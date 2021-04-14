@@ -152,7 +152,7 @@ namespace Microsoft.Exchange.MapiHttp
 			{
 				NspiHttpHandler.processId,
 				"Microsoft Exchange",
-				"15.00.1497.012"
+				"15.00.1497.015"
 			});
 			int num = Privileges.RemoveAllExcept(new string[]
 			{
@@ -181,7 +181,7 @@ namespace Microsoft.Exchange.MapiHttp
 			{
 				NspiHttpHandler.processId,
 				"Microsoft Exchange",
-				"15.00.1497.012"
+				"15.00.1497.015"
 			});
 		}
 
@@ -191,7 +191,7 @@ namespace Microsoft.Exchange.MapiHttp
 			{
 				NspiHttpHandler.processId,
 				"Microsoft Exchange",
-				"15.00.1497.012"
+				"15.00.1497.015"
 			});
 			while (ExDateTime.Now - NspiHttpHandler.shutdownTime.Value < NspiHttpHandler.waitDrainOnShutdown)
 			{
@@ -212,7 +212,7 @@ namespace Microsoft.Exchange.MapiHttp
 			{
 				NspiHttpHandler.processId,
 				"Microsoft Exchange",
-				"15.00.1497.012"
+				"15.00.1497.015"
 			});
 		}
 

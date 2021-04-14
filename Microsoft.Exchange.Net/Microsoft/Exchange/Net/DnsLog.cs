@@ -22,7 +22,7 @@ namespace Microsoft.Exchange.Net
 				Assembly executingAssembly = Assembly.GetExecutingAssembly();
 				dnsLogPath = Path.Combine(Directory.GetParent(Path.GetDirectoryName(executingAssembly.Location)).FullName, "TransportRoles\\Logs\\Dns\\");
 			}
-			DnsLog.dnsLogSchema = new LogSchema("Microsoft Exchange Server", "15.00.1497.012", "DNS log", DnsLog.Fields);
+			DnsLog.dnsLogSchema = new LogSchema("Microsoft Exchange Server", "15.00.1497.015", "DNS log", DnsLog.Fields);
 			DnsLog.log = new AsyncLog("DnsLog", new LogHeaderFormatter(DnsLog.dnsLogSchema), "DnsLogs");
 			DnsLog.log.Configure(dnsLogPath, dnsLogmaxAge, dnsLogMaxDirectorySize, dnsLogMaxFileSize, 5242880, TimeSpan.FromSeconds(60.0), TimeSpan.FromSeconds(15.0));
 			DnsLog.enabled = true;

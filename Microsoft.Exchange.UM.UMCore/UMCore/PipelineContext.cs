@@ -230,9 +230,9 @@ namespace Microsoft.Exchange.UM.UMCore
 							string key;
 							if ((key = array[0]) != null)
 							{
-								if (<PrivateImplementationDetails>{52CC4AA6-9890-4FF8-93E5-6095807AC0AF}.$$method0x600147c-1 == null)
+								if (<PrivateImplementationDetails>{C4249C9C-CB93-4F62-922B-E7B5A64A44D3}.$$method0x600147c-1 == null)
 								{
-									<PrivateImplementationDetails>{52CC4AA6-9890-4FF8-93E5-6095807AC0AF}.$$method0x600147c-1 = new Dictionary<string, int>(15)
+									<PrivateImplementationDetails>{C4249C9C-CB93-4F62-922B-E7B5A64A44D3}.$$method0x600147c-1 = new Dictionary<string, int>(15)
 									{
 										{
 											"CallId",
@@ -297,7 +297,7 @@ namespace Microsoft.Exchange.UM.UMCore
 									};
 								}
 								int num2;
-								if (<PrivateImplementationDetails>{52CC4AA6-9890-4FF8-93E5-6095807AC0AF}.$$method0x600147c-1.TryGetValue(key, out num2))
+								if (<PrivateImplementationDetails>{C4249C9C-CB93-4F62-922B-E7B5A64A44D3}.$$method0x600147c-1.TryGetValue(key, out num2))
 								{
 									switch (num2)
 									{
@@ -402,9 +402,9 @@ namespace Microsoft.Exchange.UM.UMCore
 				string key2;
 				if ((key2 = text) != null)
 				{
-					if (<PrivateImplementationDetails>{52CC4AA6-9890-4FF8-93E5-6095807AC0AF}.$$method0x600147c-2 == null)
+					if (<PrivateImplementationDetails>{C4249C9C-CB93-4F62-922B-E7B5A64A44D3}.$$method0x600147c-2 == null)
 					{
-						<PrivateImplementationDetails>{52CC4AA6-9890-4FF8-93E5-6095807AC0AF}.$$method0x600147c-2 = new Dictionary<string, int>(10)
+						<PrivateImplementationDetails>{C4249C9C-CB93-4F62-922B-E7B5A64A44D3}.$$method0x600147c-2 = new Dictionary<string, int>(10)
 						{
 							{
 								"SMTPVoiceMail",
@@ -449,7 +449,7 @@ namespace Microsoft.Exchange.UM.UMCore
 						};
 					}
 					int num3;
-					if (<PrivateImplementationDetails>{52CC4AA6-9890-4FF8-93E5-6095807AC0AF}.$$method0x600147c-2.TryGetValue(key2, out num3))
+					if (<PrivateImplementationDetails>{C4249C9C-CB93-4F62-922B-E7B5A64A44D3}.$$method0x600147c-2.TryGetValue(key2, out num3))
 					{
 						switch (num3)
 						{

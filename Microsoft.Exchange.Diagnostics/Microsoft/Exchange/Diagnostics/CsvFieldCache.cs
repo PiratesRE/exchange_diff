@@ -352,7 +352,7 @@ namespace Microsoft.Exchange.Diagnostics
 
 		private const string VersionString = "Version:";
 
-		public static readonly Version LocalVersion = new Version("15.00.1497.012");
+		public static readonly Version LocalVersion = new Version("15.00.1497.015");
 
 		private CsvTable table;
 

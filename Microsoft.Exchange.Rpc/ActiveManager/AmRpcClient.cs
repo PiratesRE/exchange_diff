@@ -38,7 +38,7 @@ namespace Microsoft.Exchange.Rpc.ActiveManager
 				{
 					AmRpcException.ThrowRpcException(num, "cli_RpcsAmGetServerForDatabase");
 				}
-				dbInfo = <Module>.Microsoft.Exchange.Rpc.ActiveManager.?A0x700b6f57.UToMDbStatusInfo(&amRpcDbStatusInfo);
+				dbInfo = <Module>.Microsoft.Exchange.Rpc.ActiveManager.?A0x9f558e99.UToMDbStatusInfo(&amRpcDbStatusInfo);
 				return <Module>.UToMErrorExceptionInfo(ref tagErrorExceptionInfo);
 			}
 			catch when (endfilter(<Module>.DwExRpcExceptionFilter(Marshal.GetExceptionCode()) != null))
@@ -47,7 +47,7 @@ namespace Microsoft.Exchange.Rpc.ActiveManager
 			}
 			finally
 			{
-				<Module>.Microsoft.Exchange.Rpc.ActiveManager.?A0x700b6f57.FreeRpcDbStatusInfo(&amRpcDbStatusInfo);
+				<Module>.Microsoft.Exchange.Rpc.ActiveManager.?A0x9f558e99.FreeRpcDbStatusInfo(&amRpcDbStatusInfo);
 				<Module>.FreeErrorExceptionInfo(&tagErrorExceptionInfo);
 			}
 			return null;
@@ -380,7 +380,7 @@ namespace Microsoft.Exchange.Rpc.ActiveManager
 			tagErrorExceptionInfo tagErrorExceptionInfo;
 			<Module>.InitErrorExceptionInfo(ref tagErrorExceptionInfo);
 			__MIDL_IActiveManagerRpc_0002 _MIDL_IActiveManagerRpc_;
-			<Module>.Microsoft.Exchange.Rpc.ActiveManager.?A0x700b6f57.MToUMountArg2(arg, &_MIDL_IActiveManagerRpc_);
+			<Module>.Microsoft.Exchange.Rpc.ActiveManager.?A0x9f558e99.MToUMountArg2(arg, &_MIDL_IActiveManagerRpc_);
 			try
 			{
 				_GUID guid2 = <Module>.ToGUID(ref guid);
@@ -453,7 +453,7 @@ namespace Microsoft.Exchange.Rpc.ActiveManager
 				{
 					AmRpcException.ThrowRpcException(num, "cli_GetPrimaryActiveManager");
 				}
-				pamInfo = <Module>.Microsoft.Exchange.Rpc.ActiveManager.?A0x700b6f57.UToMPamInfo(&_MIDL_IActiveManagerRpc_);
+				pamInfo = <Module>.Microsoft.Exchange.Rpc.ActiveManager.?A0x9f558e99.UToMPamInfo(&_MIDL_IActiveManagerRpc_);
 				return <Module>.UToMErrorExceptionInfo(ref tagErrorExceptionInfo);
 			}
 			catch when (endfilter(<Module>.DwExRpcExceptionFilter(Marshal.GetExceptionCode()) != null))
@@ -913,7 +913,7 @@ namespace Microsoft.Exchange.Rpc.ActiveManager
 			tagErrorExceptionInfo tagErrorExceptionInfo;
 			<Module>.InitErrorExceptionInfo(ref tagErrorExceptionInfo);
 			__MIDL_IActiveManagerRpc_0003 _MIDL_IActiveManagerRpc_;
-			<Module>.Microsoft.Exchange.Rpc.ActiveManager.?A0x700b6f57.MToUMountArg3(arg, &_MIDL_IActiveManagerRpc_);
+			<Module>.Microsoft.Exchange.Rpc.ActiveManager.?A0x9f558e99.MToUMountArg3(arg, &_MIDL_IActiveManagerRpc_);
 			try
 			{
 				_GUID guid2 = <Module>.ToGUID(ref guid);

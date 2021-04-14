@@ -61,7 +61,7 @@ namespace Microsoft.Exchange.Data.ApplicationLogic.CommonHandlers
 					ThreadCount = currentProcess.Threads.Count,
 					MemorySize = currentProcess.VirtualMemorySize64,
 					ProcessUpTime = currentProcess.TotalProcessorTime.TotalHours,
-					Version = "15.00.1497.012"
+					Version = "15.00.1497.015"
 				};
 			}
 			return result;

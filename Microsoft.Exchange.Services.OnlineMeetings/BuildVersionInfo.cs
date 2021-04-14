@@ -14,9 +14,9 @@ namespace Microsoft.Exchange
 
 		public const int BuildMajor = 1497;
 
-		public const int BuildMinor = 12;
+		public const int BuildMinor = 15;
 
-		public const string FileVersion = "15.00.1497.012";
+		public const string FileVersion = "15.00.1497.015";
 
 		public const string AssemblyVersion = "15.0.0.0";
 

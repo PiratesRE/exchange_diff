@@ -62,7 +62,7 @@ namespace Microsoft.Exchange.Data.Storage.Clutter
 				this.SetUserConfigurationProperty(this.GetSentTimePropertyKey(notificationType), ExDateTime.UtcNow);
 				this.SetUserConfigurationProperty(this.GetInternetMessageIdPropertyKey(notificationType), messageItem.InternetMessageId);
 				this.SetUserConfigurationProperty(this.GetMessageGuidPropertyKey(notificationType), (valueAsNullable != null) ? valueAsNullable.Value.ToString() : null);
-				this.SetUserConfigurationProperty(this.GetServerVersionPropertyKey(notificationType), "15.00.1497.012");
+				this.SetUserConfigurationProperty(this.GetServerVersionPropertyKey(notificationType), "15.00.1497.015");
 				NotificationManager.LogNotificationSentActivity(this.session, notificationType, messageItem, valueAsNullable, folder);
 			}
 		}

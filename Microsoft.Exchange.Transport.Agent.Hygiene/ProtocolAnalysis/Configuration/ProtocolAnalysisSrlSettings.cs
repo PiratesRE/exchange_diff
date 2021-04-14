@@ -1200,9 +1200,9 @@ namespace Microsoft.Exchange.Transport.Agent.ProtocolAnalysis.Configuration
 						{
 							goto IL_1EF;
 						}
-						if (<PrivateImplementationDetails>{F28DE915-E35E-49F1-9F35-FA7FC113BD0D}.$$method0x6000218-1 == null)
+						if (<PrivateImplementationDetails>{7DD82F65-5C67-42F0-A46E-3A96B00F132A}.$$method0x6000218-1 == null)
 						{
-							<PrivateImplementationDetails>{F28DE915-E35E-49F1-9F35-FA7FC113BD0D}.$$method0x6000218-1 = new Dictionary<string, int>(6)
+							<PrivateImplementationDetails>{7DD82F65-5C67-42F0-A46E-3A96B00F132A}.$$method0x6000218-1 = new Dictionary<string, int>(6)
 							{
 								{
 									"ConfigurationVersion",
@@ -1231,7 +1231,7 @@ namespace Microsoft.Exchange.Transport.Agent.ProtocolAnalysis.Configuration
 							};
 						}
 						int num;
-						if (!<PrivateImplementationDetails>{F28DE915-E35E-49F1-9F35-FA7FC113BD0D}.$$method0x6000218-1.TryGetValue(name, out num))
+						if (!<PrivateImplementationDetails>{7DD82F65-5C67-42F0-A46E-3A96B00F132A}.$$method0x6000218-1.TryGetValue(name, out num))
 						{
 							goto IL_1EF;
 						}

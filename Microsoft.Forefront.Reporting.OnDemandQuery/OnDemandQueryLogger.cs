@@ -10,7 +10,7 @@ namespace Microsoft.Forefront.Reporting.OnDemandQuery
 		static OnDemandQueryLogger()
 		{
 			string[] names = Enum.GetNames(typeof(OnDemandQueryLogFields));
-			OnDemandQueryLogger.OnDemandQueryLogSchema = new LogSchema("Microsoft.Forefront.Reporting.Common", "15.00.1497.012", "OnDemandQueryLogs", names);
+			OnDemandQueryLogger.OnDemandQueryLogSchema = new LogSchema("Microsoft.Forefront.Reporting.Common", "15.00.1497.015", "OnDemandQueryLogs", names);
 			string path = "D:\\OnDemandQueryLogs";
 			TimeSpan maxAge = TimeSpan.FromDays(5.0);
 			long maxDirectorySize = 50000000L;

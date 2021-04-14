@@ -68,7 +68,7 @@ namespace Microsoft.Internal.ManagedWPP
 
 		private static Guid[] messageGuids = new Guid[]
 		{
-			new Guid("{44f79c5d-d950-a1cb-e41b-1c3107db2b1e}"),
+			new Guid("{400c448c-9e5e-c70d-3892-10d63e28a5fa}"),
 			new Guid("{2a428b2b-bb10-1c28-337e-baba1409df62}"),
 			new Guid("{f51b3d09-494f-6609-efb6-3c5c508587a8}"),
 			new Guid("{013e9f2f-7ec0-df47-5ad0-bff73960c1ba}"),

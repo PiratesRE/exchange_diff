@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{09CD9476-CD82-489E-B9E2-84B47CA141B0}</ProjectGuid>
+    <ProjectGuid>{7A3782CB-D60A-4A00-8673-7FAAD5746C7F}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Microsoft.Exchange.Setup.Common</RootNamespace>
@@ -181,63 +181,63 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Microsoft.Exchange.Common\Microsoft.Exchange.Common.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140F0}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746BBF}</Project>
       <Name>Microsoft.Exchange.Common</Name>
     </ProjectReference>
     <ProjectReference Include="..\Microsoft.Exchange.Configuration.ObjectModel\Microsoft.Exchange.Configuration.ObjectModel.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140FC}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746BCB}</Project>
       <Name>Microsoft.Exchange.Configuration.ObjectModel</Name>
     </ProjectReference>
     <ProjectReference Include="..\Microsoft.Exchange.Data.Common\Microsoft.Exchange.Data.Common.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140D3}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746BA2}</Project>
       <Name>Microsoft.Exchange.Data.Common</Name>
     </ProjectReference>
     <ProjectReference Include="..\Microsoft.Exchange.Data.Directory\Microsoft.Exchange.Data.Directory.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14105}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746BD4}</Project>
       <Name>Microsoft.Exchange.Data.Directory</Name>
     </ProjectReference>
     <ProjectReference Include="..\Microsoft.Exchange.Data\Microsoft.Exchange.Data.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14106}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746BD5}</Project>
       <Name>Microsoft.Exchange.Data</Name>
     </ProjectReference>
     <ProjectReference Include="..\Microsoft.Exchange.Diagnostics\Microsoft.Exchange.Diagnostics.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14113}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746BE2}</Project>
       <Name>Microsoft.Exchange.Diagnostics</Name>
     </ProjectReference>
     <ProjectReference Include="..\Microsoft.Exchange.Management.Deployment\Microsoft.Exchange.Management.Deployment.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1415A}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746C29}</Project>
       <Name>Microsoft.Exchange.Management.Deployment</Name>
     </ProjectReference>
     <ProjectReference Include="..\Microsoft.Exchange.Management\Microsoft.Exchange.Management.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1415C}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746C2B}</Project>
       <Name>Microsoft.Exchange.Management</Name>
     </ProjectReference>
     <ProjectReference Include="..\Microsoft.Exchange.Net\Microsoft.Exchange.Net.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14178}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746C47}</Project>
       <Name>Microsoft.Exchange.Net</Name>
     </ProjectReference>
     <ProjectReference Include="..\Microsoft.Exchange.PowerShell.Configuration\Microsoft.Exchange.PowerShell.Configuration.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1417F}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746C4E}</Project>
       <Name>Microsoft.Exchange.PowerShell.Configuration</Name>
     </ProjectReference>
     <ProjectReference Include="..\Microsoft.Exchange.Setup.AcquireLanguagePack\Microsoft.Exchange.Setup.AcquireLanguagePack.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141AE}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746C7D}</Project>
       <Name>Microsoft.Exchange.Setup.AcquireLanguagePack</Name>
     </ProjectReference>
     <ProjectReference Include="..\Microsoft.Exchange.Setup.CommonBase\Microsoft.Exchange.Setup.CommonBase.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141B1}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746C80}</Project>
       <Name>Microsoft.Exchange.Setup.CommonBase</Name>
     </ProjectReference>
     <ProjectReference Include="..\Microsoft.Exchange.Setup.Parser\Microsoft.Exchange.Setup.Parser.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141B4}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746C83}</Project>
       <Name>Microsoft.Exchange.Setup.Parser</Name>
     </ProjectReference>
     <ProjectReference Include="..\Microsoft.Exchange.UM.UMCommon\Microsoft.Exchange.UM.UMCommon.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141DB}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746CAA}</Project>
       <Name>Microsoft.Exchange.UM.UMCommon</Name>
     </ProjectReference>
     <ProjectReference Include="..\mscorlib\mscorlib.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141F1}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746CC0}</Project>
       <Name>mscorlib</Name>
     </ProjectReference>
   </ItemGroup>

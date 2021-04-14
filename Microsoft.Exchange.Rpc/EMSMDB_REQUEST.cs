@@ -10,7 +10,7 @@ internal struct EMSMDB_REQUEST
 
 	[NativeCppClass]
 	[StructLayout(LayoutKind.Explicit, Size = 168)]
-	internal struct $UnnamedClass$0xb0ec4a19$9$
+	internal struct $UnnamedClass$0x5fb2abd7$9$
 	{
 		[FieldOffset(0)]
 		private long <alignment\u0020member>;

@@ -113,7 +113,7 @@ namespace Microsoft.Exchange.MessagingPolicies.RmSvcAgent
 			}
 			E4eLog.Instance.LogInfo(args.MailItem.Message.MessageId, "[E]FileVersion: {0}", new object[]
 			{
-				"15.00.1497.012"
+				"15.00.1497.015"
 			});
 			E4eLog.Instance.LogInfo(args.MailItem.Message.MessageId, "[E]IsOriginatingMail: '{0}'", new object[]
 			{

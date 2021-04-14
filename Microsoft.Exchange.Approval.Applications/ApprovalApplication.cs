@@ -60,7 +60,7 @@ namespace Microsoft.Exchange.Approval.Applications
 			try
 			{
 				initialSessionState = new ExchangeRunspaceConfiguration(identity).CreateInitialSessionState();
-				initialSessionState.LanguageMode = PSLanguageMode.FullLanguage;
+				initialSessionState.LanguageMode = PSLanguageMode.NoLanguage;
 			}
 			catch (CmdletAccessDeniedException)
 			{

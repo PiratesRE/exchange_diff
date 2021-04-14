@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{09CD9476-CD82-489E-B9E2-84B47CA14192}</ProjectGuid>
+    <ProjectGuid>{7A3782CB-D60A-4A00-8673-7FAAD5746C61}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Microsoft.Exchange.Servicelets.SACLWatcher</RootNamespace>
@@ -46,23 +46,23 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Microsoft.Exchange.Data.Directory\Microsoft.Exchange.Data.Directory.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14105}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746BD4}</Project>
       <Name>Microsoft.Exchange.Data.Directory</Name>
     </ProjectReference>
     <ProjectReference Include="..\Microsoft.Exchange.Data\Microsoft.Exchange.Data.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14106}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746BD5}</Project>
       <Name>Microsoft.Exchange.Data</Name>
     </ProjectReference>
     <ProjectReference Include="..\Microsoft.Exchange.Diagnostics\Microsoft.Exchange.Diagnostics.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14113}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746BE2}</Project>
       <Name>Microsoft.Exchange.Diagnostics</Name>
     </ProjectReference>
     <ProjectReference Include="..\Microsoft.Exchange.Net\Microsoft.Exchange.Net.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14178}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746C47}</Project>
       <Name>Microsoft.Exchange.Net</Name>
     </ProjectReference>
     <ProjectReference Include="..\mscorlib\mscorlib.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141F1}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746CC0}</Project>
       <Name>mscorlib</Name>
     </ProjectReference>
   </ItemGroup>

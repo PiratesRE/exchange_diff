@@ -91,7 +91,7 @@ namespace Microsoft.Exchange.Security.OAuth
 				LogRowFormatter logRowFormatter = new LogRowFormatter(OutboundProtocolLog.schema);
 				logRowFormatter[1] = OutboundProtocolLog.GetNextSequenceNumber();
 				logRowFormatter[2] = Globals.ProcessId;
-				logRowFormatter[3] = "15.00.1497.012";
+				logRowFormatter[3] = "15.00.1497.015";
 				logRowFormatter[4] = operation;
 				logRowFormatter[5] = resultCode;
 				logRowFormatter[6] = processingTime;
@@ -241,7 +241,7 @@ namespace Microsoft.Exchange.Security.OAuth
 			new OutboundProtocolLog.FieldInfo(OutboundProtocolLog.Field.TokenResult, "token-result")
 		};
 
-		private static readonly LogSchema schema = new LogSchema("Microsoft Exchange", "15.00.1497.012", "OAuth Outbound Logs", OutboundProtocolLog.GetColumnArray());
+		private static readonly LogSchema schema = new LogSchema("Microsoft Exchange", "15.00.1497.015", "OAuth Outbound Logs", OutboundProtocolLog.GetColumnArray());
 
 		private static TimeSpan defaultMaxRetentionPeriod = TimeSpan.FromHours(48.0);
 

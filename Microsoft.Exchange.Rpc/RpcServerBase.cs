@@ -140,7 +140,7 @@ namespace Microsoft.Exchange.Rpc
 				}
 				_GUID guid2;
 				cpblk(ref guid2, ref rpc_IF_ID, 16);
-				Guid uuid = <Module>.Microsoft.Exchange.Rpc.?A0xd73cb61b.GuidFromGUID(ref guid2);
+				Guid uuid = <Module>.Microsoft.Exchange.Rpc.?A0x31f30f38.GuidFromGUID(ref guid2);
 				rpcServerBase.m_uuid = uuid;
 				RpcServerBase.serverCache.Add(rpcServerBase.m_uuid, rpcServerBase);
 				flag = true;
@@ -204,7 +204,7 @@ namespace Microsoft.Exchange.Rpc
 			RpcServerBase.EmptyArraySegment = emptyArraySegment;
 			RpcServerBase.DefaultMaxRpcCalls = 1234;
 			RpcServerBase.checkSecurityDelegate = new CheckSecurityDelegate(RpcServerBase.CheckSecurity);
-			<Module>.?A0xd73cb61b.securityCallback = Marshal.GetFunctionPointerForDelegate(RpcServerBase.checkSecurityDelegate).ToPointer();
+			<Module>.?A0x31f30f38.securityCallback = Marshal.GetFunctionPointerForDelegate(RpcServerBase.checkSecurityDelegate).ToPointer();
 		}
 
 		protected static FileSecurity BuildDefaultSecurityDescriptor()
@@ -340,7 +340,7 @@ namespace Microsoft.Exchange.Rpc
 			}
 			_GUID guid;
 			cpblk(ref guid, ref rpc_IF_ID, 16);
-			Guid uuid = <Module>.Microsoft.Exchange.Rpc.?A0xd73cb61b.GuidFromGUID(ref guid);
+			Guid uuid = <Module>.Microsoft.Exchange.Rpc.?A0x31f30f38.GuidFromGUID(ref guid);
 			rpcServerBase.m_uuid = uuid;
 			RpcServerBase.serverCache.Add(rpcServerBase.m_uuid, rpcServerBase);
 			return rpcServerBase;
@@ -575,7 +575,7 @@ namespace Microsoft.Exchange.Rpc
 			}
 			_GUID guid;
 			cpblk(ref guid, ref rpc_IF_ID, 16);
-			Guid guid2 = <Module>.Microsoft.Exchange.Rpc.?A0xd73cb61b.GuidFromGUID(ref guid);
+			Guid guid2 = <Module>.Microsoft.Exchange.Rpc.?A0x31f30f38.GuidFromGUID(ref guid);
 			return RpcServerBase.serverCache.Lookup(guid2);
 		}
 
@@ -765,7 +765,7 @@ namespace Microsoft.Exchange.Rpc
 
 		public unsafe static int GetSecurityDetails(void* Interface, void* InterfaceDetails)
 		{
-			Guid guid = <Module>.Microsoft.Exchange.Rpc.?A0xd73cb61b.GuidFromGUID(Interface);
+			Guid guid = <Module>.Microsoft.Exchange.Rpc.?A0x31f30f38.GuidFromGUID(Interface);
 			RpcServerBase rpcServerBase = RpcServerBase.serverCache.Lookup(guid);
 			if (rpcServerBase == null)
 			{
@@ -796,7 +796,7 @@ namespace Microsoft.Exchange.Rpc
 
 		public unsafe static int CheckSecurity(void* Interface, void* Context)
 		{
-			Guid guid = <Module>.Microsoft.Exchange.Rpc.?A0xd73cb61b.GuidFromGUID(Interface);
+			Guid guid = <Module>.Microsoft.Exchange.Rpc.?A0x31f30f38.GuidFromGUID(Interface);
 			RpcServerBase rpcServerBase = RpcServerBase.serverCache.Lookup(guid);
 			int num;
 			if (rpcServerBase == null)

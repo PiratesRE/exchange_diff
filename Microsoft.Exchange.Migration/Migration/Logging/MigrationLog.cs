@@ -165,7 +165,7 @@ namespace Microsoft.Exchange.Migration.Logging
 			"data"
 		};
 
-		private static readonly LogSchema Schema = new LogSchema("Microsoft Exchange Server", "15.00.1497.012", "MigrationLog", MigrationLog.Fields);
+		private static readonly LogSchema Schema = new LogSchema("Microsoft Exchange Server", "15.00.1497.015", "MigrationLog", MigrationLog.Fields);
 
 		private static readonly KeyValuePair<MigrationEventType, MigrationLog.Tracer>[] Tracers = new KeyValuePair<MigrationEventType, MigrationLog.Tracer>[]
 		{

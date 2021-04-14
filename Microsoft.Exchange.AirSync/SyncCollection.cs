@@ -1232,9 +1232,9 @@ namespace Microsoft.Exchange.AirSync
 				{
 					goto IL_184;
 				}
-				if (<PrivateImplementationDetails>{FFCBDD4C-C702-4D33-87A9-71BBCA1064B7}.$$method0x60007b7-1 == null)
+				if (<PrivateImplementationDetails>{9389F671-9FA0-4E66-995A-7A9A156B88BC}.$$method0x60007b7-1 == null)
 				{
-					<PrivateImplementationDetails>{FFCBDD4C-C702-4D33-87A9-71BBCA1064B7}.$$method0x60007b7-1 = new Dictionary<string, int>(7)
+					<PrivateImplementationDetails>{9389F671-9FA0-4E66-995A-7A9A156B88BC}.$$method0x60007b7-1 = new Dictionary<string, int>(7)
 					{
 						{
 							"Calendar",
@@ -1267,7 +1267,7 @@ namespace Microsoft.Exchange.AirSync
 					};
 				}
 				int num;
-				if (!<PrivateImplementationDetails>{FFCBDD4C-C702-4D33-87A9-71BBCA1064B7}.$$method0x60007b7-1.TryGetValue(key, out num))
+				if (!<PrivateImplementationDetails>{9389F671-9FA0-4E66-995A-7A9A156B88BC}.$$method0x60007b7-1.TryGetValue(key, out num))
 				{
 					goto IL_184;
 				}
@@ -1582,9 +1582,9 @@ namespace Microsoft.Exchange.AirSync
 			string key;
 			if ((key = item.ClassType) != null)
 			{
-				if (<PrivateImplementationDetails>{FFCBDD4C-C702-4D33-87A9-71BBCA1064B7}.$$method0x60007c3-1 == null)
+				if (<PrivateImplementationDetails>{9389F671-9FA0-4E66-995A-7A9A156B88BC}.$$method0x60007c3-1 == null)
 				{
-					<PrivateImplementationDetails>{FFCBDD4C-C702-4D33-87A9-71BBCA1064B7}.$$method0x60007c3-1 = new Dictionary<string, int>(6)
+					<PrivateImplementationDetails>{9389F671-9FA0-4E66-995A-7A9A156B88BC}.$$method0x60007c3-1 = new Dictionary<string, int>(6)
 					{
 						{
 							"Calendar",
@@ -1613,7 +1613,7 @@ namespace Microsoft.Exchange.AirSync
 					};
 				}
 				int num;
-				if (<PrivateImplementationDetails>{FFCBDD4C-C702-4D33-87A9-71BBCA1064B7}.$$method0x60007c3-1.TryGetValue(key, out num))
+				if (<PrivateImplementationDetails>{9389F671-9FA0-4E66-995A-7A9A156B88BC}.$$method0x60007c3-1.TryGetValue(key, out num))
 				{
 					Item item2;
 					switch (num)

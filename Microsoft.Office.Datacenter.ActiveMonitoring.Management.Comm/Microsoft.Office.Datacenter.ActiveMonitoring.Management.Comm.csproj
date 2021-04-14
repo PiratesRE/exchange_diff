@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{09CD9476-CD82-489E-B9E2-84B47CA141EB}</ProjectGuid>
+    <ProjectGuid>{7A3782CB-D60A-4A00-8673-7FAAD5746CBA}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Microsoft.Office.Datacenter.ActiveMonitoring.Management.Common</RootNamespace>
@@ -56,23 +56,23 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Microsoft.Exchange.Data.Common\Microsoft.Exchange.Data.Common.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140D3}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746BA2}</Project>
       <Name>Microsoft.Exchange.Data.Common</Name>
     </ProjectReference>
     <ProjectReference Include="..\Microsoft.Exchange.Data.Storage\Microsoft.Exchange.Data.Storage.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1410F}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746BDE}</Project>
       <Name>Microsoft.Exchange.Data.Storage</Name>
     </ProjectReference>
     <ProjectReference Include="..\Microsoft.Exchange.Data\Microsoft.Exchange.Data.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14106}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746BD5}</Project>
       <Name>Microsoft.Exchange.Data</Name>
     </ProjectReference>
     <ProjectReference Include="..\Microsoft.Office.Datacenter.WorkerTaskFrameworkInternalProvi\Microsoft.Office.Datacenter.WorkerTaskFrameworkInternalProvi.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141EF}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746CBE}</Project>
       <Name>Microsoft.Office.Datacenter.WorkerTaskFrameworkInternalProvider</Name>
     </ProjectReference>
     <ProjectReference Include="..\mscorlib\mscorlib.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141F1}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746CC0}</Project>
       <Name>mscorlib</Name>
     </ProjectReference>
   </ItemGroup>

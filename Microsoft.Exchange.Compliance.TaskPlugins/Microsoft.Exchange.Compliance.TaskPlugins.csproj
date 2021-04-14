@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{09CD9476-CD82-489E-B9E2-84B47CA140F5}</ProjectGuid>
+    <ProjectGuid>{7A3782CB-D60A-4A00-8673-7FAAD5746BC4}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Microsoft.Exchange.Compliance.TaskPlugins</RootNamespace>
@@ -51,31 +51,31 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Microsoft.Exchange.Compliance.TaskDistributionCommon\Microsoft.Exchange.Compliance.TaskDistributionCommon.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140F3}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746BC2}</Project>
       <Name>Microsoft.Exchange.Compliance.TaskDistributionCommon</Name>
     </ProjectReference>
     <ProjectReference Include="..\Microsoft.Exchange.Configuration.ObjectModel\Microsoft.Exchange.Configuration.ObjectModel.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140FC}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746BCB}</Project>
       <Name>Microsoft.Exchange.Configuration.ObjectModel</Name>
     </ProjectReference>
     <ProjectReference Include="..\Microsoft.Exchange.Data.Directory\Microsoft.Exchange.Data.Directory.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14105}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746BD4}</Project>
       <Name>Microsoft.Exchange.Data.Directory</Name>
     </ProjectReference>
     <ProjectReference Include="..\Microsoft.Exchange.Data.Storage\Microsoft.Exchange.Data.Storage.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1410F}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746BDE}</Project>
       <Name>Microsoft.Exchange.Data.Storage</Name>
     </ProjectReference>
     <ProjectReference Include="..\Microsoft.Exchange.Data\Microsoft.Exchange.Data.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14106}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746BD5}</Project>
       <Name>Microsoft.Exchange.Data</Name>
     </ProjectReference>
     <ProjectReference Include="..\Microsoft.Exchange.Search.Fast\Microsoft.Exchange.Search.Fast.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14195}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746C64}</Project>
       <Name>Microsoft.Exchange.Search.Fast</Name>
     </ProjectReference>
     <ProjectReference Include="..\mscorlib\mscorlib.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141F1}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746CC0}</Project>
       <Name>mscorlib</Name>
     </ProjectReference>
   </ItemGroup>

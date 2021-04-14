@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 [assembly: AssemblyTitle("Microsoft.Exchange.Search.IndexAgent")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyFileVersion("15.00.1497.012")]
+[assembly: AssemblyFileVersion("15.00.1497.015")]
 [assembly: AssemblyCompany("Microsoft Corporation")]
 [assembly: AssemblyCopyright("(C) 2014 Microsoft Corporation. All rights reserved.")]
 [assembly: AssemblyTrademark("Microsoft(R) is a registered trademark of Microsoft Corporation.")]

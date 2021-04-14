@@ -43,9 +43,9 @@ namespace Microsoft.Exchange.Services
 			Exception result = null;
 			if (exceptionType != null && exceptionType != null)
 			{
-				if (<PrivateImplementationDetails>{66AAB65C-53B7-4036-8215-CAF8E2ECAEBD}.$$method0x600019e-1 == null)
+				if (<PrivateImplementationDetails>{07C235D2-EA05-4020-8C99-D4258F03250B}.$$method0x600019e-1 == null)
 				{
-					<PrivateImplementationDetails>{66AAB65C-53B7-4036-8215-CAF8E2ECAEBD}.$$method0x600019e-1 = new Dictionary<string, int>(28)
+					<PrivateImplementationDetails>{07C235D2-EA05-4020-8C99-D4258F03250B}.$$method0x600019e-1 = new Dictionary<string, int>(28)
 					{
 						{
 							"Microsoft.Exchange.Data.Storage.EventNotFoundException",
@@ -162,7 +162,7 @@ namespace Microsoft.Exchange.Services
 					};
 				}
 				int num;
-				if (<PrivateImplementationDetails>{66AAB65C-53B7-4036-8215-CAF8E2ECAEBD}.$$method0x600019e-1.TryGetValue(exceptionType, out num))
+				if (<PrivateImplementationDetails>{07C235D2-EA05-4020-8C99-D4258F03250B}.$$method0x600019e-1.TryGetValue(exceptionType, out num))
 				{
 					switch (num)
 					{

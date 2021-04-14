@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{09CD9476-CD82-489E-B9E2-84B47CA141C4}</ProjectGuid>
+    <ProjectGuid>{7A3782CB-D60A-4A00-8673-7FAAD5746C93}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Microsoft.Exchange.Transport.Agent.PhishingDetection</RootNamespace>
@@ -49,15 +49,15 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Microsoft.Exchange.Data.Transport\Microsoft.Exchange.Data.Transport.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140D5}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746BA4}</Project>
       <Name>Microsoft.Exchange.Data.Transport</Name>
     </ProjectReference>
     <ProjectReference Include="..\Microsoft.Exchange.Extensibility.Partner\Microsoft.Exchange.Extensibility.Partner.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14127}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746BF6}</Project>
       <Name>Microsoft.Exchange.Extensibility.Partner</Name>
     </ProjectReference>
     <ProjectReference Include="..\mscorlib\mscorlib.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141F1}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746CC0}</Project>
       <Name>mscorlib</Name>
     </ProjectReference>
   </ItemGroup>

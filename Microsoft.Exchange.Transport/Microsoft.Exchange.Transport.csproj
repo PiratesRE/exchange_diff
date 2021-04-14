@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{09CD9476-CD82-489E-B9E2-84B47CA141CD}</ProjectGuid>
+    <ProjectGuid>{7A3782CB-D60A-4A00-8673-7FAAD5746C9C}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Microsoft</RootNamespace>
@@ -1160,131 +1160,131 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Microsoft.Exchange.Common.DiskManagement\Microsoft.Exchange.Common.DiskManagement.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140EF}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746BBE}</Project>
       <Name>Microsoft.Exchange.Common.DiskManagement</Name>
     </ProjectReference>
     <ProjectReference Include="..\Microsoft.Exchange.Common\Microsoft.Exchange.Common.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140F0}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746BBF}</Project>
       <Name>Microsoft.Exchange.Common</Name>
     </ProjectReference>
     <ProjectReference Include="..\Microsoft.Exchange.Compliance\Microsoft.Exchange.Compliance.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140F2}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746BC1}</Project>
       <Name>Microsoft.Exchange.Compliance</Name>
     </ProjectReference>
     <ProjectReference Include="..\Microsoft.Exchange.Configuration.ObjectModel\Microsoft.Exchange.Configuration.ObjectModel.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140FC}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746BCB}</Project>
       <Name>Microsoft.Exchange.Configuration.ObjectModel</Name>
     </ProjectReference>
     <ProjectReference Include="..\Microsoft.Exchange.Core.Strings\Microsoft.Exchange.Core.Strings.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14103}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746BD2}</Project>
       <Name>Microsoft.Exchange.Core.Strings</Name>
     </ProjectReference>
     <ProjectReference Include="..\Microsoft.Exchange.Data.ApplicationLogic\Microsoft.Exchange.Data.ApplicationLogic.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14104}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746BD3}</Project>
       <Name>Microsoft.Exchange.Data.ApplicationLogic</Name>
     </ProjectReference>
     <ProjectReference Include="..\Microsoft.Exchange.Data.Common\Microsoft.Exchange.Data.Common.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140D3}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746BA2}</Project>
       <Name>Microsoft.Exchange.Data.Common</Name>
     </ProjectReference>
     <ProjectReference Include="..\Microsoft.Exchange.Data.Directory\Microsoft.Exchange.Data.Directory.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14105}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746BD4}</Project>
       <Name>Microsoft.Exchange.Data.Directory</Name>
     </ProjectReference>
     <ProjectReference Include="..\Microsoft.Exchange.Data.Metering.Contracts\Microsoft.Exchange.Data.Metering.Contracts.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1410B}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746BDA}</Project>
       <Name>Microsoft.Exchange.Data.Metering.Contracts</Name>
     </ProjectReference>
     <ProjectReference Include="..\Microsoft.Exchange.Data.Metering\Microsoft.Exchange.Data.Metering.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1410C}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746BDB}</Project>
       <Name>Microsoft.Exchange.Data.Metering</Name>
     </ProjectReference>
     <ProjectReference Include="..\Microsoft.Exchange.Data.Storage\Microsoft.Exchange.Data.Storage.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1410F}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746BDE}</Project>
       <Name>Microsoft.Exchange.Data.Storage</Name>
     </ProjectReference>
     <ProjectReference Include="..\Microsoft.Exchange.Data.ThrottlingService.Client\Microsoft.Exchange.Data.ThrottlingService.Client.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14110}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746BDF}</Project>
       <Name>Microsoft.Exchange.Data.ThrottlingService.Client</Name>
     </ProjectReference>
     <ProjectReference Include="..\Microsoft.Exchange.Data.Transport\Microsoft.Exchange.Data.Transport.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140D5}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746BA4}</Project>
       <Name>Microsoft.Exchange.Data.Transport</Name>
     </ProjectReference>
     <ProjectReference Include="..\Microsoft.Exchange.Data\Microsoft.Exchange.Data.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14106}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746BD5}</Project>
       <Name>Microsoft.Exchange.Data</Name>
     </ProjectReference>
     <ProjectReference Include="..\Microsoft.Exchange.Diagnostics\Microsoft.Exchange.Diagnostics.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14113}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746BE2}</Project>
       <Name>Microsoft.Exchange.Diagnostics</Name>
     </ProjectReference>
     <ProjectReference Include="..\Microsoft.Exchange.EdgeSync.Common\Microsoft.Exchange.EdgeSync.Common.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14119}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746BE8}</Project>
       <Name>Microsoft.Exchange.EdgeSync.Common</Name>
     </ProjectReference>
     <ProjectReference Include="..\Microsoft.Exchange.Extensibility.Internal\Microsoft.Exchange.Extensibility.Internal.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14126}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746BF5}</Project>
       <Name>Microsoft.Exchange.Extensibility.Internal</Name>
     </ProjectReference>
     <ProjectReference Include="..\Microsoft.Exchange.Extensibility.Partner\Microsoft.Exchange.Extensibility.Partner.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14127}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746BF6}</Project>
       <Name>Microsoft.Exchange.Extensibility.Partner</Name>
     </ProjectReference>
     <ProjectReference Include="..\Microsoft.Exchange.MessageSecurity\Microsoft.Exchange.MessageSecurity.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1416A}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746C39}</Project>
       <Name>Microsoft.Exchange.MessageSecurity</Name>
     </ProjectReference>
     <ProjectReference Include="..\Microsoft.Exchange.Net\Microsoft.Exchange.Net.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14178}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746C47}</Project>
       <Name>Microsoft.Exchange.Net</Name>
     </ProjectReference>
     <ProjectReference Include="..\Microsoft.Exchange.Rpc\Microsoft.Exchange.Rpc.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14188}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746C57}</Project>
       <Name>Microsoft.Exchange.Rpc</Name>
     </ProjectReference>
     <ProjectReference Include="..\Microsoft.Exchange.TextProcessing\Microsoft.Exchange.TextProcessing.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141BB}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746C8A}</Project>
       <Name>Microsoft.Exchange.TextProcessing</Name>
     </ProjectReference>
     <ProjectReference Include="..\Microsoft.Exchange.Transport.Common\Microsoft.Exchange.Transport.Common.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141CC}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746C9B}</Project>
       <Name>Microsoft.Exchange.Transport.Common</Name>
     </ProjectReference>
     <ProjectReference Include="..\Microsoft.Exchange.Transport.LoggingCommon\Microsoft.Exchange.Transport.LoggingCommon.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141CF}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746C9E}</Project>
       <Name>Microsoft.Exchange.Transport.LoggingCommon</Name>
     </ProjectReference>
     <ProjectReference Include="..\Microsoft.Exchange.Transport.Scheduler.Contracts\Microsoft.Exchange.Transport.Scheduler.Contracts.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141D0}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746C9F}</Project>
       <Name>Microsoft.Exchange.Transport.Scheduler.Contracts</Name>
     </ProjectReference>
     <ProjectReference Include="..\Microsoft.Exchange.Transport.Scheduler\Microsoft.Exchange.Transport.Scheduler.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141D1}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746CA0}</Project>
       <Name>Microsoft.Exchange.Transport.Scheduler</Name>
     </ProjectReference>
     <ProjectReference Include="..\Microsoft.Exchange.Transport.Storage.Contracts\Microsoft.Exchange.Transport.Storage.Contracts.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141D2}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746CA1}</Project>
       <Name>Microsoft.Exchange.Transport.Storage.Contracts</Name>
     </ProjectReference>
     <ProjectReference Include="..\Microsoft.Exchange.Transport.Storage\Microsoft.Exchange.Transport.Storage.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141D3}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746CA2}</Project>
       <Name>Microsoft.Exchange.Transport.Storage</Name>
     </ProjectReference>
     <ProjectReference Include="..\Microsoft.Exchange.VariantConfiguration\Microsoft.Exchange.VariantConfiguration.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141E0}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746CAF}</Project>
       <Name>Microsoft.Exchange.VariantConfiguration</Name>
     </ProjectReference>
     <ProjectReference Include="..\Microsoft.Isam.Esent.Interop\Microsoft.Isam.Esent.Interop.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141E8}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746CB7}</Project>
       <Name>Microsoft.Isam.Esent.Interop</Name>
     </ProjectReference>
     <ProjectReference Include="..\Microsoft.Office.Datacenter.ActiveMonitoringLocal\Microsoft.Office.Datacenter.ActiveMonitoringLocal.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141ED}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746CBC}</Project>
       <Name>Microsoft.Office.Datacenter.ActiveMonitoringLocal</Name>
     </ProjectReference>
     <ProjectReference Include="..\mscorlib\mscorlib.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141F1}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746CC0}</Project>
       <Name>mscorlib</Name>
     </ProjectReference>
   </ItemGroup>

@@ -65,7 +65,7 @@ namespace Microsoft.Exchange.Protocols.Smtp
 
 		protected virtual void SendWatsonReport(FormatException exception, StringBuilder details)
 		{
-			ExWatson.SendGenericWatsonReport("E12", ExWatson.ApplicationVersion.ToString(), ExWatson.AppName, "15.00.1497.012", Assembly.GetExecutingAssembly().GetName().Name, exception.GetType().Name, exception.StackTrace, exception.GetHashCode().ToString(CultureInfo.InvariantCulture), exception.TargetSite.Name, details.ToString());
+			ExWatson.SendGenericWatsonReport("E12", ExWatson.ApplicationVersion.ToString(), ExWatson.AppName, "15.00.1497.015", Assembly.GetExecutingAssembly().GetName().Name, exception.GetType().Name, exception.StackTrace, exception.GetHashCode().ToString(CultureInfo.InvariantCulture), exception.TargetSite.Name, details.ToString());
 		}
 
 		private void SendWatsonReportWithoutCrashingTheProcess(FormatException exception)

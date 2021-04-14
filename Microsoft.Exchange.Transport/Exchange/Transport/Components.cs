@@ -1012,7 +1012,7 @@ namespace Microsoft.Exchange.Transport
 			if (availableMemoryInMBytes < Components.TransportAppConfig.WorkerProcess.FreeMemoryRequiredToStartInMbytes)
 			{
 				string text = string.Format("TotalMemoryAvailableInMB:{0} MemoryRequiredToStartServiceInMB:{1} {2}", availableMemoryInMBytes, Components.TransportAppConfig.WorkerProcess.FreeMemoryRequiredToStartInMbytes, Components.GetProcessMemoryUsage());
-				ExWatson.SendGenericWatsonReport("E12", ExWatson.ApplicationVersion.ToString(), ExWatson.AppName, "15.00.1497.012", Assembly.GetExecutingAssembly().GetName().Name, "OutOfMemoryException", "Startup", "Startup", "Component.Start", text);
+				ExWatson.SendGenericWatsonReport("E12", ExWatson.ApplicationVersion.ToString(), ExWatson.AppName, "15.00.1497.015", Assembly.GetExecutingAssembly().GetName().Name, "OutOfMemoryException", "Startup", "Startup", "Component.Start", text);
 				Components.eventLogger.LogEvent(TransportEventLogConstants.Tuple_NotEnoughMemoryToStartService, null, new object[]
 				{
 					text

@@ -747,7 +747,7 @@ namespace Microsoft.Exchange.ProvisioningAgent
 				new KeyValuePair<string, object>("Succeeded", this.AuditLogFields.Succeeded.ToString()),
 				new KeyValuePair<string, object>("Error", string.IsNullOrEmpty(this.AuditLogFields.Error) ? "" : this.AuditLogFields.Error.ToString()),
 				new KeyValuePair<string, object>("RunDate", this.AuditLogFields.RunDate),
-				new KeyValuePair<string, object>("OriginatingServer", AdminLogProvisioningHandler.MachineName + " (15.00.1497.012)")
+				new KeyValuePair<string, object>("OriginatingServer", AdminLogProvisioningHandler.MachineName + " (15.00.1497.015)")
 			};
 		}
 

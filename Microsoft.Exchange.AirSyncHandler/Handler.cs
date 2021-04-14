@@ -61,7 +61,7 @@ namespace Microsoft.Exchange.AirSyncHandler
 					});
 					if (GlobalSettings.FullServerVersion)
 					{
-						Handler.serverVersion = "15.00.1497.012";
+						Handler.serverVersion = "15.00.1497.015";
 					}
 					else
 					{

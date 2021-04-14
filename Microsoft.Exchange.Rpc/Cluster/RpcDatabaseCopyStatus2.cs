@@ -25,7 +25,7 @@ namespace Microsoft.Exchange.Rpc.Cluster
 			this.m_ciCurrentness = s.CICurrentness;
 			DateTime statusRetrievedTime = s.StatusRetrievedTime;
 			this.m_statusRetrievedTime = statusRetrievedTime;
-			if (!<Module>.?A0xfc1cfc89.IsValidDateTime(this.m_statusRetrievedTime))
+			if (!<Module>.?A0xa7ddfcdb.IsValidDateTime(this.m_statusRetrievedTime))
 			{
 				DateTime utcNow = DateTime.UtcNow;
 				this.m_statusRetrievedTime = utcNow;

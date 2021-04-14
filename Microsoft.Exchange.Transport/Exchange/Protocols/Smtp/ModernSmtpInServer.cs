@@ -444,7 +444,7 @@ namespace Microsoft.Exchange.Protocols.Smtp
 			stringBuilder.AppendFormat("Number of sessions remaining: {0}", this.currentSessions.Count);
 			Exception ex = new InvalidOperationException(stringBuilder.ToString());
 			bool flag;
-			ExWatson.SendThrottledGenericWatsonReport("E12", ExWatson.ApplicationVersion.ToString(), ExWatson.AppName, "15.00.1497.012", Assembly.GetExecutingAssembly().GetName().Name, ex.GetType().Name, ex.StackTrace, ex.GetHashCode().ToString(CultureInfo.InvariantCulture), ex.TargetSite.Name, "details", TimeSpan.FromHours(1.0), out flag);
+			ExWatson.SendThrottledGenericWatsonReport("E12", ExWatson.ApplicationVersion.ToString(), ExWatson.AppName, "15.00.1497.015", Assembly.GetExecutingAssembly().GetName().Name, ex.GetType().Name, ex.StackTrace, ex.GetHashCode().ToString(CultureInfo.InvariantCulture), ex.TargetSite.Name, "details", TimeSpan.FromHours(1.0), out flag);
 		}
 
 		private void OnTransportServerConfigurationChanged(TransportServerConfiguration config)

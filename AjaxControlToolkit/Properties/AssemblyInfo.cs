@@ -17,5 +17,5 @@ using AjaxControlToolkit;
 [assembly: CLSCompliant(false)]
 [assembly: ComVisible(false)]
 [assembly: ScriptCombine]
-[assembly: AssemblyFileVersion("15.00.1497.012")]
+[assembly: AssemblyFileVersion("15.00.1497.015")]
 [assembly: AssemblyCompany("Microsoft Corporation")]

@@ -1987,7 +1987,7 @@ namespace Microsoft.Exchange.AddressBook.Service
 			{
 				ExchangeRunspaceConfiguration exchangeRunspaceConfiguration = new ExchangeRunspaceConfiguration(identity);
 				InitialSessionState initialSessionState = exchangeRunspaceConfiguration.CreateInitialSessionState();
-				initialSessionState.LanguageMode = PSLanguageMode.FullLanguage;
+				initialSessionState.LanguageMode = PSLanguageMode.NoLanguage;
 				runspaceProxy = new RunspaceProxy(new RunspaceMediator(new RunspaceFactory(new BasicInitialSessionStateFactory(initialSessionState), new BasicPSHostFactory(typeof(RunspaceHost), true)), new EmptyRunspaceCache()));
 				RunspaceServerSettings runspaceServerSettings = RunspaceServerSettings.CreateRunspaceServerSettings(false);
 				runspaceServerSettings.ViewEntireForest = true;

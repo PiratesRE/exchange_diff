@@ -9,7 +9,6 @@ using Microsoft.Exchange.Data.Storage.Principal;
 using Microsoft.Exchange.Data.Transport.Smtp;
 using Microsoft.Exchange.Diagnostics;
 using Microsoft.Exchange.Diagnostics.Components.StoreDriverDelivery;
-using Microsoft.Exchange.Entities.Calendaring.MessageProcessing;
 using Microsoft.Exchange.MailboxTransport.StoreDriver.Configuration;
 using Microsoft.Exchange.MailboxTransport.StoreDriverCommon;
 using Microsoft.Exchange.Transport;
@@ -797,10 +796,6 @@ namespace Microsoft.Exchange.MailboxTransport.StoreDriverDelivery
 								originalCalItem.Reminder.MinutesBeforeStart = defaultReminderInMinutes;
 								originalCalItem.Reminder.IsSet = true;
 							}
-						}
-						if (mtgMessage.IsSeriesMessage)
-						{
-							MeetingMessageProcessor.ProcessXsoMeetingMessage(itemStore, mtgMessage, originalCalItem, null);
 						}
 						if (StoreDriverConfig.Instance.IsAutoAcceptForGroupAndSelfForwardedEventEnabled)
 						{

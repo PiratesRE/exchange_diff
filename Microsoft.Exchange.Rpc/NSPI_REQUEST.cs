@@ -10,7 +10,7 @@ internal struct NSPI_REQUEST
 
 	[NativeCppClass]
 	[StructLayout(LayoutKind.Explicit, Size = 88)]
-	internal struct $UnnamedClass$0x8a38a54f$24$
+	internal struct $UnnamedClass$0x02b5c158$24$
 	{
 		[FieldOffset(0)]
 		private long <alignment\u0020member>;

@@ -95,7 +95,7 @@ namespace Microsoft.Exchange.Data.Storage
 				{
 					this.SafeTraceDebug(0L, "Start creating Auditing Optics log.", new object[0]);
 				}
-				this.LogSchema = new LogSchema(AuditingOpticsConstants.SoftwareName, "15.00.1497.012", this.LogTypeName, this.GetLogFields());
+				this.LogSchema = new LogSchema(AuditingOpticsConstants.SoftwareName, "15.00.1497.015", this.LogTypeName, this.GetLogFields());
 				LogHeaderFormatter headerFormatter = new LogHeaderFormatter(this.LogSchema);
 				this.Logger = new Log(this.FileNamePrefix, headerFormatter, this.LogComponentName);
 				if (this.IsDebugTraceEnabled())

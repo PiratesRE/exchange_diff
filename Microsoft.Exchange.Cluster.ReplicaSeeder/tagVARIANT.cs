@@ -11,27 +11,27 @@ internal struct tagVARIANT
 	[NativeCppClass]
 	[UnsafeValueType]
 	[StructLayout(LayoutKind.Explicit, Size = 24)]
-	internal struct $UnnamedClass$0x68686545$389$
+	internal struct $UnnamedClass$0xe0e50152$389$
 	{
 		[FieldOffset(0)]
 		private long <alignment\u0020member>;
 
 		[NativeCppClass]
 		[StructLayout(LayoutKind.Sequential, Size = 24)]
-		internal struct $UnnamedClass$0x68686545$390$
+		internal struct $UnnamedClass$0xe0e50152$390$
 		{
 			private long <alignment\u0020member>;
 
 			[NativeCppClass]
 			[StructLayout(LayoutKind.Explicit, Size = 16)]
-			internal struct $UnnamedClass$0x68686545$391$
+			internal struct $UnnamedClass$0xe0e50152$391$
 			{
 				[FieldOffset(0)]
 				private long <alignment\u0020member>;
 
 				[NativeCppClass]
 				[StructLayout(LayoutKind.Sequential, Size = 16)]
-				internal struct $UnnamedClass$0x68686545$392$
+				internal struct $UnnamedClass$0xe0e50152$392$
 				{
 					private long <alignment\u0020member>;
 				}

@@ -106,7 +106,7 @@ namespace Microsoft.Exchange.Data.ApplicationLogic
 				yield return new KeyValuePair<string, string>("Error", this.Error);
 			}
 			yield return new KeyValuePair<string, string>("Run Date", string.Format("{0:s}", this.RunDate));
-			yield return new KeyValuePair<string, string>("OriginatingServer", string.Format("{0} ({1})", AdminAuditLogRecord.MachineName, "15.00.1497.012"));
+			yield return new KeyValuePair<string, string>("OriginatingServer", string.Format("{0} ({1})", AdminAuditLogRecord.MachineName, "15.00.1497.015"));
 			yield break;
 		}
 

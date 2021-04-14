@@ -446,7 +446,7 @@ namespace Microsoft.Exchange.Data.Directory
 			TenantProperty.EXOTenantContainerCN
 		};
 
-		private static readonly LogSchema schema = new LogSchema("Microsoft Exchange", "15.00.1497.012", "GLS Logs", GLSLogger.GetColumnArray());
+		private static readonly LogSchema schema = new LogSchema("Microsoft Exchange", "15.00.1497.015", "GLS Logs", GLSLogger.GetColumnArray());
 
 		private static TimeSpan defaultMaxRetentionPeriod = TimeSpan.FromHours(8.0);
 

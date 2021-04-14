@@ -207,9 +207,9 @@ namespace Microsoft.Exchange.Monitoring
 			string key;
 			if ((key = text) != null)
 			{
-				if (<PrivateImplementationDetails>{45A016D6-9512-4E33-B5E4-CBF8CD83FD38}.$$method0x6002eea-1 == null)
+				if (<PrivateImplementationDetails>{37FB2C37-8946-4F00-B324-D759A1883C9F}.$$method0x6002eea-1 == null)
 				{
-					<PrivateImplementationDetails>{45A016D6-9512-4E33-B5E4-CBF8CD83FD38}.$$method0x6002eea-1 = new Dictionary<string, int>(7)
+					<PrivateImplementationDetails>{37FB2C37-8946-4F00-B324-D759A1883C9F}.$$method0x6002eea-1 = new Dictionary<string, int>(7)
 					{
 						{
 							"Microsoft.Exchange.2010.Mailbox.DatabaseService",
@@ -242,7 +242,7 @@ namespace Microsoft.Exchange.Monitoring
 					};
 				}
 				int num;
-				if (<PrivateImplementationDetails>{45A016D6-9512-4E33-B5E4-CBF8CD83FD38}.$$method0x6002eea-1.TryGetValue(key, out num))
+				if (<PrivateImplementationDetails>{37FB2C37-8946-4F00-B324-D759A1883C9F}.$$method0x6002eea-1.TryGetValue(key, out num))
 				{
 					Status tenantStatus;
 					switch (num)

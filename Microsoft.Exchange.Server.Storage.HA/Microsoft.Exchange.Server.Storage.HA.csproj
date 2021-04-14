@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{09CD9476-CD82-489E-B9E2-84B47CA1419F}</ProjectGuid>
+    <ProjectGuid>{7A3782CB-D60A-4A00-8673-7FAAD5746C6E}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Microsoft.Exchange.Server.Storage</RootNamespace>
@@ -67,51 +67,51 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Microsoft.Exchange.Cluster.Shared\Microsoft.Exchange.Cluster.Shared.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140EE}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746BBD}</Project>
       <Name>Microsoft.Exchange.Cluster.Shared</Name>
     </ProjectReference>
     <ProjectReference Include="..\Microsoft.Exchange.Common\Microsoft.Exchange.Common.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140F0}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746BBF}</Project>
       <Name>Microsoft.Exchange.Common</Name>
     </ProjectReference>
     <ProjectReference Include="..\Microsoft.Exchange.Data.Common\Microsoft.Exchange.Data.Common.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140D3}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746BA2}</Project>
       <Name>Microsoft.Exchange.Data.Common</Name>
     </ProjectReference>
     <ProjectReference Include="..\Microsoft.Exchange.Diagnostics\Microsoft.Exchange.Diagnostics.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14113}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746BE2}</Project>
       <Name>Microsoft.Exchange.Diagnostics</Name>
     </ProjectReference>
     <ProjectReference Include="..\Microsoft.Exchange.EseRepl\Microsoft.Exchange.EseRepl.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14124}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746BF3}</Project>
       <Name>Microsoft.Exchange.EseRepl</Name>
     </ProjectReference>
     <ProjectReference Include="..\Microsoft.Exchange.Net\Microsoft.Exchange.Net.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14178}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746C47}</Project>
       <Name>Microsoft.Exchange.Net</Name>
     </ProjectReference>
     <ProjectReference Include="..\Microsoft.Exchange.Server.Storage.Common\Microsoft.Exchange.Server.Storage.Common.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1419A}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746C69}</Project>
       <Name>Microsoft.Exchange.Server.Storage.Common</Name>
     </ProjectReference>
     <ProjectReference Include="..\Microsoft.Exchange.Server.Storage.DirectoryServices\Microsoft.Exchange.Server.Storage.DirectoryServices.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1419C}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746C6B}</Project>
       <Name>Microsoft.Exchange.Server.Storage.DirectoryServices</Name>
     </ProjectReference>
     <ProjectReference Include="..\Microsoft.Exchange.Server.Storage.PhysicalAccess\Microsoft.Exchange.Server.Storage.PhysicalAccess.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141A4}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746C73}</Project>
       <Name>Microsoft.Exchange.Server.Storage.PhysicalAccess</Name>
     </ProjectReference>
     <ProjectReference Include="..\Microsoft.Exchange.Server.Storage.StoreCommonServices\Microsoft.Exchange.Server.Storage.StoreCommonServices.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141A8}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746C77}</Project>
       <Name>Microsoft.Exchange.Server.Storage.StoreCommonServices</Name>
     </ProjectReference>
     <ProjectReference Include="..\Microsoft.Isam.Esent.Interop\Microsoft.Isam.Esent.Interop.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141E8}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746CB7}</Project>
       <Name>Microsoft.Isam.Esent.Interop</Name>
     </ProjectReference>
     <ProjectReference Include="..\mscorlib\mscorlib.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141F1}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746CC0}</Project>
       <Name>mscorlib</Name>
     </ProjectReference>
   </ItemGroup>

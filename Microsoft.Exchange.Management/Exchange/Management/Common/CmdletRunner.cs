@@ -67,9 +67,9 @@ namespace Microsoft.Exchange.Management.Common
 			else
 			{
 				PSLanguageMode languageMode = Runspace.DefaultRunspace.SessionStateProxy.LanguageMode;
-				if (languageMode != PSLanguageMode.RestrictedLanguage)
+				if (languageMode != PSLanguageMode.NoLanguage)
 				{
-					Runspace.DefaultRunspace.SessionStateProxy.LanguageMode = PSLanguageMode.RestrictedLanguage;
+					Runspace.DefaultRunspace.SessionStateProxy.LanguageMode = PSLanguageMode.NoLanguage;
 				}
 				List<PSObject> list = new List<PSObject>();
 				StringBuilder stringBuilder = new StringBuilder();

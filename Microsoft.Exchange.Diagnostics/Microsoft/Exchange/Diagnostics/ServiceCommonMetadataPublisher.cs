@@ -312,7 +312,7 @@ namespace Microsoft.Exchange.Diagnostics
 
 		private static readonly string VersionBuild = 1497.ToString();
 
-		private static readonly string VersionRevision = 12.ToString();
+		private static readonly string VersionRevision = 15.ToString();
 
 		private static readonly string MachineName = Environment.MachineName;
 

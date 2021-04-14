@@ -73,7 +73,7 @@ namespace Microsoft.Exchange.MailboxTransport.StoreDriverDelivery.Agents
 					storeDriverDeliveryEventArgsImpl.PropertiesForAllMessageCopies = new Dictionary<PropertyDefinition, object>();
 				}
 				ConversationIndexTrackingEx conversationIndexTrackingEx = ConversationIndexTrackingEx.Create();
-				this.performanceContext = ConversationsProcessingAgent.conversationLatencyDetectionContextFactory.CreateContext("15.00.1497.012", "FIXUP", new IPerformanceDataProvider[0]);
+				this.performanceContext = ConversationsProcessingAgent.conversationLatencyDetectionContextFactory.CreateContext("15.00.1497.015", "FIXUP", new IPerformanceDataProvider[0]);
 				if (!this.isBodyTagCalculated)
 				{
 					ConversationsProcessingAgent.tracer.TraceDebug((long)this.GetHashCode(), "Calculating body tag");
@@ -421,7 +421,7 @@ namespace Microsoft.Exchange.MailboxTransport.StoreDriverDelivery.Agents
 
 		private const int MinimumBackendServerVersion = 1937801369;
 
-		private const string AssemblyVersion = "15.00.1497.012";
+		private const string AssemblyVersion = "15.00.1497.015";
 
 		internal static int ControlFlags = 0;
 

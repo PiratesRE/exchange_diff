@@ -38,7 +38,7 @@ namespace Microsoft.Exchange.Transport.Logging.MessageTracking
 
 		public static void Start(string logFilePrefix)
 		{
-			MessageTrackingLog.msgTrackingSchema = new LogSchema("Microsoft Exchange Server", "15.00.1497.012", "Message Tracking Log", MessageTrackingLog.Fields);
+			MessageTrackingLog.msgTrackingSchema = new LogSchema("Microsoft Exchange Server", "15.00.1497.015", "Message Tracking Log", MessageTrackingLog.Fields);
 			MessageTrackingLog.log = new Log(logFilePrefix, new LogHeaderFormatter(MessageTrackingLog.msgTrackingSchema), "MessageTrackingLogs");
 			if (MessageTrackingLog.log.LogDirectory != null)
 			{

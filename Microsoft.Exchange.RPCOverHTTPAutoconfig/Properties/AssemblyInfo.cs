@@ -8,4 +8,4 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyTrademark("Microsoft(R) is a registered trademark of Microsoft Corporation.")]
 [assembly: AssemblyProduct("Microsoft(R) Exchange")]
 [assembly: AssemblyCompany("Microsoft Corporation")]
-[assembly: AssemblyFileVersion("15.00.1497.012")]
+[assembly: AssemblyFileVersion("15.00.1497.015")]

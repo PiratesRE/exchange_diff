@@ -973,7 +973,7 @@ namespace Microsoft.Exchange.AirSync
 						{
 							this.mailboxLogger.SetData(MailboxLogDataName.RequestTime, ExDateTime.Now.ToString(DateTimeFormatInfo.InvariantInfo));
 							this.mailboxLogger.SetData(MailboxLogDataName.ServerName, Command.MachineName);
-							this.mailboxLogger.SetData(MailboxLogDataName.AssemblyVersion, "15.00.1497.012");
+							this.mailboxLogger.SetData(MailboxLogDataName.AssemblyVersion, "15.00.1497.015");
 							this.requestId = this.GetNextNumber(0, true);
 							this.mailboxLogger.SetData(MailboxLogDataName.Identifier, this.requestId.ToString("X", CultureInfo.InvariantCulture.NumberFormat));
 							this.mailboxLogger.LogRequestHeader(this.Request);

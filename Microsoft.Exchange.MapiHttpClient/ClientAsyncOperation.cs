@@ -756,7 +756,7 @@ namespace Microsoft.Exchange.MapiHttp
 			}
 		}
 
-		private static readonly string ClientApplication = string.Format("{0}/{1}", "MapiHttpClient", "15.00.1497.012");
+		private static readonly string ClientApplication = string.Format("{0}/{1}", "MapiHttpClient", "15.00.1497.015");
 
 		private readonly ClientSessionContext context;
 

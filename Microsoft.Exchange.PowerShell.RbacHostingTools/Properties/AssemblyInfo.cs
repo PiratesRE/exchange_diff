@@ -33,5 +33,5 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTrademark("Microsoft(R) is a registered trademark of Microsoft Corporation.")]
 [assembly: AssemblyCompany("Microsoft Corporation")]
 [assembly: AssemblyCopyright("(C) 2014 Microsoft Corporation. All rights reserved.")]
-[assembly: AssemblyFileVersion("15.00.1497.012")]
+[assembly: AssemblyFileVersion("15.00.1497.015")]
 [assembly: AssemblyProduct("Microsoft(R) Exchange")]

@@ -8,4 +8,4 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyProduct("Microsoft(R) Exchange")]
 [assembly: AssemblyCopyright("(C) 2014 Microsoft Corporation. All rights reserved.")]
 [assembly: AssemblyCompany("Microsoft Corporation")]
-[assembly: AssemblyFileVersion("15.00.1497.012")]
+[assembly: AssemblyFileVersion("15.00.1497.015")]

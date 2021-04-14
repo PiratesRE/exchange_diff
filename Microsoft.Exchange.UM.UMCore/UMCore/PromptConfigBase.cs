@@ -155,9 +155,9 @@ namespace Microsoft.Exchange.UM.UMCore
 			}
 			if (configType != null)
 			{
-				if (<PrivateImplementationDetails>{52CC4AA6-9890-4FF8-93E5-6095807AC0AF}.$$method0x60006b1-1 == null)
+				if (<PrivateImplementationDetails>{C4249C9C-CB93-4F62-922B-E7B5A64A44D3}.$$method0x60006b1-1 == null)
 				{
-					<PrivateImplementationDetails>{52CC4AA6-9890-4FF8-93E5-6095807AC0AF}.$$method0x60006b1-1 = new Dictionary<string, int>(34)
+					<PrivateImplementationDetails>{C4249C9C-CB93-4F62-922B-E7B5A64A44D3}.$$method0x60006b1-1 = new Dictionary<string, int>(34)
 					{
 						{
 							"statement",
@@ -298,7 +298,7 @@ namespace Microsoft.Exchange.UM.UMCore
 					};
 				}
 				int num;
-				if (<PrivateImplementationDetails>{52CC4AA6-9890-4FF8-93E5-6095807AC0AF}.$$method0x60006b1-1.TryGetValue(configType, out num))
+				if (<PrivateImplementationDetails>{C4249C9C-CB93-4F62-922B-E7B5A64A44D3}.$$method0x60006b1-1.TryGetValue(configType, out num))
 				{
 					PromptConfigBase promptConfigBase;
 					switch (num)

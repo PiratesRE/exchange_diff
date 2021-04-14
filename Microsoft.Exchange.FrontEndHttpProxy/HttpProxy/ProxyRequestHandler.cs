@@ -227,14 +227,6 @@ namespace Microsoft.Exchange.HttpProxy
 			}
 		}
 
-		protected virtual bool ProxyKerberosAuthentication
-		{
-			get
-			{
-				return false;
-			}
-		}
-
 		protected virtual bool ShouldSendFullActivityScope
 		{
 			get
@@ -629,24 +621,66 @@ namespace Microsoft.Exchange.HttpProxy
 			{
 				headers[Constants.MsExchProxyUri] = Uri.EscapeUriString(fullRawUrl);
 			}
+			if ((HttpProxySettings.SerializeClientAccessContext.Value & 1) == 1 && !string.IsNullOrWhiteSpace(this.ClientRequest.Headers[Constants.XIsFromCafe]))
+			{
+				throw new HttpException(400, "Invalid headers(1)");
+			}
 			headers[Constants.XIsFromCafe] = Constants.IsFromCafeHeaderValue;
 			headers[Constants.XSourceCafeServer] = HttpProxyGlobals.LocalMachineFqdn.Member;
+			if ((HttpProxySettings.SerializeClientAccessContext.Value & 2) == 2 && !string.IsNullOrWhiteSpace(this.ClientRequest.Headers["X-CommonAccessToken"]))
+			{
+				throw new HttpException(400, "Invalid headers(2)");
+			}
 			if (this.AuthBehavior.AuthState != AuthState.BackEndFullAuth)
 			{
 				if (this.ClientRequest.IsAuthenticated)
 				{
-					CommonAccessToken commonAccessToken = AspNetHelper.FixupCommonAccessToken(this.HttpContext, this.AnchoredRoutingTarget.BackEndServer.Version);
-					if (commonAccessToken == null)
+					string text = this.ClientRequest.Headers["X-CommonAccessToken"];
+					if (!string.IsNullOrWhiteSpace(text))
 					{
-						commonAccessToken = (this.HttpContext.Items["Item-CommonAccessToken"] as CommonAccessToken);
+						CommonAccessToken token = CommonAccessToken.Deserialize(text);
+						if (token.IsSystemOrMachineAccount())
+						{
+							throw new HttpException(400, "Bad context");
+						}
+						WindowsIdentity windowsIdentity = null;
+						if (this.HttpContext != null && this.HttpContext.User != null)
+						{
+							windowsIdentity = (this.HttpContext.User.Identity as WindowsIdentity);
+						}
+						if (windowsIdentity == null || !windowsIdentity.IsSystemOrTrustedMachineAccount())
+						{
+							throw new HttpException(400, "Unauthorized to send context");
+						}
+						RequestDetailsLoggerBase<RequestDetailsLogger>.SafeAppendGenericInfo(this.Logger, "CT", "TMA");
+						headers["X-CommonAccessToken"] = text;
 					}
-					if (commonAccessToken != null)
+					else
 					{
+						CommonAccessToken commonAccessToken = AspNetHelper.FixupCommonAccessToken(this.HttpContext, this.AnchoredRoutingTarget.BackEndServer.Version);
+						if (commonAccessToken == null)
+						{
+							commonAccessToken = (this.HttpContext.Items["Item-CommonAccessToken"] as CommonAccessToken);
+						}
+						if (commonAccessToken == null)
+						{
+							throw new HttpException(400, "No context to send");
+						}
+						if (commonAccessToken.IsSystemOrMachineAccount())
+						{
+							throw new HttpException(400, "Cannot serialize context");
+						}
 						headers["X-CommonAccessToken"] = commonAccessToken.Serialize();
 					}
 				}
 				else if (this.ShouldBackendRequestBeAnonymous())
 				{
+					RequestDetailsLoggerBase<RequestDetailsLogger>.SafeAppendGenericInfo(this.Logger, "CT", "BEAn");
+					headers["X-CommonAccessToken"] = new CommonAccessToken(AccessTokenType.Anonymous).Serialize();
+				}
+				else
+				{
+					RequestDetailsLoggerBase<RequestDetailsLogger>.SafeAppendGenericInfo(this.Logger, "CT", "An");
 					headers["X-CommonAccessToken"] = new CommonAccessToken(AccessTokenType.Anonymous).Serialize();
 				}
 			}
@@ -712,13 +746,10 @@ namespace Microsoft.Exchange.HttpProxy
 			}
 			serverRequest.ServicePoint.Expect100Continue = false;
 			serverRequest.ServicePoint.BindIPEndPointDelegate = new BindIPEndPoint(this.BindIPEndPointCallback);
-			if (this.ProxyKerberosAuthentication)
-			{
-				serverRequest.ConnectionGroupName = this.ClientRequest.UserHostAddress + ":" + GccUtils.GetClientPort(this.HttpContext);
-			}
-			else if (this.AuthBehavior.AuthState == AuthState.BackEndFullAuth || this.ShouldBackendRequestBeAnonymous() || (HttpProxySettings.TestBackEndSupportEnabled.Value && !string.IsNullOrEmpty(this.ClientRequest.Headers[Constants.TestBackEndUrlRequestHeaderKey])))
+			if (this.AuthBehavior.AuthState == AuthState.BackEndFullAuth || this.ShouldBackendRequestBeAnonymous() || !this.ClientRequest.IsAuthenticated || (HttpProxySettings.TestBackEndSupportEnabled.Value && !string.IsNullOrEmpty(this.ClientRequest.Headers[Constants.TestBackEndUrlRequestHeaderKey])))
 			{
 				serverRequest.ConnectionGroupName = "Unauthenticated";
+				RequestDetailsLoggerBase<RequestDetailsLogger>.SafeAppendGenericInfo(this.Logger, "Krb", "UA");
 			}
 			else
 			{
@@ -790,7 +821,7 @@ namespace Microsoft.Exchange.HttpProxy
 						try
 						{
 							Uri uri = this.GetTargetBackEndServerUrl();
-							if (!this.ProxyKerberosAuthentication && !string.Equals(uri.Host, this.AnchoredRoutingTarget.BackEndServer.Fqdn, StringComparison.OrdinalIgnoreCase))
+							if (!string.Equals(uri.Host, this.AnchoredRoutingTarget.BackEndServer.Fqdn, StringComparison.OrdinalIgnoreCase))
 							{
 								throw new HttpException(503, "Service Unavailable");
 							}
@@ -912,6 +943,10 @@ namespace Microsoft.Exchange.HttpProxy
 			httpWebRequest.Headers[Constants.OriginatingClientIpHeader] = AspNetHelper.GetClientIpAsProxyHeader(this.ClientRequest);
 			httpWebRequest.Headers[Constants.OriginatingClientPortHeader] = AspNetHelper.GetClientPortAsProxyHeader(this.HttpContext);
 			this.PrepareServerRequest(httpWebRequest);
+			if (string.IsNullOrWhiteSpace(httpWebRequest.Headers["X-CommonAccessToken"]))
+			{
+				throw new HttpException(400, "Missing context");
+			}
 			this.PfdTracer.TraceRequest("ProxyRequest", httpWebRequest);
 			this.PfdTracer.TraceHeaders("ProxyRequest", this.ClientRequest.Headers, httpWebRequest.Headers);
 			this.PfdTracer.TraceCookies("ProxyRequest", this.ClientRequest.Cookies, httpWebRequest.CookieContainer);
@@ -1524,7 +1559,7 @@ namespace Microsoft.Exchange.HttpProxy
 						destination.UserAgent = headers[text];
 						continue;
 					case "AUTHORIZATION":
-						if (this.AuthBehavior.AuthState == AuthState.BackEndFullAuth || this.ProxyKerberosAuthentication)
+						if (this.AuthBehavior.AuthState == AuthState.BackEndFullAuth)
 						{
 							destination.Headers.Add(text, headers[text]);
 							continue;
@@ -1634,22 +1669,6 @@ namespace Microsoft.Exchange.HttpProxy
 					continue;
 				}
 				case "WWW-AUTHENTICATE":
-					if (this.ProxyKerberosAuthentication)
-					{
-						string[] array = this.ServerResponse.Headers[text].Split(new char[]
-						{
-							','
-						});
-						foreach (string text2 in array)
-						{
-							if (text2.TrimStart(new char[0]).StartsWith(Constants.KerberosPackageValue, StringComparison.OrdinalIgnoreCase))
-							{
-								this.ClientResponse.Headers.Add(text, text2.Trim());
-								break;
-							}
-						}
-						continue;
-					}
 					if (this.AuthBehavior.ShouldCopyAuthenticationHeaderToClientResponse)
 					{
 						this.ClientResponse.Headers.Add(text, this.ServerResponse.Headers[text]);
@@ -2001,7 +2020,7 @@ namespace Microsoft.Exchange.HttpProxy
 			{
 				HttpWebResponse httpWebResponse = (HttpWebResponse)exception.Response;
 				int statusCode = (int)httpWebResponse.StatusCode;
-				if (statusCode != 401 || this.ProxyKerberosAuthentication || this.AuthBehavior.ShouldCopyAuthenticationHeaderToClientResponse)
+				if (statusCode != 401 || this.AuthBehavior.ShouldCopyAuthenticationHeaderToClientResponse)
 				{
 					this.HttpContext.Server.ClearError();
 					ProxyRequestHandler.DisposeIfNotNullAndCatchExceptions(this.ServerResponse);

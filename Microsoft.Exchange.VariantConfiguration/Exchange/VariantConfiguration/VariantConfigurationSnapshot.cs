@@ -4965,14 +4965,6 @@ namespace Microsoft.Exchange.VariantConfiguration
 				}
 			}
 
-			public IFeature ProcessSeriesMeetingMessages
-			{
-				get
-				{
-					return this.snapshot.GetObject<IFeature>("MailboxTransport.settings.ini", "ProcessSeriesMeetingMessages");
-				}
-			}
-
 			public IFeature UseFopeReceivedSpfHeader
 			{
 				get

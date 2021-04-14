@@ -10,7 +10,7 @@ internal struct tagREGISTRATION_REQUEST
 
 	[NativeCppClass]
 	[StructLayout(LayoutKind.Explicit, Size = 72)]
-	internal struct $UnnamedClass$0xbab7b314$2$
+	internal struct $UnnamedClass$0xfb50af8c$2$
 	{
 		[FieldOffset(0)]
 		private long <alignment\u0020member>;

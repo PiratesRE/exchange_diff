@@ -38,9 +38,9 @@ namespace Microsoft.Exchange.Management.Deployment
 		{
 			if (roleNameOrAllRoles != null)
 			{
-				if (<PrivateImplementationDetails>{45A016D6-9512-4E33-B5E4-CBF8CD83FD38}.$$method0x6001050-1 == null)
+				if (<PrivateImplementationDetails>{37FB2C37-8946-4F00-B324-D759A1883C9F}.$$method0x6001050-1 == null)
 				{
-					<PrivateImplementationDetails>{45A016D6-9512-4E33-B5E4-CBF8CD83FD38}.$$method0x6001050-1 = new Dictionary<string, int>(15)
+					<PrivateImplementationDetails>{37FB2C37-8946-4F00-B324-D759A1883C9F}.$$method0x6001050-1 = new Dictionary<string, int>(15)
 					{
 						{
 							"AllRoles",
@@ -105,7 +105,7 @@ namespace Microsoft.Exchange.Management.Deployment
 					};
 				}
 				int num;
-				if (<PrivateImplementationDetails>{45A016D6-9512-4E33-B5E4-CBF8CD83FD38}.$$method0x6001050-1.TryGetValue(roleNameOrAllRoles, out num))
+				if (<PrivateImplementationDetails>{37FB2C37-8946-4F00-B324-D759A1883C9F}.$$method0x6001050-1.TryGetValue(roleNameOrAllRoles, out num))
 				{
 					string arg;
 					switch (num)

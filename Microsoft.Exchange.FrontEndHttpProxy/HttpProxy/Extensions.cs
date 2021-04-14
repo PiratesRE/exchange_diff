@@ -4,6 +4,7 @@ using System.Security.Principal;
 using System.Web;
 using Microsoft.Exchange.Clients.Owa.Core;
 using Microsoft.Exchange.Data.Directory;
+using Microsoft.Exchange.Data.Directory.SystemConfiguration;
 using Microsoft.Exchange.Data.Storage;
 using Microsoft.Exchange.Diagnostics;
 using Microsoft.Exchange.Diagnostics.Components.HttpProxy;
@@ -114,6 +115,36 @@ namespace Microsoft.Exchange.HttpProxy
 				identity = LiveIdBasicHelper.GetCallerIdentity(httpContext);
 			}
 			return identity;
+		}
+
+		public static bool HasTokenSerializationRights(this WindowsIdentity identity)
+		{
+			if (identity == null)
+			{
+				throw new ArgumentNullException("identity");
+			}
+			bool result;
+			try
+			{
+				using (ClientSecurityContext clientSecurityContext = identity.CreateClientSecurityContext(true))
+				{
+					result = LocalServer.AllowsTokenSerializationBy(clientSecurityContext);
+				}
+			}
+			catch (AuthzException ex)
+			{
+				throw new HttpException(401, ex.Message);
+			}
+			return result;
+		}
+
+		public static bool IsSystemOrTrustedMachineAccount(this WindowsIdentity identity)
+		{
+			if (identity == null)
+			{
+				throw new ArgumentNullException("identity");
+			}
+			return identity.IsSystem || (identity.Name != null && identity.Name.EndsWith("$", StringComparison.OrdinalIgnoreCase) && identity.HasTokenSerializationRights());
 		}
 
 		public static HttpMethod GetHttpMethod(this HttpRequest request)
@@ -254,7 +285,7 @@ namespace Microsoft.Exchange.HttpProxy
 			site = null;
 			try
 			{
-				site = serviceTopology.GetSite(fqdn, "f:\\15.00.1497\\sources\\dev\\cafe\\src\\HttpProxy\\Misc\\Extensions.cs", "TryGetSite", 495);
+				site = serviceTopology.GetSite(fqdn, "f:\\15.00.1497\\sources\\dev\\cafe\\src\\HttpProxy\\Misc\\Extensions.cs", "TryGetSite", 561);
 			}
 			catch (ServerNotFoundException)
 			{
@@ -289,5 +320,16 @@ namespace Microsoft.Exchange.HttpProxy
 				array[num] = t;
 			}
 		}
+
+		internal static bool IsSystemOrMachineAccount(this CommonAccessToken token)
+		{
+			return token.TokenType != null && token.TokenType.Equals(Extensions.windowsAccessTokenType, StringComparison.OrdinalIgnoreCase) && token.WindowsAccessToken != null && token.WindowsAccessToken.LogonName != null && (token.WindowsAccessToken.LogonName.Equals(Extensions.windowsSystemAccountLogon, StringComparison.OrdinalIgnoreCase) || token.WindowsAccessToken.LogonName.Equals(Extensions.windowsCurrentUserName, StringComparison.OrdinalIgnoreCase) || token.WindowsAccessToken.LogonName.EndsWith("$", StringComparison.OrdinalIgnoreCase));
+		}
+
+		private static string windowsAccessTokenType = AccessTokenType.Windows.ToString();
+
+		private static string windowsSystemAccountLogon = new SecurityIdentifier(WellKnownSidType.LocalSystemSid, null).Translate(typeof(NTAccount)).Value;
+
+		private static string windowsCurrentUserName = WindowsIdentity.GetCurrent().Name;
 	}
 }

@@ -66,6 +66,6 @@ namespace Microsoft.Exchange.HttpProxy
 
 		private static AutoResetEvent logCommitSignal = new AutoResetEvent(false);
 
-		private static LogSchema logSchema = new LogSchema("Microsoft Exchange Server", "15.00.1497.012", "ProxyLogs", LogData.LogColumnNames);
+		private static LogSchema logSchema = new LogSchema("Microsoft Exchange Server", "15.00.1497.015", "ProxyLogs", LogData.LogColumnNames);
 	}
 }

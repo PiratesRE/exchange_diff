@@ -120,7 +120,7 @@ namespace Microsoft.Exchange.Data.Directory.Diagnostics
 			new BaseDirectoryProtocolLog.FieldInfo(19, "error")
 		};
 
-		private static readonly LogSchema schema = new LogSchema("Microsoft Exchange", "15.00.1497.012", "DirCache Logs", BaseDirectoryProtocolLog.GetColumnArray(CacheProtocolLog.Fields));
+		private static readonly LogSchema schema = new LogSchema("Microsoft Exchange", "15.00.1497.015", "DirCache Logs", BaseDirectoryProtocolLog.GetColumnArray(CacheProtocolLog.Fields));
 
 		private object logLock = new object();
 

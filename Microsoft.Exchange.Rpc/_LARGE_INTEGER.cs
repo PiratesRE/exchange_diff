@@ -11,7 +11,7 @@ internal struct _LARGE_INTEGER
 
 	[NativeCppClass]
 	[StructLayout(LayoutKind.Sequential, Size = 8)]
-	internal struct $UnnamedClass$0xfb2f6e25$2$
+	internal struct $UnnamedClass$0xf73bf4a3$2$
 	{
 		private int <alignment\u0020member>;
 	}

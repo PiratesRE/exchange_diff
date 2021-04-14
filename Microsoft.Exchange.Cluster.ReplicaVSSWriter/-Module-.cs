@@ -172,7 +172,7 @@ internal class <Module>
 	internal static void ??__E_AtlReleaseManagedClassFactories@ATL@@YMXXZ()
 	{
 		<Module>.ATL.CAtlReleaseManagedClassFactories.{ctor}(ref <Module>.ATL._AtlReleaseManagedClassFactories);
-		<Module>._atexit_m(ldftn(?A0x092bbd29.??__F_AtlReleaseManagedClassFactories@ATL@@YMXXZ));
+		<Module>._atexit_m(ldftn(?A0x8c154cf1.??__F_AtlReleaseManagedClassFactories@ATL@@YMXXZ));
 	}
 
 	internal static void ??__F_AtlReleaseManagedClassFactories@ATL@@YMXXZ()

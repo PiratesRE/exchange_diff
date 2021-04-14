@@ -241,9 +241,9 @@ namespace Microsoft.Exchange.Services.Wcf
 						string name;
 						if (flag && (name = readerAtBodyContents.Name) != null)
 						{
-							if (<PrivateImplementationDetails>{66AAB65C-53B7-4036-8215-CAF8E2ECAEBD}.$$method0x6005591-1 == null)
+							if (<PrivateImplementationDetails>{07C235D2-EA05-4020-8C99-D4258F03250B}.$$method0x6005591-1 == null)
 							{
-								<PrivateImplementationDetails>{66AAB65C-53B7-4036-8215-CAF8E2ECAEBD}.$$method0x6005591-1 = new Dictionary<string, int>(8)
+								<PrivateImplementationDetails>{07C235D2-EA05-4020-8C99-D4258F03250B}.$$method0x6005591-1 = new Dictionary<string, int>(8)
 								{
 									{
 										"RequestServerVersion",
@@ -280,7 +280,7 @@ namespace Microsoft.Exchange.Services.Wcf
 								};
 							}
 							int num;
-							if (<PrivateImplementationDetails>{66AAB65C-53B7-4036-8215-CAF8E2ECAEBD}.$$method0x6005591-1.TryGetValue(name, out num))
+							if (<PrivateImplementationDetails>{07C235D2-EA05-4020-8C99-D4258F03250B}.$$method0x6005591-1.TryGetValue(name, out num))
 							{
 								switch (num)
 								{

@@ -263,7 +263,7 @@ namespace Microsoft.Exchange.Data.Directory
 			new ADProtocolLog.FieldInfo(ADProtocolLog.Field.CallerInfo, "caller-info")
 		};
 
-		private static readonly LogSchema Schema = new LogSchema("Microsoft Exchange", "15.00.1497.012", "ADDriver Logs", ADProtocolLog.GetColumnArray());
+		private static readonly LogSchema Schema = new LogSchema("Microsoft Exchange", "15.00.1497.015", "ADDriver Logs", ADProtocolLog.GetColumnArray());
 
 		private static readonly TimeSpan RowTimeLimit = TimeSpan.FromSeconds(5.0);
 

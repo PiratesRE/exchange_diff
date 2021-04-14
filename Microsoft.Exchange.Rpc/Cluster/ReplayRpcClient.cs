@@ -86,7 +86,7 @@ namespace Microsoft.Exchange.Rpc.Cluster
 			sgStatuses = null;
 			try
 			{
-				ptr = <Module>.Microsoft.Exchange.Rpc.Cluster.?A0x9d18277a.FromGuidArray(sgGuids, &num2);
+				ptr = <Module>.Microsoft.Exchange.Rpc.Cluster.?A0xc6d92728.FromGuidArray(sgGuids, &num2);
 				num = <Module>.cli_GetCopyStatusEx2(base.BindingHandle, (uint)collectionFlags, num2, ptr, &num3, &ptr2, &num4, &tagErrorExceptionInfo);
 				if (num < 0)
 				{
@@ -140,7 +140,7 @@ namespace Microsoft.Exchange.Rpc.Cluster
 			ex = null;
 			try
 			{
-				ptr = <Module>.Microsoft.Exchange.Rpc.Cluster.?A0x9d18277a.FromGuidArray(dbGuids, &num2);
+				ptr = <Module>.Microsoft.Exchange.Rpc.Cluster.?A0xc6d92728.FromGuidArray(dbGuids, &num2);
 				num = <Module>.cli_RpcsGetCopyStatusEx4(base.BindingHandle, (uint)collectionFlags2, num2, ptr, &num3, &ptr2, &num4, &tagErrorExceptionInfo);
 				if (num < 0)
 				{
@@ -200,7 +200,7 @@ namespace Microsoft.Exchange.Rpc.Cluster
 			dbStatuses = null;
 			try
 			{
-				ptr = <Module>.Microsoft.Exchange.Rpc.Cluster.?A0x9d18277a.FromGuidArray(dbGuids, &num2);
+				ptr = <Module>.Microsoft.Exchange.Rpc.Cluster.?A0xc6d92728.FromGuidArray(dbGuids, &num2);
 				num = <Module>.cli_RpcsGetCopyStatusBasic(base.BindingHandle, (uint)collectionFlags2, num2, ptr, &num3, &ptr2, &num4, &tagErrorExceptionInfo);
 				if (num < 0)
 				{
@@ -272,7 +272,7 @@ namespace Microsoft.Exchange.Rpc.Cluster
 			tagSeederStatus2 tagSeederStatus;
 			<Module>.InitSeederStatus(&tagSeederStatus);
 			tagSeederArgs3 tagSeederArgs;
-			int num = <Module>.Microsoft.Exchange.Rpc.Cluster.?A0x9d18277a.MToUSeederArgs(seederArgs, &tagSeederArgs);
+			int num = <Module>.Microsoft.Exchange.Rpc.Cluster.?A0xc6d92728.MToUSeederArgs(seederArgs, &tagSeederArgs);
 			if (num < 0)
 			{
 				ReplayRpcException.ThrowRpcException(num, "RpccPrepareDatabaseSeedAndBegin");
@@ -285,7 +285,7 @@ namespace Microsoft.Exchange.Rpc.Cluster
 				{
 					ReplayRpcException.ThrowRpcException(num, "cli_RpcsClusterPrepareDatabaseSeedAndBegin3");
 				}
-				seederStatus = <Module>.Microsoft.Exchange.Rpc.Cluster.?A0x9d18277a.UToMSeederStatus(ref tagSeederStatus);
+				seederStatus = <Module>.Microsoft.Exchange.Rpc.Cluster.?A0xc6d92728.UToMSeederStatus(ref tagSeederStatus);
 				return <Module>.UToMErrorExceptionInfo(ref tagErrorExceptionInfo);
 			}
 			catch when (endfilter(<Module>.DwExRpcExceptionFilter(Marshal.GetExceptionCode()) != null))
@@ -295,7 +295,7 @@ namespace Microsoft.Exchange.Rpc.Cluster
 			finally
 			{
 				<Module>.FreeSeederStatus(&tagSeederStatus);
-				<Module>.Microsoft.Exchange.Rpc.Cluster.?A0x9d18277a.FreeSeederArgs(&tagSeederArgs);
+				<Module>.Microsoft.Exchange.Rpc.Cluster.?A0xc6d92728.FreeSeederArgs(&tagSeederArgs);
 				<Module>.FreeErrorExceptionInfo(&tagErrorExceptionInfo);
 			}
 			return null;
@@ -309,7 +309,7 @@ namespace Microsoft.Exchange.Rpc.Cluster
 			tagSeederStatus2 tagSeederStatus;
 			<Module>.InitSeederStatus(&tagSeederStatus);
 			tagSeederArgs4 tagSeederArgs;
-			int num = <Module>.Microsoft.Exchange.Rpc.Cluster.?A0x9d18277a.MToUSeederArgs(seederArgs, &tagSeederArgs);
+			int num = <Module>.Microsoft.Exchange.Rpc.Cluster.?A0xc6d92728.MToUSeederArgs(seederArgs, &tagSeederArgs);
 			if (num < 0)
 			{
 				ReplayRpcException.ThrowRpcException(num, "RpccPrepareDatabaseSeedAndBegin4");
@@ -322,7 +322,7 @@ namespace Microsoft.Exchange.Rpc.Cluster
 				{
 					ReplayRpcException.ThrowRpcException(num, "cli_RpcsClusterPrepareDatabaseSeedAndBegin4");
 				}
-				seederStatus = <Module>.Microsoft.Exchange.Rpc.Cluster.?A0x9d18277a.UToMSeederStatus(ref tagSeederStatus);
+				seederStatus = <Module>.Microsoft.Exchange.Rpc.Cluster.?A0xc6d92728.UToMSeederStatus(ref tagSeederStatus);
 				return <Module>.UToMErrorExceptionInfo(ref tagErrorExceptionInfo);
 			}
 			catch when (endfilter(<Module>.DwExRpcExceptionFilter(Marshal.GetExceptionCode()) != null))
@@ -332,7 +332,7 @@ namespace Microsoft.Exchange.Rpc.Cluster
 			finally
 			{
 				<Module>.FreeSeederStatus(&tagSeederStatus);
-				<Module>.Microsoft.Exchange.Rpc.Cluster.?A0x9d18277a.FreeSeederArgs((tagSeederArgs3*)(&tagSeederArgs));
+				<Module>.Microsoft.Exchange.Rpc.Cluster.?A0xc6d92728.FreeSeederArgs((tagSeederArgs3*)(&tagSeederArgs));
 				<Module>.FreeErrorExceptionInfo(&tagErrorExceptionInfo);
 			}
 			return null;
@@ -346,7 +346,7 @@ namespace Microsoft.Exchange.Rpc.Cluster
 			tagSeederStatus2 tagSeederStatus;
 			<Module>.InitSeederStatus(&tagSeederStatus);
 			tagSeederArgs5 tagSeederArgs;
-			int num = <Module>.Microsoft.Exchange.Rpc.Cluster.?A0x9d18277a.MToUSeederArgs(seederArgs, &tagSeederArgs);
+			int num = <Module>.Microsoft.Exchange.Rpc.Cluster.?A0xc6d92728.MToUSeederArgs(seederArgs, &tagSeederArgs);
 			if (num < 0)
 			{
 				ReplayRpcException.ThrowRpcException(num, "RpccPrepareDatabaseSeedAndBegin5");
@@ -359,7 +359,7 @@ namespace Microsoft.Exchange.Rpc.Cluster
 				{
 					ReplayRpcException.ThrowRpcException(num, "cli_RpcsClusterPrepareDatabaseSeedAndBegin5");
 				}
-				seederStatus = <Module>.Microsoft.Exchange.Rpc.Cluster.?A0x9d18277a.UToMSeederStatus(ref tagSeederStatus);
+				seederStatus = <Module>.Microsoft.Exchange.Rpc.Cluster.?A0xc6d92728.UToMSeederStatus(ref tagSeederStatus);
 				return <Module>.UToMErrorExceptionInfo(ref tagErrorExceptionInfo);
 			}
 			catch when (endfilter(<Module>.DwExRpcExceptionFilter(Marshal.GetExceptionCode()) != null))
@@ -369,7 +369,7 @@ namespace Microsoft.Exchange.Rpc.Cluster
 			finally
 			{
 				<Module>.FreeSeederStatus(&tagSeederStatus);
-				<Module>.Microsoft.Exchange.Rpc.Cluster.?A0x9d18277a.FreeSeederArgs((tagSeederArgs3*)(&tagSeederArgs));
+				<Module>.Microsoft.Exchange.Rpc.Cluster.?A0xc6d92728.FreeSeederArgs((tagSeederArgs3*)(&tagSeederArgs));
 				<Module>.FreeErrorExceptionInfo(&tagErrorExceptionInfo);
 			}
 			return null;
@@ -446,7 +446,7 @@ namespace Microsoft.Exchange.Rpc.Cluster
 				{
 					ReplayRpcException.ThrowRpcException(num, routineName);
 				}
-				pSeederStatus = <Module>.Microsoft.Exchange.Rpc.Cluster.?A0x9d18277a.UToMSeederStatus(ref tagSeederStatus);
+				pSeederStatus = <Module>.Microsoft.Exchange.Rpc.Cluster.?A0xc6d92728.UToMSeederStatus(ref tagSeederStatus);
 				return <Module>.UToMErrorExceptionInfo(ref tagErrorExceptionInfo);
 			}
 			catch when (endfilter(<Module>.DwExRpcExceptionFilter(Marshal.GetExceptionCode()) != null))
@@ -1136,7 +1136,7 @@ namespace Microsoft.Exchange.Rpc.Cluster
 			container = null;
 			try
 			{
-				ptr = <Module>.Microsoft.Exchange.Rpc.Cluster.?A0x9d18277a.FromGuidArray(dbGuids, &num2);
+				ptr = <Module>.Microsoft.Exchange.Rpc.Cluster.?A0xc6d92728.FromGuidArray(dbGuids, &num2);
 				num = <Module>.cli_RpcsGetCopyStatusWithHealthState(base.BindingHandle, (uint)collectionFlags2, num2, ptr, &num3, &ptr2, &tagErrorExceptionInfo);
 				if (num < 0)
 				{

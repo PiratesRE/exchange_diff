@@ -11,20 +11,20 @@ internal struct tagPROPVARIANT
 	[UnsafeValueType]
 	[NativeCppClass]
 	[StructLayout(LayoutKind.Explicit, Size = 24)]
-	internal struct $UnnamedClass$0x2959e25a$522$
+	internal struct $UnnamedClass$0xae7b7e24$522$
 	{
 		[FieldOffset(0)]
 		private long <alignment\u0020member>;
 
 		[NativeCppClass]
 		[StructLayout(LayoutKind.Sequential, Size = 24)]
-		internal struct $UnnamedClass$0x2959e25a$523$
+		internal struct $UnnamedClass$0xae7b7e24$523$
 		{
 			private long <alignment\u0020member>;
 
 			[NativeCppClass]
 			[StructLayout(LayoutKind.Explicit, Size = 16)]
-			internal struct $UnnamedClass$0x2959e25a$524$
+			internal struct $UnnamedClass$0xae7b7e24$524$
 			{
 				[FieldOffset(0)]
 				private long <alignment\u0020member>;

@@ -155,7 +155,7 @@ namespace Microsoft.Exchange.AnchorService
 			"data"
 		};
 
-		private static readonly LogSchema Schema = new LogSchema("Microsoft Exchange Server", "15.00.1497.012", "AnchorLog", AnchorLog.Fields);
+		private static readonly LogSchema Schema = new LogSchema("Microsoft Exchange Server", "15.00.1497.015", "AnchorLog", AnchorLog.Fields);
 
 		private readonly KeyValuePair<MigrationEventType, AnchorLog.Tracer>[] tracers;
 

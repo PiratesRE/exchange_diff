@@ -421,7 +421,7 @@ namespace Microsoft.Exchange.Security.RightsManagement.Protectors
 			}
 			catch (AccessViolationException ex)
 			{
-				ExWatson.SendGenericWatsonReport("E12", ExWatson.RealApplicationVersion.ToString(), ExWatson.RealAppName, "15.00.1497.012", Assembly.GetExecutingAssembly().GetName().Name, ex.GetType().Name, ex.StackTrace, ex.StackTrace.GetHashCode().ToString("x"), ex.TargetSite.Name, ex.ToString());
+				ExWatson.SendGenericWatsonReport("E12", ExWatson.RealApplicationVersion.ToString(), ExWatson.RealAppName, "15.00.1497.015", Assembly.GetExecutingAssembly().GetName().Name, ex.GetType().Name, ex.StackTrace, ex.StackTrace.GetHashCode().ToString("x"), ex.TargetSite.Name, ex.ToString());
 				ProtectorsManager.Tracer.TraceError<Exception>(0L, "Protector caused AccessViolationException: {0}", ex);
 				num = -1;
 			}

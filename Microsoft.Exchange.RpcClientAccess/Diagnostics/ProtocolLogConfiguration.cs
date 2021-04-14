@@ -34,7 +34,7 @@ namespace Microsoft.Exchange.RpcClientAccess.Diagnostics
 		{
 			get
 			{
-				return "15.00.1497.012";
+				return "15.00.1497.015";
 			}
 		}
 
@@ -126,7 +126,7 @@ namespace Microsoft.Exchange.RpcClientAccess.Diagnostics
 
 		private const string SoftwareNameValue = "Microsoft Exchange";
 
-		private const string SoftwareVersionValue = "15.00.1497.012";
+		private const string SoftwareVersionValue = "15.00.1497.015";
 
 		private const string LogTypeNameValue = "RCA Protocol Logs";
 

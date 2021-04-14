@@ -51,7 +51,7 @@ namespace Microsoft.Exchange.Rpc.PoolRpc
 					*(ref tagRPC_POOL_CREATE_SESSION_RESPONSE_HEADER + 20) = (int)sessionId;
 					*(ref tagRPC_POOL_CREATE_SESSION_RESPONSE_HEADER + 24) = 3840;
 					*(ref tagRPC_POOL_CREATE_SESSION_RESPONSE_HEADER + 26) = (short)34265;
-					*(ref tagRPC_POOL_CREATE_SESSION_RESPONSE_HEADER + 28) = (short)(this.m_versionDelta + 12);
+					*(ref tagRPC_POOL_CREATE_SESSION_RESPONSE_HEADER + 28) = (short)(this.m_versionDelta + 15);
 					*(ref tagRPC_POOL_CREATE_SESSION_RESPONSE_HEADER + 30) = (short)this.m_rgwBestVersion_w0;
 					*(ref tagRPC_POOL_CREATE_SESSION_RESPONSE_HEADER + 32) = (short)this.m_rgwBestVersion_w1;
 					*(ref tagRPC_POOL_CREATE_SESSION_RESPONSE_HEADER + 34) = (short)this.m_rgwBestVersion_w2;

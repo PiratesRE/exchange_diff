@@ -437,9 +437,9 @@ namespace Microsoft.Exchange.AirSync
 					{
 						goto IL_1A7;
 					}
-					if (<PrivateImplementationDetails>{FFCBDD4C-C702-4D33-87A9-71BBCA1064B7}.$$method0x6000711-1 == null)
+					if (<PrivateImplementationDetails>{9389F671-9FA0-4E66-995A-7A9A156B88BC}.$$method0x6000711-1 == null)
 					{
-						<PrivateImplementationDetails>{FFCBDD4C-C702-4D33-87A9-71BBCA1064B7}.$$method0x6000711-1 = new Dictionary<string, int>(8)
+						<PrivateImplementationDetails>{9389F671-9FA0-4E66-995A-7A9A156B88BC}.$$method0x6000711-1 = new Dictionary<string, int>(8)
 						{
 							{
 								"LinkId",
@@ -476,7 +476,7 @@ namespace Microsoft.Exchange.AirSync
 						};
 					}
 					int num;
-					if (!<PrivateImplementationDetails>{FFCBDD4C-C702-4D33-87A9-71BBCA1064B7}.$$method0x6000711-1.TryGetValue(key, out num))
+					if (!<PrivateImplementationDetails>{9389F671-9FA0-4E66-995A-7A9A156B88BC}.$$method0x6000711-1.TryGetValue(key, out num))
 					{
 						goto IL_1A7;
 					}

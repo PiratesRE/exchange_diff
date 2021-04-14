@@ -26,7 +26,7 @@ namespace Microsoft.Exchange.MapiHttp
 				15,
 				0,
 				1497,
-				12
+				15
 			});
 			stringBuilder.AppendFormat("<p>Exchange MAPI/HTTP Connectivity Endpoint<br><br>Version: {0}<br>Vdir Path: {1}<br><br></p>", version, context.HtmlEncode(endpointVdirPath));
 			string authIdentifier;

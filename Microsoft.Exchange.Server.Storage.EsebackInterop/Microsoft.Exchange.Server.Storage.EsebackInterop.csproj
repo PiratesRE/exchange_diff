@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x64</Platform>
-    <ProjectGuid>{09CD9476-CD82-489E-B9E2-84B47CA1419D}</ProjectGuid>
+    <ProjectGuid>{7A3782CB-D60A-4A00-8673-7FAAD5746C6C}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Microsoft.Exchange.Server.Storage.EsebackInterop</RootNamespace>
@@ -344,15 +344,15 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Microsoft.Exchange.Server.Storage.Common\Microsoft.Exchange.Server.Storage.Common.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1419A}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746C69}</Project>
       <Name>Microsoft.Exchange.Server.Storage.Common</Name>
     </ProjectReference>
     <ProjectReference Include="..\Microsoft.Isam.Esent.Interop\Microsoft.Isam.Esent.Interop.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141E8}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746CB7}</Project>
       <Name>Microsoft.Isam.Esent.Interop</Name>
     </ProjectReference>
     <ProjectReference Include="..\mscorlib\mscorlib.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141F1}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746CC0}</Project>
       <Name>mscorlib</Name>
     </ProjectReference>
   </ItemGroup>

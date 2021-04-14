@@ -320,7 +320,7 @@ namespace Microsoft.Exchange.Data.Storage
 		{
 			get
 			{
-				return "15.00.1497.012";
+				return "15.00.1497.015";
 			}
 		}
 
@@ -338,7 +338,7 @@ namespace Microsoft.Exchange.Data.Storage
 
 		private static long ObtainBuildVersion()
 		{
-			return 4222124748767244L;
+			return 4222124748767247L;
 		}
 
 		public static void TraceConstructIDisposable(object obj)

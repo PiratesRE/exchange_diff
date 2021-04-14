@@ -229,7 +229,7 @@ namespace Microsoft.Exchange.Data.Storage
 			new ServiceTopologyLog.FieldInfo(ServiceTopologyLog.Field.CallerInfo, "caller-info")
 		};
 
-		private static readonly LogSchema Schema = new LogSchema("Microsoft Exchange", "15.00.1497.012", "ServiceTopology Logs", ServiceTopologyLog.GetColumnArray());
+		private static readonly LogSchema Schema = new LogSchema("Microsoft Exchange", "15.00.1497.015", "ServiceTopology Logs", ServiceTopologyLog.GetColumnArray());
 
 		private static readonly TimeSpan DefaultMaxRetentionPeriod = TimeSpan.FromHours(8.0);
 

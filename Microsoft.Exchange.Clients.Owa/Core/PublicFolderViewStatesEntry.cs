@@ -259,9 +259,9 @@ namespace Microsoft.Exchange.Clients.Owa.Core
 						{
 							goto IL_23A;
 						}
-						if (<PrivateImplementationDetails>{83F8DD10-61AE-4283-B829-2F464F055E61}.$$method0x6001267-1 == null)
+						if (<PrivateImplementationDetails>{912F2AED-BF68-4DDC-9379-4CB89AA1AA01}.$$method0x6001267-1 == null)
 						{
-							<PrivateImplementationDetails>{83F8DD10-61AE-4283-B829-2F464F055E61}.$$method0x6001267-1 = new Dictionary<string, int>(11)
+							<PrivateImplementationDetails>{912F2AED-BF68-4DDC-9379-4CB89AA1AA01}.$$method0x6001267-1 = new Dictionary<string, int>(11)
 							{
 								{
 									"folderId",
@@ -310,7 +310,7 @@ namespace Microsoft.Exchange.Clients.Owa.Core
 							};
 						}
 						int num;
-						if (!<PrivateImplementationDetails>{83F8DD10-61AE-4283-B829-2F464F055E61}.$$method0x6001267-1.TryGetValue(name, out num))
+						if (!<PrivateImplementationDetails>{912F2AED-BF68-4DDC-9379-4CB89AA1AA01}.$$method0x6001267-1.TryGetValue(name, out num))
 						{
 							goto IL_23A;
 						}

@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{09CD9476-CD82-489E-B9E2-84B47CA14130}</ProjectGuid>
+    <ProjectGuid>{7A3782CB-D60A-4A00-8673-7FAAD5746BFF}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Microsoft.Exchange.HttpProxy.RouteRefresher</RootNamespace>
@@ -49,35 +49,35 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Microsoft.Exchange.Diagnostics\Microsoft.Exchange.Diagnostics.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14113}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746BE2}</Project>
       <Name>Microsoft.Exchange.Diagnostics</Name>
     </ProjectReference>
     <ProjectReference Include="..\Microsoft.Exchange.HttpProxy.Common\Microsoft.Exchange.HttpProxy.Common.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1412D}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746BFC}</Project>
       <Name>Microsoft.Exchange.HttpProxy.Common</Name>
     </ProjectReference>
     <ProjectReference Include="..\Microsoft.Exchange.HttpProxy.Diagnostics\Microsoft.Exchange.HttpProxy.Diagnostics.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1412E}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746BFD}</Project>
       <Name>Microsoft.Exchange.HttpProxy.Diagnostics</Name>
     </ProjectReference>
     <ProjectReference Include="..\Microsoft.Exchange.HttpProxy.RouteSelector\Microsoft.Exchange.HttpProxy.RouteSelector.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14131}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746C00}</Project>
       <Name>Microsoft.Exchange.HttpProxy.RouteSelector</Name>
     </ProjectReference>
     <ProjectReference Include="..\Microsoft.Exchange.HttpProxy.Routing\Microsoft.Exchange.HttpProxy.Routing.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14132}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746C01}</Project>
       <Name>Microsoft.Exchange.HttpProxy.Routing</Name>
     </ProjectReference>
     <ProjectReference Include="..\Microsoft.Exchange.Net\Microsoft.Exchange.Net.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14178}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746C47}</Project>
       <Name>Microsoft.Exchange.Net</Name>
     </ProjectReference>
     <ProjectReference Include="..\Microsoft.Exchange.SharedCache.Client\Microsoft.Exchange.SharedCache.Client.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141B5}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746C84}</Project>
       <Name>Microsoft.Exchange.SharedCache.Client</Name>
     </ProjectReference>
     <ProjectReference Include="..\mscorlib\mscorlib.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141F1}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746CC0}</Project>
       <Name>mscorlib</Name>
     </ProjectReference>
   </ItemGroup>

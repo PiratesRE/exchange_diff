@@ -105,7 +105,6 @@ namespace Microsoft.Exchange.HttpProxy
 				goto IL_20C;
 			case ProtocolType.PowerShell:
 			case ProtocolType.PowerShellLiveId:
-			case ProtocolType.PowerShellGateway:
 				array = topologyConfigurationSession.Find<ADPowerShellVirtualDirectory>(descendantId, QueryScope.SubTree, filter, null, 2);
 				goto IL_20C;
 			case ProtocolType.RpcHttp:

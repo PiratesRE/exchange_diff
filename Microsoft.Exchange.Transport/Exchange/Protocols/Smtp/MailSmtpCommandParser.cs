@@ -229,9 +229,9 @@ namespace Microsoft.Exchange.Protocols.Smtp
 				{
 					goto IL_4C5;
 				}
-				if (<PrivateImplementationDetails>{4DE65400-4833-4ECF-AD3A-6AE043FBDF84}.$$method0x60032fc-1 == null)
+				if (<PrivateImplementationDetails>{BF04BF36-E6FD-46F0-A1BE-B963EEF0FE07}.$$method0x60032fc-1 == null)
 				{
-					<PrivateImplementationDetails>{4DE65400-4833-4ECF-AD3A-6AE043FBDF84}.$$method0x60032fc-1 = new Dictionary<string, int>(14)
+					<PrivateImplementationDetails>{BF04BF36-E6FD-46F0-A1BE-B963EEF0FE07}.$$method0x60032fc-1 = new Dictionary<string, int>(14)
 					{
 						{
 							"size",
@@ -292,7 +292,7 @@ namespace Microsoft.Exchange.Protocols.Smtp
 					};
 				}
 				int num2;
-				if (!<PrivateImplementationDetails>{4DE65400-4833-4ECF-AD3A-6AE043FBDF84}.$$method0x60032fc-1.TryGetValue(key, out num2))
+				if (!<PrivateImplementationDetails>{BF04BF36-E6FD-46F0-A1BE-B963EEF0FE07}.$$method0x60032fc-1.TryGetValue(key, out num2))
 				{
 					goto IL_4C5;
 				}

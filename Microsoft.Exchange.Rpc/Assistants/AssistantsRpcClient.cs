@@ -21,8 +21,8 @@ namespace Microsoft.Exchange.Rpc.Assistants
 				{
 					hglobal = Marshal.StringToHGlobalAnsi(assistantName);
 					sbyte* ptr = (sbyte*)hglobal.ToPointer();
-					_GUID guid = <Module>.Microsoft.Exchange.Rpc.?A0x2ff2afa6.GUIDFromGuid(mdbGuid);
-					_GUID guid2 = <Module>.Microsoft.Exchange.Rpc.?A0x2ff2afa6.GUIDFromGuid(mailboxGuid);
+					_GUID guid = <Module>.Microsoft.Exchange.Rpc.?A0xaca9a705.GUIDFromGuid(mdbGuid);
+					_GUID guid2 = <Module>.Microsoft.Exchange.Rpc.?A0xaca9a705.GUIDFromGuid(mailboxGuid);
 					num = <Module>.cli_RunNowHR(base.BindingHandle, (sbyte*)ptr, guid2, guid);
 				}
 				catch when (endfilter(true))
@@ -82,8 +82,8 @@ namespace Microsoft.Exchange.Rpc.Assistants
 					hglobal2 = Marshal.StringToHGlobalAnsi(parameters);
 					sbyte* ptr = (sbyte*)hglobal.ToPointer();
 					sbyte* ptr2 = (sbyte*)hglobal2.ToPointer();
-					_GUID guid = <Module>.Microsoft.Exchange.Rpc.?A0x2ff2afa6.GUIDFromGuid(mdbGuid);
-					_GUID guid2 = <Module>.Microsoft.Exchange.Rpc.?A0x2ff2afa6.GUIDFromGuid(mailboxGuid);
+					_GUID guid = <Module>.Microsoft.Exchange.Rpc.?A0xaca9a705.GUIDFromGuid(mdbGuid);
+					_GUID guid2 = <Module>.Microsoft.Exchange.Rpc.?A0xaca9a705.GUIDFromGuid(mailboxGuid);
 					num = <Module>.cli_RunNowWithParamsHR(base.BindingHandle, (sbyte*)ptr, guid2, guid, (sbyte*)ptr2);
 				}
 				catch when (endfilter(true))

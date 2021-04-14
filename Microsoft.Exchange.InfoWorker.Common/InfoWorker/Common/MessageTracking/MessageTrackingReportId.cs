@@ -79,9 +79,9 @@ namespace Microsoft.Exchange.InfoWorker.Common.MessageTracking
 					string key;
 					if ((key = array3[0]) != null)
 					{
-						if (<PrivateImplementationDetails>{555FE7EF-A8C8-4AA8-9F87-0745861BF96F}.$$method0x6001364-1 == null)
+						if (<PrivateImplementationDetails>{4CED4D17-1DCC-48DB-A0F7-054ABB0134C1}.$$method0x6001364-1 == null)
 						{
-							<PrivateImplementationDetails>{555FE7EF-A8C8-4AA8-9F87-0745861BF96F}.$$method0x6001364-1 = new Dictionary<string, int>(6)
+							<PrivateImplementationDetails>{4CED4D17-1DCC-48DB-A0F7-054ABB0134C1}.$$method0x6001364-1 = new Dictionary<string, int>(6)
 							{
 								{
 									"Message-Id",
@@ -110,7 +110,7 @@ namespace Microsoft.Exchange.InfoWorker.Common.MessageTracking
 							};
 						}
 						int num2;
-						if (<PrivateImplementationDetails>{555FE7EF-A8C8-4AA8-9F87-0745861BF96F}.$$method0x6001364-1.TryGetValue(key, out num2))
+						if (<PrivateImplementationDetails>{4CED4D17-1DCC-48DB-A0F7-054ABB0134C1}.$$method0x6001364-1.TryGetValue(key, out num2))
 						{
 							switch (num2)
 							{

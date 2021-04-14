@@ -46,7 +46,7 @@ namespace Microsoft.Exchange.Data.Storage.Optics
 
 		private static readonly Lazy<KeyValuePair<string, object>> ApplicationIdKeyValuePair = new Lazy<KeyValuePair<string, object>>(() => new KeyValuePair<string, object>("ApplicationId", ApplicationName.Current.Name));
 
-		private static readonly Lazy<KeyValuePair<string, object>> ApplicationVersionKeyValuePair = new Lazy<KeyValuePair<string, object>>(() => new KeyValuePair<string, object>("ApplicationVersion", "15.00.1497.012"));
+		private static readonly Lazy<KeyValuePair<string, object>> ApplicationVersionKeyValuePair = new Lazy<KeyValuePair<string, object>>(() => new KeyValuePair<string, object>("ApplicationVersion", "15.00.1497.015"));
 
 		private readonly string tenantName;
 

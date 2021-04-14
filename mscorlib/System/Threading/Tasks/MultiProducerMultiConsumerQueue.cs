@@ -7,7 +7,7 @@ using System.Diagnostics;
 namespace System.Threading.Tasks
 {
 	[DebuggerDisplay("Count = {Count}")]
-	internal sealed class MultiProducerMultiConsumerQueue<T> : ConcurrentQueue<T>, IProducerConsumerQueue<T>, IEnumerable<!0>, IEnumerable
+	internal sealed class MultiProducerMultiConsumerQueue<T> : ConcurrentQueue<T>, IProducerConsumerQueue<!0>, IEnumerable<!0>, IEnumerable
 	{
 		void IProducerConsumerQueue<!0>.Enqueue(T item)
 		{

@@ -36,7 +36,7 @@ namespace Microsoft.Exchange.Data.Storage.Clutter
 
 		private static readonly LogSchema Schema;
 
-		private static readonly string Version = "15.00.1497.012";
+		private static readonly string Version = "15.00.1497.015";
 
 		private static readonly string[] Columns = new string[]
 		{

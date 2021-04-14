@@ -200,9 +200,9 @@ namespace Microsoft.Exchange.Clients.Owa2.Server.Core
 						string id;
 						if (clientLogEventList.CheckAndAdd(clientLogEvent2) && (id = datapoint2.Id) != null)
 						{
-							if (<PrivateImplementationDetails>{38B691CF-9E72-4F22-A560-A7F126C51047}.$$method0x6001a88-1 == null)
+							if (<PrivateImplementationDetails>{4BD56370-6648-4C5E-B73C-8618F7040D0B}.$$method0x6001a88-1 == null)
 							{
-								<PrivateImplementationDetails>{38B691CF-9E72-4F22-A560-A7F126C51047}.$$method0x6001a88-1 = new Dictionary<string, int>(11)
+								<PrivateImplementationDetails>{4BD56370-6648-4C5E-B73C-8618F7040D0B}.$$method0x6001a88-1 = new Dictionary<string, int>(11)
 								{
 									{
 										"PerfTraceCTQ",
@@ -251,7 +251,7 @@ namespace Microsoft.Exchange.Clients.Owa2.Server.Core
 								};
 							}
 							int num2;
-							if (<PrivateImplementationDetails>{38B691CF-9E72-4F22-A560-A7F126C51047}.$$method0x6001a88-1.TryGetValue(id, out num2))
+							if (<PrivateImplementationDetails>{4BD56370-6648-4C5E-B73C-8618F7040D0B}.$$method0x6001a88-1.TryGetValue(id, out num2))
 							{
 								switch (num2)
 								{

@@ -25,7 +25,7 @@ namespace Microsoft.Exchange.Hygiene.Data.Spam
 		{
 			get
 			{
-				return new ComparisonFilter(ComparisonOperator.Equal, DalHelper.BuildVersionProp, "15.00.1497.012");
+				return new ComparisonFilter(ComparisonOperator.Equal, DalHelper.BuildVersionProp, "15.00.1497.015");
 			}
 		}
 

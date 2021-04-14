@@ -14,7 +14,7 @@ namespace Microsoft.Exchange.Inference.Common
 		{
 			get
 			{
-				return "15.00.1497.012";
+				return "15.00.1497.015";
 			}
 		}
 

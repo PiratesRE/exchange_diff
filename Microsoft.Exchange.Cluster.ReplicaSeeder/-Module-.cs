@@ -1622,19 +1622,19 @@ internal class <Module>
 
 	internal static _GUID g_ReplayServiceTraceGuid;
 
-	public static method __m2mep@?GetUnmanagedUni@?A0xe4b0b5ec@@$$FYMPEAGPE$AAVString@System@@@Z;
+	public static method __m2mep@?GetUnmanagedUni@?A0x907c643f@@$$FYMPEAGPE$AAVString@System@@@Z;
 
-	public static method __m2mep@?FreeUnmanagedUni@?A0xe4b0b5ec@@$$FYAXPEAG@Z;
+	public static method __m2mep@?FreeUnmanagedUni@?A0x907c643f@@$$FYAXPEAG@Z;
 
-	public static method __m2mep@?MakeManagedBytes@?A0xe4b0b5ec@@$$FYMP$01EAEPEAEH@Z;
+	public static method __m2mep@?MakeManagedBytes@?A0x907c643f@@$$FYMP$01EAEPEAEH@Z;
 
 	public static method __m2mep@?GetEC@ReplicaSeeder@Cluster@Exchange@Microsoft@@$$FYAJJ@Z;
 
 	internal static $ArrayType$$$BY0BM@$$CBG g_wszEndpointAnnotation;
 
-	public static method __m2mep@?GetUnmanagedUni@?A0xbcb4c405@@$$FYMPEAGPE$AAVString@System@@@Z;
+	public static method __m2mep@?GetUnmanagedUni@?A0x37452046@@$$FYMPEAGPE$AAVString@System@@@Z;
 
-	public static method __m2mep@?FreeUnmanagedUni@?A0xbcb4c405@@$$FYAXPEAG@Z;
+	public static method __m2mep@?FreeUnmanagedUni@?A0x37452046@@$$FYAXPEAG@Z;
 
 	internal static __s_GUID _GUID_90f1a06e_7712_4762_86b5_7a5eba6bdb02;
 

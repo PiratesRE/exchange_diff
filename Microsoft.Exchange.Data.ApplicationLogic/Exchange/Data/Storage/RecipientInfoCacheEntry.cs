@@ -400,9 +400,9 @@ namespace Microsoft.Exchange.Data.Storage
 						string name;
 						if ((name = reader.Name) != null)
 						{
-							if (<PrivateImplementationDetails>{495E4232-B7DB-45E0-83EB-134F7677B64F}.$$method0x6000f59-1 == null)
+							if (<PrivateImplementationDetails>{D5CF531D-82F1-4E51-8A61-14D2D34F2091}.$$method0x6000f59-1 == null)
 							{
-								<PrivateImplementationDetails>{495E4232-B7DB-45E0-83EB-134F7677B64F}.$$method0x6000f59-1 = new Dictionary<string, int>(16)
+								<PrivateImplementationDetails>{D5CF531D-82F1-4E51-8A61-14D2D34F2091}.$$method0x6000f59-1 = new Dictionary<string, int>(16)
 								{
 									{
 										"displayName",
@@ -471,7 +471,7 @@ namespace Microsoft.Exchange.Data.Storage
 								};
 							}
 							int num7;
-							if (<PrivateImplementationDetails>{495E4232-B7DB-45E0-83EB-134F7677B64F}.$$method0x6000f59-1.TryGetValue(name, out num7))
+							if (<PrivateImplementationDetails>{D5CF531D-82F1-4E51-8A61-14D2D34F2091}.$$method0x6000f59-1.TryGetValue(name, out num7))
 							{
 								switch (num7)
 								{

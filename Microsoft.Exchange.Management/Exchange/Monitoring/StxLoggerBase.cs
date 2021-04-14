@@ -176,7 +176,7 @@ namespace Microsoft.Exchange.Monitoring
 			{
 				if (this.schema == null)
 				{
-					this.schema = new LogSchema("Microsoft Exchange", "15.00.1497.012", this.LogTypeName, this.GetColumnArray());
+					this.schema = new LogSchema("Microsoft Exchange", "15.00.1497.015", this.LogTypeName, this.GetColumnArray());
 				}
 				return this.schema;
 			}

@@ -601,9 +601,9 @@ namespace Microsoft.Exchange.AirSync
 			string key;
 			if (commandName != null && (key = commandName.ToLower(CultureInfo.InvariantCulture)) != null)
 			{
-				if (<PrivateImplementationDetails>{FFCBDD4C-C702-4D33-87A9-71BBCA1064B7}.$$method0x600023d-1 == null)
+				if (<PrivateImplementationDetails>{9389F671-9FA0-4E66-995A-7A9A156B88BC}.$$method0x600023d-1 == null)
 				{
-					<PrivateImplementationDetails>{FFCBDD4C-C702-4D33-87A9-71BBCA1064B7}.$$method0x600023d-1 = new Dictionary<string, int>(24)
+					<PrivateImplementationDetails>{9389F671-9FA0-4E66-995A-7A9A156B88BC}.$$method0x600023d-1 = new Dictionary<string, int>(24)
 					{
 						{
 							"gethierarchy",
@@ -704,7 +704,7 @@ namespace Microsoft.Exchange.AirSync
 					};
 				}
 				int num;
-				if (<PrivateImplementationDetails>{FFCBDD4C-C702-4D33-87A9-71BBCA1064B7}.$$method0x600023d-1.TryGetValue(key, out num))
+				if (<PrivateImplementationDetails>{9389F671-9FA0-4E66-995A-7A9A156B88BC}.$$method0x600023d-1.TryGetValue(key, out num))
 				{
 					switch (num)
 					{

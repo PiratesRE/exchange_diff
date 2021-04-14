@@ -1334,6 +1334,6 @@ namespace Microsoft.Exchange.AirSync
 			SchemaProvider.CreateTypeImplementation("DataOnly", "Implementation with a fully materialized and context-unaware state initialized at data source loading time", typeSchema43, 0, typeof(_DataOnly_IWorkloadSettings_Implementation_), typeof(_DataOnly_IWorkloadSettings_Implementation_), instanceProviderBuilder86);
 		}
 
-		private static readonly Schema schema = SchemaProvider.CreateSchema(Guid.Parse("811bdf56bf444b9fac19c5a53ca918da"), "ParallaxSchemaProvider", "ParallaxSchemaProvider");
+		private static readonly Schema schema = SchemaProvider.CreateSchema(Guid.Parse("357d4a38b0d54349b8757812cdb50a63"), "ParallaxSchemaProvider", "ParallaxSchemaProvider");
 	}
 }

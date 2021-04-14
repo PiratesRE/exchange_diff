@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{09CD9476-CD82-489E-B9E2-84B47CA141A7}</ProjectGuid>
+    <ProjectGuid>{7A3782CB-D60A-4A00-8673-7FAAD5746C76}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Microsoft.Exchange.Server.Storage.RpcProxy</RootNamespace>
@@ -63,51 +63,51 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Microsoft.Exchange.Common\Microsoft.Exchange.Common.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140F0}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746BBF}</Project>
       <Name>Microsoft.Exchange.Common</Name>
     </ProjectReference>
     <ProjectReference Include="..\Microsoft.Exchange.Diagnostics\Microsoft.Exchange.Diagnostics.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14113}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746BE2}</Project>
       <Name>Microsoft.Exchange.Diagnostics</Name>
     </ProjectReference>
     <ProjectReference Include="..\Microsoft.Exchange.Net\Microsoft.Exchange.Net.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14178}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746C47}</Project>
       <Name>Microsoft.Exchange.Net</Name>
     </ProjectReference>
     <ProjectReference Include="..\Microsoft.Exchange.RpcClientAccess.Parser\Microsoft.Exchange.RpcClientAccess.Parser.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1418D}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746C5C}</Project>
       <Name>Microsoft.Exchange.RpcClientAccess.Parser</Name>
     </ProjectReference>
     <ProjectReference Include="..\Microsoft.Exchange.Rpc\Microsoft.Exchange.Rpc.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14188}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746C57}</Project>
       <Name>Microsoft.Exchange.Rpc</Name>
     </ProjectReference>
     <ProjectReference Include="..\Microsoft.Exchange.Server.Storage.AdminInterface\Microsoft.Exchange.Server.Storage.AdminInterface.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14199}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746C68}</Project>
       <Name>Microsoft.Exchange.Server.Storage.AdminInterface</Name>
     </ProjectReference>
     <ProjectReference Include="..\Microsoft.Exchange.Server.Storage.Common\Microsoft.Exchange.Server.Storage.Common.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1419A}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746C69}</Project>
       <Name>Microsoft.Exchange.Server.Storage.Common</Name>
     </ProjectReference>
     <ProjectReference Include="..\Microsoft.Exchange.Server.Storage.DirectoryServices\Microsoft.Exchange.Server.Storage.DirectoryServices.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1419C}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746C6B}</Project>
       <Name>Microsoft.Exchange.Server.Storage.DirectoryServices</Name>
     </ProjectReference>
     <ProjectReference Include="..\Microsoft.Exchange.Server.Storage.MapiDisp\Microsoft.Exchange.Server.Storage.MapiDisp.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141A2}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746C71}</Project>
       <Name>Microsoft.Exchange.Server.Storage.MapiDisp</Name>
     </ProjectReference>
     <ProjectReference Include="..\Microsoft.Exchange.Server.Storage.WorkerManager\Microsoft.Exchange.Server.Storage.WorkerManager.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141AA}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746C79}</Project>
       <Name>Microsoft.Exchange.Server.Storage.WorkerManager</Name>
     </ProjectReference>
     <ProjectReference Include="..\Microsoft.Office.Datacenter.ActiveMonitoringLocal\Microsoft.Office.Datacenter.ActiveMonitoringLocal.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141ED}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746CBC}</Project>
       <Name>Microsoft.Office.Datacenter.ActiveMonitoringLocal</Name>
     </ProjectReference>
     <ProjectReference Include="..\mscorlib\mscorlib.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141F1}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746CC0}</Project>
       <Name>mscorlib</Name>
     </ProjectReference>
   </ItemGroup>

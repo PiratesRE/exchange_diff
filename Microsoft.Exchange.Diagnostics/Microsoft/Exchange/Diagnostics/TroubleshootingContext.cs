@@ -206,14 +206,14 @@ namespace Microsoft.Exchange.Diagnostics
 							}
 						}
 					}
-					ExWatson.SendTroubleshootingWatsonReport("15.00.1497.012", this.location, "UnexpectedCondition:" + exception.GetType().Name, exception.StackTrace, functionName, stringBuilder.ToString(), tempFileStream.FilePath);
+					ExWatson.SendTroubleshootingWatsonReport("15.00.1497.015", this.location, "UnexpectedCondition:" + exception.GetType().Name, exception.StackTrace, functionName, stringBuilder.ToString(), tempFileStream.FilePath);
 					IL_152:
 					File.Delete(tempFileStream.FilePath);
 				}
 			}
 		}
 
-		private const string AssemblyVersion = "15.00.1497.012";
+		private const string AssemblyVersion = "15.00.1497.015";
 
 		private const int MaxTraceBufferEntryCount = 1000;
 

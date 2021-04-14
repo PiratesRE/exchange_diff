@@ -271,7 +271,7 @@ internal class <Module>
 		{
 			if (!rpcErrorExceptionInfo.IsFailed() && amDbStatusInfo != null)
 			{
-				num = <Module>.?A0x2a17ddd5.MToUDbStatusInfo(amDbStatusInfo, rpcDbInfo);
+				num = <Module>.?A0xc5493c1b.MToUDbStatusInfo(amDbStatusInfo, rpcDbInfo);
 				if (num < 0)
 				{
 					goto IL_BF;
@@ -282,7 +282,7 @@ internal class <Module>
 		}
 		IL_BF:
 		<Module>.FreeErrorExceptionInfo(pErrorInfo);
-		<Module>.?A0x2a17ddd5.FreeRpcDbStatusInfo(rpcDbInfo);
+		<Module>.?A0xc5493c1b.FreeRpcDbStatusInfo(rpcDbInfo);
 		return num;
 	}
 
@@ -402,7 +402,7 @@ internal class <Module>
 				int num2 = <Module>.StringToUnmanaged(amPamInfo.ServerName, (ushort**)rpcPamInfo);
 				if (num2 < 0)
 				{
-					<Module>.?A0x2a17ddd5.FreeRpcPamInfo(rpcPamInfo);
+					<Module>.?A0xc5493c1b.FreeRpcPamInfo(rpcPamInfo);
 					num = num2;
 					goto IL_68;
 				}
@@ -411,7 +411,7 @@ internal class <Module>
 		}
 		IL_68:
 		<Module>.FreeErrorExceptionInfo(pErrorInfo);
-		<Module>.?A0x2a17ddd5.FreeRpcPamInfo(rpcPamInfo);
+		<Module>.?A0xc5493c1b.FreeRpcPamInfo(rpcPamInfo);
 		return num;
 	}
 
@@ -422,7 +422,7 @@ internal class <Module>
 		{
 			return -2147023181;
 		}
-		AmMountArg mountArg = <Module>.?A0x2a17ddd5.UToMMountArg((void*)rpcMountArg, cRpcMountArg);
+		AmMountArg mountArg = <Module>.?A0xc5493c1b.UToMMountArg((void*)rpcMountArg, cRpcMountArg);
 		Guid guid = <Module>.FromGUID(ref dbGuid);
 		return <Module>.MToUErrorExceptionInfo(amRpcServerBase.MountDatabaseDirect(guid, mountArg), pErrorInfo);
 	}
@@ -434,7 +434,7 @@ internal class <Module>
 		{
 			return -2147023181;
 		}
-		AmMountArg mountArg = <Module>.?A0x2a17ddd5.UToMMountArg((void*)rpcMountArg, cRpcMountArg);
+		AmMountArg mountArg = <Module>.?A0xc5493c1b.UToMMountArg((void*)rpcMountArg, cRpcMountArg);
 		Guid guid = <Module>.FromGUID(ref dbGuid);
 		return <Module>.MToUErrorExceptionInfo(amRpcServerBase.MountDatabaseDirect(guid, mountArg), pErrorInfo);
 	}
@@ -857,7 +857,7 @@ internal class <Module>
 					return 0;
 				}
 			}
-			<Module>.?A0x2a17ddd5.FreeRpcDbStatusInfo(rpcDbInfo);
+			<Module>.?A0xc5493c1b.FreeRpcDbStatusInfo(rpcDbInfo);
 			return num;
 		}
 		return -2147024809;
@@ -873,7 +873,7 @@ internal class <Module>
 		int num = <Module>.StringToUnmanaged(pamInfo.ServerName, (ushort**)rpcPamInfo);
 		if (num < 0)
 		{
-			<Module>.?A0x2a17ddd5.FreeRpcPamInfo(rpcPamInfo);
+			<Module>.?A0xc5493c1b.FreeRpcPamInfo(rpcPamInfo);
 			return num;
 		}
 		return 0;
@@ -1002,7 +1002,7 @@ internal class <Module>
 		{
 			return -2147023181;
 		}
-		Guid mdbGuid2 = <Module>.Microsoft.Exchange.Rpc.?A0x482dc6da.GuidFromGUID(ref mdbGuid);
+		Guid mdbGuid2 = <Module>.Microsoft.Exchange.Rpc.?A0x18aac321.GuidFromGUID(ref mdbGuid);
 		return activeMonitoringRpcServerBase.RequestMonitoring(mdbGuid2);
 	}
 
@@ -1013,7 +1013,7 @@ internal class <Module>
 		{
 			return -2147023181;
 		}
-		Guid mdbGuid2 = <Module>.Microsoft.Exchange.Rpc.?A0x482dc6da.GuidFromGUID(ref mdbGuid);
+		Guid mdbGuid2 = <Module>.Microsoft.Exchange.Rpc.?A0x18aac321.GuidFromGUID(ref mdbGuid);
 		activeMonitoringRpcServerBase.CancelMonitoring(mdbGuid2);
 		return 0;
 	}
@@ -1029,7 +1029,7 @@ internal class <Module>
 		if (credential != null && serverName != null)
 		{
 			text = null;
-			Guid mdbGuid2 = <Module>.Microsoft.Exchange.Rpc.?A0x482dc6da.GuidFromGUID(ref mdbGuid);
+			Guid mdbGuid2 = <Module>.Microsoft.Exchange.Rpc.?A0x18aac321.GuidFromGUID(ref mdbGuid);
 			int result = activeMonitoringRpcServerBase.RequestCredential(<Module>.UToMString(serverName), mdbGuid2, <Module>.UToMString(upn), ref text);
 			if (text != null)
 			{
@@ -1051,7 +1051,7 @@ internal class <Module>
 		{
 			return -2147024809;
 		}
-		Guid mdbGuid2 = <Module>.Microsoft.Exchange.Rpc.?A0x482dc6da.GuidFromGUID(ref mdbGuid);
+		Guid mdbGuid2 = <Module>.Microsoft.Exchange.Rpc.?A0x18aac321.GuidFromGUID(ref mdbGuid);
 		return activeMonitoringRpcServerBase.Heartbeat(<Module>.UToMString(serverName), mdbGuid2);
 	}
 
@@ -1126,7 +1126,7 @@ internal class <Module>
 		{
 			return -2147024809;
 		}
-		Guid mdbGuid2 = <Module>.Microsoft.Exchange.Rpc.?A0x482dc6da.GuidFromGUID(ref mdbGuid);
+		Guid mdbGuid2 = <Module>.Microsoft.Exchange.Rpc.?A0x18aac321.GuidFromGUID(ref mdbGuid);
 		return activeMonitoringRpcServerBase.CreateMonitoringMailbox(<Module>.UToMString(displayName), mdbGuid2);
 	}
 
@@ -5993,8 +5993,8 @@ internal class <Module>
 		}
 		long num2 = (long)(ptr2 - parameters);
 		string parameters2 = new string((sbyte*)parameters, 0, (int)num2);
-		Guid guid = <Module>.Microsoft.Exchange.Rpc.?A0x75ee1d24.GuidFromGUID(ref mdbGuid);
-		Guid guid2 = <Module>.Microsoft.Exchange.Rpc.?A0x75ee1d24.GuidFromGUID(ref mailboxGuid);
+		Guid guid = <Module>.Microsoft.Exchange.Rpc.?A0xf6b51587.GuidFromGUID(ref mdbGuid);
+		Guid guid2 = <Module>.Microsoft.Exchange.Rpc.?A0xf6b51587.GuidFromGUID(ref mailboxGuid);
 		return assistantsRpcServerBase.RunNowWithParamsHR(assistantName2, guid2, guid, parameters2);
 	}
 
@@ -6012,8 +6012,8 @@ internal class <Module>
 		}
 		long num = (long)(ptr - assistantName);
 		string assistantName2 = new string((sbyte*)assistantName, 0, (int)num);
-		Guid guid = <Module>.Microsoft.Exchange.Rpc.?A0x75ee1d24.GuidFromGUID(ref mdbGuid);
-		Guid guid2 = <Module>.Microsoft.Exchange.Rpc.?A0x75ee1d24.GuidFromGUID(ref mailboxGuid);
+		Guid guid = <Module>.Microsoft.Exchange.Rpc.?A0xf6b51587.GuidFromGUID(ref mdbGuid);
+		Guid guid2 = <Module>.Microsoft.Exchange.Rpc.?A0xf6b51587.GuidFromGUID(ref mailboxGuid);
 		return assistantsRpcServerBase.RunNowHR(assistantName2, guid2, guid);
 	}
 
@@ -6146,7 +6146,7 @@ internal class <Module>
 	{
 		if (pSeederArgs != null)
 		{
-			<Module>.Microsoft.Exchange.Rpc.Cluster.?A0x9d18277a.FreeSeederArgs((tagSeederArgs3*)pSeederArgs);
+			<Module>.Microsoft.Exchange.Rpc.Cluster.?A0xc6d92728.FreeSeederArgs((tagSeederArgs3*)pSeederArgs);
 		}
 	}
 
@@ -6154,7 +6154,7 @@ internal class <Module>
 	{
 		if (pSeederArgs != null)
 		{
-			<Module>.Microsoft.Exchange.Rpc.Cluster.?A0x9d18277a.FreeSeederArgs((tagSeederArgs3*)pSeederArgs);
+			<Module>.Microsoft.Exchange.Rpc.Cluster.?A0xc6d92728.FreeSeederArgs((tagSeederArgs3*)pSeederArgs);
 		}
 	}
 
@@ -6203,7 +6203,7 @@ internal class <Module>
 					}
 				}
 			}
-			<Module>.Microsoft.Exchange.Rpc.Cluster.?A0x9d18277a.FreeSeederArgs(pSeederArgs);
+			<Module>.Microsoft.Exchange.Rpc.Cluster.?A0xc6d92728.FreeSeederArgs(pSeederArgs);
 			return num7;
 		}
 		return -2147024809;
@@ -6216,10 +6216,10 @@ internal class <Module>
 			return -2147024809;
 		}
 		initblk(pSeederArgs, 0, 96L);
-		int num = <Module>.Microsoft.Exchange.Rpc.Cluster.?A0x9d18277a.MToUSeederArgs(seederArgs, (tagSeederArgs3*)pSeederArgs);
+		int num = <Module>.Microsoft.Exchange.Rpc.Cluster.?A0xc6d92728.MToUSeederArgs(seederArgs, (tagSeederArgs3*)pSeederArgs);
 		if (num < 0)
 		{
-			<Module>.Microsoft.Exchange.Rpc.Cluster.?A0x9d18277a.FreeSeederArgs((tagSeederArgs3*)pSeederArgs);
+			<Module>.Microsoft.Exchange.Rpc.Cluster.?A0xc6d92728.FreeSeederArgs((tagSeederArgs3*)pSeederArgs);
 			return num;
 		}
 		*(int*)(pSeederArgs + 88L / (long)sizeof(tagSeederArgs4)) = seederArgs.MaxSeedsInParallel;
@@ -6235,10 +6235,10 @@ internal class <Module>
 			return -2147024809;
 		}
 		initblk(pSeederArgs, 0, 104L);
-		int num = <Module>.Microsoft.Exchange.Rpc.Cluster.?A0x9d18277a.MToUSeederArgs(seederArgs, (tagSeederArgs4*)pSeederArgs);
+		int num = <Module>.Microsoft.Exchange.Rpc.Cluster.?A0xc6d92728.MToUSeederArgs(seederArgs, (tagSeederArgs4*)pSeederArgs);
 		if (num < 0)
 		{
-			<Module>.Microsoft.Exchange.Rpc.Cluster.?A0x9d18277a.FreeSeederArgs((tagSeederArgs3*)pSeederArgs);
+			<Module>.Microsoft.Exchange.Rpc.Cluster.?A0xc6d92728.FreeSeederArgs((tagSeederArgs3*)pSeederArgs);
 			return num;
 		}
 		*(int*)(pSeederArgs + 96L / (long)sizeof(tagSeederArgs5)) = (int)seederArgs.Flags;
@@ -6277,7 +6277,7 @@ internal class <Module>
 		int result = num;
 		if (num >= 0)
 		{
-			result = <Module>.?A0xc70495f8.StringCopyWorkerW(pszDest, cchDest, null, pszSrc, 2147483646UL);
+			result = <Module>.?A0x9cc595aa.StringCopyWorkerW(pszDest, cchDest, null, pszSrc, 2147483646UL);
 		}
 		else if (cchDest > 0UL)
 		{
@@ -6411,7 +6411,7 @@ internal class <Module>
 		{
 			if (num != 0UL && num <= 2147483647UL)
 			{
-				<Module>.?A0xc70495f8.StringCopyWorkerW(ptr2, num, null, (ushort*)ptr, 2147483646UL);
+				<Module>.?A0x9cc595aa.StringCopyWorkerW(ptr2, num, null, (ushort*)ptr, 2147483646UL);
 			}
 			else if (num > 0UL)
 			{
@@ -6589,7 +6589,7 @@ internal class <Module>
 		{
 			return -2147023181;
 		}
-		Guid[] dbGuids = <Module>.?A0xc70495f8.ToGuidArray(sgSize, pSgGuid);
+		Guid[] dbGuids = <Module>.?A0x9cc595aa.ToGuidArray(sgSize, pSgGuid);
 		array = null;
 		RpcErrorExceptionInfo copyStatus = replayRpcServerBase.GetCopyStatus((RpcGetDatabaseCopyStatusFlags)collectionFlags, dbGuids, ref array);
 		int num2 = <Module>.MToUErrorExceptionInfo(copyStatus, pErrorInfo);
@@ -6648,7 +6648,7 @@ internal class <Module>
 		{
 			return -2147023181;
 		}
-		Guid[] dbGuids = <Module>.?A0xc70495f8.ToGuidArray(dbSize, pDbGuid);
+		Guid[] dbGuids = <Module>.?A0x9cc595aa.ToGuidArray(dbSize, pDbGuid);
 		array = null;
 		int num2 = 0;
 		RpcErrorExceptionInfo copyStatus = replayRpcServerBase.GetCopyStatus2((RpcGetDatabaseCopyStatusFlags2)collectionFlags2, dbGuids, out num2, out array);
@@ -6707,7 +6707,7 @@ internal class <Module>
 		{
 			return -2147023181;
 		}
-		Guid[] dbGuids = <Module>.?A0xc70495f8.ToGuidArray(dbSize, pDbGuid);
+		Guid[] dbGuids = <Module>.?A0x9cc595aa.ToGuidArray(dbSize, pDbGuid);
 		rpcCopyStatusContainer = null;
 		RpcErrorExceptionInfo copyStatusWithHealthState = replayRpcServerBase.GetCopyStatusWithHealthState((RpcGetDatabaseCopyStatusFlags2)collectionFlags2, dbGuids, ref rpcCopyStatusContainer);
 		int num2 = <Module>.MToUErrorExceptionInfo(copyStatusWithHealthState, pErrorInfo);
@@ -6765,7 +6765,7 @@ internal class <Module>
 		{
 			return -2147023181;
 		}
-		Guid[] dbGuids = <Module>.?A0xc70495f8.ToGuidArray(dbSize, pDbGuid);
+		Guid[] dbGuids = <Module>.?A0x9cc595aa.ToGuidArray(dbSize, pDbGuid);
 		array = null;
 		RpcErrorExceptionInfo copyStatusBasic = replayRpcServerBase.GetCopyStatusBasic((RpcGetDatabaseCopyStatusFlags2)collectionFlags2, dbGuids, ref array);
 		int num2 = <Module>.MToUErrorExceptionInfo(copyStatusBasic, pErrorInfo);
@@ -6918,14 +6918,14 @@ internal class <Module>
 		{
 			return -2147024891;
 		}
-		RpcSeederArgs seederArgs = <Module>.?A0xc70495f8.UToMSeederArgs(pSeederArgs);
+		RpcSeederArgs seederArgs = <Module>.?A0x9cc595aa.UToMSeederArgs(pSeederArgs);
 		rpcSeederStatus = null;
 		int num = <Module>.MToUErrorExceptionInfo(replayRpcServerBase.RpcsPrepareDatabaseSeedAndBegin(seederArgs, ref rpcSeederStatus), pErrorExceptionInfo);
 		if (num >= 0)
 		{
 			if (rpcSeederStatus != null)
 			{
-				num = <Module>.?A0xc70495f8.MToUSeederStatus(rpcSeederStatus, pSeederStatus);
+				num = <Module>.?A0x9cc595aa.MToUSeederStatus(rpcSeederStatus, pSeederStatus);
 				if (num < 0)
 				{
 					goto IL_56;
@@ -6951,14 +6951,14 @@ internal class <Module>
 		{
 			return -2147024891;
 		}
-		RpcSeederArgs seederArgs = <Module>.?A0xc70495f8.UToMSeederArgs(pSeederArgs);
+		RpcSeederArgs seederArgs = <Module>.?A0x9cc595aa.UToMSeederArgs(pSeederArgs);
 		rpcSeederStatus = null;
 		int num = <Module>.MToUErrorExceptionInfo(replayRpcServerBase.RpcsPrepareDatabaseSeedAndBegin(seederArgs, ref rpcSeederStatus), pErrorExceptionInfo);
 		if (num >= 0)
 		{
 			if (rpcSeederStatus != null)
 			{
-				num = <Module>.?A0xc70495f8.MToUSeederStatus(rpcSeederStatus, pSeederStatus);
+				num = <Module>.?A0x9cc595aa.MToUSeederStatus(rpcSeederStatus, pSeederStatus);
 				if (num < 0)
 				{
 					goto IL_56;
@@ -6984,14 +6984,14 @@ internal class <Module>
 		{
 			return -2147024891;
 		}
-		RpcSeederArgs seederArgs = <Module>.?A0xc70495f8.UToMSeederArgs(pSeederArgs);
+		RpcSeederArgs seederArgs = <Module>.?A0x9cc595aa.UToMSeederArgs(pSeederArgs);
 		rpcSeederStatus = null;
 		int num = <Module>.MToUErrorExceptionInfo(replayRpcServerBase.RpcsPrepareDatabaseSeedAndBegin(seederArgs, ref rpcSeederStatus), pErrorExceptionInfo);
 		if (num >= 0)
 		{
 			if (rpcSeederStatus != null)
 			{
-				num = <Module>.?A0xc70495f8.MToUSeederStatus(rpcSeederStatus, pSeederStatus);
+				num = <Module>.?A0x9cc595aa.MToUSeederStatus(rpcSeederStatus, pSeederStatus);
 				if (num < 0)
 				{
 					goto IL_56;
@@ -7050,7 +7050,7 @@ internal class <Module>
 		{
 			if (rpcSeederStatus != null)
 			{
-				num = <Module>.?A0xc70495f8.MToUSeederStatus(rpcSeederStatus, pSeederStatus);
+				num = <Module>.?A0x9cc595aa.MToUSeederStatus(rpcSeederStatus, pSeederStatus);
 				if (num < 0)
 				{
 					goto IL_48;
@@ -7772,7 +7772,7 @@ internal class <Module>
 		*(*(A_0 + 176L)) = 0;
 		*(*(A_0 + 128L)) = 3840;
 		*(*(A_0 + 128L) + 2L) = (short)34265;
-		*(*(A_0 + 128L) + 4L) = 12;
+		*(*(A_0 + 128L) + 4L) = 15;
 		int num2 = <Module>.EcCriticalVersionCheck(*(A_0 + 120L), *(A_0 + 136L));
 		if (num2 != null)
 		{
@@ -9605,7 +9605,7 @@ internal class <Module>
 			*(*(A_0 + 88L)) = 1000;
 			*(*(A_0 + 128L)) = 3840;
 			*(*(A_0 + 128L) + 2L) = (short)34265;
-			*(*(A_0 + 128L) + 4L) = (short)(proxyServer.GetVersionDelta() + 12);
+			*(*(A_0 + 128L) + 4L) = (short)(proxyServer.GetVersionDelta() + 15);
 			int num4 = <Module>.EcCriticalVersionCheck(*(A_0 + 120L), *(A_0 + 136L));
 			if (num4 != null)
 			{
@@ -10089,7 +10089,7 @@ internal class <Module>
 				int num3;
 				do
 				{
-					num3 = <Module>.?A0x793548b6.Convert((long)num2 * 56L + ptr / sizeof(IPRangeData), items[num2]);
+					num3 = <Module>.?A0xfc0bb96e.Convert((long)num2 * 56L + ptr / sizeof(IPRangeData), items[num2]);
 					if (num3 < 0)
 					{
 						goto IL_75;
@@ -16989,22 +16989,22 @@ internal class <Module>
 
 	internal unsafe static int ExecutePoPRequest(void* hBinding, int nRequestLen, byte* pRequestBytes, int* pnResponseLen, byte** ppResponseBytes)
 	{
-		return <Module>.?A0xc2457be6.UMVersionedRpcServerBase_ExecuteRequest(UMVersionedRpcServerBase.UMPlayOnPhoneRpcIntfHandle, nRequestLen, pRequestBytes, pnResponseLen, ppResponseBytes);
+		return <Module>.?A0xce51e160.UMVersionedRpcServerBase_ExecuteRequest(UMVersionedRpcServerBase.UMPlayOnPhoneRpcIntfHandle, nRequestLen, pRequestBytes, pnResponseLen, ppResponseBytes);
 	}
 
 	internal unsafe static int ProcessPartnerMessage(void* hBinding, int nRequestLen, byte* pRequestBytes, int* pnResponseLen, byte** ppResponseBytes)
 	{
-		return <Module>.?A0xc2457be6.UMVersionedRpcServerBase_ExecuteRequest(UMVersionedRpcServerBase.UMPartnerMessageRpcIntfHandle, nRequestLen, pRequestBytes, pnResponseLen, ppResponseBytes);
+		return <Module>.?A0xce51e160.UMVersionedRpcServerBase_ExecuteRequest(UMVersionedRpcServerBase.UMPartnerMessageRpcIntfHandle, nRequestLen, pRequestBytes, pnResponseLen, ppResponseBytes);
 	}
 
 	internal unsafe static int ExecuteRequest(void* hBinding, int nRequestLen, byte* pRequestBytes, int* pnResponseLen, byte** ppResponseBytes)
 	{
-		return <Module>.?A0xc2457be6.UMVersionedRpcServerBase_ExecuteRequest(UMVersionedRpcServerBase.UMRecipientTasksRpcIntfHandle, nRequestLen, pRequestBytes, pnResponseLen, ppResponseBytes);
+		return <Module>.?A0xce51e160.UMVersionedRpcServerBase_ExecuteRequest(UMVersionedRpcServerBase.UMRecipientTasksRpcIntfHandle, nRequestLen, pRequestBytes, pnResponseLen, ppResponseBytes);
 	}
 
 	internal unsafe static int ExecutePromptPreviewRequest(void* hBinding, int nRequestLen, byte* pRequestBytes, int* pnResponseLen, byte** ppResponseBytes)
 	{
-		return <Module>.?A0xc2457be6.UMVersionedRpcServerBase_ExecuteRequest(UMVersionedRpcServerBase.UMPromptPreviewRpcIntfHandle, nRequestLen, pRequestBytes, pnResponseLen, ppResponseBytes);
+		return <Module>.?A0xce51e160.UMVersionedRpcServerBase_ExecuteRequest(UMVersionedRpcServerBase.UMPromptPreviewRpcIntfHandle, nRequestLen, pRequestBytes, pnResponseLen, ppResponseBytes);
 	}
 
 	internal unsafe static void ExecuteStepAsync(_RPC_ASYNC_STATE* pAsyncState, void* hBinding, int inBytesLen, byte* pInBytes, int* pOutBytesLen, byte** ppOutBytes)
@@ -19921,39 +19921,39 @@ internal class <Module>
 
 	internal static uint g_ulActiveNotificationsBrokerDispatchThreads;
 
-	public static method __m2mep@?FromUnmanagedBool@?A0x700b6f57@@$$FYA_NH@Z;
+	public static method __m2mep@?FromUnmanagedBool@?A0x9f558e99@@$$FYA_NH@Z;
 
-	public static method __m2mep@?ToUnmanagedBool@?A0x700b6f57@@$$FYAH_N@Z;
+	public static method __m2mep@?ToUnmanagedBool@?A0x9f558e99@@$$FYAH_N@Z;
 
-	public static method __m2mep@?InitRpcDbStatusInfo@?A0x700b6f57@ActiveManager@Rpc@Exchange@Microsoft@@$$FYAXPEAU_AmRpcDbStatusInfo2@@@Z;
+	public static method __m2mep@?InitRpcDbStatusInfo@?A0x9f558e99@ActiveManager@Rpc@Exchange@Microsoft@@$$FYAXPEAU_AmRpcDbStatusInfo2@@@Z;
 
-	public static method __m2mep@?InitRpcPamInfo@?A0x700b6f57@ActiveManager@Rpc@Exchange@Microsoft@@$$FYAXPEAU__MIDL_IActiveManagerRpc_0001@@@Z;
+	public static method __m2mep@?InitRpcPamInfo@?A0x9f558e99@ActiveManager@Rpc@Exchange@Microsoft@@$$FYAXPEAU__MIDL_IActiveManagerRpc_0001@@@Z;
 
-	public static method __m2mep@?FreeRpcDbStatusInfo@?A0x700b6f57@ActiveManager@Rpc@Exchange@Microsoft@@$$FYAXPEAU_AmRpcDbStatusInfo2@@@Z;
+	public static method __m2mep@?FreeRpcDbStatusInfo@?A0x9f558e99@ActiveManager@Rpc@Exchange@Microsoft@@$$FYAXPEAU_AmRpcDbStatusInfo2@@@Z;
 
-	public static method __m2mep@?FreeRpcPamInfo@?A0x700b6f57@ActiveManager@Rpc@Exchange@Microsoft@@$$FYAXPEAU__MIDL_IActiveManagerRpc_0001@@@Z;
+	public static method __m2mep@?FreeRpcPamInfo@?A0x9f558e99@ActiveManager@Rpc@Exchange@Microsoft@@$$FYAXPEAU__MIDL_IActiveManagerRpc_0001@@@Z;
 
-	public static method __m2mep@?FreeRpcMountArg2@?A0x700b6f57@ActiveManager@Rpc@Exchange@Microsoft@@$$FYAXPEAU__MIDL_IActiveManagerRpc_0002@@@Z;
+	public static method __m2mep@?FreeRpcMountArg2@?A0x9f558e99@ActiveManager@Rpc@Exchange@Microsoft@@$$FYAXPEAU__MIDL_IActiveManagerRpc_0002@@@Z;
 
-	public static method __m2mep@?FreeRpcMountArg3@?A0x700b6f57@ActiveManager@Rpc@Exchange@Microsoft@@$$FYAXPEAU__MIDL_IActiveManagerRpc_0003@@@Z;
+	public static method __m2mep@?FreeRpcMountArg3@?A0x9f558e99@ActiveManager@Rpc@Exchange@Microsoft@@$$FYAXPEAU__MIDL_IActiveManagerRpc_0003@@@Z;
 
-	public static method __m2mep@?FreeRpcDismountArg@?A0x700b6f57@ActiveManager@Rpc@Exchange@Microsoft@@$$FYAXPEAU__MIDL_IActiveManagerRpc_0004@@@Z;
+	public static method __m2mep@?FreeRpcDismountArg@?A0x9f558e99@ActiveManager@Rpc@Exchange@Microsoft@@$$FYAXPEAU__MIDL_IActiveManagerRpc_0004@@@Z;
 
-	public static method __m2mep@?UToMDbStatusInfo@?A0x700b6f57@ActiveManager@Rpc@Exchange@Microsoft@@$$FYMPE$AAVAmDbStatusInfo2@2345@PEAU_AmRpcDbStatusInfo2@@@Z;
+	public static method __m2mep@?UToMDbStatusInfo@?A0x9f558e99@ActiveManager@Rpc@Exchange@Microsoft@@$$FYMPE$AAVAmDbStatusInfo2@2345@PEAU_AmRpcDbStatusInfo2@@@Z;
 
-	public static method __m2mep@?UToMPamInfo@?A0x700b6f57@ActiveManager@Rpc@Exchange@Microsoft@@$$FYMPE$AAVAmPamInfo@2345@PEAU__MIDL_IActiveManagerRpc_0001@@@Z;
+	public static method __m2mep@?UToMPamInfo@?A0x9f558e99@ActiveManager@Rpc@Exchange@Microsoft@@$$FYMPE$AAVAmPamInfo@2345@PEAU__MIDL_IActiveManagerRpc_0001@@@Z;
 
-	public static method __m2mep@?MToUMountArg2@?A0x700b6f57@ActiveManager@Rpc@Exchange@Microsoft@@$$FYMJPE$AAVAmMountArg@2345@PEAU__MIDL_IActiveManagerRpc_0002@@@Z;
+	public static method __m2mep@?MToUMountArg2@?A0x9f558e99@ActiveManager@Rpc@Exchange@Microsoft@@$$FYMJPE$AAVAmMountArg@2345@PEAU__MIDL_IActiveManagerRpc_0002@@@Z;
 
-	public static method __m2mep@?MToUMountArg3@?A0x700b6f57@ActiveManager@Rpc@Exchange@Microsoft@@$$FYMJPE$AAVAmMountArg@2345@PEAU__MIDL_IActiveManagerRpc_0003@@@Z;
+	public static method __m2mep@?MToUMountArg3@?A0x9f558e99@ActiveManager@Rpc@Exchange@Microsoft@@$$FYMJPE$AAVAmMountArg@2345@PEAU__MIDL_IActiveManagerRpc_0003@@@Z;
 
-	public static method __m2mep@?MToUDismountArg@?A0x700b6f57@ActiveManager@Rpc@Exchange@Microsoft@@$$FYMJPE$AAVAmDismountArg@2345@PEAU__MIDL_IActiveManagerRpc_0004@@@Z;
+	public static method __m2mep@?MToUDismountArg@?A0x9f558e99@ActiveManager@Rpc@Exchange@Microsoft@@$$FYMJPE$AAVAmDismountArg@2345@PEAU__MIDL_IActiveManagerRpc_0004@@@Z;
 
 	public static method __m2mep@?HRESULT_FROM_WIN32@@$$J0YAJK@Z;
 
-	public static method __m2mep@?FromUnmanagedBool@?A0x2a17ddd5@@$$FYA_NH@Z;
+	public static method __m2mep@?FromUnmanagedBool@?A0xc5493c1b@@$$FYA_NH@Z;
 
-	public static method __m2mep@?ToUnmanagedBool@?A0x2a17ddd5@@$$FYAH_N@Z;
+	public static method __m2mep@?ToUnmanagedBool@?A0xc5493c1b@@$$FYAH_N@Z;
 
 	public static method __m2mep@?RpcsAmGetServerForDatabase@@$$J0YAJPEAXU_GUID@@PEAU_AmRpcDbStatusInfo2@@PEAUtagErrorExceptionInfo@@@Z;
 
@@ -20013,13 +20013,13 @@ internal class <Module>
 
 	public static method __m2mep@?AmGenericRequest@@$$J0YAJPEAXPEAUtagGenericRequestInfo@@PEAUtagGenericReplyInfo@@PEAUtagErrorExceptionInfo@@@Z;
 
-	public static method __m2mep@?MToUDbStatusInfo@?A0x2a17ddd5@@$$FYMJPE$AAVAmDbStatusInfo2@ActiveManager@Rpc@Exchange@Microsoft@@PEAU_AmRpcDbStatusInfo2@@@Z;
+	public static method __m2mep@?MToUDbStatusInfo@?A0xc5493c1b@@$$FYMJPE$AAVAmDbStatusInfo2@ActiveManager@Rpc@Exchange@Microsoft@@PEAU_AmRpcDbStatusInfo2@@@Z;
 
-	public static method __m2mep@?MToUPamInfo@?A0x2a17ddd5@@$$FYMJPE$AAVAmPamInfo@ActiveManager@Rpc@Exchange@Microsoft@@PEAU__MIDL_IActiveManagerRpc_0001@@@Z;
+	public static method __m2mep@?MToUPamInfo@?A0xc5493c1b@@$$FYMJPE$AAVAmPamInfo@ActiveManager@Rpc@Exchange@Microsoft@@PEAU__MIDL_IActiveManagerRpc_0001@@@Z;
 
-	public static method __m2mep@?UToMMountArg@?A0x2a17ddd5@@$$FYMPE$AAVAmMountArg@ActiveManager@Rpc@Exchange@Microsoft@@PEAXJ@Z;
+	public static method __m2mep@?UToMMountArg@?A0xc5493c1b@@$$FYMPE$AAVAmMountArg@ActiveManager@Rpc@Exchange@Microsoft@@PEAXJ@Z;
 
-	public static method __m2mep@?UToMDismountArg@?A0x2a17ddd5@@$$FYMPE$AAVAmDismountArg@ActiveManager@Rpc@Exchange@Microsoft@@PEAU__MIDL_IActiveManagerRpc_0004@@@Z;
+	public static method __m2mep@?UToMDismountArg@?A0xc5493c1b@@$$FYMPE$AAVAmDismountArg@ActiveManager@Rpc@Exchange@Microsoft@@PEAU__MIDL_IActiveManagerRpc_0004@@@Z;
 
 	public static method __m2mep@?MToUGenericRequestInfo@@$$FYMJPE$AAVRpcGenericRequestInfo@ActiveMonitoring@Rpc@Exchange@Microsoft@@PEAUtagGenericRequestInfo@@@Z;
 
@@ -20041,7 +20041,7 @@ internal class <Module>
 
 	public static method __m2mep@?CreateMonitoringMailbox@@$$J0YAJPEAXPEAGU_GUID@@@Z;
 
-	public static method __m2mep@?GuidFromGUID@?A0x482dc6da@Rpc@Exchange@Microsoft@@$$FYM?AVGuid@System@@AEBU_GUID@@@Z;
+	public static method __m2mep@?GuidFromGUID@?A0x18aac321@Rpc@Exchange@Microsoft@@$$FYM?AVGuid@System@@AEBU_GUID@@@Z;
 
 	internal static $_s__RTTIBaseClassArray$_extraBytes_24 ??_R2AdminGetIFVersionRpc@@8;
 
@@ -20099,7 +20099,7 @@ internal class <Module>
 
 	public static method __m2mep@?AdminGetIFVersion_Managed@@$$FYAXPEAXJPEAG1@Z;
 
-	public static method __m2mep@?GUIDFromGuid@?A0xa0f17d9b@Rpc@Exchange@Microsoft@@$$FYM?AU_GUID@@PE$AAVGuid@System@@@Z;
+	public static method __m2mep@?GUIDFromGuid@?A0xf92a72b0@Rpc@Exchange@Microsoft@@$$FYM?AU_GUID@@PE$AAVGuid@System@@@Z;
 
 	public unsafe static int** __unep@?EcValidateParameters@AdminRpcServer_Wrapper@AdminRpc@Rpc@Exchange@Microsoft@@$$FMEAAJXZ;
 
@@ -20143,7 +20143,7 @@ internal class <Module>
 
 	public static method __m2mep@?EcLogReplayRequest2_Managed@@$$FYAJPEAXPEAU_GUID@@KPEAK2PEAPEAE223232PEAPEAK@Z;
 
-	public static method __m2mep@?GUIDFromGuid@?A0xc32148a1@Rpc@Exchange@Microsoft@@$$FYM?AU_GUID@@PE$AAVGuid@System@@@Z;
+	public static method __m2mep@?GUIDFromGuid@?A0x9afa478a@Rpc@Exchange@Microsoft@@$$FYM?AU_GUID@@PE$AAVGuid@System@@@Z;
 
 	unsafe static int** __unep@?InternalExecute@AdminRpcServer_Wrapper@AdminRpc@Rpc@Exchange@Microsoft@@$$FUEAAJXZ;
 
@@ -20961,7 +20961,7 @@ internal class <Module>
 
 	public static method __m2mep@?EcDeleteUserInfo50_Managed@@$$FYAJPEAXPEAU_GUID@@1KKQEAEPEAKPEAPEAE@Z;
 
-	public static method __m2mep@?GUIDFromGuid@?A0x65564315@Rpc@Exchange@Microsoft@@$$FYM?AU_GUID@@PE$AAVGuid@System@@@Z;
+	public static method __m2mep@?GUIDFromGuid@?A0x3c8d4c3e@Rpc@Exchange@Microsoft@@$$FYM?AU_GUID@@PE$AAVGuid@System@@@Z;
 
 	public unsafe static int** __unep@?EcValidateParameters@EcReadMdbEvents50Rpc@@$$FUEAAJXZ;
 
@@ -21411,7 +21411,7 @@ internal class <Module>
 
 	public static method __m2mep@?EcDispatchCall@EcLogReplayRequestRpc@@$$FUEAMJPE$AAUIAdminRpcServer@AdminRpc@Rpc@Exchange@Microsoft@@PE$AAVClientSecurityContext@Authorization@Security@56@P$01EAEAE$CAP$01EAE@Z;
 
-	public static method __m2mep@?GUIDFromGuid@?A0x202252a7@Rpc@Exchange@Microsoft@@$$FYM?AU_GUID@@PE$AAVGuid@System@@@Z;
+	public static method __m2mep@?GUIDFromGuid@?A0x2c36c821@Rpc@Exchange@Microsoft@@$$FYM?AU_GUID@@PE$AAVGuid@System@@@Z;
 
 	public unsafe static int** __unep@?EcValidateParameters@EcListAllMdbStatusRpc@@$$FUEAAJXZ;
 
@@ -21461,17 +21461,17 @@ internal class <Module>
 
 	public static method __m2mep@??_GEcListAllMdbStatus50AsyncState@@$$FQEAAPEAXI@Z;
 
-	public static method __m2mep@?GUIDFromGuid@?A0x497527af@Rpc@Exchange@Microsoft@@$$FYM?AU_GUID@@PE$AAVGuid@System@@@Z;
+	public static method __m2mep@?GUIDFromGuid@?A0x3db9f67c@Rpc@Exchange@Microsoft@@$$FYM?AU_GUID@@PE$AAVGuid@System@@@Z;
 
 	unsafe static int** __unep@?InternalExecute@AdminRpcServer_Wrapper@AdminRpc@Rpc@Exchange@Microsoft@@$$FUEAAJXZ;
 
 	public static method __m2mep@?InternalExecute@AdminRpcServer_Wrapper@AdminRpc@Rpc@Exchange@Microsoft@@$$FUEAAJXZ;
 
-	public static method __m2mep@?GUIDFromGuid@?A0x1369952d@Rpc@Exchange@Microsoft@@$$FYM?AU_GUID@@PE$AAVGuid@System@@@Z;
+	public static method __m2mep@?GUIDFromGuid@?A0x67a544fe@Rpc@Exchange@Microsoft@@$$FYM?AU_GUID@@PE$AAVGuid@System@@@Z;
 
 	public unsafe static int** __unep@?InternalExecute@AdminRpcServer_Wrapper@AdminRpc@Rpc@Exchange@Microsoft@@$$FUEAAJXZ;
 
-	public static method __m2mep@?GUIDFromGuid@?A0x2ff2afa6@Rpc@Exchange@Microsoft@@$$FYM?AU_GUID@@PE$AAVGuid@System@@@Z;
+	public static method __m2mep@?GUIDFromGuid@?A0xaca9a705@Rpc@Exchange@Microsoft@@$$FYM?AU_GUID@@PE$AAVGuid@System@@@Z;
 
 	public static method __m2mep@?RunNow@@$$J0YAXPEAXPEBDU_GUID@@2@Z;
 
@@ -21483,47 +21483,47 @@ internal class <Module>
 
 	public static method __m2mep@?HaltHR@@$$J0YAJPEAXPEBD@Z;
 
-	public static method __m2mep@?GuidFromGUID@?A0x75ee1d24@Rpc@Exchange@Microsoft@@$$FYM?AVGuid@System@@AEBU_GUID@@@Z;
+	public static method __m2mep@?GuidFromGUID@?A0xf6b51587@Rpc@Exchange@Microsoft@@$$FYM?AVGuid@System@@AEBU_GUID@@@Z;
 
-	public static method __m2mep@?ToUnmanagedBool@?A0x9d18277a@@$$FYAH_N@Z;
+	public static method __m2mep@?ToUnmanagedBool@?A0xc6d92728@@$$FYAH_N@Z;
 
-	public static method __m2mep@?UToMSeederStatus@?A0x9d18277a@Cluster@Rpc@Exchange@Microsoft@@$$FYMPE$AAVRpcSeederStatus@2345@QEBUtagSeederStatus2@@@Z;
+	public static method __m2mep@?UToMSeederStatus@?A0xc6d92728@Cluster@Rpc@Exchange@Microsoft@@$$FYMPE$AAVRpcSeederStatus@2345@QEBUtagSeederStatus2@@@Z;
 
-	public static method __m2mep@?FromGuidArray@?A0x9d18277a@Cluster@Rpc@Exchange@Microsoft@@$$FYMPEAU_GUID@@P$01EAVGuid@System@@PEAH@Z;
+	public static method __m2mep@?FromGuidArray@?A0xc6d92728@Cluster@Rpc@Exchange@Microsoft@@$$FYMPEAU_GUID@@P$01EAVGuid@System@@PEAH@Z;
 
-	public static method __m2mep@?InitSeederArgs@?A0x9d18277a@Cluster@Rpc@Exchange@Microsoft@@$$FYAXPEAUtagSeederArgs3@@@Z;
+	public static method __m2mep@?InitSeederArgs@?A0xc6d92728@Cluster@Rpc@Exchange@Microsoft@@$$FYAXPEAUtagSeederArgs3@@@Z;
 
-	public static method __m2mep@?InitSeederArgs@?A0x9d18277a@Cluster@Rpc@Exchange@Microsoft@@$$FYAXPEAUtagSeederArgs4@@@Z;
+	public static method __m2mep@?InitSeederArgs@?A0xc6d92728@Cluster@Rpc@Exchange@Microsoft@@$$FYAXPEAUtagSeederArgs4@@@Z;
 
-	public static method __m2mep@?InitSeederArgs@?A0x9d18277a@Cluster@Rpc@Exchange@Microsoft@@$$FYAXPEAUtagSeederArgs5@@@Z;
+	public static method __m2mep@?InitSeederArgs@?A0xc6d92728@Cluster@Rpc@Exchange@Microsoft@@$$FYAXPEAUtagSeederArgs5@@@Z;
 
-	public static method __m2mep@?FreeSeederArgs@?A0x9d18277a@Cluster@Rpc@Exchange@Microsoft@@$$FYAXPEAUtagSeederArgs3@@@Z;
+	public static method __m2mep@?FreeSeederArgs@?A0xc6d92728@Cluster@Rpc@Exchange@Microsoft@@$$FYAXPEAUtagSeederArgs3@@@Z;
 
-	public static method __m2mep@?FreeSeederArgs@?A0x9d18277a@Cluster@Rpc@Exchange@Microsoft@@$$FYAXPEAUtagSeederArgs4@@@Z;
+	public static method __m2mep@?FreeSeederArgs@?A0xc6d92728@Cluster@Rpc@Exchange@Microsoft@@$$FYAXPEAUtagSeederArgs4@@@Z;
 
-	public static method __m2mep@?FreeSeederArgs@?A0x9d18277a@Cluster@Rpc@Exchange@Microsoft@@$$FYAXPEAUtagSeederArgs5@@@Z;
+	public static method __m2mep@?FreeSeederArgs@?A0xc6d92728@Cluster@Rpc@Exchange@Microsoft@@$$FYAXPEAUtagSeederArgs5@@@Z;
 
-	public static method __m2mep@?MToUSeederArgs@?A0x9d18277a@Cluster@Rpc@Exchange@Microsoft@@$$FYMJPE$AAVRpcSeederArgs@2345@PEAUtagSeederArgs3@@@Z;
+	public static method __m2mep@?MToUSeederArgs@?A0xc6d92728@Cluster@Rpc@Exchange@Microsoft@@$$FYMJPE$AAVRpcSeederArgs@2345@PEAUtagSeederArgs3@@@Z;
 
-	public static method __m2mep@?MToUSeederArgs@?A0x9d18277a@Cluster@Rpc@Exchange@Microsoft@@$$FYMJPE$AAVRpcSeederArgs@2345@PEAUtagSeederArgs4@@@Z;
+	public static method __m2mep@?MToUSeederArgs@?A0xc6d92728@Cluster@Rpc@Exchange@Microsoft@@$$FYMJPE$AAVRpcSeederArgs@2345@PEAUtagSeederArgs4@@@Z;
 
-	public static method __m2mep@?MToUSeederArgs@?A0x9d18277a@Cluster@Rpc@Exchange@Microsoft@@$$FYMJPE$AAVRpcSeederArgs@2345@PEAUtagSeederArgs5@@@Z;
+	public static method __m2mep@?MToUSeederArgs@?A0xc6d92728@Cluster@Rpc@Exchange@Microsoft@@$$FYMJPE$AAVRpcSeederArgs@2345@PEAUtagSeederArgs5@@@Z;
 
-	public static method __m2mep@?IsValidDateTime@?A0xfc1cfc89@@$$FYM_NVDateTime@System@@@Z;
+	public static method __m2mep@?IsValidDateTime@?A0xa7ddfcdb@@$$FYM_NVDateTime@System@@@Z;
 
-	public static method __m2mep@?FromUnmanagedBool@?A0xc70495f8@@$$FYA_NH@Z;
+	public static method __m2mep@?FromUnmanagedBool@?A0x9cc595aa@@$$FYA_NH@Z;
 
 	public static method __m2mep@?StringCchCopyW@@$$FYAJPEAG_KPEBG@Z;
 
-	public static method __m2mep@?StringValidateDestW@?A0xc70495f8@@$$FYAJPEBG_K_K@Z;
+	public static method __m2mep@?StringValidateDestW@?A0x9cc595aa@@$$FYAJPEBG_K_K@Z;
 
-	public static method __m2mep@?StringCopyWorkerW@?A0xc70495f8@@$$FYAJPEAG_KPEA_KPEBG1@Z;
+	public static method __m2mep@?StringCopyWorkerW@?A0x9cc595aa@@$$FYAJPEAG_KPEA_KPEBG1@Z;
 
-	public static method __m2mep@?UToMSeederArgs@?A0xc70495f8@@$$FYMPE$AAVRpcSeederArgs@Cluster@Rpc@Exchange@Microsoft@@QEAUtagSeederArgs3@@@Z;
+	public static method __m2mep@?UToMSeederArgs@?A0x9cc595aa@@$$FYMPE$AAVRpcSeederArgs@Cluster@Rpc@Exchange@Microsoft@@QEAUtagSeederArgs3@@@Z;
 
-	public static method __m2mep@?UToMSeederArgs@?A0xc70495f8@@$$FYMPE$AAVRpcSeederArgs@Cluster@Rpc@Exchange@Microsoft@@QEAUtagSeederArgs4@@@Z;
+	public static method __m2mep@?UToMSeederArgs@?A0x9cc595aa@@$$FYMPE$AAVRpcSeederArgs@Cluster@Rpc@Exchange@Microsoft@@QEAUtagSeederArgs4@@@Z;
 
-	public static method __m2mep@?UToMSeederArgs@?A0xc70495f8@@$$FYMPE$AAVRpcSeederArgs@Cluster@Rpc@Exchange@Microsoft@@QEAUtagSeederArgs5@@@Z;
+	public static method __m2mep@?UToMSeederArgs@?A0x9cc595aa@@$$FYMPE$AAVRpcSeederArgs@Cluster@Rpc@Exchange@Microsoft@@QEAUtagSeederArgs5@@@Z;
 
 	public static method __m2mep@?BaseSecurityCheck@@$$FYM_NPE$AAVReplayRpcServerBase@Cluster@Rpc@Exchange@Microsoft@@PEAX@Z;
 
@@ -21591,9 +21591,9 @@ internal class <Module>
 
 	public static method __m2mep@?RpcsClusterForceCleanupNode@@$$J0YAJPEAXPEAPEAGPEAUtagErrorExceptionInfo@@@Z;
 
-	public static method __m2mep@?MToUSeederStatus@?A0xc70495f8@@$$FYMJPE$AAVRpcSeederStatus@Cluster@Rpc@Exchange@Microsoft@@PEAUtagSeederStatus2@@@Z;
+	public static method __m2mep@?MToUSeederStatus@?A0x9cc595aa@@$$FYMJPE$AAVRpcSeederStatus@Cluster@Rpc@Exchange@Microsoft@@PEAUtagSeederStatus2@@@Z;
 
-	public static method __m2mep@?ToGuidArray@?A0xc70495f8@@$$FYMP$01EAVGuid@System@@HPEAU_GUID@@@Z;
+	public static method __m2mep@?ToGuidArray@?A0x9cc595aa@@$$FYMP$01EAVGuid@System@@HPEAU_GUID@@@Z;
 
 	public static method __m2mep@?NullableBoolToInt@@$$FYMHAE$CAV?$Nullable@_N@System@@@Z;
 
@@ -22278,9 +22278,9 @@ internal class <Module>
 
 	public static method __m2mep@?IpFilterGetItems@@$$J0YAJPEAXHHUExInt128@@HPEAPEAUIPRangeData@@PEAH@Z;
 
-	public static method __m2mep@?Convert@?A0x793548b6@@$$FYMJPEAUIPRangeData@@PE$AAVIPFilterRange@IPFilter@Rpc@Exchange@Microsoft@@@Z;
+	public static method __m2mep@?Convert@?A0xfc0bb96e@@$$FYMJPEAUIPRangeData@@PE$AAVIPFilterRange@IPFilter@Rpc@Exchange@Microsoft@@@Z;
 
-	public static method __m2mep@?FreeRecord@?A0x793548b6@@$$FYAXPEAUIPRangeData@@@Z;
+	public static method __m2mep@?FreeRecord@?A0xfc0bb96e@@$$FYAXPEAUIPRangeData@@@Z;
 
 	public static method __m2mep@?EnqueueRequest@@$$J0YAJPEAXHHHPEAEPEAHPEAPEAE@Z;
 
@@ -22292,7 +22292,7 @@ internal class <Module>
 
 	public static method __m2mep@?Cancel@@$$J0YAJPEAXU_GUID@@@Z;
 
-	public static method __m2mep@?FreeStringSafe@?A0x997100e1@@$$FYAXPEAG@Z;
+	public static method __m2mep@?FreeStringSafe@?A0x1a2a0842@@$$FYAXPEAG@Z;
 
 	public static method __m2mep@?InitRpcSearchId@@$$FYAXPEAU__MIDL_IMailboxSearch_0001@@@Z;
 
@@ -23353,7 +23353,7 @@ internal class <Module>
 
 	public static method __m2mep@??$Execute@VSafeEcPoolWaitForNotificationsAsyncRpcAsyncStateHandle@PoolRpc@Rpc@Exchange@Microsoft@@@ManagedExceptionAsyncCrashWrapper@Rpc@Exchange@Microsoft@@$$FQEAAXPEAU_RPC_ASYNC_STATE@@@Z;
 
-	public static method __m2mep@?GUIDFromGuid@?A0xbf7b67eb@Rpc@Exchange@Microsoft@@$$FYM?AU_GUID@@PE$AAVGuid@System@@@Z;
+	public static method __m2mep@?GUIDFromGuid@?A0xc2782e68@Rpc@Exchange@Microsoft@@$$FYM?AU_GUID@@PE$AAVGuid@System@@@Z;
 
 	public unsafe static int** __unep@?EcValidateParameters@PoolRpcServer_Wrapper@@$$FMEAAJXZ;
 
@@ -23369,9 +23369,9 @@ internal class <Module>
 
 	internal static method runProcessCommand;
 
-	public static method __m2mep@?GuidFromGUID@?A0xc3533410@Rpc@Exchange@Microsoft@@$$FYM?AVGuid@System@@AEBU_GUID@@@Z;
+	public static method __m2mep@?GuidFromGUID@?A0x2c0dd5de@Rpc@Exchange@Microsoft@@$$FYM?AVGuid@System@@AEBU_GUID@@@Z;
 
-	public static method __m2mep@?GUIDFromGuid@?A0xc3533410@Rpc@Exchange@Microsoft@@$$FYM?AU_GUID@@PE$AAVGuid@System@@@Z;
+	public static method __m2mep@?GUIDFromGuid@?A0x2c0dd5de@Rpc@Exchange@Microsoft@@$$FYM?AU_GUID@@PE$AAVGuid@System@@@Z;
 
 	public static method __m2mep@?CheckFullPermissions@@$$FYMJPEAXPE$AAVQueueViewerRpcServer@QueueViewer@Rpc@Exchange@Microsoft@@@Z;
 
@@ -23589,9 +23589,9 @@ internal class <Module>
 
 	public static method __m2mep@?FIsLRPC@Rpc@Exchange@Microsoft@@$$FYAHPEAX@Z;
 
-	public static method __m2mep@?GuidFromGUID@?A0xd73cb61b@Rpc@Exchange@Microsoft@@$$FYM?AVGuid@System@@AEBU_GUID@@@Z;
+	public static method __m2mep@?GuidFromGUID@?A0x31f30f38@Rpc@Exchange@Microsoft@@$$FYM?AVGuid@System@@AEBU_GUID@@@Z;
 
-	public static method __m2mep@?GUIDFromGuid@?A0xd73cb61b@Rpc@Exchange@Microsoft@@$$FYM?AU_GUID@@PE$AAVGuid@System@@@Z;
+	public static method __m2mep@?GUIDFromGuid@?A0x31f30f38@Rpc@Exchange@Microsoft@@$$FYM?AU_GUID@@PE$AAVGuid@System@@@Z;
 
 	unsafe static int** __unep@?_CommonRpcSecurityCallback@@$$FYAJPEAX0@Z;
 
@@ -23789,7 +23789,7 @@ internal class <Module>
 
 	public static method __m2mep@?Ping@@$$J0YAJPEAXU_GUID@@PEAH@Z;
 
-	public static method __m2mep@?UMVersionedRpcServerBase_ExecuteRequest@?A0xc2457be6@@$$FYMJVIntPtr@System@@HPEAEPEAHPEAPEAE@Z;
+	public static method __m2mep@?UMVersionedRpcServerBase_ExecuteRequest@?A0xce51e160@@$$FYMJVIntPtr@System@@HPEAEPEAHPEAPEAE@Z;
 
 	public static method __m2mep@?ExecutePoPRequest@@$$J0YAJPEAXHPEAEPEAHPEAPEAE@Z;
 

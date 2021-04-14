@@ -231,7 +231,7 @@ namespace Microsoft.Exchange.Data.Directory.SystemConfiguration
 			new MservProtocolLog.FieldInfo(MservProtocolLog.Field.TransactionId, "transaction-id")
 		};
 
-		private static readonly LogSchema schema = new LogSchema("Microsoft Exchange", "15.00.1497.012", "Mserv Logs", MservProtocolLog.GetColumnArray());
+		private static readonly LogSchema schema = new LogSchema("Microsoft Exchange", "15.00.1497.015", "Mserv Logs", MservProtocolLog.GetColumnArray());
 
 		private static TimeSpan defaultMaxRetentionPeriod = TimeSpan.FromHours(24.0);
 

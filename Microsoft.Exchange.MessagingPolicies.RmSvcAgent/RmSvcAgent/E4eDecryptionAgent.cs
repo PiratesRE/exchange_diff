@@ -42,7 +42,7 @@ namespace Microsoft.Exchange.MessagingPolicies.RmSvcAgent
 				string messageId = args.MailItem.Message.MessageId;
 				E4eLog.Instance.LogInfo(args.MailItem.Message.MessageId, "[D]FileVersion: {0}", new object[]
 				{
-					"15.00.1497.012"
+					"15.00.1497.015"
 				});
 				E4eLog.Instance.LogInfo(args.MailItem.Message.MessageId, "[D]P1 Sender: '{0}'", new object[]
 				{

@@ -3,7 +3,7 @@
 namespace System.Collections.Generic
 {
 	[__DynamicallyInvokable]
-	public interface IDictionary<TKey, TValue> : ICollection<KeyValuePair<TKey, TValue>>, IEnumerable<KeyValuePair<TKey, TValue>>, IEnumerable
+	public interface IDictionary<TKey, TValue> : ICollection<KeyValuePair<!0, !1>>, IEnumerable<KeyValuePair<!0, !1>>, IEnumerable
 	{
 		[__DynamicallyInvokable]
 		TValue this[TKey key]

@@ -171,7 +171,7 @@ namespace Microsoft.Exchange.Data.Directory.Diagnostics
 			new BaseDirectoryProtocolLog.FieldInfo(10, "server")
 		};
 
-		private static readonly LogSchema schema = new LogSchema("Microsoft Exchange", "15.00.1497.012", "ADScenario Logs", BaseDirectoryProtocolLog.GetColumnArray(ADScenarioLog.Fields));
+		private static readonly LogSchema schema = new LogSchema("Microsoft Exchange", "15.00.1497.015", "ADScenario Logs", BaseDirectoryProtocolLog.GetColumnArray(ADScenarioLog.Fields));
 
 		private object logLock = new object();
 

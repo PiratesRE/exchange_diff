@@ -13,7 +13,6 @@ namespace Microsoft.Exchange.VariantConfiguration.Reflection
 			base.Add(new VariantConfigurationSection("MailboxTransport.settings.ini", "InferenceClassificationAgent", typeof(IFeature), false));
 			base.Add(new VariantConfigurationSection("MailboxTransport.settings.ini", "UseParticipantSmtpEmailAddress", typeof(IFeature), false));
 			base.Add(new VariantConfigurationSection("MailboxTransport.settings.ini", "CheckArbitrationMailboxCapacity", typeof(IFeature), false));
-			base.Add(new VariantConfigurationSection("MailboxTransport.settings.ini", "ProcessSeriesMeetingMessages", typeof(IFeature), false));
 			base.Add(new VariantConfigurationSection("MailboxTransport.settings.ini", "UseFopeReceivedSpfHeader", typeof(IFeature), false));
 			base.Add(new VariantConfigurationSection("MailboxTransport.settings.ini", "OrderSeriesMeetingMessages", typeof(IFeature), false));
 		}
@@ -63,14 +62,6 @@ namespace Microsoft.Exchange.VariantConfiguration.Reflection
 			get
 			{
 				return base["CheckArbitrationMailboxCapacity"];
-			}
-		}
-
-		public VariantConfigurationSection ProcessSeriesMeetingMessages
-		{
-			get
-			{
-				return base["ProcessSeriesMeetingMessages"];
 			}
 		}
 

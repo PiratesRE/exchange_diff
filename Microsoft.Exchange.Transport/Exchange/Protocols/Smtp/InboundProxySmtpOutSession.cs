@@ -178,9 +178,9 @@ namespace Microsoft.Exchange.Protocols.Smtp
 			SmtpCommand smtpCommand = null;
 			if (cmd != null)
 			{
-				if (<PrivateImplementationDetails>{4DE65400-4833-4ECF-AD3A-6AE043FBDF84}.$$method0x60027e2-1 == null)
+				if (<PrivateImplementationDetails>{BF04BF36-E6FD-46F0-A1BE-B963EEF0FE07}.$$method0x60027e2-1 == null)
 				{
-					<PrivateImplementationDetails>{4DE65400-4833-4ECF-AD3A-6AE043FBDF84}.$$method0x60027e2-1 = new Dictionary<string, int>(12)
+					<PrivateImplementationDetails>{BF04BF36-E6FD-46F0-A1BE-B963EEF0FE07}.$$method0x60027e2-1 = new Dictionary<string, int>(12)
 					{
 						{
 							"ConnectResponse",
@@ -233,7 +233,7 @@ namespace Microsoft.Exchange.Protocols.Smtp
 					};
 				}
 				int num;
-				if (<PrivateImplementationDetails>{4DE65400-4833-4ECF-AD3A-6AE043FBDF84}.$$method0x60027e2-1.TryGetValue(cmd, out num))
+				if (<PrivateImplementationDetails>{BF04BF36-E6FD-46F0-A1BE-B963EEF0FE07}.$$method0x60027e2-1.TryGetValue(cmd, out num))
 				{
 					switch (num)
 					{

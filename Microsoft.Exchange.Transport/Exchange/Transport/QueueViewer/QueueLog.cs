@@ -15,7 +15,7 @@ namespace Microsoft.Exchange.Transport.QueueViewer
 			{
 				return;
 			}
-			QueueLog.queueLogSchema = new LogSchema("Microsoft Exchange Server", "15.00.1497.012", "Transport Queue Log", QueueLog.Fields);
+			QueueLog.queueLogSchema = new LogSchema("Microsoft Exchange Server", "15.00.1497.015", "Transport Queue Log", QueueLog.Fields);
 			Server transportServer = Components.Configuration.LocalServer.TransportServer;
 			string text = (transportServer.QueueLogPath == null) ? null : transportServer.QueueLogPath.PathName;
 			if (!string.IsNullOrEmpty(text))

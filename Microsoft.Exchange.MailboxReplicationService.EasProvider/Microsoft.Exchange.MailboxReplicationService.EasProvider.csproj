@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{09CD9476-CD82-489E-B9E2-84B47CA14149}</ProjectGuid>
+    <ProjectGuid>{7A3782CB-D60A-4A00-8673-7FAAD5746C18}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Microsoft.Exchange.MailboxReplicationService</RootNamespace>
@@ -61,55 +61,55 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Microsoft.Exchange.Connections.Common\Microsoft.Exchange.Connections.Common.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140FF}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746BCE}</Project>
       <Name>Microsoft.Exchange.Connections.Common</Name>
     </ProjectReference>
     <ProjectReference Include="..\Microsoft.Exchange.Connections.Eas\Microsoft.Exchange.Connections.Eas.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14100}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746BCF}</Project>
       <Name>Microsoft.Exchange.Connections.Eas</Name>
     </ProjectReference>
     <ProjectReference Include="..\Microsoft.Exchange.Data.Common\Microsoft.Exchange.Data.Common.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140D3}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746BA2}</Project>
       <Name>Microsoft.Exchange.Data.Common</Name>
     </ProjectReference>
     <ProjectReference Include="..\Microsoft.Exchange.Data.Directory\Microsoft.Exchange.Data.Directory.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14105}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746BD4}</Project>
       <Name>Microsoft.Exchange.Data.Directory</Name>
     </ProjectReference>
     <ProjectReference Include="..\Microsoft.Exchange.Data.Storage\Microsoft.Exchange.Data.Storage.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1410F}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746BDE}</Project>
       <Name>Microsoft.Exchange.Data.Storage</Name>
     </ProjectReference>
     <ProjectReference Include="..\Microsoft.Exchange.Data\Microsoft.Exchange.Data.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14106}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746BD5}</Project>
       <Name>Microsoft.Exchange.Data</Name>
     </ProjectReference>
     <ProjectReference Include="..\Microsoft.Exchange.Diagnostics\Microsoft.Exchange.Diagnostics.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14113}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746BE2}</Project>
       <Name>Microsoft.Exchange.Diagnostics</Name>
     </ProjectReference>
     <ProjectReference Include="..\Microsoft.Exchange.Entities.DataModel\Microsoft.Exchange.Entities.DataModel.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14120}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746BEF}</Project>
       <Name>Microsoft.Exchange.Entities.DataModel</Name>
     </ProjectReference>
     <ProjectReference Include="..\Microsoft.Exchange.MailboxReplicationService.Common\Microsoft.Exchange.MailboxReplicationService.Common.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14147}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746C16}</Project>
       <Name>Microsoft.Exchange.MailboxReplicationService.Common</Name>
     </ProjectReference>
     <ProjectReference Include="..\Microsoft.Exchange.Net\Microsoft.Exchange.Net.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14178}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746C47}</Project>
       <Name>Microsoft.Exchange.Net</Name>
     </ProjectReference>
     <ProjectReference Include="..\Microsoft.Exchange.RpcClientAccess.Parser\Microsoft.Exchange.RpcClientAccess.Parser.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1418D}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746C5C}</Project>
       <Name>Microsoft.Exchange.RpcClientAccess.Parser</Name>
     </ProjectReference>
     <ProjectReference Include="..\Microsoft.Exchange.StoreProvider\Microsoft.Exchange.StoreProvider.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141B9}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746C88}</Project>
       <Name>Microsoft.Exchange.StoreProvider</Name>
     </ProjectReference>
     <ProjectReference Include="..\mscorlib\mscorlib.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141F1}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746CC0}</Project>
       <Name>mscorlib</Name>
     </ProjectReference>
   </ItemGroup>

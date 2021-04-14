@@ -24,7 +24,7 @@ namespace Microsoft.Exchange.AddressBook.Service
 			{
 				if (ProtocolLog.schema == null)
 				{
-					ProtocolLog.schema = new LogSchema("Microsoft Exchange", "15.00.1497.012", ProtocolLog.defaultLogTypeName, ProtocolLog.GetColumnArray());
+					ProtocolLog.schema = new LogSchema("Microsoft Exchange", "15.00.1497.015", ProtocolLog.defaultLogTypeName, ProtocolLog.GetColumnArray());
 				}
 				return ProtocolLog.schema;
 			}

@@ -10,7 +10,7 @@ namespace Microsoft.Exchange.PushNotifications
 	{
 		public static void LogServerVersion()
 		{
-			PushNotificationsCrimsonEvents.ServerVersion.Log<string>("15.00.1497.012");
+			PushNotificationsCrimsonEvents.ServerVersion.Log<string>("15.00.1497.015");
 		}
 
 		public static void LogOnPremPublishingResponse(WebHeaderCollection headers)

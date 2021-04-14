@@ -631,7 +631,7 @@ namespace Microsoft.Exchange.Rpc
 					initblk(ref guid + 4, 0, 12L);
 					if (bindingInfo.ClientObjectGuid != Guid.Empty)
 					{
-						_GUID guid2 = <Module>.Microsoft.Exchange.Rpc.?A0xd73cb61b.GUIDFromGuid(bindingInfo.ClientObjectGuid);
+						_GUID guid2 = <Module>.Microsoft.Exchange.Rpc.?A0x31f30f38.GUIDFromGuid(bindingInfo.ClientObjectGuid);
 						guid = guid2;
 					}
 					else if (interfaceHandle != null)
@@ -809,7 +809,7 @@ namespace Microsoft.Exchange.Rpc
 				{
 					throw <Module>.Microsoft.Exchange.Rpc.GetRpcExceptionWithEEInfo(num3, routineName3);
 				}
-				_GUID guid = <Module>.Microsoft.Exchange.Rpc.?A0xd73cb61b.GUIDFromGuid(bindingInfo.ClientObjectGuid);
+				_GUID guid = <Module>.Microsoft.Exchange.Rpc.?A0x31f30f38.GUIDFromGuid(bindingInfo.ClientObjectGuid);
 				_GUID guid2 = guid;
 				string routineName4 = "RpcMgmtEpEltInqBegin";
 				int num4 = <Module>.RpcMgmtEpEltInqBegin(ptr2, 3, &rpc_IF_ID, 1, &guid2, &ptr3);

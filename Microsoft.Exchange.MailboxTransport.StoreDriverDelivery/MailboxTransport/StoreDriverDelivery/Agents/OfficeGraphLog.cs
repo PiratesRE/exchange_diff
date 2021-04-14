@@ -8,7 +8,7 @@ namespace Microsoft.Exchange.MailboxTransport.StoreDriverDelivery.Agents
 	{
 		public static void Start()
 		{
-			OfficeGraphLog.officeGraphLogSchema = new LogSchema("Microsoft Exchange Server", "15.00.1497.012", "Office Graph Log", OfficeGraphLog.Fields);
+			OfficeGraphLog.officeGraphLogSchema = new LogSchema("Microsoft Exchange Server", "15.00.1497.015", "Office Graph Log", OfficeGraphLog.Fields);
 			OfficeGraphLog.log = new Log(OfficeGraphLogSchema.LogPrefix, new LogHeaderFormatter(OfficeGraphLog.officeGraphLogSchema), "OfficeGraph");
 			OfficeGraphLog.log.Configure("D:\\OfficeGraph", TimeSpan.FromDays(1.0), 104857600L, 5242880L);
 		}

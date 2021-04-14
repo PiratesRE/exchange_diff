@@ -12,7 +12,7 @@ namespace Microsoft.Exchange.Rpc.ProcessAccess
 	{
 		private unsafe void SetObjectType(ValueType guid)
 		{
-			_GUID guid2 = <Module>.Microsoft.Exchange.Rpc.?A0xc3533410.GUIDFromGuid(guid);
+			_GUID guid2 = <Module>.Microsoft.Exchange.Rpc.?A0x2c0dd5de.GUIDFromGuid(guid);
 			int num = <Module>.RpcObjectSetType(&guid2, &guid2);
 			if (num != null && num != 1711)
 			{
@@ -22,7 +22,7 @@ namespace Microsoft.Exchange.Rpc.ProcessAccess
 
 		private unsafe void ClearObjectType(ValueType guid)
 		{
-			_GUID guid2 = <Module>.Microsoft.Exchange.Rpc.?A0xc3533410.GUIDFromGuid(guid);
+			_GUID guid2 = <Module>.Microsoft.Exchange.Rpc.?A0x2c0dd5de.GUIDFromGuid(guid);
 			int num = <Module>.RpcObjectSetType(&guid2, null);
 			if (num != null && num != 1900)
 			{
@@ -87,7 +87,7 @@ namespace Microsoft.Exchange.Rpc.ProcessAccess
 		{
 			RunProcessCommandDelegate d = new RunProcessCommandDelegate(ProcessAccessRpcServer.RunProcessCommand);
 			this.runProcessCommandDelegate = d;
-			<Module>.?A0xc3533410.SetRunProcessCommandFunction(Marshal.GetFunctionPointerForDelegate(d).ToPointer());
+			<Module>.?A0x2c0dd5de.SetRunProcessCommandFunction(Marshal.GetFunctionPointerForDelegate(d).ToPointer());
 		}
 
 		protected unsafe override void RegisterInterface(void* ifSpec, ValueType mgrTypeGuid, _GUID* pMgrTypeUuid, void* pMgrEpv, uint flags, uint maxCalls)
@@ -99,21 +99,21 @@ namespace Microsoft.Exchange.Rpc.ProcessAccess
 			this.m_mgrTypeGuid = mgrTypeGuid;
 			this.SetObjectType(ProcessAccessRpcServer.ProcessLocatorGuid);
 			this.SetObjectType(this.m_mgrTypeGuid);
-			_GUID guid = <Module>.Microsoft.Exchange.Rpc.?A0xc3533410.GUIDFromGuid(ProcessAccessRpcServer.ProcessLocatorGuid);
+			_GUID guid = <Module>.Microsoft.Exchange.Rpc.?A0x2c0dd5de.GUIDFromGuid(ProcessAccessRpcServer.ProcessLocatorGuid);
 			base.RegisterInterface(ifSpec, null, &guid, pMgrEpv, flags, maxCalls);
-			guid = <Module>.Microsoft.Exchange.Rpc.?A0xc3533410.GUIDFromGuid(this.m_mgrTypeGuid);
+			guid = <Module>.Microsoft.Exchange.Rpc.?A0x2c0dd5de.GUIDFromGuid(this.m_mgrTypeGuid);
 			base.RegisterInterface(ifSpec, null, &guid, pMgrEpv, flags, maxCalls);
 		}
 
 		protected unsafe override void UnregisterInterface(void* ifSpec, _GUID* pMgrTypeUuid, uint waitForCallsToComplete)
 		{
-			_GUID guid = <Module>.Microsoft.Exchange.Rpc.?A0xc3533410.GUIDFromGuid(ProcessAccessRpcServer.ProcessLocatorGuid);
+			_GUID guid = <Module>.Microsoft.Exchange.Rpc.?A0x2c0dd5de.GUIDFromGuid(ProcessAccessRpcServer.ProcessLocatorGuid);
 			int num = <Module>.RpcServerUnregisterIf(ifSpec, &guid, waitForCallsToComplete);
 			if (num != null)
 			{
 				RpcServerBase.ThrowRpcException("Could not unregister interface", num);
 			}
-			guid = <Module>.Microsoft.Exchange.Rpc.?A0xc3533410.GUIDFromGuid(this.m_mgrTypeGuid);
+			guid = <Module>.Microsoft.Exchange.Rpc.?A0x2c0dd5de.GUIDFromGuid(this.m_mgrTypeGuid);
 			int num2 = <Module>.RpcServerUnregisterIf(ifSpec, &guid, waitForCallsToComplete);
 			if (num2 != null)
 			{
@@ -127,13 +127,13 @@ namespace Microsoft.Exchange.Rpc.ProcessAccess
 			_UUID_VECTOR uuid_VECTOR = 1;
 			_GUID guid;
 			*(ref uuid_VECTOR + 8) = ref guid;
-			guid = <Module>.Microsoft.Exchange.Rpc.?A0xc3533410.GUIDFromGuid(ProcessAccessRpcServer.ProcessLocatorGuid);
+			guid = <Module>.Microsoft.Exchange.Rpc.?A0x2c0dd5de.GUIDFromGuid(ProcessAccessRpcServer.ProcessLocatorGuid);
 			int num = <Module>.RpcEpRegisterW(ifSpec, pBindingVector, &uuid_VECTOR, wszAnnotation);
 			if (num != null)
 			{
 				RpcServerBase.ThrowRpcException("RpcEpRegister", num);
 			}
-			guid = <Module>.Microsoft.Exchange.Rpc.?A0xc3533410.GUIDFromGuid(this.m_mgrTypeGuid);
+			guid = <Module>.Microsoft.Exchange.Rpc.?A0x2c0dd5de.GUIDFromGuid(this.m_mgrTypeGuid);
 			int num2 = <Module>.RpcEpRegisterW(ifSpec, pBindingVector, &uuid_VECTOR, wszAnnotation);
 			if (num2 != null)
 			{
@@ -146,9 +146,9 @@ namespace Microsoft.Exchange.Rpc.ProcessAccess
 			_UUID_VECTOR uuid_VECTOR = 1;
 			_GUID guid;
 			*(ref uuid_VECTOR + 8) = ref guid;
-			guid = <Module>.Microsoft.Exchange.Rpc.?A0xc3533410.GUIDFromGuid(ProcessAccessRpcServer.ProcessLocatorGuid);
+			guid = <Module>.Microsoft.Exchange.Rpc.?A0x2c0dd5de.GUIDFromGuid(ProcessAccessRpcServer.ProcessLocatorGuid);
 			base.UnregisterEp(ifSpec, pBindingVector, &uuid_VECTOR);
-			guid = <Module>.Microsoft.Exchange.Rpc.?A0xc3533410.GUIDFromGuid(this.m_mgrTypeGuid);
+			guid = <Module>.Microsoft.Exchange.Rpc.?A0x2c0dd5de.GUIDFromGuid(this.m_mgrTypeGuid);
 			base.UnregisterEp(ifSpec, pBindingVector, &uuid_VECTOR);
 		}
 
@@ -196,7 +196,7 @@ namespace Microsoft.Exchange.Rpc.ProcessAccess
 							IntPtr ptr3 = new IntPtr((void*)ptr2);
 							value = Marshal.PtrToStringUni(ptr3);
 						}
-						Guid key = <Module>.Microsoft.Exchange.Rpc.?A0xc3533410.GuidFromGUID(ref guid);
+						Guid key = <Module>.Microsoft.Exchange.Rpc.?A0x2c0dd5de.GuidFromGUID(ref guid);
 						KeyValuePair<Guid, string> item = new KeyValuePair<Guid, string>(key, value);
 						list.Add(item);
 					}
@@ -222,7 +222,7 @@ namespace Microsoft.Exchange.Rpc.ProcessAccess
 
 		public unsafe static RpcServerBase RegisterServer(Type type, ObjectSecurity sd, uint accessMask, ValueType mgrTypeGuid, string annotation, [MarshalAs(UnmanagedType.U1)] bool isLocalOnly, uint maxCalls)
 		{
-			return RpcServerBase.RegisterServer(type, sd, accessMask, mgrTypeGuid, (void*)(&<Module>.Microsoft.Exchange.Rpc.ProcessAccess.?A0xc3533410.DEFAULT_EPV), annotation, isLocalOnly, maxCalls);
+			return RpcServerBase.RegisterServer(type, sd, accessMask, mgrTypeGuid, (void*)(&<Module>.Microsoft.Exchange.Rpc.ProcessAccess.?A0x2c0dd5de.DEFAULT_EPV), annotation, isLocalOnly, maxCalls);
 		}
 
 		// Note: this type is marked as 'beforefieldinit'.

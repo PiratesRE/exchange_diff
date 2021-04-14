@@ -33,9 +33,9 @@ namespace Microsoft.Exchange.MessagingPolicies.Rules
 			string name;
 			if ((name = base.Name) != null)
 			{
-				if (<PrivateImplementationDetails>{B46F2CD1-5B82-4EA3-AFEB-DDEAE81DDCB9}.$$method0x600016f-1 == null)
+				if (<PrivateImplementationDetails>{E5009AC9-61BF-4F4C-814F-F0F6ED8AB7B2}.$$method0x600016f-1 == null)
 				{
-					<PrivateImplementationDetails>{B46F2CD1-5B82-4EA3-AFEB-DDEAE81DDCB9}.$$method0x600016f-1 = new Dictionary<string, int>(28)
+					<PrivateImplementationDetails>{E5009AC9-61BF-4F4C-814F-F0F6ED8AB7B2}.$$method0x600016f-1 = new Dictionary<string, int>(28)
 					{
 						{
 							"Message.Subject",
@@ -152,7 +152,7 @@ namespace Microsoft.Exchange.MessagingPolicies.Rules
 					};
 				}
 				int num;
-				if (<PrivateImplementationDetails>{B46F2CD1-5B82-4EA3-AFEB-DDEAE81DDCB9}.$$method0x600016f-1.TryGetValue(name, out num))
+				if (<PrivateImplementationDetails>{E5009AC9-61BF-4F4C-814F-F0F6ED8AB7B2}.$$method0x600016f-1.TryGetValue(name, out num))
 				{
 					object obj;
 					switch (num)

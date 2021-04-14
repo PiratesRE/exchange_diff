@@ -211,9 +211,9 @@ namespace Microsoft.Exchange.Clients.Owa.Basic.Controls
 			EditCalendarItemPreFormAction.RedirectTo result = EditCalendarItemPreFormAction.RedirectTo.None;
 			if (commandPost != null)
 			{
-				if (<PrivateImplementationDetails>{83F8DD10-61AE-4283-B829-2F464F055E61}.$$method0x600016f-1 == null)
+				if (<PrivateImplementationDetails>{912F2AED-BF68-4DDC-9379-4CB89AA1AA01}.$$method0x600016f-1 == null)
 				{
-					<PrivateImplementationDetails>{83F8DD10-61AE-4283-B829-2F464F055E61}.$$method0x600016f-1 = new Dictionary<string, int>(23)
+					<PrivateImplementationDetails>{912F2AED-BF68-4DDC-9379-4CB89AA1AA01}.$$method0x600016f-1 = new Dictionary<string, int>(23)
 					{
 						{
 							"addmrrrcp",
@@ -310,7 +310,7 @@ namespace Microsoft.Exchange.Clients.Owa.Basic.Controls
 					};
 				}
 				int num;
-				if (<PrivateImplementationDetails>{83F8DD10-61AE-4283-B829-2F464F055E61}.$$method0x600016f-1.TryGetValue(commandPost, out num))
+				if (<PrivateImplementationDetails>{912F2AED-BF68-4DDC-9379-4CB89AA1AA01}.$$method0x600016f-1.TryGetValue(commandPost, out num))
 				{
 					switch (num)
 					{

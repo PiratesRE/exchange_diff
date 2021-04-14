@@ -39,7 +39,7 @@ namespace Microsoft.Exchange.Cluster.EseBack
 				}
 				finally
 				{
-					num = <Module>.HrESELogShipOpenEx(ptr2, (ushort*)(&<Module>.?A0xbcb4c405.g_wszEndpointAnnotation), ptr3, ptr4, ptr5, ptr6, fCircularLogging ? 1 : 0, replicaType, rpcTimeoutMsecs, &ptr);
+					num = <Module>.HrESELogShipOpenEx(ptr2, (ushort*)(&<Module>.?A0x37452046.g_wszEndpointAnnotation), ptr3, ptr4, ptr5, ptr6, fCircularLogging ? 1 : 0, replicaType, rpcTimeoutMsecs, &ptr);
 					if (null == ptr)
 					{
 						ExTraceGlobals.CLogShipContextTracer.TraceDebug<string>(0L, "Failed to create CLogShipContext for SG {0}. Attempting connect to multi-process server", sgGuid);

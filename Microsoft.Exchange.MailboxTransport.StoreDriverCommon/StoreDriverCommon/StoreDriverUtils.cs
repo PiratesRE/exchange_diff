@@ -22,7 +22,7 @@ namespace Microsoft.Exchange.MailboxTransport.StoreDriverCommon
 		{
 			ArgumentValidator.ThrowIfNull("exception", exception);
 			ArgumentValidator.ThrowIfNullOrEmpty("detailedExceptionInformation", detailedExceptionInformation);
-			ExWatson.SendGenericWatsonReport("E12", ExWatson.ApplicationVersion.ToString(), ExWatson.AppName, "15.00.1497.012", Assembly.GetExecutingAssembly().GetName().Name, exception.GetType().Name, exception.StackTrace, exception.GetHashCode().ToString(), exception.TargetSite.Name, detailedExceptionInformation);
+			ExWatson.SendGenericWatsonReport("E12", ExWatson.ApplicationVersion.ToString(), ExWatson.AppName, "15.00.1497.015", Assembly.GetExecutingAssembly().GetName().Name, exception.GetType().Name, exception.StackTrace, exception.GetHashCode().ToString(), exception.TargetSite.Name, detailedExceptionInformation);
 		}
 
 		public static bool CheckIfDateTimeExceedsThreshold(DateTime dateTime, DateTime dateTimeReference, TimeSpan timeSpan)

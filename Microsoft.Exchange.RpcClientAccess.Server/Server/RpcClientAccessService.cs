@@ -26,7 +26,7 @@ namespace Microsoft.Exchange.RpcClientAccess.Server
 				{
 					currentProcess.Id,
 					"Microsoft Exchange",
-					"15.00.1497.012"
+					"15.00.1497.015"
 				});
 			}
 		}
@@ -168,7 +168,7 @@ namespace Microsoft.Exchange.RpcClientAccess.Server
 				{
 					currentProcess.Id,
 					"Microsoft Exchange",
-					"15.00.1497.012"
+					"15.00.1497.015"
 				});
 			}
 		}

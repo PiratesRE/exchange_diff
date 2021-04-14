@@ -406,7 +406,7 @@ namespace Microsoft.Exchange.PopImap.Core
 		{
 			try
 			{
-				folder[FolderSchema.PopImapConversionVersion] = "15.00.1497.012";
+				folder[FolderSchema.PopImapConversionVersion] = "15.00.1497.015";
 				folder.Save();
 			}
 			catch (LocalizedException)
@@ -3275,7 +3275,7 @@ namespace Microsoft.Exchange.PopImap.Core
 
 		public const string SkipAuthenticationOnCafeToken = "SkipAuthenticationOnCafeToken";
 
-		private const string AssemblyVersion = "15.00.1497.012";
+		private const string AssemblyVersion = "15.00.1497.015";
 
 		public static bool UseClientIpTestMocks = false;
 

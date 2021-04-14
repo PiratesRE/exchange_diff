@@ -474,9 +474,9 @@ namespace Microsoft.Exchange.Management.SystemConfigurationTasks
 		{
 			if (operand != null)
 			{
-				if (<PrivateImplementationDetails>{45A016D6-9512-4E33-B5E4-CBF8CD83FD38}.$$method0x600614a-1 == null)
+				if (<PrivateImplementationDetails>{37FB2C37-8946-4F00-B324-D759A1883C9F}.$$method0x600614a-1 == null)
 				{
-					<PrivateImplementationDetails>{45A016D6-9512-4E33-B5E4-CBF8CD83FD38}.$$method0x600614a-1 = new Dictionary<string, int>(12)
+					<PrivateImplementationDetails>{37FB2C37-8946-4F00-B324-D759A1883C9F}.$$method0x600614a-1 = new Dictionary<string, int>(12)
 					{
 						{
 							"eq",
@@ -529,7 +529,7 @@ namespace Microsoft.Exchange.Management.SystemConfigurationTasks
 					};
 				}
 				int num;
-				if (<PrivateImplementationDetails>{45A016D6-9512-4E33-B5E4-CBF8CD83FD38}.$$method0x600614a-1.TryGetValue(operand, out num))
+				if (<PrivateImplementationDetails>{37FB2C37-8946-4F00-B324-D759A1883C9F}.$$method0x600614a-1.TryGetValue(operand, out num))
 				{
 					InterceptorAgentConditionMatchType result;
 					switch (num)

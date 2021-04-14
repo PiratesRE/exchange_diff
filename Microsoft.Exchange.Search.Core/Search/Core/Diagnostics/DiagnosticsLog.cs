@@ -17,7 +17,7 @@ namespace Microsoft.Exchange.Search.Core.Diagnostics
 			this.IsEnabled = diagnosticsLogConfig.IsEnabled;
 			if (this.IsEnabled)
 			{
-				this.Schema = new LogSchema("Microsoft Exchange", "15.00.1497.012", this.diagnosticsLogConfig.LogTypeName, columns);
+				this.Schema = new LogSchema("Microsoft Exchange", "15.00.1497.015", this.diagnosticsLogConfig.LogTypeName, columns);
 				if (!DiagnosticsLog.logSingletons.TryGetValue(this.diagnosticsLogConfig.LogTypeName, out this.log))
 				{
 					lock (DiagnosticsLog.lockObject)

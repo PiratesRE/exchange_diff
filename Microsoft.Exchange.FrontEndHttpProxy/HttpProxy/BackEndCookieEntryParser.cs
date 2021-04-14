@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+using Microsoft.Exchange.Data.Storage;
 using Microsoft.Exchange.ExchangeSystem;
 
 namespace Microsoft.Exchange.HttpProxy
@@ -57,9 +58,20 @@ namespace Microsoft.Exchange.HttpProxy
 						switch (backEndCookieEntryType)
 						{
 						case BackEndCookieEntryType.Server:
-							cookieEntry = new BackEndServerCookieEntry(array[1], int.Parse(array[2]), expiryTime);
-							result = true;
+						{
+							int version = int.Parse(array[2]);
+							ServiceTopology currentServiceTopology = ServiceTopology.GetCurrentServiceTopology("f:\\15.00.1497\\sources\\dev\\cafe\\src\\HttpProxy\\Cookie\\BackEndCookieEntryParser.cs", "TryParse", 132);
+							if (UriHostNameType.Dns != Uri.CheckHostName(array[1]) || !currentServiceTopology.TryGetServerVersion(array[1], out version, "f:\\15.00.1497\\sources\\dev\\cafe\\src\\HttpProxy\\Cookie\\BackEndCookieEntryParser.cs", "TryParse", 135))
+							{
+								result = false;
+							}
+							else
+							{
+								cookieEntry = new BackEndServerCookieEntry(array[1], version, expiryTime);
+								result = true;
+							}
 							break;
+						}
 						case BackEndCookieEntryType.Database:
 						{
 							Guid database = new Guid(array[1]);

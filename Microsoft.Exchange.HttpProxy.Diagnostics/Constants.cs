@@ -10,7 +10,7 @@ namespace Microsoft.Exchange.HttpProxy
 
 		public static readonly string VersionBuild = 1497.ToString();
 
-		public static readonly string VersionRevision = 12.ToString();
+		public static readonly string VersionRevision = 15.ToString();
 
 		public static readonly string MachineName = Environment.MachineName;
 	}

@@ -517,7 +517,7 @@ namespace Microsoft.Exchange.RpcClientAccess.Server
 			15,
 			0,
 			1497,
-			12
+			15
 		};
 
 		private static bool isCallBlocking = false;

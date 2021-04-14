@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace Microsoft.Exchange.Diagnostics
 {
-	public class SlidingSequence<T> : SlidingWindow, IEnumerable<!0>, IEnumerable
+	public class SlidingSequence<T> : SlidingWindow, IEnumerable<T>, IEnumerable
 	{
 		public SlidingSequence(TimeSpan slidingWindowLength, TimeSpan bucketLength) : this(slidingWindowLength, bucketLength, () => DateTime.UtcNow)
 		{

@@ -11,27 +11,27 @@ internal struct tagVARIANT
 	[NativeCppClass]
 	[UnsafeValueType]
 	[StructLayout(LayoutKind.Explicit, Size = 24)]
-	internal struct $UnnamedClass$0x8b8c29d7$392$
+	internal struct $UnnamedClass$0x64d2c819$392$
 	{
 		[FieldOffset(0)]
 		private long <alignment\u0020member>;
 
 		[NativeCppClass]
 		[StructLayout(LayoutKind.Sequential, Size = 24)]
-		internal struct $UnnamedClass$0x8b8c29d7$393$
+		internal struct $UnnamedClass$0x64d2c819$393$
 		{
 			private long <alignment\u0020member>;
 
 			[NativeCppClass]
 			[StructLayout(LayoutKind.Explicit, Size = 16)]
-			internal struct $UnnamedClass$0x8b8c29d7$394$
+			internal struct $UnnamedClass$0x64d2c819$394$
 			{
 				[FieldOffset(0)]
 				private long <alignment\u0020member>;
 
 				[NativeCppClass]
 				[StructLayout(LayoutKind.Sequential, Size = 16)]
-				internal struct $UnnamedClass$0x8b8c29d7$395$
+				internal struct $UnnamedClass$0x64d2c819$395$
 				{
 					private long <alignment\u0020member>;
 				}
@@ -42,27 +42,27 @@ internal struct tagVARIANT
 	[NativeCppClass]
 	[UnsafeValueType]
 	[StructLayout(LayoutKind.Explicit, Size = 24)]
-	internal struct $UnnamedClass$0x203b98b2$392$
+	internal struct $UnnamedClass$0x0a043423$392$
 	{
 		[FieldOffset(0)]
 		private long <alignment\u0020member>;
 
 		[NativeCppClass]
 		[StructLayout(LayoutKind.Sequential, Size = 24)]
-		internal struct $UnnamedClass$0x203b98b2$393$
+		internal struct $UnnamedClass$0x0a043423$393$
 		{
 			private long <alignment\u0020member>;
 
 			[NativeCppClass]
 			[StructLayout(LayoutKind.Explicit, Size = 16)]
-			internal struct $UnnamedClass$0x203b98b2$394$
+			internal struct $UnnamedClass$0x0a043423$394$
 			{
 				[FieldOffset(0)]
 				private long <alignment\u0020member>;
 
 				[NativeCppClass]
 				[StructLayout(LayoutKind.Sequential, Size = 16)]
-				internal struct $UnnamedClass$0x203b98b2$395$
+				internal struct $UnnamedClass$0x0a043423$395$
 				{
 					private long <alignment\u0020member>;
 				}
@@ -73,27 +73,27 @@ internal struct tagVARIANT
 	[UnsafeValueType]
 	[NativeCppClass]
 	[StructLayout(LayoutKind.Explicit, Size = 24)]
-	internal struct $UnnamedClass$0x092bbd29$389$
+	internal struct $UnnamedClass$0x8c154cf1$389$
 	{
 		[FieldOffset(0)]
 		private long <alignment\u0020member>;
 
 		[NativeCppClass]
 		[StructLayout(LayoutKind.Sequential, Size = 24)]
-		internal struct $UnnamedClass$0x092bbd29$390$
+		internal struct $UnnamedClass$0x8c154cf1$390$
 		{
 			private long <alignment\u0020member>;
 
 			[NativeCppClass]
 			[StructLayout(LayoutKind.Explicit, Size = 16)]
-			internal struct $UnnamedClass$0x092bbd29$391$
+			internal struct $UnnamedClass$0x8c154cf1$391$
 			{
 				[FieldOffset(0)]
 				private long <alignment\u0020member>;
 
 				[NativeCppClass]
 				[StructLayout(LayoutKind.Sequential, Size = 16)]
-				internal struct $UnnamedClass$0x092bbd29$392$
+				internal struct $UnnamedClass$0x8c154cf1$392$
 				{
 					private long <alignment\u0020member>;
 				}

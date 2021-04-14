@@ -16,7 +16,7 @@ namespace Microsoft.Exchange.Configuration.Core
 		internal void InitializeLogger()
 		{
 			string[] names = Enum.GetNames(typeof(RequestMonitorMetadata));
-			this.logSchema = new LogSchema("Microsoft Exchange Server", "15.00.1497.012", "Request Monitor Logs", names);
+			this.logSchema = new LogSchema("Microsoft Exchange Server", "15.00.1497.015", "Request Monitor Logs", names);
 			this.log = new Log("Request_Monitor_", new LogHeaderFormatter(this.logSchema, true), "RequestMonitor");
 			string logFolderPath = this.LogFolderPath;
 			this.log.Configure(logFolderPath, RequestMonitorLogger.maxAge, (long)(RequestMonitorLogger.maxDirectorySize * 1024 * 1024 * 1024), (long)(RequestMonitorLogger.maxLogFileSize * 1024 * 1024), true);

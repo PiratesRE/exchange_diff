@@ -1182,9 +1182,9 @@ namespace Microsoft.Office.Datacenter.ActiveMonitoring
 			string key;
 			if (escalationService == "Exchange" && (key = escalationTeam) != null)
 			{
-				if (<PrivateImplementationDetails>{ED1A6B9D-770B-4253-B304-A159A20CB8A8}.$$method0x600055d-1 == null)
+				if (<PrivateImplementationDetails>{3E5494A9-60C5-46F7-92C8-8069F1074799}.$$method0x600055d-1 == null)
 				{
-					<PrivateImplementationDetails>{ED1A6B9D-770B-4253-B304-A159A20CB8A8}.$$method0x600055d-1 = new Dictionary<string, int>(10)
+					<PrivateImplementationDetails>{3E5494A9-60C5-46F7-92C8-8069F1074799}.$$method0x600055d-1 = new Dictionary<string, int>(10)
 					{
 						{
 							"Central Admin",
@@ -1229,7 +1229,7 @@ namespace Microsoft.Office.Datacenter.ActiveMonitoring
 					};
 				}
 				int num;
-				if (<PrivateImplementationDetails>{ED1A6B9D-770B-4253-B304-A159A20CB8A8}.$$method0x600055d-1.TryGetValue(key, out num))
+				if (<PrivateImplementationDetails>{3E5494A9-60C5-46F7-92C8-8069F1074799}.$$method0x600055d-1.TryGetValue(key, out num))
 				{
 					switch (num)
 					{

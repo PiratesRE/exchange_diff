@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{09CD9476-CD82-489E-B9E2-84B47CA141A3}</ProjectGuid>
+    <ProjectGuid>{7A3782CB-D60A-4A00-8673-7FAAD5746C72}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Microsoft.Exchange.Server.Storage.MultiMailboxSearch</RootNamespace>
@@ -53,35 +53,35 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Microsoft.Exchange.Diagnostics\Microsoft.Exchange.Diagnostics.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14113}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746BE2}</Project>
       <Name>Microsoft.Exchange.Diagnostics</Name>
     </ProjectReference>
     <ProjectReference Include="..\Microsoft.Exchange.Server.Storage.Common\Microsoft.Exchange.Server.Storage.Common.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1419A}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746C69}</Project>
       <Name>Microsoft.Exchange.Server.Storage.Common</Name>
     </ProjectReference>
     <ProjectReference Include="..\Microsoft.Exchange.Server.Storage.FullTextIndex\Microsoft.Exchange.Server.Storage.FullTextIndex.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1419E}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746C6D}</Project>
       <Name>Microsoft.Exchange.Server.Storage.FullTextIndex</Name>
     </ProjectReference>
     <ProjectReference Include="..\Microsoft.Exchange.Server.Storage.PhysicalAccess\Microsoft.Exchange.Server.Storage.PhysicalAccess.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141A4}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746C73}</Project>
       <Name>Microsoft.Exchange.Server.Storage.PhysicalAccess</Name>
     </ProjectReference>
     <ProjectReference Include="..\Microsoft.Exchange.Server.Storage.PropertyDefinitions\Microsoft.Exchange.Server.Storage.PropertyDefinitions.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141A5}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746C74}</Project>
       <Name>Microsoft.Exchange.Server.Storage.PropertyDefinitions</Name>
     </ProjectReference>
     <ProjectReference Include="..\Microsoft.Exchange.Server.Storage.PropertyTag\Microsoft.Exchange.Server.Storage.PropertyTag.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141A6}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746C75}</Project>
       <Name>Microsoft.Exchange.Server.Storage.PropertyTag</Name>
     </ProjectReference>
     <ProjectReference Include="..\Microsoft.Exchange.Server.Storage.StoreCommonServices\Microsoft.Exchange.Server.Storage.StoreCommonServices.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141A8}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746C77}</Project>
       <Name>Microsoft.Exchange.Server.Storage.StoreCommonServices</Name>
     </ProjectReference>
     <ProjectReference Include="..\mscorlib\mscorlib.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141F1}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746CC0}</Project>
       <Name>mscorlib</Name>
     </ProjectReference>
   </ItemGroup>

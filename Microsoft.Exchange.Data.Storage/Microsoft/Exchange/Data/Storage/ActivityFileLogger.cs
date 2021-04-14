@@ -30,7 +30,7 @@ namespace Microsoft.Exchange.Data.Storage
 		{
 			int num = 0;
 			string text = string.Empty;
-			string version = "15.00.1497.012";
+			string version = "15.00.1497.015";
 			using (Process currentProcess = Process.GetCurrentProcess())
 			{
 				num = currentProcess.Id;

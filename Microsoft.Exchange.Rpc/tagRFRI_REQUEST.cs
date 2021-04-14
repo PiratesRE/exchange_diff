@@ -10,7 +10,7 @@ internal struct tagRFRI_REQUEST
 
 	[NativeCppClass]
 	[StructLayout(LayoutKind.Explicit, Size = 40)]
-	internal struct $UnnamedClass$0x8d157d4a$2$
+	internal struct $UnnamedClass$0x0598195d$2$
 	{
 		[FieldOffset(0)]
 		private long <alignment\u0020member>;

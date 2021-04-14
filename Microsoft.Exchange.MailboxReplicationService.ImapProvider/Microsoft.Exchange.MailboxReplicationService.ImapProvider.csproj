@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{09CD9476-CD82-489E-B9E2-84B47CA1414A}</ProjectGuid>
+    <ProjectGuid>{7A3782CB-D60A-4A00-8673-7FAAD5746C19}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Microsoft.Exchange.MailboxReplicationService</RootNamespace>
@@ -57,39 +57,39 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Microsoft.Exchange.Connections.Common\Microsoft.Exchange.Connections.Common.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140FF}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746BCE}</Project>
       <Name>Microsoft.Exchange.Connections.Common</Name>
     </ProjectReference>
     <ProjectReference Include="..\Microsoft.Exchange.Connections.Imap\Microsoft.Exchange.Connections.Imap.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14101}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746BD0}</Project>
       <Name>Microsoft.Exchange.Connections.Imap</Name>
     </ProjectReference>
     <ProjectReference Include="..\Microsoft.Exchange.Data.Directory\Microsoft.Exchange.Data.Directory.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14105}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746BD4}</Project>
       <Name>Microsoft.Exchange.Data.Directory</Name>
     </ProjectReference>
     <ProjectReference Include="..\Microsoft.Exchange.Diagnostics\Microsoft.Exchange.Diagnostics.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14113}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746BE2}</Project>
       <Name>Microsoft.Exchange.Diagnostics</Name>
     </ProjectReference>
     <ProjectReference Include="..\Microsoft.Exchange.MailboxReplicationService.Common\Microsoft.Exchange.MailboxReplicationService.Common.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14147}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746C16}</Project>
       <Name>Microsoft.Exchange.MailboxReplicationService.Common</Name>
     </ProjectReference>
     <ProjectReference Include="..\Microsoft.Exchange.Net\Microsoft.Exchange.Net.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14178}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746C47}</Project>
       <Name>Microsoft.Exchange.Net</Name>
     </ProjectReference>
     <ProjectReference Include="..\Microsoft.Exchange.RpcClientAccess.Parser\Microsoft.Exchange.RpcClientAccess.Parser.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1418D}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746C5C}</Project>
       <Name>Microsoft.Exchange.RpcClientAccess.Parser</Name>
     </ProjectReference>
     <ProjectReference Include="..\Microsoft.Exchange.StoreProvider\Microsoft.Exchange.StoreProvider.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141B9}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746C88}</Project>
       <Name>Microsoft.Exchange.StoreProvider</Name>
     </ProjectReference>
     <ProjectReference Include="..\mscorlib\mscorlib.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141F1}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746CC0}</Project>
       <Name>mscorlib</Name>
     </ProjectReference>
   </ItemGroup>

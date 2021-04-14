@@ -41,7 +41,7 @@ namespace Microsoft.Exchange.Diagnostics.LatencyDetection
 				this.TaskName,
 				this.correlationId
 			});
-			this.latencyDetectionContext = this.latencyDetectionContextFactory.CreateContext("15.00.1497.012", this.TaskName, performanceDataProviders);
+			this.latencyDetectionContext = this.latencyDetectionContextFactory.CreateContext("15.00.1497.015", this.TaskName, performanceDataProviders);
 		}
 
 		public TimeSpan Stop()

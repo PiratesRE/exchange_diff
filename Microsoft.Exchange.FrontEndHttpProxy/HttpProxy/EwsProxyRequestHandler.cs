@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Net;
 using System.Web;
 using Microsoft.Exchange.Data.ApplicationLogic.Cafe;
 using Microsoft.Exchange.Data.Storage;
@@ -43,15 +42,6 @@ namespace Microsoft.Exchange.HttpProxy
 
 		protected override void DoProtocolSpecificBeginRequestLogging()
 		{
-		}
-
-		protected override void AddProtocolSpecificHeadersToServerRequest(WebHeaderCollection headers)
-		{
-			base.AddProtocolSpecificHeadersToServerRequest(headers);
-			if (this.proxyForSameOrgExchangeOAuthCallToLowerVersion)
-			{
-				headers.Remove("X-CommonAccessToken");
-			}
 		}
 
 		protected override StreamProxy BuildRequestStreamProxy(StreamProxy.StreamProxyType streamProxyType, Stream source, Stream target, byte[] buffer)

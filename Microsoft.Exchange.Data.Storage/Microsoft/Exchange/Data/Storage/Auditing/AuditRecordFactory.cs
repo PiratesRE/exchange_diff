@@ -331,7 +331,7 @@ namespace Microsoft.Exchange.Data.Storage.Auditing
 			record.OriginatingServer = string.Format(CultureInfo.InvariantCulture, "{0} ({1})\r\n", new object[]
 			{
 				AuditRecordFactory.MachineName,
-				"15.00.1497.012"
+				"15.00.1497.015"
 			});
 		}
 

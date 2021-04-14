@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{09CD9476-CD82-489E-B9E2-84B47CA141D0}</ProjectGuid>
+    <ProjectGuid>{7A3782CB-D60A-4A00-8673-7FAAD5746C9F}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Microsoft.Exchange.Transport</RootNamespace>
@@ -51,15 +51,15 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Microsoft.Exchange.Data.Metering.Contracts\Microsoft.Exchange.Data.Metering.Contracts.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1410B}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746BDA}</Project>
       <Name>Microsoft.Exchange.Data.Metering.Contracts</Name>
     </ProjectReference>
     <ProjectReference Include="..\Microsoft.Exchange.Transport.Storage.Contracts\Microsoft.Exchange.Transport.Storage.Contracts.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141D2}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746CA1}</Project>
       <Name>Microsoft.Exchange.Transport.Storage.Contracts</Name>
     </ProjectReference>
     <ProjectReference Include="..\mscorlib\mscorlib.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141F1}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746CC0}</Project>
       <Name>mscorlib</Name>
     </ProjectReference>
   </ItemGroup>

@@ -700,9 +700,7 @@ namespace Microsoft.Exchange.Configuration.Authorization
 		protected virtual ExchangeRunspaceConfigurationSettings BuildRunspaceConfigurationSettings(string connectionString, IIdentity identity)
 		{
 			string text;
-			ExchangeRunspaceConfigurationSettings exchangeRunspaceConfigurationSettings = ExchangeRunspaceConfigurationSettings.FromUriConnectionString(connectionString, ExchangeRunspaceConfigurationSettings.ExchangeApplication.PowerShell, out text);
-			exchangeRunspaceConfigurationSettings.LanguageMode = AppSettings.Current.PSLanguageMode;
-			return exchangeRunspaceConfigurationSettings;
+			return ExchangeRunspaceConfigurationSettings.FromUriConnectionString(connectionString, ExchangeRunspaceConfigurationSettings.ExchangeApplication.PowerShell, out text);
 		}
 
 		private void LogCommonValues()

@@ -320,7 +320,7 @@ namespace Microsoft.Exchange.Server.Storage.MapiDisp
 
 		private const int MaximalSupportedDiagnosticInfoSize = 512;
 
-		private static string diagnosticInfoHeaderString = string.Format("{0}:{1}", "15.00.1497.012", MapiDispHelper.GetDnsHostName());
+		private static string diagnosticInfoHeaderString = string.Format("{0}:{1}", "15.00.1497.015", MapiDispHelper.GetDnsHostName());
 
 		private RopId ropId;
 

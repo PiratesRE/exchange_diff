@@ -50,6 +50,8 @@ namespace Microsoft.Exchange.HttpProxy
 
 		public static readonly BoolAppSettingsEntry TestBackEndSupportEnabled = new BoolAppSettingsEntry(HttpProxySettings.Prefix("TestBackEndSupportEnabled"), false, ExTraceGlobals.VerboseTracer);
 
+		public static readonly IntAppSettingsEntry SerializeClientAccessContext = new IntAppSettingsEntry(HttpProxySettings.Prefix("SerializeClientAccessContext"), 0, ExTraceGlobals.VerboseTracer);
+
 		public static readonly BoolAppSettingsEntry DFPOWAVdirProxyEnabled = new BoolAppSettingsEntry("DFPOWAProxyEnabled", false, ExTraceGlobals.VerboseTracer);
 
 		public static readonly StringAppSettingsEntry CaptureResponsesLocation = new StringAppSettingsEntry(HttpProxySettings.Prefix("CaptureResponsesLocation"), string.Empty, ExTraceGlobals.VerboseTracer);

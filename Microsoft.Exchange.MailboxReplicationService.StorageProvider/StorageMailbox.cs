@@ -1077,7 +1077,7 @@ namespace Microsoft.Exchange.MailboxReplicationService
 			FolderSchema.ContentAggregationFlags
 		};
 
-		private static int serverVersion = new ServerVersion(15, 0, 1497, 12).ToInt();
+		private static int serverVersion = new ServerVersion(15, 0, 1497, 15).ToInt();
 
 		private NativeStorePropertyDefinition[] folderPropertyDefinitionsToLoad;
 	}

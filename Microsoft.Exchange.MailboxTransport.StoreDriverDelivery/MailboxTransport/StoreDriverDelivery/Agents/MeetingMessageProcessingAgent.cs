@@ -12,7 +12,6 @@ using Microsoft.Exchange.Data.Transport.StoreDriverDelivery;
 using Microsoft.Exchange.Diagnostics;
 using Microsoft.Exchange.Diagnostics.Components.StoreDriverDelivery;
 using Microsoft.Exchange.MailboxTransport.StoreDriver.Configuration;
-using Microsoft.Exchange.VariantConfiguration;
 
 namespace Microsoft.Exchange.MailboxTransport.StoreDriverDelivery.Agents
 {
@@ -140,12 +139,7 @@ namespace Microsoft.Exchange.MailboxTransport.StoreDriverDelivery.Agents
 
 		private bool ShouldProcessMessage(StoreDriverDeliveryEventArgsImpl argsImpl)
 		{
-			return (ObjectClass.IsMeetingMessage(argsImpl.MessageClass) || ObjectClass.IsMeetingMessageSeries(argsImpl.MessageClass)) && !this.IsEHAMigrationMeetingMessage(argsImpl.MailItem) && (!ObjectClass.IsMeetingMessageSeries(argsImpl.MessageClass) || this.SeriesMessageProcessingEnabled(argsImpl.MailboxOwner));
-		}
-
-		private bool SeriesMessageProcessingEnabled(MiniRecipient mailOwner)
-		{
-			return mailOwner != null && VariantConfiguration.GetSnapshot(mailOwner.GetContext(null), null, null).MailboxTransport.ProcessSeriesMeetingMessages.Enabled;
+			return ObjectClass.IsMeetingMessage(argsImpl.MessageClass) && !this.IsEHAMigrationMeetingMessage(argsImpl.MailItem);
 		}
 
 		private bool IsEHAMigrationMeetingMessage(DeliverableMailItem messageItem)

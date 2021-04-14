@@ -12,7 +12,7 @@ internal struct _CONTEXT
 	[NativeCppClass]
 	[UnsafeValueType]
 	[StructLayout(LayoutKind.Explicit, Size = 512)]
-	internal struct $UnnamedClass$0xfb2f6e25$7$
+	internal struct $UnnamedClass$0xf73bf4a3$7$
 	{
 		[FieldOffset(0)]
 		private long <alignment\u0020member>;
@@ -20,7 +20,7 @@ internal struct _CONTEXT
 		[UnsafeValueType]
 		[NativeCppClass]
 		[StructLayout(LayoutKind.Sequential, Size = 416)]
-		internal struct $UnnamedClass$0xfb2f6e25$8$
+		internal struct $UnnamedClass$0xf73bf4a3$8$
 		{
 			private long <alignment\u0020member>;
 		}

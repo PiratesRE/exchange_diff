@@ -53,7 +53,7 @@ namespace Microsoft.Exchange.Rpc.AdminRpc
 			}
 			if (this.m_mgrTypeGuid != null)
 			{
-				_GUID guid = <Module>.Microsoft.Exchange.Rpc.?A0xa0f17d9b.GUIDFromGuid(this.m_mgrTypeGuid.Value);
+				_GUID guid = <Module>.Microsoft.Exchange.Rpc.?A0xf92a72b0.GUIDFromGuid(this.m_mgrTypeGuid.Value);
 				_UUID_VECTOR uuid_VECTOR = 1;
 				*(ref uuid_VECTOR + 8) = ref guid;
 				RpcServerBase.CheckDuplicateEndpoint(ref rpc_IF_ID, ref guid, true);
@@ -80,7 +80,7 @@ namespace Microsoft.Exchange.Rpc.AdminRpc
 		{
 			if (this.m_mgrTypeGuid != null)
 			{
-				_GUID guid = <Module>.Microsoft.Exchange.Rpc.?A0xa0f17d9b.GUIDFromGuid(this.m_mgrTypeGuid.Value);
+				_GUID guid = <Module>.Microsoft.Exchange.Rpc.?A0xf92a72b0.GUIDFromGuid(this.m_mgrTypeGuid.Value);
 				_UUID_VECTOR uuid_VECTOR = 1;
 				*(ref uuid_VECTOR + 8) = ref guid;
 				base.UnregisterEp(ifSpec, pBindingVector, &uuid_VECTOR);

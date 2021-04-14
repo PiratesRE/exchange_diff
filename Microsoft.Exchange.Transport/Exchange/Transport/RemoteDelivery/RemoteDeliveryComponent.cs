@@ -340,7 +340,7 @@ namespace Microsoft.Exchange.Transport.RemoteDelivery
 					});
 				}
 				string stackTrace = Environment.StackTrace;
-				ExWatson.SendGenericWatsonReport("E12", ExWatson.ApplicationVersion.ToString(), ExWatson.AppName, "15.00.1497.012", Assembly.GetExecutingAssembly().GetName().Name, "System.InvalidOperationException", stackTrace, stackTrace.GetHashCode().ToString(), "RemoteDeliveryComponent.SendWatsonOnDuplicate", string.Format("Duplicate queue found. More info:{0}{1}", Environment.NewLine, this.queueAddRemoveTrace));
+				ExWatson.SendGenericWatsonReport("E12", ExWatson.ApplicationVersion.ToString(), ExWatson.AppName, "15.00.1497.015", Assembly.GetExecutingAssembly().GetName().Name, "System.InvalidOperationException", stackTrace, stackTrace.GetHashCode().ToString(), "RemoteDeliveryComponent.SendWatsonOnDuplicate", string.Format("Duplicate queue found. More info:{0}{1}", Environment.NewLine, this.queueAddRemoveTrace));
 			}
 		}
 

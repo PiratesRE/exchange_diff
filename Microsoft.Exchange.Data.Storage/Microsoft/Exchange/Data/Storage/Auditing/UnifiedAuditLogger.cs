@@ -23,7 +23,7 @@ namespace Microsoft.Exchange.Data.Storage.Auditing
 		{
 			string[] fields = (from f in LocalQueueCsvFields.Fields
 			select f.Name).ToArray<string>();
-			this.logSchema = new LogSchema("Microsoft Exchange", "15.00.1497.012", "audit", fields);
+			this.logSchema = new LogSchema("Microsoft Exchange", "15.00.1497.015", "audit", fields);
 			LogHeaderFormatter headerFormatter = new LogHeaderFormatter(this.logSchema, LogHeaderCsvOption.NotCsvCompatible);
 			this.localQueue = new Log("audit", headerFormatter, "Exchange");
 			UnifiedAuditLoggerSettings unifiedAuditLoggerSettings = UnifiedAuditLoggerSettings.Load();
@@ -68,7 +68,7 @@ namespace Microsoft.Exchange.Data.Storage.Auditing
 
 		private const string Software = "Microsoft Exchange";
 
-		private const string Version = "15.00.1497.012";
+		private const string Version = "15.00.1497.015";
 
 		private const string LogType = "audit";
 

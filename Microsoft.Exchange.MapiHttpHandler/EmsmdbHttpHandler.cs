@@ -252,7 +252,7 @@ namespace Microsoft.Exchange.MapiHttp
 			{
 				EmsmdbHttpHandler.processId,
 				"Microsoft Exchange",
-				"15.00.1497.012"
+				"15.00.1497.015"
 			});
 			Configuration.EventLogger = new ConfigurationSchema.EventLogger(EmsmdbHttpHandler.LogConfigurationEventConfig);
 			int num = Privileges.RemoveAllExcept(new string[]
@@ -280,7 +280,7 @@ namespace Microsoft.Exchange.MapiHttp
 			{
 				EmsmdbHttpHandler.processId,
 				"Microsoft Exchange",
-				"15.00.1497.012"
+				"15.00.1497.015"
 			});
 		}
 
@@ -290,7 +290,7 @@ namespace Microsoft.Exchange.MapiHttp
 			{
 				EmsmdbHttpHandler.processId,
 				"Microsoft Exchange",
-				"15.00.1497.012"
+				"15.00.1497.015"
 			});
 			if (EmsmdbHttpHandler.dispatchPool != null)
 			{
@@ -311,7 +311,7 @@ namespace Microsoft.Exchange.MapiHttp
 			{
 				EmsmdbHttpHandler.processId,
 				"Microsoft Exchange",
-				"15.00.1497.012"
+				"15.00.1497.015"
 			});
 		}
 

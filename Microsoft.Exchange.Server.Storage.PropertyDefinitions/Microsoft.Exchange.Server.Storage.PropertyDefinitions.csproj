@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{09CD9476-CD82-489E-B9E2-84B47CA141A5}</ProjectGuid>
+    <ProjectGuid>{7A3782CB-D60A-4A00-8673-7FAAD5746C74}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Microsoft.Exchange.Server.Storage.PropTags</RootNamespace>
@@ -51,15 +51,15 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Microsoft.Exchange.Server.Storage.Common\Microsoft.Exchange.Server.Storage.Common.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1419A}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746C69}</Project>
       <Name>Microsoft.Exchange.Server.Storage.Common</Name>
     </ProjectReference>
     <ProjectReference Include="..\Microsoft.Exchange.Server.Storage.PropertyTag\Microsoft.Exchange.Server.Storage.PropertyTag.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141A6}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746C75}</Project>
       <Name>Microsoft.Exchange.Server.Storage.PropertyTag</Name>
     </ProjectReference>
     <ProjectReference Include="..\mscorlib\mscorlib.csproj">
-      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141F1}</Project>
+      <Project>{7A3782CB-D60A-4A00-8673-7FAAD5746CC0}</Project>
       <Name>mscorlib</Name>
     </ProjectReference>
   </ItemGroup>

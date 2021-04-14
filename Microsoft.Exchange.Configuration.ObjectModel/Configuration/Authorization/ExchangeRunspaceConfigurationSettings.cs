@@ -221,11 +221,6 @@ namespace Microsoft.Exchange.Configuration.Authorization
 			{
 				Enum.TryParse<ExchangeRunspaceConfigurationSettings.ExchangeApplication>(text2, true, out exchangeApplication);
 			}
-			PSLanguageMode pslanguageMode = PSLanguageMode.NoLanguage;
-			if (exchangeApplication == ExchangeRunspaceConfigurationSettings.ExchangeApplication.EMC)
-			{
-				pslanguageMode = PSLanguageMode.NoLanguage;
-			}
 			ExchangeRunspaceConfigurationSettings.ProxyMethod proxyMethod = ExchangeRunspaceConfigurationSettings.ProxyMethod.None;
 			if (collection.Get("proxyMethod") != null)
 			{
@@ -242,7 +237,7 @@ namespace Microsoft.Exchange.Configuration.Authorization
 				bool.TryParse(collection.Get("X-EncodeDecode-Key"), out encodeDecodeKey);
 			}
 			bool isProxy = ExchangeRunspaceConfigurationSettings.IsCalledFromProxy(collection);
-			return new ExchangeRunspaceConfigurationSettings(uri, exchangeApplication, text, serializationLevel, pslanguageMode, proxyMethod, flag, encodeDecodeKey, isProxy);
+			return new ExchangeRunspaceConfigurationSettings(uri, exchangeApplication, text, serializationLevel, PSLanguageMode.NoLanguage, proxyMethod, flag, encodeDecodeKey, isProxy);
 		}
 
 		internal static string AddClientApplicationToUrl(string url, ExchangeRunspaceConfigurationSettings.ExchangeApplication clientApp)

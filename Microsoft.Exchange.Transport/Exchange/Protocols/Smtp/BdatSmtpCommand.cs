@@ -506,7 +506,7 @@ namespace Microsoft.Exchange.Protocols.Smtp
 			stringBuilder.AppendLine(string.Format("TotalBytesRead={0}", this.totalBytesRead));
 			stringBuilder.AppendLine(string.Format("BodyStream Length={0}", (this.bodyStream == null) ? "null" : this.bodyStream.Length.ToString(CultureInfo.InvariantCulture)));
 			stringBuilder.AppendLine(string.Format("BodyStream Position={0}", (this.bodyStream == null) ? "null" : this.bodyStream.Position.ToString(CultureInfo.InvariantCulture)));
-			ExWatson.SendGenericWatsonReport("E12", ExWatson.ApplicationVersion.ToString(), ExWatson.AppName, "15.00.1497.012", Assembly.GetExecutingAssembly().GetName().Name, exception.GetType().Name, exception.StackTrace, exception.GetHashCode().ToString(CultureInfo.InvariantCulture), exception.TargetSite.Name, stringBuilder.ToString());
+			ExWatson.SendGenericWatsonReport("E12", ExWatson.ApplicationVersion.ToString(), ExWatson.AppName, "15.00.1497.015", Assembly.GetExecutingAssembly().GetName().Name, exception.GetType().Name, exception.StackTrace, exception.GetHashCode().ToString(CultureInfo.InvariantCulture), exception.TargetSite.Name, stringBuilder.ToString());
 		}
 
 		private void RestoreBdatState()

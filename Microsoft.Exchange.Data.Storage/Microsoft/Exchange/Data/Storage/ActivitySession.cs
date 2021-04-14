@@ -56,7 +56,7 @@ namespace Microsoft.Exchange.Data.Storage
 			ActivitySession.ClientInfo clientInfo = new ActivitySession.ClientInfo
 			{
 				Id = ClientId.Other,
-				Version = "15.00.1497.012"
+				Version = "15.00.1497.015"
 			};
 			string text = (mailboxSession == null || mailboxSession.ClientInfoString == null) ? string.Empty : mailboxSession.ClientInfoString;
 			if (text.Equals("Client=MSExchangeRPC", StringComparison.OrdinalIgnoreCase) && ActivityContext.GetCurrentActivityScope() != null)

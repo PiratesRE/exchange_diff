@@ -626,7 +626,7 @@ namespace Microsoft.Exchange.AirSync
 			return result;
 		}
 
-		public const string AssemblyVersion = "15.00.1497.012";
+		public const string AssemblyVersion = "15.00.1497.015";
 
 		private const string AirSyncComponent = "MSExchange ActiveSync";
 

@@ -35,7 +35,7 @@ namespace Microsoft.Exchange.Transport.Common
 				stringBuilder.AppendLine(string.Format("Key={0}, Value={1}", keyToAdd, valueToAdd));
 				string text = stringBuilder.ToString();
 				bool flag;
-				ExWatson.SendThrottledGenericWatsonReport("E12", ExWatson.ApplicationVersion.ToString(), ExWatson.AppName, "15.00.1497.012", Assembly.GetExecutingAssembly().GetName().Name, ex.GetType().Name, ex.StackTrace, ex.GetHashCode().ToString(CultureInfo.InvariantCulture), ex.TargetSite.Name, text, TimeSpan.FromHours(1.0), out flag);
+				ExWatson.SendThrottledGenericWatsonReport("E12", ExWatson.ApplicationVersion.ToString(), ExWatson.AppName, "15.00.1497.015", Assembly.GetExecutingAssembly().GetName().Name, ex.GetType().Name, ex.StackTrace, ex.GetHashCode().ToString(CultureInfo.InvariantCulture), ex.TargetSite.Name, text, TimeSpan.FromHours(1.0), out flag);
 				if (diagnosticsHandler != null)
 				{
 					diagnosticsHandler(keyToAdd, valueToAdd, text);

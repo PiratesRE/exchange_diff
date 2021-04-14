@@ -35,9 +35,9 @@ namespace Microsoft.Exchange.Clients.Owa.Basic
 			string result = null;
 			if (postCommand != null)
 			{
-				if (<PrivateImplementationDetails>{83F8DD10-61AE-4283-B829-2F464F055E61}.$$method0x60001aa-1 == null)
+				if (<PrivateImplementationDetails>{912F2AED-BF68-4DDC-9379-4CB89AA1AA01}.$$method0x60001aa-1 == null)
 				{
-					<PrivateImplementationDetails>{83F8DD10-61AE-4283-B829-2F464F055E61}.$$method0x60001aa-1 = new Dictionary<string, int>(6)
+					<PrivateImplementationDetails>{912F2AED-BF68-4DDC-9379-4CB89AA1AA01}.$$method0x60001aa-1 = new Dictionary<string, int>(6)
 					{
 						{
 							"rmrcp",
@@ -66,7 +66,7 @@ namespace Microsoft.Exchange.Clients.Owa.Basic
 					};
 				}
 				int num;
-				if (<PrivateImplementationDetails>{83F8DD10-61AE-4283-B829-2F464F055E61}.$$method0x60001aa-1.TryGetValue(postCommand, out num))
+				if (<PrivateImplementationDetails>{912F2AED-BF68-4DDC-9379-4CB89AA1AA01}.$$method0x60001aa-1.TryGetValue(postCommand, out num))
 				{
 					switch (num)
 					{

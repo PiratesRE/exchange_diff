@@ -900,7 +900,7 @@ namespace Microsoft.Exchange.MapiHttp
 
 		private static readonly byte[] ScratchBuffer = new byte[16];
 
-		private static readonly string serverApplication = string.Format("{0}/{1}", "Exchange", "15.00.1497.012");
+		private static readonly string serverApplication = string.Format("{0}/{1}", "Exchange", "15.00.1497.015");
 
 		private delegate bool TryConvertHeaderDelegate<T>(string header, out T convertedValue);
 	}

@@ -2195,7 +2195,7 @@ namespace Microsoft.Exchange.MailboxReplicationService
 			string stackTrace = CommonUtils.GetStackTrace(exception);
 			string failureType = CommonUtils.GetFailureType(exception);
 			callStackHash = CommonUtils.ComputeCallStackHash(exception, 5);
-			ExWatson.SendGenericWatsonReport("E12", ExWatson.RealApplicationVersion.ToString(), ExWatson.RealAppName, "15.00.1497.012", Assembly.GetExecutingAssembly().GetName().Name, failureType, stackTrace, callStackHash, exception.TargetSite.Name, detailedError);
+			ExWatson.SendGenericWatsonReport("E12", ExWatson.RealApplicationVersion.ToString(), ExWatson.RealAppName, "15.00.1497.015", Assembly.GetExecutingAssembly().GetName().Name, failureType, stackTrace, callStackHash, exception.TargetSite.Name, detailedError);
 		}
 
 		internal static string ComputeCallStackHash(Exception exception, int maxDepth = 5)

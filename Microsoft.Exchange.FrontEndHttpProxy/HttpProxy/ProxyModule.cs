@@ -110,7 +110,7 @@ namespace Microsoft.Exchange.HttpProxy
 
 		protected virtual bool AllowAnonymousRequest(HttpRequest httpRequest)
 		{
-			return HttpProxyGlobals.ProtocolType != ProtocolType.Mapi && (WopiRequestPathHandler.IsWopiRequest(httpRequest, AuthCommon.IsFrontEnd) || AnonymousCalendarProxyRequestHandler.IsAnonymousCalendarRequest(httpRequest) || OwaExtensibilityProxyRequestHandler.IsOwaExtensibilityRequest(httpRequest) || OwaCobrandingRedirProxyRequestHandler.IsCobrandingRedirRequest(httpRequest) || E4eProxyRequestHandler.IsE4ePayloadRequest(httpRequest) || httpRequest.IsWsSecurityRequest() || PsgwProxyRequestHandler.IsPsgwRequest(httpRequest));
+			return HttpProxyGlobals.ProtocolType != ProtocolType.Mapi && (WopiRequestPathHandler.IsWopiRequest(httpRequest, AuthCommon.IsFrontEnd) || AnonymousCalendarProxyRequestHandler.IsAnonymousCalendarRequest(httpRequest) || OwaExtensibilityProxyRequestHandler.IsOwaExtensibilityRequest(httpRequest) || OwaCobrandingRedirProxyRequestHandler.IsCobrandingRedirRequest(httpRequest) || E4eProxyRequestHandler.IsE4ePayloadRequest(httpRequest) || httpRequest.IsWsSecurityRequest());
 		}
 
 		private static void FinalizeRequestLatencies(HttpContext httpContext, RequestDetailsLogger requestDetailsLogger, IActivityScope activityScope, LatencyTracker tracker, int traceContext)
@@ -413,10 +413,6 @@ namespace Microsoft.Exchange.HttpProxy
 				else if (HttpProxyGlobals.ProtocolType == ProtocolType.Owa && OwaResourceProxyRequestHandler.CanHandle(httpContext.Request))
 				{
 					httpHandler = new OwaResourceProxyRequestHandler();
-				}
-				else if (HttpProxyGlobals.ProtocolType == ProtocolType.PowerShellGateway)
-				{
-					httpHandler = new PsgwProxyRequestHandler();
 				}
 				result = httpHandler;
 			}

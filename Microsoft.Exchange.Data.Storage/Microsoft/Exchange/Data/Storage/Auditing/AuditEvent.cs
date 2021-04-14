@@ -142,7 +142,7 @@ namespace Microsoft.Exchange.Data.Storage.Auditing
 			yield return new KeyValuePair<string, string>("OriginatingServer", string.Format(CultureInfo.InvariantCulture, "{0} ({1})\r\n", new object[]
 			{
 				AuditEvent.MachineName,
-				"15.00.1497.012"
+				"15.00.1497.015"
 			}));
 			yield break;
 		}

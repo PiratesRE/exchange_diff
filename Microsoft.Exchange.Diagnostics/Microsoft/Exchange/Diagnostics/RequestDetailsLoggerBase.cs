@@ -492,7 +492,7 @@ namespace Microsoft.Exchange.Diagnostics
 				RequestDetailsLoggerBase<T>.enumToIndexMap.Add(keyValuePair.Value, num);
 				num++;
 			}
-			RequestDetailsLoggerBase<T>.LogSchema = new LogSchema("Microsoft Exchange Server", "15.00.1497.012", RequestDetailsLoggerBase<T>.RequestLoggerConfig.LogType, array);
+			RequestDetailsLoggerBase<T>.LogSchema = new LogSchema("Microsoft Exchange Server", "15.00.1497.015", RequestDetailsLoggerBase<T>.RequestLoggerConfig.LogType, array);
 			RequestDetailsLoggerBase<T>.Log = new Log(RequestDetailsLoggerBase<T>.RequestLoggerConfig.LogFilePrefix, new LogHeaderFormatter(RequestDetailsLoggerBase<T>.LogSchema, true), RequestDetailsLoggerBase<T>.RequestLoggerConfig.LogComponent);
 			string text = ConfigurationManager.AppSettings[RequestDetailsLoggerBase<T>.RequestLoggerConfig.FolderPathAppSettingsKey];
 			if (string.IsNullOrEmpty(text))

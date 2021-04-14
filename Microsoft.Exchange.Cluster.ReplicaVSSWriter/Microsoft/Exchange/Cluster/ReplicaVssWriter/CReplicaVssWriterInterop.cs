@@ -1546,7 +1546,7 @@ namespace Microsoft.Exchange.Cluster.ReplicaVssWriter
 					ref byte byte&2 = ref ese_ICON_DESCRIPTION5.pvData[0];
 					try
 					{
-						num = calli(System.Int32 modopt(System.Runtime.CompilerServices.IsLong) modopt(System.Runtime.CompilerServices.CallConvCdecl)(System.IntPtr,VSS_COMPONENT_TYPE,System.UInt16 modopt(System.Runtime.CompilerServices.IsConst)*,System.UInt16 modopt(System.Runtime.CompilerServices.IsConst)*,System.UInt16 modopt(System.Runtime.CompilerServices.IsConst)*,System.Byte modopt(System.Runtime.CompilerServices.IsConst)*,System.UInt32,System.Byte modopt(System.Runtime.CompilerServices.CompilerMarshalOverride),System.Byte modopt(System.Runtime.CompilerServices.CompilerMarshalOverride),System.Byte modopt(System.Runtime.CompilerServices.CompilerMarshalOverride),System.Byte modopt(System.Runtime.CompilerServices.CompilerMarshalOverride),System.UInt32 modopt(System.Runtime.CompilerServices.IsLong)), pMetadata, 2, ptr, ref <Module>.?A0x092bbd29.g_wszFileSubComp, ref <Module>.?A0x092bbd29.g_wszFileSubComp, ref byte&2, ese_ICON_DESCRIPTION5.ulSize, 1, 1, 0, 1, 0, *(*(long*)pMetadata + 16L));
+						num = calli(System.Int32 modopt(System.Runtime.CompilerServices.IsLong) modopt(System.Runtime.CompilerServices.CallConvCdecl)(System.IntPtr,VSS_COMPONENT_TYPE,System.UInt16 modopt(System.Runtime.CompilerServices.IsConst)*,System.UInt16 modopt(System.Runtime.CompilerServices.IsConst)*,System.UInt16 modopt(System.Runtime.CompilerServices.IsConst)*,System.Byte modopt(System.Runtime.CompilerServices.IsConst)*,System.UInt32,System.Byte modopt(System.Runtime.CompilerServices.CompilerMarshalOverride),System.Byte modopt(System.Runtime.CompilerServices.CompilerMarshalOverride),System.Byte modopt(System.Runtime.CompilerServices.CompilerMarshalOverride),System.Byte modopt(System.Runtime.CompilerServices.CompilerMarshalOverride),System.UInt32 modopt(System.Runtime.CompilerServices.IsLong)), pMetadata, 2, ptr, ref <Module>.?A0x8c154cf1.g_wszFileSubComp, ref <Module>.?A0x8c154cf1.g_wszFileSubComp, ref byte&2, ese_ICON_DESCRIPTION5.ulSize, 1, 1, 0, 1, 0, *(*(long*)pMetadata + 16L));
 					}
 					catch
 					{
@@ -1562,7 +1562,7 @@ namespace Microsoft.Exchange.Cluster.ReplicaVssWriter
 						ExTraceGlobals.ReplicaVssWriterInteropTracer.TraceError<string, int>((long)this.GetHashCode(), "AddComponent for EDB {0} returned {1:X8}", text, num);
 						return num;
 					}
-					num = calli(System.Int32 modopt(System.Runtime.CompilerServices.IsLong) modopt(System.Runtime.CompilerServices.CallConvCdecl)(System.IntPtr,System.UInt16 modopt(System.Runtime.CompilerServices.IsConst)*,System.UInt16 modopt(System.Runtime.CompilerServices.IsConst)*,System.UInt16 modopt(System.Runtime.CompilerServices.IsConst)*,System.UInt16 modopt(System.Runtime.CompilerServices.IsConst)*,System.Byte modopt(System.Runtime.CompilerServices.CompilerMarshalOverride),System.UInt16 modopt(System.Runtime.CompilerServices.IsConst)*,System.UInt32 modopt(System.Runtime.CompilerServices.IsLong)), pMetadata, ptr, ref <Module>.?A0x092bbd29.g_wszFileSubComp, ptr4, ptr5, 0, 0L, 3841, *(*(long*)pMetadata + 40L));
+					num = calli(System.Int32 modopt(System.Runtime.CompilerServices.IsLong) modopt(System.Runtime.CompilerServices.CallConvCdecl)(System.IntPtr,System.UInt16 modopt(System.Runtime.CompilerServices.IsConst)*,System.UInt16 modopt(System.Runtime.CompilerServices.IsConst)*,System.UInt16 modopt(System.Runtime.CompilerServices.IsConst)*,System.UInt16 modopt(System.Runtime.CompilerServices.IsConst)*,System.Byte modopt(System.Runtime.CompilerServices.CompilerMarshalOverride),System.UInt16 modopt(System.Runtime.CompilerServices.IsConst)*,System.UInt32 modopt(System.Runtime.CompilerServices.IsLong)), pMetadata, ptr, ref <Module>.?A0x8c154cf1.g_wszFileSubComp, ptr4, ptr5, 0, 0L, 3841, *(*(long*)pMetadata + 40L));
 					if (num < 0)
 					{
 						object[] array4 = new object[2];
@@ -1576,7 +1576,7 @@ namespace Microsoft.Exchange.Cluster.ReplicaVssWriter
 					ref byte byte&3 = ref ese_ICON_DESCRIPTION2.pvData[0];
 					try
 					{
-						num = calli(System.Int32 modopt(System.Runtime.CompilerServices.IsLong) modopt(System.Runtime.CompilerServices.CallConvCdecl)(System.IntPtr,VSS_COMPONENT_TYPE,System.UInt16 modopt(System.Runtime.CompilerServices.IsConst)*,System.UInt16 modopt(System.Runtime.CompilerServices.IsConst)*,System.UInt16 modopt(System.Runtime.CompilerServices.IsConst)*,System.Byte modopt(System.Runtime.CompilerServices.IsConst)*,System.UInt32,System.Byte modopt(System.Runtime.CompilerServices.CompilerMarshalOverride),System.Byte modopt(System.Runtime.CompilerServices.CompilerMarshalOverride),System.Byte modopt(System.Runtime.CompilerServices.CompilerMarshalOverride),System.Byte modopt(System.Runtime.CompilerServices.CompilerMarshalOverride),System.UInt32 modopt(System.Runtime.CompilerServices.IsLong)), pMetadata, 2, ptr, ref <Module>.?A0x092bbd29.g_wszLogsSubComp, ref <Module>.?A0x092bbd29.g_wszLogsSubComp, ref byte&3, ese_ICON_DESCRIPTION2.ulSize, 1, 1, 0, 1, 0, *(*(long*)pMetadata + 16L));
+						num = calli(System.Int32 modopt(System.Runtime.CompilerServices.IsLong) modopt(System.Runtime.CompilerServices.CallConvCdecl)(System.IntPtr,VSS_COMPONENT_TYPE,System.UInt16 modopt(System.Runtime.CompilerServices.IsConst)*,System.UInt16 modopt(System.Runtime.CompilerServices.IsConst)*,System.UInt16 modopt(System.Runtime.CompilerServices.IsConst)*,System.Byte modopt(System.Runtime.CompilerServices.IsConst)*,System.UInt32,System.Byte modopt(System.Runtime.CompilerServices.CompilerMarshalOverride),System.Byte modopt(System.Runtime.CompilerServices.CompilerMarshalOverride),System.Byte modopt(System.Runtime.CompilerServices.CompilerMarshalOverride),System.Byte modopt(System.Runtime.CompilerServices.CompilerMarshalOverride),System.UInt32 modopt(System.Runtime.CompilerServices.IsLong)), pMetadata, 2, ptr, ref <Module>.?A0x8c154cf1.g_wszLogsSubComp, ref <Module>.?A0x8c154cf1.g_wszLogsSubComp, ref byte&3, ese_ICON_DESCRIPTION2.ulSize, 1, 1, 0, 1, 0, *(*(long*)pMetadata + 16L));
 					}
 					catch
 					{
@@ -1602,7 +1602,7 @@ namespace Microsoft.Exchange.Cluster.ReplicaVssWriter
 					ExTraceGlobals.ReplicaVssWriterInteropTracer.TraceDebug((long)this.GetHashCode(), "AddComponent for logs on DB '{0}' logical path '{1}' logical name '{2}'", args2);
 					ptr4 = this.GetUnmanagedWideString(text7);
 					ptr5 = this.GetUnmanagedWideString(text6);
-					num = calli(System.Int32 modopt(System.Runtime.CompilerServices.IsLong) modopt(System.Runtime.CompilerServices.CallConvCdecl)(System.IntPtr,System.UInt16 modopt(System.Runtime.CompilerServices.IsConst)*,System.UInt16 modopt(System.Runtime.CompilerServices.IsConst)*,System.UInt16 modopt(System.Runtime.CompilerServices.IsConst)*,System.UInt16 modopt(System.Runtime.CompilerServices.IsConst)*,System.Byte modopt(System.Runtime.CompilerServices.CompilerMarshalOverride),System.UInt16 modopt(System.Runtime.CompilerServices.IsConst)*,System.UInt32 modopt(System.Runtime.CompilerServices.IsLong)), pMetadata, ptr, ref <Module>.?A0x092bbd29.g_wszLogsSubComp, ptr4, ptr5, 0, 0L, 3855, *(*(long*)pMetadata + 40L));
+					num = calli(System.Int32 modopt(System.Runtime.CompilerServices.IsLong) modopt(System.Runtime.CompilerServices.CallConvCdecl)(System.IntPtr,System.UInt16 modopt(System.Runtime.CompilerServices.IsConst)*,System.UInt16 modopt(System.Runtime.CompilerServices.IsConst)*,System.UInt16 modopt(System.Runtime.CompilerServices.IsConst)*,System.UInt16 modopt(System.Runtime.CompilerServices.IsConst)*,System.Byte modopt(System.Runtime.CompilerServices.CompilerMarshalOverride),System.UInt16 modopt(System.Runtime.CompilerServices.IsConst)*,System.UInt32 modopt(System.Runtime.CompilerServices.IsLong)), pMetadata, ptr, ref <Module>.?A0x8c154cf1.g_wszLogsSubComp, ptr4, ptr5, 0, 0L, 3855, *(*(long*)pMetadata + 40L));
 					if (num < 0)
 					{
 						object[] array6 = new object[2];
@@ -1617,7 +1617,7 @@ namespace Microsoft.Exchange.Cluster.ReplicaVssWriter
 					this.FreeUnmanagedWideString(ptr5);
 					ptr4 = this.GetUnmanagedWideString(str);
 					ptr5 = this.GetUnmanagedWideString(text8);
-					num = calli(System.Int32 modopt(System.Runtime.CompilerServices.IsLong) modopt(System.Runtime.CompilerServices.CallConvCdecl)(System.IntPtr,System.UInt16 modopt(System.Runtime.CompilerServices.IsConst)*,System.UInt16 modopt(System.Runtime.CompilerServices.IsConst)*,System.UInt16 modopt(System.Runtime.CompilerServices.IsConst)*,System.UInt16 modopt(System.Runtime.CompilerServices.IsConst)*,System.Byte modopt(System.Runtime.CompilerServices.CompilerMarshalOverride),System.UInt16 modopt(System.Runtime.CompilerServices.IsConst)*,System.UInt32 modopt(System.Runtime.CompilerServices.IsLong)), pMetadata, ptr, ref <Module>.?A0x092bbd29.g_wszLogsSubComp, ptr4, ptr5, 0, 0L, 3841, *(*(long*)pMetadata + 40L));
+					num = calli(System.Int32 modopt(System.Runtime.CompilerServices.IsLong) modopt(System.Runtime.CompilerServices.CallConvCdecl)(System.IntPtr,System.UInt16 modopt(System.Runtime.CompilerServices.IsConst)*,System.UInt16 modopt(System.Runtime.CompilerServices.IsConst)*,System.UInt16 modopt(System.Runtime.CompilerServices.IsConst)*,System.UInt16 modopt(System.Runtime.CompilerServices.IsConst)*,System.Byte modopt(System.Runtime.CompilerServices.CompilerMarshalOverride),System.UInt16 modopt(System.Runtime.CompilerServices.IsConst)*,System.UInt32 modopt(System.Runtime.CompilerServices.IsLong)), pMetadata, ptr, ref <Module>.?A0x8c154cf1.g_wszLogsSubComp, ptr4, ptr5, 0, 0L, 3841, *(*(long*)pMetadata + 40L));
 					if (num < 0)
 					{
 						object[] array7 = new object[2];
@@ -6302,7 +6302,7 @@ namespace Microsoft.Exchange.Cluster.ReplicaVssWriter
 					xmlDocument = new XmlDocument();
 					xmlDocument.LoadXml(ComponentInformation.RestoreEnvironment);
 					XmlElement newChild = xmlDocument.CreateElement(ComponentInformation.VersionStamp);
-					XmlText newChild2 = xmlDocument.CreateTextNode("15.00.1497.012");
+					XmlText newChild2 = xmlDocument.CreateTextNode("15.00.1497.015");
 					xmlDocument.DocumentElement.AppendChild(newChild);
 					xmlDocument.DocumentElement.LastChild.AppendChild(newChild2);
 					newChild = xmlDocument.CreateElement(ComponentInformation.DatabaseGuidOriginal);

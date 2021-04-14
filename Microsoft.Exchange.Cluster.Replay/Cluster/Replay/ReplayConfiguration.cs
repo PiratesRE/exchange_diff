@@ -685,7 +685,7 @@ namespace Microsoft.Exchange.Cluster.Replay
 			xmlWriter.WriteStartDocument(true);
 			xmlWriter.WriteStartElement("EXWRITER_METADATA");
 			xmlWriter.WriteStartElement("VERSION_STAMP");
-			xmlWriter.WriteString("15.00.1497.012");
+			xmlWriter.WriteString("15.00.1497.015");
 			xmlWriter.WriteEndElement();
 			string fileName = Path.GetFileName(destinationEdbPath);
 			string directoryName = Path.GetDirectoryName(destinationEdbPath);

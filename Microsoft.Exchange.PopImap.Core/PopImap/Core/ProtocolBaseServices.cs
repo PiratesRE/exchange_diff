@@ -34,7 +34,7 @@ namespace Microsoft.Exchange.PopImap.Core
 		public ProtocolBaseServices()
 		{
 			ProtocolBaseServices.serverName = ComputerInformation.DnsFullyQualifiedDomainName;
-			ProtocolBaseServices.serverVersion = "15.00.1497.012";
+			ProtocolBaseServices.serverVersion = "15.00.1497.015";
 			ProtocolBaseServices.isMultiTenancyEnabled = VariantConfiguration.InvariantNoFlightingSnapshot.Global.MultiTenancy.Enabled;
 			this.LoadFlightingState();
 			this.IsPartnerHostedOnly = DatacenterRegistry.IsPartnerHostedOnly();

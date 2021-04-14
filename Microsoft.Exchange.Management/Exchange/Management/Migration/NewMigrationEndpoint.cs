@@ -382,9 +382,9 @@ namespace Microsoft.Exchange.Management.Migration
 			string parameterSetName;
 			if ((parameterSetName = base.ParameterSetName) != null)
 			{
-				if (<PrivateImplementationDetails>{45A016D6-9512-4E33-B5E4-CBF8CD83FD38}.$$method0x60029e6-1 == null)
+				if (<PrivateImplementationDetails>{37FB2C37-8946-4F00-B324-D759A1883C9F}.$$method0x60029e6-1 == null)
 				{
-					<PrivateImplementationDetails>{45A016D6-9512-4E33-B5E4-CBF8CD83FD38}.$$method0x60029e6-1 = new Dictionary<string, int>(7)
+					<PrivateImplementationDetails>{37FB2C37-8946-4F00-B324-D759A1883C9F}.$$method0x60029e6-1 = new Dictionary<string, int>(7)
 					{
 						{
 							"ExchangeOutlookAnywhere",
@@ -417,7 +417,7 @@ namespace Microsoft.Exchange.Management.Migration
 					};
 				}
 				int num;
-				if (<PrivateImplementationDetails>{45A016D6-9512-4E33-B5E4-CBF8CD83FD38}.$$method0x60029e6-1.TryGetValue(parameterSetName, out num))
+				if (<PrivateImplementationDetails>{37FB2C37-8946-4F00-B324-D759A1883C9F}.$$method0x60029e6-1.TryGetValue(parameterSetName, out num))
 				{
 					switch (num)
 					{
