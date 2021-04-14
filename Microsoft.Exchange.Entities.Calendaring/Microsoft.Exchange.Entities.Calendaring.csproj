@@ -1,0 +1,252 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{09CD9476-CD82-489E-B9E2-84B47CA1411E}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Microsoft.Exchange.Entities.Calendaring</RootNamespace>
+    <AssemblyName>Microsoft.Exchange.Entities.Calendaring</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CalendarFolderUpdateFailedException.cs" />
+    <Compile Include="CalendarGroupEntryUpdateFailedException.cs" />
+    <Compile Include="CalendarGroupIsNotEmptyException.cs" />
+    <Compile Include="CalendaringContainer.cs" />
+    <Compile Include="CalendaringStrings.cs" />
+    <Compile Include="CalendarNameAlreadyInUseException.cs" />
+    <Compile Include="CalendarNameCannotBeEmptyException.cs" />
+    <Compile Include="CalendarUpdateFailedException.cs" />
+    <Compile Include="CannotDeleteDefaultCalendarException.cs" />
+    <Compile Include="CannotDeleteSpecialCalendarGroupException.cs" />
+    <Compile Include="CannotRenameDefaultCalendarException.cs" />
+    <Compile Include="ClientIdAlreadyInUseException.cs" />
+    <Compile Include="ConsumerSharing\ConsumerCalendarSubscription.cs" />
+    <Compile Include="ConsumerSharing\ConsumerCalendarSynchronizer.cs" />
+    <Compile Include="ConsumerSharing\SyncResult.cs" />
+    <Compile Include="DataProviders\CalendarFolderDataProvider.cs" />
+    <Compile Include="DataProviders\CalendarGroupDataProvider.cs" />
+    <Compile Include="DataProviders\CalendarGroupEntryDataProvider.cs" />
+    <Compile Include="DataProviders\EventAttachmentDataProvider.cs" />
+    <Compile Include="DataProviders\EventDataProvider.cs" />
+    <Compile Include="DataProviders\EventExtensions.cs" />
+    <Compile Include="DataProviders\MeetingRequestMessageDataProvider.cs" />
+    <Compile Include="DataProviders\MidnightEnforcementOption.cs" />
+    <Compile Include="DataProviders\SeriesEventDataProvider.cs" />
+    <Compile Include="EntitySets\CalendarCommands\CreateCalendar.cs" />
+    <Compile Include="EntitySets\CalendarCommands\DeleteCalendar.cs" />
+    <Compile Include="EntitySets\CalendarCommands\FindCalendars.cs" />
+    <Compile Include="EntitySets\CalendarCommands\ReadCalendar.cs" />
+    <Compile Include="EntitySets\CalendarCommands\UpdateCalendar.cs" />
+    <Compile Include="EntitySets\CalendarGroupCommands\CreateCalendarGroup.cs" />
+    <Compile Include="EntitySets\CalendarGroupCommands\DeleteCalendarGroup.cs" />
+    <Compile Include="EntitySets\CalendarGroupCommands\FindCalendarGroups.cs" />
+    <Compile Include="EntitySets\CalendarGroupCommands\ReadCalendarGroup.cs" />
+    <Compile Include="EntitySets\CalendarGroupCommands\UpdateCalendarGroup.cs" />
+    <Compile Include="EntitySets\CalendarGroupReference.cs" />
+    <Compile Include="EntitySets\CalendarGroups.cs" />
+    <Compile Include="EntitySets\CalendarReference.cs" />
+    <Compile Include="EntitySets\Calendars.cs" />
+    <Compile Include="EntitySets\CalendarsInCalendarGroup.cs" />
+    <Compile Include="EntitySets\DefaultCalendarReference.cs" />
+    <Compile Include="EntitySets\EventCommandFactory.cs" />
+    <Compile Include="EntitySets\EventCommands\CalendarViewParameters.cs" />
+    <Compile Include="EntitySets\EventCommands\CancelEvent.cs" />
+    <Compile Include="EntitySets\EventCommands\CancelEventBase.cs" />
+    <Compile Include="EntitySets\EventCommands\CancelSeries.cs" />
+    <Compile Include="EntitySets\EventCommands\ConvertSingleEventToNprSeries.cs" />
+    <Compile Include="EntitySets\EventCommands\CreateEvent.cs" />
+    <Compile Include="EntitySets\EventCommands\CreateEventBase.cs" />
+    <Compile Include="EntitySets\EventCommands\CreateNewSeries.cs" />
+    <Compile Include="EntitySets\EventCommands\CreateNprInstance.cs" />
+    <Compile Include="EntitySets\EventCommands\CreateReceivedSeries.cs" />
+    <Compile Include="EntitySets\EventCommands\CreateSeries.cs" />
+    <Compile Include="EntitySets\EventCommands\CreateSeriesFromExistingSingleEvent.cs" />
+    <Compile Include="EntitySets\EventCommands\CreateSeriesInternalBase.cs" />
+    <Compile Include="EntitySets\EventCommands\CreateSingleEventBase.cs" />
+    <Compile Include="EntitySets\EventCommands\DeleteEvent.cs" />
+    <Compile Include="EntitySets\EventCommands\DeleteEventBase.cs" />
+    <Compile Include="EntitySets\EventCommands\DeleteSeries.cs" />
+    <Compile Include="EntitySets\EventCommands\EventTimeAdjuster.cs" />
+    <Compile Include="EntitySets\EventCommands\ExpandSeries.cs" />
+    <Compile Include="EntitySets\EventCommands\FindEvents.cs" />
+    <Compile Include="EntitySets\EventCommands\ForwardEvent.cs" />
+    <Compile Include="EntitySets\EventCommands\ForwardEventBase.cs" />
+    <Compile Include="EntitySets\EventCommands\ForwardSeries.cs" />
+    <Compile Include="EntitySets\EventCommands\GetCalendarView.cs" />
+    <Compile Include="EntitySets\EventCommands\ReadEvent.cs" />
+    <Compile Include="EntitySets\EventCommands\RespondToEvent.cs" />
+    <Compile Include="EntitySets\EventCommands\RespondToEventBase.cs" />
+    <Compile Include="EntitySets\EventCommands\RespondToSeries.cs" />
+    <Compile Include="EntitySets\EventCommands\UpdateEvent.cs" />
+    <Compile Include="EntitySets\EventCommands\UpdateEventBase.cs" />
+    <Compile Include="EntitySets\EventCommands\UpdateSeries.cs" />
+    <Compile Include="EntitySets\EventReference.cs" />
+    <Compile Include="EntitySets\Events.cs" />
+    <Compile Include="EntitySets\IEventCommandFactory.cs" />
+    <Compile Include="EntitySets\ILocalCalendarReference.cs" />
+    <Compile Include="EntitySets\IMeetingRequestMessageCommandFactory.cs" />
+    <Compile Include="EntitySets\MailboxCalendars.cs" />
+    <Compile Include="EntitySets\MeetingRequestCommands\RespondToMeetingRequestMessage.cs" />
+    <Compile Include="EntitySets\MeetingRequestMessageCommandFactory.cs" />
+    <Compile Include="EntitySets\MeetingRequestMessages.cs" />
+    <Compile Include="FolderNotFoundException.cs" />
+    <Compile Include="Interop\CalendarInterop.cs" />
+    <Compile Include="Interop\CalendarInteropLog.cs" />
+    <Compile Include="Interop\ErrorRecoverySeriesCommand.cs" />
+    <Compile Include="Interop\EventSeriesPropagationConfig.cs" />
+    <Compile Include="Interop\ICalendarInteropLog.cs" />
+    <Compile Include="Interop\ICalendarInteropSeriesAction.cs" />
+    <Compile Include="Interop\ISeriesActionParser.cs" />
+    <Compile Include="Interop\MarkInstancesAsExceptionsCommand.cs" />
+    <Compile Include="Interop\NoOpSeriesRecoveryCommand.cs" />
+    <Compile Include="Interop\PropagateToInstance.cs" />
+    <Compile Include="Interop\SeriesActionParser.cs" />
+    <Compile Include="Interop\SeriesInlineInterop.cs" />
+    <Compile Include="Interop\SeriesInteropCommand.cs" />
+    <Compile Include="Interop\SeriesPendingActionsInterop.cs" />
+    <Compile Include="InvalidCalendarGroupNameException.cs" />
+    <Compile Include="InvalidNewReminderSettingIdException.cs" />
+    <Compile Include="InvalidPopupReminderSettingsCountException.cs" />
+    <Compile Include="InvalidReminderSettingIdException.cs" />
+    <Compile Include="MessageProcessing\MeetingMessageProcessor.cs" />
+    <Compile Include="MessageProcessing\ProcessMeetingMessageCommand.cs" />
+    <Compile Include="MessageProcessing\ProcessSeriesMeetingRequest.cs" />
+    <Compile Include="NullPopupReminderSettingsException.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SeriesNotFoundException.cs" />
+    <Compile Include="TypeConversion\Converters\AttendeeConverter.cs" />
+    <Compile Include="TypeConversion\Converters\AttendeeParticipantWrapper.cs" />
+    <Compile Include="TypeConversion\Converters\AttendeeTypeConverter.cs" />
+    <Compile Include="TypeConversion\Converters\FreeBusyConverter.cs" />
+    <Compile Include="TypeConversion\Converters\GlobalObjectIdConverter.cs" />
+    <Compile Include="TypeConversion\Converters\IAttendeeTypeConverter.cs" />
+    <Compile Include="TypeConversion\Converters\IParticipantRoutingTypeConverter.cs" />
+    <Compile Include="TypeConversion\Converters\IParticipantWrapper.cs" />
+    <Compile Include="TypeConversion\Converters\IResponseTypeConverter.cs" />
+    <Compile Include="TypeConversion\Converters\MeetingMessageTypeConverter.cs" />
+    <Compile Include="TypeConversion\Converters\OrganizerConverter.cs" />
+    <Compile Include="TypeConversion\Converters\ParticipantConverter.cs" />
+    <Compile Include="TypeConversion\Converters\ParticipantRoutingTypeConverter.cs" />
+    <Compile Include="TypeConversion\Converters\ParticipantWrapper.2.cs" />
+    <Compile Include="TypeConversion\Converters\ParticipantWrapper.cs" />
+    <Compile Include="TypeConversion\Converters\PropertyChangeMetadataConverter.cs" />
+    <Compile Include="TypeConversion\Converters\Recurrence\DailyRecurrencePatternConverter.cs" />
+    <Compile Include="TypeConversion\Converters\Recurrence\DayOfWeekConverter.cs" />
+    <Compile Include="TypeConversion\Converters\Recurrence\IDayOfWeekConverter.cs" />
+    <Compile Include="TypeConversion\Converters\Recurrence\IWeekIndexConverter.cs" />
+    <Compile Include="TypeConversion\Converters\Recurrence\MonthlyRecurrencePatternConverter.cs" />
+    <Compile Include="TypeConversion\Converters\Recurrence\PatternConverter.cs" />
+    <Compile Include="TypeConversion\Converters\Recurrence\RangeConverter.cs" />
+    <Compile Include="TypeConversion\Converters\Recurrence\RecurrenceConverter.cs" />
+    <Compile Include="TypeConversion\Converters\Recurrence\WeekIndexConverter.cs" />
+    <Compile Include="TypeConversion\Converters\Recurrence\WeeklyRecurrencePatternConverter.cs" />
+    <Compile Include="TypeConversion\Converters\Recurrence\YearlyRecurrencePatternConverter.cs" />
+    <Compile Include="TypeConversion\Converters\ResponseTypeConverter.cs" />
+    <Compile Include="TypeConversion\PropertyAccessors\StorageAccessors\AttendeeAccessors.cs" />
+    <Compile Include="TypeConversion\PropertyAccessors\StorageAccessors\CalendarFolderAccessors.cs" />
+    <Compile Include="TypeConversion\PropertyAccessors\StorageAccessors\CalendarGroupAccessors.cs" />
+    <Compile Include="TypeConversion\PropertyAccessors\StorageAccessors\CalendarGroupEntryAccessors.cs" />
+    <Compile Include="TypeConversion\PropertyAccessors\StorageAccessors\CalendarItemAccessors.cs" />
+    <Compile Include="TypeConversion\PropertyAccessors\StorageAccessors\MeetingMessageAccessors.cs" />
+    <Compile Include="TypeConversion\PropertyAccessors\StorageAttendeesPropertyAccessor.cs" />
+    <Compile Include="TypeConversion\PropertyAccessors\StorageLocationPropertyAccessor.cs" />
+    <Compile Include="TypeConversion\PropertyTranslationRules\ActionQueueRules.cs" />
+    <Compile Include="TypeConversion\PropertyTranslationRules\DraftStateRules.cs" />
+    <Compile Include="TypeConversion\PropertyTranslationRules\EventPopupReminderSettingsRules.cs" />
+    <Compile Include="TypeConversion\PropertyTranslationRules\EventTypeTranslationRule.cs" />
+    <Compile Include="TypeConversion\PropertyTranslationRules\PatternedRecurrenceRule.cs" />
+    <Compile Include="TypeConversion\PropertyTranslationRules\ResponseStatusRule.cs" />
+    <Compile Include="TypeConversion\PropertyTranslationRules\SeriesIdTranslationRule.cs" />
+    <Compile Include="TypeConversion\PropertyTranslationRules\SeriesMasterIdTranslationRule.cs" />
+    <Compile Include="TypeConversion\Translators\CalendarGroupEntryTranslator.cs" />
+    <Compile Include="TypeConversion\Translators\CalendarGroupTranslator.cs" />
+    <Compile Include="TypeConversion\Translators\CalendarTranslator.cs" />
+    <Compile Include="TypeConversion\Translators\EventTranslator.cs" />
+    <Compile Include="TypeConversion\Translators\EventWorkflowParametersTranslator.cs" />
+    <Compile Include="TypeConversion\Translators\MeetingMessageTranslator.cs" />
+    <Compile Include="UnableToFindUserException.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="CalendaringStrings.resources" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.Exchange.Common\Microsoft.Exchange.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140F0}</Project>
+      <Name>Microsoft.Exchange.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Common\Microsoft.Exchange.Data.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140D3}</Project>
+      <Name>Microsoft.Exchange.Data.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Directory\Microsoft.Exchange.Data.Directory.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14105}</Project>
+      <Name>Microsoft.Exchange.Data.Directory</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Storage\Microsoft.Exchange.Data.Storage.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1410F}</Project>
+      <Name>Microsoft.Exchange.Data.Storage</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data\Microsoft.Exchange.Data.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14106}</Project>
+      <Name>Microsoft.Exchange.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Diagnostics\Microsoft.Exchange.Diagnostics.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14113}</Project>
+      <Name>Microsoft.Exchange.Diagnostics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Entities.Common\Microsoft.Exchange.Entities.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1411F}</Project>
+      <Name>Microsoft.Exchange.Entities.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Entities.DataModel\Microsoft.Exchange.Entities.DataModel.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14120}</Project>
+      <Name>Microsoft.Exchange.Entities.DataModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.InfoWorker.Common\Microsoft.Exchange.InfoWorker.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1413C}</Project>
+      <Name>Microsoft.Exchange.InfoWorker.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Net\Microsoft.Exchange.Net.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14178}</Project>
+      <Name>Microsoft.Exchange.Net</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\mscorlib\mscorlib.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141F1}</Project>
+      <Name>mscorlib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

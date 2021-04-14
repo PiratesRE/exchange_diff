@@ -1,0 +1,13 @@
+﻿{
+    "__type":"FolderResponseShape:#Exchange",
+    "AdditionalProperties":[
+        {"__type":"ExtendedPropertyUri:#Exchange","PropertyTag":"0x10f4","PropertyType":"Boolean"},
+        {"__type":"PropertyUri:#Exchange","FieldURI":"DistinguishedFolderId"},
+        {"__type":"PropertyUri:#Exchange","FieldURI":"ParentFolderId"},
+        {"__type":"PropertyUri:#Exchange","FieldURI":"FolderPolicyTag"},
+        {"__type":"PropertyUri:#Exchange","FieldURI":"FolderArchiveTag"},
+        {"__type":"PropertyUri:#Exchange","FieldURI":"FolderClass"},
+        {"__type":"ExtendedPropertyUri:#Exchange","PropertyTag":"0x301d","PropertyType":"Integer"}
+    ],
+    "BaseShape":"Default"
+}

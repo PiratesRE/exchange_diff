@@ -1,0 +1,275 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{09CD9476-CD82-489E-B9E2-84B47CA14193}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Microsoft.Exchange</RootNamespace>
+    <AssemblyName>Microsoft.Exchange.Search.Core</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Exchange.Search.OperatorSchema" />
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Inference\Performance\PipelineCounters.cs" />
+    <Compile Include="Inference\Performance\PipelineCountersInstance.cs" />
+    <Compile Include="Inference\Performance\StatefulComponentPerformanceCounters.cs" />
+    <Compile Include="Inference\Performance\StatefulComponentPerformanceCountersInstance.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Search\Core\Abstraction\CatalogReseedException.cs" />
+    <Compile Include="Search\Core\Abstraction\CatalogState.cs" />
+    <Compile Include="Search\Core\Abstraction\ComponentException.cs" />
+    <Compile Include="Search\Core\Abstraction\ComponentFailedException.cs" />
+    <Compile Include="Search\Core\Abstraction\ComponentFailedPermanentException.cs" />
+    <Compile Include="Search\Core\Abstraction\ComponentFailedTransientException.cs" />
+    <Compile Include="Search\Core\Abstraction\DatabaseInitializationException.cs" />
+    <Compile Include="Search\Core\Abstraction\DocumentFailureDescription.cs" />
+    <Compile Include="Search\Core\Abstraction\DocumentFailureException.cs" />
+    <Compile Include="Search\Core\Abstraction\DocumentOperation.cs" />
+    <Compile Include="Search\Core\Abstraction\DocumentResolution.cs" />
+    <Compile Include="Search\Core\Abstraction\Exceptions\EndlessEvaluationFaultInjectionException.cs" />
+    <Compile Include="Search\Core\Abstraction\FailedEventArgs.cs" />
+    <Compile Include="Search\Core\Abstraction\FailedItemParameters.cs" />
+    <Compile Include="Search\Core\Abstraction\FailureMode.cs" />
+    <Compile Include="Search\Core\Abstraction\FieldSet.cs" />
+    <Compile Include="Search\Core\Abstraction\IAttachment.cs" />
+    <Compile Include="Search\Core\Abstraction\IConfig.cs" />
+    <Compile Include="Search\Core\Abstraction\IDisposableDocument.cs" />
+    <Compile Include="Search\Core\Abstraction\IDocEntry.cs" />
+    <Compile Include="Search\Core\Abstraction\IDocument.cs" />
+    <Compile Include="Search\Core\Abstraction\IDocumentAdapter.cs" />
+    <Compile Include="Search\Core\Abstraction\IDocumentProcessor.cs" />
+    <Compile Include="Search\Core\Abstraction\IDocumentTracker.cs" />
+    <Compile Include="Search\Core\Abstraction\IExecutable.cs" />
+    <Compile Include="Search\Core\Abstraction\IFailedItemStorage.cs" />
+    <Compile Include="Search\Core\Abstraction\IFailureEntry.cs" />
+    <Compile Include="Search\Core\Abstraction\IFastDocument.cs" />
+    <Compile Include="Search\Core\Abstraction\IFastDocumentHelper.cs" />
+    <Compile Include="Search\Core\Abstraction\IFeeder.cs" />
+    <Compile Include="Search\Core\Abstraction\IFlowManager.cs" />
+    <Compile Include="Search\Core\Abstraction\IIdentity.cs" />
+    <Compile Include="Search\Core\Abstraction\IIndexManager.cs" />
+    <Compile Include="Search\Core\Abstraction\IIndexSeederSource.cs" />
+    <Compile Include="Search\Core\Abstraction\IIndexSeederTarget.cs" />
+    <Compile Include="Search\Core\Abstraction\IIndexStatusStore.cs" />
+    <Compile Include="Search\Core\Abstraction\IMessageRecipient.cs" />
+    <Compile Include="Search\Core\Abstraction\IndexStatus.cs" />
+    <Compile Include="Search\Core\Abstraction\IndexStatusErrorCode.cs" />
+    <Compile Include="Search\Core\Abstraction\IndexStatusIndex.cs" />
+    <Compile Include="Search\Core\Abstraction\INodeManager.cs" />
+    <Compile Include="Search\Core\Abstraction\INotifyFailed.cs" />
+    <Compile Include="Search\Core\Abstraction\IOperatorPerfCounter.cs" />
+    <Compile Include="Search\Core\Abstraction\IPersistableDocumentAdapter.cs" />
+    <Compile Include="Search\Core\Abstraction\IPipeline.cs" />
+    <Compile Include="Search\Core\Abstraction\IPipelineComponent.cs" />
+    <Compile Include="Search\Core\Abstraction\IPipelineComponentConfig.cs" />
+    <Compile Include="Search\Core\Abstraction\IPipelineComponentFactory.cs" />
+    <Compile Include="Search\Core\Abstraction\IPipelineConnector.cs" />
+    <Compile Include="Search\Core\Abstraction\IPipelineContext.cs" />
+    <Compile Include="Search\Core\Abstraction\IPipelineErrorHandler.cs" />
+    <Compile Include="Search\Core\Abstraction\IPropertyBag.cs" />
+    <Compile Include="Search\Core\Abstraction\IReadOnlyPropertyBag.cs" />
+    <Compile Include="Search\Core\Abstraction\ISerializableProperty.cs" />
+    <Compile Include="Search\Core\Abstraction\IStartStop.cs" />
+    <Compile Include="Search\Core\Abstraction\IStartStopPipelineComponent.cs" />
+    <Compile Include="Search\Core\Abstraction\IStreamManager.cs" />
+    <Compile Include="Search\Core\Abstraction\ISubmitDocument.cs" />
+    <Compile Include="Search\Core\Abstraction\IWatermarkStorage.cs" />
+    <Compile Include="Search\Core\Abstraction\OperationFailedException.cs" />
+    <Compile Include="Search\Core\Abstraction\OperatorPerformanceCounter.cs" />
+    <Compile Include="Search\Core\Abstraction\PoisonComponentException.cs" />
+    <Compile Include="Search\Core\Abstraction\PropertyDefinition.cs" />
+    <Compile Include="Search\Core\Abstraction\PropertyErrorException.cs" />
+    <Compile Include="Search\Core\Abstraction\PropertyFlag.cs" />
+    <Compile Include="Search\Core\Abstraction\PropertyTypeErrorException.cs" />
+    <Compile Include="Search\Core\Abstraction\SerializablePropertyId.cs" />
+    <Compile Include="Search\Core\Abstraction\SerializablePropertyType.cs" />
+    <Compile Include="Search\Core\Abstraction\UpdateIndexStatusSource.cs" />
+    <Compile Include="Search\Core\AsyncTask\AggregateException.cs" />
+    <Compile Include="Search\Core\AsyncTask\AsyncPrepareToStart.cs" />
+    <Compile Include="Search\Core\AsyncTask\AsyncStart.cs" />
+    <Compile Include="Search\Core\AsyncTask\AsyncStop.cs" />
+    <Compile Include="Search\Core\AsyncTask\AsyncTask.cs" />
+    <Compile Include="Search\Core\AsyncTask\AsyncTaskParallel.cs" />
+    <Compile Include="Search\Core\AsyncTask\AsyncTaskSequence.cs" />
+    <Compile Include="Search\Core\AsyncTask\AsyncTaskWithChildTasks.cs" />
+    <Compile Include="Search\Core\AsyncTask\TaskCompleteCallback.cs" />
+    <Compile Include="Search\Core\CannotProcessDocException.cs" />
+    <Compile Include="Search\Core\Common\ActionMethod.cs" />
+    <Compile Include="Search\Core\Common\AppConfigAdapter.cs" />
+    <Compile Include="Search\Core\Common\AsyncResult.2.cs" />
+    <Compile Include="Search\Core\Common\AsyncResult.cs" />
+    <Compile Include="Search\Core\Common\BetweenFilter.cs" />
+    <Compile Include="Search\Core\Common\CallbackWrapper.cs" />
+    <Compile Include="Search\Core\Common\ComponentInfo.cs" />
+    <Compile Include="Search\Core\Common\ComponentInstance.cs" />
+    <Compile Include="Search\Core\Common\ComponentRegistry.cs" />
+    <Compile Include="Search\Core\Common\ConditionMethod.cs" />
+    <Compile Include="Search\Core\Common\Config.cs" />
+    <Compile Include="Search\Core\Common\ContainerComponent.cs" />
+    <Compile Include="Search\Core\Common\DeferredStarter.cs" />
+    <Compile Include="Search\Core\Common\Disposable.cs" />
+    <Compile Include="Search\Core\Common\EvaluationErrors.cs" />
+    <Compile Include="Search\Core\Common\EvaluationErrorsHelper.cs" />
+    <Compile Include="Search\Core\Common\Executable.cs" />
+    <Compile Include="Search\Core\Common\FailureMonitor.cs" />
+    <Compile Include="Search\Core\Common\FeederType.cs" />
+    <Compile Include="Search\Core\Common\FlightingSearchConfig.cs" />
+    <Compile Include="Search\Core\Common\FolderIdHelper.cs" />
+    <Compile Include="Search\Core\Common\Heap.cs" />
+    <Compile Include="Search\Core\Common\IConfigAdapter.cs" />
+    <Compile Include="Search\Core\Common\IHeapItem.cs" />
+    <Compile Include="Search\Core\Common\IndexStatusStore.cs" />
+    <Compile Include="Search\Core\Common\LanguagePropertyMapping.cs" />
+    <Compile Include="Search\Core\Common\LapTimer.cs" />
+    <Compile Include="Search\Core\Common\LazyAsyncResultWithTimeout.cs" />
+    <Compile Include="Search\Core\Common\LohFriendlyStream.cs" />
+    <Compile Include="Search\Core\Common\MailboxCrawlerState.cs" />
+    <Compile Include="Search\Core\Common\MailboxState.cs" />
+    <Compile Include="Search\Core\Common\NoderunnerResourceHelper.cs" />
+    <Compile Include="Search\Core\Common\NoTransitionException.cs" />
+    <Compile Include="Search\Core\Common\ProcessorAffinityHelper.cs" />
+    <Compile Include="Search\Core\Common\QueueManager.cs" />
+    <Compile Include="Search\Core\Common\RefCount.cs" />
+    <Compile Include="Search\Core\Common\RegisteredWaitHandleWrapper.cs" />
+    <Compile Include="Search\Core\Common\SearchParticipant.cs" />
+    <Compile Include="Search\Core\Common\SerializableProperties.cs" />
+    <Compile Include="Search\Core\Common\SerializableProperty.cs" />
+    <Compile Include="Search\Core\Common\SerializableStreamProperty.cs" />
+    <Compile Include="Search\Core\Common\SerializableStringProperty.cs" />
+    <Compile Include="Search\Core\Common\SignalInfo.cs" />
+    <Compile Include="Search\Core\Common\SignalPriority.cs" />
+    <Compile Include="Search\Core\Common\StartStopComponent.cs" />
+    <Compile Include="Search\Core\Common\StatefulComponent.cs" />
+    <Compile Include="Search\Core\Common\StateInfo.cs" />
+    <Compile Include="Search\Core\Common\StreamChannel.cs" />
+    <Compile Include="Search\Core\Common\StreamManager.cs" />
+    <Compile Include="Search\Core\Common\TransitionInfo.cs" />
+    <Compile Include="Search\Core\Common\TransitionLogEntry.cs" />
+    <Compile Include="Search\Core\Common\TransportFlowMessageFlags.cs" />
+    <Compile Include="Search\Core\Common\Util.cs" />
+    <Compile Include="Search\Core\Common\WatermarkManager.cs" />
+    <Compile Include="Search\Core\Common\XHeaderStream.cs" />
+    <Compile Include="Search\Core\Diagnostics\DiagnosticsLog.cs" />
+    <Compile Include="Search\Core\Diagnostics\DiagnosticsLogConfig.cs" />
+    <Compile Include="Search\Core\Diagnostics\DiagnosticsLoggingTag.cs" />
+    <Compile Include="Search\Core\Diagnostics\DiagnosticsSession.cs" />
+    <Compile Include="Search\Core\Diagnostics\DiagnosticsSessionFactory.cs" />
+    <Compile Include="Search\Core\Diagnostics\IDiagnosticsLogConfig.cs" />
+    <Compile Include="Search\Core\Diagnostics\IDiagnosticsSession.cs" />
+    <Compile Include="Search\Core\Diagnostics\IDiagnosticsSessionFactory.cs" />
+    <Compile Include="Search\Core\Diagnostics\OperatorDiagnostics.cs" />
+    <Compile Include="Search\Core\Diagnostics\OperatorDiagnosticsFactory.cs" />
+    <Compile Include="Search\Core\Diagnostics\OperatorLocation.cs" />
+    <Compile Include="Search\Core\Diagnostics\OperatorTimingEntry.cs" />
+    <Compile Include="Search\Core\Diagnostics\TransportFlowOperatorTimings.cs" />
+    <Compile Include="Search\Core\DocProcessCanceledException.cs" />
+    <Compile Include="Search\Core\DocumentModel\PropertyBag.cs" />
+    <Compile Include="Search\Core\DocumentValidationException.cs" />
+    <Compile Include="Search\Core\IndexStatusException.cs" />
+    <Compile Include="Search\Core\IndexStatusInvalidException.cs" />
+    <Compile Include="Search\Core\IndexStatusInvalidPropertyException.cs" />
+    <Compile Include="Search\Core\IndexStatusNotFoundException.cs" />
+    <Compile Include="Search\Core\IndexStatusRegistryNotFoundException.cs" />
+    <Compile Include="Search\Core\LocDescriptionAttribute.cs" />
+    <Compile Include="Search\Core\Pipeline\PerfCounterSampleCollector.cs" />
+    <Compile Include="Search\Core\Pipeline\Pipeline.cs" />
+    <Compile Include="Search\Core\Pipeline\PipelineComponentConfig.cs" />
+    <Compile Include="Search\Core\Pipeline\PipelineComponentConfigDefinition.cs" />
+    <Compile Include="Search\Core\Pipeline\PipelineComponentCreator.cs" />
+    <Compile Include="Search\Core\Pipeline\PipelineComponentDefinition.cs" />
+    <Compile Include="Search\Core\Pipeline\PipelineComponentFactoryDefinition.cs" />
+    <Compile Include="Search\Core\Pipeline\PipelineComponentList.cs" />
+    <Compile Include="Search\Core\Pipeline\PipelineComponentMonitor.cs" />
+    <Compile Include="Search\Core\Pipeline\PipelineConfigAdapter.cs" />
+    <Compile Include="Search\Core\Pipeline\PipelineConnectorBase.cs" />
+    <Compile Include="Search\Core\Pipeline\PipelineContext.cs" />
+    <Compile Include="Search\Core\Pipeline\PipelineDefinition.cs" />
+    <Compile Include="Search\Core\RightsManagementException.cs" />
+    <Compile Include="Search\Core\RpcEndpoint\RpcConnectionPool.cs" />
+    <Compile Include="Search\Core\RpcEndpoint\SearchServiceRpcClient.cs" />
+    <Compile Include="Search\Core\RpcEndpoint\SearchServiceRpcServer.cs" />
+    <Compile Include="Search\Core\Strings.cs" />
+    <Compile Include="Search\EventLog\MSExchangeFastSearchEventLogConstants.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Search\Core\Strings.resources" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.ApplicationLogic\Microsoft.Exchange.Data.ApplicationLogic.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14104}</Project>
+      <Name>Microsoft.Exchange.Data.ApplicationLogic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Common\Microsoft.Exchange.Data.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140D3}</Project>
+      <Name>Microsoft.Exchange.Data.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Directory\Microsoft.Exchange.Data.Directory.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14105}</Project>
+      <Name>Microsoft.Exchange.Data.Directory</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Storage\Microsoft.Exchange.Data.Storage.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1410F}</Project>
+      <Name>Microsoft.Exchange.Data.Storage</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data\Microsoft.Exchange.Data.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14106}</Project>
+      <Name>Microsoft.Exchange.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Diagnostics\Microsoft.Exchange.Diagnostics.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14113}</Project>
+      <Name>Microsoft.Exchange.Diagnostics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Net\Microsoft.Exchange.Net.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14178}</Project>
+      <Name>Microsoft.Exchange.Net</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Rpc\Microsoft.Exchange.Rpc.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14188}</Project>
+      <Name>Microsoft.Exchange.Rpc</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.VariantConfiguration\Microsoft.Exchange.VariantConfiguration.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141E0}</Project>
+      <Name>Microsoft.Exchange.VariantConfiguration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\mscorlib\mscorlib.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141F1}</Project>
+      <Name>mscorlib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

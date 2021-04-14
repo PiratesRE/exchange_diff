@@ -1,0 +1,94 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{09CD9476-CD82-489E-B9E2-84B47CA141AF}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Microsoft.Exchange</RootNamespace>
+    <AssemblyName>Microsoft.Exchange.Setup.Bootstrapper.Common</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Bootstrapper\Setup\BootstrapperBase.cs" />
+    <Compile Include="Bootstrapper\Setup\DialogBoxForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Bootstrapper\Setup\DialogBoxForm.Designer.cs">
+      <DependentUpon>DialogBoxForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Setup\Bootstrapper\Common\Bit64OnlyException.cs" />
+    <Compile Include="Setup\Bootstrapper\Common\BootstrapperLogger.cs" />
+    <Compile Include="Setup\Bootstrapper\Common\DirectoryNotExistsException.cs" />
+    <Compile Include="Setup\Bootstrapper\Common\FileCopyException.cs" />
+    <Compile Include="Setup\Bootstrapper\Common\FileNotExistsException.cs" />
+    <Compile Include="Setup\Bootstrapper\Common\FileVersionNotFoundException.cs" />
+    <Compile Include="Setup\Bootstrapper\Common\IBootstrapperLogger.cs" />
+    <Compile Include="Setup\Bootstrapper\Common\InsufficientDiskSpaceException.cs" />
+    <Compile Include="Setup\Bootstrapper\Common\InvalidNetFwVersionException.cs" />
+    <Compile Include="Setup\Bootstrapper\Common\InvalidOSVersionException.cs" />
+    <Compile Include="Setup\Bootstrapper\Common\InvalidPSVersionException.cs" />
+    <Compile Include="Setup\Bootstrapper\Common\SetupLogInitializeException.cs" />
+    <Compile Include="Setup\Bootstrapper\Common\StartSetupFileNotFoundException.cs" />
+    <Compile Include="Setup\Bootstrapper\Common\Strings.cs" />
+    <Compile Include="Setup\CommonBase\DriveType.cs" />
+    <Compile Include="Setup\CommonBase\SetupChecksFileConstant.cs" />
+    <Compile Include="Setup\CommonBase\SetupChecksRegistryConstant.cs" />
+    <Compile Include="Setup\CommonBase\SetupHelper.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Setup\Bootstrapper\Common\Strings.resources" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Common\Microsoft.Exchange.Data.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140D3}</Project>
+      <Name>Microsoft.Exchange.Data.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Diagnostics\Microsoft.Exchange.Diagnostics.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14113}</Project>
+      <Name>Microsoft.Exchange.Diagnostics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Setup.AcquireLanguagePack\Microsoft.Exchange.Setup.AcquireLanguagePack.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141AE}</Project>
+      <Name>Microsoft.Exchange.Setup.AcquireLanguagePack</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\mscorlib\mscorlib.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141F1}</Project>
+      <Name>mscorlib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

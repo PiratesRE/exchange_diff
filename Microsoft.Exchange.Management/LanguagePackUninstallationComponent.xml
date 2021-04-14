@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo Name="Language Pack Uninstall Configuration">
+  <ServerTasks>
+    <ServerTaskInfo Id="_9a89e7313d524f298d51c24709f69125" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <!-- For Install, upgrade and DR, remove the specified LP packages -->
+      <Install />
+      <BuildToBuildUpgrade />
+      <DisasterRecovery />
+      <!-- Remove any existing client language packs -->
+      <Uninstall>
+        <!-- Remove all client LP packages based on what we find in the window installer registry subtree -->
+        <Standalone>
+          <![CDATA[
+                    $regPath='HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall';
+                    
+                    $PackageGUIDRegEx = "{DEDFFB[0-9a-fA-F]{2}-42EC-4E26-[0-9a-fA-F]{4}-430E86DF378C}";
+                    
+                    $InstallPath = (Get-ItemProperty 'HKLM:\SOFTWARE\Microsoft\ExchangeServer\v15\setup').MsiInstallPath;
+                    
+                    if(test-path ($regPath))
+                    {
+                        Write-ExchangeSetupLog -info ("Removing " +  $RoleLanguagePackType + " Language Packs.");
+                        Get-ChildItem ($regPath) | foreach{ 
+                            if($_ -match "(?<ProductCode>$PackageGUIDRegEx)") {
+                                $langPackPackageCode = $matches['ProductCode'];
+                                if($langPackPackageCode -ne $null -and $langPackPackageCode.Length -ne 0) {
+                                    Write-ExchangeSetupLog -info ("Removing package $langPackPackageCode");
+                                    $language = $langPackPackageCode.Substring(20,4);
+                                    $logFilePath = [IO.Path]::Combine($RoleLogFilePath,"Uninstall") + '.' + $language + '.' + "Client" + "." + $RoleLogDateTime + ".msilog";
+                                    uninstall-MsiPackage -ProductCode ($langPackPackageCode) -LogFile ($logFilePath);
+                                };
+                            };
+                        };
+                        Get-Childitem -Path $InstallPath -include "*.Localized.js","*.Localized.min.js" -recurse | foreach ($_) {remove-item $_.fullname};
+                        Write-ExchangeSetupLog -info "Remove Language Packs completed.";
+                    };
+                ]]>
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Remove any existing server language packs -->
+    <ServerTaskInfo Id="_73217845dd5e4dd88a658b82846f1c99" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install />
+      <BuildToBuildUpgrade />
+      <DisasterRecovery />
+      <Uninstall>
+        <!-- Remove all server LP packages based on what we find in the window installer registry subtree -->
+        <Standalone>
+          <![CDATA[
+                    $regPath='HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall';
+                    
+                    $PackageGUIDRegEx = "{521E60[0-9a-fA-F]{2}-B4B1-4CBC-[0-9a-fA-F]{4}-25AD697801FA}";
+                    
+                    if(test-path ($regPath))
+                    {
+                        Write-ExchangeSetupLog -info ("Removing " +  $RoleLanguagePackType + " Language Packs.");
+                        Get-ChildItem ($regPath) | foreach{ 
+                            if($_ -match "(?<ProductCode>$PackageGUIDRegEx)") {
+                                $langPackPackageCode = $matches['ProductCode'];
+                                if($langPackPackageCode -ne $null -and $langPackPackageCode.Length -ne 0) {
+                                    Write-ExchangeSetupLog -info ("Removing package $langPackPackageCode");
+                                    $language = $langPackPackageCode.Substring(20,4);
+                                    $logFilePath = [IO.Path]::Combine($RoleLogFilePath,"Uninstall") + '.' + $language + '.' + "Server" + "." + $RoleLogDateTime + ".msilog";
+                                    uninstall-MsiPackage -ProductCode ($langPackPackageCode) -LogFile ($logFilePath);
+                                };
+                            };
+                        };
+                        Write-ExchangeSetupLog -info "Remove Language Packs completed.";
+                    };
+                ]]>
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+  </ServerTasks>
+</SetupComponentInfo>

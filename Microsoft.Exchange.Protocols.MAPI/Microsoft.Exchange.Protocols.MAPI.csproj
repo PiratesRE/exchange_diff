@@ -1,0 +1,230 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{09CD9476-CD82-489E-B9E2-84B47CA14182}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Microsoft.Exchange.Protocols.MAPI</RootNamespace>
+    <AssemblyName>Microsoft.Exchange.Protocols.MAPI</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Exchange.Common.IL" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AccessCheckOperation.cs" />
+    <Compile Include="AccessCheckState.cs" />
+    <Compile Include="ActiveObjectLimits.cs" />
+    <Compile Include="AttachmentConfigureFlags.cs" />
+    <Compile Include="AttachMethod.cs" />
+    <Compile Include="BulkErrorAction.cs" />
+    <Compile Include="BulkOperation.cs" />
+    <Compile Include="ClientTypeHelper.cs" />
+    <Compile Include="CodePage.cs" />
+    <Compile Include="CopyFolderOperation.cs" />
+    <Compile Include="CopyToFlags.cs" />
+    <Compile Include="CountedClientSecurityContext.cs" />
+    <Compile Include="DeferredSendEvent.cs" />
+    <Compile Include="DeferredSendHandler.cs" />
+    <Compile Include="DeleteFolderOperation.cs" />
+    <Compile Include="DeleteMessagesOperation.cs" />
+    <Compile Include="EmptyFolderOperation.cs" />
+    <Compile Include="ExExceptionAccessDenied.cs" />
+    <Compile Include="ExExceptionConditionViolation.cs" />
+    <Compile Include="ExExceptionCorruptData.cs" />
+    <Compile Include="ExExceptionFail.cs" />
+    <Compile Include="ExExceptionInvalidObject.cs" />
+    <Compile Include="ExExceptionInvalidParameter.cs" />
+    <Compile Include="ExExceptionInvalidRecipients.cs" />
+    <Compile Include="ExExceptionInvalidType.cs" />
+    <Compile Include="ExExceptionLogonFailed.cs" />
+    <Compile Include="ExExceptionMailboxInTransit.cs" />
+    <Compile Include="ExExceptionMailboxQuarantined.cs" />
+    <Compile Include="ExExceptionMapiRpcFormat.cs" />
+    <Compile Include="ExExceptionMaxSubmissionExceeded.cs" />
+    <Compile Include="ExExceptionNoReceiveFolder.cs" />
+    <Compile Include="ExExceptionNoSupport.cs" />
+    <Compile Include="ExExceptionNotFound.cs" />
+    <Compile Include="ExExceptionObjectChanged.cs" />
+    <Compile Include="ExExceptionObjectDeleted.cs" />
+    <Compile Include="ExExceptionOutOfMemory.cs" />
+    <Compile Include="ExExceptionPropSize.cs" />
+    <Compile Include="ExExceptionPropType.cs" />
+    <Compile Include="ExExceptionRequiresRefResolve.cs" />
+    <Compile Include="ExExceptionSearchFolder.cs" />
+    <Compile Include="ExExceptionSendAsDenied.cs" />
+    <Compile Include="ExExceptionStreamAccessDenied.cs" />
+    <Compile Include="ExExceptionStreamInvalidParameter.cs" />
+    <Compile Include="ExExceptionStreamSeekError.cs" />
+    <Compile Include="ExExceptionSyncConflict.cs" />
+    <Compile Include="ExExceptionSyncIgnore.cs" />
+    <Compile Include="ExExceptionSyncNoParent.cs" />
+    <Compile Include="ExExceptionTooComplex.cs" />
+    <Compile Include="ExExceptionTooManyRecipients.cs" />
+    <Compile Include="ExExceptionVersionMismatch.cs" />
+    <Compile Include="ExtensionMethods\MapiExtensionMethods.cs" />
+    <Compile Include="FolderConfigureFlags.cs" />
+    <Compile Include="FolderCopyPropsOperation.cs" />
+    <Compile Include="FolderCopyToOperation.cs" />
+    <Compile Include="GetMailboxInfoTableFlags.cs" />
+    <Compile Include="GetPropListFlags.cs" />
+    <Compile Include="Globals.cs" />
+    <Compile Include="Helper.cs" />
+    <Compile Include="HierarchyBulkOperation.cs" />
+    <Compile Include="ICountableObject.cs" />
+    <Compile Include="IMapiObject.cs" />
+    <Compile Include="IMapiObjectCounter.cs" />
+    <Compile Include="IRopHandlerWithContext.cs" />
+    <Compile Include="LegacyHelper.cs" />
+    <Compile Include="LegacyPropProblem.cs" />
+    <Compile Include="LogTransactionInformationMapi.cs" />
+    <Compile Include="MailboxLogonList.cs" />
+    <Compile Include="MapiAccess.cs" />
+    <Compile Include="MapiAddressTypes.cs" />
+    <Compile Include="MapiAttachment.cs" />
+    <Compile Include="MapiBase.cs" />
+    <Compile Include="MapiContext.cs" />
+    <Compile Include="MapiCopyToFlags.cs" />
+    <Compile Include="MapiException.cs" />
+    <Compile Include="MapiFolder.cs" />
+    <Compile Include="MapiLogon.cs" />
+    <Compile Include="MapiMailbox.cs" />
+    <Compile Include="MapiMailboxShape.cs" />
+    <Compile Include="MapiMessage.cs" />
+    <Compile Include="MapiMessageClasses.cs" />
+    <Compile Include="MapiNotificationFlags.cs" />
+    <Compile Include="MapiNotify.cs" />
+    <Compile Include="MapiObjectTrackedType.cs" />
+    <Compile Include="MapiObjectTrackingScope.cs" />
+    <Compile Include="MapiObjectType.cs" />
+    <Compile Include="MapiPerSessionObjectCounter.cs" />
+    <Compile Include="MapiPerson.cs" />
+    <Compile Include="MapiPersonCollection.cs" />
+    <Compile Include="MapiPropBagBase.cs" />
+    <Compile Include="MapiPropertyProblem.cs" />
+    <Compile Include="MapiProtocolsHelpers.cs" />
+    <Compile Include="MapiQryNamedPropsFlags.cs" />
+    <Compile Include="MapiSaveMessageChangesFlags.cs" />
+    <Compile Include="MapiServiceType.cs" />
+    <Compile Include="MapiSession.cs" />
+    <Compile Include="MapiSessionPerServiceCounter.cs" />
+    <Compile Include="MapiSessionPerUserAndClientTypeCounter.cs" />
+    <Compile Include="MapiSessionPerUserCounter.cs" />
+    <Compile Include="MapiStream.cs" />
+    <Compile Include="MapiStreamLock.cs" />
+    <Compile Include="MapiTimedEventHandler.cs" />
+    <Compile Include="MapiTimedEvents.cs" />
+    <Compile Include="MapiViewAttachment.cs" />
+    <Compile Include="MapiViewFolder.cs" />
+    <Compile Include="MapiViewMessage.cs" />
+    <Compile Include="MapiViewSetColumnsFlag.cs" />
+    <Compile Include="MapiViewTableBase.cs" />
+    <Compile Include="MessageConfigureFlags.cs" />
+    <Compile Include="MessageListBulkOperation.cs" />
+    <Compile Include="MoveCopyMessagesOperation.cs" />
+    <Compile Include="OpenStoreFlags.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RcaTypeHelpers.cs" />
+    <Compile Include="ResolveMethod.cs" />
+    <Compile Include="RopFlags.cs" />
+    <Compile Include="SecurityContextKey.cs" />
+    <Compile Include="SecurityContextManager.cs" />
+    <Compile Include="SecurityContextsQueryTarget.cs" />
+    <Compile Include="SetReadFlagsOperation.cs" />
+    <Compile Include="StreamFlags.cs" />
+    <Compile Include="SubmitMessageRightsCheckFlags.cs" />
+    <Compile Include="TableEventType.cs" />
+    <Compile Include="TableModifiedNotificationEvent.cs" />
+    <Compile Include="UnlimitedObjectCounter.cs" />
+    <Compile Include="Version.cs" />
+    <Compile Include="ViewMessageConfigureFlags.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Common\Microsoft.Exchange.Data.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140D3}</Project>
+      <Name>Microsoft.Exchange.Data.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Diagnostics\Microsoft.Exchange.Diagnostics.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14113}</Project>
+      <Name>Microsoft.Exchange.Diagnostics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Net\Microsoft.Exchange.Net.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14178}</Project>
+      <Name>Microsoft.Exchange.Net</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.RpcClientAccess.ExMonHandler\Microsoft.Exchange.RpcClientAccess.ExMonHandler.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1418A}</Project>
+      <Name>Microsoft.Exchange.RpcClientAccess.ExMonHandler</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.RpcClientAccess.Parser\Microsoft.Exchange.RpcClientAccess.Parser.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1418D}</Project>
+      <Name>Microsoft.Exchange.RpcClientAccess.Parser</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Server.Storage.Common\Microsoft.Exchange.Server.Storage.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1419A}</Project>
+      <Name>Microsoft.Exchange.Server.Storage.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Server.Storage.LazyIndexing\Microsoft.Exchange.Server.Storage.LazyIndexing.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141A0}</Project>
+      <Name>Microsoft.Exchange.Server.Storage.LazyIndexing</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Server.Storage.LogicalDataModel\Microsoft.Exchange.Server.Storage.LogicalDataModel.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141A1}</Project>
+      <Name>Microsoft.Exchange.Server.Storage.LogicalDataModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Server.Storage.PhysicalAccess\Microsoft.Exchange.Server.Storage.PhysicalAccess.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141A4}</Project>
+      <Name>Microsoft.Exchange.Server.Storage.PhysicalAccess</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Server.Storage.PropertyDefinitions\Microsoft.Exchange.Server.Storage.PropertyDefinitions.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141A5}</Project>
+      <Name>Microsoft.Exchange.Server.Storage.PropertyDefinitions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Server.Storage.PropertyTag\Microsoft.Exchange.Server.Storage.PropertyTag.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141A6}</Project>
+      <Name>Microsoft.Exchange.Server.Storage.PropertyTag</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Server.Storage.StoreCommonServices\Microsoft.Exchange.Server.Storage.StoreCommonServices.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141A8}</Project>
+      <Name>Microsoft.Exchange.Server.Storage.StoreCommonServices</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Office.Datacenter.ActiveMonitoringLocal\Microsoft.Office.Datacenter.ActiveMonitoringLocal.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141ED}</Project>
+      <Name>Microsoft.Office.Datacenter.ActiveMonitoringLocal</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\mscorlib\mscorlib.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141F1}</Project>
+      <Name>mscorlib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

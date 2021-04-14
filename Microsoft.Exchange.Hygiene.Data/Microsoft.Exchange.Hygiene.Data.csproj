@@ -1,0 +1,662 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{09CD9476-CD82-489E-B9E2-84B47CA14135}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Microsoft.Exchange</RootNamespace>
+    <AssemblyName>Microsoft.Exchange.Hygiene.Data</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Exchange.Hygiene.DiagnosisUtil" />
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.DirectoryServices.Protocols" />
+    <Reference Include="System.IdentityModel" />
+    <Reference Include="System.Management.Automation" />
+    <Reference Include="System.Runtime.Caching" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Common\Reputation\ReputationEntityType.cs" />
+    <Compile Include="Data\IDisposableConfigDataProvider.cs" />
+    <Compile Include="Hygiene\Cache\Data\BloomFilterMode.cs" />
+    <Compile Include="Hygiene\Cache\Data\CacheConfiguration.cs" />
+    <Compile Include="Hygiene\Cache\Data\CacheCookieRow.cs" />
+    <Compile Include="Hygiene\Cache\Data\CacheDataLossException.cs" />
+    <Compile Include="Hygiene\Cache\Data\CacheDeserializationException.cs" />
+    <Compile Include="Hygiene\Cache\Data\CacheEntityState.cs" />
+    <Compile Include="Hygiene\Cache\Data\CacheFailoverMode.cs" />
+    <Compile Include="Hygiene\Cache\Data\CacheFileCookie.cs" />
+    <Compile Include="Hygiene\Cache\Data\CacheFileCookieSerializer.cs" />
+    <Compile Include="Hygiene\Cache\Data\CacheFileName.cs" />
+    <Compile Include="Hygiene\Cache\Data\CacheGlobalLock.cs" />
+    <Compile Include="Hygiene\Cache\Data\CacheKeyLookup.cs" />
+    <Compile Include="Hygiene\Cache\Data\CacheLockInfo.cs" />
+    <Compile Include="Hygiene\Cache\Data\CacheObjectSchema.cs" />
+    <Compile Include="Hygiene\Cache\Data\CachePrimingAction.cs" />
+    <Compile Include="Hygiene\Cache\Data\CachePrimingInfo.cs" />
+    <Compile Include="Hygiene\Cache\Data\CachePrimingMode.cs" />
+    <Compile Include="Hygiene\Cache\Data\CachePrimingState.cs" />
+    <Compile Include="Hygiene\Cache\Data\CacheUnableToLockException.cs" />
+    <Compile Include="Hygiene\Cache\Data\CacheWatchdogException.cs" />
+    <Compile Include="Hygiene\Cache\Data\CacheWorkSliceCookie.cs" />
+    <Compile Include="Hygiene\Cache\Data\EntityCacheConfiguration.cs" />
+    <Compile Include="Hygiene\Cache\Data\EntityCacheConfigurationCollection.cs" />
+    <Compile Include="Hygiene\Cache\Data\HygieneCacheException.cs" />
+    <Compile Include="Hygiene\Cache\Data\ICachePrimingInfo.cs" />
+    <Compile Include="Hygiene\Cache\Data\TenantConfigurationCacheMode.cs" />
+    <Compile Include="Hygiene\Data\AsyncQueue\AsyncQueueCommonSchema.cs" />
+    <Compile Include="Hygiene\Data\AsyncQueue\AsyncQueueFlags.cs" />
+    <Compile Include="Hygiene\Data\AsyncQueue\AsyncQueueLog.cs" />
+    <Compile Include="Hygiene\Data\AsyncQueue\AsyncQueueLogBatch.cs" />
+    <Compile Include="Hygiene\Data\AsyncQueue\AsyncQueueLogBatchSchema.cs" />
+    <Compile Include="Hygiene\Data\AsyncQueue\AsyncQueueLogProperty.cs" />
+    <Compile Include="Hygiene\Data\AsyncQueue\AsyncQueueLogPropertySchema.cs" />
+    <Compile Include="Hygiene\Data\AsyncQueue\AsyncQueueLogSchema.cs" />
+    <Compile Include="Hygiene\Data\AsyncQueue\AsyncQueueOwnerInfo.cs" />
+    <Compile Include="Hygiene\Data\AsyncQueue\AsyncQueueOwnerInfoSchema.cs" />
+    <Compile Include="Hygiene\Data\AsyncQueue\AsyncQueuePriority.cs" />
+    <Compile Include="Hygiene\Data\AsyncQueue\AsyncQueueProbeResult.cs" />
+    <Compile Include="Hygiene\Data\AsyncQueue\AsyncQueueProbeSchema.cs" />
+    <Compile Include="Hygiene\Data\AsyncQueue\AsyncQueueReport.cs" />
+    <Compile Include="Hygiene\Data\AsyncQueue\AsyncQueueReportSchema.cs" />
+    <Compile Include="Hygiene\Data\AsyncQueue\AsyncQueueRequest.cs" />
+    <Compile Include="Hygiene\Data\AsyncQueue\AsyncQueueRequestExistsException.cs" />
+    <Compile Include="Hygiene\Data\AsyncQueue\AsyncQueueRequestSchema.cs" />
+    <Compile Include="Hygiene\Data\AsyncQueue\AsyncQueueRequestStatusInfo.cs" />
+    <Compile Include="Hygiene\Data\AsyncQueue\AsyncQueueRequestStatusUpdate.cs" />
+    <Compile Include="Hygiene\Data\AsyncQueue\AsyncQueueRequestStatusUpdateSchema.cs" />
+    <Compile Include="Hygiene\Data\AsyncQueue\AsyncQueueSession.cs" />
+    <Compile Include="Hygiene\Data\AsyncQueue\AsyncQueueStaleObjectException.cs" />
+    <Compile Include="Hygiene\Data\AsyncQueue\AsyncQueueStatus.cs" />
+    <Compile Include="Hygiene\Data\AsyncQueue\AsyncQueueStatusReport.cs" />
+    <Compile Include="Hygiene\Data\AsyncQueue\AsyncQueueStatusReportSchema.cs" />
+    <Compile Include="Hygiene\Data\AsyncQueue\AsyncQueueStep.cs" />
+    <Compile Include="Hygiene\Data\AsyncQueue\AsyncQueueStepSchema.cs" />
+    <Compile Include="Hygiene\Data\AuditHelper.cs" />
+    <Compile Include="Hygiene\Data\AuditHistoryResult.cs" />
+    <Compile Include="Hygiene\Data\AuditProperty.cs" />
+    <Compile Include="Hygiene\Data\BackgroundJobBackend\BackgroundJobBackendBase.cs" />
+    <Compile Include="Hygiene\Data\BackgroundJobBackend\BackgroundJobBackendPropertyDefinition.cs" />
+    <Compile Include="Hygiene\Data\BackgroundJobBackend\BackgroundJobBackendSession.cs" />
+    <Compile Include="Hygiene\Data\BackgroundJobBackend\BackgroundJobMgrHeartBeatUpdate.cs" />
+    <Compile Include="Hygiene\Data\BackgroundJobBackend\BackgroundJobMgrInstance.cs" />
+    <Compile Include="Hygiene\Data\BackgroundJobBackend\BackgroundJobMgrInstanceProperties.cs" />
+    <Compile Include="Hygiene\Data\BackgroundJobBackend\BackgroundJobMgrTimedOutInstance.cs" />
+    <Compile Include="Hygiene\Data\BackgroundJobBackend\DataCenterDefinition.cs" />
+    <Compile Include="Hygiene\Data\BackgroundJobBackend\Days.cs" />
+    <Compile Include="Hygiene\Data\BackgroundJobBackend\JobDefinition.cs" />
+    <Compile Include="Hygiene\Data\BackgroundJobBackend\JobDefinitionProperties.cs" />
+    <Compile Include="Hygiene\Data\BackgroundJobBackend\RegionDefinition.cs" />
+    <Compile Include="Hygiene\Data\BackgroundJobBackend\Regions.cs" />
+    <Compile Include="Hygiene\Data\BackgroundJobBackend\RoleDefinition.cs" />
+    <Compile Include="Hygiene\Data\BackgroundJobBackend\SaveTaskItemBatch.cs" />
+    <Compile Include="Hygiene\Data\BackgroundJobBackend\ScheduleItem.cs" />
+    <Compile Include="Hygiene\Data\BackgroundJobBackend\ScheduleItemActiveUpdate.cs" />
+    <Compile Include="Hygiene\Data\BackgroundJobBackend\ScheduleItemProperties.cs" />
+    <Compile Include="Hygiene\Data\BackgroundJobBackend\SchedulingStrategyType.cs" />
+    <Compile Include="Hygiene\Data\BackgroundJobBackend\SchedulingType.cs" />
+    <Compile Include="Hygiene\Data\BackgroundJobBackend\SyncTaskStatusUpdate.cs" />
+    <Compile Include="Hygiene\Data\BackgroundJobBackend\TakeTaskOwnership.cs" />
+    <Compile Include="Hygiene\Data\BackgroundJobBackend\TaskCompletionStatusType.cs" />
+    <Compile Include="Hygiene\Data\BackgroundJobBackend\TaskExecutionStateType.cs" />
+    <Compile Include="Hygiene\Data\BackgroundJobBackend\TaskItem.cs" />
+    <Compile Include="Hygiene\Data\BackgroundJobBackend\TaskItemProperties.cs" />
+    <Compile Include="Hygiene\Data\BackgroundJobBackend\TaskStatusUpdate.cs" />
+    <Compile Include="Hygiene\Data\BatchPropertyTable.cs" />
+    <Compile Include="Hygiene\Data\BucketizedTimeCounter.cs" />
+    <Compile Include="Hygiene\Data\BuildVersion.cs" />
+    <Compile Include="Hygiene\Data\CachedIterator.cs" />
+    <Compile Include="Hygiene\Data\CompositePagedReader.cs" />
+    <Compile Include="Hygiene\Data\ConfigDataProviderPagedReader.cs" />
+    <Compile Include="Hygiene\Data\ConfigurablePropertyBag.cs" />
+    <Compile Include="Hygiene\Data\ConfigurationSettingBatch.cs" />
+    <Compile Include="Hygiene\Data\ConfigurationSettingBatchSchema.cs" />
+    <Compile Include="Hygiene\Data\ConfigurationSettingStatusBatch.cs" />
+    <Compile Include="Hygiene\Data\ConfigurationSettingStatusBatchSchema.cs" />
+    <Compile Include="Hygiene\Data\Configuration\AppConfigCollection.cs" />
+    <Compile Include="Hygiene\Data\Configuration\AppConfigParameter.cs" />
+    <Compile Include="Hygiene\Data\Configuration\AppConfigSchema.cs" />
+    <Compile Include="Hygiene\Data\Configuration\AppConfigSession.cs" />
+    <Compile Include="Hygiene\Data\Configuration\AppConfigVersion.cs" />
+    <Compile Include="Hygiene\Data\CurrentOperationCounter.cs" />
+    <Compile Include="Hygiene\Data\DalHelper.cs" />
+    <Compile Include="Hygiene\Data\DatabaseType.cs" />
+    <Compile Include="Hygiene\Data\DataBlob.cs" />
+    <Compile Include="Hygiene\Data\DataBlobCommonSchema.cs" />
+    <Compile Include="Hygiene\Data\DataBlobSchema.cs" />
+    <Compile Include="Hygiene\Data\DataBlobSession.cs" />
+    <Compile Include="Hygiene\Data\DataBlobVersion.cs" />
+    <Compile Include="Hygiene\Data\DataBlobVersionSchema.cs" />
+    <Compile Include="Hygiene\Data\DataBlobVersionType.cs" />
+    <Compile Include="Hygiene\Data\DataCenterInfo.cs" />
+    <Compile Include="Hygiene\Data\DataLatencyDetail.cs" />
+    <Compile Include="Hygiene\Data\DataLatencyDetailCollection.cs" />
+    <Compile Include="Hygiene\Data\DataLatencyDetailSchema.cs" />
+    <Compile Include="Hygiene\Data\DataProviderConvertingException.cs" />
+    <Compile Include="Hygiene\Data\DataProviderExecutionException.cs" />
+    <Compile Include="Hygiene\Data\DataProviderExecutionTransientException.cs" />
+    <Compile Include="Hygiene\Data\DataProviderIsTooBusyException.cs" />
+    <Compile Include="Hygiene\Data\DataProviderMappingException.cs" />
+    <Compile Include="Hygiene\Data\DataProviderReturnErrorException.cs" />
+    <Compile Include="Hygiene\Data\DataProvider\BloomFilterProviderFactory.cs" />
+    <Compile Include="Hygiene\Data\DataProvider\ConfigDataProviderFactory.cs" />
+    <Compile Include="Hygiene\Data\DataProvider\EnvironmentStrategy.cs" />
+    <Compile Include="Hygiene\Data\DeviceCommonSchema.cs" />
+    <Compile Include="Hygiene\Data\DeviceSnapshot.cs" />
+    <Compile Include="Hygiene\Data\DictionaryExtensions.cs" />
+    <Compile Include="Hygiene\Data\Directory\ADAccount.cs" />
+    <Compile Include="Hygiene\Data\Directory\ADAccountSchema.cs" />
+    <Compile Include="Hygiene\Data\Directory\ADForeignPrincipal.cs" />
+    <Compile Include="Hygiene\Data\Directory\ADForeignPrincipalSchema.cs" />
+    <Compile Include="Hygiene\Data\Directory\ADLink.cs" />
+    <Compile Include="Hygiene\Data\Directory\ADLinkSchema.cs" />
+    <Compile Include="Hygiene\Data\Directory\ADMiniDomain.cs" />
+    <Compile Include="Hygiene\Data\Directory\ADMiniDomainSchema.cs" />
+    <Compile Include="Hygiene\Data\Directory\ADMiniUser.cs" />
+    <Compile Include="Hygiene\Data\Directory\ADMiniUserSchema.cs" />
+    <Compile Include="Hygiene\Data\Directory\ADRoutingInfo.cs" />
+    <Compile Include="Hygiene\Data\Directory\ADRoutingInfoSchema.cs" />
+    <Compile Include="Hygiene\Data\Directory\ADSpamScanSetting.cs" />
+    <Compile Include="Hygiene\Data\Directory\ADSpamScanSettingSchema.cs" />
+    <Compile Include="Hygiene\Data\Directory\ADSubscribedPlan.cs" />
+    <Compile Include="Hygiene\Data\Directory\ADSubscribedPlanSchema.cs" />
+    <Compile Include="Hygiene\Data\Directory\ADUserSetting.cs" />
+    <Compile Include="Hygiene\Data\Directory\ADUserSettingSchema.cs" />
+    <Compile Include="Hygiene\Data\Directory\ADVirusScanSetting.cs" />
+    <Compile Include="Hygiene\Data\Directory\ADVirusScanSettingSchema.cs" />
+    <Compile Include="Hygiene\Data\Directory\AssignedPlan.cs" />
+    <Compile Include="Hygiene\Data\Directory\AssignedPlanSchema.cs" />
+    <Compile Include="Hygiene\Data\Directory\ContactExtendedPropertiesEmailAddress.cs" />
+    <Compile Include="Hygiene\Data\Directory\DomainSettings.cs" />
+    <Compile Include="Hygiene\Data\Directory\DomainSettingsSchema.cs" />
+    <Compile Include="Hygiene\Data\Directory\EdgeBlockMode.cs" />
+    <Compile Include="Hygiene\Data\Directory\FfoADUserSchemaExtensions.cs" />
+    <Compile Include="Hygiene\Data\Directory\FfoConfigurationSession.cs" />
+    <Compile Include="Hygiene\Data\Directory\FfoDirectorySession.cs" />
+    <Compile Include="Hygiene\Data\Directory\FfoDirectorySesssionFactory.cs" />
+    <Compile Include="Hygiene\Data\Directory\FfoPagedReader.cs" />
+    <Compile Include="Hygiene\Data\Directory\FfoRecipientSession.cs" />
+    <Compile Include="Hygiene\Data\Directory\FfoSessionSettingsFactory.cs" />
+    <Compile Include="Hygiene\Data\Directory\FfoTenant.cs" />
+    <Compile Include="Hygiene\Data\Directory\FfoTenantConfigurationSession.cs" />
+    <Compile Include="Hygiene\Data\Directory\FfoTenantRecipientSession.cs" />
+    <Compile Include="Hygiene\Data\Directory\FfoTenantSchema.cs" />
+    <Compile Include="Hygiene\Data\Directory\FfoTopologyConfigurationSession.cs" />
+    <Compile Include="Hygiene\Data\Directory\FfoTraceTenant.cs" />
+    <Compile Include="Hygiene\Data\Directory\GlobalConfigSession.cs" />
+    <Compile Include="Hygiene\Data\Directory\GroupExtendedPropertiesEmailAddress.cs" />
+    <Compile Include="Hygiene\Data\Directory\HostedContentFilterRuleFacade.cs" />
+    <Compile Include="Hygiene\Data\Directory\HostedContentFilterRuleFacadeSchema.cs" />
+    <Compile Include="Hygiene\Data\Directory\HygieneFilterRuleFacade.cs" />
+    <Compile Include="Hygiene\Data\Directory\HygieneFilterRuleFacadeSchema.cs" />
+    <Compile Include="Hygiene\Data\Directory\IPListType.cs" />
+    <Compile Include="Hygiene\Data\Directory\LinkType.cs" />
+    <Compile Include="Hygiene\Data\Directory\MalwareFilterRuleFacade.cs" />
+    <Compile Include="Hygiene\Data\Directory\MalwareFilterRuleFacadeSchema.cs" />
+    <Compile Include="Hygiene\Data\Directory\OnDemandQueryCallerType.cs" />
+    <Compile Include="Hygiene\Data\Directory\OnDemandQueryPriority.cs" />
+    <Compile Include="Hygiene\Data\Directory\OnDemandQueryRequest.cs" />
+    <Compile Include="Hygiene\Data\Directory\OnDemandQueryRequestSchema.cs" />
+    <Compile Include="Hygiene\Data\Directory\OnDemandQueryRequestStatus.cs" />
+    <Compile Include="Hygiene\Data\Directory\OnDemandQueryType.cs" />
+    <Compile Include="Hygiene\Data\Directory\PartnerCertificate.cs" />
+    <Compile Include="Hygiene\Data\Directory\PartnerConfigSession.cs" />
+    <Compile Include="Hygiene\Data\Directory\PartnerRole.cs" />
+    <Compile Include="Hygiene\Data\Directory\ProbeEnvironment.cs" />
+    <Compile Include="Hygiene\Data\Directory\ProbeOrganizationInfo.cs" />
+    <Compile Include="Hygiene\Data\Directory\RegionEmailFilter.cs" />
+    <Compile Include="Hygiene\Data\Directory\RegionEmailFilterSchema.cs" />
+    <Compile Include="Hygiene\Data\Directory\ReportExecutionStatusType.cs" />
+    <Compile Include="Hygiene\Data\Directory\ReportFormatType.cs" />
+    <Compile Include="Hygiene\Data\Directory\ReportSchedule.cs" />
+    <Compile Include="Hygiene\Data\Directory\ReportScheduleFrequencyType.cs" />
+    <Compile Include="Hygiene\Data\Directory\ReportScheduleSchema.cs" />
+    <Compile Include="Hygiene\Data\Directory\ResellerType.cs" />
+    <Compile Include="Hygiene\Data\Directory\RmsoUpgradeStatus.cs" />
+    <Compile Include="Hygiene\Data\Directory\Role.cs" />
+    <Compile Include="Hygiene\Data\Directory\RoleGroupFacade.cs" />
+    <Compile Include="Hygiene\Data\Directory\RoleGroupFacadeSchema.cs" />
+    <Compile Include="Hygiene\Data\Directory\SenderType.cs" />
+    <Compile Include="Hygiene\Data\Directory\SpamScanFlags.cs" />
+    <Compile Include="Hygiene\Data\Directory\TenantConfigurationCacheEntry.cs" />
+    <Compile Include="Hygiene\Data\Directory\TenantConfigurationCacheEntryReason.cs" />
+    <Compile Include="Hygiene\Data\Directory\TenantConfigurationCacheEntrySchema.cs" />
+    <Compile Include="Hygiene\Data\Directory\TenantInboundConnectorBucket.cs" />
+    <Compile Include="Hygiene\Data\Directory\TenantIPFilterSetting.cs" />
+    <Compile Include="Hygiene\Data\Directory\TenantIPFilterSettingSchema.cs" />
+    <Compile Include="Hygiene\Data\Directory\TenantIPInfo.cs" />
+    <Compile Include="Hygiene\Data\Directory\TenantReportingSession.cs" />
+    <Compile Include="Hygiene\Data\Directory\TenantUndeleteRequest.cs" />
+    <Compile Include="Hygiene\Data\Directory\ToStringHelpers.cs" />
+    <Compile Include="Hygiene\Data\Directory\TransportRuleCollectionFacade.cs" />
+    <Compile Include="Hygiene\Data\Directory\TransportRuleCollectionFacadeSchema.cs" />
+    <Compile Include="Hygiene\Data\Directory\UnifiedPolicy\PolicyKeyStorage.cs" />
+    <Compile Include="Hygiene\Data\Directory\UnifiedPolicy\PolicySyncCookie.cs" />
+    <Compile Include="Hygiene\Data\Directory\UnifiedPolicy\UnifiedPolicySession.cs" />
+    <Compile Include="Hygiene\Data\Directory\UnifiedPolicy\UnifiedPolicyStorageFactory.cs" />
+    <Compile Include="Hygiene\Data\Directory\UserCertificate.cs" />
+    <Compile Include="Hygiene\Data\Directory\UserExtendedPropertiesEmailAddress.cs" />
+    <Compile Include="Hygiene\Data\Directory\UserRole.cs" />
+    <Compile Include="Hygiene\Data\Directory\UserSettingFlags.cs" />
+    <Compile Include="Hygiene\Data\Directory\VirusScanFlags.cs" />
+    <Compile Include="Hygiene\Data\DomainProvisioningRequest.cs" />
+    <Compile Include="Hygiene\Data\DomainProvisioningRequestFlags.cs" />
+    <Compile Include="Hygiene\Data\DomainProvisioningRequestSchema.cs" />
+    <Compile Include="Hygiene\Data\Domain\CommonDomainProperties.cs" />
+    <Compile Include="Hygiene\Data\Domain\DataDatetimeGroup.cs" />
+    <Compile Include="Hygiene\Data\Domain\DICommon.cs" />
+    <Compile Include="Hygiene\Data\Domain\DIDomainCommon.cs" />
+    <Compile Include="Hygiene\Data\Domain\DIDomainTargetEnvironment.cs" />
+    <Compile Include="Hygiene\Data\Domain\DITargetService.cs" />
+    <Compile Include="Hygiene\Data\Domain\DITenantTargetEnvironment.cs" />
+    <Compile Include="Hygiene\Data\Domain\DomainSchema.cs" />
+    <Compile Include="Hygiene\Data\Domain\DomainSession.cs" />
+    <Compile Include="Hygiene\Data\Domain\DomainTargetEnvironment.cs" />
+    <Compile Include="Hygiene\Data\Domain\NsResourceRecord.cs" />
+    <Compile Include="Hygiene\Data\Domain\SoaResourceRecord.cs" />
+    <Compile Include="Hygiene\Data\Domain\StringHelper.cs" />
+    <Compile Include="Hygiene\Data\Domain\TargetService.cs" />
+    <Compile Include="Hygiene\Data\Domain\TargetServiceByTenantId.cs" />
+    <Compile Include="Hygiene\Data\Domain\TenantTargetEnvironment.cs" />
+    <Compile Include="Hygiene\Data\Domain\TenantUndeleteRequest.cs" />
+    <Compile Include="Hygiene\Data\Domain\TraceHelper.cs" />
+    <Compile Include="Hygiene\Data\Domain\TransactionScopeHelper.cs" />
+    <Compile Include="Hygiene\Data\Domain\UserTargetEnvironment.cs" />
+    <Compile Include="Hygiene\Data\Domain\Zone.cs" />
+    <Compile Include="Hygiene\Data\EventLogger.cs" />
+    <Compile Include="Hygiene\Data\EXORole.cs" />
+    <Compile Include="Hygiene\Data\Extensions.cs" />
+    <Compile Include="Hygiene\Data\FacadeBase.cs" />
+    <Compile Include="Hygiene\Data\FfoAuditSession.cs" />
+    <Compile Include="Hygiene\Data\FfoHygineDataProviderEventLogConstants.cs" />
+    <Compile Include="Hygiene\Data\FFORole.cs" />
+    <Compile Include="Hygiene\Data\GenericObjectId.cs" />
+    <Compile Include="Hygiene\Data\GlobalConfig\DataCenterSettings.cs" />
+    <Compile Include="Hygiene\Data\GlobalConfig\GlobalSystemConfigSession.cs" />
+    <Compile Include="Hygiene\Data\HygieneDataStrings.cs" />
+    <Compile Include="Hygiene\Data\HygieneIPRange.cs" />
+    <Compile Include="Hygiene\Data\HygienePropertyDefinition.cs" />
+    <Compile Include="Hygiene\Data\HygieneSession.cs" />
+    <Compile Include="Hygiene\Data\IBloomFilterDataProvider.cs" />
+    <Compile Include="Hygiene\Data\ICurrentOperationCounter.cs" />
+    <Compile Include="Hygiene\Data\IDataTypeResolver.cs" />
+    <Compile Include="Hygiene\Data\IFfoAuditSession.cs" />
+    <Compile Include="Hygiene\Data\IHashBucket.cs" />
+    <Compile Include="Hygiene\Data\InvalidObjectTypeForSessionException.cs" />
+    <Compile Include="Hygiene\Data\IPagedReader.cs" />
+    <Compile Include="Hygiene\Data\IPartitionedDataProvider.cs" />
+    <Compile Include="Hygiene\Data\ItemsProperty.cs" />
+    <Compile Include="Hygiene\Data\ITransactionProvider.cs" />
+    <Compile Include="Hygiene\Data\IValidateable.cs" />
+    <Compile Include="Hygiene\Data\Kes\KesSession.cs" />
+    <Compile Include="Hygiene\Data\Kes\MessageRuleMap.cs" />
+    <Compile Include="Hygiene\Data\Kes\ReputationList.cs" />
+    <Compile Include="Hygiene\Data\Kes\ReputationListSettings.cs" />
+    <Compile Include="Hygiene\Data\Kes\ReputationListType.cs" />
+    <Compile Include="Hygiene\Data\Kes\SpamExclusionData.cs" />
+    <Compile Include="Hygiene\Data\Kes\SpamExclusionDataID.cs" />
+    <Compile Include="Hygiene\Data\Kes\SyncWatermark.cs" />
+    <Compile Include="Hygiene\Data\Kes\SyncWatermarkBatch.cs" />
+    <Compile Include="Hygiene\Data\LatencyBucket.cs" />
+    <Compile Include="Hygiene\Data\LocDescriptionAttribute.cs" />
+    <Compile Include="Hygiene\Data\MailDeliveryStatus.cs" />
+    <Compile Include="Hygiene\Data\MailDirection.cs" />
+    <Compile Include="Hygiene\Data\MessageTrace\AggPolicyTrafficData.cs" />
+    <Compile Include="Hygiene\Data\MessageTrace\AggPolicyTrafficDatas.cs" />
+    <Compile Include="Hygiene\Data\MessageTrace\AggTopTrafficData.cs" />
+    <Compile Include="Hygiene\Data\MessageTrace\AggTopTrafficDatas.cs" />
+    <Compile Include="Hygiene\Data\MessageTrace\AggTrafficData.cs" />
+    <Compile Include="Hygiene\Data\MessageTrace\AggTrafficDatas.cs" />
+    <Compile Include="Hygiene\Data\MessageTrace\BlobType.cs" />
+    <Compile Include="Hygiene\Data\MessageTrace\CommonLogRowData.cs" />
+    <Compile Include="Hygiene\Data\MessageTrace\CommonMessageTraceSchema.cs" />
+    <Compile Include="Hygiene\Data\MessageTrace\CommonReportingSchema.cs" />
+    <Compile Include="Hygiene\Data\MessageTrace\EsnTenant.cs" />
+    <Compile Include="Hygiene\Data\MessageTrace\EsnTenantSchema.cs" />
+    <Compile Include="Hygiene\Data\MessageTrace\ExtendedPropertyStore.cs" />
+    <Compile Include="Hygiene\Data\MessageTrace\IdGenerator.cs" />
+    <Compile Include="Hygiene\Data\MessageTrace\IdScope.cs" />
+    <Compile Include="Hygiene\Data\MessageTrace\IExtendedPropertyStore.cs" />
+    <Compile Include="Hygiene\Data\MessageTrace\IMessageTraceQuery.cs" />
+    <Compile Include="Hygiene\Data\MessageTrace\IMessageTraceSession.cs" />
+    <Compile Include="Hygiene\Data\MessageTrace\IMessageTraceVisitor.cs" />
+    <Compile Include="Hygiene\Data\MessageTrace\MessageAction.cs" />
+    <Compile Include="Hygiene\Data\MessageTrace\MessageActionProperty.cs" />
+    <Compile Include="Hygiene\Data\MessageTrace\MessageActionSchema.cs" />
+    <Compile Include="Hygiene\Data\MessageTrace\MessageClassification.cs" />
+    <Compile Include="Hygiene\Data\MessageTrace\MessageClassificationProperty.cs" />
+    <Compile Include="Hygiene\Data\MessageTrace\MessageClassificationSchema.cs" />
+    <Compile Include="Hygiene\Data\MessageTrace\MessageClientInformation.cs" />
+    <Compile Include="Hygiene\Data\MessageTrace\MessageClientInformationProperty.cs" />
+    <Compile Include="Hygiene\Data\MessageTrace\MessageClientInformationSchema.cs" />
+    <Compile Include="Hygiene\Data\MessageTrace\MessageEvent.cs" />
+    <Compile Include="Hygiene\Data\MessageTrace\MessageEventProperty.cs" />
+    <Compile Include="Hygiene\Data\MessageTrace\MessageEventRule.cs" />
+    <Compile Include="Hygiene\Data\MessageTrace\MessageEventRuleClassification.cs" />
+    <Compile Include="Hygiene\Data\MessageTrace\MessageEventRuleClassificationProperty.cs" />
+    <Compile Include="Hygiene\Data\MessageTrace\MessageEventRuleClassificationSchema.cs" />
+    <Compile Include="Hygiene\Data\MessageTrace\MessageEventRuleProperty.cs" />
+    <Compile Include="Hygiene\Data\MessageTrace\MessageEventRuleSchema.cs" />
+    <Compile Include="Hygiene\Data\MessageTrace\MessageEventSchema.cs" />
+    <Compile Include="Hygiene\Data\MessageTrace\MessageEventSourceItem.cs" />
+    <Compile Include="Hygiene\Data\MessageTrace\MessageEventSourceItemProperty.cs" />
+    <Compile Include="Hygiene\Data\MessageTrace\MessageEventSourceItemSchema.cs" />
+    <Compile Include="Hygiene\Data\MessageTrace\MessageProperty.cs" />
+    <Compile Include="Hygiene\Data\MessageTrace\MessageRecipient.cs" />
+    <Compile Include="Hygiene\Data\MessageTrace\MessageRecipientFlags.cs" />
+    <Compile Include="Hygiene\Data\MessageTrace\MessageRecipientProperty.cs" />
+    <Compile Include="Hygiene\Data\MessageTrace\MessageRecipientSchema.cs" />
+    <Compile Include="Hygiene\Data\MessageTrace\MessageRecipientStatus.cs" />
+    <Compile Include="Hygiene\Data\MessageTrace\MessageRecipientStatusProperty.cs" />
+    <Compile Include="Hygiene\Data\MessageTrace\MessageRecipientStatusSchema.cs" />
+    <Compile Include="Hygiene\Data\MessageTrace\MessageTrace.cs" />
+    <Compile Include="Hygiene\Data\MessageTrace\MessageTraceBatch.cs" />
+    <Compile Include="Hygiene\Data\MessageTrace\MessageTraceCollapsedProperty.cs" />
+    <Compile Include="Hygiene\Data\MessageTrace\MessageTraceDataSet.cs" />
+    <Compile Include="Hygiene\Data\MessageTrace\MessageTraceDataSetSchema.cs" />
+    <Compile Include="Hygiene\Data\MessageTrace\MessageTraceEntityBase.cs" />
+    <Compile Include="Hygiene\Data\MessageTrace\MessageTraceForSaveDataSet.cs" />
+    <Compile Include="Hygiene\Data\MessageTrace\MessageTraceObjectId.cs" />
+    <Compile Include="Hygiene\Data\MessageTrace\MessageTraceSchema.cs" />
+    <Compile Include="Hygiene\Data\MessageTrace\MessageTraceSession.cs" />
+    <Compile Include="Hygiene\Data\MessageTrace\MessageTraceTenantSettingFacade.cs" />
+    <Compile Include="Hygiene\Data\MessageTrace\MessageTraceTransportRule.cs" />
+    <Compile Include="Hygiene\Data\MessageTrace\MessageTraceTransportRuleSchema.cs" />
+    <Compile Include="Hygiene\Data\MessageTrace\MessageTraceVisitorBase.cs" />
+    <Compile Include="Hygiene\Data\MessageTrace\MessageTrafficTypeMapping.cs" />
+    <Compile Include="Hygiene\Data\MessageTrace\MessageTrafficTypeMappings.cs" />
+    <Compile Include="Hygiene\Data\MessageTrace\PropertyBase.cs" />
+    <Compile Include="Hygiene\Data\MessageTrace\QuarantinedMessage.cs" />
+    <Compile Include="Hygiene\Data\MessageTrace\QuarantinedMessageCommonSchema.cs" />
+    <Compile Include="Hygiene\Data\MessageTrace\QuarantinedMessageDetail.cs" />
+    <Compile Include="Hygiene\Data\MessageTrace\QuarantinedMessageDetailSchema.cs" />
+    <Compile Include="Hygiene\Data\MessageTrace\QuarantinedMessageRecipient.cs" />
+    <Compile Include="Hygiene\Data\MessageTrace\QuarantinedMessageRecipientBatch.cs" />
+    <Compile Include="Hygiene\Data\MessageTrace\QuarantinedMessageRecipientBatchSchema.cs" />
+    <Compile Include="Hygiene\Data\MessageTrace\QuarantinedMessageRecipientSchema.cs" />
+    <Compile Include="Hygiene\Data\MessageTrace\QuarantinedMessageSchema.cs" />
+    <Compile Include="Hygiene\Data\MessageTrace\RawLogBatch.cs" />
+    <Compile Include="Hygiene\Data\MessageTrace\Reports\DLPMessageDetail.cs" />
+    <Compile Include="Hygiene\Data\MessageTrace\Reports\DLPUnifiedDetail.cs" />
+    <Compile Include="Hygiene\Data\MessageTrace\Reports\MalwareMessageDetail.cs" />
+    <Compile Include="Hygiene\Data\MessageTrace\Reports\MessageDetailReport.cs" />
+    <Compile Include="Hygiene\Data\MessageTrace\Reports\MessageTrace.cs" />
+    <Compile Include="Hygiene\Data\MessageTrace\Reports\MessageTraceDetail.cs" />
+    <Compile Include="Hygiene\Data\MessageTrace\Reports\PolicyMessageDetail.cs" />
+    <Compile Include="Hygiene\Data\MessageTrace\Reports\PolicyTrafficReport.cs" />
+    <Compile Include="Hygiene\Data\MessageTrace\Reports\Schema.cs" />
+    <Compile Include="Hygiene\Data\MessageTrace\Reports\SpamMessageDetail.cs" />
+    <Compile Include="Hygiene\Data\MessageTrace\Reports\TopTrafficReport.cs" />
+    <Compile Include="Hygiene\Data\MessageTrace\Reports\TrafficReport.cs" />
+    <Compile Include="Hygiene\Data\MessageTrace\TransportQueueLogBatch.cs" />
+    <Compile Include="Hygiene\Data\MessageTrace\TransportQueueLogBatchSchema.cs" />
+    <Compile Include="Hygiene\Data\MessageTrace\TransportQueueLogSaveDataSet.cs" />
+    <Compile Include="Hygiene\Data\MessageTrace\TransportQueueLogSaveDataSetSchema.cs" />
+    <Compile Include="Hygiene\Data\MessageTrace\TransportQueueSession.cs" />
+    <Compile Include="Hygiene\Data\MessageTrace\TvpInfo.cs" />
+    <Compile Include="Hygiene\Data\MessageTrace\UnifiedPolicyCommonSchema.cs" />
+    <Compile Include="Hygiene\Data\MessageTrace\UnifiedPolicyDataSetSchema.cs" />
+    <Compile Include="Hygiene\Data\MessageTrace\UnifiedPolicyForSaveDataSet.cs" />
+    <Compile Include="Hygiene\Data\MessageTrace\UnifiedPolicyRule.cs" />
+    <Compile Include="Hygiene\Data\MessageTrace\UnifiedPolicyRuleAction.cs" />
+    <Compile Include="Hygiene\Data\MessageTrace\UnifiedPolicyRuleActionSchema.cs" />
+    <Compile Include="Hygiene\Data\MessageTrace\UnifiedPolicyRuleClassification.cs" />
+    <Compile Include="Hygiene\Data\MessageTrace\UnifiedPolicyRuleClassificationSchema.cs" />
+    <Compile Include="Hygiene\Data\MessageTrace\UnifiedPolicyRuleSchema.cs" />
+    <Compile Include="Hygiene\Data\MessageTrace\UnifiedPolicyTrace.cs" />
+    <Compile Include="Hygiene\Data\MessageTrace\UnifiedPolicyTraceBatch.cs" />
+    <Compile Include="Hygiene\Data\MessageTrace\UnifiedPolicyTraceSchema.cs" />
+    <Compile Include="Hygiene\Data\MessageTrace\UnsentSpamDigestMessage.cs" />
+    <Compile Include="Hygiene\Data\MessageTrace\UnsentSpamDigestMessageSchema.cs" />
+    <Compile Include="Hygiene\Data\MessageTrace\UserAddress.cs" />
+    <Compile Include="Hygiene\Data\MessageTrace\UserAddressBatch.cs" />
+    <Compile Include="Hygiene\Data\MessageTrace\UserAddressBatchSchema.cs" />
+    <Compile Include="Hygiene\Data\MessageTrace\UserAddressSchema.cs" />
+    <Compile Include="Hygiene\Data\MissingCertificateException.cs" />
+    <Compile Include="Hygiene\Data\MobileDeviceSession.cs" />
+    <Compile Include="Hygiene\Data\MultiValuedQueryFilter.cs" />
+    <Compile Include="Hygiene\Data\NullPagedReader.cs" />
+    <Compile Include="Hygiene\Data\OperationBit.cs" />
+    <Compile Include="Hygiene\Data\Optics\IOpticsSession.cs" />
+    <Compile Include="Hygiene\Data\Optics\OpticsLogBatch.cs" />
+    <Compile Include="Hygiene\Data\Optics\OpticsSession.cs" />
+    <Compile Include="Hygiene\Data\Optics\ReputationQueryCache.cs" />
+    <Compile Include="Hygiene\Data\Optics\ReputationQueryInput.cs" />
+    <Compile Include="Hygiene\Data\Optics\ReputationQueryResult.cs" />
+    <Compile Include="Hygiene\Data\OrgIdIdentity.cs" />
+    <Compile Include="Hygiene\Data\PageCookieTvp.cs" />
+    <Compile Include="Hygiene\Data\PagingHelper.cs" />
+    <Compile Include="Hygiene\Data\PartitionDataLatency.cs" />
+    <Compile Include="Hygiene\Data\PermanentDALException.cs" />
+    <Compile Include="Hygiene\Data\ProcessWideServiceType.cs" />
+    <Compile Include="Hygiene\Data\PropertyTable.cs" />
+    <Compile Include="Hygiene\Data\ProxyWrapper.cs" />
+    <Compile Include="Hygiene\Data\RawFileLogger\RawFileLogger.cs" />
+    <Compile Include="Hygiene\Data\RawFileLogger\RawFileLoggerConfiguration.cs" />
+    <Compile Include="Hygiene\Data\RegionTagCache.cs" />
+    <Compile Include="Hygiene\Data\RegionTagRetriever.cs" />
+    <Compile Include="Hygiene\Data\ReportingFilterTable.cs" />
+    <Compile Include="Hygiene\Data\Reporting\AggInboundIPSchema.cs" />
+    <Compile Include="Hygiene\Data\Reporting\AggInboundSpamDataHistory.cs" />
+    <Compile Include="Hygiene\Data\Reporting\AggOutboundEmailAddressIpHistory.cs" />
+    <Compile Include="Hygiene\Data\Reporting\AggOutboundIpHistory.cs" />
+    <Compile Include="Hygiene\Data\Reporting\AggOutboundIPSchema.cs" />
+    <Compile Include="Hygiene\Data\Reporting\DeviceData.cs" />
+    <Compile Include="Hygiene\Data\Reporting\DeviceDataBatch.cs" />
+    <Compile Include="Hygiene\Data\Reporting\DeviceDataBatchSchema.cs" />
+    <Compile Include="Hygiene\Data\Reporting\GoodMessageData.cs" />
+    <Compile Include="Hygiene\Data\Reporting\GoodMessageSchema.cs" />
+    <Compile Include="Hygiene\Data\Reporting\ReportingCommonSchema.cs" />
+    <Compile Include="Hygiene\Data\Reporting\ReportingSession.cs" />
+    <Compile Include="Hygiene\Data\Reporting\Tenant.cs" />
+    <Compile Include="Hygiene\Data\Reporting\TenantThrottleInfoBatch.cs" />
+    <Compile Include="Hygiene\Data\Reporting\TenantThrottleInfoBatchSchema.cs" />
+    <Compile Include="Hygiene\Data\Reporting\TrafficUserDetail.cs" />
+    <Compile Include="Hygiene\Data\RetryHelper.cs" />
+    <Compile Include="Hygiene\Data\Robocopy.cs" />
+    <Compile Include="Hygiene\Data\RoboCopyException.cs" />
+    <Compile Include="Hygiene\Data\RoleEntryType.cs" />
+    <Compile Include="Hygiene\Data\RoleSet.cs" />
+    <Compile Include="Hygiene\Data\Rus\RusConfig.cs" />
+    <Compile Include="Hygiene\Data\Rus\RusConfigSchema.cs" />
+    <Compile Include="Hygiene\Data\Rus\RusConfigSession.cs" />
+    <Compile Include="Hygiene\Data\ServiceTagScope.cs" />
+    <Compile Include="Hygiene\Data\ServiceType.cs" />
+    <Compile Include="Hygiene\Data\SessionConfiguration.cs" />
+    <Compile Include="Hygiene\Data\SetEntityDataRequest.cs" />
+    <Compile Include="Hygiene\Data\SpamRuleBlobUtils.cs" />
+    <Compile Include="Hygiene\Data\Spam\AuthoringData.cs" />
+    <Compile Include="Hygiene\Data\Spam\BlobRulePackage.cs" />
+    <Compile Include="Hygiene\Data\Spam\ConfigurableBatch.cs" />
+    <Compile Include="Hygiene\Data\Spam\ConfigurablePropertyTable.cs" />
+    <Compile Include="Hygiene\Data\Spam\DeleteAll.cs" />
+    <Compile Include="Hygiene\Data\Spam\KesSpamCommon.cs" />
+    <Compile Include="Hygiene\Data\Spam\KesSpamPropertyName.cs" />
+    <Compile Include="Hygiene\Data\Spam\KesSpamSchema.cs" />
+    <Compile Include="Hygiene\Data\Spam\MaxProcessorID.cs" />
+    <Compile Include="Hygiene\Data\Spam\MaxRuleID.cs" />
+    <Compile Include="Hygiene\Data\Spam\NumericOperationType.cs" />
+    <Compile Include="Hygiene\Data\Spam\PredicateData.cs" />
+    <Compile Include="Hygiene\Data\Spam\PredicateExtendedProperty.cs" />
+    <Compile Include="Hygiene\Data\Spam\PredicateExtendedPropertyBatch.cs" />
+    <Compile Include="Hygiene\Data\Spam\PredicateType.cs" />
+    <Compile Include="Hygiene\Data\Spam\Processor.cs" />
+    <Compile Include="Hygiene\Data\Spam\ProcessorBatch.cs" />
+    <Compile Include="Hygiene\Data\Spam\ProcessorData.cs" />
+    <Compile Include="Hygiene\Data\Spam\ProcessorType.cs" />
+    <Compile Include="Hygiene\Data\Spam\ResultData.cs" />
+    <Compile Include="Hygiene\Data\Spam\ResultType.cs" />
+    <Compile Include="Hygiene\Data\Spam\RuleBase.cs" />
+    <Compile Include="Hygiene\Data\Spam\RuleBaseBatch.cs" />
+    <Compile Include="Hygiene\Data\Spam\RuleDataBase.cs" />
+    <Compile Include="Hygiene\Data\Spam\RuleExtendedProperty.cs" />
+    <Compile Include="Hygiene\Data\Spam\RuleExtendedPropertyBatch.cs" />
+    <Compile Include="Hygiene\Data\Spam\RuleMetaData.cs" />
+    <Compile Include="Hygiene\Data\Spam\RulePredicate.cs" />
+    <Compile Include="Hygiene\Data\Spam\RulePredicateBatch.cs" />
+    <Compile Include="Hygiene\Data\Spam\RuleScope.cs" />
+    <Compile Include="Hygiene\Data\Spam\RuleScopeType.cs" />
+    <Compile Include="Hygiene\Data\Spam\RuleStatusType.cs" />
+    <Compile Include="Hygiene\Data\Spam\RuleType.cs" />
+    <Compile Include="Hygiene\Data\Spam\RuleUpdate.cs" />
+    <Compile Include="Hygiene\Data\Spam\RuleUpdateBatch.cs" />
+    <Compile Include="Hygiene\Data\Spam\RuleValidationPriority.cs" />
+    <Compile Include="Hygiene\Data\Spam\SpamDataBlob.cs" />
+    <Compile Include="Hygiene\Data\Spam\SpamDataBlobDataID.cs" />
+    <Compile Include="Hygiene\Data\Spam\SpamDataBlobVersion.cs" />
+    <Compile Include="Hygiene\Data\Spam\SpamRule.cs" />
+    <Compile Include="Hygiene\Data\Spam\SpamRuleBlob.cs" />
+    <Compile Include="Hygiene\Data\Spam\SpamRuleBlobBatch.cs" />
+    <Compile Include="Hygiene\Data\Spam\SpamRuleBlobPackage.cs" />
+    <Compile Include="Hygiene\Data\Spam\SpamRuleBlobSchema.cs" />
+    <Compile Include="Hygiene\Data\Spam\SpamRuleData.cs" />
+    <Compile Include="Hygiene\Data\Spam\SpamRulePackageData.cs" />
+    <Compile Include="Hygiene\Data\Spam\SpamRuleProcessorBlob.cs" />
+    <Compile Include="Hygiene\Data\Spam\SpamRuleProcessorBlobBatch.cs" />
+    <Compile Include="Hygiene\Data\Spam\SpamRuleProcessorBlobSchema.cs" />
+    <Compile Include="Hygiene\Data\Spam\SpamSession.cs" />
+    <Compile Include="Hygiene\Data\Spam\URIRule.cs" />
+    <Compile Include="Hygiene\Data\Spam\URIRuleData.cs" />
+    <Compile Include="Hygiene\Data\Spam\URIRulePackageData.cs" />
+    <Compile Include="Hygiene\Data\SqlDBVersion.cs" />
+    <Compile Include="Hygiene\Data\SqlPropertyDefinition.cs" />
+    <Compile Include="Hygiene\Data\SqlPropertyDefinitionFlags.cs" />
+    <Compile Include="Hygiene\Data\SqlPropertyTypes.cs" />
+    <Compile Include="Hygiene\Data\Sync\BaseCookie.cs" />
+    <Compile Include="Hygiene\Data\Sync\BaseCookieFilter.cs" />
+    <Compile Include="Hygiene\Data\Sync\BaseCookieSchema.cs" />
+    <Compile Include="Hygiene\Data\Sync\CommonSyncProperties.cs" />
+    <Compile Include="Hygiene\Data\Sync\FfoSyncObjectType.cs" />
+    <Compile Include="Hygiene\Data\Sync\FfoSyncObjectTypeConverter.cs" />
+    <Compile Include="Hygiene\Data\Sync\IllegalOperationCallerNotCookieOwnerException.cs" />
+    <Compile Include="Hygiene\Data\Sync\IllegalOperationDuplicateBatchException.cs" />
+    <Compile Include="Hygiene\Data\Sync\IllegalOperationNewCookieWithDataException.cs" />
+    <Compile Include="Hygiene\Data\Sync\IllegalOperationNoCallerSpecifiedException.cs" />
+    <Compile Include="Hygiene\Data\Sync\MergedCookie.cs" />
+    <Compile Include="Hygiene\Data\Sync\MergedCookieSchema.cs" />
+    <Compile Include="Hygiene\Data\Sync\ProvisioningFlags.cs" />
+    <Compile Include="Hygiene\Data\Sync\ServiceCookie.cs" />
+    <Compile Include="Hygiene\Data\Sync\ServiceCookieFilter.cs" />
+    <Compile Include="Hygiene\Data\Sync\ServiceCookieSchema.cs" />
+    <Compile Include="Hygiene\Data\Sync\SyncPropertyRefresh.cs" />
+    <Compile Include="Hygiene\Data\Sync\SyncPropertyRefreshSchema.cs" />
+    <Compile Include="Hygiene\Data\Sync\SyncPropertyRefreshStatus.cs" />
+    <Compile Include="Hygiene\Data\Sync\SyncSession.cs" />
+    <Compile Include="Hygiene\Data\Sync\SyncType.cs" />
+    <Compile Include="Hygiene\Data\Sync\TenantCookie.cs" />
+    <Compile Include="Hygiene\Data\Sync\TenantCookieFilter.cs" />
+    <Compile Include="Hygiene\Data\Sync\TenantCookieSchema.cs" />
+    <Compile Include="Hygiene\Data\Sync\UnpublishedObject.cs" />
+    <Compile Include="Hygiene\Data\Sync\UnpublishedObjectSchema.cs" />
+    <Compile Include="Hygiene\Data\Sync\UnsyncedObject.cs" />
+    <Compile Include="Hygiene\Data\Sync\UnsyncedObjectSchema.cs" />
+    <Compile Include="Hygiene\Data\SystemProbe\SystemProbeData.cs" />
+    <Compile Include="Hygiene\Data\SystemProbe\SystemProbeEvent.cs" />
+    <Compile Include="Hygiene\Data\TableTraceRecord.cs" />
+    <Compile Include="Hygiene\Data\TenantIPCookie.cs" />
+    <Compile Include="Hygiene\Data\TenantProvisioningRequest.cs" />
+    <Compile Include="Hygiene\Data\TenantProvisioningRequestFlags.cs" />
+    <Compile Include="Hygiene\Data\TenantProvisioningRequestSchema.cs" />
+    <Compile Include="Hygiene\Data\TenantSettingFacade.cs" />
+    <Compile Include="Hygiene\Data\TransientDALException.cs" />
+    <Compile Include="Hygiene\Data\TransientDataProviderUnavailableException.cs" />
+    <Compile Include="Hygiene\Data\Watchdog.cs" />
+    <Compile Include="Hygiene\Data\WebServiceDualWriteFacade.cs" />
+    <Compile Include="Hygiene\Data\WebServiceTransportRuleFacade.cs" />
+    <Compile Include="Hygiene\Data\WstDataProviderSettings.cs" />
+    <Compile Include="Hygiene\Migrate1415\AlexToDal\MigrationCookie.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Hygiene\Data\DataStrings.resources" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.Exchange.Common\Microsoft.Exchange.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140F0}</Project>
+      <Name>Microsoft.Exchange.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Compliance\Microsoft.Exchange.Compliance.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140F2}</Project>
+      <Name>Microsoft.Exchange.Compliance</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Common\Microsoft.Exchange.Data.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140D3}</Project>
+      <Name>Microsoft.Exchange.Data.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Directory\Microsoft.Exchange.Data.Directory.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14105}</Project>
+      <Name>Microsoft.Exchange.Data.Directory</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data\Microsoft.Exchange.Data.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14106}</Project>
+      <Name>Microsoft.Exchange.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Diagnostics\Microsoft.Exchange.Diagnostics.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14113}</Project>
+      <Name>Microsoft.Exchange.Diagnostics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Net\Microsoft.Exchange.Net.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14178}</Project>
+      <Name>Microsoft.Exchange.Net</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.SharePointSignalStore\Microsoft.Exchange.SharePointSignalStore.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141B6}</Project>
+      <Name>Microsoft.Exchange.SharePointSignalStore</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Transport.LoggingCommon\Microsoft.Exchange.Transport.LoggingCommon.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141CF}</Project>
+      <Name>Microsoft.Exchange.Transport.LoggingCommon</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Office.CompliancePolicy.Platform\Microsoft.Office.CompliancePolicy.Platform.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141EA}</Project>
+      <Name>Microsoft.Office.CompliancePolicy.Platform</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Office.Datacenter.ActiveMonitoringLocal\Microsoft.Office.Datacenter.ActiveMonitoringLocal.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141ED}</Project>
+      <Name>Microsoft.Office.Datacenter.ActiveMonitoringLocal</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\mscorlib\mscorlib.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141F1}</Project>
+      <Name>mscorlib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

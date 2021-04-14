@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo IsDatacenterOnly="true" IsDatacenterDedicatedOnly="true" Name="Datacenter Unified Messaging PostSetup">
+
+  <ServerTasks>
+
+    <ServerTaskInfo Id="_bef4988f364647b597bd3deceb1acc6f" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install />
+
+      <!-- Only upgrade mode is used by the binding tasks-->
+      <BuildToBuildUpgrade>
+        <Standalone></Standalone>
+      </BuildToBuildUpgrade>
+
+      <DisasterRecovery />
+      <Uninstall />
+    </ServerTaskInfo>
+
+  </ServerTasks>
+
+</SetupComponentInfo>
+

@@ -1,0 +1,502 @@
+<?xml version="1.0" encoding="utf-8"?>
+<OperatorGraph name='TransportCTSFlowMdm' xmlns='http://schemas.microsoft.com/ceres/studio/2009/10/flow'>
+  <Parameters>
+    <Parameter name='SubmissionComponent/SupportsAtomicGrouping' value='true' />
+    <Parameter name="CorrelationIdField" value="CorrelationId" />
+  </Parameters>
+  <Operators>
+
+    <Operator name='FlowInput' type='Microsoft.Ceres.Evaluation.Operators.Core.Input'>
+      <Targets>
+        <Target>
+          <operatorMoniker name='AfterFlowInputTracingPoint' />
+        </Target>
+      </Targets>
+      <Properties>
+        <Property name='inputName' value='myInput' />
+        <Property name='maxMemoryInBytes' value='2097152L' />
+        <Property name='sortedPrefix' value='0' />
+        <Property name='useDisk' value='False' />
+      </Properties>
+      <OutputSchema sortedPrefix='0'>
+        <Field name='contextid' type='String' canBeNull='false' />
+        <Field name='port' type='Int32' canBeNull='false' />
+        <Field name='CorrelationId' type='Guid' canBeNull='false' />
+        <Field name='properties' type='Bucket' canBeNull='false' />
+        <Field name='SubmitTime' type='DateTime' canBeNull='true' />
+        <Field name='messageflags' type='Int32' canBeNull='false' />
+        <Field name='indexSystemName' type='String' canBeNull='false' />
+      </OutputSchema>
+    </Operator>
+    
+    <!-- Beginning of Tracing Operators -->
+    <Operator name="AfterFlowInputTracingPoint" type="Microsoft.Ceres.ContentEngine.Operators.Tracing.FlowDetailsTraceOperator">
+      <Targets>
+        <Target>
+          <operatorMoniker name="RetrieverOperator" />
+        </Target>
+      </Targets>
+      <Properties>
+        <Property name="correlationIDFieldName" value="CorrelationId" />
+        <Property name="tracingPointID" value="2000" />
+        <Property name="operationTypeFieldName" value="ExchangeTransportFlowOperation" />
+        <Property name="flowTypeName" value="TransportFlow" /> 
+        <Property name="documentIDFieldName" value="dummyIDField" />
+      </Properties>
+    </Operator>
+
+    <Operator name='RetrieverOperator' type='Microsoft.Exchange.Search.OperatorSchema.TransportRetrieverOperator'>
+      <Targets>
+        <Target breakpointEnabled='false'>
+          <operatorMoniker name='ErrorBypassCheck' />
+        </Target>
+      </Targets>
+      <ErrorTarget>
+        <operatorMoniker name='TransportRetrieverOperatorError' />
+      </ErrorTarget>
+      <Properties>
+        <Property name='contextid' value='contextid' />
+        <Property name='port' value='port' />
+        <Property name='originalbody' value='OriginalBody' />
+        <Property name='subject' value='Subject' />
+        <Property name='from' value='From' />
+        <Property name='to' value='To' />
+        <Property name='cc' value='CC' />
+        <Property name='senttime' value='SentTime' />
+        <Property name='messageflags' value ='messageflags' />
+        <Property name='shouldbypassnlg' value ='shouldbypassnlg' />
+        <Property name='shouldbypasstokenserializer' value ='shouldbypasstokenserializer' />
+        <Property name='shouldbypassmdm' value ='shouldbypassmdm' />
+      </Properties>
+    </Operator>
+
+    <Operator name="ErrorBypassCheck" type="Microsoft.Ceres.ContentEngine.Operators.BuiltIn.Router">
+      <Targets>
+        <Target breakpointEnabled="false">
+          <operatorMoniker name="ErrorWriterOperator" />
+        </Target>
+        <Target breakpointEnabled="false">
+          <operatorMoniker name="AfterRetrieverTracingPoint" />
+        </Target>
+      </Targets>
+      <Properties>
+        <Property name="routerGroups" value="[
+                (0,
+                  &quot;default&quot;,
+                  &quot;&quot;,
+                  &quot;DocumentParser&quot;
+                ),
+                (1,
+                  &quot;ErrorWriterOperatorPath&quot;,
+                  &quot;errorcode != 0&quot;,
+                  &quot;ErrorWriterOperator&quot;
+                )]" />
+      </Properties>
+    </Operator>
+
+    <Operator name="AfterRetrieverTracingPoint" type="Microsoft.Ceres.ContentEngine.Operators.Tracing.WithNumbersTraceOperator">
+      <Targets>
+        <Target>
+          <operatorMoniker name="DocumentParser" />
+        </Target>
+      </Targets>
+      <Properties>
+        <Property name="correlationIDFieldName" value="CorrelationId" />
+        <Property name="tracingPointID" value="2040" />  
+        <Property name="attachmentsFieldName" value="attachmentfilenames" />
+        <Property name="hasAttachmentsFieldName" value="hasattachment" />
+        <Property name="isAnnotatedFieldName" value="annotationtoken" />      
+        <Property name="documentSizeFieldName" value="size" />
+        <Property name="documentIDFieldName" value="dummyIDField" />
+      </Properties>
+    </Operator>
+    
+    <Operator name="DocumentParser" type="Microsoft.Ceres.ContentEngine.Operators.BuiltIn.SubFlow.SubFlow">
+      <Targets>
+        <Target breakpointEnabled="false">
+          <operatorMoniker name="AfterDocumentParserTracingPoint" />
+        </Target>
+      </Targets>
+      <ErrorTarget>
+        <operatorMoniker name='TransportDocumentParserError' />
+      </ErrorTarget>
+      <Properties>
+        <Property name="subFlowName" value="&quot;Microsoft.DocParsingSubFlow&quot;" />
+        <Property name="subFlowInputs" />
+        <Property name="subFlowOutputs" />
+        <Property name="inputOutputMap" />
+      </Properties>
+    </Operator>
+
+    <Operator name="AfterDocumentParserTracingPoint" type="Microsoft.Ceres.ContentEngine.Operators.Tracing.SizeTraceOperator">
+      <Targets>
+        <Target>
+          <operatorMoniker name="PostDocParserOperator" />
+        </Target>
+      </Targets>
+      <Properties>
+        <Property name="correlationIDFieldName" value="CorrelationId" />
+        <Property name="tracingPointID" value="2080" />  
+        <Property name="documentSizeFieldName" value="size" />
+        <Property name="documentIDFieldName" value="dummyIDField" />
+      </Properties>
+    </Operator>
+
+    <Operator name='PostDocParserOperator' type='Microsoft.Exchange.Search.OperatorSchema.PostDocParserOperator'>
+      <Targets>
+        <Target breakpointEnabled='false'>
+          <operatorMoniker name='AllToTextual' />
+        </Target>
+      </Targets>
+      <ErrorTarget>
+        <operatorMoniker name='TransportPostDocParserOperatorError' />
+      </ErrorTarget>
+      <Properties>
+        <Property name='id' value='id' />
+        <Property name='indexid' value='indexid' />
+        <Property name='errorcode' value='errorcode' />
+      </Properties>
+    </Operator>
+
+    <Operator name='AllToTextual' type='Microsoft.Ceres.ContentEngine.Operators.BuiltIn.TextToTextual'>
+      <Targets>
+        <Target>
+          <operatorMoniker name='SetFallbackLanguage' />
+        </Target>
+      </Targets>
+      <Properties>
+        <Property name='fieldsToIgnore' value="['From', 'To', 'CC', 'contextid', 'Attachments']" />
+      </Properties>
+    </Operator>
+
+    <Operator name="SetFallbackLanguage" type="Microsoft.Ceres.ContentEngine.Operators.BuiltIn.Mapper">
+      <Targets>
+        <Target breakpointEnabled="false">
+          <operatorMoniker name="PriorTransportLanguageIdentifierDiagnosticOperator" />
+        </Target>
+      </Targets>
+      <Properties>
+        <Property name="expressions" />
+        <Property name="fieldsToRemove" />
+        <Property name="adaptableType" value="True" />
+      </Properties>
+      <OutputSchema>
+        <Field name="fallbackLanguage" type="String" expression="&quot;unknown&quot;" />
+      </OutputSchema>
+    </Operator>
+
+    <Operator name='PriorTransportLanguageIdentifierDiagnosticOperator' type='Microsoft.Exchange.Search.OperatorSchema.DiagnosticOperator'>
+      <Targets>
+        <Target breakpointEnabled='false'>
+          <operatorMoniker name='LanguageIdentifier_body' />
+        </Target>
+      </Targets>
+      <Properties>
+      </Properties>
+    </Operator>
+
+    <Operator name='LanguageIdentifier_body' type='Microsoft.Ceres.ContentEngine.NlpOperators.LanguageDetector'>
+      <Targets>
+        <Target>
+          <operatorMoniker name='PostTransportLanguageIdentifierDiagnosticOperator' />
+        </Target>
+      </Targets>
+      <Properties>
+        <Property name='inputField' value='transportlanguagedetectiontext' />
+        <Property name='fallbackLanguageField' value='fallbackLanguage' />
+        <Property name='maximumCharactersToRead' value='5000' />
+        <Property name='documentLanguageOutputField' value='language' />
+      </Properties>
+    </Operator>
+
+    <Operator name='PostTransportLanguageIdentifierDiagnosticOperator' type='Microsoft.Exchange.Search.OperatorSchema.DiagnosticOperator'>
+      <Targets>
+        <Target breakpointEnabled='false'>
+          <operatorMoniker name='DidLanguageIdentificationFail' />
+        </Target>
+      </Targets>
+      <Properties>
+      </Properties>
+    </Operator>
+
+    <Operator name="DidLanguageIdentificationFail" type="Microsoft.Ceres.ContentEngine.Operators.BuiltIn.Mapper">
+      <Targets>
+        <Target breakpointEnabled="false">
+          <operatorMoniker name="SetFallbackLanguageIfIdentificationFailed" />
+        </Target>
+      </Targets>
+      <Properties>
+        <Property name="expressions" />
+        <Property name="fieldsToRemove" />
+        <Property name="adaptableType" value="True" />
+      </Properties>
+      <OutputSchema>
+        <Field name="languageIdentificationFailed" type="Boolean" expression="language == &quot;unknown&quot;" />
+      </OutputSchema>
+    </Operator>
+
+    <Operator name="SetFallbackLanguageIfIdentificationFailed" type="Microsoft.Ceres.ContentEngine.Operators.BuiltIn.Mapper">
+      <Targets>
+        <Target breakpointEnabled="false">
+          <operatorMoniker name="AfterPostLanguageIdentifierTracingPoint" />
+        </Target>
+      </Targets>
+      <Properties>
+        <Property name="expressions" />
+        <Property name="fieldsToRemove" />
+        <Property name="adaptableType" value="True" />
+      </Properties>
+      <OutputSchema>
+        <Field name="language" type="String" expression="languageIdentificationFailed ? &quot;en&quot; : language" />
+      </OutputSchema>
+    </Operator>    
+
+    <Operator name="AfterPostLanguageIdentifierTracingPoint" type="Microsoft.Ceres.ContentEngine.Operators.Tracing.NormalTraceOperator">
+      <Targets>
+        <Target>
+          <operatorMoniker name="PriorWordBreakerDiagnosticOperator" />
+        </Target>
+      </Targets>
+      <Properties>
+        <Property name="correlationIDFieldName" value="CorrelationId" />
+        <Property name="tracingPointID" value="2100" />
+        <Property name="documentIDFieldName" value="dummyIDField" />
+      </Properties>
+    </Operator>
+
+    <Operator name='PriorWordBreakerDiagnosticOperator' type='Microsoft.Exchange.Search.OperatorSchema.DiagnosticOperator'>
+      <Targets>
+        <Target breakpointEnabled='false'>
+          <operatorMoniker name='WordBreaker' />
+        </Target>
+      </Targets>
+      <Properties>
+      </Properties>
+    </Operator>
+
+    <Operator name="WordBreaker" type="Microsoft.Ceres.ContentEngine.NlpOperators.WordBreaker">
+      <Targets>
+        <Target>
+          <operatorMoniker name="PostWordBreakerDiagnosticOperator" />
+        </Target>
+      </Targets>
+      <Properties>
+        <Property name="languageField" value="&quot;language&quot;" />
+        <Property name="outputMode" value="Annotate" />
+        <Property name="inputField" value="&quot;nextField&quot;" />
+        <Property name="tokenAnnotationName" value="token" />
+        <Property name="altTokenAnnotationName" value="alttoken" />
+        <Property name="annotateTokenSegments" value="True" />
+        <Property name="annotateNGramsForTokenSegments" value="True" />
+        <Property name="maxAnnotations" value="131072" />
+        <Property name="enablePartialProcessing" value="True" />
+        <Property name="propertiesField" value="&quot;properties&quot;" />
+        <Property name="fieldList" value="[&quot;body&quot;,&quot;OriginalBody&quot;,&quot;Subject&quot;,&quot;From&quot;,&quot;To&quot;,&quot;CC&quot;]" />
+      </Properties>
+    </Operator>
+
+    <Operator name='PostWordBreakerDiagnosticOperator' type='Microsoft.Exchange.Search.OperatorSchema.DiagnosticOperator'>
+      <Targets>
+        <Target breakpointEnabled='false'>
+          <operatorMoniker name='AfterWordBreakerTracingPoint' />
+        </Target>
+      </Targets>
+      <Properties>
+      </Properties>
+    </Operator>
+
+    <Operator name="AfterWordBreakerTracingPoint" type="Microsoft.Ceres.ContentEngine.Operators.Tracing.NormalTraceOperator">
+      <Targets>
+        <Target>
+          <operatorMoniker name="TokenSerializerOperator" />
+        </Target>
+      </Targets>
+      <Properties>
+        <Property name="correlationIDFieldName" value="CorrelationId" />
+        <Property name="tracingPointID" value="2120" />
+        <Property name="documentIDFieldName" value="dummyIDField" />
+      </Properties>
+    </Operator>
+
+    <Operator name='TokenSerializerOperator' type='Microsoft.Exchange.Search.OperatorSchema.TokenSerializerOperator'>
+      <Targets>
+        <Target breakpointEnabled='false'>
+            <operatorMoniker name='NlgBypassCheck' />
+        </Target>
+      </Targets>
+      <Properties>
+        <Property name='inputfield' value='body' />
+        <Property name='annotationtoken' value='annotationtoken' />
+      </Properties>
+    </Operator>
+
+    <Operator name="NlgBypassCheck" type="Microsoft.Ceres.ContentEngine.Operators.BuiltIn.Router">
+      <Targets>
+        <Target breakpointEnabled="false">
+          <operatorMoniker name="OriginalBodyToBody" />
+        </Target>
+        <Target breakpointEnabled="false">
+          <operatorMoniker name="NlgBypassWriterOperator" />
+        </Target>
+      </Targets>
+      <Properties>
+        <Property name="routerGroups" value="[
+                (0,
+                  &quot;default&quot;,
+                  &quot;&quot;,
+                  &quot;OriginalBodyToBody&quot;
+                ),
+                (1,
+                  &quot;BypassNlgSubflowPath&quot;,
+                  &quot;shouldbypassnlg&quot;,
+                  &quot;NlgBypassWriterOperator&quot;
+                )]" />
+      </Properties>
+    </Operator>
+
+    <Operator name="OriginalBodyToBody" type="Microsoft.Ceres.ContentEngine.Operators.BuiltIn.Mapper">
+      <Targets>
+        <Target>
+          <operatorMoniker name="NlgSubFlow" />
+        </Target>
+      </Targets>
+      <Properties>
+        <Property name="expressions"/>
+        <Property name="fieldsToRemove" />
+        <Property name="adaptableType" value="True" />
+      </Properties>
+      <OutputSchema>
+        <Field name="Body" type="Textual" canBeNull="true" expression="OriginalBody"/>
+      </OutputSchema>
+    </Operator>
+
+    <Operator name='NlgSubFlow' type='Microsoft.Ceres.ContentEngine.Operators.BuiltIn.SubFlow.SubFlow'>
+      <Targets>
+        <Target breakpointEnabled='false'>
+          <operatorMoniker name='WriterOperator' />
+        </Target>
+      </Targets>
+      <Properties>
+        <Property name='subFlowName' value='Microsoft.NaturalLanguage.ExtractionsFlow' />
+        <Property name='subFlowInputs' />
+        <Property name='subFlowOutputs' />
+        <Property name='inputOutputMap' />
+      </Properties>
+    </Operator>
+
+    <Operator name='WriterOperator' type='Microsoft.Exchange.Search.OperatorSchema.TransportWriterOperator'>
+      <Properties>
+        <Property name="contextid" value="contextid" />
+        <Property name="annotationtoken" value="annotationtoken" />
+        <Property name='tasksXml' value='tasksXml' />
+        <Property name='meetingsXml' value='meetingsXml' />
+        <Property name='addressesXml' value='addressesXml' />
+        <Property name='keywordsXml' value='keywordsXml' />
+        <Property name='phonesXml' value='phonesXml' />
+        <Property name='emailsXml' value='emailsXml' />
+        <Property name='urlsXml' value='urlsXml' />
+        <Property name='contactsXml' value='contactsXml' />
+        <Property name='language' value='language' />
+        <Property name='languageIdentificationFailed' value='languageIdentificationFailed' />
+        <Property name='errorcode' value='errorcode' />
+        <Property name='provideCallbacks' value='True' />
+      </Properties>
+    </Operator>
+
+    <Operator name='NlgBypassWriterOperator' type='Microsoft.Exchange.Search.OperatorSchema.TransportWriterOperator'>
+      <Properties>
+        <Property name="contextid" value="contextid" />
+        <Property name="annotationtoken" value="annotationtoken" />
+        <Property name='tasksXml' value='tasksXml' />
+        <Property name='meetingsXml' value='meetingsXml' />
+        <Property name='addressesXml' value='addressesXml' />
+        <Property name='keywordsXml' value='keywordsXml' />
+        <Property name='phonesXml' value='phonesXml' />
+        <Property name='emailsXml' value='emailsXml' />
+        <Property name='urlsXml' value='urlsXml' />
+        <Property name='contactsXml' value='contactsXml' />
+        <Property name='language' value='language' />
+        <Property name='languageIdentificationFailed' value='languageIdentificationFailed' />
+        <Property name='errorcode' value='errorcode' />
+        <Property name='provideCallbacks' value='True' />
+      </Properties>
+    </Operator>
+
+    <Operator name='ErrorWriterOperator' type='Microsoft.Exchange.Search.OperatorSchema.TransportWriterOperator'>
+      <Properties>
+        <Property name="contextid" value="contextid" />
+        <Property name="annotationtoken" value="annotationtoken" />
+        <Property name='tasksXml' value='tasksXml' />
+        <Property name='meetingsXml' value='meetingsXml' />
+        <Property name='addressesXml' value='addressesXml' />
+        <Property name='keywordsXml' value='keywordsXml' />
+        <Property name='phonesXml' value='phonesXml' />
+        <Property name='emailsXml' value='emailsXml' />
+        <Property name='urlsXml' value='urlsXml' />
+        <Property name='contactsXml' value='contactsXml' />
+        <Property name='language' value='language' />
+        <Property name='languageIdentificationFailed' value='languageIdentificationFailed' />
+        <Property name='errorcode' value='errorcode' />
+        <Property name='provideCallbacks' value='True' />
+      </Properties>
+    </Operator>
+
+    <Operator name='TransportRetrieverOperatorError' type='Microsoft.Exchange.Search.OperatorSchema.TransportErrorOperator'>
+      <Targets>
+        <Target breakpointEnabled='false'>
+          <operatorMoniker name='RetrieverOperatorNullWriter' />
+        </Target>
+      </Targets>
+      <Properties>
+        <Property name='Exception' value='Exception' />
+        <Property name='ExceptionCorrelationId' value='ExceptionCorrelationId' />
+      </Properties>
+    </Operator>
+
+    <Operator name='RetrieverOperatorNullWriter' type='Microsoft.Ceres.ContentEngine.Operators.BuiltIn.NullWriter'>
+      <Properties>
+        <Property name="callbackInterval" value="1" />
+        <Property name="provideCallbacks" value="True" />
+      </Properties>
+    </Operator>
+
+    <Operator name='TransportDocumentParserError' type='Microsoft.Exchange.Search.OperatorSchema.TransportErrorOperator'>
+      <Targets>
+        <Target breakpointEnabled='false'>
+          <operatorMoniker name='TransportDocumentParserNullWriter' />
+        </Target>
+      </Targets>
+      <Properties>
+        <Property name='Exception' value='Exception' />
+        <Property name='ExceptionCorrelationId' value='ExceptionCorrelationId' />
+      </Properties>
+    </Operator>
+
+    <Operator name='TransportDocumentParserNullWriter' type='Microsoft.Ceres.ContentEngine.Operators.BuiltIn.NullWriter'>
+      <Properties>
+        <Property name="callbackInterval" value="1" />
+        <Property name="provideCallbacks" value="True" />
+      </Properties>
+    </Operator>
+
+    <Operator name='TransportPostDocParserOperatorError' type='Microsoft.Exchange.Search.OperatorSchema.TransportErrorOperator'>
+      <Targets>
+        <Target breakpointEnabled='false'>
+          <operatorMoniker name='TransportPostDocParserOperatorNullWriter' />
+        </Target>
+      </Targets>
+      <Properties>
+        <Property name='Exception' value='Exception' />
+        <Property name='ExceptionCorrelationId' value='ExceptionCorrelationId' />
+      </Properties>
+    </Operator>
+
+    <Operator name='TransportPostDocParserOperatorNullWriter' type='Microsoft.Ceres.ContentEngine.Operators.BuiltIn.NullWriter'>
+      <Properties>
+        <Property name="callbackInterval" value="1" />
+        <Property name="provideCallbacks" value="True" />
+      </Properties>
+    </Operator>
+
+  </Operators>
+</OperatorGraph>

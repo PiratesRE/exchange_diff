@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo Name="CAFE PreSetup" DescriptionId="SetupComponentPostSetupCafe">
+
+  <ServerTasks>
+
+    <ServerTaskInfo Id="_37a69395746b4da88a5f97e2c3aa7d88" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressStartingUMCallRouter" IsFatal="false">
+        <Standalone>start-SetupService -ServiceName MSExchangeUMCR</Standalone>
+      </Install>
+
+      <BuildToBuildUpgrade />
+      <DisasterRecovery />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Generates a common include file for web.config files to reference. -->
+    <ServerTaskInfo Id="_GenerateDependentAssemblies" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          $dependentAssemblyGeneratorExePath = [System.IO.Path]::Combine($RoleInstallPath, "bin", "DependentAssemblyGenerator.exe");
+          $exchangeBinPath = [System.IO.Path]::Combine($RoleInstallPath, "bin");
+          $frontEndPath = [System.IO.Path]::Combine($RoleInstallPath, "FrontEnd");
+          $clientAccessPath = [System.IO.Path]::Combine($RoleInstallPath, "ClientAccess");
+          $sharedWebConfig = [System.IO.Path]::Combine($RoleInstallPath, "FrontEnd", "HttpProxy", "SharedWebConfig.config");
+
+          $a = &amp;"$dependentAssemblyGeneratorExePath" -exchangePath "$exchangeBinPath" -exchangePath "$frontEndPath" -exchangePath "$clientAccessPath" -configFile "$sharedWebConfig";
+          $a | % { if ($_.Length > 0) { Write-ExchangeSetupLog -Info "$_.ToString()" } }
+          Start-SetupProcess -Name "iisreset" -Args "/timeout:120"
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Change a list of application pools from the default GC to run as clientGC, aka gcServer=false-->
+    <ServerTaskInfo Id="_SelectedAppPoolsToGCServerFalseCafe" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          $configFilePath = [System.IO.Path]::Combine($RoleInstallPath, "bin", "GenericAppPoolConfigWithGCServerEnabledFalse.config");
+          $windir = $env:windir;
+
+          # List of app pools excluded from this processing - some app pools already have a config file or they should remain as server gc
+          [System.Array] $appPoolsExcludedFromWorkstationGC = "msexchangerpcproxyfrontendapppool","internalexchangesharedapppool","msexchangemapifrontendapppool","msexchangemapimailboxapppool","msexchangemapiaddressbookapppool","msexchangesyncapppool";
+          $syncAppPool = "msexchangesyncapppool";
+		  
+          $appPools = &amp;"$windir\system32\inetsrv\appcmd.exe" "list" "apppool";
+          $x = get-wmiobject Win32_ComputerSystem;
+          foreach($appPool in $appPools)
+          {
+              $startIndex =  $appPool.IndexOf('"') + 1;
+              $numChars = $appPool.SubString($startIndex).IndexOf('"');
+              $appPoolName = $appPool.SubString($startIndex, $numChars);			  
+			  
+              # Do not enable Workstation GC for SyncAppPool on machines with memory more than 20g 			  
+              # Do not enable Workstation GC for AppPools that Allocate greater than 50MB/s at their peak e.g. MSExchangeRpcProxyFrontEndAppPool			  
+              if ((($syncAppPool.Contains($appPoolName.ToLower()) -eq $true) -and ($x.TotalPhysicalMemory/1000mb -lt 20)) -or ($appPoolsExcludedFromWorkstationGC.Contains($appPoolName.ToLower()) -ne $true))
+			  {			  				  
+				# We'll set this whether or not the app pool exists.  Failures are ignored.
+				$a= &amp;"$windir\system32\inetsrv\appcmd.exe" "set" "apppool" "$appPoolName" /managedRuntimeLoader:"";
+				$b= &amp;"$windir\system32\inetsrv\appcmd.exe" "set" "apppool" "$appPoolName" /CLRConfigFile:"$configFilePath";
+				Write-ExchangeSetupLog -Info ($a + " " + $b)
+			  }
+			  else
+			  {			    
+				Write-ExchangeSetupLog -Info "Skipping $appPoolName since it is in the exclusion list";
+			  }			  
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Set CAFE Apps to not use Dynamic Compression since it is CPU intensive and BE is already doing Compression -->
+    <ServerTaskInfo Id="_SelectedCafeAppsDisableDynComp" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          $windir = $env:windir;
+          # Note: Turning off DynComp for AppPools like MSFFOGLSAppPool as well
+          $backEndAppPrefix = "Exchange Back End";
+          $apps = &amp;"$windir\system32\inetsrv\appcmd.exe" "list" "app";
+          foreach($app in $apps)
+          {
+              $startIndex =  $app.IndexOf('"') + 1;
+              $numChars = $app.SubString($startIndex).IndexOf('"');
+              $appName = $app.SubString($startIndex, $numChars);
+
+              # Don't want to disable Dynamic Compression on 1 box topologies for BE Apps, so adding check
+              if($appName.StartsWith($backEndAppPrefix))
+              {
+                  Write-ExchangeSetupLog -Info "Skipping $appName since Dynamic Compression should remain turned on for it";
+              }
+              else
+              {
+                  # We'll set this whether or not the app pool exists.  Failures are ignored.
+                  $a= &amp;"$windir\system32\inetsrv\appcmd.exe" "set" "config" "$appName" -section:urlCompression /doDynamicCompression:false /commit:apphost
+                  Write-ExchangeSetupLog -Info ($a)
+              }
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Disables IIS health check and recycling of app pools as this is handled by our proxy test probes. -->
+    <ServerTaskInfo Id="_DisableIISHealthCheckRecyclingCafe" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          $windir = $env:windir;
+          $appPools = &amp;"$windir\system32\inetsrv\appcmd.exe" "list" "apppool";
+          foreach($appPool in $appPools)
+          {
+              $startIndex =  $appPool.IndexOf('"') + 1;
+              $numChars = $appPool.SubString($startIndex).IndexOf('"');
+              $appPoolName = $appPool.SubString($startIndex, $numChars);
+
+              if ($appPoolName.StartsWith("MSExchange"))
+              {
+                  $a = &amp;"$windir\system32\inetsrv\appcmd.exe" "set" "apppool" "$appPoolName" /processModel.pingingEnabled:false
+                  Write-ExchangeSetupLog -Info ($a)
+              }
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+  </ServerTasks>
+
+</SetupComponentInfo>

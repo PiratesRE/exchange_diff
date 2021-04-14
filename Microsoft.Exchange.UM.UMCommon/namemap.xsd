@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+
+	<xs:element name="GrammarFilter">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name ="Rules" type="classes_t"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:simpleType name="recipient_type_t">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="User"/>
+			<xs:enumeration value="UserMailbox"/>
+			<xs:enumeration value="MailUser"/>
+			<xs:enumeration value="Contact"/>
+			<xs:enumeration value="MailContact"/>
+			<xs:enumeration value="Group"/>
+			<xs:enumeration value="MailUniversalDistributionGroup"/>
+			<xs:enumeration value="MailNonUniversalGroup"/>
+			<xs:enumeration value="DynamicDistributionGroup"/>
+			<xs:enumeration value="PublicFolder"/>
+			<xs:enumeration value="PublicDatabase"/>
+			<xs:enumeration value="SystemAttendantMailbox"/>
+			<xs:enumeration value="SystemMailbox"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:element name="Class" type="recipient_type_t"/>
+
+	<xs:complexType name="classes_t">
+		<xs:choice minOccurs = "0" maxOccurs = "unbounded" >
+			<xs:element name="Rule" type="class_t" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:choice>
+		<xs:attribute name="lang" type="xs:language" use="optional"/>
+	</xs:complexType>
+
+	<xs:complexType name="class_t">
+		<xs:sequence >
+			<xs:element ref="Class" minOccurs="1" maxOccurs="unbounded"/>
+			<xs:element ref="Patterns" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+		<xs:attribute name="name" type="xs:string" use="optional"/>
+	</xs:complexType>
+
+	<xs:element name="Input" type="xs:string"/>
+
+	<xs:element name="Output" type="output_t"/>
+
+	<xs:complexType name="output_t">
+		<xs:simpleContent>
+			<xs:extension base="xs:string">
+				<xs:attribute name="tn" type="xs:boolean" use="optional" default="true"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+
+	<xs:element name="Pattern">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="Input"/>
+				<xs:element ref="Output" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="Patterns">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="Pattern" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

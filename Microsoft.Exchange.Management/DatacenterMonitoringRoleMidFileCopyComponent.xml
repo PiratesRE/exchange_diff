@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo IsDatacenterOnly="true" IsDatacenterDedicatedOnly="true" Name="Datacenter Monitoring MidFileCopy">
+
+  <ServerTasks>
+
+    <ServerTaskInfo Id="_d0c6c301438b4306aec7c2b994a1eee5" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install />
+
+      <!-- Only upgrade mode is used by the binding tasks-->
+      <BuildToBuildUpgrade>
+        <Standalone></Standalone>
+      </BuildToBuildUpgrade>
+
+      <DisasterRecovery />
+      <Uninstall />
+    </ServerTaskInfo>
+
+  </ServerTasks>
+
+</SetupComponentInfo>
+

@@ -1,0 +1,162 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{09CD9476-CD82-489E-B9E2-84B47CA141E1}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Microsoft.Exchange.WorkloadManagement</RootNamespace>
+    <AssemblyName>Microsoft.Exchange.WorkloadManagement</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AdmissionClassificationData.cs" />
+    <Compile Include="CiAgeOfLastNotificationResourceHealthMonitor.cs" />
+    <Compile Include="CiAgeOfLastNotificationResourceKey.cs" />
+    <Compile Include="CiHealthMonitorConfiguration.cs" />
+    <Compile Include="CiHealthMonitorConfigurationSetting.cs" />
+    <Compile Include="CiMdbCopyInfo.cs" />
+    <Compile Include="CiMdbInfo.cs" />
+    <Compile Include="CiResourceHealthMonitorBase.cs" />
+    <Compile Include="CiResourceKey.cs" />
+    <Compile Include="ClassificationBlock.cs" />
+    <Compile Include="ClassificationDictionary.cs" />
+    <Compile Include="ClassificationPerfCounterWrapper.cs" />
+    <Compile Include="DefaultAdmissionControl.cs" />
+    <Compile Include="DiskExtent.cs" />
+    <Compile Include="DiskExtents.cs" />
+    <Compile Include="DiskIoControl.cs" />
+    <Compile Include="DiskLatencyResourceKey.cs" />
+    <Compile Include="DiskLatencyResourceMonitor.cs" />
+    <Compile Include="DiskPerformanceStructure.cs" />
+    <Compile Include="DummyWorkloadLogger.cs" />
+    <Compile Include="EventLogs\WorkloadManagementEventLogConstants.cs" />
+    <Compile Include="IResourceAdmissionControl.cs" />
+    <Compile Include="ITask.cs" />
+    <Compile Include="ITaskProvider.cs" />
+    <Compile Include="ITaskProviderManager.cs" />
+    <Compile Include="ITaskTimeout.cs" />
+    <Compile Include="IUserWorkloadManager.cs" />
+    <Compile Include="LogEventIf.cs" />
+    <Compile Include="LogEventIfSlotBlocked.cs" />
+    <Compile Include="MailboxDatabaseCopyStatusCache.cs" />
+    <Compile Include="MdbCopyMonitor.cs" />
+    <Compile Include="MSExchangeUserWorkloadManager.cs" />
+    <Compile Include="MSExchangeUserWorkloadManagerInstance.cs" />
+    <Compile Include="MSExchangeWorkloadManagement.cs" />
+    <Compile Include="MSExchangeWorkloadManagementClassification.cs" />
+    <Compile Include="MSExchangeWorkloadManagementClassificationInstance.cs" />
+    <Compile Include="MSExchangeWorkloadManagementInstance.cs" />
+    <Compile Include="MSExchangeWorkloadManagementWorkload.cs" />
+    <Compile Include="MSExchangeWorkloadManagementWorkloadInstance.cs" />
+    <Compile Include="NonOperationalAdmissionControlException.cs" />
+    <Compile Include="ProcessorResourceKey.cs" />
+    <Compile Include="ProcessorResourceLoadMonitor.cs" />
+    <Compile Include="ProcessorResourceLoadMonitorConfiguration.cs" />
+    <Compile Include="ProcessorResourceLoadMonitorConfigurationSetting.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RemoveResourceDelegate.cs" />
+    <Compile Include="ResourceAdmissionControlManager.cs" />
+    <Compile Include="ResourceAvailabilityChangeDelegate.cs" />
+    <Compile Include="ResourceLoadDelayInfo.cs" />
+    <Compile Include="ResourceReservation.cs" />
+    <Compile Include="ResourceReservationContext.cs" />
+    <Compile Include="StandardBudgetCacheHandler.cs" />
+    <Compile Include="Strings.cs" />
+    <Compile Include="SystemTaskBase.cs" />
+    <Compile Include="SystemWorkloadBase.cs" />
+    <Compile Include="SystemWorkloadManager.cs" />
+    <Compile Include="TaskExecuteResult.cs" />
+    <Compile Include="TaskLocation.cs" />
+    <Compile Include="TaskProvider.cs" />
+    <Compile Include="TaskStepResult.cs" />
+    <Compile Include="UserWorkloadManager.cs" />
+    <Compile Include="UserWorkloadManagerHandler.cs" />
+    <Compile Include="UserWorkloadManagerPerfCounterWrapper.cs" />
+    <Compile Include="UserWorkloadManagerResult.cs" />
+    <Compile Include="WLMTaskDetails.cs" />
+    <Compile Include="WorkloadExecution.cs" />
+    <Compile Include="WorkloadExecutionStatus.cs" />
+    <Compile Include="WorkloadManagementPerfCounterWrapper.cs" />
+    <Compile Include="WorkloadManagerEventLogger.cs" />
+    <Compile Include="WorkloadPerfCounterWrapper.cs" />
+    <Compile Include="WorkloadPolicy.cs" />
+    <Compile Include="WorkloadSettings.cs" />
+    <Compile Include="WrappedTask.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Strings.resources" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.ApplicationLogic\Microsoft.Exchange.Data.ApplicationLogic.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14104}</Project>
+      <Name>Microsoft.Exchange.Data.ApplicationLogic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Common\Microsoft.Exchange.Data.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140D3}</Project>
+      <Name>Microsoft.Exchange.Data.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Directory\Microsoft.Exchange.Data.Directory.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14105}</Project>
+      <Name>Microsoft.Exchange.Data.Directory</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Storage\Microsoft.Exchange.Data.Storage.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1410F}</Project>
+      <Name>Microsoft.Exchange.Data.Storage</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Diagnostics\Microsoft.Exchange.Diagnostics.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14113}</Project>
+      <Name>Microsoft.Exchange.Diagnostics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Net\Microsoft.Exchange.Net.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14178}</Project>
+      <Name>Microsoft.Exchange.Net</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Rpc\Microsoft.Exchange.Rpc.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14188}</Project>
+      <Name>Microsoft.Exchange.Rpc</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.VariantConfiguration\Microsoft.Exchange.VariantConfiguration.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141E0}</Project>
+      <Name>Microsoft.Exchange.VariantConfiguration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\mscorlib\mscorlib.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141F1}</Project>
+      <Name>mscorlib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo IsDatacenterOnly="true" IsDatacenterDedicatedOnly="true" Name="AuditService Component" DescriptionId="SetupAuditServiceComponent">
+    <ServerTasks>
+        <!-- uninstall old  Audit service -->
+        <ServerTaskInfo Id="_UninstallOldAuditService" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install />
+            <BuildToBuildUpgrade>
+                <Standalone>
+                Uninstall-AuditService
+                </Standalone>
+            </BuildToBuildUpgrade>
+            <DisasterRecovery UseInstallTasks="true" />
+            <Uninstall />
+        </ServerTaskInfo>
+        <!-- Install Audit Service. -->
+        <ServerTaskInfo Id="_InstallAuditService" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install>
+                <Standalone>
+                if($RoleDatacenterFfoEnvironment -ne "True")
+                {
+                    if (!(get-service MSExchangeAS* | where {$_.name -eq "MSExchangeAS"}))
+                    {
+                        Install-AuditService
+                    }
+                }
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true" />
+            <DisasterRecovery UseInstallTasks="true" />
+            <Uninstall />
+        </ServerTaskInfo>
+        <!-- Start Audit service. -->
+        <ServerTaskInfo Id="_StartAuditService" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install>
+                <Standalone>
+                if($RoleDatacenterFfoEnvironment -ne "True")
+                {
+                    Start-SetupService -ServiceName MSExchangeAS -IgnoreTimeout:$true
+                }
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true" />
+            <DisasterRecovery UseInstallTasks="true" />
+            <Uninstall />
+        </ServerTaskInfo>
+    </ServerTasks>
+</SetupComponentInfo>

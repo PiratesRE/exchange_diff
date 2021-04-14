@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo Name="ClientAccessExchangeCertificate" DescriptionId="ClientAccessExchangeCertificateComponentDescription">
+
+  <ServerTasks>
+
+    <!-- ClientAccessExchangeCertificate -->
+    <ServerTaskInfo Id="_fb5e9028e669404d94dba90aace8c2f9" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          Install-ExchangeCertificate -WebSiteName "Exchange Back End" -services "IIS, POP, IMAP" -DomainController $RoleDomainController -InstallInTrustedRootCAIfSelfSigned $true
+          if ($RoleIsDatacenter -ne $true -And $RoleIsPartnerHosted -ne $true)
+          {
+            Install-AuthCertificate -DomainController $RoleDomainController
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="false" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall/>
+    </ServerTaskInfo>
+
+  </ServerTasks>
+</SetupComponentInfo>
+

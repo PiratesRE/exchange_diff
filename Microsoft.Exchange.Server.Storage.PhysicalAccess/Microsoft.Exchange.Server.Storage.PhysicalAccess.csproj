@@ -1,0 +1,296 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{09CD9476-CD82-489E-B9E2-84B47CA141A4}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Microsoft.Exchange.Server.Storage</RootNamespace>
+    <AssemblyName>Microsoft.Exchange.Server.Storage.PhysicalAccess</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Exchange.Common.IL" />
+    <Reference Include="Microsoft.Isam.Esent.Interop.Types" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="PhysicalAccessJet\CachedColumnValues.cs" />
+    <Compile Include="PhysicalAccessJet\ColumnValueComparer.cs" />
+    <Compile Include="PhysicalAccessJet\IJetColumn.cs" />
+    <Compile Include="PhysicalAccessJet\IJetRecordCounter.cs" />
+    <Compile Include="PhysicalAccessJet\IJetSearchCriteria.cs" />
+    <Compile Include="PhysicalAccessJet\IJetSimpleQueryOperator.cs" />
+    <Compile Include="PhysicalAccessJet\JetApplyOperator.cs" />
+    <Compile Include="PhysicalAccessJet\JetCategorizedTableOperator.cs" />
+    <Compile Include="PhysicalAccessJet\JetColumnValueHelper.cs" />
+    <Compile Include="PhysicalAccessJet\JetConnection.cs" />
+    <Compile Include="PhysicalAccessJet\JetConstantColumn.cs" />
+    <Compile Include="PhysicalAccessJet\JetConversionColumn.cs" />
+    <Compile Include="PhysicalAccessJet\JetCountOperator.cs" />
+    <Compile Include="PhysicalAccessJet\JetDatabase.cs" />
+    <Compile Include="PhysicalAccessJet\JetDatabaseIntegrityCheck.cs" />
+    <Compile Include="PhysicalAccessJet\JetDataRow.cs" />
+    <Compile Include="PhysicalAccessJet\JetDeleteOperator.cs" />
+    <Compile Include="PhysicalAccessJet\JetDistinctOperator.cs" />
+    <Compile Include="PhysicalAccessJet\JetFunctionColumn.cs" />
+    <Compile Include="PhysicalAccessJet\JetIndexAndOperator.cs" />
+    <Compile Include="PhysicalAccessJet\JetIndexNotOperator.cs" />
+    <Compile Include="PhysicalAccessJet\JetIndexOrOperator.cs" />
+    <Compile Include="PhysicalAccessJet\JetInsertOperator.cs" />
+    <Compile Include="PhysicalAccessJet\JetJoinOperator.cs" />
+    <Compile Include="PhysicalAccessJet\JetLogReplayStatus.cs" />
+    <Compile Include="PhysicalAccessJet\JetMappedPropertyColumn.cs" />
+    <Compile Include="PhysicalAccessJet\JetOrdinalPositionOperator.cs" />
+    <Compile Include="PhysicalAccessJet\JetPartitionHelper.cs" />
+    <Compile Include="PhysicalAccessJet\JetPhysicalColumn.cs" />
+    <Compile Include="PhysicalAccessJet\JetPreReadOperator.cs" />
+    <Compile Include="PhysicalAccessJet\JetPropertyColumn.cs" />
+    <Compile Include="PhysicalAccessJet\JetReader.cs" />
+    <Compile Include="PhysicalAccessJet\JetRetrieveColumnHelper.cs" />
+    <Compile Include="PhysicalAccessJet\JetSearchCriteriaAnd.cs" />
+    <Compile Include="PhysicalAccessJet\JetSearchCriteriaBitMask.cs" />
+    <Compile Include="PhysicalAccessJet\JetSearchCriteriaCompare.cs" />
+    <Compile Include="PhysicalAccessJet\JetSearchCriteriaFalse.cs" />
+    <Compile Include="PhysicalAccessJet\JetSearchCriteriaNear.cs" />
+    <Compile Include="PhysicalAccessJet\JetSearchCriteriaNot.cs" />
+    <Compile Include="PhysicalAccessJet\JetSearchCriteriaOr.cs" />
+    <Compile Include="PhysicalAccessJet\JetSearchCriteriaText.cs" />
+    <Compile Include="PhysicalAccessJet\JetSearchCriteriaTrue.cs" />
+    <Compile Include="PhysicalAccessJet\JetSimpleQueryOperatorHelper.cs" />
+    <Compile Include="PhysicalAccessJet\JetSizeOfColumn.cs" />
+    <Compile Include="PhysicalAccessJet\JetSortOperator.cs" />
+    <Compile Include="PhysicalAccessJet\JetTable.cs" />
+    <Compile Include="PhysicalAccessJet\JetTableClassInfo.cs" />
+    <Compile Include="PhysicalAccessJet\JetTableFunction.cs" />
+    <Compile Include="PhysicalAccessJet\JetTableFunctionOperator.cs" />
+    <Compile Include="PhysicalAccessJet\JetTableOperator.cs" />
+    <Compile Include="PhysicalAccessJet\JetUpdateOperator.cs" />
+    <Compile Include="PhysicalAccessJet\JetVirtualColumn.cs" />
+    <Compile Include="PhysicalAccessSql\ColumnUse.cs" />
+    <Compile Include="PhysicalAccessSql\DatabaseLocation.cs" />
+    <Compile Include="PhysicalAccessSql\IOStatistics.cs" />
+    <Compile Include="PhysicalAccessSql\ISqlClientFactory.cs" />
+    <Compile Include="PhysicalAccessSql\ISqlColumn.cs" />
+    <Compile Include="PhysicalAccessSql\ISqlCommand.cs" />
+    <Compile Include="PhysicalAccessSql\ISqlConnection.cs" />
+    <Compile Include="PhysicalAccessSql\ISqlDataReader.cs" />
+    <Compile Include="PhysicalAccessSql\ISqlSearchCriteria.cs" />
+    <Compile Include="PhysicalAccessSql\ISqlSimpleQueryOperator.cs" />
+    <Compile Include="PhysicalAccessSql\ISqlTransaction.cs" />
+    <Compile Include="PhysicalAccessSql\SingleTableColumnRenameQueryModel.cs" />
+    <Compile Include="PhysicalAccessSql\SingleTableQueryModel.cs" />
+    <Compile Include="PhysicalAccessSql\SqlApplyOperator.cs" />
+    <Compile Include="PhysicalAccessSql\SqlCategorizedTableOperator.cs" />
+    <Compile Include="PhysicalAccessSql\SqlClientFactory.cs" />
+    <Compile Include="PhysicalAccessSql\SqlCollationHelper.cs" />
+    <Compile Include="PhysicalAccessSql\SqlCommand.cs" />
+    <Compile Include="PhysicalAccessSql\SqlConnection.cs" />
+    <Compile Include="PhysicalAccessSql\SqlConstantColumn.cs" />
+    <Compile Include="PhysicalAccessSql\SqlConversionColumn.cs" />
+    <Compile Include="PhysicalAccessSql\SqlCountOperator.cs" />
+    <Compile Include="PhysicalAccessSql\SqlDatabase.cs" />
+    <Compile Include="PhysicalAccessSql\SqlDataRow.cs" />
+    <Compile Include="PhysicalAccessSql\SqlDeleteOperator.cs" />
+    <Compile Include="PhysicalAccessSql\SqlDistinctOperator.cs" />
+    <Compile Include="PhysicalAccessSql\SqlFunctionColumn.cs" />
+    <Compile Include="PhysicalAccessSql\SqlIndexAndOperator.cs" />
+    <Compile Include="PhysicalAccessSql\SqlIndexNotOperator.cs" />
+    <Compile Include="PhysicalAccessSql\SqlIndexOrOperator.cs" />
+    <Compile Include="PhysicalAccessSql\SqlInsertOperator.cs" />
+    <Compile Include="PhysicalAccessSql\SqlJoinOperator.cs" />
+    <Compile Include="PhysicalAccessSql\SqlMappedPropertyColumn.cs" />
+    <Compile Include="PhysicalAccessSql\SqlOrdinalPositionOperator.cs" />
+    <Compile Include="PhysicalAccessSql\SqlPhysicalColumn.cs" />
+    <Compile Include="PhysicalAccessSql\SqlPreReadOperator.cs" />
+    <Compile Include="PhysicalAccessSql\SqlPropertyColumn.cs" />
+    <Compile Include="PhysicalAccessSql\SqlQueryModel.cs" />
+    <Compile Include="PhysicalAccessSql\SqlReader.cs" />
+    <Compile Include="PhysicalAccessSql\SqlSearchCriteriaAnd.cs" />
+    <Compile Include="PhysicalAccessSql\SqlSearchCriteriaBitMask.cs" />
+    <Compile Include="PhysicalAccessSql\SqlSearchCriteriaCompare.cs" />
+    <Compile Include="PhysicalAccessSql\SqlSearchCriteriaFalse.cs" />
+    <Compile Include="PhysicalAccessSql\SqlSearchCriteriaNear.cs" />
+    <Compile Include="PhysicalAccessSql\SqlSearchCriteriaNot.cs" />
+    <Compile Include="PhysicalAccessSql\SqlSearchCriteriaOr.cs" />
+    <Compile Include="PhysicalAccessSql\SqlSearchCriteriaText.cs" />
+    <Compile Include="PhysicalAccessSql\SqlSearchCriteriaTrue.cs" />
+    <Compile Include="PhysicalAccessSql\SqlSizeOfColumn.cs" />
+    <Compile Include="PhysicalAccessSql\SqlSortOperator.cs" />
+    <Compile Include="PhysicalAccessSql\SqlTable.cs" />
+    <Compile Include="PhysicalAccessSql\SqlTableFunction.cs" />
+    <Compile Include="PhysicalAccessSql\SqlTableFunctionOperator.cs" />
+    <Compile Include="PhysicalAccessSql\SqlTableOperator.cs" />
+    <Compile Include="PhysicalAccessSql\SqlUpdateOperator.cs" />
+    <Compile Include="PhysicalAccess\ApplyOperator.cs" />
+    <Compile Include="PhysicalAccess\CategorizedTableCollapseState.cs" />
+    <Compile Include="PhysicalAccess\CategorizedTableOperator.cs" />
+    <Compile Include="PhysicalAccess\CategorizedTableParams.cs" />
+    <Compile Include="PhysicalAccess\CategorizedViewRowType.cs" />
+    <Compile Include="PhysicalAccess\CategoryHeaderSortOverride.cs" />
+    <Compile Include="PhysicalAccess\Column.cs" />
+    <Compile Include="PhysicalAccess\ColumnValue.cs" />
+    <Compile Include="PhysicalAccess\Connection.cs" />
+    <Compile Include="PhysicalAccess\ConstantColumn.cs" />
+    <Compile Include="PhysicalAccess\ConversionColumn.cs" />
+    <Compile Include="PhysicalAccess\CouldNotCreateDatabaseException.cs" />
+    <Compile Include="PhysicalAccess\CountOperator.cs" />
+    <Compile Include="PhysicalAccess\DataAccessOperator.cs" />
+    <Compile Include="PhysicalAccess\Database.cs" />
+    <Compile Include="PhysicalAccess\DatabaseConnectionStatistics.cs" />
+    <Compile Include="PhysicalAccess\DatabaseFlags.cs" />
+    <Compile Include="PhysicalAccess\DatabaseHeaderInfo.cs" />
+    <Compile Include="PhysicalAccess\DatabaseOperationStatistics.cs" />
+    <Compile Include="PhysicalAccess\DatabaseSchemaBroken.cs" />
+    <Compile Include="PhysicalAccess\DatabaseType.cs" />
+    <Compile Include="PhysicalAccess\DataRow.cs" />
+    <Compile Include="PhysicalAccess\DeleteOperator.cs" />
+    <Compile Include="PhysicalAccess\DistinctOperator.cs" />
+    <Compile Include="PhysicalAccess\EmptyTwir.cs" />
+    <Compile Include="PhysicalAccess\ExtendedPropertyColumn.cs" />
+    <Compile Include="PhysicalAccess\ExtensionMethods\ExtensionMethods.cs" />
+    <Compile Include="PhysicalAccess\Factory.cs" />
+    <Compile Include="PhysicalAccess\FunctionColumn.cs" />
+    <Compile Include="PhysicalAccess\GeneratedCreateDatabase.cs" />
+    <Compile Include="PhysicalAccess\Globals.cs" />
+    <Compile Include="PhysicalAccess\IColumn.cs" />
+    <Compile Include="PhysicalAccess\IColumnResolver.cs" />
+    <Compile Include="PhysicalAccess\IColumnStreamAccess.cs" />
+    <Compile Include="PhysicalAccess\IConfigurableTableContents.cs" />
+    <Compile Include="PhysicalAccess\IConnectionProvider.cs" />
+    <Compile Include="PhysicalAccess\ICustomParameter.cs" />
+    <Compile Include="PhysicalAccess\IDatabaseExecutionContext.cs" />
+    <Compile Include="PhysicalAccess\IExecutionPlanner.cs" />
+    <Compile Include="PhysicalAccess\IGetColumnValues.cs" />
+    <Compile Include="PhysicalAccess\IIndex.cs" />
+    <Compile Include="PhysicalAccess\IInterruptControl.cs" />
+    <Compile Include="PhysicalAccess\ILogReplayStatus.cs" />
+    <Compile Include="PhysicalAccess\Index.cs" />
+    <Compile Include="PhysicalAccess\IndexAndOperator.cs" />
+    <Compile Include="PhysicalAccess\IndexNotOperator.cs" />
+    <Compile Include="PhysicalAccess\IndexOrOperator.cs" />
+    <Compile Include="PhysicalAccess\InsertOperator.cs" />
+    <Compile Include="PhysicalAccess\IRefillableTableContents.cs" />
+    <Compile Include="PhysicalAccess\IRowAccess.cs" />
+    <Compile Include="PhysicalAccess\IRowPropertyBag.cs" />
+    <Compile Include="PhysicalAccess\IStoreDatabaseQueryTarget.cs" />
+    <Compile Include="PhysicalAccess\ITWIR.cs" />
+    <Compile Include="PhysicalAccess\JoinOperator.cs" />
+    <Compile Include="PhysicalAccess\KeyRange.cs" />
+    <Compile Include="PhysicalAccess\MappedPropertyColumn.cs" />
+    <Compile Include="PhysicalAccess\NativeMemoryMethods.cs" />
+    <Compile Include="PhysicalAccess\NullColumnException.cs" />
+    <Compile Include="PhysicalAccess\OrdinalPositionOperator.cs" />
+    <Compile Include="PhysicalAccess\ParameterizedSQL.cs" />
+    <Compile Include="PhysicalAccess\PhysicalAccessPerformanceCounters.cs" />
+    <Compile Include="PhysicalAccess\PhysicalAccessPerformanceCountersInstance.cs" />
+    <Compile Include="PhysicalAccess\PhysicalColumn.cs" />
+    <Compile Include="PhysicalAccess\PhysicalColumnStream.cs" />
+    <Compile Include="PhysicalAccess\PreReadOperator.cs" />
+    <Compile Include="PhysicalAccess\PropertyColumn.cs" />
+    <Compile Include="PhysicalAccess\Reader.cs" />
+    <Compile Include="PhysicalAccess\RowStats.cs" />
+    <Compile Include="PhysicalAccess\RowStatsCounterType.cs" />
+    <Compile Include="PhysicalAccess\RowStatsTableClassIndex.cs" />
+    <Compile Include="PhysicalAccess\SearchCriteria.cs" />
+    <Compile Include="PhysicalAccess\SearchCriteriaAnd.cs" />
+    <Compile Include="PhysicalAccess\SearchCriteriaBitMask.cs" />
+    <Compile Include="PhysicalAccess\SearchCriteriaCompare.cs" />
+    <Compile Include="PhysicalAccess\SearchCriteriaFalse.cs" />
+    <Compile Include="PhysicalAccess\SearchCriteriaNear.cs" />
+    <Compile Include="PhysicalAccess\SearchCriteriaNot.cs" />
+    <Compile Include="PhysicalAccess\SearchCriteriaOr.cs" />
+    <Compile Include="PhysicalAccess\SearchCriteriaText.cs" />
+    <Compile Include="PhysicalAccess\SearchCriteriaTrue.cs" />
+    <Compile Include="PhysicalAccess\SimpleQueryOperator.cs" />
+    <Compile Include="PhysicalAccess\SizeOfColumn.cs" />
+    <Compile Include="PhysicalAccess\SmallRowStats.cs" />
+    <Compile Include="PhysicalAccess\SmallRowStatsTableClassIndex.cs" />
+    <Compile Include="PhysicalAccess\SortColumn.cs" />
+    <Compile Include="PhysicalAccess\SortOperator.cs" />
+    <Compile Include="PhysicalAccess\SortOrder.cs" />
+    <Compile Include="PhysicalAccess\SortOrderBuilder.cs" />
+    <Compile Include="PhysicalAccess\SpecialColumns.cs" />
+    <Compile Include="PhysicalAccess\StartStopKey.cs" />
+    <Compile Include="PhysicalAccess\StoreQueryTargets.cs" />
+    <Compile Include="PhysicalAccess\StringFormatOptions.cs" />
+    <Compile Include="PhysicalAccess\Table.cs" />
+    <Compile Include="PhysicalAccess\TableAccessHints.cs" />
+    <Compile Include="PhysicalAccess\TableClass.cs" />
+    <Compile Include="PhysicalAccess\TableFunction.cs" />
+    <Compile Include="PhysicalAccess\TableFunctionOperator.cs" />
+    <Compile Include="PhysicalAccess\TableLevelIOStats.cs" />
+    <Compile Include="PhysicalAccess\TableOperator.cs" />
+    <Compile Include="PhysicalAccess\TestInterruptControl.cs" />
+    <Compile Include="PhysicalAccess\UpdateOperator.cs" />
+    <Compile Include="PhysicalAccess\VirtualColumn.cs" />
+    <Compile Include="PhysicalAccess\VirtualColumnDefinition.cs" />
+    <Compile Include="PhysicalAccess\VirtualColumnId.cs" />
+    <Compile Include="PhysicalAccess\VirtualColumnNames.cs" />
+    <Compile Include="PhysicalAccess\WriteChunkingInterruptControl.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.Exchange.Common\Microsoft.Exchange.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140F0}</Project>
+      <Name>Microsoft.Exchange.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Diagnostics\Microsoft.Exchange.Diagnostics.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14113}</Project>
+      <Name>Microsoft.Exchange.Diagnostics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Net\Microsoft.Exchange.Net.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14178}</Project>
+      <Name>Microsoft.Exchange.Net</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Server.Storage.Common\Microsoft.Exchange.Server.Storage.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1419A}</Project>
+      <Name>Microsoft.Exchange.Server.Storage.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Server.Storage.PropertyTag\Microsoft.Exchange.Server.Storage.PropertyTag.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141A6}</Project>
+      <Name>Microsoft.Exchange.Server.Storage.PropertyTag</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Isam.Esent.Interop\Microsoft.Isam.Esent.Interop.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141E8}</Project>
+      <Name>Microsoft.Isam.Esent.Interop</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\mscorlib\mscorlib.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141F1}</Project>
+      <Name>mscorlib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

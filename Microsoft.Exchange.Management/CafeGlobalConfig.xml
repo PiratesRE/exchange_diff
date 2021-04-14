@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo Name="CAFE Global AD Configuration" DescriptionId="SetupComponentCafeGlobalConfig">
+
+  <!-- Tasks to create a container and objects underneath the conatiner required by CAFE role -->
+  <OrgTasks>
+  </OrgTasks>
+  
+</SetupComponentInfo>

@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo Name="All Roles Common First" DescriptionId="SetupComponentAllADRolesCommon" AlwaysExecute="true">
+
+  <!-- This component is ALWAYS executed, regardless of other installed roles -->
+  <ServerTasks>
+
+    <!-- E14 528333: WMI must be started before running ServiceControl.ps1 if
+         an ExecutionPolicy is being used -->
+    <ServerTaskInfo Id="_3e69ba31a53e4c29a2d6bffcf78cc614" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install Weight="5" DescriptionId="SetupProgressStartingWMIService">
+        <Standalone>
+          if (Get-Service winmgmt* | ?{ $_.Name -ieq "winmgmt" })
+          {
+            Set-Service winmgmt -StartupType Automatic
+            Start-SetupService -ServiceName winmgmt
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall/>
+    </ServerTaskInfo>
+
+    <!-- Normally all services would be enabled in AllRolesPostFileCopy. If it failed
+    resume won't try it again. Thus we'll try to do it again here. -->
+    <ServerTaskInfo Id="_56139ce4432346ecb7936afae4c3a9cc" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          &amp; $RoleBinPath\ServiceControl.ps1 EnableServices $RoleRoleName.Replace('Role','')
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall/>
+    </ServerTaskInfo>
+    <ServerTaskInfo Id="_edc23bc11a4e4119a6a4ee802ff1ea49" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          if ($RoleRoles)
+          {
+            &amp; $RoleBinPath\ServiceControl.ps1 EnableServices $RoleRoles.Replace('Role','').Split(',')
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall/>
+    </ServerTaskInfo>
+
+    <!-- Setup depends on remote registry and wmi. So let's start them first. -->
+    <ServerTaskInfo Id="_62f13a063b2846a5ab20765bb7a3fc51" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install Weight="5" DescriptionId="SetupProgressStartingRemoteRegistryService">
+        <Standalone>Start-SetupService -ServiceName RemoteRegistry</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall/>
+    </ServerTaskInfo>
+
+    <!-- Set Folder/Registry Permissions when installing, recovering or upgradeing -->
+    <!-- This requires local administrator permission -->
+    <ServerTaskInfo Id="_00573a17b6e34c26842a6646830d57fa" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>Set-LocalPermissions</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall/>
+    </ServerTaskInfo>
+
+    <!-- Register Exchange providers with WinMgmt (Tracing, Performance) -->
+    <!-- $Review need to make language directory dynamic instead for Exchange.MFL. Bug E14 18871 -->
+    <ServerTaskInfo Id="_77668249568048d3812fb7cdba08c58b" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>
+          $mofFilePath =  ($RoleInstallPath + "bin\Exchange.MOF");
+          $mflFilePath =  ($RoleInstallPath + "bin\en\Exchange.MFL");
+          compile-moffile -MofFilePath:$mofFilePath;
+          compile-moffile -MofFilePath:$mflFilePath;
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>
+          $mofFilePath =  ($RoleInstallPath + "bin\ExchangeUninstall.MOF");
+          compile-moffile -MofFilePath:$mofFilePath;
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Add global firewall rule for RPC/RPCEPMap -->
+    <ServerTaskInfo Id="_f557448f44964e5eaa5dba792a3c4f09" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+           Add-FirewallException -FirewallRule (New-Object Microsoft.Exchange.Security.WindowsFirewall.MSExchangeRPCByPortRule)
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>remove-firewallexception -FirewallRule (New-Object Microsoft.Exchange.Security.WindowsFirewall.MSExchangeRPCByPortRule)</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <ServerTaskInfo Id="_84a0f0e2c2f44db2b537e9696c26fc3e" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+           Add-FirewallException -FirewallRule (New-Object Microsoft.Exchange.Security.WindowsFirewall.MSExchangeRPCEPMapByPortRule)
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>remove-firewallexception -FirewallRule (New-Object Microsoft.Exchange.Security.WindowsFirewall.MSExchangeRPCEPMapByPortRule)</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+  </ServerTasks>
+
+</SetupComponentInfo>

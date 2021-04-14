@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo Name="Frontend Transport Permissions Configuration" DescriptionId="SetupComponentConfigPermissionsFrontendTransport">
+  <ServerTasks>
+    <!-- Set Folder/Registry Permissions when installing, recovering or upgrade Frontend Role
+         The permissions are described in Management/Deployment/LocalPermissions.xml
+    -->
+    <ServerTaskInfo Id="_040B8077-D4D5-4571-88D4-F7EDB3228E05" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>Set-LocalPermissions -Feature:"FrontendTransport"</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <!--Uninstall is not required as folder/registry entries are removed when the role is uninstalled-->
+      <Uninstall/>
+    </ServerTaskInfo>
+  </ServerTasks>
+</SetupComponentInfo>

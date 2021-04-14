@@ -1,0 +1,778 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{09CD9476-CD82-489E-B9E2-84B47CA141E4}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Microsoft.Forefront.Monitoring.ActiveMonitoring</RootNamespace>
+    <AssemblyName>Microsoft.Forefront.Monitoring.ActiveMonitoring.Local.Components</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Exchange.Hygiene.AsyncQueueDaemon" />
+    <Reference Include="Microsoft.Exchange.Hygiene.AsyncQueueStress" />
+    <Reference Include="Microsoft.Exchange.Hygiene.CacheDataProvider" />
+    <Reference Include="Microsoft.Exchange.Hygiene.Deployment.Common" />
+    <Reference Include="Microsoft.Exchange.Hygiene.PowershellDataProvider" />
+    <Reference Include="Microsoft.Exchange.Hygiene.Provisioning" />
+    <Reference Include="Microsoft.Exchange.Hygiene.WebStoreDataProvider" />
+    <Reference Include="Microsoft.Forefront.AntiSpam.Common" />
+    <Reference Include="Microsoft.Forefront.AntiSpam.RulesPublisher" />
+    <Reference Include="Microsoft.Forefront.Hygiene.Rus.Client" />
+    <Reference Include="Microsoft.Forefront.Hygiene.Rus.Common" />
+    <Reference Include="Microsoft.Forefront.Hygiene.Rus.EngineUpdateCommon" />
+    <Reference Include="Microsoft.Forefront.Reporting.Security" />
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.IdentityModel" />
+    <Reference Include="System.IdentityModel.Tokens.Jwt" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.Management.Automation" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.ServiceProcess" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Account.cs" />
+    <Compile Include="AntiSpamDiscovery.cs" />
+    <Compile Include="AsyncDiscovery.cs" />
+    <Compile Include="AsyncQueueDiscovery.cs" />
+    <Compile Include="AsyncQueueMonitorException.cs" />
+    <Compile Include="AsyncQueueProbe.cs" />
+    <Compile Include="AsyncQueueProbeNewRequest.cs" />
+    <Compile Include="AuthenticationType.cs" />
+    <Compile Include="BackgroundDiscovery.cs" />
+    <Compile Include="BasicRestOAuthSyncProxy.cs" />
+    <Compile Include="CaptureType.cs" />
+    <Compile Include="CheckAntiSpamWatermarksProbe.cs" />
+    <Compile Include="CheckForwardSyncJobIsRunning.cs" />
+    <Compile Include="CheckSingleInstanceTasks.cs" />
+    <Compile Include="CheckStaleContinousTasks.cs" />
+    <Compile Include="CheckStaleScheduledTasks.cs" />
+    <Compile Include="CheckTaskInNotStartedStatus.cs" />
+    <Compile Include="CheckTransportStatusDuringSwitchOverActiveProbe.cs" />
+    <Compile Include="CmdletDiscovery.cs" />
+    <Compile Include="Cmdlet\CmdletProbe.cs" />
+    <Compile Include="ComponentState.cs" />
+    <Compile Include="ConnectionLostPoint.cs" />
+    <Compile Include="CustomCommandRunPoint.cs" />
+    <Compile Include="CustomerReporting\CustomerReportingDiscovery.cs" />
+    <Compile Include="CustomerReporting\CustomerReportingProbe.cs" />
+    <Compile Include="CustomerReporting\OnDemandQueryBatchJobProbe.cs" />
+    <Compile Include="DalDiscovery.cs" />
+    <Compile Include="Dal\ADObjectDeserializerOperation.cs" />
+    <Compile Include="Dal\AssertOperation.cs" />
+    <Compile Include="Dal\AssertOperator.cs" />
+    <Compile Include="Dal\ConfigDataProviderOperation.cs" />
+    <Compile Include="Dal\DalProbe.cs" />
+    <Compile Include="Dal\DalProbeBinder.cs" />
+    <Compile Include="Dal\DalProbeOperation.cs" />
+    <Compile Include="Dal\DalType.cs" />
+    <Compile Include="Dal\DalWorkDefinition.cs" />
+    <Compile Include="Dal\DataContractDeserializerOperation.cs" />
+    <Compile Include="Dal\DBConnectivityProbe.cs" />
+    <Compile Include="Dal\DeleteOperation.cs" />
+    <Compile Include="Dal\DeserializerOperation.cs" />
+    <Compile Include="Dal\DistributedCacheHealthProbe.cs" />
+    <Compile Include="Dal\FindOperation.cs" />
+    <Compile Include="Dal\ReflectionCreateOperation.cs" />
+    <Compile Include="Dal\ReflectionInvokeOperation.cs" />
+    <Compile Include="Dal\ReflectionOperation.cs" />
+    <Compile Include="Dal\ReflectionParameter.cs" />
+    <Compile Include="Dal\SaveOperation.cs" />
+    <Compile Include="Dal\TestReadWriteOperation.cs" />
+    <Compile Include="Dal\WstConfigMetadataExpiredProbe.cs" />
+    <Compile Include="Dal\XmlDeserializerOperation.cs" />
+    <Compile Include="DatabaseDiscovery.cs" />
+    <Compile Include="DataminingDiscovery.cs" />
+    <Compile Include="DeploymentDiscovery.cs" />
+    <Compile Include="Deployment\NtpEventProbe.cs" />
+    <Compile Include="Deployment\Probes\CertificateExpirationProbe.cs" />
+    <Compile Include="Deployment\Probes\FEPAVSignatureExpirationProbe.cs" />
+    <Compile Include="Deployment\Probes\TimeServiceProbe.cs" />
+    <Compile Include="DirectEmailResponder.cs" />
+    <Compile Include="DiscoveryUtils.cs" />
+    <Compile Include="DnsDiscovery.cs" />
+    <Compile Include="DNSPlusPlus\AaaaRecord.cs" />
+    <Compile Include="DNSPlusPlus\Answer.cs" />
+    <Compile Include="DNSPlusPlus\ARecord.cs" />
+    <Compile Include="DNSPlusPlus\DnsConfiguration.cs" />
+    <Compile Include="DNSPlusPlus\DnsHelper.cs" />
+    <Compile Include="DNSPlusPlus\DnsLocalConfiguration.cs" />
+    <Compile Include="DNSPlusPlus\DnsMonitorException.cs" />
+    <Compile Include="DNSPlusPlus\DNSProbe.cs" />
+    <Compile Include="DNSPlusPlus\DnsProbeOperation.cs" />
+    <Compile Include="DNSPlusPlus\DNSProbeWorkDefinition.cs" />
+    <Compile Include="DNSPlusPlus\DnsRemoteConfiguration.cs" />
+    <Compile Include="DNSPlusPlus\DomainSelection.cs" />
+    <Compile Include="DNSPlusPlus\NSRecord.cs" />
+    <Compile Include="DNSPlusPlus\QueryResponseCode.cs" />
+    <Compile Include="DNSPlusPlus\Question.cs" />
+    <Compile Include="DNSPlusPlus\RecordClass.cs" />
+    <Compile Include="DNSPlusPlus\RecordType.cs" />
+    <Compile Include="DNSPlusPlus\Response.cs" />
+    <Compile Include="DNSPlusPlus\SOARecord.cs" />
+    <Compile Include="DnsUtils.cs" />
+    <Compile Include="E4ePortalDiscovery.cs" />
+    <Compile Include="E4ePortalProbe.cs" />
+    <Compile Include="EdgeDiscovery.cs" />
+    <Compile Include="ELCDiscovery.cs" />
+    <Compile Include="EmailManagementDiscovery.cs" />
+    <Compile Include="EndPoint.cs" />
+    <Compile Include="ExpectedResponseType.cs" />
+    <Compile Include="ExpectedResult.cs" />
+    <Compile Include="ExpectedResultType.cs" />
+    <Compile Include="ExtendedReportWebProbe.cs" />
+    <Compile Include="ExternalDnsProbe.cs" />
+    <Compile Include="FfoBGDTaskProbeBase.cs" />
+    <Compile Include="FfoCentralAdminDiscovery.cs" />
+    <Compile Include="FfoCentralAdmin\FfoPowerShellScriptProbe.cs" />
+    <Compile Include="FfoExchangeFileUploaderDiscovery.cs" />
+    <Compile Include="FfoExchangeFileUploader\FfoExchangeFileUploaderProbe.cs" />
+    <Compile Include="FfoLAMProbeException.cs" />
+    <Compile Include="FfoPSScriptLAMProbe.cs" />
+    <Compile Include="FfoQuarantineRetentionJobOldMessagesExistProbe.cs" />
+    <Compile Include="FfoRwsDiscovery.cs" />
+    <Compile Include="FfoUccDiscovery.cs" />
+    <Compile Include="ForwardSyncProbeException.cs" />
+    <Compile Include="FrontendDiscovery.cs" />
+    <Compile Include="FrontendHubMailboxDiscovery.cs" />
+    <Compile Include="GenericRUSProbe.cs" />
+    <Compile Include="HighAvailabilityDiscovery.cs" />
+    <Compile Include="HtmlUtility.cs" />
+    <Compile Include="HttpRequest.cs" />
+    <Compile Include="HubDiscovery.cs" />
+    <Compile Include="IHttpRequest.cs" />
+    <Compile Include="InfraDnsProbe.cs" />
+    <Compile Include="JournalAgentProbe.cs" />
+    <Compile Include="JournalingDiscovery.cs" />
+    <Compile Include="JsonHelpers.cs" />
+    <Compile Include="Local\Components\LocDescriptionAttribute.cs" />
+    <Compile Include="Local\Components\MessageTracingProbeException.cs" />
+    <Compile Include="Local\Components\Strings.cs" />
+    <Compile Include="LogUploaderDiscovery.cs" />
+    <Compile Include="MailboxDiscovery.cs" />
+    <Compile Include="Message.cs" />
+    <Compile Include="MessageTracingHubDiscovery.cs" />
+    <Compile Include="MicrosoftOnline\Account.cs" />
+    <Compile Include="MicrosoftOnline\Account1.cs" />
+    <Compile Include="MicrosoftOnline\AddressType.cs" />
+    <Compile Include="MicrosoftOnline\AddServiceTypeCompletedEventHandler.cs" />
+    <Compile Include="MicrosoftOnline\AlternativeSecurityIdValue.cs" />
+    <Compile Include="MicrosoftOnline\AppAddressValue.cs" />
+    <Compile Include="MicrosoftOnline\AssignedCapabilityStatus.cs" />
+    <Compile Include="MicrosoftOnline\AssignedLicenseValue.cs" />
+    <Compile Include="MicrosoftOnline\AssignedPlanFilterValue.cs" />
+    <Compile Include="MicrosoftOnline\AssignedPlanValue.cs" />
+    <Compile Include="MicrosoftOnline\AssociateToPartnerCompletedEventArgs.cs" />
+    <Compile Include="MicrosoftOnline\AssociateToPartnerCompletedEventHandler.cs" />
+    <Compile Include="MicrosoftOnline\AsymmetricKeyType.cs" />
+    <Compile Include="MicrosoftOnline\AsymmetricKeyValue.cs" />
+    <Compile Include="MicrosoftOnline\AttributeSet.cs" />
+    <Compile Include="MicrosoftOnline\AuthorizedPartyValue.cs" />
+    <Compile Include="MicrosoftOnline\BuildRandomAccountCompletedEventArgs.cs" />
+    <Compile Include="MicrosoftOnline\BuildRandomAccountCompletedEventHandler.cs" />
+    <Compile Include="MicrosoftOnline\BuildRandomCompanyCompletedEventArgs.cs" />
+    <Compile Include="MicrosoftOnline\BuildRandomCompanyCompletedEventHandler.cs" />
+    <Compile Include="MicrosoftOnline\BuildRandomCompanyProfileCompletedEventArgs.cs" />
+    <Compile Include="MicrosoftOnline\BuildRandomCompanyProfileCompletedEventHandler.cs" />
+    <Compile Include="MicrosoftOnline\BuildRandomSubscriptionCompletedEventArgs.cs" />
+    <Compile Include="MicrosoftOnline\BuildRandomSubscriptionCompletedEventHandler.cs" />
+    <Compile Include="MicrosoftOnline\BuildRandomUserCompletedEventArgs.cs" />
+    <Compile Include="MicrosoftOnline\BuildRandomUserCompletedEventHandler.cs" />
+    <Compile Include="MicrosoftOnline\Company.cs" />
+    <Compile Include="MicrosoftOnline\Company1.cs" />
+    <Compile Include="MicrosoftOnline\CompanyDomainValue.cs" />
+    <Compile Include="MicrosoftOnline\CompanyManagerProvider.cs" />
+    <Compile Include="MicrosoftOnline\CompanyProfile.cs" />
+    <Compile Include="MicrosoftOnline\CompanyProfileState.cs" />
+    <Compile Include="MicrosoftOnline\CompanyProfileStateChangeReason.cs" />
+    <Compile Include="MicrosoftOnline\CompanyTagLevelMapsValueCompanyTagLevelMap.cs" />
+    <Compile Include="MicrosoftOnline\CompanyUnverifiedDomainValue.cs" />
+    <Compile Include="MicrosoftOnline\CompanyVerifiedDomainValue.cs" />
+    <Compile Include="MicrosoftOnline\Contact.cs" />
+    <Compile Include="MicrosoftOnline\ContextMoveStage.cs" />
+    <Compile Include="MicrosoftOnline\ContextMoveStatusValue.cs" />
+    <Compile Include="MicrosoftOnline\ContextMoveWatermarksValue.cs" />
+    <Compile Include="MicrosoftOnline\ContextMoveWatermarksValueSourceSubscriberFilterVersion.cs" />
+    <Compile Include="MicrosoftOnline\Contract.cs" />
+    <Compile Include="MicrosoftOnline\CreateAccountCompletedEventHandler.cs" />
+    <Compile Include="MicrosoftOnline\CreateCompanyCompletedEventArgs.cs" />
+    <Compile Include="MicrosoftOnline\CreateCompanyCompletedEventHandler.cs" />
+    <Compile Include="MicrosoftOnline\CreateCompanyWithSubscriptionsCompletedEventArgs.cs" />
+    <Compile Include="MicrosoftOnline\CreateCompanyWithSubscriptionsCompletedEventHandler.cs" />
+    <Compile Include="MicrosoftOnline\CreateMailboxAgentsGroupCompletedEventHandler.cs" />
+    <Compile Include="MicrosoftOnline\CreatePartnerCompletedEventArgs.cs" />
+    <Compile Include="MicrosoftOnline\CreatePartnerCompletedEventHandler.cs" />
+    <Compile Include="MicrosoftOnline\CreateSyndicatedCompanyCompletedEventArgs.cs" />
+    <Compile Include="MicrosoftOnline\CreateSyndicatedCompanyCompletedEventHandler.cs" />
+    <Compile Include="MicrosoftOnline\CreateUpdateDeleteSubscriptionCompletedEventHandler.cs" />
+    <Compile Include="MicrosoftOnline\CredentialType.cs" />
+    <Compile Include="MicrosoftOnline\CredentialValue.cs" />
+    <Compile Include="MicrosoftOnline\Datacenter.cs" />
+    <Compile Include="MicrosoftOnline\DatacenterRedirectionValue.cs" />
+    <Compile Include="MicrosoftOnline\DeleteAccountCompletedEventHandler.cs" />
+    <Compile Include="MicrosoftOnline\DeleteCompanyCompletedEventHandler.cs" />
+    <Compile Include="MicrosoftOnline\DeletePartnerContractCompletedEventHandler.cs" />
+    <Compile Include="MicrosoftOnline\DemoteToCompanyCompletedEventHandler.cs" />
+    <Compile Include="MicrosoftOnline\DirectoryObject.cs" />
+    <Compile Include="MicrosoftOnline\DirectoryObjectClass.cs" />
+    <Compile Include="MicrosoftOnline\DirectoryObjectClassAddressList.cs" />
+    <Compile Include="MicrosoftOnline\DirectoryProperty.cs" />
+    <Compile Include="MicrosoftOnline\DirectoryPropertyBinary.cs" />
+    <Compile Include="MicrosoftOnline\DirectoryPropertyBinarySingle.cs" />
+    <Compile Include="MicrosoftOnline\DirectoryPropertyBinarySingleLength1To102400.cs" />
+    <Compile Include="MicrosoftOnline\DirectoryPropertyBinarySingleLength1To12000.cs" />
+    <Compile Include="MicrosoftOnline\DirectoryPropertyBinarySingleLength1To128.cs" />
+    <Compile Include="MicrosoftOnline\DirectoryPropertyBinarySingleLength1To195.cs" />
+    <Compile Include="MicrosoftOnline\DirectoryPropertyBinarySingleLength1To256.cs" />
+    <Compile Include="MicrosoftOnline\DirectoryPropertyBinarySingleLength1To28.cs" />
+    <Compile Include="MicrosoftOnline\DirectoryPropertyBinarySingleLength1To32000.cs" />
+    <Compile Include="MicrosoftOnline\DirectoryPropertyBinarySingleLength1To4000.cs" />
+    <Compile Include="MicrosoftOnline\DirectoryPropertyBinarySingleLength1To8000.cs" />
+    <Compile Include="MicrosoftOnline\DirectoryPropertyBinarySingleLength8.cs" />
+    <Compile Include="MicrosoftOnline\DirectoryPropertyBoolean.cs" />
+    <Compile Include="MicrosoftOnline\DirectoryPropertyBooleanSingle.cs" />
+    <Compile Include="MicrosoftOnline\DirectoryPropertyDateTime.cs" />
+    <Compile Include="MicrosoftOnline\DirectoryPropertyDateTimeSingle.cs" />
+    <Compile Include="MicrosoftOnline\DirectoryPropertyGuid.cs" />
+    <Compile Include="MicrosoftOnline\DirectoryPropertyGuidSingle.cs" />
+    <Compile Include="MicrosoftOnline\DirectoryPropertyInt32.cs" />
+    <Compile Include="MicrosoftOnline\DirectoryPropertyInt32Single.cs" />
+    <Compile Include="MicrosoftOnline\DirectoryPropertyInt32SingleMax1.cs" />
+    <Compile Include="MicrosoftOnline\DirectoryPropertyInt32SingleMin0.cs" />
+    <Compile Include="MicrosoftOnline\DirectoryPropertyInt32SingleMin0Max1.cs" />
+    <Compile Include="MicrosoftOnline\DirectoryPropertyInt32SingleMin0Max2.cs" />
+    <Compile Include="MicrosoftOnline\DirectoryPropertyInt32SingleMin0Max3.cs" />
+    <Compile Include="MicrosoftOnline\DirectoryPropertyInt32SingleMin0Max65535.cs" />
+    <Compile Include="MicrosoftOnline\DirectoryPropertyInt64.cs" />
+    <Compile Include="MicrosoftOnline\DirectoryPropertyInt64Single.cs" />
+    <Compile Include="MicrosoftOnline\DirectoryPropertyProxyAddresses.cs" />
+    <Compile Include="MicrosoftOnline\DirectoryPropertyReference.cs" />
+    <Compile Include="MicrosoftOnline\DirectoryPropertyReferenceAddressList.cs" />
+    <Compile Include="MicrosoftOnline\DirectoryPropertyReferenceAddressListSingle.cs" />
+    <Compile Include="MicrosoftOnline\DirectoryPropertyReferenceAny.cs" />
+    <Compile Include="MicrosoftOnline\DirectoryPropertyReferenceAnySingle.cs" />
+    <Compile Include="MicrosoftOnline\DirectoryPropertyReferenceContact.cs" />
+    <Compile Include="MicrosoftOnline\DirectoryPropertyReferenceContactSingle.cs" />
+    <Compile Include="MicrosoftOnline\DirectoryPropertyReferenceServicePlan.cs" />
+    <Compile Include="MicrosoftOnline\DirectoryPropertyServicePrincipalName.cs" />
+    <Compile Include="MicrosoftOnline\DirectoryPropertyString.cs" />
+    <Compile Include="MicrosoftOnline\DirectoryPropertyStringLength1To1024.cs" />
+    <Compile Include="MicrosoftOnline\DirectoryPropertyStringLength1To1123.cs" />
+    <Compile Include="MicrosoftOnline\DirectoryPropertyStringLength1To2048.cs" />
+    <Compile Include="MicrosoftOnline\DirectoryPropertyStringLength1To256.cs" />
+    <Compile Include="MicrosoftOnline\DirectoryPropertyStringLength1To3.cs" />
+    <Compile Include="MicrosoftOnline\DirectoryPropertyStringLength1To40.cs" />
+    <Compile Include="MicrosoftOnline\DirectoryPropertyStringLength1To512.cs" />
+    <Compile Include="MicrosoftOnline\DirectoryPropertyStringLength1To64.cs" />
+    <Compile Include="MicrosoftOnline\DirectoryPropertyStringLength2To500.cs" />
+    <Compile Include="MicrosoftOnline\DirectoryPropertyStringSingle.cs" />
+    <Compile Include="MicrosoftOnline\DirectoryPropertyStringSingleLength1To1024.cs" />
+    <Compile Include="MicrosoftOnline\DirectoryPropertyStringSingleLength1To1123.cs" />
+    <Compile Include="MicrosoftOnline\DirectoryPropertyStringSingleLength1To128.cs" />
+    <Compile Include="MicrosoftOnline\DirectoryPropertyStringSingleLength1To16.cs" />
+    <Compile Include="MicrosoftOnline\DirectoryPropertyStringSingleLength1To20.cs" />
+    <Compile Include="MicrosoftOnline\DirectoryPropertyStringSingleLength1To2048.cs" />
+    <Compile Include="MicrosoftOnline\DirectoryPropertyStringSingleLength1To256.cs" />
+    <Compile Include="MicrosoftOnline\DirectoryPropertyStringSingleLength1To3.cs" />
+    <Compile Include="MicrosoftOnline\DirectoryPropertyStringSingleLength1To40.cs" />
+    <Compile Include="MicrosoftOnline\DirectoryPropertyStringSingleLength1To454.cs" />
+    <Compile Include="MicrosoftOnline\DirectoryPropertyStringSingleLength1To500.cs" />
+    <Compile Include="MicrosoftOnline\DirectoryPropertyStringSingleLength1To512.cs" />
+    <Compile Include="MicrosoftOnline\DirectoryPropertyStringSingleLength1To6.cs" />
+    <Compile Include="MicrosoftOnline\DirectoryPropertyStringSingleLength1To64.cs" />
+    <Compile Include="MicrosoftOnline\DirectoryPropertyStringSingleMailNickname.cs" />
+    <Compile Include="MicrosoftOnline\DirectoryPropertyTargetAddress.cs" />
+    <Compile Include="MicrosoftOnline\DirectoryPropertyXml.cs" />
+    <Compile Include="MicrosoftOnline\DirectoryPropertyXmlAlternativeSecurityId.cs" />
+    <Compile Include="MicrosoftOnline\DirectoryPropertyXmlAny.cs" />
+    <Compile Include="MicrosoftOnline\DirectoryPropertyXmlAnySingle.cs" />
+    <Compile Include="MicrosoftOnline\DirectoryPropertyXmlAppAddress.cs" />
+    <Compile Include="MicrosoftOnline\DirectoryPropertyXmlAssignedLicense.cs" />
+    <Compile Include="MicrosoftOnline\DirectoryPropertyXmlAssignedPlan.cs" />
+    <Compile Include="MicrosoftOnline\DirectoryPropertyXmlAsymmetricKey.cs" />
+    <Compile Include="MicrosoftOnline\DirectoryPropertyXmlAuthorizedParty.cs" />
+    <Compile Include="MicrosoftOnline\DirectoryPropertyXmlCompanyPartnership.cs" />
+    <Compile Include="MicrosoftOnline\DirectoryPropertyXmlCompanyPartnershipSingle.cs" />
+    <Compile Include="MicrosoftOnline\DirectoryPropertyXmlCompanyUnverifiedDomain.cs" />
+    <Compile Include="MicrosoftOnline\DirectoryPropertyXmlCompanyVerifiedDomain.cs" />
+    <Compile Include="MicrosoftOnline\DirectoryPropertyXmlContextMoveStatus.cs" />
+    <Compile Include="MicrosoftOnline\DirectoryPropertyXmlContextMoveStatusSingle.cs" />
+    <Compile Include="MicrosoftOnline\DirectoryPropertyXmlContextMoveWatermarks.cs" />
+    <Compile Include="MicrosoftOnline\DirectoryPropertyXmlContextMoveWatermarksSingle.cs" />
+    <Compile Include="MicrosoftOnline\DirectoryPropertyXmlCredential.cs" />
+    <Compile Include="MicrosoftOnline\DirectoryPropertyXmlDatacenterRedirection.cs" />
+    <Compile Include="MicrosoftOnline\DirectoryPropertyXmlDirSyncStatus.cs" />
+    <Compile Include="MicrosoftOnline\DirectoryPropertyXmlEncryptedSecretKey.cs" />
+    <Compile Include="MicrosoftOnline\DirectoryPropertyXmlGeographicLocation.cs" />
+    <Compile Include="MicrosoftOnline\DirectoryPropertyXmlKeyDescription.cs" />
+    <Compile Include="MicrosoftOnline\DirectoryPropertyXmlLicenseUnitsDetail.cs" />
+    <Compile Include="MicrosoftOnline\DirectoryPropertyXmlLicenseUnitsDetailSingle.cs" />
+    <Compile Include="MicrosoftOnline\DirectoryPropertyXmlMigrationDetail.cs" />
+    <Compile Include="MicrosoftOnline\DirectoryPropertyXmlPropagationTask.cs" />
+    <Compile Include="MicrosoftOnline\DirectoryPropertyXmlProvisionedPlan.cs" />
+    <Compile Include="MicrosoftOnline\DirectoryPropertyXmlRightsManagementTenantConfiguration.cs" />
+    <Compile Include="MicrosoftOnline\DirectoryPropertyXmlRightsManagementTenantConfigurationSingl.cs" />
+    <Compile Include="MicrosoftOnline\DirectoryPropertyXmlRightsManagementTenantKey.cs" />
+    <Compile Include="MicrosoftOnline\DirectoryPropertyXmlRightsManagementUserKey.cs" />
+    <Compile Include="MicrosoftOnline\DirectoryPropertyXmlRightsManagementUserKeySingle.cs" />
+    <Compile Include="MicrosoftOnline\DirectoryPropertyXmlSearchForUsers.cs" />
+    <Compile Include="MicrosoftOnline\DirectoryPropertyXmlServiceEndpoint.cs" />
+    <Compile Include="MicrosoftOnline\DirectoryPropertyXmlServiceInfo.cs" />
+    <Compile Include="MicrosoftOnline\DirectoryPropertyXmlServiceInstanceInfo.cs" />
+    <Compile Include="MicrosoftOnline\DirectoryPropertyXmlServiceInstanceMap.cs" />
+    <Compile Include="MicrosoftOnline\DirectoryPropertyXmlServiceOriginatedResource.cs" />
+    <Compile Include="MicrosoftOnline\DirectoryPropertyXmlSharedKeyReference.cs" />
+    <Compile Include="MicrosoftOnline\DirectoryPropertyXmlStrongAuthenticationMethod.cs" />
+    <Compile Include="MicrosoftOnline\DirectoryPropertyXmlStrongAuthenticationPolicy.cs" />
+    <Compile Include="MicrosoftOnline\DirectoryPropertyXmlSupportRole.cs" />
+    <Compile Include="MicrosoftOnline\DirectoryPropertyXmlTaskSetScopeReference.cs" />
+    <Compile Include="MicrosoftOnline\DirectoryPropertyXmlThrottleLimit.cs" />
+    <Compile Include="MicrosoftOnline\DirectoryPropertyXmlValidationError.cs" />
+    <Compile Include="MicrosoftOnline\DirectoryReference.cs" />
+    <Compile Include="MicrosoftOnline\DirectoryReferenceAddressList.cs" />
+    <Compile Include="MicrosoftOnline\DirectoryReferenceAny.cs" />
+    <Compile Include="MicrosoftOnline\DirectoryReferenceContact.cs" />
+    <Compile Include="MicrosoftOnline\DirectoryReferenceServicePlan.cs" />
+    <Compile Include="MicrosoftOnline\DirectorySearch.cs" />
+    <Compile Include="MicrosoftOnline\DirSyncState.cs" />
+    <Compile Include="MicrosoftOnline\DirSyncStatusValue.cs" />
+    <Compile Include="MicrosoftOnline\EncryptedSecretKeyValue.cs" />
+    <Compile Include="MicrosoftOnline\FeatureDescriptor.cs" />
+    <Compile Include="MicrosoftOnline\ForceDeleteCompanyCompletedEventHandler.cs" />
+    <Compile Include="MicrosoftOnline\ForceDemoteToCompanyCompletedEventHandler.cs" />
+    <Compile Include="MicrosoftOnline\ForceRefreshSystemDataCompletedEventHandler.cs" />
+    <Compile Include="MicrosoftOnline\ForceTransitiveReplicationCompletedEventArgs.cs" />
+    <Compile Include="MicrosoftOnline\ForceTransitiveReplicationCompletedEventHandler.cs" />
+    <Compile Include="MicrosoftOnline\ForeignPrincipal.cs" />
+    <Compile Include="MicrosoftOnline\GeographicLocationValue.cs" />
+    <Compile Include="MicrosoftOnline\GetAccountSubscriptionsCompletedEventArgs.cs" />
+    <Compile Include="MicrosoftOnline\GetAccountSubscriptionsCompletedEventHandler.cs" />
+    <Compile Include="MicrosoftOnline\GetCompanyAccountsCompletedEventArgs.cs" />
+    <Compile Include="MicrosoftOnline\GetCompanyAccountsCompletedEventHandler.cs" />
+    <Compile Include="MicrosoftOnline\GetCompanyAssignedPlansCompletedEventArgs.cs" />
+    <Compile Include="MicrosoftOnline\GetCompanyAssignedPlansCompletedEventHandler.cs" />
+    <Compile Include="MicrosoftOnline\GetCompanyContextIdCompletedEventArgs.cs" />
+    <Compile Include="MicrosoftOnline\GetCompanyContextIdCompletedEventHandler.cs" />
+    <Compile Include="MicrosoftOnline\GetCompanyForeignPrincipalObjectsCompletedEventArgs.cs" />
+    <Compile Include="MicrosoftOnline\GetCompanyForeignPrincipalObjectsCompletedEventHandler.cs" />
+    <Compile Include="MicrosoftOnline\GetCompanyProvisionedPlansCompletedEventArgs.cs" />
+    <Compile Include="MicrosoftOnline\GetCompanyProvisionedPlansCompletedEventHandler.cs" />
+    <Compile Include="MicrosoftOnline\GetCompanySubscriptionsCompletedEventArgs.cs" />
+    <Compile Include="MicrosoftOnline\GetCompanySubscriptionsCompletedEventHandler.cs" />
+    <Compile Include="MicrosoftOnline\GetDefaultContractRoleMapCompletedEventArgs.cs" />
+    <Compile Include="MicrosoftOnline\GetDefaultContractRoleMapCompletedEventHandler.cs" />
+    <Compile Include="MicrosoftOnline\GetPartitionIdCompletedEventArgs.cs" />
+    <Compile Include="MicrosoftOnline\GetPartitionIdCompletedEventHandler.cs" />
+    <Compile Include="MicrosoftOnline\GetPartNumberFromSkuIdCompletedEventArgs.cs" />
+    <Compile Include="MicrosoftOnline\GetPartNumberFromSkuIdCompletedEventHandler.cs" />
+    <Compile Include="MicrosoftOnline\GetSkuIdFromPartNumberCompletedEventArgs.cs" />
+    <Compile Include="MicrosoftOnline\GetSkuIdFromPartNumberCompletedEventHandler.cs" />
+    <Compile Include="MicrosoftOnline\Group.cs" />
+    <Compile Include="MicrosoftOnline\IsDomainAvailableCompletedEventArgs.cs" />
+    <Compile Include="MicrosoftOnline\IsDomainAvailableCompletedEventHandler.cs" />
+    <Compile Include="MicrosoftOnline\KeyDescriptionValue.cs" />
+    <Compile Include="MicrosoftOnline\KeyGroup.cs" />
+    <Compile Include="MicrosoftOnline\KeyType.cs" />
+    <Compile Include="MicrosoftOnline\KeyUsage.cs" />
+    <Compile Include="MicrosoftOnline\LicenseUnitsDetailValue.cs" />
+    <Compile Include="MicrosoftOnline\ListServicesForPartnershipCompletedEventArgs.cs" />
+    <Compile Include="MicrosoftOnline\ListServicesForPartnershipCompletedEventHandler.cs" />
+    <Compile Include="MicrosoftOnline\LiveNamespaceType.cs" />
+    <Compile Include="MicrosoftOnline\MapValue.cs" />
+    <Compile Include="MicrosoftOnline\MapValueRegion.cs" />
+    <Compile Include="MicrosoftOnline\MapValueRegionCountry.cs" />
+    <Compile Include="MicrosoftOnline\MapValueRegionCountryState.cs" />
+    <Compile Include="MicrosoftOnline\MigrationDetailValue.cs" />
+    <Compile Include="MicrosoftOnline\PartnerRoleMap.cs" />
+    <Compile Include="MicrosoftOnline\PartnershipValue.cs" />
+    <Compile Include="MicrosoftOnline\PartnerType.cs" />
+    <Compile Include="MicrosoftOnline\PromoteToPartnerCompletedEventHandler.cs" />
+    <Compile Include="MicrosoftOnline\PropagationTaskStatus.cs" />
+    <Compile Include="MicrosoftOnline\PropagationTaskValue.cs" />
+    <Compile Include="MicrosoftOnline\ProvisionedPlanValue.cs" />
+    <Compile Include="MicrosoftOnline\ProvisionInfo.cs" />
+    <Compile Include="MicrosoftOnline\ProvisioningStatus.cs" />
+    <Compile Include="MicrosoftOnline\ProvisioningStatus1.cs" />
+    <Compile Include="MicrosoftOnline\Region.cs" />
+    <Compile Include="MicrosoftOnline\RelyingPartyStrongAuthenticationPolicyValue.cs" />
+    <Compile Include="MicrosoftOnline\RemoveServiceTypeCompletedEventHandler.cs" />
+    <Compile Include="MicrosoftOnline\RenameAccountCompletedEventHandler.cs" />
+    <Compile Include="MicrosoftOnline\RightsManagementTenantConfigurationValue.cs" />
+    <Compile Include="MicrosoftOnline\RightsManagementTenantKeyValue.cs" />
+    <Compile Include="MicrosoftOnline\RightsManagementUserKeyValue.cs" />
+    <Compile Include="MicrosoftOnline\Role.cs" />
+    <Compile Include="MicrosoftOnline\RoleMap.cs" />
+    <Compile Include="MicrosoftOnline\RoleTemplate.cs" />
+    <Compile Include="MicrosoftOnline\Scope.cs" />
+    <Compile Include="MicrosoftOnline\ScopeReferencesScopeReference.cs" />
+    <Compile Include="MicrosoftOnline\SearchForUsersValue.cs" />
+    <Compile Include="MicrosoftOnline\SecretKeyType.cs" />
+    <Compile Include="MicrosoftOnline\SelectionConditionValue.cs" />
+    <Compile Include="MicrosoftOnline\Service.cs" />
+    <Compile Include="MicrosoftOnline\ServiceEndpointValue.cs" />
+    <Compile Include="MicrosoftOnline\ServiceInfoValue.cs" />
+    <Compile Include="MicrosoftOnline\ServiceInstance.cs" />
+    <Compile Include="MicrosoftOnline\ServiceInstanceInfoValue.cs" />
+    <Compile Include="MicrosoftOnline\ServiceInstanceMapValue.cs" />
+    <Compile Include="MicrosoftOnline\ServiceOriginatedResourceValue.cs" />
+    <Compile Include="MicrosoftOnline\ServicePlan.cs" />
+    <Compile Include="MicrosoftOnline\ServicePlanLevelMapsValueServicePlanLevelMap.cs" />
+    <Compile Include="MicrosoftOnline\ServicePlanProvisioningStatus.cs" />
+    <Compile Include="MicrosoftOnline\ServicePrincipal.cs" />
+    <Compile Include="MicrosoftOnline\SetCompanyPartnershipCompletedEventHandler.cs" />
+    <Compile Include="MicrosoftOnline\SetCompanyProvisioningStatusCompletedEventHandler.cs" />
+    <Compile Include="MicrosoftOnline\SharedKeyReferenceValue.cs" />
+    <Compile Include="MicrosoftOnline\SignupCompletedEventArgs.cs" />
+    <Compile Include="MicrosoftOnline\SignupCompletedEventHandler.cs" />
+    <Compile Include="MicrosoftOnline\SignupWithCompanyTagsCompletedEventArgs.cs" />
+    <Compile Include="MicrosoftOnline\SignupWithCompanyTagsCompletedEventHandler.cs" />
+    <Compile Include="MicrosoftOnline\SliceInstance.cs" />
+    <Compile Include="MicrosoftOnline\SortOrder.cs" />
+    <Compile Include="MicrosoftOnline\SortProperty.cs" />
+    <Compile Include="MicrosoftOnline\StockKeepingUnit.cs" />
+    <Compile Include="MicrosoftOnline\StrongAuthenticationMethodValue.cs" />
+    <Compile Include="MicrosoftOnline\StrongAuthenticationPolicyValue.cs" />
+    <Compile Include="MicrosoftOnline\StrongAuthenticationRuleValue.cs" />
+    <Compile Include="MicrosoftOnline\SubscribedPlan.cs" />
+    <Compile Include="MicrosoftOnline\Subscription.cs" />
+    <Compile Include="MicrosoftOnline\Subscription1.cs" />
+    <Compile Include="MicrosoftOnline\SubscriptionState.cs" />
+    <Compile Include="MicrosoftOnline\SupportRoleValue.cs" />
+    <Compile Include="MicrosoftOnline\Task.cs" />
+    <Compile Include="MicrosoftOnline\TaskSet.cs" />
+    <Compile Include="MicrosoftOnline\TaskSetScopeReferenceValue.cs" />
+    <Compile Include="MicrosoftOnline\ThrottleLimitValue.cs" />
+    <Compile Include="MicrosoftOnline\ThrottlePolicy.cs" />
+    <Compile Include="MicrosoftOnline\UpdateCompanyProfileCompletedEventHandler.cs" />
+    <Compile Include="MicrosoftOnline\UpdateCompanyTagsCompletedEventHandler.cs" />
+    <Compile Include="MicrosoftOnline\User.cs" />
+    <Compile Include="MicrosoftOnline\User1.cs" />
+    <Compile Include="MicrosoftOnline\ValidationErrorValue.cs" />
+    <Compile Include="MicrosoftOnline\WeightedServiceInstancesWeightedServiceInstance.cs" />
+    <Compile Include="MicrosoftOnline\WeightedServiceInstancesWeightedServiceInstanceAdditionalSer.cs" />
+    <Compile Include="MicrosoftOnline\XmlValueAlternativeSecurityId.cs" />
+    <Compile Include="MicrosoftOnline\XmlValueAppAddress.cs" />
+    <Compile Include="MicrosoftOnline\XmlValueAssignedLicense.cs" />
+    <Compile Include="MicrosoftOnline\XmlValueAssignedPlan.cs" />
+    <Compile Include="MicrosoftOnline\XmlValueAsymmetricKey.cs" />
+    <Compile Include="MicrosoftOnline\XmlValueAuthorizedParty.cs" />
+    <Compile Include="MicrosoftOnline\XmlValueCompanyPartnership.cs" />
+    <Compile Include="MicrosoftOnline\XmlValueCompanyUnverifiedDomain.cs" />
+    <Compile Include="MicrosoftOnline\XmlValueCompanyVerifiedDomain.cs" />
+    <Compile Include="MicrosoftOnline\XmlValueContextMoveStatus.cs" />
+    <Compile Include="MicrosoftOnline\XmlValueContextMoveWatermarks.cs" />
+    <Compile Include="MicrosoftOnline\XmlValueCredential.cs" />
+    <Compile Include="MicrosoftOnline\XmlValueDatacenterRedirection.cs" />
+    <Compile Include="MicrosoftOnline\XmlValueDirSyncStatus.cs" />
+    <Compile Include="MicrosoftOnline\XmlValueEncryptedSecretKey.cs" />
+    <Compile Include="MicrosoftOnline\XmlValueGeographicLocation.cs" />
+    <Compile Include="MicrosoftOnline\XmlValueKeyDescription.cs" />
+    <Compile Include="MicrosoftOnline\XmlValueLicenseUnitsDetail.cs" />
+    <Compile Include="MicrosoftOnline\XmlValueMigrationDetail.cs" />
+    <Compile Include="MicrosoftOnline\XmlValuePropagationTask.cs" />
+    <Compile Include="MicrosoftOnline\XmlValueProvisionedPlan.cs" />
+    <Compile Include="MicrosoftOnline\XmlValueRightsManagementTenantConfiguration.cs" />
+    <Compile Include="MicrosoftOnline\XmlValueRightsManagementTenantKey.cs" />
+    <Compile Include="MicrosoftOnline\XmlValueRightsManagementUserKey.cs" />
+    <Compile Include="MicrosoftOnline\XmlValueSearchForUsers.cs" />
+    <Compile Include="MicrosoftOnline\XmlValueServiceEndpoint.cs" />
+    <Compile Include="MicrosoftOnline\XmlValueServiceInfo.cs" />
+    <Compile Include="MicrosoftOnline\XmlValueServiceInstanceInfo.cs" />
+    <Compile Include="MicrosoftOnline\XmlValueServiceInstanceMap.cs" />
+    <Compile Include="MicrosoftOnline\XmlValueServiceOriginatedResource.cs" />
+    <Compile Include="MicrosoftOnline\XmlValueSharedKeyReference.cs" />
+    <Compile Include="MicrosoftOnline\XmlValueStrongAuthenticationMethod.cs" />
+    <Compile Include="MicrosoftOnline\XmlValueStrongAuthenticationPolicy.cs" />
+    <Compile Include="MicrosoftOnline\XmlValueSupportRole.cs" />
+    <Compile Include="MicrosoftOnline\XmlValueTaskSetScopeReference.cs" />
+    <Compile Include="MicrosoftOnline\XmlValueThrottleLimit.cs" />
+    <Compile Include="MicrosoftOnline\XmlValueValidationError.cs" />
+    <Compile Include="Migration1415Discovery.cs" />
+    <Compile Include="MonitoringDiscovery.cs" />
+    <Compile Include="MtrtDiscovery.cs" />
+    <Compile Include="NameValuePair.cs" />
+    <Compile Include="NtpDelayDetectionDiscovery.cs" />
+    <Compile Include="OAuthHelpers.cs" />
+    <Compile Include="OAuthTokenRequest.cs" />
+    <Compile Include="OBDUploaderDiscovery.cs" />
+    <Compile Include="OBDUploaderProbe.cs" />
+    <Compile Include="OBDUploaderProbeDefinition.cs" />
+    <Compile Include="OrganizationDeprovisioningProbe.cs" />
+    <Compile Include="OrganizationInitializationDefinition.cs" />
+    <Compile Include="OrganizationInitializationProbe.cs" />
+    <Compile Include="OverallConsecutiveSampleValueBelowThresholdIfMutexExistsMoni.cs" />
+    <Compile Include="PostData.cs" />
+    <Compile Include="ProbeHelper.cs" />
+    <Compile Include="ProbeRunSequence.cs" />
+    <Compile Include="ProbeSyncInitialRun.cs" />
+    <Compile Include="Probes\DiagnosticsAggregationLocalSnapshotProbe.cs" />
+    <Compile Include="Probes\DiagnosticsAggregationWebServiceProbe.cs" />
+    <Compile Include="Probes\RandomResultProbe.cs" />
+    <Compile Include="ProbeWorkItemLogger.cs" />
+    <Compile Include="ProcessCookies.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ProvisioningDiscovery.cs" />
+    <Compile Include="ProvisioningProbeWorkItem.cs" />
+    <Compile Include="ProvisioningRecipientProbe.cs" />
+    <Compile Include="QueueConfiguration.cs" />
+    <Compile Include="QueueDigestDiscovery.cs" />
+    <Compile Include="QueueDigestProbe.cs" />
+    <Compile Include="QueueType.cs" />
+    <Compile Include="RaaService\RaaServiceDiscovery.cs" />
+    <Compile Include="RecipientProvisioningDefinition.cs" />
+    <Compile Include="RemotePowershellProbe.cs" />
+    <Compile Include="RemotePowershellWrapper.cs" />
+    <Compile Include="RequestMethod.cs" />
+    <Compile Include="ResponseCapture.cs" />
+    <Compile Include="RpsDelegatedAdminProbe.cs" />
+    <Compile Include="RpsDiscovery.cs" />
+    <Compile Include="RpsProbeHelper.cs" />
+    <Compile Include="RpsTenantAdminProbe.cs" />
+    <Compile Include="RusAkamaiPackagesVerifierProbe.cs" />
+    <Compile Include="RusEngine.cs" />
+    <Compile Include="RusEnginePublishingFailureProbe.cs" />
+    <Compile Include="RusFallbackQdsShareCheckingProbe.cs" />
+    <Compile Include="RusPublishingPipelineBase.cs" />
+    <Compile Include="RusSignaturePollingBgdJobFailureProbe.cs" />
+    <Compile Include="Security\IpsecConnectionSecurityRulesProbe.cs" />
+    <Compile Include="Security\IpsecDiscovery.cs" />
+    <Compile Include="Security\IpsecSecurityAssociationsProbe.cs" />
+    <Compile Include="Security\JITPolicyViolationDetectionDiscovery.cs" />
+    <Compile Include="Security\JITPolicyViolationDetectionProbe.cs" />
+    <Compile Include="ServerResponse.cs" />
+    <Compile Include="ServiceEndPointProbe.cs" />
+    <Compile Include="SetHubTransportToDrainingStateResponder.cs" />
+    <Compile Include="SLALatencyOverallConsecutiveBelowThresholdMonitor.cs" />
+    <Compile Include="SmartAlertsConnectivityDiscovery.cs" />
+    <Compile Include="SmartAlertsConnectivityProbe.cs" />
+    <Compile Include="SmtpClientDebugOutput.cs" />
+    <Compile Include="SmtpConnectionProbeWorkDefinition.cs" />
+    <Compile Include="SmtpCustomCommand.cs" />
+    <Compile Include="SmtpExpectedResponse.cs" />
+    <Compile Include="Smtp\Monitors\DelayedStartOverallConsecutiveProbeFailuresMonitor.cs" />
+    <Compile Include="Smtp\Monitors\SmtpProbeMonitor.cs" />
+    <Compile Include="Smtp\Probes\AsyncProbe.cs" />
+    <Compile Include="Smtp\Probes\BasicSmtpClientFactory.cs" />
+    <Compile Include="Smtp\Probes\BucketedSmtpProbe.cs" />
+    <Compile Include="Smtp\Probes\CertificateCache.cs" />
+    <Compile Include="Smtp\Probes\ClientCertificateCriteria.cs" />
+    <Compile Include="Smtp\Probes\DatacenterFfoOutboundProxyProbe.cs" />
+    <Compile Include="Smtp\Probes\DatacenterHubOutboundProxyProbe.cs" />
+    <Compile Include="Smtp\Probes\DelTraceDebug.cs" />
+    <Compile Include="Smtp\Probes\Directionality.cs" />
+    <Compile Include="Smtp\Probes\E4eTransportSmtpProbe.cs" />
+    <Compile Include="Smtp\Probes\ExpectedMessage.cs" />
+    <Compile Include="Smtp\Probes\FfoToExoInboundProxyProbe.cs" />
+    <Compile Include="Smtp\Probes\HubAvailabilityProbe.cs" />
+    <Compile Include="Smtp\Probes\IMinimalSmtpClient.cs" />
+    <Compile Include="Smtp\Probes\IMinimalSmtpClientFactory.cs" />
+    <Compile Include="Smtp\Probes\IPop3Client.cs" />
+    <Compile Include="Smtp\Probes\IrmTransportSmtpProbe.cs" />
+    <Compile Include="Smtp\Probes\ISimpleSmtpClient.cs" />
+    <Compile Include="Smtp\Probes\MailboxDeliveryAvailabilityProbe.cs" />
+    <Compile Include="Smtp\Probes\MailboxDeliveryInstanceAvailabilityProbe.cs" />
+    <Compile Include="Smtp\Probes\MailDeliverySmtpProbe.cs" />
+    <Compile Include="Smtp\Probes\MailErrorType.cs" />
+    <Compile Include="Smtp\Probes\MatchType.cs" />
+    <Compile Include="Smtp\Probes\MessageTracingMessageProbe.cs" />
+    <Compile Include="Smtp\Probes\Notification.cs" />
+    <Compile Include="Smtp\Probes\Pop3Attachment.cs" />
+    <Compile Include="Smtp\Probes\Pop3BodyText.cs" />
+    <Compile Include="Smtp\Probes\Pop3Client.cs" />
+    <Compile Include="Smtp\Probes\Pop3Exception.cs" />
+    <Compile Include="Smtp\Probes\Pop3Message.cs" />
+    <Compile Include="Smtp\Probes\ProbeStatus.cs" />
+    <Compile Include="Smtp\Probes\ProxyProbeCommon.cs" />
+    <Compile Include="Smtp\Probes\RawSmtpClientWrapper.cs" />
+    <Compile Include="Smtp\Probes\RecordType.cs" />
+    <Compile Include="Smtp\Probes\ResolverHelper.cs" />
+    <Compile Include="Smtp\Probes\SafetyNetProbe.cs" />
+    <Compile Include="Smtp\Probes\SendMailHelper.cs" />
+    <Compile Include="Smtp\Probes\SimpleSmtpClient.cs" />
+    <Compile Include="Smtp\Probes\SmtpClientWrapper.cs" />
+    <Compile Include="Smtp\Probes\SmtpConnectionProbe.cs" />
+    <Compile Include="Smtp\Probes\SmtpConnectionProbeAnalytics.cs" />
+    <Compile Include="Smtp\Probes\SmtpConnectionProbeException.cs" />
+    <Compile Include="Smtp\Probes\SmtpConnectionProbeLatency.cs" />
+    <Compile Include="Smtp\Probes\SmtpFailureCategory.cs" />
+    <Compile Include="Smtp\Probes\SmtpProbe.cs" />
+    <Compile Include="Smtp\Probes\SmtpProbeWorkDefinition.cs" />
+    <Compile Include="Smtp\Probes\SmtpRecipient.cs" />
+    <Compile Include="Smtp\Probes\TransportProbeCommon.cs" />
+    <Compile Include="Smtp\Probes\TransportSmtpProbe.cs" />
+    <Compile Include="StreamingOpticsDiscovery.cs" />
+    <Compile Include="SyslogListener\SyslogListenerDiscovery.cs" />
+    <Compile Include="TransportDatabase\TransportOldQueueDBCleanupHelper.cs" />
+    <Compile Include="TransportDatabase\TransportOldQueueDBCleanupProbe.cs" />
+    <Compile Include="TransportDatabase\TransportOldQueueDBCleanupResponder.cs" />
+    <Compile Include="Transport\ComponentStateBasedServiceProbe.cs" />
+    <Compile Include="Transport\Probes\IMailboxProvider.cs" />
+    <Compile Include="Transport\Probes\IResultsChecker.cs" />
+    <Compile Include="Transport\Probes\ITracer.cs" />
+    <Compile Include="Transport\Probes\MailboxDatabaseSelectionResult.cs" />
+    <Compile Include="Transport\Probes\MailboxProvider.cs" />
+    <Compile Include="Transport\Probes\MailboxSelectionResult.cs" />
+    <Compile Include="Transport\Probes\MapiSubmitLAMProbe.cs" />
+    <Compile Include="Transport\Probes\MBTSubmissionServiceHeartbeatProbe.cs" />
+    <Compile Include="Transport\Probes\ResultsChecker.cs" />
+    <Compile Include="Transport\Probes\SendMapiMailDefinitionFactory.cs" />
+    <Compile Include="Transport\Probes\Stage.cs" />
+    <Compile Include="Transport\Probes\Tracer.cs" />
+    <Compile Include="Transport\Responders\ComponentStateBasedEscalateResponder.cs" />
+    <Compile Include="Transport\TransportCommon.cs" />
+    <Compile Include="Utils.cs" />
+    <Compile Include="WebServiceDataProvider\WebServiceDataProviderDiscovery.cs" />
+    <Compile Include="WebService\ExtendedReportWebDiscovery.cs" />
+    <Compile Include="WebService\GlsWebServiceDiscovery.cs" />
+    <Compile Include="WebService\Operation.cs" />
+    <Compile Include="WebService\Parameter.cs" />
+    <Compile Include="WebService\PolicySyncDiscovery.cs" />
+    <Compile Include="WebService\PolicySyncGetChangesAvailabilityProbe.cs" />
+    <Compile Include="WebService\ResultItem.cs" />
+    <Compile Include="WebService\ResultVerifyMethod.cs" />
+    <Compile Include="WebService\SpamDigestWebServiceDiscovery.cs" />
+    <Compile Include="WebService\WebServiceClient.cs" />
+    <Compile Include="WebService\WebServiceConfiguration.cs" />
+    <Compile Include="WebService\WebServiceDiscovery.cs" />
+    <Compile Include="WebService\WebServiceProbe.cs" />
+    <Compile Include="WebService\WebServiceProbeWorkDefinition.cs" />
+    <Compile Include="WebStoreDiscovery.cs" />
+    <Compile Include="Webstore\Probes\WebstoreReplicationLatencyProbe.cs" />
+    <Compile Include="WebUIDiscovery.cs" />
+    <Compile Include="WebUIProbeWorkDefinition.cs" />
+    <Compile Include="WebUIProbe\WebUIProbe.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Local\Components\Strings.resources" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.Exchange.Common\Microsoft.Exchange.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140F0}</Project>
+      <Name>Microsoft.Exchange.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Compliance\Microsoft.Exchange.Compliance.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140F2}</Project>
+      <Name>Microsoft.Exchange.Compliance</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Common\Microsoft.Exchange.Data.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140D3}</Project>
+      <Name>Microsoft.Exchange.Data.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Directory\Microsoft.Exchange.Data.Directory.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14105}</Project>
+      <Name>Microsoft.Exchange.Data.Directory</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.HA\Microsoft.Exchange.Data.HA.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14108}</Project>
+      <Name>Microsoft.Exchange.Data.HA</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Storage\Microsoft.Exchange.Data.Storage.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1410F}</Project>
+      <Name>Microsoft.Exchange.Data.Storage</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Transport\Microsoft.Exchange.Data.Transport.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140D5}</Project>
+      <Name>Microsoft.Exchange.Data.Transport</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data\Microsoft.Exchange.Data.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14106}</Project>
+      <Name>Microsoft.Exchange.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Diagnostics\Microsoft.Exchange.Diagnostics.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14113}</Project>
+      <Name>Microsoft.Exchange.Diagnostics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Extensibility.Internal\Microsoft.Exchange.Extensibility.Internal.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14126}</Project>
+      <Name>Microsoft.Exchange.Extensibility.Internal</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Hygiene.Data\Microsoft.Exchange.Hygiene.Data.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14135}</Project>
+      <Name>Microsoft.Exchange.Hygiene.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Management.Transport\Microsoft.Exchange.Management.Transport.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14166}</Project>
+      <Name>Microsoft.Exchange.Management.Transport</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Monitoring.ActiveMonitoring.Local.Compone\Microsoft.Exchange.Monitoring.ActiveMonitoring.Local.Compone.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14176}</Project>
+      <Name>Microsoft.Exchange.Monitoring.ActiveMonitoring.Local.Components</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Net\Microsoft.Exchange.Net.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14178}</Project>
+      <Name>Microsoft.Exchange.Net</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Rpc\Microsoft.Exchange.Rpc.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14188}</Project>
+      <Name>Microsoft.Exchange.Rpc</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Security\Microsoft.Exchange.Security.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14198}</Project>
+      <Name>Microsoft.Exchange.Security</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Transport\Microsoft.Exchange.Transport.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141CD}</Project>
+      <Name>Microsoft.Exchange.Transport</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.VariantConfiguration\Microsoft.Exchange.VariantConfiguration.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141E0}</Project>
+      <Name>Microsoft.Exchange.VariantConfiguration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Office.CompliancePolicy.Platform\Microsoft.Office.CompliancePolicy.Platform.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141EA}</Project>
+      <Name>Microsoft.Office.CompliancePolicy.Platform</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Office.Datacenter.ActiveMonitoringLocal\Microsoft.Office.Datacenter.ActiveMonitoringLocal.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141ED}</Project>
+      <Name>Microsoft.Office.Datacenter.ActiveMonitoringLocal</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Office.Datacenter.Monitoring.ActiveMonitoring.Reco\Microsoft.Office.Datacenter.Monitoring.ActiveMonitoring.Reco.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141EE}</Project>
+      <Name>Microsoft.Office.Datacenter.Monitoring.ActiveMonitoring.Recovery</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Office.Datacenter.WorkerTaskFrameworkInternalProvi\Microsoft.Office.Datacenter.WorkerTaskFrameworkInternalProvi.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141EF}</Project>
+      <Name>Microsoft.Office.Datacenter.WorkerTaskFrameworkInternalProvider</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\mscorlib\mscorlib.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141F1}</Project>
+      <Name>mscorlib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

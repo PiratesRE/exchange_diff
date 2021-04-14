@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SetupComponentInfo Name="Search Service Configuration" DescriptionId="SetupComponentConfiguringSearchService">
+  <ServerTasks>
+    <ServerTaskInfo Id="_4b7ba69312c84e7086Fab4763283865c" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install Weight="5" DescriptionId="SetupProgressPrecompilingBinaries" IsFatal="false">
+        <Standalone>
+          $fullPath = [System.IO.Path]::Combine($RoleInstallPath, "bin\Microsoft.Exchange.Search.Service.exe");
+          precompile-ManagedBinary -BinaryName  $fullPath;
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall Weight="5" DescriptionId="SetupProgressPrecompilingBinaries" IsFatal="false">
+        <Standalone>
+          $fullPath = [System.IO.Path]::Combine($RoleInstallPath, "bin\Microsoft.Exchange.Search.Service.exe");
+          precompile-ManagedBinary -BinaryName  $fullPath -Action uninstall;
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/Remove Search service -->
+    <ServerTaskInfo Id="_36ee62ab7b35466ea1aa4f1b788a306f" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          $indexStatusKey = "HKLM:\SOFTWARE\Microsoft\ExchangeServer\v15\Search\IndexStatus";
+          $values = Get-Item -Path $indexStatusKey -ErrorAction SilentlyContinue;
+          if ($values -ne $null -and $values.Property.Count -ne 0)
+          {
+              Remove-ItemProperty -Path $indexStatusKey -Name $values.Property -ErrorAction SilentlyContinue;
+          }
+          if (!(get-service MSExchangeFastSearch* | where {$_.name -eq "MSExchangeFastSearch"}))
+          {
+            install-FastSearchService
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>uninstall-FastSearchService</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+  </ServerTasks>
+</SetupComponentInfo>

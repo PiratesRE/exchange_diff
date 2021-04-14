@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo Name="Bridgehead Service Configuration" DescriptionId="SetupComponentStartingBridgeheadServices">
+
+  <ServerTasks>
+    <!-- We do all the exchange service starts in the post-setup bucket for install. Except the services which are necessary for setup to complete.
+  This is done so that we dont error out setup if any of the services fail to start.
+  -->
+    <!-- Stop Anti-spam Update service -->
+    <ServerTaskInfo Id="_07925259d92a475c8b2ee3d4e7641f12" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install/>
+      <BuildToBuildUpgrade />
+      <DisasterRecovery/>
+      <Uninstall>
+        <Standalone>stop-SetupService -ServiceName MSExchangeAntispamUpdate</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Start FMS service -->
+    <ServerTaskInfo Id="_7690585D-9B0C-4978-B0B5-1A9EB0E6CE33" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressStartFilteringService" IsFatal="true">
+        <Standalone>
+          <!-- We do not want to start fms if MSExchangeTransport is not to be started -->
+          if ($RoleStartTransportService)
+          {
+              start-SetupService -ServiceName FMS
+          }    
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade />
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Start MSExchangeAntimalwareSvc service -->
+    <ServerTaskInfo Id="_DE296F04-AC7F-483C-A184-4153D06D92CF" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="true">
+        <Standalone>
+          <!-- Check if service exists, then start it. This check is interim until V2 is fully enabled -->
+          $MSExchangeAntimalwareService = Get-WmiObject -Query "Select StartMode From Win32_Service Where Name='MSExchangeAntimalwareSvc'"
+          
+          <!-- During B2B upgrade, service might be disabled in which case start-setupservice will fail. -->
+          <!-- To prevent that, we will have this check for now. -->
+          <!-- This check should be removed once Malware Agent V1 is phased out -->
+          if($MSExchangeAntimalwareService -ne $null -and $MSExchangeAntimalwareService.StartMode -ne "Disabled" -and $RoleStartTransportService)
+          {
+            start-SetupService -ServiceName MSExchangeAntimalwareSvc
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade />
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall />
+    </ServerTaskInfo>
+    
+    <!-- Start/stop Edge Transport service -->
+    <ServerTaskInfo Id="_fe1e918090cf487999f06438464a7f11" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressStartEdgeTransportService">
+        <Standalone>
+          if ($RoleStartTransportService)
+          {
+              start-SetupService -ServiceName MSExchangeTransport -MaxWaitTimeForRunningState 0:0:40
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade />
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall DescriptionId="SetupProgressStopEdgeTransportService">
+        <Standalone>stop-SetupService -ServiceName MSExchangeTransport</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Stop FMS service -->
+    <ServerTaskInfo Id="_E9A96D51-A4B6-4BD5-9E05-94C4FA5B65F5" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install/>
+      <BuildToBuildUpgrade />
+      <DisasterRecovery/>
+      <Uninstall DescriptionId="SetupProgressStopFilteringService">
+        <Standalone>
+          stop-SetupService -ServiceName FMS
+          <!-- Check if service exists, then start it. This check is interim until V2 is fully enabled -->
+          $amService = Get-Service MSExchangeAntimalwareSvc -ErrorAction SilentlyContinue
+          if($amService)
+          {
+              stop-SetupService -ServiceName MSExchangeAntimalwareSvc
+          }
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Start/stop Edge Sync service -->
+    <ServerTaskInfo Id="_ac4c7d84a18748e2aea37f42af71cff9" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressStoppingEdgeSyncService">
+        <Standalone>
+          if ((get-service MSExchangeEdgeSync* | where {$_.name -eq "MSExchangeEdgeSync"}))
+          {
+            stop-SetupService -ServiceName MSExchangeEdgeSync;
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall DescriptionId="SetupProgressStoppingEdgeSyncService">
+        <Standalone>stop-SetupService -ServiceName MSExchangeEdgeSync</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+  </ServerTasks>
+</SetupComponentInfo>

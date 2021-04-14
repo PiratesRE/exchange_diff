@@ -1,0 +1,519 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{09CD9476-CD82-489E-B9E2-84B47CA14173}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Microsoft.Exchange</RootNamespace>
+    <AssemblyName>Microsoft.Exchange.Migration</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Exchange.WebServices" />
+    <Reference Include="Microsoft.PowerShell.HostingTools" />
+    <Reference Include="System" />
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Management.Automation" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Data\Storage\Management\MigrationObjectLog.cs" />
+    <Compile Include="Migration\ActiveMigrationJobItemProcessor.cs" />
+    <Compile Include="Migration\ActiveMigrationJobProcessor.cs" />
+    <Compile Include="Migration\AsyncNotificationAdapter.cs" />
+    <Compile Include="Migration\AutodiscoverClientResponse.cs" />
+    <Compile Include="Migration\AutodiscoverClientStatus.cs" />
+    <Compile Include="Migration\AutodiscoverProxyService.cs" />
+    <Compile Include="Migration\ConsumerMailboxData.cs" />
+    <Compile Include="Migration\ContactProvisioningData.cs" />
+    <Compile Include="Migration\ContactUpdateProvisioningData.cs" />
+    <Compile Include="Migration\CryptoAdapter.cs" />
+    <Compile Include="Migration\DataAccessLayer\BasicMigrationSlotProvider.cs" />
+    <Compile Include="Migration\DataAccessLayer\ExchangeOutlookAnywhereEndpoint.cs" />
+    <Compile Include="Migration\DataAccessLayer\ExchangeRemoteMoveEndpoint.cs" />
+    <Compile Include="Migration\DataAccessLayer\ImapEndpoint.cs" />
+    <Compile Include="Migration\DataAccessLayer\MigrationEndpointBase.cs" />
+    <Compile Include="Migration\DataAccessLayer\PSTImportEndpoint.cs" />
+    <Compile Include="Migration\DataAccessLayer\PublicFolderEndpoint.cs" />
+    <Compile Include="Migration\DataMigrationStepHandler.cs" />
+    <Compile Include="Migration\DkmAdapter.cs" />
+    <Compile Include="Migration\ExchangeJobItemSubscriptionSettings.cs" />
+    <Compile Include="Migration\ExchangeJobProvisionStartingProcessor.cs" />
+    <Compile Include="Migration\ExchangeJobSubscriptionSettings.cs" />
+    <Compile Include="Migration\ExchangeJobSyncInitializingProcessor.cs" />
+    <Compile Include="Migration\ExchangeMigrationBatchCsvSchema.cs" />
+    <Compile Include="Migration\ExchangeMigrationDataRow.cs" />
+    <Compile Include="Migration\ExchangeMigrationGroupMembersCsvSchema.cs" />
+    <Compile Include="Migration\ExchangeMigrationGroupRecipient.cs" />
+    <Compile Include="Migration\ExchangeMigrationMailContactRecipient.cs" />
+    <Compile Include="Migration\ExchangeMigrationMailEnabledUserRecipient.cs" />
+    <Compile Include="Migration\ExchangeMigrationMailUserRecipient.cs" />
+    <Compile Include="Migration\ExchangeMigrationRecipient.cs" />
+    <Compile Include="Migration\ExchangeMigrationRecipientWithHomeServer.cs" />
+    <Compile Include="Migration\ExchangeProvisioningDataFactory.cs" />
+    <Compile Include="Migration\ExchangeProvisioningDataStorage.cs" />
+    <Compile Include="Migration\FailureReportCsvSchema.cs" />
+    <Compile Include="Migration\GetMailboxImportRequestStatisticsCommand.cs" />
+    <Compile Include="Migration\GetMoveRequestStatisticsCommand.cs" />
+    <Compile Include="Migration\GetPublicFolderMigrationRequestStatisticsCommand.cs" />
+    <Compile Include="Migration\GetSyncRequestStatisticsCommand.cs" />
+    <Compile Include="Migration\GroupMembershipProvisioningState.cs" />
+    <Compile Include="Migration\GroupProvisioningData.cs" />
+    <Compile Include="Migration\GroupProvisioningSnapshot.cs" />
+    <Compile Include="Migration\IAsyncNotificationAdapter.cs" />
+    <Compile Include="Migration\IAutodiscoverService.cs" />
+    <Compile Include="Migration\ICryptoAdapter.cs" />
+    <Compile Include="Migration\IExceptionInjectionHandler.cs" />
+    <Compile Include="Migration\IJobSubscriptionSettings.cs" />
+    <Compile Include="Migration\ILegacySubscriptionHandler.cs" />
+    <Compile Include="Migration\IMailboxData.cs" />
+    <Compile Include="Migration\IMAPCSVDataRowProvider.cs" />
+    <Compile Include="Migration\IMAPJobItemSubscriptionSettings.cs" />
+    <Compile Include="Migration\IMAPJobSubscriptionSettings.cs" />
+    <Compile Include="Migration\IMAPJobSyncCompletingProcessor.cs" />
+    <Compile Include="Migration\IMAPJobSyncInitializingProcessor.cs" />
+    <Compile Include="Migration\IMAPMigrationDataRow.cs" />
+    <Compile Include="Migration\IMAPPAWJobSubscriptionSettings.cs" />
+    <Compile Include="Migration\IMigrationADProvider.cs" />
+    <Compile Include="Migration\IMigrationAttachment.cs" />
+    <Compile Include="Migration\IMigrationAttachmentMessage.cs" />
+    <Compile Include="Migration\IMigrationAutodiscoverClient.cs" />
+    <Compile Include="Migration\IMigrationConfig.cs" />
+    <Compile Include="Migration\IMigrationDataProvider.cs" />
+    <Compile Include="Migration\IMigrationDataRow.cs" />
+    <Compile Include="Migration\IMigrationDataRowProvider.cs" />
+    <Compile Include="Migration\IMigrationEmailHandler.cs" />
+    <Compile Include="Migration\IMigrationEmailMessageItem.cs" />
+    <Compile Include="Migration\IMigrationJobCache.cs" />
+    <Compile Include="Migration\IMigrationMessageItem.cs" />
+    <Compile Include="Migration\IMigrationMessagePersistable.cs" />
+    <Compile Include="Migration\IMigrationMrsClient.cs" />
+    <Compile Include="Migration\IMigrationNspiClient.cs" />
+    <Compile Include="Migration\IMigrationPersistable.cs" />
+    <Compile Include="Migration\IMigrationRunspaceProxy.cs" />
+    <Compile Include="Migration\IMigrationSerializable.cs" />
+    <Compile Include="Migration\IMigrationStoreObject.cs" />
+    <Compile Include="Migration\InitializationStepHandler.cs" />
+    <Compile Include="Migration\InvalidDataRow.cs" />
+    <Compile Include="Migration\IProvisioningData.cs" />
+    <Compile Include="Migration\IProvisioningHandler.cs" />
+    <Compile Include="Migration\ISnapshotId.cs" />
+    <Compile Include="Migration\IStepHandler.cs" />
+    <Compile Include="Migration\IStepSettings.cs" />
+    <Compile Include="Migration\IStepSnapshot.cs" />
+    <Compile Include="Migration\ISubscriptionAccessor.cs" />
+    <Compile Include="Migration\ISubscriptionId.cs" />
+    <Compile Include="Migration\ISubscriptionSettings.cs" />
+    <Compile Include="Migration\ISubscriptionStatistics.cs" />
+    <Compile Include="Migration\ItemStateTransition.cs" />
+    <Compile Include="Migration\ItemStateTransitionHelper.cs" />
+    <Compile Include="Migration\ITestSubscriptionAccessor.cs" />
+    <Compile Include="Migration\IUpgradeConstraintAdapter.cs" />
+    <Compile Include="Migration\JobCancellationStatus.cs" />
+    <Compile Include="Migration\JobItemOperationResult.cs" />
+    <Compile Include="Migration\JobItemSubscriptionSettingsBase.cs" />
+    <Compile Include="Migration\JobProcessor.cs" />
+    <Compile Include="Migration\JobSubscriptionSettingsBase.cs" />
+    <Compile Include="Migration\JobSyncCompletingProcessor.cs" />
+    <Compile Include="Migration\JobSyncInitializingProcessor.cs" />
+    <Compile Include="Migration\LegacyExchangeMigrationGroupRecipient.cs" />
+    <Compile Include="Migration\LegacyExchangeSubscriptionHandler.cs" />
+    <Compile Include="Migration\LegacyIMAPSubscriptionHandler.cs" />
+    <Compile Include="Migration\LegacyLocalMoveSubscriptionHandler.cs" />
+    <Compile Include="Migration\LegacyMigrationJobProcessorResponse.cs" />
+    <Compile Include="Migration\LegacyMigrationProcessor.cs" />
+    <Compile Include="Migration\LegacyMoveSubscriptionHandlerBase.cs" />
+    <Compile Include="Migration\LegacyMrsSubscriptionHandlerBase.cs" />
+    <Compile Include="Migration\LegacyPublicFolderSubscriptionHandler.cs" />
+    <Compile Include="Migration\LegacyRemoteMoveSubscriptionHandler.cs" />
+    <Compile Include="Migration\LegacySubscriptionHandlerBase.cs" />
+    <Compile Include="Migration\Logging\MigrationLog.cs" />
+    <Compile Include="Migration\Logging\MigrationLogContext.cs" />
+    <Compile Include="Migration\Logging\MigrationLogger.cs" />
+    <Compile Include="Migration\MailboxData.cs" />
+    <Compile Include="Migration\MailboxDataHelper.cs" />
+    <Compile Include="Migration\MailEnabledUserProvisioningData.cs" />
+    <Compile Include="Migration\MailEnabledUserUpdateProvisioningData.cs" />
+    <Compile Include="Migration\MemberProvisioningData.cs" />
+    <Compile Include="Migration\MigrationADProvider.cs" />
+    <Compile Include="Migration\MigrationApplication.cs" />
+    <Compile Include="Migration\MigrationAttachment.cs" />
+    <Compile Include="Migration\MigrationAutodiscoverClient.cs" />
+    <Compile Include="Migration\MigrationAutodiscoverGetUserSettingsRpcArgs.cs" />
+    <Compile Include="Migration\MigrationAutodiscoverGetUserSettingsRpcResult.cs" />
+    <Compile Include="Migration\MigrationBatch.cs" />
+    <Compile Include="Migration\MigrationBatchCsvProcessor.cs" />
+    <Compile Include="Migration\MigrationBatchCsvSchema.cs" />
+    <Compile Include="Migration\MigrationBatchDataProvider.cs" />
+    <Compile Include="Migration\MigrationCacheEntry.cs" />
+    <Compile Include="Migration\MigrationComponent.cs" />
+    <Compile Include="Migration\MigrationComponentDiagnosticInfo.cs" />
+    <Compile Include="Migration\MigrationConstraints.cs" />
+    <Compile Include="Migration\MigrationCountCache.cs" />
+    <Compile Include="Migration\MigrationCSVDataRowProvider.cs" />
+    <Compile Include="Migration\MigrationDataProvider.cs" />
+    <Compile Include="Migration\MigrationDataProviderEmailHandler.cs" />
+    <Compile Include="Migration\MigrationDiagnosticArgument.cs" />
+    <Compile Include="Migration\MigrationEmailMessageItem.cs" />
+    <Compile Include="Migration\MigrationEndpointDataProvider.cs" />
+    <Compile Include="Migration\MigrationEndpointLog.cs" />
+    <Compile Include="Migration\MigrationEqualityFilter.cs" />
+    <Compile Include="Migration\MigrationErrorCsvSchema.cs" />
+    <Compile Include="Migration\MigrationExchangeFailureReportCsvSchema.cs" />
+    <Compile Include="Migration\MigrationExchangeProxyRpcClient.cs" />
+    <Compile Include="Migration\MigrationExchangeSuccessReportCsvSchema.cs" />
+    <Compile Include="Migration\MigrationFailureFlags.cs" />
+    <Compile Include="Migration\MigrationFailureLog.cs" />
+    <Compile Include="Migration\MigrationFailureReportCsvSchema.cs" />
+    <Compile Include="Migration\MigrationFolder.cs" />
+    <Compile Include="Migration\MigrationHelper.cs" />
+    <Compile Include="Migration\MigrationHierarchyProcessorBase.cs" />
+    <Compile Include="Migration\MigrationImapFailureReportCsvSchema.cs" />
+    <Compile Include="Migration\MigrationImapSuccessReportCsvSchema.cs" />
+    <Compile Include="Migration\MigrationIssue.cs" />
+    <Compile Include="Migration\MigrationIssueCache.cs" />
+    <Compile Include="Migration\MigrationJob.cs" />
+    <Compile Include="Migration\MigrationJobCache.cs" />
+    <Compile Include="Migration\MigrationJobCompletedProcessor.cs" />
+    <Compile Include="Migration\MigrationJobCompletingProcessor.cs" />
+    <Compile Include="Migration\MigrationJobCompletionInitializingProcessor.cs" />
+    <Compile Include="Migration\MigrationJobCompletionStartingProcessor.cs" />
+    <Compile Include="Migration\MigrationJobIssue.cs" />
+    <Compile Include="Migration\MigrationJobItem.cs" />
+    <Compile Include="Migration\MigrationJobItemIssue.cs" />
+    <Compile Include="Migration\MigrationJobItemLog.cs" />
+    <Compile Include="Migration\MigrationJobItemProcessorBase.cs" />
+    <Compile Include="Migration\MigrationJobItemProcessorResponse.cs" />
+    <Compile Include="Migration\MigrationJobItemSummary.cs" />
+    <Compile Include="Migration\MigrationJobLog.cs" />
+    <Compile Include="Migration\MigrationJobObjectCache.cs" />
+    <Compile Include="Migration\MigrationJobProcessorBase.cs" />
+    <Compile Include="Migration\MigrationJobProcessorResponse.cs" />
+    <Compile Include="Migration\MigrationJobProvisionStartingProcessor.cs" />
+    <Compile Include="Migration\MigrationJobRemovingProcessor.cs" />
+    <Compile Include="Migration\MigrationJobReportingCursor.cs" />
+    <Compile Include="Migration\MigrationJobReportWriterDelegate.cs" />
+    <Compile Include="Migration\MigrationJobStage.cs" />
+    <Compile Include="Migration\MigrationJobStatus.cs" />
+    <Compile Include="Migration\MigrationJobStoppedProcessor.cs" />
+    <Compile Include="Migration\MigrationJobSummary.cs" />
+    <Compile Include="Migration\MigrationJobSyncCompletedProcessor.cs" />
+    <Compile Include="Migration\MigrationJobSyncCompletingProcessor.cs" />
+    <Compile Include="Migration\MigrationJobSyncInitializingProcessor.cs" />
+    <Compile Include="Migration\MigrationJobSyncStartingProcessor.cs" />
+    <Compile Include="Migration\MigrationJobTemplateDataGeneratorDelegate.cs" />
+    <Compile Include="Migration\MigrationJobValidatingProcessor.cs" />
+    <Compile Include="Migration\MigrationLocalMoveCsvSchema.cs" />
+    <Compile Include="Migration\MigrationMailboxNotFoundOnServerException.cs" />
+    <Compile Include="Migration\MigrationMessageHelper.cs" />
+    <Compile Include="Migration\MigrationMessageItem.cs" />
+    <Compile Include="Migration\MigrationMessagePersistableBase.cs" />
+    <Compile Include="Migration\MigrationMoveCsvSchema.cs" />
+    <Compile Include="Migration\MigrationMoveSuccessReportCsvSchema.cs" />
+    <Compile Include="Migration\MigrationNotificationRpcImpl.cs" />
+    <Compile Include="Migration\MigrationNotificationRpcSkeleton.cs" />
+    <Compile Include="Migration\MigrationNspiClient.cs" />
+    <Compile Include="Migration\MigrationNspiGetGroupMembersRpcArgs.cs" />
+    <Compile Include="Migration\MigrationNspiGetGroupMembersRpcResult.cs" />
+    <Compile Include="Migration\MigrationNspiGetNewDsaRpcArgs.cs" />
+    <Compile Include="Migration\MigrationNspiGetNewDsaRpcResult.cs" />
+    <Compile Include="Migration\MigrationNspiGetRecipientRpcArgs.cs" />
+    <Compile Include="Migration\MigrationNspiGetRecipientRpcResult.cs" />
+    <Compile Include="Migration\MigrationNspiQueryRowsRpcArgs.cs" />
+    <Compile Include="Migration\MigrationNspiQueryRowsRpcResult.cs" />
+    <Compile Include="Migration\MigrationNspiRpcArgs.cs" />
+    <Compile Include="Migration\MigrationNspiSetRecipientRpcArgs.cs" />
+    <Compile Include="Migration\MigrationNspiSetRecipientRpcResult.cs" />
+    <Compile Include="Migration\MigrationObjectLogConfiguration.cs" />
+    <Compile Include="Migration\MigrationPersistableBase.cs" />
+    <Compile Include="Migration\MigrationPersistableDictionary.cs" />
+    <Compile Include="Migration\MigrationPreexistingBatchCsvDataRowProvider.cs" />
+    <Compile Include="Migration\MigrationPreexistingBatchCsvSchema.cs" />
+    <Compile Include="Migration\MigrationPreexistingDataRow.cs" />
+    <Compile Include="Migration\MigrationProcessorBase.cs" />
+    <Compile Include="Migration\MigrationProcessorResponse.cs" />
+    <Compile Include="Migration\MigrationProcessorResult.cs" />
+    <Compile Include="Migration\MigrationProxyRpcArgs.cs" />
+    <Compile Include="Migration\MigrationProxyRpcPropTags.cs" />
+    <Compile Include="Migration\MigrationProxyRpcResult.cs" />
+    <Compile Include="Migration\MigrationProxyRpcType.cs" />
+    <Compile Include="Migration\MigrationRemoteMoveCsvSchema.cs" />
+    <Compile Include="Migration\MigrationRemoteMoveOnboardingCsvSchema.cs" />
+    <Compile Include="Migration\MigrationReportCsvSchema.cs" />
+    <Compile Include="Migration\MigrationReportData.cs" />
+    <Compile Include="Migration\MigrationReportDataProvider.cs" />
+    <Compile Include="Migration\MigrationReportGenerator.cs" />
+    <Compile Include="Migration\MigrationReportItem.cs" />
+    <Compile Include="Migration\MigrationRowSelector.cs" />
+    <Compile Include="Migration\MigrationRowSelectorResult.cs" />
+    <Compile Include="Migration\MigrationRunspaceProxy.cs" />
+    <Compile Include="Migration\MigrationScanner.cs" />
+    <Compile Include="Migration\MigrationScheduler.cs" />
+    <Compile Include="Migration\MigrationServiceConfig.cs" />
+    <Compile Include="Migration\MigrationServiceConfigSchema.cs" />
+    <Compile Include="Migration\MigrationServiceFactory.cs" />
+    <Compile Include="Migration\MigrationServiceHelper.cs" />
+    <Compile Include="Migration\MigrationServiceRpcImpl.cs" />
+    <Compile Include="Migration\MigrationServiceRpcSkeleton.cs" />
+    <Compile Include="Migration\MigrationSession.cs" />
+    <Compile Include="Migration\MigrationSessionDataProvider.cs" />
+    <Compile Include="Migration\MigrationSessionProcessor.cs" />
+    <Compile Include="Migration\MigrationSlotType.cs" />
+    <Compile Include="Migration\MigrationStatusData.cs" />
+    <Compile Include="Migration\MigrationStoreObject.cs" />
+    <Compile Include="Migration\MigrationSuccessReportCsvSchema.cs" />
+    <Compile Include="Migration\MigrationTestIntegration.cs" />
+    <Compile Include="Migration\MigrationUser.cs" />
+    <Compile Include="Migration\MigrationUserDataProvider.cs" />
+    <Compile Include="Migration\MigrationUserStatistics.cs" />
+    <Compile Include="Migration\MigrationUtil.cs" />
+    <Compile Include="Migration\MigrationWorkflow.cs" />
+    <Compile Include="Migration\MigrationWorkflowPosition.cs" />
+    <Compile Include="Migration\MigrationWorkflowStep.cs" />
+    <Compile Include="Migration\MoveCsvDataRowProvider.cs" />
+    <Compile Include="Migration\MoveJobItemSubscriptionSettings.cs" />
+    <Compile Include="Migration\MoveJobSubscriptionSettings.cs" />
+    <Compile Include="Migration\MoveJobSyncInitializingProcessor.cs" />
+    <Compile Include="Migration\MoveMigrationDataRow.cs" />
+    <Compile Include="Migration\MoveSubscriptionArbiter.cs" />
+    <Compile Include="Migration\MoveSubscriptionSnapshot.cs" />
+    <Compile Include="Migration\MrsAccessorBase.cs" />
+    <Compile Include="Migration\MrsAccessorCommand.cs" />
+    <Compile Include="Migration\MRSAccessorIdCommand.cs" />
+    <Compile Include="Migration\MRSImapSyncRequestAccessor.cs" />
+    <Compile Include="Migration\MRSMergeRequestAccessor.cs" />
+    <Compile Include="Migration\MrsMoveRequestAccessor.cs" />
+    <Compile Include="Migration\MrsPublicFolderAccessor.cs" />
+    <Compile Include="Migration\MRSSubscriptionArbiter.cs" />
+    <Compile Include="Migration\MRSSubscriptionId.cs" />
+    <Compile Include="Migration\MRSSyncRequestAccessorBase.cs" />
+    <Compile Include="Migration\MRSXO1SyncRequestAccessor.cs" />
+    <Compile Include="Migration\MSExchangeSyncMigrationEventLogConstants.cs" />
+    <Compile Include="Migration\NewMailboxImportRequestCommand.cs" />
+    <Compile Include="Migration\NewMailboxImportRequestCommandBase.cs" />
+    <Compile Include="Migration\NewMergeRequestCommand.cs" />
+    <Compile Include="Migration\NewMergeRequestCommandBase.cs" />
+    <Compile Include="Migration\NewMoveRequestCommand.cs" />
+    <Compile Include="Migration\NewMoveRequestCommandBase.cs" />
+    <Compile Include="Migration\NewMrsRequestCommandBase.cs" />
+    <Compile Include="Migration\NewPublicFolderMigrationRequestCommand.cs" />
+    <Compile Include="Migration\NewPublicFolderMigrationRequestCommandBase.cs" />
+    <Compile Include="Migration\NewSyncRequestCommand.cs" />
+    <Compile Include="Migration\NewSyncRequestCommandBase.cs" />
+    <Compile Include="Migration\NspiCsvMigrationDataRowProvider.cs" />
+    <Compile Include="Migration\NspiDisplayType.cs" />
+    <Compile Include="Migration\NspiMigrationDataReader.cs" />
+    <Compile Include="Migration\NspiMigrationDataRow.cs" />
+    <Compile Include="Migration\NspiMigrationDataRowProvider.cs" />
+    <Compile Include="Migration\NullUpgradeConstraintAdapter.cs" />
+    <Compile Include="Migration\OrganizationUpgradeConstraintAdapter.cs" />
+    <Compile Include="Migration\ProvisionedObject.cs" />
+    <Compile Include="Migration\ProvisioningAction.cs" />
+    <Compile Include="Migration\ProvisioningComponent.cs" />
+    <Compile Include="Migration\ProvisioningData.cs" />
+    <Compile Include="Migration\ProvisioningDataFactory.cs" />
+    <Compile Include="Migration\ProvisioningDataStorageBase.cs" />
+    <Compile Include="Migration\ProvisioningId.cs" />
+    <Compile Include="Migration\ProvisioningSnapshot.cs" />
+    <Compile Include="Migration\ProvisioningStepHandler.cs" />
+    <Compile Include="Migration\ProvisioningStepHandlerBase.cs" />
+    <Compile Include="Migration\ProvisioningType.cs" />
+    <Compile Include="Migration\ProvisioningUpdateStepHandler.cs" />
+    <Compile Include="Migration\PSTCSVDataRowProvider.cs" />
+    <Compile Include="Migration\PSTImportAccessor.cs" />
+    <Compile Include="Migration\PSTImportCsvSchema.cs" />
+    <Compile Include="Migration\PSTImportSubscriptionSnapshot.cs" />
+    <Compile Include="Migration\PSTJobItemSubscriptionSettings.cs" />
+    <Compile Include="Migration\PSTJobSubscriptionSettings.cs" />
+    <Compile Include="Migration\PSTMigrationDataRow.cs" />
+    <Compile Include="Migration\PublicFolderCSVDataRowProvider.cs" />
+    <Compile Include="Migration\PublicFolderJobCompletionInitializingProcessor.cs" />
+    <Compile Include="Migration\PublicFolderJobSubscriptionSettings.cs" />
+    <Compile Include="Migration\PublicFolderJobSyncInitializingProcessor.cs" />
+    <Compile Include="Migration\PublicFolderMigrationBatchCsvProcessor.cs" />
+    <Compile Include="Migration\PublicFolderMigrationCsvSchema.cs" />
+    <Compile Include="Migration\PublicFolderMigrationDataRow.cs" />
+    <Compile Include="Migration\RecipientProvisioningData.cs" />
+    <Compile Include="Migration\RemoveMailboxImportRequestCommand.cs" />
+    <Compile Include="Migration\RemoveMigrationJobItemProcessor.cs" />
+    <Compile Include="Migration\RemoveMigrationJobProcessor.cs" />
+    <Compile Include="Migration\RemoveMoveRequestCommand.cs" />
+    <Compile Include="Migration\RemovePublicFolderMigrationRequestCommand.cs" />
+    <Compile Include="Migration\RemoveSyncRequestCommand.cs" />
+    <Compile Include="Migration\ReportCsvSchema.cs" />
+    <Compile Include="Migration\ReportingStageEnum.cs" />
+    <Compile Include="Migration\ReportMigrationJobProcessor.cs" />
+    <Compile Include="Migration\ResumeMailboxImportRequestCommand.cs" />
+    <Compile Include="Migration\ResumeMoveRequestCommand.cs" />
+    <Compile Include="Migration\ResumePublicFolderMigrationRequestCommand.cs" />
+    <Compile Include="Migration\ResumeSyncRequestCommand.cs" />
+    <Compile Include="Migration\RunspaceAccessorBase.cs" />
+    <Compile Include="Migration\RuntimeJobData.cs" />
+    <Compile Include="Migration\SetMailboxImportRequestCommand.cs" />
+    <Compile Include="Migration\SetMoveRequestCommand.cs" />
+    <Compile Include="Migration\SetPublicFolderMigrationRequestCommand.cs" />
+    <Compile Include="Migration\SetSyncRequestCommand.cs" />
+    <Compile Include="Migration\SnapshotMigrationJobItemProcessorBase.cs" />
+    <Compile Include="Migration\SnapshotStatus.cs" />
+    <Compile Include="Migration\StartMigrationJobItemProcessor.cs" />
+    <Compile Include="Migration\StartMigrationJobProcessor.cs" />
+    <Compile Include="Migration\StopMigrationJobItemProcessor.cs" />
+    <Compile Include="Migration\StopMigrationJobProcessor.cs" />
+    <Compile Include="Migration\SubscriptionAccessorBase.cs" />
+    <Compile Include="Migration\SubscriptionArbiterBase.cs" />
+    <Compile Include="Migration\SubscriptionIdHelper.cs" />
+    <Compile Include="Migration\SubscriptionSettingsBase.cs" />
+    <Compile Include="Migration\SubscriptionSnapshot.cs" />
+    <Compile Include="Migration\SuspendMailboxImportRequestCommand.cs" />
+    <Compile Include="Migration\SuspendMoveRequestCommand.cs" />
+    <Compile Include="Migration\SuspendPublicFolderMigrationRequestCommand.cs" />
+    <Compile Include="Migration\SuspendSyncRequestCommand.cs" />
+    <Compile Include="Migration\SyncResourceAccessor.cs" />
+    <Compile Include="Migration\SyncSubscriptionId.cs" />
+    <Compile Include="Migration\SyncSubscriptionRunspaceAccessor.cs" />
+    <Compile Include="Migration\SyncSubscriptionSnapshot.cs" />
+    <Compile Include="Migration\TestSubscriptionAspect.cs" />
+    <Compile Include="Migration\TestSubscriptionProxyAccessor.cs" />
+    <Compile Include="Migration\TestSubscriptionSnapshot.cs" />
+    <Compile Include="Migration\Test\MigrationEmailHandlerProxy.cs" />
+    <Compile Include="Migration\UserProvisioningData.cs" />
+    <Compile Include="Migration\UserUpdateProvisioningData.cs" />
+    <Compile Include="Migration\XO1CSVDataRowProvider.cs" />
+    <Compile Include="Migration\XO1MigrationDataRow.cs" />
+    <Compile Include="Migration\XO1ProvisioningDataFactory.cs" />
+    <Compile Include="Migration\XO1ProvisioningDataStorage.cs" />
+    <Compile Include="Migration\XO1UserProvisioningData.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="BatchCompletedReport.htm" />
+    <EmbeddedResource Include="BatchReport.htm" />
+    <EmbeddedResource Include="ErrorImage.gif" />
+    <EmbeddedResource Include="Information.gif" />
+    <EmbeddedResource Include="MigrationCompletedReport.htm" />
+    <EmbeddedResource Include="StagedExchangeMigrationCompletedReport.htm" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.DKM.Proxy\Microsoft.DKM.Proxy.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140D7}</Project>
+      <Name>Microsoft.DKM.Proxy</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.BatchService\Microsoft.Exchange.BatchService.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140E3}</Project>
+      <Name>Microsoft.Exchange.BatchService</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Common\Microsoft.Exchange.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140F0}</Project>
+      <Name>Microsoft.Exchange.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Configuration.ObjectModel\Microsoft.Exchange.Configuration.ObjectModel.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140FC}</Project>
+      <Name>Microsoft.Exchange.Configuration.ObjectModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.ApplicationLogic\Microsoft.Exchange.Data.ApplicationLogic.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14104}</Project>
+      <Name>Microsoft.Exchange.Data.ApplicationLogic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Common\Microsoft.Exchange.Data.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140D3}</Project>
+      <Name>Microsoft.Exchange.Data.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Directory\Microsoft.Exchange.Data.Directory.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14105}</Project>
+      <Name>Microsoft.Exchange.Data.Directory</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Storage\Microsoft.Exchange.Data.Storage.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1410F}</Project>
+      <Name>Microsoft.Exchange.Data.Storage</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data\Microsoft.Exchange.Data.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14106}</Project>
+      <Name>Microsoft.Exchange.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Diagnostics\Microsoft.Exchange.Diagnostics.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14113}</Project>
+      <Name>Microsoft.Exchange.Diagnostics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.MailboxReplicationService.Common\Microsoft.Exchange.MailboxReplicationService.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14147}</Project>
+      <Name>Microsoft.Exchange.MailboxReplicationService.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.MailboxReplicationService.MapiProvider\Microsoft.Exchange.MailboxReplicationService.MapiProvider.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1414B}</Project>
+      <Name>Microsoft.Exchange.MailboxReplicationService.MapiProvider</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Net\Microsoft.Exchange.Net.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14178}</Project>
+      <Name>Microsoft.Exchange.Net</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Rpc\Microsoft.Exchange.Rpc.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14188}</Project>
+      <Name>Microsoft.Exchange.Rpc</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.StoreProvider\Microsoft.Exchange.StoreProvider.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141B9}</Project>
+      <Name>Microsoft.Exchange.StoreProvider</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Transport.Sync.Common\Microsoft.Exchange.Transport.Sync.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141D5}</Project>
+      <Name>Microsoft.Exchange.Transport.Sync.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Transport.Sync.MigrationRpc\Microsoft.Exchange.Transport.Sync.MigrationRpc.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141D7}</Project>
+      <Name>Microsoft.Exchange.Transport.Sync.MigrationRpc</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Transport\Microsoft.Exchange.Transport.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141CD}</Project>
+      <Name>Microsoft.Exchange.Transport</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.VariantConfiguration\Microsoft.Exchange.VariantConfiguration.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141E0}</Project>
+      <Name>Microsoft.Exchange.VariantConfiguration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Office.Datacenter.ActiveMonitoringLocal\Microsoft.Office.Datacenter.ActiveMonitoringLocal.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141ED}</Project>
+      <Name>Microsoft.Office.Datacenter.ActiveMonitoringLocal</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\mscorlib\mscorlib.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141F1}</Project>
+      <Name>mscorlib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\mscorlib\mscorlib.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141F1}</Project>
+      <Name>mscorlib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

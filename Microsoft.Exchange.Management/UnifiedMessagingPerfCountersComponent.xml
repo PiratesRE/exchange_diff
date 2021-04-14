@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo Name="Unified Messaging Perf Counters">
+
+  <ServerTasks>
+
+    <!-- Install/remove UM Install Single Counters -->
+    <ServerTaskInfo Id="_734fc8afbe3a45c2adabada3a9a79ac4" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>new-PerfCounters -DefinitionFileName aacounters.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-PerfCounters -DefinitionFileName aacounters.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/remove UM Install Single Counters -->
+    <ServerTaskInfo Id="_f51511058b36459f9a3153b7adbbd0ee" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>new-PerfCounters -DefinitionFileName availabilitycounters.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-PerfCounters -DefinitionFileName availabilitycounters.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/remove UM Install Single Counters -->
+    <ServerTaskInfo Id="_80db39720ca24e028311370b72a8d24d" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>new-PerfCounters -DefinitionFileName callansweringcounters.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-PerfCounters -DefinitionFileName callansweringcounters.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/remove ECP Counters -->
+    <ServerTaskInfo Id="_5c77406f2a9c4bf3825f443c98957d9a" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>new-PerfCounters -DefinitionFileName EcpPerfCounters.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-PerfCounters -DefinitionFileName EcpPerfCounters.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/remove throttling perf counters -->
+    <ServerTaskInfo Id="_e57f3e063b724bfe9bd21925697d58eb" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>new-PerfCounters -DefinitionFileName ThrottlingPerformanceCounters.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-PerfCounters -DefinitionFileName ThrottlingPerformanceCounters.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/remove middle-tier store perf counters -->
+    <ServerTaskInfo Id="_c739115908494297890a847d5af1e09b" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>new-PerfCounters -DefinitionFileName MiddleTierStoragePerformanceCounters.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-PerfCounters -DefinitionFileName MiddleTierStoragePerformanceCounters.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/remove Active Manager Client Counters -->
+    <ServerTaskInfo Id="_6de7cede1f41486b8843b47a4356728f" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>new-PerfCounters -DefinitionFileName ActiveManagerClientPerfmon.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-PerfCounters -DefinitionFileName ActiveManagerClientPerfmon.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/remove Rms perf counters -->
+    <ServerTaskInfo Id="_84f654e16fff4604a0d7c56d23a598f5" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>new-PerfCounters -DefinitionFileName RmsPerfCounters.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-PerfCounters -DefinitionFileName RmsPerfCounters.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/remove UM Install Single Counters -->
+    <ServerTaskInfo Id="_180d0ba737a4466b9302f8164943d468" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>new-PerfCounters -DefinitionFileName faxcounters.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-PerfCounters -DefinitionFileName faxcounters.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/remove UM Install Single Counters -->
+    <ServerTaskInfo Id="_70ea37acfdaf48f2b2684bf8d985a1a8" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>new-PerfCounters -DefinitionFileName generalcounters.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-PerfCounters -DefinitionFileName generalcounters.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/remove UM Install Single Counters -->
+    <ServerTaskInfo Id="_3c83a22ae2a54cde8dc8fbb786975913" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>new-PerfCounters -DefinitionFileName performancecounters.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-PerfCounters -DefinitionFileName performancecounters.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/remove UM Install Single Counters -->
+    <ServerTaskInfo Id="_fe37ff371a324900a4f45af7c022fa36" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>new-PerfCounters -DefinitionFileName subscriberaccesscounters.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-PerfCounters -DefinitionFileName subscriberaccesscounters.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/remove UM Install Single Counters -->
+    <ServerTaskInfo Id="_fad8502af4ef4aa5bccdfdf4ef964855" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>new-PerfCounters -DefinitionFileName transcriptioncounters.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-PerfCounters -DefinitionFileName transcriptioncounters.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/remove UM Install Single Counters -->
+    <ServerTaskInfo Id="_788ce03944a64da59eaa9699108a232f" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>new-PerfCounters -DefinitionFileName MwiLoadBalancerPerformanceCounters.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-PerfCounters -DefinitionFileName MwiLoadBalancerPerformanceCounters.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/remove Admin Audit perf counters -->
+    <ServerTaskInfo Id="_a01e2acc720943af8d478839a6a63847" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>new-PerfCounters -DefinitionFileName AdminAuditPerfCounters.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-PerfCounters -DefinitionFileName AdminAuditPerfCounters.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+  </ServerTasks>
+
+</SetupComponentInfo>
+

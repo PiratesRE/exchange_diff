@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo IsDatacenterOnly="true" IsDatacenterDedicatedOnly="true" Name="Datacenter Monitoring Role Pre Setup Component">
+
+  <ServerTasks>
+    <ServerTaskInfo Id="_afea9141b45249aba9dcd585281d7915" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+               Write-ExchangeSetupLog -Info "Datacenter PreSetup tasks for Monitoring Role called";
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery />
+      <Uninstall />
+    </ServerTaskInfo>
+
+  </ServerTasks>
+
+</SetupComponentInfo>
+

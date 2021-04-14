@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo IsDatacenterOnly="true"  IsDatacenterDedicatedOnly="true" Name="Datacenter Bridgehead Perf Counters Exo Only Component" DatacenterMode="ExO" DescriptionId="ExoDatacenterSetupComponentPerfCountersBridgehead">
+
+  <ServerTasks>
+
+    <!-- Install/remove Transport Sync Worker Core perf counters -->
+    <ServerTaskInfo Id="_f075e62a112c4f678fc95b5b7b1ea918" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>
+          new-PerfCounters -DefinitionFileName TransportSyncWorkerCorePerfCounters.xml
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>
+          remove-PerfCounters -DefinitionFileName TransportSyncWorkerCorePerfCounters.xml
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/remove Transport Sync Worker Framework perf counters -->
+    <ServerTaskInfo Id="_9b6a118143334aa6be08b1165a317500" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>
+          new-PerfCounters -DefinitionFileName TransportSyncWorkerFrameworkPerfCounters.xml
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>
+          remove-PerfCounters -DefinitionFileName TransportSyncWorkerFrameworkPerfCounters.xml
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/remove Transport Sync deltasync aggregation perf counters -->
+    <ServerTaskInfo Id="_1739fb5e2aa549b99058579938c1ddd7" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>
+          new-PerfCounters -DefinitionFileName DeltaSyncAggregationPerfCounters.xml
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>
+          remove-PerfCounters -DefinitionFileName DeltaSyncAggregationPerfCounters.xml
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>  
+
+    <!-- Install/remove Transport Sync pop3 aggregation perf counters -->
+    <ServerTaskInfo Id="_d7dcb6fd3b724f43a93d5f86d0482fde" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>
+          new-PerfCounters -DefinitionFileName Pop3AggregationPerfCounters.xml
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>
+          remove-PerfCounters -DefinitionFileName Pop3AggregationPerfCounters.xml
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/remove Transport Sync Imap aggregation perf counters -->
+    <ServerTaskInfo Id="_138f835a114d4cf0ac7bb6d1153707e6" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>
+          new-PerfCounters -DefinitionFileName ImapAggregationPerfCounters.xml
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>
+          remove-PerfCounters -DefinitionFileName ImapAggregationPerfCounters.xml
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/remove Transport Sync People Connection perf counters -->
+    <ServerTaskInfo Id="_20556380ce2243efa039af02545ca9f6" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>
+          new-PerfCounters -DefinitionFileName PeopleConnectionPerfCounters.xml
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>
+          remove-PerfCounters -DefinitionFileName PeopleConnectionPerfCounters.xml
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/remove EdgeSyc EHF perf counters -->
+    <ServerTaskInfo Id="_b5c5f3d9aa29424f88d19f65daa28742" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>
+          if ($RoleIsDatacenter -eq $true)
+          {
+            remove-PerfCounters -DefinitionFileName EhfPerfCounters.xml;
+          }
+          else
+          {
+            new-PerfCounters -DefinitionFileName EhfPerfCounters.xml;
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-PerfCounters -DefinitionFileName EhfPerfCounters.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+  </ServerTasks>
+</SetupComponentInfo>
+

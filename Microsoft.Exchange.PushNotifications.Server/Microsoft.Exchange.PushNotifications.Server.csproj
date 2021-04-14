@@ -1,0 +1,148 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{09CD9476-CD82-489E-B9E2-84B47CA14187}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Microsoft.Exchange.PushNotifications.Server</RootNamespace>
+    <AssemblyName>Microsoft.Exchange.PushNotifications.Server</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Exchange.PushNotifications.CrimsonEvents" />
+    <Reference Include="Microsoft.Web.Administration" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.IdentityModel" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.ServiceModel.Web" />
+    <Reference Include="System.Web" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Commands\CreateAzureHub.cs" />
+    <Compile Include="Commands\CreateDeviceRegistration.cs" />
+    <Compile Include="Commands\GetAppConfigData.cs" />
+    <Compile Include="Commands\IssueRegistrationChallenge.cs" />
+    <Compile Include="Commands\PublishLocalUserNotifications.cs" />
+    <Compile Include="Commands\PublishNotifications.cs" />
+    <Compile Include="Commands\PublishNotificationsBase.cs" />
+    <Compile Include="Commands\PublishOnPremNotifications.cs" />
+    <Compile Include="Commands\PublishOutlookNotifications.cs" />
+    <Compile Include="Commands\PublishProxyNotifications.cs" />
+    <Compile Include="Commands\PublishUserNotification.cs" />
+    <Compile Include="Commands\ServiceCommandPermanentException.cs" />
+    <Compile Include="Commands\ServiceCommandTransientException.cs" />
+    <Compile Include="Core\ActivityContextLogConfig.cs" />
+    <Compile Include="Core\ActivityContextLogger.cs" />
+    <Compile Include="Core\IServiceCommand.cs" />
+    <Compile Include="Core\ServiceBase.cs" />
+    <Compile Include="Core\ServiceCommand.cs" />
+    <Compile Include="Core\ServiceCommandAsyncResult.cs" />
+    <Compile Include="Core\ServiceCommandResultNone.cs" />
+    <Compile Include="Core\ServiceConfig.cs" />
+    <Compile Include="FailedToAcquireBudgetException.cs" />
+    <Compile Include="LocStrings\Strings.cs" />
+    <Compile Include="OperationCancelledException.cs" />
+    <Compile Include="PendingGet\MowaPendingGetRequestHandler.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ServiceBusyException.cs" />
+    <Compile Include="Services\DeviceBudget.cs" />
+    <Compile Include="Services\DeviceBudgetKey.cs" />
+    <Compile Include="Services\DeviceBudgetWrapper.cs" />
+    <Compile Include="Services\DeviceThrottlingManager.cs" />
+    <Compile Include="Services\IDeviceBudget.cs" />
+    <Compile Include="Services\ITokenBucket.cs" />
+    <Compile Include="Services\ITokenBucketFactory.cs" />
+    <Compile Include="Services\PushNotificationOnPremService.cs" />
+    <Compile Include="Services\PushNotificationService.cs" />
+    <Compile Include="Services\PushNotificationServiceBudgetKey.cs" />
+    <Compile Include="Services\TokenBucket.cs" />
+    <Compile Include="Services\TokenBucketBoundary.cs" />
+    <Compile Include="Services\TokenBucketFactory.cs" />
+    <Compile Include="Wcf\Extensions.cs" />
+    <Compile Include="Wcf\PublishUserNotificationBehavior.cs" />
+    <Compile Include="Wcf\PublishUserNotificationBehaviorExtension.cs" />
+    <Compile Include="Wcf\PushNotificationAuthorizationManager.cs" />
+    <Compile Include="Wcf\PushNotificationAuthorizationPolicy.cs" />
+    <Compile Include="Wcf\PushNotificationErrorHandler.cs" />
+    <Compile Include="Wcf\PushNotificationServiceBehavior.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="LocStrings\Strings.resources" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.Exchange.Common\Microsoft.Exchange.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140F0}</Project>
+      <Name>Microsoft.Exchange.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Common\Microsoft.Exchange.Data.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140D3}</Project>
+      <Name>Microsoft.Exchange.Data.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Directory\Microsoft.Exchange.Data.Directory.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14105}</Project>
+      <Name>Microsoft.Exchange.Data.Directory</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data\Microsoft.Exchange.Data.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14106}</Project>
+      <Name>Microsoft.Exchange.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Diagnostics\Microsoft.Exchange.Diagnostics.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14113}</Project>
+      <Name>Microsoft.Exchange.Diagnostics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Net\Microsoft.Exchange.Net.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14178}</Project>
+      <Name>Microsoft.Exchange.Net</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.PushNotifications.Publishers\Microsoft.Exchange.PushNotifications.Publishers.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14186}</Project>
+      <Name>Microsoft.Exchange.PushNotifications.Publishers</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.PushNotifications\Microsoft.Exchange.PushNotifications.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14185}</Project>
+      <Name>Microsoft.Exchange.PushNotifications</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Security\Microsoft.Exchange.Security.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14198}</Project>
+      <Name>Microsoft.Exchange.Security</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.WorkloadManagement\Microsoft.Exchange.WorkloadManagement.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141E1}</Project>
+      <Name>Microsoft.Exchange.WorkloadManagement</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\mscorlib\mscorlib.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141F1}</Project>
+      <Name>mscorlib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

@@ -1,0 +1,50 @@
+﻿using System;
+
+namespace Microsoft.Exchange.Data.Storage.Management
+{
+	public enum SpellcheckerSupportedLanguage
+	{
+		[LocDescription(ServerStrings.IDs.SpellCheckerSpanish)]
+		Spanish,
+		[LocDescription(ServerStrings.IDs.SpellCheckerArabic)]
+		Arabic,
+		[LocDescription(ServerStrings.IDs.SpellCheckerDanish)]
+		Danish,
+		[LocDescription(ServerStrings.IDs.SpellCheckerDutch)]
+		Dutch,
+		[LocDescription(ServerStrings.IDs.SpellCheckerEnglishAustralia)]
+		EnglishAustralia,
+		[LocDescription(ServerStrings.IDs.SpellCheckerEnglishCanada)]
+		EnglishCanada,
+		[LocDescription(ServerStrings.IDs.SpellCheckerEnglishUnitedKingdom)]
+		EnglishUnitedKingdom,
+		[LocDescription(ServerStrings.IDs.SpellCheckerEnglishUnitedStates)]
+		EnglishUnitedStates,
+		[LocDescription(ServerStrings.IDs.SpellCheckerFinnish)]
+		Finnish,
+		[LocDescription(ServerStrings.IDs.SpellCheckerFrench)]
+		French,
+		[LocDescription(ServerStrings.IDs.SpellCheckerGermanPostReform)]
+		GermanPostReform,
+		[LocDescription(ServerStrings.IDs.SpellCheckerGermanPreReform)]
+		GermanPreReform,
+		[LocDescription(ServerStrings.IDs.SpellCheckerHebrew)]
+		Hebrew,
+		[LocDescription(ServerStrings.IDs.SpellCheckerItalian)]
+		Italian,
+		[LocDescription(ServerStrings.IDs.SpellCheckerKorean)]
+		Korean,
+		[LocDescription(ServerStrings.IDs.SpellCheckerNorwegianBokmal)]
+		NorwegianBokmal,
+		[LocDescription(ServerStrings.IDs.SpellCheckerNorwegianNynorsk)]
+		NorwegianNynorsk,
+		[LocDescription(ServerStrings.IDs.SpellCheckerPortuguesePortugal)]
+		PortuguesePortugal,
+		[LocDescription(ServerStrings.IDs.SpellCheckerPortugueseBrasil)]
+		PortugueseBrasil,
+		[LocDescription(ServerStrings.IDs.SpellCheckerSwedish)]
+		Swedish,
+		[LocDescription(ServerStrings.IDs.SpellCheckerCatalan)]
+		Catalan
+	}
+}

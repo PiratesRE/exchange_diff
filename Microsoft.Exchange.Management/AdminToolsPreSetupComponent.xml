@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo Name="Admin Tools PreSetup" DescriptionId="SetupComponentPreSetupAdminTools">
+
+  <ServerTasks>
+
+    <ServerTaskInfo Id="_b74a11f13a664111b253bb8f6f0c8588" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install />
+      
+      <!-- Only upgrade mode is used by the binding tasks-->
+      <BuildToBuildUpgrade DescriptionId="SetupSettingAdminToolsConfiguredVersion">
+        <Standalone>
+          Set-AdminConfiguredVersion -Mode $RoleInstallationMode
+        </Standalone>
+      </BuildToBuildUpgrade>
+      
+      <DisasterRecovery />
+      
+      <Uninstall />
+    
+    </ServerTaskInfo>
+  
+  </ServerTasks>
+
+</SetupComponentInfo>

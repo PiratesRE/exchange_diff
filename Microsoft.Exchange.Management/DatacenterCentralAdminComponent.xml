@@ -1,0 +1,2958 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo IsDatacenterOnly="true" Name="Exchange Central Admin Component">
+
+    <ServerTasks>
+        <!-- First, need to configure Central Admin Database before doing anything on Central Admin Service-->
+
+        <!--Create the CentralAdmin registry key if it does not exist-->
+        <!-- We need to include the v14 registry entry so our E14 Script Libraries can be executed correctly on the E14 service -->
+        <ServerTaskInfo Id="_0b7d19382994490c93f2f665d7b1eddc" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install>
+                <Standalone>
+                    new-item HKLM:\Software\Microsoft\ExchangeServer\v15\CentralAdmin -ea SilentlyContinue;
+                    
+                    new-item HKLM:\Software\Microsoft\ExchangeServer\v14 -ea SilentlyContinue;
+                    new-item HKLM:\Software\Microsoft\ExchangeServer\v14\Setup -ea SilentlyContinue;
+                    $installPath = (Get-ItemProperty -path:HKLM:SOFTWARE\Microsoft\ExchangeServer\v15\Setup -ea SilentlyContinue).MsiInstallPath;
+                    if (![System.String]::IsNullOrEmpty($installPath))
+                    {
+                        Set-ItemProperty -Path:HKLM:\Software\Microsoft\ExchangeServer\v14\Setup -Name:MsiInstallPath -Value:$installPath -ea SilentlyContinue;
+                    }
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true"/>
+            <DisasterRecovery/>
+            <Uninstall/>
+        </ServerTaskInfo>
+        
+        <!--Set the registry to point to correct Central Admin database server.
+            This must be done before calling any cmdlets from "Microsoft.Exchange.Management.Powershell.CentralAdmin" snap-in.
+            Note:
+                - Some cmdlets are called implicitly by functions defined in CentralAdminSetup.ps1, such as Get-IsPublisher.
+                - On one-box test topology the variable $RoleDatacenterCentralAdminDatabaseServer is null,
+                  because this setup is running stand-alone, outside of Central Admin workflow. -->
+        <ServerTaskInfo Id="_ae87497387be4dc0aad884b0afd725a7" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install>
+                <Standalone>
+                    . $RoleBinPath\CentralAdminSetup.ps1;
+                    Write-ExchangeSetupLog -Info -Message:"The value of variable `$RoleDatacenterCentralAdminDatabaseServer is '$($RoleDatacenterCentralAdminDatabaseServer)'.";
+                    $CentralAdminDatabaseServer = GetDBServerName -dbServerName $RoleDatacenterCentralAdminDatabaseServer;
+                    Set-ItemProperty -Path HKLM:\Software\Microsoft\ExchangeServer\v15\CentralAdmin -Name "DatabaseServer" -Value $CentralAdminDatabaseServer;
+                    Set-ItemProperty -Path HKLM:\Software\Microsoft\ExchangeServer\v15\CentralAdmin -Name "MirrorDatabaseServer" -Value $RoleDatacenterCentralAdminMirrorDatabaseServer;
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true"/>
+            <DisasterRecovery/>
+            <Uninstall/>
+        </ServerTaskInfo>
+
+      <!-- Register FFO Central Admin Snap-in only in FFO environment -->
+      <ServerTaskInfo Id="_e4632830b4df4d149b4fe4a634ef4402" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+        <Install>
+          <Standalone>
+            if($RoleDatacenterFfoEnvironment -eq "True")
+            {
+              new-item HKLM:\SOFTWARE\Microsoft\PowerShell\1\PowerShellSnapins\Microsoft.Exchange.Management.Powershell.FfoCentralAdmin -ea SilentlyContinue;
+
+              $installPath = (Get-ItemProperty -path:HKLM:SOFTWARE\Microsoft\ExchangeServer\v15\Setup -ea SilentlyContinue).MsiInstallPath;
+              Set-ItemProperty -Path:HKLM:\SOFTWARE\Microsoft\PowerShell\1\PowerShellSnapins\Microsoft.Exchange.Management.Powershell.FfoCentralAdmin -Name:ApplicationBase -Value:"$($installPath)bin" -ea SilentlyContinue;
+              Set-ItemProperty -Path:HKLM:\SOFTWARE\Microsoft\PowerShell\1\PowerShellSnapins\Microsoft.Exchange.Management.Powershell.FfoCentralAdmin -Name:AssemblyName -Value:"Microsoft.Exchange.Management.Powershell.FfoCentralAdmin, Version=15.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" -ea SilentlyContinue;
+              Set-ItemProperty -Path:HKLM:\SOFTWARE\Microsoft\PowerShell\1\PowerShellSnapins\Microsoft.Exchange.Management.Powershell.FfoCentralAdmin -Name:CustomPSSnapInType -Value:"Microsoft.Exchange.Management.Powershell.CentralAdmin.FfoCentralAdminPSSnapIn" -ea SilentlyContinue;
+              Set-ItemProperty -Path:HKLM:\SOFTWARE\Microsoft\PowerShell\1\PowerShellSnapins\Microsoft.Exchange.Management.Powershell.FfoCentralAdmin -Name:Description -Value:"Central Admin Tasks for the Exchange Server" -ea SilentlyContinue;
+              Set-ItemProperty -Path:HKLM:\SOFTWARE\Microsoft\PowerShell\1\PowerShellSnapins\Microsoft.Exchange.Management.Powershell.FfoCentralAdmin -Name:ModuleName -Value:"$($installPath)bin\Microsoft.Exchange.Management.Powershell.FfoCentralAdmin.dll" -ea SilentlyContinue;
+              Set-ItemProperty -Path:HKLM:\SOFTWARE\Microsoft\PowerShell\1\PowerShellSnapins\Microsoft.Exchange.Management.Powershell.FfoCentralAdmin -Name:PowerShellVersion -Value:"2.0" -ea SilentlyContinue;
+              Set-ItemProperty -Path:HKLM:\SOFTWARE\Microsoft\PowerShell\1\PowerShellSnapins\Microsoft.Exchange.Management.Powershell.FfoCentralAdmin -Name:Vendor -Value:"Microsoft Corporation" -ea SilentlyContinue;
+              Set-ItemProperty -Path:HKLM:\SOFTWARE\Microsoft\PowerShell\1\PowerShellSnapins\Microsoft.Exchange.Management.Powershell.FfoCentralAdmin -Name:Version -Value:"15.0.0.0" -ea SilentlyContinue;
+          }
+          </Standalone>
+        </Install>
+        <BuildToBuildUpgrade UseInstallTasks="true"/>
+        <DisasterRecovery/>
+        <Uninstall/>
+      </ServerTaskInfo>
+
+      <ServerTaskInfo Id="_e31424cdddcf4e4ab66aca475090c1ba" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+        <Install>
+          <Standalone>
+            if($RoleDatacenterFfoEnvironment -eq "True")
+            {
+              $allUsersPath = [System.Environment]::GetFolderPath([System.Environment+SpecialFolder]::CommonApplicationData)
+              $networkOpticsProviderPath = Join-Path -Path $allUsersPath -ChildPath "NetworkOpticsProvider\NetworkPerfMonitoringData"
+              if (![System.IO.Directory]::Exists($networkOpticsProviderPath))
+              {
+                [System.IO.Directory]::CreateDirectory($networkOpticsProviderPath)
+
+                $User = "NT AUTHORITY\NETWORK SERVICE"
+                $Acl = Get-Acl $networkOpticsProviderPath
+                $Acl.SetAccessRuleProtection($True, $True)
+
+                Write-ExchangeSetupLog -Info "Granting user '$User' Modify control to folder path '$networkOpticsProviderPath'"
+                $Rule = New-Object System.Security.AccessControl.FileSystemAccessRule($User, "Modify", "ContainerInherit, ObjectInherit", "None", "Allow")
+                $Acl.SetAccessRule($Rule)
+                Set-Acl $networkOpticsProviderPath $Acl
+              }
+            }
+          </Standalone>
+        </Install>
+        <BuildToBuildUpgrade UseInstallTasks="true"/>
+        <DisasterRecovery/>
+        <Uninstall/>
+      </ServerTaskInfo>
+
+      <!--Create the DBVersions registry key under CentralAdmin if it does not exist-->
+        <ServerTaskInfo Id="_0e93af16b17b4a958f1f42c55672029a" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install>
+                <Standalone>
+                    new-item HKLM:\Software\Microsoft\ExchangeServer\v15\CentralAdmin\DBVersions -ea SilentlyContinue;
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true"/>
+            <DisasterRecovery />
+            <Uninstall/>
+        </ServerTaskInfo>
+
+        <!--Create the exchange central admin database if necessary ( for buid to build check the registry and the current version to decide-->
+        <ServerTaskInfo Id="_941bcdc378f8444c96a062b5339cc057" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Central Admin">
+            <!-- For install, setup checks whether the database exists on SQL first. -->
+            <!-- If the database already exists, setup just updates the local registry key. If not, setup creates a database on SQL -->
+            <Install>
+                <Standalone>
+                    &amp;{
+                        $ErrorActionPreference = "Stop";
+                        . $RoleBinPath\CentralAdminSetup.ps1;
+                        $currentECADB = GetCurrentECADBName([System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll"));
+                        $CentralAdminDatabaseServer = GetDBServerName -dbServerName $RoleDatacenterCentralAdminDatabaseServer;
+
+                        Write-ExchangeSetupLog -Info "Checking whether database '$currentECADB' exists on server $CentralAdminDatabaseServer.";
+                        $existingECADB = Execute-SqlCommand -ServerName $CentralAdminDatabaseServer -DatabaseName "Master" -Command "select Name from sys.databases where name = '$currentECADB'" -ExecuteScalar -Timeout $RoleDatacenterSqlOperationTimeout;
+
+                        if ([string]::IsNullOrEmpty($existingECADB))
+                        {
+                            $dbPath = $null
+                            $logPath = $null
+
+                            if (!([string]::IsNullOrEmpty($RoleDatacenterCentralAdminDatabasePath)) -and $RoleDatacenterCentralAdminDatabasePath.Contains(":"))
+                            {
+                                Create-RemoteDirectory -ServerName $CentralAdminDatabaseServer -Path $RoleDatacenterCentralAdminDatabasePath
+                                $dbPath = $RoleDatacenterCentralAdminDatabasePath
+                            }
+
+                            if (!([string]::IsNullOrEmpty($RoleDatacenterCentralAdminTransactionLogPath)) -and $RoleDatacenterCentralAdminTransactionLogPath.Contains(":"))
+                            {
+                                Create-RemoteDirectory -ServerName $CentralAdminDatabaseServer -Path $RoleDatacenterCentralAdminTransactionLogPath
+                                $logPath = $RoleDatacenterCentralAdminTransactionLogPath
+                            }
+                         
+                            Write-ExchangeSetupLog -Info "Creating new database '$currentECADB'";
+                            install-sqldatabase -ServerName $CentralAdminDatabaseServer -DatabaseName $currentECADB -DatabasePath $dbPath -TransactionLogPath $logPath
+                        }
+                        else
+                        {
+                            Write-ExchangeSetupLog -Info "Database '$currentECADB' already exists. Upgrading the local registry path accordingly.";
+                            $currentVersion = GetCurrentECADBMajorVersion([System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll"));
+                            new-item HKLM:\Software\Microsoft\ExchangeServer\v15\CentralAdmin\DBVersions\$currentVersion -ea SilentlyContinue;
+                            set-itemproperty -path HKLM:\Software\Microsoft\ExchangeServer\v15\CentralAdmin\DBVersions\$currentVersion -Name "ExchangeCentralAdmin" -Value $currentECADB -ea SilentlyContinue;
+                        }
+                    }
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade>
+                <!-- For B2B upgrade, setup first checks whether the registry key represents the latest database exists on the machine as it indicates whether the database exists on SQL -->
+                <!-- If the registry key is not found, setup then checks whether the database really exists on SQL as other Central Admin service may have already created that -->
+                <!-- If the database already exists, setup just updates the local registry key. If not, setup creates a database on SQL -->
+                <Standalone>
+                    &amp;{
+                        $ErrorActionPreference = "Stop";
+                        . $RoleBinPath\CentralAdminSetup.ps1;
+                        if(-not(IsDatabaseCurrent([System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll"))))
+                        {
+                            $currentECADB = GetCurrentECADBName([System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll"));
+                            $CentralAdminDatabaseServer = GetDBServerName -dbServerName $RoleDatacenterCentralAdminDatabaseServer;
+
+                            Write-ExchangeSetupLog -Info "Checking whether database '$currentECADB' exists on server $CentralAdminDatabaseServer.";
+                            $existingECADB = Execute-SqlCommand -ServerName $CentralAdminDatabaseServer -DatabaseName "Master" -Command "select Name from sys.databases where name = '$currentECADB'" -ExecuteScalar -Timeout $RoleDatacenterSqlOperationTimeout;
+
+                            if ([string]::IsNullOrEmpty($existingECADB))
+                            {
+                                Write-ExchangeSetupLog -Info "Creating new database '$currentECADB'";
+                                install-sqldatabase -ServerName $CentralAdminDatabaseServer -DatabaseName $currentECADB;
+                            }
+                            else
+                            {
+                                Write-ExchangeSetupLog -Info "Database '$currentECADB' already exists. Upgrading the local registry path accordingly.";
+                                $currentVersion = GetCurrentECADBMajorVersion([System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll"));
+                                new-item HKLM:\Software\Microsoft\ExchangeServer\v15\CentralAdmin\DBVersions\$currentVersion -ea SilentlyContinue;
+                                set-itemproperty -path HKLM:\Software\Microsoft\ExchangeServer\v15\CentralAdmin\DBVersions\$currentVersion -Name "ExchangeCentralAdmin" -Value $currentECADB;
+                            }
+                        }
+                    }
+                </Standalone>
+            </BuildToBuildUpgrade>
+            <DisasterRecovery />
+            <Uninstall/>
+        </ServerTaskInfo>
+      
+        <!--Create the tables for the exchange central admin database if the database is created by this setup-->
+        <!--The "-not(IsDatabaseCurrent...)" check indicates whether database is created by this setup as for other cases it always returns false (meaning database is current). -->
+        <ServerTaskInfo Id="_8d2a790fc6ec40adbaf5b1d382a057f0" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install>
+                <Standalone>
+                    . $RoleBinPath\CentralAdminSetup.ps1;
+                    $centralAdminBinaryPath = [System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll");
+                    $isDatabaseCurrent = IsDatabaseCurrent($centralAdminBinaryPath);
+                    $CentralAdminDatabaseServer = GetDBServerName -dbServerName $RoleDatacenterCentralAdminDatabaseServer;
+                    Write-ExchangeSetupLog -Info -Message:"Checking whether database must be deployed: isDatabaseCurrent = $($isDatabaseCurrent).";
+                    if(!$isDatabaseCurrent)
+                    {
+                        Write-ExchangeSetupLog -Info -Message:"Deploying the database.";
+                        $currentECADB = GetCurrentECADBName([System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll"));
+                        $filePath = [System.IO.Path]::Combine($RoleBinPath, "CreateTables.sql");
+                        Execute-SqlCommand -ServerName $CentralAdminDatabaseServer -DatabaseName $currentECADB -Command $filePath -ExecuteScript -Timeout $RoleDatacenterSqlOperationTimeout;
+                    }
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true"/>
+            <DisasterRecovery />
+            <Uninstall/>
+        </ServerTaskInfo>
+      
+        <!-- This step is applicable only to FFO environment.
+             In EXO environment database schema is upgraded in a separate Dropbox payload.
+             But in FFO environment - only as part of deployment or upgrade of CS servers. -->
+        <!--Even when there is already a database with the target major version (as indicated by IsDatabaseCurrent), it is possible that the database needs minor schema updates. -->
+        <!--These minor schema updates are tracked with the minor version of the database. -->
+        <!--Thus, we will check the minor version of the database and apply schema updates.-->
+        <!--This task is executed only when there is already a database. So, it is safe to create a new database version object right after applying schema updates. -->
+        <!--When we create a brand new database, we will create a database version object after the database becomes ready. -->
+        <ServerTaskInfo Id="_08D59271C994489d8A585233BF1A80A6" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Central Admin">
+            <Install>
+                <Standalone>
+                    if($RoleDatacenterFfoEnvironment -eq "True")
+                    {
+                        . $RoleBinPath\CentralAdminSetup.ps1;
+                        $centralAdminBinaryPath = [System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll");
+                        $isDatabaseCurrent = IsDatabaseCurrent($centralAdminBinaryPath);
+                        $targetDatabaseServer = GetDBServerName -dbServerName $RoleDatacenterCentralAdminDatabaseServer;
+                        Write-ExchangeSetupLog -Info -Message:"Checking whether schema must be upgraded on database server '$($targetDatabaseServer)': isDatabaseCurrent = $($isDatabaseCurrent).";
+                        if($isDatabaseCurrent)
+                        {
+                            Apply-MinorSchemaUpdate -centralAdminDatabaseServer $targetDatabaseServer -CentralAdminBinaryPath $centralAdminBinaryPath -SqlScriptFolderPath $RoleBinPath;
+                        }
+                    }
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true"/>
+            <DisasterRecovery />
+            <Uninstall/>
+        </ServerTaskInfo>
+        
+        <ServerTaskInfo Id="_1e9f6e76b65445e7a47ff185dabb844e" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Central Admin">
+            <Install>
+                <Standalone>
+                    . $RoleBinPath\CentralAdminSetup.ps1;
+                    $rollbackTimeoutInSec = 30;  
+                    $sqlcmdTimeoutInSec = 1200;  
+                    $centralAdminBinaryPath = [System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll");
+                    $isDatabaseCurrent = IsDatabaseCurrent($centralAdminBinaryPath);
+                    $targetDatabaseServer = GetDBServerName -dbServerName $RoleDatacenterCentralAdminDatabaseServer;
+                    Write-ExchangeSetupLog -Info -Message:"Checking and updating the isolation level to READ_COMMITTED_SNAPSHOT on database server '$($targetDatabaseServer)': isDatabaseCurrent = $($isDatabaseCurrent).";
+                    if($RoleDatacenterFfoEnvironment -ne "True" -and !$isDatabaseCurrent)
+                    {
+                        $currentECADB = GetCurrentECADBName([System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll"));
+                        $sqlCommand = "IF ((SELECT [is_read_committed_snapshot_on] FROM sys.databases WHERE [name]=N'$($currentECADB)') = 0) BEGIN ALTER DATABASE $($currentECADB) SET READ_COMMITTED_SNAPSHOT ON WITH ROLLBACK AFTER $($rollbackTimeoutInSec); END;";
+                        Execute-SqlCommand -ServerName $targetDatabaseServer -DatabaseName $currentECADB -Command $sqlCommand -Timeout $sqlcmdTimeoutInSec;
+                    }
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true"/>
+            <DisasterRecovery />
+            <Uninstall/>
+        </ServerTaskInfo>
+        
+        <!-- Configure publisher server name and flag in the database. -->
+        <ServerTaskInfo Id="_1e9f6e76b65445e7a47ff185dabb843d" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Central Admin">
+            <Install>
+                <Standalone>
+                    . $RoleBinPath\CentralAdminSetup.ps1;
+                    $centralAdminBinaryPath = [System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll");
+                    $isDatabaseCurrent = IsDatabaseCurrent($centralAdminBinaryPath);
+                    $targetDatabaseServer = GetDBServerName -dbServerName $RoleDatacenterCentralAdminDatabaseServer;
+                    Write-ExchangeSetupLog -Info -Message:"Checking whether publisher server name must be configured on database server '$($targetDatabaseServer)': isDatabaseCurrent = $($isDatabaseCurrent).";
+                    if(!$isDatabaseCurrent)
+                    {
+                        # On one box test topology the variable $RoleDatacenterDefaultPublisherServer is null,
+                        # because this setup is running stand-alone, outside of Central Admin workflow, 
+                        # therefore variable $publisherServer will be assigned value 'localhost'.
+                        # In other/real environments, it will be assigned a value of Central Admin parameter 'DefaultPublisherServer'
+                        # that applies to given environment.
+                        [string] $publisherServer = GetDBServerName -dbServerName $RoleDatacenterDefaultPublisherServer;
+                        [string] $publisherMirrorServer = $RoleDatacenterDefaultPublisherMirrorServer;
+                        if ($null -eq $publisherMirrorServer)
+                        {
+                            $publisherMirrorServer = [String]::Empty;
+                        }
+
+                        [int] $isPublisherBit = 0;
+                        if ($publisherServer -ieq $targetDatabaseServer)
+                        {
+                            # This will only be the case in one-box test environment because in other environments $publisherServer is a DNS name.
+                            $isPublisherBit = 1;
+                        }
+
+                        [string] $databaseName = GetCurrentECADBName([System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll"));
+                        [string] $sqlCommand = "EXEC dbo.SetDatabaseConfiguration @PublisherServer = '$($publisherServer)', @PublisherMirrorServer = '$($publisherMirrorServer)', @IsPublisher = $($isPublisherBit)";
+                        Write-ExchangeSetupLog -Info "Configuring publisher server with value '$($publisherServer)' on Central Admin database server '$($targetDatabaseServer)'.";
+                        Execute-SqlCommand -ServerName:$targetDatabaseServer -DatabaseName:$databaseName -Command:$sqlCommand;
+                    }
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true"/>
+            <DisasterRecovery />
+            <Uninstall/>
+        </ServerTaskInfo>
+        
+        <!--Configuring bootstrap account for deployment workflows to use during WinPE phase-->
+        <!-- Create a sql login with the constant password if the account does not already exist-->
+        <ServerTaskInfo Id="_416502d9805b4eecb67e428b15e476ae" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install>
+                <Standalone>
+                    . $RoleBinPath\CentralAdminSetup.ps1;                    
+                    if(-not(IsDatabaseCurrent([System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll"))))
+                    {
+                        if ([string]::IsNullOrEmpty($RoleDatacenterBootstrapPassword))
+                        {
+                          Write-ExchangeSetupLog -Info "Need to get the BootstrapPassword value from registry. Path: HKLM:\SOFTWARE\Microsoft\ExchangeLabs\BootstrapPassword";
+                          $exchangeLabs = Get-ItemProperty HKLM:\SOFTWARE\Microsoft\ExchangeLabs -ea SilentlyContinue;
+                          if ($exchangeLabs)
+                          {
+                             $RoleDatacenterBootstrapPassword = $exchangeLabs.BootstrapPassword;
+                          }
+                        }
+
+                        if ([string]::IsNullOrEmpty($RoleDatacenterBootstrap2Password))
+                        {
+                          Write-ExchangeSetupLog -Info "Need to get the Bootstrap2Password value from registry. Path: HKLM:\SOFTWARE\Microsoft\ExchangeLabs\Bootstrap2Password";
+                          $exchangeLabs = Get-ItemProperty HKLM:\SOFTWARE\Microsoft\ExchangeLabs -ea SilentlyContinue;
+                          if ($exchangeLabs)
+                          {
+                             $RoleDatacenterBootstrap2Password = $exchangeLabs.Bootstrap2Password;
+                          }
+                        }
+
+                        $CentralAdminDatabaseServer = GetDBServerName -dbServerName $RoleDatacenterCentralAdminDatabaseServer;
+                        $userName = "bootstrap";                        
+                        [string] $sqlCommand = "IF NOT EXISTS (SELECT [name] FROM sys.syslogins WHERE [name] = '$($userName)') BEGIN CREATE LOGIN [$($userName)] WITH PASSWORD='$($RoleDatacenterBootstrapPassword)' END";
+                        execute-sqlcommand -ServerName $CentralAdminDatabaseServer -DatabaseName "master" -Command $sqlCommand -Timeout $RoleDatacenterSqlOperationTimeout;
+                        
+                        if($RoleDatacenterFfoEnvironment -ne "True")
+                        {
+                           $userName2 = "bootstrap2";
+                           [string] $sqlCommand2 = "IF NOT EXISTS (SELECT [name] FROM sys.syslogins WHERE [name] = '$($userName2)') BEGIN CREATE LOGIN [$($userName2)] WITH PASSWORD='$($RoleDatacenterBootstrap2Password)' END";
+                           execute-sqlcommand -ServerName $CentralAdminDatabaseServer -DatabaseName "master" -Command $sqlCommand2 -Timeout $RoleDatacenterSqlOperationTimeout;
+                        }
+                    }
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true"/>
+            <DisasterRecovery UseInstallTasks="true"/>
+            <Uninstall/>
+        </ServerTaskInfo>
+
+        <!-- Add bootstrap user to bulkadmin server role-->
+        <ServerTaskInfo Id="_c6f4613b52b142b9886a8a4870f5eae2" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install>
+                <Standalone>
+                    . $RoleBinPath\CentralAdminSetup.ps1;
+                    if(-not(IsDatabaseCurrent([System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll"))))
+                    {
+                        $CentralAdminDatabaseServer = GetDBServerName -dbServerName $RoleDatacenterCentralAdminDatabaseServer;
+                        execute-sqlcommand -ServerName $CentralAdminDatabaseServer -DatabaseName "master" -Command "exec sp_addsrvrolemember 'bootstrap','bulkadmin'" -Timeout $RoleDatacenterSqlOperationTimeout;
+                        if($RoleDatacenterFfoEnvironment -ne "True")
+                        {
+                           execute-sqlcommand -ServerName $CentralAdminDatabaseServer -DatabaseName "master" -Command "exec sp_addsrvrolemember 'bootstrap2','bulkadmin'" -Timeout $RoleDatacenterSqlOperationTimeout;
+                        }
+                    }
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true"/>
+            <DisasterRecovery/>
+            <Uninstall/>
+        </ServerTaskInfo>
+
+        <!--Alter the default database on the account so that it points to the latest central admin database-->
+        <ServerTaskInfo Id="_2362f6d1aa3c45719474f52f3dae4970" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install>
+                <Standalone>
+                    . $RoleBinPath\CentralAdminSetup.ps1;
+                    if(-not(IsDatabaseCurrent([System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll"))))
+                    {
+                        $currentECADB = GetCurrentECADBName([System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll"));
+                        $CentralAdminDatabaseServer = GetDBServerName -dbServerName $RoleDatacenterCentralAdminDatabaseServer;
+                        execute-sqlcommand -ServerName $CentralAdminDatabaseServer -DatabaseName "master" -Command "alter login bootstrap with DEFAULT_DATABASE=$currentECADB" -Timeout $RoleDatacenterSqlOperationTimeout;
+                        if($RoleDatacenterFfoEnvironment -ne "True")
+                        {
+                           execute-sqlcommand -ServerName $CentralAdminDatabaseServer -DatabaseName "master" -Command "alter login bootstrap2 with DEFAULT_DATABASE=$currentECADB" -Timeout $RoleDatacenterSqlOperationTimeout;
+                        }
+                    }
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true"/>
+            <DisasterRecovery/>
+            <Uninstall/>
+        </ServerTaskInfo>
+
+        <!--Add bootstrap to the central admin database-->
+        <ServerTaskInfo Id="_abfb4784fb014c12ab6ee9388218de56" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install>
+                <Standalone>
+                    . $RoleBinPath\CentralAdminSetup.ps1;
+                    if(-not(IsDatabaseCurrent([System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll"))))
+                    {
+                        $currentECADB = GetCurrentECADBName([System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll"));
+                        $CentralAdminDatabaseServer = GetDBServerName -dbServerName $RoleDatacenterCentralAdminDatabaseServer;
+                        [string] $sqlCommand = "IF NOT EXISTS (SELECT [name] FROM sysusers WHERE [name] = 'bootstrap') BEGIN CREATE USER [bootstrap] FOR LOGIN [bootstrap] END";
+                        execute-sqlcommand -ServerName $CentralAdminDatabaseServer -DatabaseName $currentECADB -Command $sqlCommand -Timeout $RoleDatacenterSqlOperationTimeout;
+                        if($RoleDatacenterFfoEnvironment -ne "True")
+                        {
+                           [string] $sqlCommand2 = "IF NOT EXISTS (SELECT [name] FROM sysusers WHERE [name] = 'bootstrap2') BEGIN CREATE USER [bootstrap2] FOR LOGIN [bootstrap2] END";
+                           execute-sqlcommand -ServerName $CentralAdminDatabaseServer -DatabaseName $currentECADB -Command $sqlCommand2 -Timeout $RoleDatacenterSqlOperationTimeout;
+                        }
+                    }
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true"/>
+            <DisasterRecovery/>
+            <Uninstall/>
+        </ServerTaskInfo>
+
+        <!--Grant connect for the bootstrap account on the database-->
+        <ServerTaskInfo Id="_d308a3e46f684a1289067d6aa7211a4b" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install>
+                <Standalone>
+                    . $RoleBinPath\CentralAdminSetup.ps1;
+                    if(-not(IsDatabaseCurrent([System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll"))))
+                    {
+                        $currentECADB = GetCurrentECADBName([System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll"));
+                        $CentralAdminDatabaseServer = GetDBServerName -dbServerName $RoleDatacenterCentralAdminDatabaseServer;
+                        execute-sqlcommand -ServerName $CentralAdminDatabaseServer -DatabaseName $currentECADB -Command "grant connect to bootstrap" -Timeout $RoleDatacenterSqlOperationTimeout;
+                        if($RoleDatacenterFfoEnvironment -ne "True")
+                        {
+                           execute-sqlcommand -ServerName $CentralAdminDatabaseServer -DatabaseName $currentECADB -Command "grant connect to bootstrap2" -Timeout $RoleDatacenterSqlOperationTimeout;
+                        }
+                    }
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true"/>
+            <DisasterRecovery/>
+            <Uninstall/>
+        </ServerTaskInfo>
+
+        <!--Revoke select for the bootstrap account on the database-->
+        <ServerTaskInfo Id="_BD0E080091E24C268F69C0997EC90CA8" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install>
+                <Standalone>
+                    . $RoleBinPath\CentralAdminSetup.ps1;
+                    if(-not(IsDatabaseCurrent([System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll"))))
+                    {
+                        $currentECADB = GetCurrentECADBName([System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll"));
+                        $CentralAdminDatabaseServer = GetDBServerName -dbServerName $RoleDatacenterCentralAdminDatabaseServer;
+                        execute-sqlcommand -ServerName $CentralAdminDatabaseServer -DatabaseName $currentECADB -Command "revoke select from bootstrap" -Timeout $RoleDatacenterSqlOperationTimeout;
+                        if($RoleDatacenterFfoEnvironment -ne "True")
+                        {
+                           execute-sqlcommand -ServerName $CentralAdminDatabaseServer -DatabaseName $currentECADB -Command "revoke select from bootstrap2" -Timeout $RoleDatacenterSqlOperationTimeout;
+                        }
+                    }
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true"/>
+            <DisasterRecovery/>
+            <Uninstall/>
+        </ServerTaskInfo>
+      
+        <!--Grant execute to bootstrap account on GetMachineBaseline Stored Procedure-->
+        <ServerTaskInfo Id="_8df8fc37cca94bad86dc7b342f0c28d2" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install>
+                <Standalone>
+                    . $RoleBinPath\CentralAdminSetup.ps1;
+                    if(-not(IsDatabaseCurrent([System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll"))))
+                    {
+                        $currentECADB = GetCurrentECADBName([System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll"));
+                        $CentralAdminDatabaseServer = GetDBServerName -dbServerName $RoleDatacenterCentralAdminDatabaseServer;
+                        execute-sqlcommand -ServerName $CentralAdminDatabaseServer -DatabaseName $currentECADB -Command "grant execute on dbo.GetMachineBaseline to bootstrap" -Timeout $RoleDatacenterSqlOperationTimeout;
+                        if($RoleDatacenterFfoEnvironment -ne "True")
+                        {
+                           execute-sqlcommand -ServerName $CentralAdminDatabaseServer -DatabaseName $currentECADB -Command "grant execute on dbo.GetMachineBaseline to bootstrap2" -Timeout $RoleDatacenterSqlOperationTimeout;
+                        }
+                    }
+                 </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true"/>
+            <DisasterRecovery/>
+            <Uninstall/>
+        </ServerTaskInfo>
+
+        <!--Grant execute to bootstrap account on GetProvisioningState Stored Procedure-->
+        <ServerTaskInfo Id="_17c353b67a4a41fb9f1af8bfff943f82" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install>
+                <Standalone>
+                    . $RoleBinPath\CentralAdminSetup.ps1;
+                    if(-not(IsDatabaseCurrent([System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll"))))
+                    {
+                        $currentECADB = GetCurrentECADBName([System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll"));
+                        $CentralAdminDatabaseServer = GetDBServerName -dbServerName $RoleDatacenterCentralAdminDatabaseServer;
+                        execute-sqlcommand -ServerName $CentralAdminDatabaseServer -DatabaseName $currentECADB -Command "grant execute on dbo.GetProvisioningState to bootstrap" -Timeout $RoleDatacenterSqlOperationTimeout;
+                        if($RoleDatacenterFfoEnvironment -ne "True")
+                        {
+                           execute-sqlcommand -ServerName $CentralAdminDatabaseServer -DatabaseName $currentECADB -Command "grant execute on dbo.GetProvisioningState to bootstrap2" -Timeout $RoleDatacenterSqlOperationTimeout;
+                        }
+                    }
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true"/>
+            <DisasterRecovery/>
+            <Uninstall/>
+        </ServerTaskInfo>
+
+        <!--Grant execute to bootstrap account on SetProvisioningStateFromWinPE Stored Procedure-->
+        <ServerTaskInfo Id="_ff4096af940e47d997f54b19732ea99a" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install>
+                <Standalone>
+                    . $RoleBinPath\CentralAdminSetup.ps1;
+                    if(-not(IsDatabaseCurrent([System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll"))))
+                    {
+                        $currentECADB = GetCurrentECADBName([System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll"));
+                        $CentralAdminDatabaseServer = GetDBServerName -dbServerName $RoleDatacenterCentralAdminDatabaseServer;
+                        execute-sqlcommand -ServerName $CentralAdminDatabaseServer -DatabaseName $currentECADB -Command "grant execute on dbo.SetProvisioningStateFromWinPE to bootstrap" -Timeout $RoleDatacenterSqlOperationTimeout;
+                        if($RoleDatacenterFfoEnvironment -ne "True")
+                        {
+                           execute-sqlcommand -ServerName $CentralAdminDatabaseServer -DatabaseName $currentECADB -Command "grant execute on dbo.SetProvisioningStateFromWinPE to bootstrap2" -Timeout $RoleDatacenterSqlOperationTimeout;
+                        }
+                    }
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true"/>
+            <DisasterRecovery/>
+            <Uninstall/>
+        </ServerTaskInfo>
+
+        <!--Grant execute to bootstrap account on WdsPxeQuery Stored Procedure-->
+        <!--WDS Server uses bootstrap account to execute this Stored Procedure-->
+        <ServerTaskInfo Id="_01bb34d5f784471892d725a4edd183c8" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install>
+                <Standalone>
+                    . $RoleBinPath\CentralAdminSetup.ps1;
+                    if(-not(IsDatabaseCurrent([System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll"))))
+                    {
+                        $currentECADB = GetCurrentECADBName([System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll"));
+                        $CentralAdminDatabaseServer = GetDBServerName -dbServerName $RoleDatacenterCentralAdminDatabaseServer;
+                        execute-sqlcommand -ServerName $CentralAdminDatabaseServer -DatabaseName $currentECADB -Command "grant execute on dbo.WdsPxeQuery to bootstrap" -Timeout $RoleDatacenterSqlOperationTimeout;
+                        if($RoleDatacenterFfoEnvironment -ne "True")
+                        {
+                           execute-sqlcommand -ServerName $CentralAdminDatabaseServer -DatabaseName $currentECADB -Command "grant execute on dbo.WdsPxeQuery to bootstrap2" -Timeout $RoleDatacenterSqlOperationTimeout;
+                        }
+                    }
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true"/>
+            <DisasterRecovery/>
+            <Uninstall/>
+        </ServerTaskInfo>
+
+        <!--Grant execute to bootstrap account on WriteWinPeTrace Stored Procedure-->
+        <!--When machines boot to WinPE, they use the bootstrap account to execute this Stored Procedure-->
+        <ServerTaskInfo Id="_0CB366EDBD5B451dB9660522B37BF202" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Central Admin">
+            <Install>
+                <Standalone>
+                    . $RoleBinPath\CentralAdminSetup.ps1;
+                    if(-not(IsDatabaseCurrent([System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll"))))
+                    {
+                        $currentECADB = GetCurrentECADBName([System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll"));
+                        $CentralAdminDatabaseServer = GetDBServerName -dbServerName $RoleDatacenterCentralAdminDatabaseServer;
+                        execute-sqlcommand -ServerName $CentralAdminDatabaseServer -DatabaseName $currentECADB -Command "grant execute on dbo.WriteWinPeTrace to bootstrap" -Timeout $RoleDatacenterSqlOperationTimeout;
+                        if($RoleDatacenterFfoEnvironment -ne "True")
+                        {
+                           execute-sqlcommand -ServerName $CentralAdminDatabaseServer -DatabaseName $currentECADB -Command "grant execute on dbo.WriteWinPeTrace to bootstrap2" -Timeout $RoleDatacenterSqlOperationTimeout;
+                        }
+                    }
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true"/>
+            <DisasterRecovery/>
+            <Uninstall/>
+        </ServerTaskInfo>
+
+        <!--Create the Central Admin Servers USG if it does not exist-->
+        <ServerTaskInfo Id="_686c7b4eb7c24f3c8c7f063723a67e59" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install>
+                <Standalone>
+                    . $RoleBinPath\CentralAdminSetup.ps1;
+                    CreateCAServersGroup
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true" />
+            <DisasterRecovery />
+            <Uninstall/>
+        </ServerTaskInfo>
+
+        <!--Create the Central Admin SQL Servers USG if it does not exist-->
+        <ServerTaskInfo Id="_F259F0AD0479454b848BBE67F75C6BA7" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Central Admin">
+            <Install>
+                <Standalone>
+                    . $RoleBinPath\CentralAdminSetup.ps1;
+                    CreateUSG -groupName $RoleDatacenterCentralAdminSqlGroup
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true" />
+            <DisasterRecovery />
+            <Uninstall/>
+        </ServerTaskInfo>
+
+        <!--Add the Central Admin SQL Servers USG as a member of the Central Admin Servers USG if that is not the case yet-->
+        <ServerTaskInfo Id="_4AE353AF60F1460e9B7E3789AA7E379A" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Central Admin">
+            <Install>
+                <Standalone>
+                    . $RoleBinPath\CentralAdminSetup.ps1;
+                    AddUserOrGroupToUSG -groupName 'Central Admin Servers' -userOrGroup $RoleDatacenterCentralAdminSqlGroup
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true" />
+            <DisasterRecovery />
+            <Uninstall/>
+        </ServerTaskInfo>
+
+        <!-- Creating/Updating role groups (security groups) for Service Change Management. -->
+        <ServerTaskInfo Id="_833432621d414b15807a5483ae6185e8" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Central Admin">
+            <Install>
+                <Standalone>
+                    . $RoleBinPath\CentralAdminSetup.ps1;
+                    Add-PSSnapin Microsoft.Exchange.Management.Powershell.CentralAdmin -ea SilentlyContinue;
+                    $importFilePath = [System.IO.Path]::Combine($RoleInstallPath, 'Datacenter\Config\ServiceChangeManagementConfiguration.xml');
+                    Write-ExchangeSetupLog -Info "Creating/Updating SCM role groups from XML file: $importFilePath";
+                    Create-ServiceChangeManagementRoleGroups -ConfigFilePath $importFilePath
+                    if($RoleDatacenterFfoEnvironment -eq "True")
+                    {
+                      $importFilePath = [System.IO.Path]::Combine($RoleInstallPath, 'Datacenter\Config\FfoServiceChangeManagementConfiguration.xml');
+                      Write-ExchangeSetupLog -Info "Creating/Updating SCM role groups from XML file: $importFilePath";
+                      Create-ServiceChangeManagementRoleGroups -ConfigFilePath $importFilePath
+                    }
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true" />
+            <DisasterRecovery />
+            <Uninstall/>
+        </ServerTaskInfo>
+
+        <!--Add a designated domain group to the local administrators group. -->
+        <ServerTaskInfo Id="_F812ED846D8A4c898803C3A4982B05CA" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Central Admin">
+            <Install>
+                <Standalone>
+                    . $RoleBinPath\CentralAdminSetup.ps1;
+                    $domain = [System.DirectoryServices.ActiveDirectory.Domain]::GetCurrentDomain().Name.Split(".")[0]
+                    Add-DomainAccountToLocalAdministrators -Domain $domain -Account $RoleDatacenterLocalAdminGroup
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true" />
+            <DisasterRecovery />
+            <Uninstall/>
+        </ServerTaskInfo>
+
+        <!--Generate proxy scripts on this machine-->
+        <!--We need to complete this task before creating RBAC roles and assignments as they depend on proxy scripts-->
+        <!--We call New-CentralAdminProxyScript inside this task and this is a Central Admin cmdlet.-->
+        <!--This cmdlet works at this stage as it does not require SQL access.-->
+        <!--Other Central Admin cmdlets don't usually work at this stage as the databae is not fully configured yet--> 
+        <ServerTaskInfo Id="_2897f677edfa471786efa7a911ef8104" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install>
+                <Standalone>
+                    Add-PSSnapin Microsoft.Exchange.Management.Powershell.CentralAdmin -ea SilentlyContinue;
+                    . $RoleBinPath\CentralAdminSetup.ps1;
+                    $scriptConfigFilePath = [System.IO.Path]::Combine($RoleInstallPath, 'Datacenter\Config\CentralAdminScriptDefinitions.xml');
+                    Create-ProxyScripts -ConfigFilePath $scriptConfigFilePath;
+                    if($RoleDatacenterFfoEnvironment -eq "True")
+                    {
+                      $scriptConfigFilePath = [System.IO.Path]::Combine($RoleInstallPath, 'Datacenter\Config\FfoCentralAdminScriptDefinitions.xml');
+                      Create-ProxyScripts -ConfigFilePath $scriptConfigFilePath;
+                    }
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true" />
+            <DisasterRecovery />
+            <Uninstall/>
+        </ServerTaskInfo>
+
+        <!--Create the Management Forest RBAC Script roles and add role entries.-->
+        <!--This has to happen before making role assignments on those script roles.-->
+        <ServerTaskInfo Id="_1416909d125c417fac1e73957f2f9a25" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install>
+                <Standalone>
+                    . $RoleBinPath\CentralAdminSetup.ps1;
+                    $scriptConfigFilePath = [System.IO.Path]::Combine($RoleInstallPath, 'Datacenter\Config\CentralAdminScriptDefinitions.xml');
+                    Create-ScriptRoleAndEntry -ConfigFilePath $scriptConfigFilePath;
+                    if($RoleDatacenterFfoEnvironment -eq "True")
+                    {
+                      $scriptConfigFilePath = [System.IO.Path]::Combine($RoleInstallPath, 'Datacenter\Config\FfoCentralAdminScriptDefinitions.xml');
+                      Create-ScriptRoleAndEntry -ConfigFilePath $scriptConfigFilePath;
+
+                      $scriptRemovalFilePath = [System.IO.Path]::Combine($RoleInstallPath, 'Datacenter\Config\FfoCentralAdminScriptRemovals.xml');
+                      Remove-UnnecessaryScriptEntries -ConfigFilePath $scriptRemovalFilePath;
+                    }
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true" />
+            <DisasterRecovery />
+            <Uninstall/>
+        </ServerTaskInfo>
+
+        <!--Create the Management Forest RBAC role assignments for script roles.-->
+        <ServerTaskInfo Id="_be1e5e6e10c240aa86ab5102835840a2" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install>
+                <Standalone>
+                    . $RoleBinPath\CentralAdminSetup.ps1;
+                    $scriptConfigFilePath = [System.IO.Path]::Combine($RoleInstallPath, 'Datacenter\Config\CentralAdminScriptDefinitions.xml');
+                    Create-ScriptRoleAssignment -ConfigFilePath $scriptConfigFilePath;
+                    if($RoleDatacenterFfoEnvironment -eq "True")
+                    {
+                      $scriptConfigFilePath = [System.IO.Path]::Combine($RoleInstallPath, 'Datacenter\Config\FfoCentralAdminScriptDefinitions.xml');
+                      Create-ScriptRoleAssignment -ConfigFilePath $scriptConfigFilePath;
+                    }
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true" />
+            <DisasterRecovery />
+            <Uninstall/>
+        </ServerTaskInfo>
+
+        <!-- Create SQL login for  management forest administrator account. -->
+        <ServerTaskInfo Id="_f1e148f087ed4b4ba3c54a5cb4d45f38" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install>
+                <Standalone>
+                    . $RoleBinPath\CentralAdminSetup.ps1;
+                    if(-not(IsDatabaseCurrent([System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll"))))
+                    {
+                        $userName = "Administrator";
+                        if (-not [string]::IsNullOrEmpty($RoleDatacenterForestAdminUserName))
+                        {
+                            $userName = $RoleDatacenterForestAdminUserName;
+                        }
+                        
+                        $domainUserName =  [System.DirectoryServices.ActiveDirectory.Domain]::GetCurrentDomain().Name.Split(".")[0] + "\"  + $userName;
+                        $CentralAdminDatabaseServer = GetDBServerName -dbServerName $RoleDatacenterCentralAdminDatabaseServer;
+                        [string] $sqlCommand = "IF NOT EXISTS (SELECT [name] FROM sys.syslogins WHERE [name] = '$($domainUserName)') BEGIN CREATE LOGIN [$($domainUserName)] FROM WINDOWS END;";
+                        execute-sqlcommand -ServerName $CentralAdminDatabaseServer -DatabaseName "Master" -Command $sqlCommand -Timeout $RoleDatacenterSqlOperationTimeout;
+                    }
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade/>
+            <DisasterRecovery/>
+            <Uninstall/>
+        </ServerTaskInfo>
+        
+        <!-- Assign sysadmin role for forest administrator login. -->
+        <ServerTaskInfo Id="_ccd882c9828841698916fea6e627b5cd" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Central Admin">
+            <Install>
+                <Standalone>
+                    . $RoleBinPath\CentralAdminSetup.ps1;
+                    if(-not(IsDatabaseCurrent([System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll"))))
+                    {
+                        $userName = "Administrator";
+                        if (-not [string]::IsNullOrEmpty($RoleDatacenterForestAdminUserName))
+                        {
+                            $userName = $RoleDatacenterForestAdminUserName;
+                        }
+                        
+                        $domainUserName =  [System.DirectoryServices.ActiveDirectory.Domain]::GetCurrentDomain().Name.Split(".")[0] + "\"  + $userName;
+                        $currentECADB = GetCurrentECADBName([System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll"));
+                        $CentralAdminDatabaseServer = GetDBServerName -dbServerName $RoleDatacenterCentralAdminDatabaseServer;
+                        execute-sqlcommand -ServerName $CentralAdminDatabaseServer -DatabaseName $currentECADB -Command "EXEC sp_addsrvrolemember [$($domainUserName)], 'sysadmin';" -Timeout $RoleDatacenterSqlOperationTimeout;
+                    }
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true"/>
+            <DisasterRecovery/>
+            <Uninstall/>
+        </ServerTaskInfo>
+        
+        <!-- Grant CONNECT permission to forest administrator login. -->
+        <ServerTaskInfo Id="_a65a9225b1e84ebdb35ea5358e076bca" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Central Admin">
+            <Install>
+                <Standalone>
+                    . $RoleBinPath\CentralAdminSetup.ps1;
+                    if(-not(IsDatabaseCurrent([System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll"))))
+                    {
+                        $userName = "Administrator";
+                        if (-not [string]::IsNullOrEmpty($RoleDatacenterForestAdminUserName))
+                        {
+                            $userName = $RoleDatacenterForestAdminUserName;
+                        }
+                        
+                        $domainUserName =  [System.DirectoryServices.ActiveDirectory.Domain]::GetCurrentDomain().Name.Split(".")[0] + "\"  + $userName;
+                        $currentECADB = GetCurrentECADBName([System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll"));
+                        $CentralAdminDatabaseServer = GetDBServerName -dbServerName $RoleDatacenterCentralAdminDatabaseServer;
+                        execute-sqlcommand -ServerName $CentralAdminDatabaseServer -DatabaseName $currentECADB -Command "GRANT CONNECT TO [$($domainUserName)];" -Timeout $RoleDatacenterSqlOperationTimeout;
+                    }
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true"/>
+            <DisasterRecovery/>
+            <Uninstall/>
+        </ServerTaskInfo>
+
+        <!--Add the Central Admin Servers group to sql logins -->
+        <ServerTaskInfo Id="_118910c188644d9dbd2b247b594e7202" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install>
+                <Standalone>
+                    . $RoleBinPath\CentralAdminSetup.ps1;
+                    if(-not(IsDatabaseCurrent([System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll"))))
+                    {
+                        $userName =  [System.DirectoryServices.ActiveDirectory.Domain]::GetCurrentDomain().Name.Split(".")[0] + "\"  + "Central Admin Servers";
+                        $CentralAdminDatabaseServer = GetDBServerName -dbServerName $RoleDatacenterCentralAdminDatabaseServer;
+                        [string] $sqlCommand = "IF NOT EXISTS (SELECT [name] FROM sys.syslogins WHERE [name] = '$($userName)') BEGIN CREATE LOGIN [$($userName)] FROM WINDOWS END;";
+                        execute-sqlcommand -ServerName $CentralAdminDatabaseServer -DatabaseName "master" -Command $sqlCommand -Timeout $RoleDatacenterSqlOperationTimeout;
+                    }
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade/>
+            <DisasterRecovery/>
+            <Uninstall/>
+        </ServerTaskInfo>
+
+        <!--Add the Central Admin SQL Servers group to sql logins -->
+        <ServerTaskInfo Id="_7F11A05295234bf2A2F87E17EEAC7A74" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Central Admin">
+            <Install>
+                <Standalone>
+                    . $RoleBinPath\CentralAdminSetup.ps1;
+                    if(-not(IsDatabaseCurrent([System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll"))))
+                    {
+                        $userName =  [System.DirectoryServices.ActiveDirectory.Domain]::GetCurrentDomain().Name.Split(".")[0] + "\"  + $RoleDatacenterCentralAdminSqlGroup;
+                        $CentralAdminDatabaseServer = GetDBServerName -dbServerName $RoleDatacenterCentralAdminDatabaseServer;
+                        [string] $sqlCommand = "IF NOT EXISTS (SELECT [name] FROM sys.syslogins WHERE [name] = '$($userName)') BEGIN CREATE LOGIN [$($userName)] FROM WINDOWS END;";
+                        execute-sqlcommand -ServerName $CentralAdminDatabaseServer -DatabaseName "master" -Command $sqlCommand -Timeout $RoleDatacenterSqlOperationTimeout;
+                    }
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade/>
+            <DisasterRecovery/>
+            <Uninstall/>
+        </ServerTaskInfo>
+
+        <!--Add the local Central Admin database server to Central Admin SQL Servers group -->
+        <ServerTaskInfo Id="_0D723D2D755C4ad4AB4272374FAE4F5A" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Central Admin">
+            <Install>
+                <Standalone>
+                    . $RoleBinPath\CentralAdminSetup.ps1;
+                    if(-not(IsDatabaseCurrent([System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll"))))
+                    {
+                        $CentralAdminDatabaseServer = GetDBServerName -dbServerName $RoleDatacenterCentralAdminDatabaseServer;
+                        $CentralAdminDatabaseServerHostName = Get-HostNameFromCName $CentralAdminDatabaseServer
+                        AddLocalComputerAccountToCentralAdminGroup -role CentralAdminDatabase -machineName $CentralAdminDatabaseServerHostName
+                    }
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade/>
+            <DisasterRecovery/>
+            <Uninstall/>
+        </ServerTaskInfo>
+
+        <!--Grant CONNECT to Central Admin SQL Servers group-->
+        <!--This has to happen before configuring SQL replication as otherwise the login cannot be added to PAL-->
+        <ServerTaskInfo Id="_94D5EFCA70F34b4fAC4F184A992D232B" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Central Admin">
+            <Install>
+                <Standalone>
+                    . $RoleBinPath\CentralAdminSetup.ps1;
+                    if(-not(IsDatabaseCurrent([System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll"))))
+                    {
+                        $currentECADB = GetCurrentECADBName([System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll"));
+                        $CentralAdminDatabaseServer = GetDBServerName -dbServerName $RoleDatacenterCentralAdminDatabaseServer;
+                        $quotedUserName = """" + [System.DirectoryServices.ActiveDirectory.Domain]::GetCurrentDomain().Name.Split(".")[0] + "\" + $RoleDatacenterCentralAdminSqlGroup + """";
+                        execute-sqlcommand -ServerName $CentralAdminDatabaseServer -DatabaseName $currentECADB -Command "GRANT CONNECT to $quotedUserName" -Timeout $RoleDatacenterSqlOperationTimeout;
+                    }
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true"/>
+            <DisasterRecovery />
+            <Uninstall/>
+        </ServerTaskInfo>
+
+        <!--Grant EXECUTE to Central Admin SQL Servers group-->
+        <ServerTaskInfo Id="_A39B0A38620347518B973355EFFA15F6" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Central Admin">
+            <Install>
+                <Standalone>
+                    . $RoleBinPath\CentralAdminSetup.ps1;
+                    if(-not(IsDatabaseCurrent([System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll"))))
+                    {
+                        $currentECADB = GetCurrentECADBName([System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll"));
+                        $CentralAdminDatabaseServer = GetDBServerName -dbServerName $RoleDatacenterCentralAdminDatabaseServer;
+                        $quotedUserName = """" + [System.DirectoryServices.ActiveDirectory.Domain]::GetCurrentDomain().Name.Split(".")[0] + "\" + $RoleDatacenterCentralAdminSqlGroup + """";
+                        execute-sqlcommand -ServerName $CentralAdminDatabaseServer -DatabaseName $currentECADB -Command "GRANT EXECUTE to $quotedUserName" -Timeout $RoleDatacenterSqlOperationTimeout;
+                    }
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true"/>
+            <DisasterRecovery />
+            <Uninstall/>
+        </ServerTaskInfo>
+
+        <!--Assign the db_owner role for Exchange Central Admin DB to the Central Admin SQL Servers group -->
+        <ServerTaskInfo Id="_03A9A22DBCE94c30B946424335CD4122" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Central Admin">
+            <Install>
+                <Standalone>
+                    . $RoleBinPath\CentralAdminSetup.ps1;
+                    if(-not(IsDatabaseCurrent([System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll"))))
+                    {
+                        $currentECADB = GetCurrentECADBName([System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll"));
+                        $CentralAdminDatabaseServer = GetDBServerName -dbServerName $RoleDatacenterCentralAdminDatabaseServer;
+                        $userName = [System.DirectoryServices.ActiveDirectory.Domain]::GetCurrentDomain().Name.Split(".")[0] + "\" + $RoleDatacenterCentralAdminSqlGroup;
+                        execute-sqlcommand -ServerName $CentralAdminDatabaseServer -DatabaseName $currentECADB -Command "exec sp_addrolemember 'db_owner', N'$userName'" -Timeout $RoleDatacenterSqlOperationTimeout;
+                    }
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true"/>
+            <DisasterRecovery/>
+            <Uninstall/>
+        </ServerTaskInfo>
+
+        <!--This section contains the main tasks to configure SQL replication-->
+
+        <!-- Create Extensible Central Admin Database schema only in FFO environment -->
+        <ServerTaskInfo Id="_7001c39722674732bed8846eb19fd01d" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install>
+                <Standalone>
+                    . $RoleBinPath\CentralAdminSetup.ps1;
+                    if($RoleDatacenterFfoEnvironment -eq "True")
+                    {
+                        $centralAdminBinaryPath = [System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll");
+                        $CentralAdminDatabaseServer = GetDBServerName -dbServerName $RoleDatacenterCentralAdminDatabaseServer;
+                        Apply-FfoSchemaUpdate `
+                          -CentralAdminDatabaseServer $CentralAdminDatabaseServer `
+                          -CentralAdminBinaryPath $centralAdminBinaryPath `
+                          -SqlScriptFolderPath $RoleBinPath `
+                          -CentralAdminPublication $RoleDatacenterCentralAdminPublication `
+                          -EnableSqlReplication $RoleDatacenterEnableSqlReplication
+                    }
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true"/>
+            <DisasterRecovery />
+            <Uninstall/>
+        </ServerTaskInfo>
+        
+        <!-- Grant execute to bootstrap account on GetExtendedProperties function. -->
+        <!-- Note: this must take place after Apply-FfoSchemaUpdate which creates that function, and after creation of bootstrap account. -->
+        <ServerTaskInfo Id="_7DFBE4A143CF48E0AA4407A0F26878AC" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Central Admin">
+            <Install>
+                <Standalone>
+                    . $RoleBinPath\CentralAdminSetup.ps1;
+                    if(-not(IsDatabaseCurrent([System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll"))))
+                    {
+                        # In FFO, GetMachineParameterSet stored proc is modified to SELECT GetExtendedProperties so grant select permissions to bootstrap account
+                        if($RoleDatacenterFfoEnvironment -eq "True")
+                        {
+                          $currentECADB = GetCurrentECADBName([System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll"));
+                          $CentralAdminDatabaseServer = GetDBServerName -dbServerName $RoleDatacenterCentralAdminDatabaseServer;
+                          execute-sqlcommand -ServerName $CentralAdminDatabaseServer -DatabaseName $currentECADB -Command "grant select on dbo.GetExtendedProperties to bootstrap" -Timeout $RoleDatacenterSqlOperationTimeout;
+                        }
+                    }
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true"/>
+            <DisasterRecovery/>
+            <Uninstall/>
+        </ServerTaskInfo>
+
+        <!-- Configure replication subscription, but only in case of bootstrap of the database. -->
+        <ServerTaskInfo Id="_426C5EF422594baf8BAC798E1BF0CA9C" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Central Admin">
+            <Install>
+                <Standalone>
+                    . $RoleBinPath\CentralAdminSetup.ps1
+                    $CentralAdminDatabaseServer = GetDBServerName -dbServerName $RoleDatacenterCentralAdminDatabaseServer
+                    $centralAdminBinaryPath = [System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll")
+                    
+                    [bool] $isPublisher = Get-IsPublisher -Server:$CentralAdminDatabaseServer;
+                    [bool] $isDatabaseCurrent = IsDatabaseCurrent($centralAdminBinaryPath);
+                    [string] $message = "Checking whether replication subscription needs to be configured on database server $($CentralAdminDatabaseServer): " + `
+                        "RoleDatacenterEnableSqlReplication = $($RoleDatacenterEnableSqlReplication); isPublisher = $($isPublisher); " + `
+                        "isDatabaseCurrent = $($isDatabaseCurrent).";
+                    Write-ExchangeSetupLog -Info -Message:$message;
+                    
+                    if ($RoleDatacenterEnableSqlReplication -and !$isPublisher -and !$isDatabaseCurrent)
+                    {
+                        Write-ExchangeSetupLog -Info Message:"Generating new snapshot at publisher.";
+                        [string] $publisherServerHostName = Get-CentralAdminPublisherServer -ResolvePrimaryHostName;
+                        [string] $databaseName = GetCurrentECADBName([System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll"));
+                        [string] $sqlCommand = "EXEC dbo.RequestNewSnapshot; EXEC dbo.GenerateNewSnapshotIfNeeded;";
+                        Execute-SqlCommand -ServerName $publisherServerHostName -DatabaseName $databaseName -Command $sqlCommand -Timeout $RoleDatacenterSqlOperationTimeout;
+
+                        Write-ExchangeSetupLog -Info Message:"Configuring replication subscription on database server '$($CentralAdminDatabaseServer)'.";
+                        $CentralAdminDatabaseServerHostName = Get-HostNameFromCName $CentralAdminDatabaseServer
+                        $exchangeInstallPath = (Get-ItemProperty HKLM:\Software\Microsoft\ExchangeServer\V15\Setup).MsiInstallPath;
+                        $replicationScript = Join-Path $exchangeInstallPath "Scripts\Restore-SqlReplication.ps1";
+                        . "$($replicationScript)" -Subscribers:"$($CentralAdminDatabaseServerHostName)" -WriteToConsole:$false;
+                    }
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true"/>
+            <DisasterRecovery/>
+            <Uninstall/>
+        </ServerTaskInfo>
+
+        <!-- Create Central Admin database Master encryption key that protects all other encryption keys in database,
+            and a credential that will be used to open the master key. The latter overrides default SQL behavior of using
+            service instance master key to make decryption work when database is failed over (or restored) on a different
+            server. -->
+        <!-- DB Master key should be created only once per database life. -->
+        <!-- IMPORTANT: We use bootstrap password to protect the key. In our production environments we should change this password immediately after -->
+        <!-- setup is complete and create a backup of this DB Master key. Changing DBMK password and creating DBMK backup is manual operation which cannot be automated. -->
+        <ServerTaskInfo Id="_1cce094bdf57412ea2713c6755bbadc4" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Central Admin">
+            <Install>
+                <Standalone>
+                    . $RoleBinPath\CentralAdminSetup.ps1;
+                    if(-not(IsDatabaseCurrent([System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll"))))
+                    {
+                        $currentECADB = GetCurrentECADBName([System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll"));
+                        $CentralAdminDatabaseServer = GetDBServerName -dbServerName $RoleDatacenterCentralAdminDatabaseServer;
+                        [string] $password = "G#a71Dqew*S2ewC4slr";
+                        [string] $sqlCommand = "IF NOT EXISTS (SELECT * FROM sys.symmetric_keys WHERE name = N'##MS_DatabaseMasterKey##') BEGIN CREATE MASTER KEY ENCRYPTION BY PASSWORD = '$($password)' END";
+                        Execute-SqlCommand -ServerName $CentralAdminDatabaseServer -DatabaseName $currentECADB -Command $sqlCommand -Timeout $RoleDatacenterSqlOperationTimeout;
+
+                        $sqlCommand = "EXEC sp_control_dbmasterkey_password @db_name = N'$($currentECADB)', @password = N'$($password)', @action = N'add';";
+                        Execute-SqlCommand -ServerName $CentralAdminDatabaseServer -DatabaseName "master" -Command $sqlCommand -Timeout $RoleDatacenterSqlOperationTimeout;
+                    }
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true"/>
+            <DisasterRecovery />
+            <Uninstall/>
+        </ServerTaskInfo>
+
+        <!-- Create SQL self-signed certificate for encrypting the symmetric encryption key. -->
+        <!-- The certificate should be created once per database life. -->
+        <ServerTaskInfo Id="_f8c2cd8be6174f6aa955eff3d5482a07" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Central Admin">
+            <Install>
+                <Standalone>
+                    . $RoleBinPath\CentralAdminSetup.ps1;
+                    if(-not(IsDatabaseCurrent([System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll"))))
+                    {
+                        $currentECADB = GetCurrentECADBName([System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll"));
+                        $CentralAdminDatabaseServer = GetDBServerName -dbServerName $RoleDatacenterCentralAdminDatabaseServer;
+                        execute-sqlcommand -ServerName $CentralAdminDatabaseServer -DatabaseName $currentECADB -Command "IF NOT EXISTS (SELECT * FROM sys.certificates WHERE name = N'SecureValuesSymmetricKeyCertificate') CREATE CERTIFICATE SecureValuesSymmetricKeyCertificate WITH SUBJECT = 'Certificate for encrypting secure values symmetric key'" -Timeout $RoleDatacenterSqlOperationTimeout;
+                    }
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade/>
+            <DisasterRecovery/>
+            <Uninstall/>
+        </ServerTaskInfo>
+
+        <!-- Create symmetric encrypton key encrypted by SecureValuesSymmetricKeyCertificate. -->
+        <ServerTaskInfo Id="_4131390b5bed4f158e9d0b5dacbfb3c7" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Central Admin">
+            <Install>
+                <Standalone>
+                    . $RoleBinPath\CentralAdminSetup.ps1;
+                    $centralAdminBinaryPath = [System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll")
+                    if ([string]::IsNullOrEmpty($RoleDatacenterCentralAdminDatabaseSymmetricKeyPassword))
+                    {
+                        # This will handle VDC and other bootstrapping cases
+                        $RoleDatacenterCentralAdminDatabaseSymmetricKeyPassword = 'G#a71Dqew*S2ewC4slr' 
+                    }
+                    $currentECADB = GetCurrentECADBName($centralAdminBinaryPath)
+                    $CentralAdminDatabaseServer = GetDBServerName -dbServerName $RoleDatacenterCentralAdminDatabaseServer;
+                    execute-sqlcommand `
+                        -ServerName $CentralAdminDatabaseServer `
+                        -DatabaseName $currentECADB `
+                        -Command "IF NOT EXISTS (SELECT * FROM sys.symmetric_keys WHERE name = N'SecureValuesSymmetricKey') CREATE SYMMETRIC KEY SecureValuesSymmetricKey WITH ALGORITHM = AES_128, KEY_SOURCE = '$RoleDatacenterCentralAdminDatabaseSymmetricKeyPassword', IDENTITY_VALUE = '$RoleDatacenterCentralAdminDatabaseSymmetricKeyIdentity' ENCRYPTION BY CERTIFICATE SecureValuesSymmetricKeyCertificate" `
+                        -Timeout $RoleDatacenterSqlOperationTimeout;
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true"/>
+            <DisasterRecovery/>
+            <Uninstall/>
+        </ServerTaskInfo>
+
+        <!-- Create SQL self-signed certificate for signing stored procedures that have access to symmetric key. -->
+        <!-- The certificate should be created once per database life. -->
+        <ServerTaskInfo Id="_02b70c575bc64b8eaa5e1a95c40b5319" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Central Admin">
+            <Install>
+                <Standalone>
+                    . $RoleBinPath\CentralAdminSetup.ps1;
+                    if(-not(IsDatabaseCurrent([System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll"))))
+                    {
+                        $currentECADB = GetCurrentECADBName([System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll"));
+                        $CentralAdminDatabaseServer = GetDBServerName -dbServerName $RoleDatacenterCentralAdminDatabaseServer;
+                        execute-sqlcommand -ServerName $CentralAdminDatabaseServer -DatabaseName $currentECADB -Command "IF NOT EXISTS (SELECT * FROM sys.certificates WHERE name = N'SecureValuesSigningCertificate') CREATE CERTIFICATE SecureValuesSigningCertificate WITH SUBJECT = 'Certificate for signing the stored procedures that access symmetric key'" -Timeout $RoleDatacenterSqlOperationTimeout;
+                    }
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade/>
+            <DisasterRecovery/>
+            <Uninstall/>
+        </ServerTaskInfo>
+
+        <!-- Create SQL user mapped to signing certificate, so we can grant permissions to the certificate. -->
+        <ServerTaskInfo Id="_ed8c2e27b5bd406ca6b63b2c75583417" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Central Admin">
+            <Install>
+                <Standalone>
+                    . $RoleBinPath\CentralAdminSetup.ps1;
+                    if(-not(IsDatabaseCurrent([System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll"))))
+                    {
+                        $currentECADB = GetCurrentECADBName([System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll"));
+                        $CentralAdminDatabaseServer = GetDBServerName -dbServerName $RoleDatacenterCentralAdminDatabaseServer;
+                        execute-sqlcommand -ServerName $CentralAdminDatabaseServer -DatabaseName $currentECADB -Command "IF NOT EXISTS (SELECT * FROM sys.database_principals WHERE name = N'SigningCertificateUser') CREATE USER SigningCertificateUser FOR CERTIFICATE SecureValuesSigningCertificate" -Timeout $RoleDatacenterSqlOperationTimeout;
+                    }
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade/>
+            <DisasterRecovery/>
+            <Uninstall/>
+        </ServerTaskInfo>
+
+        <!-- Grant permission to SigningCertificateUser to use symmetric key -->
+        <ServerTaskInfo Id="_545acc6a21eb43f0ac89809e3c5f5f1c" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Central Admin">
+            <Install>
+                <Standalone>
+                    . $RoleBinPath\CentralAdminSetup.ps1;
+                    $CentralAdminDatabaseServer = GetDBServerName -dbServerName $RoleDatacenterCentralAdminDatabaseServer;
+                    $centralAdminBinaryPath = [System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll")
+                    if(-not(IsDatabaseCurrent($centralAdminBinaryPath)))
+                    {
+                        $currentECADB = GetCurrentECADBName($centralAdminBinaryPath);
+                        Execute-SqlCommand -ServerName $CentralAdminDatabaseServer -DatabaseName $currentECADB -Command "GRANT VIEW DEFINITION ON SYMMETRIC KEY::SecureValuesSymmetricKey to SigningCertificateUser" -Timeout $RoleDatacenterSqlOperationTimeout;
+                    }
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true"/>
+            <DisasterRecovery />
+            <Uninstall/>
+        </ServerTaskInfo>
+
+        <!-- Grant permission to SigningCertificateUser to use certificate to decrypt symmetric key -->
+        <ServerTaskInfo Id="_d3125d4a6e6c431d9780c1abdd72f809" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Central Admin">
+            <Install>
+                <Standalone>
+                    . $RoleBinPath\CentralAdminSetup.ps1;
+                    if(-not(IsDatabaseCurrent([System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll"))))
+                    {
+                        $currentECADB = GetCurrentECADBName([System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll"));
+                        $CentralAdminDatabaseServer = GetDBServerName -dbServerName $RoleDatacenterCentralAdminDatabaseServer;
+                        Execute-SqlCommand -ServerName $CentralAdminDatabaseServer -DatabaseName $currentECADB -Command "GRANT CONTROL ON CERTIFICATE::SecureValuesSymmetricKeyCertificate to SigningCertificateUser" -Timeout $RoleDatacenterSqlOperationTimeout;
+                    }
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true"/>
+            <DisasterRecovery />
+            <Uninstall/>
+        </ServerTaskInfo>
+
+        <!-- Anything that calls GetMachineParameterSet needs permissions to the Machine, Version, MachineDefinition, Pod, Forest, Location, and Service tables. -->
+
+        <!--Grant select on table(s) for the SigningCertificateUser account-->
+        <ServerTaskInfo Id="_2D61D35B98644C56ABA93FD372A20CE8" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install>
+                <Standalone>
+                    . $RoleBinPath\CentralAdminSetup.ps1;
+                    if(-not(IsDatabaseCurrent([System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll"))))
+                    {
+                        $currentECADB = GetCurrentECADBName([System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll"));
+                        $CentralAdminDatabaseServer = GetDBServerName -dbServerName $RoleDatacenterCentralAdminDatabaseServer;
+                        execute-sqlcommand -ServerName $CentralAdminDatabaseServer -DatabaseName $currentECADB -Command "grant select on dbo.Machine to SigningCertificateUser" -Timeout $RoleDatacenterSqlOperationTimeout;
+                    }
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true"/>
+            <DisasterRecovery/>
+            <Uninstall/>
+        </ServerTaskInfo>
+
+        <!--Grant select on table(s) for the SigningCertificateUser account-->
+        <ServerTaskInfo Id="_F5436476F5C34BA2A7F261988E5AE06B" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install>
+                <Standalone>
+                    . $RoleBinPath\CentralAdminSetup.ps1;
+                    if(-not(IsDatabaseCurrent([System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll"))))
+                    {
+                        $currentECADB = GetCurrentECADBName([System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll"));
+                        $CentralAdminDatabaseServer = GetDBServerName -dbServerName $RoleDatacenterCentralAdminDatabaseServer;
+                        execute-sqlcommand -ServerName $CentralAdminDatabaseServer -DatabaseName $currentECADB -Command "grant select on dbo.Version to SigningCertificateUser" -Timeout $RoleDatacenterSqlOperationTimeout;
+                    }
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true"/>
+            <DisasterRecovery/>
+            <Uninstall/>
+        </ServerTaskInfo>
+
+        <!--Grant select on table(s) for the SigningCertificateUser account-->
+        <ServerTaskInfo Id="_E331A4C20FCB406BBC08EDC21E3229BA" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install>
+                <Standalone>
+                    . $RoleBinPath\CentralAdminSetup.ps1;
+                    if(-not(IsDatabaseCurrent([System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll"))))
+                    {
+                        $currentECADB = GetCurrentECADBName([System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll"));
+                        $CentralAdminDatabaseServer = GetDBServerName -dbServerName $RoleDatacenterCentralAdminDatabaseServer;
+                        execute-sqlcommand -ServerName $CentralAdminDatabaseServer -DatabaseName $currentECADB -Command "grant select on dbo.MachineDefinition to SigningCertificateUser" -Timeout $RoleDatacenterSqlOperationTimeout;
+                    }
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true"/>
+            <DisasterRecovery/>
+            <Uninstall/>
+        </ServerTaskInfo>
+
+        <!--Grant select on table(s) for the SigningCertificateUser account-->
+        <ServerTaskInfo Id="_3534231DEB104510B1A269B6895D2BBB" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install>
+                <Standalone>
+                    . $RoleBinPath\CentralAdminSetup.ps1;
+                    if(-not(IsDatabaseCurrent([System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll"))))
+                    {
+                        $currentECADB = GetCurrentECADBName([System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll"));
+                        $CentralAdminDatabaseServer = GetDBServerName -dbServerName $RoleDatacenterCentralAdminDatabaseServer;
+                        execute-sqlcommand -ServerName $CentralAdminDatabaseServer -DatabaseName $currentECADB -Command "grant select on dbo.Pod to SigningCertificateUser" -Timeout $RoleDatacenterSqlOperationTimeout;
+                    }
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true"/>
+            <DisasterRecovery/>
+            <Uninstall/>
+        </ServerTaskInfo>
+
+        <!--Grant select on table(s) for the SigningCertificateUser account-->
+        <ServerTaskInfo Id="_5550BB4670B349C5AACA0A1F64573B2D" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install>
+                <Standalone>
+                    . $RoleBinPath\CentralAdminSetup.ps1;
+                    if(-not(IsDatabaseCurrent([System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll"))))
+                    {
+                        $currentECADB = GetCurrentECADBName([System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll"));
+                        $CentralAdminDatabaseServer = GetDBServerName -dbServerName $RoleDatacenterCentralAdminDatabaseServer;
+                        execute-sqlcommand -ServerName $CentralAdminDatabaseServer -DatabaseName $currentECADB -Command "grant select on dbo.Forest to SigningCertificateUser" -Timeout $RoleDatacenterSqlOperationTimeout;
+                    }
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true"/>
+            <DisasterRecovery/>
+            <Uninstall/>
+        </ServerTaskInfo>
+
+        <!--Grant select on table(s) for the SigningCertificateUser account-->
+        <ServerTaskInfo Id="_12276C492E314130BA569323187F9FCE" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install>
+                <Standalone>
+                    . $RoleBinPath\CentralAdminSetup.ps1;
+                    if(-not(IsDatabaseCurrent([System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll"))))
+                    {
+                        $currentECADB = GetCurrentECADBName([System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll"));
+                        $CentralAdminDatabaseServer = GetDBServerName -dbServerName $RoleDatacenterCentralAdminDatabaseServer;
+                        execute-sqlcommand -ServerName $CentralAdminDatabaseServer -DatabaseName $currentECADB -Command "grant select on dbo.Location to SigningCertificateUser" -Timeout $RoleDatacenterSqlOperationTimeout;
+                    }
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true"/>
+            <DisasterRecovery/>
+            <Uninstall/>
+        </ServerTaskInfo>
+
+        <!--Grant select on table(s) for the SigningCertificateUser account-->
+        <ServerTaskInfo Id="_395E82F917324F3E9A80945302E0A4A7" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install>
+                <Standalone>
+                    . $RoleBinPath\CentralAdminSetup.ps1;
+                    if(-not(IsDatabaseCurrent([System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll"))))
+                    {
+                        $currentECADB = GetCurrentECADBName([System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll"));
+                        $CentralAdminDatabaseServer = GetDBServerName -dbServerName $RoleDatacenterCentralAdminDatabaseServer;
+                        execute-sqlcommand -ServerName $CentralAdminDatabaseServer -DatabaseName $currentECADB -Command "grant select on dbo.Service to SigningCertificateUser" -Timeout $RoleDatacenterSqlOperationTimeout;
+                    }
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true"/>
+            <DisasterRecovery/>
+            <Uninstall/>
+        </ServerTaskInfo>
+
+        <!--Grant select on table(s) for the SigningCertificateUser account-->
+        <ServerTaskInfo Id="_b27879e823cb4ff2b929d91b1fef7d1f" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install>
+                <Standalone>
+                    . $RoleBinPath\CentralAdminSetup.ps1;
+                    if(-not(IsDatabaseCurrent([System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll"))))
+                    {
+                        $currentECADB = GetCurrentECADBName([System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll"));
+                        $CentralAdminDatabaseServer = GetDBServerName -dbServerName $RoleDatacenterCentralAdminDatabaseServer;
+                        execute-sqlcommand -ServerName $CentralAdminDatabaseServer -DatabaseName $currentECADB -Command "grant select on dbo.Rack to SigningCertificateUser" -Timeout $RoleDatacenterSqlOperationTimeout;
+                    }
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true"/>
+            <DisasterRecovery/>
+            <Uninstall/>
+        </ServerTaskInfo>
+
+        <!--Grant select on table(s) for the SigningCertificateUser account-->
+        <ServerTaskInfo Id="_532bb136ce5d464e806893cd5a19b1e3" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install>
+                <Standalone>
+                    . $RoleBinPath\CentralAdminSetup.ps1;
+                    if(-not(IsDatabaseCurrent([System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll"))))
+                    {
+                        $currentECADB = GetCurrentECADBName([System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll"));
+                        $CentralAdminDatabaseServer = GetDBServerName -dbServerName $RoleDatacenterCentralAdminDatabaseServer;
+                        execute-sqlcommand -ServerName $CentralAdminDatabaseServer -DatabaseName $currentECADB -Command "grant select on dbo.RackType to SigningCertificateUser" -Timeout $RoleDatacenterSqlOperationTimeout;
+                    }
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true"/>
+            <DisasterRecovery/>
+            <Uninstall/>
+        </ServerTaskInfo>
+
+        <!-- Sign GetSecureValue stored procedure that have access to symmetric encryption key -->
+        <ServerTaskInfo Id="_2bbf84c112b14e9a82bb5dded79c011a" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Central Admin">
+            <Install>
+                <Standalone>
+                    . $RoleBinPath\CentralAdminSetup.ps1;
+                    if(-not(IsDatabaseCurrent([System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll"))))
+                    {
+                        $currentECADB = GetCurrentECADBName([System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll"));
+                        $CentralAdminDatabaseServer = GetDBServerName -dbServerName $RoleDatacenterCentralAdminDatabaseServer;
+                        Execute-SqlCommand -ServerName $CentralAdminDatabaseServer -DatabaseName $currentECADB -Command "IF NOT EXISTS (SELECT * FROM sys.crypt_properties AS cp LEFT JOIN sys.all_objects AS ao ON cp.major_id = ao.object_id WHERE ao.name LIKE '%GetSecureValue%') ADD SIGNATURE TO dbo.GetSecureValue BY CERTIFICATE SecureValuesSigningCertificate" -Timeout $RoleDatacenterSqlOperationTimeout;
+                    }
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true"/>
+            <DisasterRecovery />
+            <Uninstall/>
+        </ServerTaskInfo>
+
+        <!-- Sign UpdateSecureValue stored procedure that have access to symmetric encryption key -->
+        <ServerTaskInfo Id="_cfeb25ea529e48e3b2bef017ecd8b834" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Central Admin">
+            <Install>
+                <Standalone>
+                    . $RoleBinPath\CentralAdminSetup.ps1;
+                    if(-not(IsDatabaseCurrent([System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll"))))
+                    {
+                        $currentECADB = GetCurrentECADBName([System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll"));
+                        $CentralAdminDatabaseServer = GetDBServerName -dbServerName $RoleDatacenterCentralAdminDatabaseServer;
+                        Execute-SqlCommand -ServerName $CentralAdminDatabaseServer -DatabaseName $currentECADB -Command "IF NOT EXISTS (SELECT * FROM sys.crypt_properties AS cp LEFT JOIN sys.all_objects AS ao ON cp.major_id = ao.object_id WHERE ao.name LIKE '%UpdateSecureValue%') ADD SIGNATURE TO dbo.UpdateSecureValue BY CERTIFICATE SecureValuesSigningCertificate" -Timeout $RoleDatacenterSqlOperationTimeout;
+                    }
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true"/>
+            <DisasterRecovery />
+            <Uninstall/>
+        </ServerTaskInfo>
+
+        <!-- Sign ImportSecureValue stored procedure that have access to symmetric encryption key -->
+        <ServerTaskInfo Id="_cfded87e1d0b4260b0f8eb2e5845686e" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Central Admin">
+            <Install>
+                <Standalone>
+                    . $RoleBinPath\CentralAdminSetup.ps1;
+                    if(-not(IsDatabaseCurrent([System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll"))))
+                    {
+                        $currentECADB = GetCurrentECADBName([System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll"));
+                        $CentralAdminDatabaseServer = GetDBServerName -dbServerName $RoleDatacenterCentralAdminDatabaseServer;
+                        Execute-SqlCommand -ServerName $CentralAdminDatabaseServer -DatabaseName $currentECADB -Command "IF NOT EXISTS (SELECT * FROM sys.crypt_properties AS cp LEFT JOIN sys.all_objects AS ao ON cp.major_id = ao.object_id WHERE ao.name LIKE '%ImportSecureValue%') ADD SIGNATURE TO dbo.ImportSecureValue BY CERTIFICATE SecureValuesSigningCertificate" -Timeout $RoleDatacenterSqlOperationTimeout;
+                    }
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true"/>
+            <DisasterRecovery />
+            <Uninstall/>
+        </ServerTaskInfo>
+
+        <!-- Sign GetMachineParameterSet stored procedure that have access to symmetric encryption key -->
+        <ServerTaskInfo Id="_3483dfe8f33a44089fc88f57de52b448" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Central Admin">
+            <Install>
+                <Standalone>
+                    . $RoleBinPath\CentralAdminSetup.ps1;
+                    if(-not(IsDatabaseCurrent([System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll"))))
+                    {
+                        $currentECADB = GetCurrentECADBName([System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll"));
+                        $CentralAdminDatabaseServer = GetDBServerName -dbServerName $RoleDatacenterCentralAdminDatabaseServer;
+                        Execute-SqlCommand -ServerName $CentralAdminDatabaseServer -DatabaseName $currentECADB -Command "IF NOT EXISTS (SELECT * FROM sys.crypt_properties AS cp LEFT JOIN sys.all_objects AS ao ON cp.major_id = ao.object_id WHERE ao.name LIKE '%GetMachineParameterSet%') ADD SIGNATURE TO dbo.GetMachineParameterSet BY CERTIFICATE SecureValuesSigningCertificate" -Timeout $RoleDatacenterSqlOperationTimeout;
+                    }
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true"/>
+            <DisasterRecovery />
+            <Uninstall/>
+        </ServerTaskInfo>
+
+        <!-- Sign GetMachineSingleParameter stored procedure that have access to symmetric encryption key -->
+        <ServerTaskInfo Id="_3ee1ecabc3b640d282e32d7968a91f79" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Central Admin">
+            <Install>
+                <Standalone>
+                    . $RoleBinPath\CentralAdminSetup.ps1;
+                    if(-not(IsDatabaseCurrent([System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll"))))
+                    {
+                        $currentECADB = GetCurrentECADBName([System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll"));
+                        $CentralAdminDatabaseServer = GetDBServerName -dbServerName $RoleDatacenterCentralAdminDatabaseServer;
+                        Execute-SqlCommand -ServerName $CentralAdminDatabaseServer -DatabaseName $currentECADB -Command "IF NOT EXISTS (SELECT * FROM sys.crypt_properties AS cp LEFT JOIN sys.all_objects AS ao ON cp.major_id = ao.object_id WHERE ao.name LIKE '%GetMachineSingleParameter%') ADD SIGNATURE TO dbo.GetMachineSingleParameter BY CERTIFICATE SecureValuesSigningCertificate" -Timeout $RoleDatacenterSqlOperationTimeout;
+                    }
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true"/>
+            <DisasterRecovery />
+            <Uninstall/>
+        </ServerTaskInfo>
+
+        <!-- Sign GetMachineSecureParameter stored procedure that have access to symmetric encryption key -->
+        <ServerTaskInfo Id="_9a5cde3c7e894e6caf593b188e75c89e" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Central Admin">
+            <Install>
+                <Standalone>
+                    . $RoleBinPath\CentralAdminSetup.ps1;
+                    if(-not(IsDatabaseCurrent([System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll"))))
+                    {
+                        $currentECADB = GetCurrentECADBName([System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll"));
+                        $CentralAdminDatabaseServer = GetDBServerName -dbServerName $RoleDatacenterCentralAdminDatabaseServer;
+                        Execute-SqlCommand -ServerName $CentralAdminDatabaseServer -DatabaseName $currentECADB -Command "IF NOT EXISTS (SELECT * FROM sys.crypt_properties AS cp LEFT JOIN sys.all_objects AS ao ON cp.major_id = ao.object_id WHERE ao.name LIKE '%GetMachineSecureParameter%') ADD SIGNATURE TO dbo.GetMachineSecureParameter BY CERTIFICATE SecureValuesSigningCertificate" -Timeout $RoleDatacenterSqlOperationTimeout;
+                    }
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true"/>
+            <DisasterRecovery />
+            <Uninstall/>
+        </ServerTaskInfo>
+
+        <!-- Sign ResolveAllParameterSetsUpdateCache stored procedure so that 'bootstrap' user can use delegation for GRANT SELECT in dynamic SQL queries when resolving parameter sets. -->
+        <ServerTaskInfo Id="_650ced97880b4d8d92b137f78391827a" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Central Admin">
+            <Install>
+                <Standalone>
+                    . $RoleBinPath\CentralAdminSetup.ps1;
+                    if(-not(IsDatabaseCurrent([System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll"))))
+                    {
+                        $currentECADB = GetCurrentECADBName([System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll"));
+                        $CentralAdminDatabaseServer = GetDBServerName -dbServerName $RoleDatacenterCentralAdminDatabaseServer;
+                        $command = "IF NOT EXISTS (SELECT * FROM sys.crypt_properties AS cp LEFT JOIN sys.all_objects AS ao ON cp.major_id = ao.object_id WHERE ao.name LIKE '%ResolveAllParameterSetsUpdateCache%') ADD SIGNATURE TO dbo.ResolveAllParameterSetsUpdateCache BY CERTIFICATE SecureValuesSigningCertificate";
+                        Execute-SqlCommand -ServerName $CentralAdminDatabaseServer -DatabaseName $currentECADB -Command $command -Timeout $RoleDatacenterSqlOperationTimeout;
+                    }
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true"/>
+            <DisasterRecovery />
+            <Uninstall/>
+        </ServerTaskInfo>
+
+        <!--Grant CONNECT to Central Admin Servers group-->
+        <ServerTaskInfo Id="_ea06cea345aa4676b729d75042c32493" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install>
+                <Standalone>
+                    . $RoleBinPath\CentralAdminSetup.ps1;
+                    if(-not(IsDatabaseCurrent([System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll"))))
+                    {
+                        $currentECADB = GetCurrentECADBName([System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll"));
+                        $CentralAdminDatabaseServer = GetDBServerName -dbServerName $RoleDatacenterCentralAdminDatabaseServer;
+                        $quotedUserName = """" + [System.DirectoryServices.ActiveDirectory.Domain]::GetCurrentDomain().Name.Split(".")[0] + "\" + "Central Admin Servers" + """";
+                        execute-sqlcommand -ServerName $CentralAdminDatabaseServer -DatabaseName $currentECADB -Command "GRANT CONNECT to $quotedUserName" -Timeout $RoleDatacenterSqlOperationTimeout;
+                    }
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true"/>
+            <DisasterRecovery />
+            <Uninstall/>
+        </ServerTaskInfo>
+
+        <!--Grant EXECUTE to Central Admin Servers group-->
+        <ServerTaskInfo Id="_4383159dfcb94a609bce0b4a26d9e687" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install>
+                <Standalone>
+                    . $RoleBinPath\CentralAdminSetup.ps1;
+                    if(-not(IsDatabaseCurrent([System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll"))))
+                    {
+                        $currentECADB = GetCurrentECADBName([System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll"));
+                        $CentralAdminDatabaseServer = GetDBServerName -dbServerName $RoleDatacenterCentralAdminDatabaseServer;
+                        $quotedUserName = """" + [System.DirectoryServices.ActiveDirectory.Domain]::GetCurrentDomain().Name.Split(".")[0] + "\" + "Central Admin Servers" + """";
+                        execute-sqlcommand -ServerName $CentralAdminDatabaseServer -DatabaseName $currentECADB -Command "GRANT EXECUTE to $quotedUserName" -Timeout $RoleDatacenterSqlOperationTimeout;
+                    }
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true"/>
+            <DisasterRecovery />
+            <Uninstall/>
+        </ServerTaskInfo>
+
+        <!--Assign the db_datareader role for Exchange Central Admin DB to the Central Admin Servers group -->
+        <ServerTaskInfo Id="_93bd7e38fc8042f89153d7f6495064d7" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install>
+                <Standalone>
+                    . $RoleBinPath\CentralAdminSetup.ps1;
+                    if(-not(IsDatabaseCurrent([System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll"))))
+                    {
+                        $currentECADB = GetCurrentECADBName([System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll"));
+                        $CentralAdminDatabaseServer = GetDBServerName -dbServerName $RoleDatacenterCentralAdminDatabaseServer;
+                        $userName = [System.DirectoryServices.ActiveDirectory.Domain]::GetCurrentDomain().Name.Split(".")[0] + "\" + "Central Admin Servers";
+                        execute-sqlcommand -ServerName $CentralAdminDatabaseServer -DatabaseName $currentECADB -Command "exec sp_addrolemember 'db_datareader', '$userName'" -Timeout $RoleDatacenterSqlOperationTimeout;
+                    }
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true"/>
+            <DisasterRecovery/>
+            <Uninstall/>
+        </ServerTaskInfo>
+
+        <!--Assign the db_datawrite role for Exchange Central Admin DB to the Central Admin Servers group -->
+        <ServerTaskInfo Id="_f6ab0a8d6b2c4bd4b2caea09151d32c9" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install>
+                <Standalone>
+                    . $RoleBinPath\CentralAdminSetup.ps1;
+                    if(-not(IsDatabaseCurrent([System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll"))))
+                    {
+                        $currentECADB = GetCurrentECADBName([System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll"));
+                        $CentralAdminDatabaseServer = GetDBServerName -dbServerName $RoleDatacenterCentralAdminDatabaseServer;
+                        $userName = [System.DirectoryServices.ActiveDirectory.Domain]::GetCurrentDomain().Name.Split(".")[0] + "\" + "Central Admin Servers";
+                        execute-sqlcommand -ServerName $CentralAdminDatabaseServer -DatabaseName $currentECADB -Command "exec sp_addrolemember 'db_datawriter', '$userName'" -Timeout $RoleDatacenterSqlOperationTimeout;
+                    }
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true"/>
+            <DisasterRecovery/>
+            <Uninstall/>
+        </ServerTaskInfo>
+
+        <!--Assign the db_datareader role for msdb to the Central Admin Servers group -->
+        <ServerTaskInfo Id="_217CD1A6B4554A7092B9C08B2E56CBF4" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Central Admin">
+            <Install>
+                <Standalone>
+                    . $RoleBinPath\CentralAdminSetup.ps1;
+                    $CentralAdminDatabaseServer = GetDBServerName -dbServerName $RoleDatacenterCentralAdminDatabaseServer;
+                    $userName = [System.DirectoryServices.ActiveDirectory.Domain]::GetCurrentDomain().Name.Split(".")[0] + "\" + "Central Admin Servers";
+                    execute-sqlcommand -ServerName $CentralAdminDatabaseServer -DatabaseName 'msdb' -Command "exec sp_addrolemember 'db_datareader', '$userName'" -Timeout $RoleDatacenterSqlOperationTimeout;
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true"/>
+            <DisasterRecovery/>
+            <Uninstall/>
+        </ServerTaskInfo>
+
+        <!--Assign the sysadmin role for the Central Admin Servers group -->
+        <ServerTaskInfo Id="_A7CDD769D1A44869A329E356ABC31E34" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Central Admin">
+            <Install>
+                <Standalone>
+                    . $RoleBinPath\CentralAdminSetup.ps1;
+                    $CentralAdminDatabaseServer = GetDBServerName -dbServerName $RoleDatacenterCentralAdminDatabaseServer;
+                    $userName = [System.DirectoryServices.ActiveDirectory.Domain]::GetCurrentDomain().Name.Split(".")[0] + "\" + "Central Admin Servers";
+                    execute-sqlcommand -ServerName $CentralAdminDatabaseServer -DatabaseName 'msdb' -Command "exec sp_addsrvrolemember '$userName', 'sysadmin'" -Timeout $RoleDatacenterSqlOperationTimeout;
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true"/>
+            <DisasterRecovery/>
+            <Uninstall/>
+        </ServerTaskInfo>
+        
+        <!--Disable login for 'SA' SQL account -->
+        <ServerTaskInfo Id="_51dd6a9753ef46578228cb8ae56ee105" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Central Admin">
+            <Install>
+                <Standalone>
+                    . $RoleBinPath\CentralAdminSetup.ps1;
+                    $CentralAdminDatabaseServer = GetDBServerName -dbServerName $RoleDatacenterCentralAdminDatabaseServer;
+                    execute-sqlcommand -ServerName $CentralAdminDatabaseServer -DatabaseName 'master' -Command "ALTER LOGIN SA DISABLE" -Timeout $RoleDatacenterSqlOperationTimeout;
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true"/>
+            <DisasterRecovery/>
+            <Uninstall/>
+        </ServerTaskInfo>
+
+        <!--Disable login for 'distributor_admin' SQL account, if it exists. -->
+        <!-- This account only exists on Publisher. We run this step on any server because publisher can be moved. -->
+        <ServerTaskInfo Id="_ff7558f0b2d24e9a86cb57a52854a61c" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Central Admin">
+            <Install>
+                <Standalone>
+                    . $RoleBinPath\CentralAdminSetup.ps1;
+                    $CentralAdminDatabaseServer = GetDBServerName -dbServerName $RoleDatacenterCentralAdminDatabaseServer;
+                    execute-sqlcommand -ServerName $CentralAdminDatabaseServer -DatabaseName 'master' -Command "IF EXISTS (SELECT name FROM master.dbo.syslogins WHERE name = 'distributor_admin') ALTER LOGIN distributor_admin DISABLE" -Timeout $RoleDatacenterSqlOperationTimeout;
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true"/>
+            <DisasterRecovery/>
+            <Uninstall/>
+        </ServerTaskInfo>
+        
+        <!--Create workflow persistence database-->
+        <!-- Review(seraldi): This is needed in particular when deploying E15 on an E14 environment the persistance and tracking DB names are different -->
+        <!-- Once we move away from E14 on PROD we should remove the CreatePersistenceDB logic -->
+        <!-- 359445 - Disable WF 3.5 Engine traces to SQL to reduce IO and CPU on the SQL DB. -->
+        <ServerTaskInfo Id="_ba4a5fda262e43e8be056d09c848eb07" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Central Admin">
+            <Install>
+                <Standalone>
+                    . $RoleBinPath\CentralAdminSetup.ps1;
+                    $persistenceDB = GetCurrentPersistenceDBName([System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll"));
+                    $CentralAdminDatabaseServer = GetDBServerName -dbServerName $RoleDatacenterCentralAdminDatabaseServer;
+                    $existingWFDB = Execute-SqlCommand -ServerName $CentralAdminDatabaseServer -DatabaseName "Master" -Command "select Name from sys.databases where name = '$persistenceDB'" -ExecuteScalar -Timeout $RoleDatacenterSqlOperationTimeout;                   
+                    if(-not(IsDatabaseCurrent([System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll"))) -or [string]::IsNullOrEmpty($existingWFDB))
+                    {
+                        install-sqldatabase -ServerName $CentralAdminDatabaseServer -DatabaseName $persistenceDB -DatabasePath $RoleDatacenterCentralAdminDatabasePath -TransactionLogPath $RoleDatacenterCentralAdminTransactionLogPath;
+                        Set-ItemProperty -Path:"HKLM:\Software\Microsoft\ExchangeServer\v15\CentralAdmin\DBVersions" -Name:CreatePersistenceDB -Value:"true" -ea:SilentlyContinue;
+                    }
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true"/>
+            <DisasterRecovery/>
+            <Uninstall/>
+        </ServerTaskInfo>
+
+        <!--Create workflow persistence database tables-->
+        <ServerTaskInfo Id="_5e51e7b4b6784062bd77c80695c8b998" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install>
+                <Standalone>
+                    . $RoleBinPath\CentralAdminSetup.ps1;
+                    $persistenceEntry = Get-ItemProperty -Path:"HKLM:\Software\Microsoft\ExchangeServer\v15\CentralAdmin\DBVersions" -ea:SilentlyContinue;
+                    if(-not(IsDatabaseCurrent([System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll"))) -or ![string]::IsNullOrEmpty($persistenceEntry.CreatePersistenceDB))
+                    {
+                        $persistenceDB = GetCurrentPersistenceDBName([System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll"));
+                        $filePath = [System.IO.Path]::Combine("$env:windir\Microsoft.NET\Framework\v3.0\Windows Workflow Foundation\SQL\EN", "SqlPersistenceService_Schema.sql");
+                        $CentralAdminDatabaseServer = GetDBServerName -dbServerName $RoleDatacenterCentralAdminDatabaseServer;
+                        Execute-SqlCommand -ServerName $CentralAdminDatabaseServer -DatabaseName $persistenceDB -Command $filePath -ExecuteScript -Timeout $RoleDatacenterSqlOperationTimeout;
+                    }
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true"/>
+            <DisasterRecovery />
+            <Uninstall/>
+        </ServerTaskInfo>
+
+        <!--Create workflow persistence database logic-->
+        <ServerTaskInfo Id="_942d9cc4be9f489fb9d6dca0353d4cb3" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install>
+                <Standalone>
+                    . $RoleBinPath\CentralAdminSetup.ps1;
+                    $persistenceEntry = Get-ItemProperty -Path:"HKLM:\Software\Microsoft\ExchangeServer\v15\CentralAdmin\DBVersions" -ea:SilentlyContinue;
+                    if(-not(IsDatabaseCurrent([System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll"))) -or ![string]::IsNullOrEmpty($persistenceEntry.CreatePersistenceDB))
+                    {
+                        $persistenceDB = GetCurrentPersistenceDBName([System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll"));
+                        $filePath = [System.IO.Path]::Combine("$env:windir\Microsoft.NET\Framework\v3.0\Windows Workflow Foundation\SQL\EN", "SqlPersistenceService_Logic.sql");
+                        $CentralAdminDatabaseServer = GetDBServerName -dbServerName $RoleDatacenterCentralAdminDatabaseServer;
+                        Execute-SqlCommand -ServerName $CentralAdminDatabaseServer -DatabaseName $persistenceDB -Command $filePath -ExecuteScript -Timeout $RoleDatacenterSqlOperationTimeout;
+                    }
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true"/>
+            <DisasterRecovery />
+            <Uninstall/>
+        </ServerTaskInfo>
+
+        <!--Grant CONNECT to Central Admin Servers group on workflow persistence database-->
+        <ServerTaskInfo Id="_80b7e19ab2cf4dfda92d4c77ccabcb03" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install>
+                <Standalone>
+                    . $RoleBinPath\CentralAdminSetup.ps1;
+                    $persistenceEntry = Get-ItemProperty -Path:"HKLM:\Software\Microsoft\ExchangeServer\v15\CentralAdmin\DBVersions" -ea:SilentlyContinue;
+                    if(-not(IsDatabaseCurrent([System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll"))) -or ![string]::IsNullOrEmpty($persistenceEntry.CreatePersistenceDB))
+                    {
+                        $persistenceDB = GetCurrentPersistenceDBName([System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll"));
+                        $CentralAdminDatabaseServer = GetDBServerName -dbServerName $RoleDatacenterCentralAdminDatabaseServer;
+                        $quotedUserName = """" + [System.DirectoryServices.ActiveDirectory.Domain]::GetCurrentDomain().Name.Split(".")[0] + "\" + "Central Admin Servers" + """";
+                        execute-sqlcommand -ServerName $CentralAdminDatabaseServer -DatabaseName $persistenceDB -Command "GRANT CONNECT to $quotedUserName" -Timeout $RoleDatacenterSqlOperationTimeout;
+                    }
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true"/>
+            <DisasterRecovery />
+            <Uninstall/>
+        </ServerTaskInfo>
+
+        <!--Grant EXECUTE to Central Admin Servers group on workflow persistence database-->
+        <ServerTaskInfo Id="_40c7d11e6a7545618d3a1c32250ab0f6" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install>
+                <Standalone>
+                    . $RoleBinPath\CentralAdminSetup.ps1;
+                    $persistenceEntry = Get-ItemProperty -Path:"HKLM:\Software\Microsoft\ExchangeServer\v15\CentralAdmin\DBVersions" -ea:SilentlyContinue;
+                    if(-not(IsDatabaseCurrent([System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll"))) -or ![string]::IsNullOrEmpty($persistenceEntry.CreatePersistenceDB))
+                    {
+                        $persistenceDB = GetCurrentPersistenceDBName([System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll"));
+                        $CentralAdminDatabaseServer = GetDBServerName -dbServerName $RoleDatacenterCentralAdminDatabaseServer;
+                        $quotedUserName = """" + [System.DirectoryServices.ActiveDirectory.Domain]::GetCurrentDomain().Name.Split(".")[0] + "\" + "Central Admin Servers" + """";
+                        execute-sqlcommand -ServerName $CentralAdminDatabaseServer -DatabaseName $persistenceDB -Command "GRANT EXECUTE to $quotedUserName" -Timeout $RoleDatacenterSqlOperationTimeout;
+                    }
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true"/>
+            <DisasterRecovery />
+            <Uninstall/>
+        </ServerTaskInfo>
+
+        <!--Assign the db_datareader role for Workflow Persistence DB to the Central Admin Servers group -->
+        <ServerTaskInfo Id="_3ca99de90d8f408e935ffecb28966b9f" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install>
+                <Standalone>
+                    . $RoleBinPath\CentralAdminSetup.ps1;
+                    $persistenceEntry = Get-ItemProperty -Path:"HKLM:\Software\Microsoft\ExchangeServer\v15\CentralAdmin\DBVersions" -ea:SilentlyContinue;
+                    if(-not(IsDatabaseCurrent([System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll"))) -or ![string]::IsNullOrEmpty($persistenceEntry.CreatePersistenceDB))
+                    {
+                        $persistenceDB = GetCurrentPersistenceDBName([System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll"));
+                        $CentralAdminDatabaseServer = GetDBServerName -dbServerName $RoleDatacenterCentralAdminDatabaseServer;
+                        $userName = [System.DirectoryServices.ActiveDirectory.Domain]::GetCurrentDomain().Name.Split(".")[0] + "\" + "Central Admin Servers";
+                        execute-sqlcommand -ServerName $CentralAdminDatabaseServer -DatabaseName $persistenceDB -Command "exec sp_addrolemember 'db_datareader', '$userName'" -Timeout $RoleDatacenterSqlOperationTimeout;
+                    }
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true"/>
+            <DisasterRecovery/>
+            <Uninstall/>
+        </ServerTaskInfo>
+
+        <!--Assign the db_datawriter role for Workflow Persistence DB to the Central Admin Servers group -->
+        <ServerTaskInfo Id="_60025972374c40eba5bb33d4afe42b1c" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install>
+                <Standalone>
+                    . $RoleBinPath\CentralAdminSetup.ps1;
+                    $persistenceEntry = Get-ItemProperty -Path:"HKLM:\Software\Microsoft\ExchangeServer\v15\CentralAdmin\DBVersions" -ea:SilentlyContinue;
+                    if(-not(IsDatabaseCurrent([System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll"))) -or ![string]::IsNullOrEmpty($persistenceEntry.CreatePersistenceDB))
+                    {
+                        $persistenceDB = GetCurrentPersistenceDBName([System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll"));
+                        $CentralAdminDatabaseServer = GetDBServerName -dbServerName $RoleDatacenterCentralAdminDatabaseServer;
+                        $userName = [System.DirectoryServices.ActiveDirectory.Domain]::GetCurrentDomain().Name.Split(".")[0] + "\" + "Central Admin Servers";
+                        execute-sqlcommand -ServerName $CentralAdminDatabaseServer -DatabaseName $persistenceDB -Command "exec sp_addrolemember 'db_datawriter', '$userName'" -Timeout $RoleDatacenterSqlOperationTimeout;
+                    }
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true"/>
+            <DisasterRecovery/>
+            <Uninstall/>
+        </ServerTaskInfo>
+
+        <!--Create workflow tracking database-->
+        <ServerTaskInfo Id="_b9ff7ffae3714659a26df8e9f7bea591" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Central Admin">
+            <Install>
+                <Standalone>
+                    . $RoleBinPath\CentralAdminSetup.ps1;
+                    $persistenceEntry = Get-ItemProperty -Path:"HKLM:\Software\Microsoft\ExchangeServer\v15\CentralAdmin\DBVersions" -ea:SilentlyContinue;
+                    if(-not(IsDatabaseCurrent([System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll"))) -or ![string]::IsNullOrEmpty($persistenceEntry.CreatePersistenceDB))
+                    {
+                        $trackingDB = GetCurrentTrackingDBName([System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll"));
+                        $persistenceDB = GetCurrentPersistenceDBName([System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll"));
+                        if($trackingDB -ne $persistenceDB)
+                        {
+                          $CentralAdminDatabaseServer = GetDBServerName -dbServerName $RoleDatacenterCentralAdminDatabaseServer;
+                          install-sqldatabase -ServerName $CentralAdminDatabaseServer -DatabaseName $trackingDB -DatabasePath $RoleDatacenterCentralAdminDatabasePath -TransactionLogPath $RoleDatacenterCentralAdminTransactionLogPath
+                        }
+                    }
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true"/>
+            <DisasterRecovery/>
+            <Uninstall/>
+        </ServerTaskInfo>
+
+        <!--Create workflow tracking database tables-->
+        <ServerTaskInfo Id="_ee6285d183ec44af9455eec86e1fe2b8" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install>
+                <Standalone>
+                    . $RoleBinPath\CentralAdminSetup.ps1;
+                    $persistenceEntry = Get-ItemProperty -Path:"HKLM:\Software\Microsoft\ExchangeServer\v15\CentralAdmin\DBVersions" -ea:SilentlyContinue;
+                    if(-not(IsDatabaseCurrent([System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll"))) -or ![string]::IsNullOrEmpty($persistenceEntry.CreatePersistenceDB))
+                    {
+                        $trackingDB = GetCurrentTrackingDBName([System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll"));
+                        $filePath = [System.IO.Path]::Combine("$env:windir\Microsoft.NET\Framework\v3.0\Windows Workflow Foundation\SQL\EN", "Tracking_Schema.sql");
+                        $CentralAdminDatabaseServer = GetDBServerName -dbServerName $RoleDatacenterCentralAdminDatabaseServer;
+                        Execute-SqlCommand -ServerName $CentralAdminDatabaseServer -DatabaseName $trackingDB -Command $filePath -ExecuteScript -Timeout $RoleDatacenterSqlOperationTimeout;
+                    }
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true"/>
+            <DisasterRecovery />
+            <Uninstall/>
+        </ServerTaskInfo>
+
+        <!--Create workflow tracking database logic-->
+        <ServerTaskInfo Id="_94725d0f142c461f9801df8846f1af58" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install>
+                <Standalone>
+                    . $RoleBinPath\CentralAdminSetup.ps1;
+                    $persistenceEntry = Get-ItemProperty -Path:"HKLM:\Software\Microsoft\ExchangeServer\v15\CentralAdmin\DBVersions" -ea:SilentlyContinue;
+                    if(-not(IsDatabaseCurrent([System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll"))) -or ![string]::IsNullOrEmpty($persistenceEntry.CreatePersistenceDB))
+                    {
+                        $trackingDB = GetCurrentTrackingDBName([System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll"));
+                        $filePath = [System.IO.Path]::Combine("$env:windir\Microsoft.NET\Framework\v3.0\Windows Workflow Foundation\SQL\EN", "Tracking_Logic.sql");
+                        $CentralAdminDatabaseServer = GetDBServerName -dbServerName $RoleDatacenterCentralAdminDatabaseServer;
+                        Execute-SqlCommand -ServerName $CentralAdminDatabaseServer -DatabaseName $trackingDB -Command $filePath -ExecuteScript -Timeout $RoleDatacenterSqlOperationTimeout;
+                    }
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true"/>
+            <DisasterRecovery />
+            <Uninstall/>
+        </ServerTaskInfo>
+
+        <!--Grant CONNECT to Central Admin Servers group on workflow tracking database-->
+        <ServerTaskInfo Id="_c0b731a435bb4a51b5167e6be9ebd041" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install>
+                <Standalone>
+                    . $RoleBinPath\CentralAdminSetup.ps1;
+                    $persistenceEntry = Get-ItemProperty -Path:"HKLM:\Software\Microsoft\ExchangeServer\v15\CentralAdmin\DBVersions" -ea:SilentlyContinue;
+                    if(-not(IsDatabaseCurrent([System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll"))) -or ![string]::IsNullOrEmpty($persistenceEntry.CreatePersistenceDB))
+                    {
+                        $trackingDB = GetCurrentTrackingDBName([System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll"));
+                        $CentralAdminDatabaseServer = GetDBServerName -dbServerName $RoleDatacenterCentralAdminDatabaseServer;
+                        $quotedUserName = """" + [System.DirectoryServices.ActiveDirectory.Domain]::GetCurrentDomain().Name.Split(".")[0] + "\" + "Central Admin Servers" + """";
+                        execute-sqlcommand -ServerName $CentralAdminDatabaseServer -DatabaseName $trackingDB -Command "GRANT CONNECT to $quotedUserName" -Timeout $RoleDatacenterSqlOperationTimeout;
+                    }
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true"/>
+            <DisasterRecovery />
+            <Uninstall/>
+        </ServerTaskInfo>
+
+        <!--Grant EXECUTE to Central Admin Servers group on workflow tracking database-->
+        <ServerTaskInfo Id="_b0ef099b8ce84e92b675a55e70f4219a" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install>
+                <Standalone>
+                    . $RoleBinPath\CentralAdminSetup.ps1;
+                    $persistenceEntry = Get-ItemProperty -Path:"HKLM:\Software\Microsoft\ExchangeServer\v15\CentralAdmin\DBVersions" -ea:SilentlyContinue;
+                    if(-not(IsDatabaseCurrent([System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll"))) -or ![string]::IsNullOrEmpty($persistenceEntry.CreatePersistenceDB))
+                    {
+                        $trackingDB = GetCurrentTrackingDBName([System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll"));
+                        $CentralAdminDatabaseServer = GetDBServerName -dbServerName $RoleDatacenterCentralAdminDatabaseServer;
+                        $quotedUserName = """" + [System.DirectoryServices.ActiveDirectory.Domain]::GetCurrentDomain().Name.Split(".")[0] + "\" + "Central Admin Servers" + """";
+                        execute-sqlcommand -ServerName $CentralAdminDatabaseServer -DatabaseName $trackingDB -Command "GRANT EXECUTE to $quotedUserName" -Timeout $RoleDatacenterSqlOperationTimeout;
+                    }
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true"/>
+            <DisasterRecovery />
+            <Uninstall/>
+        </ServerTaskInfo>
+
+        <!--Assign the db_datareader role for Workflow Tracking DB to the Central Admin Servers group -->
+        <ServerTaskInfo Id="_e0f3b5979a864348b2f4b69427115c0a" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install>
+                <Standalone>
+                    . $RoleBinPath\CentralAdminSetup.ps1;
+                    $persistenceEntry = Get-ItemProperty -Path:"HKLM:\Software\Microsoft\ExchangeServer\v15\CentralAdmin\DBVersions" -ea:SilentlyContinue;
+                    if(-not(IsDatabaseCurrent([System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll"))) -or ![string]::IsNullOrEmpty($persistenceEntry.CreatePersistenceDB))
+                    {
+                        $trackingDB = GetCurrentTrackingDBName([System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll"));
+                        $CentralAdminDatabaseServer = GetDBServerName -dbServerName $RoleDatacenterCentralAdminDatabaseServer;
+                        $userName = [System.DirectoryServices.ActiveDirectory.Domain]::GetCurrentDomain().Name.Split(".")[0] + "\" + "Central Admin Servers";
+                        execute-sqlcommand -ServerName $CentralAdminDatabaseServer -DatabaseName $trackingDB -Command "exec sp_addrolemember 'db_datareader', '$userName'" -Timeout $RoleDatacenterSqlOperationTimeout;
+                    }
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true"/>
+            <DisasterRecovery/>
+            <Uninstall/>
+        </ServerTaskInfo>
+
+        <!--Assign the db_datawriter role for Workflow Tracking DB to the Central Admin Servers group -->
+        <ServerTaskInfo Id="_2473d8e60f504e2bac0306ca31b3e0c0" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install>
+                <Standalone>
+                    . $RoleBinPath\CentralAdminSetup.ps1;
+                    $persistenceEntry = Get-ItemProperty -Path:"HKLM:\Software\Microsoft\ExchangeServer\v15\CentralAdmin\DBVersions" -ea:SilentlyContinue;
+                    if(-not(IsDatabaseCurrent([System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll"))) -or ![string]::IsNullOrEmpty($persistenceEntry.CreatePersistenceDB))
+                    {
+                        $trackingDB = GetCurrentTrackingDBName([System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll"));
+                        $CentralAdminDatabaseServer = GetDBServerName -dbServerName $RoleDatacenterCentralAdminDatabaseServer;
+                        $userName = [System.DirectoryServices.ActiveDirectory.Domain]::GetCurrentDomain().Name.Split(".")[0] + "\" + "Central Admin Servers";
+                        execute-sqlcommand -ServerName $CentralAdminDatabaseServer -DatabaseName $trackingDB -Command "exec sp_addrolemember 'db_datawriter', '$userName'" -Timeout $RoleDatacenterSqlOperationTimeout;
+                        Remove-ItemProperty -Path:"HKLM:\Software\Microsoft\ExchangeServer\v15\CentralAdmin\DBVersions" -Name:CreatePersistenceDB -ea:SilentlyContinue;                        
+                    }
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true"/>
+            <DisasterRecovery/>
+            <Uninstall/>
+        </ServerTaskInfo>
+
+        <!-- Setting default value for EnforcePowerShellStrictMode parameter in CA workflows -->
+        <ServerTaskInfo Id="_3b0f444098324c749b865d27278b75b8" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install>
+                <Standalone>
+                    if(-not ([String]::IsNullOrEmpty($RoleDatacenterEnforcePowerShellStrictMode) ) )
+                    {
+                        set-itemproperty -path HKLM:\Software\Microsoft\ExchangeServer\v15\CentralAdmin -Name "EnforcePowerShellStrictMode" -Value $RoleDatacenterEnforcePowerShellStrictMode;
+                    }
+                </Standalone>
+            </Install>
+          <BuildToBuildUpgrade UseInstallTasks="true"/>
+          <DisasterRecovery UseInstallTasks="true"/>
+          <Uninstall/>
+        </ServerTaskInfo>
+
+        <!--Creates Service object-->
+        <ServerTaskInfo Id="_d1fc5dc1177e4cf4aac75d4dc43c6464" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install>
+                <Standalone>
+                    . $RoleBinPath\CentralAdminSetup.ps1;
+                    Add-PSSnapin Microsoft.Exchange.Management.Powershell.CentralAdmin -ea SilentlyContinue;
+                    $centralAdminBinaryPath = [System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll")
+                    $CentralAdminDatabaseServer = GetDBServerName -dbServerName $RoleDatacenterCentralAdminDatabaseServer;
+                    [bool] $isPublisher = Get-IsPublisher -Server:$CentralAdminDatabaseServer;
+                    if ($isPublisher -and (-not(IsDatabaseCurrent($centralAdminBinaryPath))))
+                    {
+                        Create-ServiceObject
+                    }
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true"/>
+            <DisasterRecovery/>
+            <Uninstall/>
+        </ServerTaskInfo>
+
+        <!--Now we create a database version object to indicate what schema version we installed -->
+        <!--This step is necessary only when we create a new database. If there is already a database, we don't do anything. -->
+        <!--This has to happen before importing global, alert mapping and version data because those operations depend -->
+        <!--on database version. However, this has to happen after the registry entry to point to CA DB is set because -->
+        <!--Central Admin cmdlets are executed. -->
+        <!--Here, we cannot set ExchangeVersion on the database version object as it requires corresponding version -->
+        <!--object. We will do that once a version object is created. -->
+        <ServerTaskInfo Id="_A9966C4469504531BAA85528D0E8C4C0" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Central Admin">
+            <Install>
+                <Standalone>
+                    . $RoleBinPath\CentralAdminSetup.ps1;
+                    $centralAdminBinaryPath = [System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll");
+
+                    Add-PSSnapin Microsoft.Exchange.Management.Powershell.CentralAdmin -ea SilentlyContinue;
+                    if(-not(IsDatabaseCurrent($centralAdminBinaryPath)))
+                    {
+                        Write-ExchangeSetupLog -Info "Creating Database Version entries for each applicable schema file.";
+                        $installingDBMajorVersion = GetCurrentECADBMajorVersion -binaryPath $centralAdminBinaryPath -Unformat;
+                        $installingHighestDBMinorVersion = GetCurrentECADBMinorVersion -binaryPath $centralAdminBinaryPath -Unformat;
+                        $minorVersionArray = @($installingHighestDBMinorVersion);
+                        $previousMinorVersions = Get-SchemaUpdateScript -MajorVersion $installingDBMajorVersion -HighestMinorVersion $installingHighestDBMinorVersion -SqlScriptFolderPath $RoleBinPath;
+                        if ($previousMinorVersions -ne $null -and $previousMinorVersions.Count -ne $null)
+                        {
+                            $minorVersionArray += $previousMinorVersions;
+                        }
+
+                        foreach ($minorVersion in ($minorVersionArray | Sort-Object -Unique))
+                        {
+                            Write-ExchangeSetupLog -Info "Creating Database Version entry '$installingDBMajorVersion.$minorVersion'";
+                            Create-DatabaseVersionObject -MajorVersion $installingDBMajorVersion -MinorVersion $minorVersion;
+                        }
+                    }
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true"/>
+            <DisasterRecovery/>
+            <Uninstall/>
+        </ServerTaskInfo>
+
+        <!--Import global data-->
+        <ServerTaskInfo Id="_7631027d9be646bb8330a81859233ac6" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install>
+                <Standalone>
+                    . $RoleBinPath\CentralAdminSetup.ps1;
+                    Add-PSSnapin Microsoft.Exchange.Management.Powershell.CentralAdmin -ea SilentlyContinue;
+                    $CentralAdminDatabaseServer = GetDBServerName -dbServerName $RoleDatacenterCentralAdminDatabaseServer;
+                    [bool] $isPublisher = Get-IsPublisher -Server:$CentralAdminDatabaseServer;
+                    if ($isPublisher)
+                    {
+                        $importScriptPath = [System.IO.Path]::Combine($RoleInstallPath, "Scripts\Import-centraladmindata.ps1");
+                        if($RoleDatacenterFfoEnvironment -eq "True")
+                        {
+                            $importScriptPath = [System.IO.Path]::Combine($RoleInstallPath, "RemoteScripts\Import-FfoCentralAdminData.ps1");
+                        }
+                        
+                        $CentralAdminDatabaseServerHostName = Get-HostNameFromCName $CentralAdminDatabaseServer
+                        $databaseServer = Get-CentralAdminMachine $CentralAdminDatabaseServerHostName -ErrorAction SilentlyContinue
+                        $targetVersion = Get-CentralAdminVersion "$RoleTargetVersion*" -ErrorAction SilentlyContinue | Select -First 1
+
+                        # Check whether the publisher server has been already upgraded by examining Version
+                        if ($databaseServer -eq $null `
+                            -or $databaseServer.ActualVersion -notlike "$RoleTargetVersion*" `
+                            -or $targetVersion -eq $null `
+                            -or $targetVersion.VersionState -ne 'Provisioned')
+                        {
+                            $importFilePath = [System.IO.Path]::Combine($RoleInstallPath, 'Datacenter\Config\CentralAdminDataGlobalDefinitions.xml');
+                            Import-CentralAdminBuildConfiguration -InputFile $importFilePath -Confirm:$false
+                            Import-CentralAdminCapacityConfiguration -InputFile $importFilePath -Confirm:$false
+                            $currentECADB = GetCurrentECADBName([System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll"));
+                            . $importScriptPath -server $CentralAdminDatabaseServer -database $currentECADB -in $importFilePath -Force
+
+                          if($RoleDatacenterFfoEnvironment -eq "True")
+                          {
+                              # Not using Import-CentralAdminBuildConfiguration here because 'Import-FfoCentralAdminData.ps1' script is being used in this case.
+                              Add-PSSnapin Microsoft.Exchange.Management.Powershell.FfoCentralAdmin -ea SilentlyContinue;
+                              $importFilePath = [System.IO.Path]::Combine($RoleInstallPath, 'Datacenter\Config\FfoCentralAdminDataGlobalDefinitions.xml');
+                              . $importScriptPath -server $CentralAdminDatabaseServer -mirrorServer $RoleDatacenterCentralAdminMirrorDatabaseServer -database $currentECADB -in $importFilePath -force:$true
+                          }
+
+                           # Import the ANSID global defaults
+                           $CAEnterpriseXmlPath = [System.IO.Path]::Combine($RoleInstallPath, "Datacenter\Config\CAEnterpriseData.xml");
+                           if(Test-Path $CAEnterpriseXmlPath)
+                           {
+                               Write-ExchangeSetupLog -Info "Importing CAEnterpriseData.xml into CA DB."
+                               Import-CentralAdminBuildConfiguration -InputFile $CAEnterpriseXmlPath -Confirm:$false
+                               Import-CentralAdminCapacityConfiguration -InputFile $CAEnterpriseXmlPath -Confirm:$false
+                               . $importScriptPath -server $CentralAdminDatabaseServer -database $currentECADB -in $CAEnterpriseXmlPath -Force:$true -IgnoreTerminatingError:$true
+                           }
+                           else
+                           {
+                               Write-ExchangeSetupLog -Info "Failed to import $CAEnterpriseXmlPath into CA DB as it does not exist."
+                           }
+                        }
+                        else
+                        {
+                            Write-ExchangeSetupLog -Info -Message:"Local database server (publisher) $CentralAdminDatabaseServer has version $($targetVersion.Name) fully prepared. Skipping import.";
+                        }
+                    }
+                    else
+                    {
+                        Write-ExchangeSetupLog -Info -Message:"Local database server $CentralAdminDatabaseServer is not the publisher. Skipping import.";
+                    }
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true"/>
+            <DisasterRecovery/>
+            <Uninstall/>
+        </ServerTaskInfo>
+      
+        <!-- Copy unattend files to the primary SQL machine -->
+        <ServerTaskInfo Id="_b3847c0cfce945b18af4438f1e06ff87" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Central Admin">
+            <Install>
+                <Standalone>
+                    . $RoleBinPath\CentralAdminSetup.ps1;
+                    Add-PSSnapin Microsoft.Exchange.Management.Powershell.CentralAdmin -ea SilentlyContinue;
+                    $CentralAdminDatabaseServer = GetDBServerName -dbServerName $RoleDatacenterCentralAdminDatabaseServer;
+                    $CentralAdminDatabaseServerHostName = Get-HostNameFromCName $CentralAdminDatabaseServer
+                    $databaseServer = Get-CentralAdminMachine $CentralAdminDatabaseServerHostName -ErrorAction SilentlyContinue
+
+                    if ($databaseServer -eq $null -or $databaseServer.ActualVersion -notlike "$RoleTargetVersion*")
+                    {
+                        Copy-UnattendFiles -targetVersion $RoleTargetVersion -centralAdminDatabaseServer $CentralAdminDatabaseServer;
+                    }
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true"/>
+            <DisasterRecovery/>
+            <Uninstall/>
+        </ServerTaskInfo>
+
+        <!-- Copy unattend files to the secondary SQL machine if that is available -->
+        <ServerTaskInfo Id="_08FDC238A4344c32BDFF5FAB53FC8B55" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Central Admin">
+            <Install IsFatal="false">
+                <Standalone>
+                    . $RoleBinPath\CentralAdminSetup.ps1;
+                    Add-PSSnapin Microsoft.Exchange.Management.Powershell.CentralAdmin -ea SilentlyContinue;
+                    $CentralAdminDatabaseServer = GetDBServerName -dbServerName $RoleDatacenterCentralAdminDatabaseServer
+                    $CentralAdminDatabaseServerHostName = Get-HostNameFromCName $CentralAdminDatabaseServer
+                    $databaseServer = Get-CentralAdminMachine $CentralAdminDatabaseServerHostName -ErrorAction SilentlyContinue
+
+                    if ($databaseServer -eq $null -or $databaseServer.ActualVersion -notlike "$RoleTargetVersion*")
+                    {
+                        $secondarySQLmachines = Get-SecondarySQL -PrimarySQL $CentralAdminDatabaseServer
+
+                        foreach ($sqlMachine in $secondarySQLmachines)
+                        {
+                           if (![string]::IsNullOrEmpty($sqlMachine))
+                           {
+                               Write-ExchangeSetupLog -Info "Trying to see if unattend files should be copied to $sqlMachine."
+                               Copy-UnattendFiles -targetVersion $RoleTargetVersion -centralAdminDatabaseServer $sqlMachine;
+                           }
+                        }
+                    }
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true"/>
+            <DisasterRecovery/>
+            <Uninstall/>
+        </ServerTaskInfo>
+
+        <!-- Import version data. This has to happen later as we use version to decide if the import is required or not -->
+        <!-- We are also importing alert mappings here because they have to come in after version but we still need to know whether they need to be done or not -->
+        <ServerTaskInfo Id="_715ed7aa0f68409884f47f593e5ed354" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install>
+                <Standalone>
+                    . $RoleBinPath\CentralAdminSetup.ps1;
+                    Add-PSSnapin Microsoft.Exchange.Management.Powershell.CentralAdmin -ea SilentlyContinue;
+                    $CentralAdminDatabaseServer = GetDBServerName -dbServerName $RoleDatacenterCentralAdminDatabaseServer;
+                    [bool] $isPublisher = Get-IsPublisher -Server:$CentralAdminDatabaseServer;
+                    if ($isPublisher)
+                    {
+                        $CentralAdminDatabaseServerHostName = Get-HostNameFromCName $CentralAdminDatabaseServer
+                        $databaseServer = Get-CentralAdminMachine $CentralAdminDatabaseServerHostName -ErrorAction SilentlyContinue
+                        $targetVersion = Get-CentralAdminVersion "$RoleTargetVersion*" -ErrorAction SilentlyContinue | Select -First 1
+
+                        # Check whether the publisher server has already been upgraded by examining ActualVersion
+                        if ($databaseServer -eq $null `
+                            -or $databaseServer.ActualVersion -notlike "$RoleTargetVersion*" `
+                            -or $targetVersion -eq $null `
+                            -or $targetVersion.VersionState -ne 'Provisioned')
+                        {
+                            $importFilePath = [System.IO.Path]::Combine($RoleInstallPath, 'Datacenter\Config\CentralAdminVersionDefinitions.xml');
+                            # CentralAdminVersionDefinitions.xml contain only Versions and Parameters and can be fully handled by Import-CentralAdminBuildConfiguration cmdlet
+                            Import-CentralAdminBuildConfiguration -InputFile $importFilePath -Confirm:$false
+
+                            if($RoleDatacenterFfoEnvironment -eq "True")
+                            {
+                                # For some reason FFO does not fall back to Import-FfoCentralAdminData.ps1 script, therefore we need to use Import-CentralAdminBuildConfiguration cmdlet
+                                # Also, FFO version config file contain same types of CA objects which are now covered by Import-CentralAdminBuildConfiguration cmdlet
+                                $importFilePath = [System.IO.Path]::Combine($RoleInstallPath, 'Datacenter\Config\FfoCentralAdminVersionDefinitions.xml');
+                                Import-CentralAdminBuildConfiguration -InputFile $importFilePath -Confirm:$false
+                            }
+
+                            $versions = @(Get-CentralAdminVersion "$RoleTargetVersion*" -ErrorAction SilentlyContinue)
+                            foreach ($version in $versions)
+                            {
+                                # Now we can declare the version is fully prepared and provisioned
+                                Set-CentralAdminVersion $version.Name -VersionState Provisioned
+                            }
+                        }
+                        else
+                        {
+                            Write-ExchangeSetupLog -Info "Local database server (publisher) $CentralAdminDatabaseServer has version $($targetVersion.Name) fully prepared. Skipping import.";
+                        }
+                    }
+                    else
+                    {
+                        Write-ExchangeSetupLog -Info "Local database server $CentralAdminDatabaseServer is not the publisher. Skipping import.";
+                    }
+                 </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true"/>
+            <DisasterRecovery/>
+            <Uninstall/>
+        </ServerTaskInfo>
+
+        <!-- Import approval policies for Service Change Management. -->
+        <ServerTaskInfo Id="_e7e8f46f164b4047bee91a5b038761ca" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Central Admin">
+            <Install>
+                <Standalone>
+                    . $RoleBinPath\CentralAdminSetup.ps1;
+                    Add-PSSnapin Microsoft.Exchange.Management.Powershell.CentralAdmin -ea SilentlyContinue;
+
+                    $CentralAdminDatabaseServer = GetDBServerName -dbServerName $RoleDatacenterCentralAdminDatabaseServer
+                    [bool] $isPublisher = Get-IsPublisher -Server:$CentralAdminDatabaseServer;
+                    if ($isPublisher)
+                    {
+                        $LockModWorkloads = @( "", "Lync", "Ose", "SPO" ) # The blank value is for EXO
+                        foreach ($workload in $LockModWorkloads)
+                        {
+                            $importFilePath = [System.IO.Path]::Combine($RoleInstallPath, 'Datacenter\Config\{0}ServiceChangeManagementConfiguration.xml' -f $workload);
+                            Write-ExchangeSetupLog -Info "Importing SCM approval policies from XML file: $importFilePath";
+                            Import-ApprovalPolicies -ConfigFilePath $importFilePath
+                        }
+
+                        if($RoleDatacenterFfoEnvironment -eq "True")
+                        {
+                            $importFilePath = [System.IO.Path]::Combine($RoleInstallPath, 'Datacenter\Config\FfoServiceChangeManagementConfiguration.xml');
+                            Write-ExchangeSetupLog -Info "Importing SCM approval policies from XML file: $importFilePath";
+                            Import-ApprovalPolicies -ConfigFilePath $importFilePath
+                        }
+                    }
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true" />
+            <DisasterRecovery />
+            <Uninstall/>
+        </ServerTaskInfo>
+
+        <!-- Import approval rules for Service Change Management. -->
+        <ServerTaskInfo Id="_ca56f0d0f20342b28662503dae51b787" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Central Admin">
+            <Install>
+                <Standalone>
+                    . $RoleBinPath\CentralAdminSetup.ps1;
+                    Add-PSSnapin Microsoft.Exchange.Management.Powershell.CentralAdmin -ea SilentlyContinue;
+                    $centralAdminBinaryPath = [System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll");
+
+                    $CentralAdminDatabaseServer = GetDBServerName -dbServerName $RoleDatacenterCentralAdminDatabaseServer;
+                    $ruleEngineVersion = GetCurrentApprovalRuleEngineVersion -binaryPath $centralAdminBinaryPath;
+                    [bool] $isPublisher = Get-IsPublisher -Server:$CentralAdminDatabaseServer;
+                    if ($isPublisher)
+                    {
+                        $LockModWorkloads = @( "", "Lync", "Ose", "SPO" ) # The blank value is for EXO
+                        foreach ($workload in $LockModWorkloads)
+                        {
+                            $importFilePath = [System.IO.Path]::Combine($RoleInstallPath, 'Datacenter\Config\{0}ServiceChangeManagementConfiguration.xml' -f $workload);
+                            Write-ExchangeSetupLog -Info "Importing SCM approval rules from XML file: $importFilePath";
+                            Import-ApprovalRules -ConfigFilePath $importFilePath -RuleEngineVersion $ruleEngineVersion;
+                            Write-ExchangeSetupLog -Info "Successfully imported SCM approval rules.";
+                        }
+
+                        if($RoleDatacenterFfoEnvironment -eq "True")
+                        {
+                            $importFilePath = [System.IO.Path]::Combine($RoleInstallPath, 'Datacenter\Config\FfoServiceChangeManagementConfiguration.xml');
+                            Write-ExchangeSetupLog -Info "Importing SCM approval rules from XML file: $importFilePath";
+                            Import-ApprovalRules -ConfigFilePath $importFilePath -RuleEngineVersion $ruleEngineVersion;
+                            Write-ExchangeSetupLog -Info "Successfully imported SCM approval rules.";
+                        }
+                    }
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true" />
+            <DisasterRecovery />
+            <Uninstall/>
+        </ServerTaskInfo>
+        
+        <!-- Set LockBox alias that is used to report SCM issues. -->
+        <ServerTaskInfo Id="_9EC7A2454B644CD4AFF36AEBD1D87F1B" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Central Admin">
+            <Install>
+                <Standalone>
+                    if($RoleDatacenterLockBoxAlias)
+                    {
+                      Set-ItemProperty -path HKLM:\Software\Microsoft\ExchangeServer\v15\CentralAdmin -Name "LockBoxAlias" -Value $RoleDatacenterLockBoxAlias;
+                    }
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true" />
+            <DisasterRecovery />
+            <Uninstall/>
+        </ServerTaskInfo>
+        
+        <!-- Import Roles for LockBox Role Configuration. -->
+        <ServerTaskInfo Id="_ee0f911012f0444db1b10df3cb0e4174" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Central Admin">
+            <Install>
+                <Standalone>
+                    . $RoleBinPath\CentralAdminSetup.ps1;
+                    Add-PSSnapin Microsoft.Exchange.Management.Powershell.CentralAdmin -ea SilentlyContinue;
+                    $centralAdminBinaryPath = [System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll");
+                    $importFilePath = [System.IO.Path]::Combine($RoleInstallPath, 'Datacenter\Config\LockBoxRoleConfiguration.xml');
+                    $CentralAdminDatabaseServer = GetDBServerName -dbServerName $RoleDatacenterCentralAdminDatabaseServer;
+                    [bool] $isPublisher = Get-IsPublisher -Server:$CentralAdminDatabaseServer;
+                    if ($isPublisher)
+                    {
+                        Write-ExchangeSetupLog -Info "Importing LockBox Roles from XML file: $importFilePath";
+                        Import-LockBoxRoles -ConfigFilePath $importFilePath;
+                        Write-ExchangeSetupLog -Info "Successfully imported LockBox Roles.";
+                        
+                        if($RoleDatacenterFfoEnvironment -eq "True")
+                        {
+                          $importFilePath = [System.IO.Path]::Combine($RoleInstallPath, 'Datacenter\Config\FfoLockBoxRoleConfiguration.xml');
+                          Write-ExchangeSetupLog -Info "Importing LockBox Roles from XML file: $importFilePath";
+                          Import-LockBoxRoles -ConfigFilePath $importFilePath;
+                          Write-ExchangeSetupLog -Info "Successfully imported LockBox Roles.";
+                        }
+                    }
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true" />
+            <DisasterRecovery />
+            <Uninstall/>
+        </ServerTaskInfo>
+
+        <!-- Imports recurrent operations into CA DB. -->
+        <!-- We execute this task in unnamed local scope because Import-CentralAdminRecurrentOperations.ps1 contains -->
+        <!-- Set-StrictMode statement that can break the following Setup tasks. -->        
+        <ServerTaskInfo Id="_e7052a4b14a841cd97a54f470adb194b" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install>
+                <Standalone>
+                  &amp; {
+                    . $RoleBinPath\CentralAdminSetup.ps1;
+                    Add-PSSnapin Microsoft.Exchange.Management.Powershell.CentralAdmin -ea SilentlyContinue;
+                    $importScriptPath = [System.IO.Path]::Combine($RoleInstallPath, "Scripts\Import-CentralAdminRecurrentOperations.ps1");
+                    $currentECADB = GetCurrentECADBName([System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll"));
+                    $CentralAdminDatabaseServer = GetDBServerName -dbServerName $RoleDatacenterCentralAdminDatabaseServer;
+                    if($RoleDatacenterFfoEnvironment -eq "True")
+                    {
+                        $recurrentOperationsXml = 'Datacenter\Config\FfoCentralAdminRecurrentOperations.xml';
+                    }
+                    else
+                    {
+                        $recurrentOperationsXml = 'Datacenter\Config\CentralAdminRecurrentOperations.xml';
+                    }
+                    $inputFilePath = [System.IO.Path]::Combine($RoleInstallPath, $recurrentOperationsXml);
+                    . $importScriptPath -InputFile $inputFilePath -DatabaseServer $CentralAdminDatabaseServer -DatabaseName $currentECADB;
+                  }
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true"/>
+            <DisasterRecovery UseInstallTasks="true"/>
+            <Uninstall/>
+        </ServerTaskInfo>
+
+        <!-- Now we can set the ExchangeVersion property of DB versions as version objects have been created -->
+        <!-- We assume that the latest OS version is used. This does not really matter even if it is not the case as it is Exchange versions that matter. -->
+        <ServerTaskInfo Id="_BD131C25D41B490dB2BF0728EEB2B4ED" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Central Admin">
+            <Install>
+                <Standalone>
+                  Add-PSSnapin Microsoft.Exchange.Management.Powershell.CentralAdmin -ea SilentlyContinue;
+                  $version = Get-CentralAdminVersion "$RoleTargetVersion*" | Sort-Object -Property Name -Descending  | Select-Object -First 1;
+                  Get-CentralAdminDatabaseVersion | where {$_.ExchangeVersion -eq $null} | Set-CentralAdminDatabaseVersion -ExchangeVersion $version.name;
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true"/>
+            <DisasterRecovery/>
+            <Uninstall/>
+        </ServerTaskInfo>
+
+        <!--Set the registry for the new version. This should be the last step of the installation in order to make build to build upgrade resume cases work-->
+        <ServerTaskInfo Id="_e02a5980dd89444b8b5c22e3f67e951c" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install>
+                <Standalone>
+                    . $RoleBinPath\CentralAdminSetup.ps1;
+                    if(-not(IsDatabaseCurrent([System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll"))))
+                    {
+                        Write-ExchangeSetupLog -Info "Finisihed configuring database '$currentECADB'. Updating the local registry path accordingly.";
+                        $currentVersion = GetCurrentECADBMajorVersion([System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll"));
+                        $currentECADB = GetCurrentECADBName([System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll"));
+                        new-item HKLM:\Software\Microsoft\ExchangeServer\v15\CentralAdmin\DBVersions\$currentVersion -ea SilentlyContinue;
+                        set-itemproperty -path HKLM:\Software\Microsoft\ExchangeServer\v15\CentralAdmin\DBVersions\$currentVersion -Name "ExchangeCentralAdmin" -Value $currentECADB;
+                    }
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true"/>
+            <DisasterRecovery/>
+            <Uninstall/>
+        </ServerTaskInfo>
+
+        <!--Set the ActualVersion of the publisher database server as we finished configuring/updating it-->
+        <ServerTaskInfo Id="_23A9E5DEE6B54516828DAB27F4C348BE" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Central Admin">
+            <Install>
+                <Standalone>
+                    . $RoleBinPath\CentralAdminSetup.ps1;
+                    Add-PSSnapIn Microsoft.Exchange.Management.Powershell.CentralAdmin -ErrorAction:SilentlyContinue;
+                    $currentPublisherServerHostName = Get-CentralAdminPublisherServer -ResolvePrimaryHostName;
+                    if (![String]::IsNullOrEmpty($currentPublisherServerHostName))
+                    {
+                        $databaseServer = Get-CentralAdminMachine $currentPublisherServerHostName -ErrorAction SilentlyContinue
+                        # Check whether ActualVersion of publisher server needs to be updated
+                        if ($databaseServer -ne $null -and $databaseServer.ActualVersion -notlike "$RoleTargetVersion*")
+                        {
+                            $version = Get-CentralAdminVersion "$RoleTargetVersion*" | Sort-Object -Property Name -Descending  | Select-Object -First 1
+                            Set-SqlMachineVersions -Version $version.Name -PrimarySqlCName $currentPublisherServerHostName
+                        }
+                    }
+                    else
+                    {
+                        Write-ExchangeSetupLog -Info -Message:"Setting ActualVersion is skipped because publisher hostname could not be resolved.";
+                    }
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true"/>
+            <DisasterRecovery/>
+            <Uninstall/>
+        </ServerTaskInfo>
+
+        <!--Set the ActualVersion of the local database server as we finished configuring/updating it too-->
+        <!--If the local database server is the publisher, it has been already updated with the previous step, so this ends up with no ops.-->
+        <ServerTaskInfo Id="_A74D24655D044e8aB9AE6ED69054AD29" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Central Admin">
+            <Install>
+                <Standalone>
+                    . $RoleBinPath\CentralAdminSetup.ps1;
+                    Add-PSSnapin Microsoft.Exchange.Management.Powershell.CentralAdmin -ea SilentlyContinue;
+                    $CentralAdminDatabaseServer = GetDBServerName -dbServerName $RoleDatacenterCentralAdminDatabaseServer
+                    $CentralAdminDatabaseServerHostName = Get-HostNameFromCName $CentralAdminDatabaseServer
+                    if (![String]::IsNullOrEmpty($CentralAdminDatabaseServerHostName))
+                    {
+                        $databaseServer = Get-CentralAdminMachine $CentralAdminDatabaseServerHostName -ErrorAction SilentlyContinue
+                        # Check whether ActualVersion of local database server needs to be updated
+                        if ($databaseServer -ne $null -and $databaseServer.ActualVersion -notlike "$RoleTargetVersion*")
+                        {
+                            $version = Get-CentralAdminVersion "$RoleTargetVersion*" | Sort-Object -Property Name -Descending  | Select-Object -First 1
+                            Set-SqlMachineVersions -Version $version.Name -PrimarySqlCName $CentralAdminDatabaseServer
+                        }
+                    }
+                    else
+                    {
+                        Write-ExchangeSetupLog -Info -Message:"DNS name '$($CentralAdminDatabaseServer)' of local database server could not be resolved. Setting ActualVersion is skipped.";
+                    }
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true"/>
+            <DisasterRecovery/>
+            <Uninstall/>
+        </ServerTaskInfo>
+
+	<!-- Now we finished configuring the Central Admin databases -->
+        <!-- Moving on to the Central Admin service machine -->
+
+	<!--Install dns server tools on central admin servers-->
+	<ServerTaskInfo Id="_42f095b7cb2b4eb2bcf40131a81caaa7" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+	  <Install>
+		<Standalone>
+		  Add-WindowsFeature rsat-dns-server
+		</Standalone>
+	  </Install>
+	  <BuildToBuildUpgrade UseInstallTasks="true"/>
+	  <DisasterRecovery UseInstallTasks="true"/>
+	  <Uninstall>
+		<Standalone>
+		  Remove-WindowsFeature rsat-dns-server
+		</Standalone>
+	  </Uninstall>
+	</ServerTaskInfo>
+
+  <!-- Install the Central Admin service -->
+  <ServerTaskInfo Id="_171499e782004c3dbda5266ae4cced1e" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+    <Install>
+    <Standalone>
+        if (!(get-service MSExchangeCentralAdmin* | where {$_.name -eq "MSExchangeCentralAdmin"}))
+        {
+            install-centraladminservice;
+        }
+    </Standalone>
+    </Install>
+    <BuildToBuildUpgrade>
+    <Standalone>
+        if ((get-service MSExchangeCentralAdmin* | where {$_.name -eq "MSExchangeCentralAdmin"}))
+        {
+            uninstall-centraladminservice;
+        }
+        
+        install-centraladminservice;
+    </Standalone>
+    </BuildToBuildUpgrade>
+    <DisasterRecovery UseInstallTasks="true" />
+    <Uninstall>
+    <Standalone>uninstall-centraladminservice</Standalone>
+    </Uninstall>
+  </ServerTaskInfo>
+     
+  <!-- Install the Recovery Action Arbiter Service in FFO environment -->
+  <ServerTaskInfo Id="_0a08bb02e40c4dbc842c7232d0511227" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+    <Install>
+    <Standalone>
+      if($RoleDatacenterFfoEnvironment -eq "True")
+      {
+          if ((get-service FfoRecoveryActionArbiter* | where {$_.name -eq "FfoRecoveryActionArbiter"}))
+          {
+             Uninstall-RecoveryActionArbiterService
+          }
+          
+          $binFile = Join-Path $RoleInstallPath "bin\Microsoft.Forefront.RecoveryActionArbiter.RaaService.exe.config"
+          $isLoadBalancerDisabled = $RoleDatacenterEnableLoadBalancerConfiguration -ne $null -and [bool]$RoleDatacenterEnableLoadBalancerConfiguration -eq $false
+          
+          # Use mock snat pool manager everywhere for now until we are ready to turn on worldwide (PS:1407812)
+          $newValue = "Microsoft.Forefront.RecoveryActionArbiter.RaaService.MockSnatPoolManager, Microsoft.Forefront.RecoveryActionArbiter.RaaService, Version=15.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35"
+          Write-ExchangeSetupLog -Info "Changing RaaService SnatPoolManager to MockSnatPoolManager"
+          Set-AppConfigValue -ConfigFileFullPath:$binFile -Element:configuration/appSettings -AppSettingKey:'SnatPoolManager' -NewValue:$newValue
+          
+          # In TDS environment, as there is no F5 configured, use mock availability, network validation provider and network optics provider          
+          if($isLoadBalancerDisabled)
+          {
+            $newValue = "Microsoft.Forefront.RecoveryActionArbiter.RaaService.MockAvailabilityProvider, Microsoft.Forefront.RecoveryActionArbiter.RaaService, Version=15.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35"
+            Write-ExchangeSetupLog -Info "Changing RaaService AvailabilityProvider to MockAvailabilityProvider"
+            Set-AppConfigValue -ConfigFileFullPath:$binFile -Element:configuration/appSettings -AppSettingKey:'AvailabilityProvider' -NewValue:$newValue           
+           
+            $newValue = "Microsoft.Forefront.RecoveryActionArbiter.RaaService.MockNetworkValidationProvider, Microsoft.Forefront.RecoveryActionArbiter.RaaService, Version=15.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35"
+            Write-ExchangeSetupLog -Info "Changing RaaService NetworkValidationProvider to MockNetworkValidationProvider"
+            Set-AppConfigValue -ConfigFileFullPath:$binFile -Element:configuration/appSettings -AppSettingKey:'ValidationProvider' -NewValue:$newValue
+
+            $newValue = "Microsoft.Forefront.RecoveryActionArbiter.RaaService.MockNetworkOpticsProvider, Microsoft.Forefront.RecoveryActionArbiter.RaaService, Version=15.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35"
+            Write-ExchangeSetupLog -Info "Changing RaaService NetworkOpticsProvider to MockNetworkOpticsProvider"
+            Set-AppConfigValue -ConfigFileFullPath:$binFile -Element:configuration/appSettings -AppSettingKey:'OpticsProvider' -NewValue:$newValue
+          }   
+
+          Install-RecoveryActionArbiterService        
+      }
+    </Standalone>
+    </Install>
+    <BuildToBuildUpgrade UseInstallTasks="true" />   
+    <DisasterRecovery UseInstallTasks="true" />
+    <Uninstall>
+    <Standalone>
+        if($RoleDatacenterFfoEnvironment -eq "True")
+        {
+          if ((get-service FfoRecoveryActionArbiter* | where {$_.name -eq "FfoRecoveryActionArbiter"}))
+          {
+              Uninstall-RecoveryActionArbiterService
+          }
+        }
+    </Standalone>
+    </Uninstall>
+  </ServerTaskInfo>
+
+	<ServerTaskInfo Id="_02d9a14b92fb44c3addbc1d17db3878b" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+	  <Install>
+		<Standalone>
+		  new-item HKLM:\Software\Microsoft\ExchangeServer\v15\CentralAdmin -ea SilentlyContinue;
+		</Standalone>
+	  </Install>
+	  <BuildToBuildUpgrade UseInstallTasks="true"/>
+	  <DisasterRecovery UseInstallTasks="true"/>
+	  <Uninstall/>
+	</ServerTaskInfo>
+
+	<!-- Setting the default value for EnableOperationValidation in registry -->
+	<ServerTaskInfo Id="_2715D70E1FD54BEC938F96432C242FCA" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Central Admin">
+	  <Install>
+		<Standalone>
+		  if(-not ([String]::IsNullOrEmpty($RoleDatacenterEnableOperationValidation)))
+		  {
+			Set-ItemProperty -Path HKLM:\Software\Microsoft\ExchangeServer\v15\CentralAdmin -Name "EnableOperationValidation" -Value $RoleDatacenterEnableOperationValidation
+		  }
+		</Standalone>
+	  </Install>
+	  <BuildToBuildUpgrade UseInstallTasks="true"/>
+	  <DisasterRecovery UseInstallTasks="true"/>
+	  <Uninstall/>
+	</ServerTaskInfo>
+
+	<!-- Setting the default value for OverrideSchedulerThrottling in registry -->
+	<ServerTaskInfo Id="_0644929CFC3A41889E1A2DF607F40214" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Central Admin">
+	  <Install>
+		<Standalone>
+		  if(-not ([String]::IsNullOrEmpty($RoleDatacenterOverrideSchedulerThrottling)))
+		  {
+			set-itemproperty -path HKLM:\Software\Microsoft\ExchangeServer\v15\CentralAdmin -Name "OverrideSchedulerThrottling" -Value $RoleDatacenterOverrideSchedulerThrottling
+		  }
+		</Standalone>
+	  </Install>
+	  <BuildToBuildUpgrade UseInstallTasks="true"/>
+	  <DisasterRecovery UseInstallTasks="true"/>
+	  <Uninstall/>
+	</ServerTaskInfo>
+
+	<!-- Setting the default value for MaxPendingWorkflows in registry -->
+	<ServerTaskInfo Id="_DAD34A0D4C7E486f9C08413A45733CD6" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Central Admin">
+	  <Install>
+		<Standalone>
+		  if(-not ([String]::IsNullOrEmpty($RoleDatacenterMaxPendingWorkflows)))
+		  {
+			New-ItemProperty -Path HKLM:\Software\Microsoft\ExchangeServer\v15\CentralAdmin -Name "MaxPendingWorkflows" -Value $RoleDatacenterMaxPendingWorkflows -PropertyType Dword -ErrorAction SilentlyContinue;
+			Set-ItemProperty -Path HKLM:\Software\Microsoft\ExchangeServer\v15\CentralAdmin -Name "MaxPendingWorkflows" -Value $RoleDatacenterMaxPendingWorkflows;
+		  }
+		</Standalone>
+	  </Install>
+	  <BuildToBuildUpgrade UseInstallTasks="true"/>
+	  <DisasterRecovery UseInstallTasks="true"/>
+	  <Uninstall/>
+	</ServerTaskInfo>
+
+	<!-- Setting the default value for UseADTopologyService in registry -->
+	<ServerTaskInfo Id="_889D91C3C6AB4C6DB85D559DED25CF41" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Central Admin">
+	  <Install>
+		<Standalone>
+		  if(-not ([String]::IsNullOrEmpty($RoleDatacenterUseADTopologyService)))
+		  {
+			Set-ItemProperty -Path HKLM:\Software\Microsoft\ExchangeServer\v15\CentralAdmin -Name "UseADTopologyService" -Value $RoleDatacenterUseADTopologyService;
+		  }
+		</Standalone>
+	  </Install>
+	  <BuildToBuildUpgrade UseInstallTasks="true"/>
+	  <DisasterRecovery UseInstallTasks="true"/>
+	  <Uninstall/>
+	</ServerTaskInfo>
+
+	<!-- Setting the default value for EnableCustomPSModule in registry -->
+	<ServerTaskInfo Id="_6D19ECC5C3C347BDA3A4A94E5A823A9A" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Central Admin">
+	  <Install>
+		<Standalone>
+		  if(-not ([String]::IsNullOrEmpty($RoleDatacenterEnableCustomPSModule)))
+		  {
+			Set-ItemProperty -Path HKLM:\Software\Microsoft\ExchangeServer\v15\CentralAdmin -Name "EnableCustomPSModule" -Value $RoleDatacenterEnableCustomPSModule;
+		  }
+		</Standalone>
+	  </Install>
+	  <BuildToBuildUpgrade UseInstallTasks="true"/>
+	  <DisasterRecovery UseInstallTasks="true"/>
+	  <Uninstall/>
+	</ServerTaskInfo>
+
+	<!--Add firewall rule for sql-->
+	<ServerTaskInfo Id="_6f56ff955a0748c5b10b24922b8b10dd" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+	  <Install>
+		<Standalone>
+		  netsh advfirewall firewall add rule name="Sql-Server" dir=in action=allow protocol=TCP localport=1433 profile=any
+		</Standalone>
+	  </Install>
+	  <BuildToBuildUpgrade/>
+	  <DisasterRecovery />
+	  <Uninstall>
+		<Standalone>
+		  netsh advfirewall firewall delete rule name="Sql-Server"
+		</Standalone>
+	  </Uninstall>
+	</ServerTaskInfo>
+
+	<!--Configure firewall for msdtc service-->
+	<ServerTaskInfo Id="_22a4484d7932450087ab83f3ead40482" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+	  <Install>
+		<Standalone>
+		  netsh advfirewall firewall set rule group="@FirewallAPI.dll,-33502" new  enable=yes
+		</Standalone>
+	  </Install>
+	  <BuildToBuildUpgrade/>
+	  <DisasterRecovery UseInstallTasks="true"/>
+	  <Uninstall>
+		<Standalone>
+		  netsh advfirewall firewall set rule group="@FirewallAPI.dll,-33502" new  enable=no
+		</Standalone>
+	  </Uninstall>
+	</ServerTaskInfo>
+
+	<!--Configure MSDTC-->
+	<ServerTaskInfo Id="_79069ec2c3cf4d78bdb2b0b83dd507ef" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+	  <Install>
+		<Standalone>
+		  set-itemproperty -path HKLM:Software\Microsoft\MSDTC\Security -Name NetworkDtcAccess -Value 1
+		</Standalone>
+	  </Install>
+	  <BuildToBuildUpgrade/>
+	  <DisasterRecovery UseInstallTasks="true"/>
+	  <Uninstall>
+		<Standalone>
+		  set-itemproperty -path HKLM:Software\Microsoft\MSDTC\Security -Name NetworkDtcAccess -Value 0
+		</Standalone>
+	  </Uninstall>
+	</ServerTaskInfo>
+
+	<ServerTaskInfo Id="_a0a2816815f94fd4baf098da0a3d63af" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+	  <Install>
+		<Standalone>
+		  set-itemproperty -path HKLM:Software\Microsoft\MSDTC\Security -Name NetworkDtcAccessClients -Value 1
+		</Standalone>
+	  </Install>
+	  <BuildToBuildUpgrade/>
+	  <DisasterRecovery UseInstallTasks="true"/>
+	  <Uninstall>
+		<Standalone>
+		  set-itemproperty -path HKLM:Software\Microsoft\MSDTC\Security -Name NetworkDtcAccessClients -Value 0
+		</Standalone>
+	  </Uninstall>
+	</ServerTaskInfo>
+
+	<ServerTaskInfo Id="_87a295041a974d97b0ca2969a6782e36" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+	  <Install>
+		<Standalone>
+		  set-itemproperty -path HKLM:Software\Microsoft\MSDTC\Security -Name NetworkDtcAccessInbound -Value 1
+		</Standalone>
+	  </Install>
+	  <BuildToBuildUpgrade/>
+	  <DisasterRecovery UseInstallTasks="true"/>
+	  <Uninstall>
+		<Standalone>
+		  set-itemproperty -path HKLM:Software\Microsoft\MSDTC\Security -Name NetworkDtcAccessInbound -Value 0
+		</Standalone>
+	  </Uninstall>
+	</ServerTaskInfo>
+
+	<ServerTaskInfo Id="_d5a17b7f14614cd3b557feda5b22cb7a" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+	  <Install>
+		<Standalone>
+		  set-itemproperty -path HKLM:Software\Microsoft\MSDTC\Security -Name NetworkDtcAccessOutbound -Value 1
+		</Standalone>
+	  </Install>
+	  <BuildToBuildUpgrade/>
+	  <DisasterRecovery UseInstallTasks="true"/>
+	  <Uninstall>
+		<Standalone>
+		  set-itemproperty -path HKLM:Software\Microsoft\MSDTC\Security -Name NetworkDtcAccessOutbound -Value 0
+		</Standalone>
+	  </Uninstall>
+	</ServerTaskInfo>
+
+	<ServerTaskInfo Id="_ae0f4e0d32dc40b48c628e5cdf15a251" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+	  <Install>
+		<Standalone>
+		  set-itemproperty -path HKLM:Software\Microsoft\MSDTC\Security -Name NetworkDtcAccessTransactions -Value 1
+		</Standalone>
+	  </Install>
+	  <BuildToBuildUpgrade/>
+	  <DisasterRecovery UseInstallTasks="true"/>
+	  <Uninstall>
+		<Standalone>
+		  set-itemproperty -path HKLM:Software\Microsoft\MSDTC\Security -Name NetworkDtcAccessTransactions -Value 0
+		</Standalone>
+	  </Uninstall>
+	</ServerTaskInfo>
+
+	<ServerTaskInfo Id="_0c271db14fd14c7bb4d695a138d22ead" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+	  <Install>
+		<Standalone>
+		  stop-service MSDTC
+		</Standalone>
+	  </Install>
+	  <BuildToBuildUpgrade/>
+	  <DisasterRecovery UseInstallTasks="true"/>
+	  <Uninstall>
+		<Standalone>
+		  stop-service MSDTC
+		</Standalone>
+	  </Uninstall>
+	</ServerTaskInfo>
+
+	<ServerTaskInfo Id="_0f230ba8ffaa4ab9936f7ccf88def71b" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+	  <Install>
+		<Standalone>
+		  start-service MSDTC
+		</Standalone>
+	  </Install>
+	  <BuildToBuildUpgrade/>
+	  <DisasterRecovery UseInstallTasks="true"/>
+	  <Uninstall>
+		<Standalone>
+		  start-service MSDTC
+		</Standalone>
+	  </Uninstall>
+	</ServerTaskInfo>
+	
+	<!--Install WDS. We are not installing WDS on topobuilder -->
+	<ServerTaskInfo Id="_4c1d41ad47724d9bbc4c890fc38e03ae" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+	  <Install>
+		<Standalone>
+		  if ($RoleDatacenterEnableWDS -eq "True")
+		  {
+		  	$wdsService = Get-Service | where {$_.Name -eq "WDSServer"};
+		  	if ($wdsService -eq $null)
+		  	{
+				Write-ExchangeSetupLog -Info "Enabling Windows Deployment Services";
+				Start-SetupProcess -Name "powershell.exe" -Args "Add-WindowsFeature WDS";
+		  	}
+		  }
+		</Standalone>
+	  </Install>
+	  <BuildToBuildUpgrade UseInstallTasks="true" />
+	  <DisasterRecovery UseInstallTasks="true" />
+	  <Uninstall/>
+	</ServerTaskInfo>
+
+	<!--Configure WDS PXE provider -->
+	<ServerTaskInfo Id="_ae9a02301f20493683e00cb7c5bca17e" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+	  <Install>
+		<Standalone>
+		  if ($RoleDatacenterEnableWDS -eq "True")
+		  {
+                        if ([string]::IsNullOrEmpty($RoleDatacenterBootstrapPassword))
+                        {
+                          Write-ExchangeSetupLog -Info "Need to get the BootstrapPassword value from registry. Path: HKLM:\SOFTWARE\Microsoft\ExchangeLabs\BootstrapPassword";
+                          $exchangeLabs = Get-ItemProperty HKLM:\SOFTWARE\Microsoft\ExchangeLabs -ea SilentlyContinue;
+                          if ($exchangeLabs)
+                          {
+                             $RoleDatacenterBootstrapPassword = $exchangeLabs.BootstrapPassword;
+                          }
+                        }
+
+                        if ([string]::IsNullOrEmpty($RoleDatacenterBootstrap2Password))
+                        {
+                          Write-ExchangeSetupLog -Info "Need to get the Bootstrap2Password value from registry. Path: HKLM:\SOFTWARE\Microsoft\ExchangeLabs\Bootstrap2Password";
+                          $exchangeLabs = Get-ItemProperty HKLM:\SOFTWARE\Microsoft\ExchangeLabs -ea SilentlyContinue;
+                          if ($exchangeLabs)
+                          {
+                             $RoleDatacenterBootstrap2Password = $exchangeLabs.Bootstrap2Password;
+                          }
+                        }
+
+		  . $RoleBinPath\CentralAdminSetup.ps1;
+		  $exchangeDatabase = GetCurrentECADBName([System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.Management.Powershell.CentralAdmin.dll"));
+                  if($RoleDatacenterFfoEnvironment -eq "True")
+                  {
+		     $CentralAdminDbConnectionString = "DRIVER=SQL server;SERVER=cadbsrv.exmgmt.local;Failover Partner=cadbmirrorsrv.exmgmt.local;UID=bootstrap;PWD=$($RoleDatacenterBootstrapPassword);APP=Microsoft ODBC SDK;DATABASE=$exchangeDatabase";
+                  }
+                  else
+                  {
+                     # Exo uses this connection string to roll between bootstrap and bootstrap2 accounts
+                     $CentralAdminDbConnectionString = "DRIVER=SQL server;SERVER=cadbsrv.exmgmt.local;Failover Partner=cadbmirrorsrv.exmgmt.local;UID=bootstrap2;PWD=$($RoleDatacenterBootstrap2Password);APP=Microsoft ODBC SDK;DATABASE=$exchangeDatabase";
+                  }
+		  $RoleWDSPath = [System.IO.Path]::Combine((Get-ItemProperty -path 'HKLM:SOFTWARE\Microsoft\ExchangeServer\v15\Setup').MsiInstallPath,"WDS");
+		  $PxeProviderKey = "HKLM:\SYSTEM\CurrentControlSet\Services\WDSServer\Providers\WDSPXE";
+
+		  Write-ExchangeSetupLog -Info "Set the Exchange WDSPXE provider registy entry";
+		  New-Item -Path $PxeProviderKey\Providers -Name Exchange -ErrorAction SilentlyContinue;
+
+		  Set-ItemProperty -Path $PxeProviderKey\Providers\Exchange -Name "ProviderDLL" -Value "$RoleWDSPath\WdsCaProv.dll";
+		  Set-ItemProperty -Path $PxeProviderKey\Providers\Exchange -Name "ConnectionString" -Value $CentralAdminDbConnectionString;
+		  New-ItemProperty -Path $PxeProviderKey\Providers\Exchange -Name "IsCritical" -Value 1 -PropertyType Dword -ErrorAction SilentlyContinue;
+		  Set-ItemProperty -Path $PxeProviderKey\Providers\Exchange -Name "IsCritical" -Value 1;
+		  New-ItemProperty -Path $PxeProviderKey\Providers\Exchange -Name "QueryThrottlingFactor" -Value $RoleDatacenterWDSThrottlingFactor -PropertyType Dword -ErrorAction SilentlyContinue;
+		  Set-ItemProperty -Path $PxeProviderKey\Providers\Exchange -Name "QueryThrottlingFactor" -Value $RoleDatacenterWDSThrottlingFactor;
+
+		  $providersorder = (Get-ItemProperty -Path $PxeProviderKey).ProvidersOrder;
+		  if ($providersorder[0] -ne "Exchange")
+		  {
+		  $exchangeprovider = @("Exchange") + $providersorder;
+		  Set-ItemProperty -path $PxeProviderKey -name ProvidersOrder -value $exchangeprovider;
+		  }
+		  Write-ExchangeSetupLog -Info "WDS provider configuration complete";
+		  }
+		</Standalone>
+	  </Install>
+	  <BuildToBuildUpgrade UseInstallTasks="true" />
+	  <DisasterRecovery UseInstallTasks="true" />
+	  <Uninstall/>
+	</ServerTaskInfo>
+
+	<!--Enable and initialize WDS -->
+	<ServerTaskInfo Id="_a0388db9a1d04e9895945d211e67b07d" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+	  <Install>
+		<Standalone>
+      if ($RoleDatacenterEnableWDS -eq "True")
+      {
+        Write-ExchangeSetupLog -Info "Need to get the WinPE image name";
+        $WinPeImageName = "WINPE Boot Image";
+        Add-PSSnapin Microsoft.Exchange.Management.Powershell.CentralAdmin -ea SilentlyContinue;
+        $machine = Get-CentralAdminMachine $RoleNetBIOSName -ErrorAction SilentlyContinue;
+
+
+        # See bug 3023729 - ActualVersion is always set to $null for machines that are currently deploying.  Thus we'll never know what version the machine was when the upgrade started
+        if ($machine -ne $null -and $machine.ActualVersion -ne $null)
+        {
+          $actualVersion = $machine.ActualVersion.RawIdentity;
+          $exActualVersion = $actualVersion.SubString(0, $actualVersion.LastIndexOf('-'));
+          $actualWinPeImageName = Get-CentralAdminParameter $exActualVersion\WinPeImageName -ErrorAction SilentlyContinue;
+
+          if ($actualWinPeImageName -ne $null -and ![string]::IsNullOrEmpty($actualWinPeImageName.Data))
+          {
+            Write-ExchangeSetupLog -Info "Retrieved the previous WinPE image name from parameter $exActualVersion\WinPeImageName. Value: $($actualWinPeImageName.Data)";
+            $WinPeImageName = $actualWinPeImageName.Data;
+          }
+          else
+          {
+            Write-ExchangeSetupLog -Info "Could not find parameter $exActualVersion\WinPeImageName or its Data is empty. The WinPE image to be removed is set to the deafult value of '$WinPeImageName'";
+          }
+        }
+        else
+        {
+          Write-ExchangeSetupLog -Info "Could not find machine $RoleNetBIOSName or its ActualVersion. The WinPE image to be removed is set to the deafult value of '$WinPeImageName'";
+        }
+
+        if ([string]::IsNullOrEmpty($RoleDatacenterFileSharePassword))
+        {
+          Write-ExchangeSetupLog -Info "Need to get the FileSharePassword value from registry. Path: HKLM:\SOFTWARE\Microsoft\ExchangeLabs\FileSharePassword";
+          $exchangeLabs = Get-ItemProperty HKLM:\SOFTWARE\Microsoft\ExchangeLabs -ea SilentlyContinue;
+          if ($exchangeLabs)
+          {
+            $RoleDatacenterFileSharePassword = $exchangeLabs.FileSharePassword;
+          }
+        }
+
+        if ((Get-ItemProperty -Path "HKLM:\System\CurrentControlSet\Services\WDSServer").Start -eq 2)
+        {
+          Write-ExchangeSetupLog -Info "Uninitialize Windows Deployment Services";
+          Start-SetupProcess -Name "WDSUTIL" -Args "/uninitialize-server";
+        }
+
+        Write-ExchangeSetupLog -Info "Initialize Windows Deployment Services";
+        Start-SetupProcess -Name "WDSUTIL" -Args "/initialize-server /reminst:$env:SystemDrive\WDSFiles" -ErrorAction SilentlyContinue;
+
+        Write-ExchangeSetupLog -Info "Stopping WDSServer";
+        Stop-SetupService -ServiceName WDSServer;
+
+        Write-ExchangeSetupLog -Info "Set the answer policy";
+        Start-SetupProcess -Name "WDSUTIL" -Args "/set-server /answerclients:all";
+
+        $dhcpService = Get-Service | where {$_.Name -eq "DHCPServer"};
+        if ($dhcpService.Status -eq "Started")
+        {
+          Write-ExchangeSetupLog -Info "Set the DHCP options";
+          Start-SetupProcess -Name "WDSUTIL" -Args "/set-server /usedhcpports:no /DHCPoption60:yes";
+        }
+        
+        # Do not turn this logging off.  Deployment workflows check for the presence of these logs to verify that clients are able to PXE boot.
+        Write-ExchangeSetupLog -Info "Enable WDS client logging";
+        Start-SetupProcess -Name "WDSUTIL" -Args "/set-server /WdsClientLogging /Enabled:Yes /LoggingLevel:Info";
+
+        Write-ExchangeSetupLog -Info "Set Architecture Discovery";
+        Start-SetupProcess -Name "WDSUTIL" -Args "/set-server /architecturediscovery:yes";
+
+        Write-ExchangeSetupLog -Info "Set the x64 default boot program to pxeboot.n12";
+        Start-SetupProcess -Name "WDSUTIL" -Args "/set-server /bootprogram:boot\x64\pxeboot.n12 /architecture:x64";
+
+        Write-ExchangeSetupLog -Info "Deleting the existing WinPE boot image if that exists";
+        Start-SetupProcess -name "WDSUTIL" -Args "/verbose /remove-image /Image:`"$WinPeImageName`" /ImageType:Boot /Architecture:x64 /FileName:Boot.wim" -ErrorAction SilentlyContinue;
+
+        ### see bug 3023729.  Adding non-fatal calls to ensure all currently known WinPE images are removed before the new one is added from the new build
+        Start-SetupProcess -name "WDSUTIL" -Args "/verbose /remove-image /Image:`"Microsoft Windows PE (x64)`" /ImageType:Boot /Architecture:x64 /FileName:Boot.wim" -ErrorAction SilentlyContinue;
+        Start-SetupProcess -name "WDSUTIL" -Args "/verbose /remove-image /Image:`"WINPE Boot Image`" /ImageType:Boot /Architecture:x64 /FileName:Boot.wim" -ErrorAction SilentlyContinue;
+
+        $WinPEImageFile = Join-Path $RoleDatacenterWinPEImageInstallDrive "WinPEImage\Boot.wim";
+	      if (!(test-path $WinPEImageFile))
+        {
+          if (!(test-path $RoleDatacenterFileShareRoot))
+          {
+            Start-SetupProcess -Name "net" -Args "use $RoleDatacenterFileShareRoot /user:$RoleDatacenterFileShareAccount $RoleDatacenterFileSharePassword";
+            if (!(test-path $RoleDatacenterFileShareRoot))
+            {
+              throw "Failed to create a network connection to '$RoleDatacenterFileShareRoot'";
+            }
+          }
+          $WinPEImageFile = Join-Path $RoleDatacenterFileShareRoot $RoleDatacenterWinPeImagePath;
+
+          if (!(test-path $WinPEImageFile))
+          {
+            throw "Could not find the WinPE image file at '$WinPEImageFile'";
+          }
+        }
+
+        Write-ExchangeSetupLog -Info "Set the WinPE boot image";
+        Start-SetupProcess -Name "WDSUTIL" -Args "/verbose /add-image /ImageType:Boot /ImageFile:$WinPEImageFile";
+
+        Write-ExchangeSetupLog -Info "Checking OS version";
+        $osInfo = Get-WmiObject Win32_OperatingSystem;
+        $osVersion = New-Object Version -ArgumentList $osInfo.Version;
+        Write-ExchangeSetupLog -Info "OS version: $osVersion";
+        $win7Ver = New-Object Version -ArgumentList "6.1";
+        [bool]$isWin7OrHigher = ($osVersion -ge $win7Ver);
+        Write-ExchangeSetupLog -Info "Is Win7 or higher: $isWin7OrHigher";
+
+        if ($isWin7OrHigher)
+        {
+          Write-ExchangeSetupLog -Info "Set the Pxe prompt policy";
+          Start-SetupProcess -Name "WDSUTIL" -Args "/Set-Server /PxePromptPolicy /New:NoPrompt";
+          
+          Write-ExchangeSetupLog -Info "Set the Pxe prompt policy";
+          Start-SetupProcess -Name "WDSUTIL" -Args "/Set-Server /BootImage:Boot\x64\Images\Boot.wim /Architecture:x64";
+        }
+      }
+    </Standalone>
+	  </Install>
+	  <BuildToBuildUpgrade UseInstallTasks="true" />
+	  <DisasterRecovery UseInstallTasks="true" />
+	  <Uninstall/>
+	</ServerTaskInfo>
+
+	<!--Configure MaxNegativeCacheTtl registry entryr -->
+	<ServerTaskInfo Id="_2873f4723b0e414687b070db85be2623" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+	  <Install>
+		<Standalone>
+		  Write-ExchangeSetupLog -Info "Setting the MaxNegativeCacheTtl registy entry";
+		  New-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\Parameters -Name "MaxNegativeCacheTtl" -Value 30 -PropertyType Dword -ErrorAction SilentlyContinue;
+		  Set-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\Parameters -Name "MaxNegativeCacheTtl" -Value 30;
+		</Standalone>
+	  </Install>
+	  <BuildToBuildUpgrade UseInstallTasks="true" />
+	  <DisasterRecovery UseInstallTasks="true" />
+	  <Uninstall/>
+	</ServerTaskInfo>
+
+	<!--Increase MaxShellsPerUser on WinRM -->
+	<ServerTaskInfo Id="_FDFF026D136B4C77A967EE6CEEB703DF" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Central Admin">
+	  <Install>
+		<Standalone>
+		  Write-ExchangeSetupLog -Info "Setting the MaxShellsPerUser entry on WinRM";
+		  Set-Item WSMan:\localhost\Shell\MaxShellsPerUser -Value 25
+		</Standalone>
+	  </Install>
+	  <BuildToBuildUpgrade UseInstallTasks="true" />
+	  <DisasterRecovery UseInstallTasks="true" />
+	  <Uninstall/>
+	</ServerTaskInfo>
+
+  <!-- Make EDS use the FFO list of perf counters to be collected if in FFO Environment. -->
+  <ServerTaskInfo Id="_2513ea21f4654385ac0b9444ba54030d" Component="Office15:\Current\Forefront for Office Datacenter\Deployment and Configuration Management\Deployment">
+    <Install IsFatal="false">
+      <Standalone>
+        if($RoleDatacenterFfoEnvironment -eq "True")
+        {
+          $serviceName = "MSExchangeDiagnostics"
+          $service = get-service $serviceName* | where {$_.name -eq $serviceName}
+          if ($service -ne $null)
+          {
+            $originalStatus = $service.Status
+            if ($originalStatus -eq "Running")
+            {
+            Stop-Service $serviceName
+            }
+          }
+
+          $ffoCounterListPath = [System.IO.Path]::Combine($RoleInstallPath, 'bin\FFOPerformanceCounterConfiguration.xml');
+          $edsCounterListPath = [System.IO.Path]::Combine($RoleInstallPath, 'bin\PerformanceCounterConfiguration.xml');
+
+          if (Test-Path $ffoCounterListPath)
+          {
+            Copy-Item -force $ffoCounterListPath $edsCounterListPath
+          }
+
+          $ffoCounterDailyListPath = [System.IO.Path]::Combine($RoleInstallPath, 'bin\FFOPerformanceCounterConfigurationDaily.xml');
+          $edsCounterDailyListPath = [System.IO.Path]::Combine($RoleInstallPath, 'bin\PerformanceCounterConfigurationDaily.xml');
+
+          if (Test-Path $ffoCounterDailyListPath)
+          {
+            Copy-Item -force $ffoCounterDailyListPath $edsCounterDailyListPath
+          }
+
+          if ($originalStatus -eq "Running")
+          {
+            Start-Service $serviceName
+          }
+        }
+      </Standalone>
+    </Install>
+    <BuildToBuildUpgrade UseInstallTasks="true" />
+    <DisasterRecovery UseInstallTasks="true" />
+    <Uninstall/>
+  </ServerTaskInfo>
+  </ServerTasks>
+</SetupComponentInfo>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo IsDatacenterOnly="true" IsDatacenterDedicatedOnly="true" Name="Datacenter ServiceHost Configuration">
+  <ServerTasks>
+
+    <!-- Configure the Windows Live ID STS for the AuthService. -->
+    <ServerTaskInfo Id="_a5cd7e000ddf44ae91d61bddddc9f30e" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup" ExcludeInDatacenterDedicated="true">
+      <Install>
+        <Standalone>
+          ."$RoleBinPath\..\Scripts\enable-LiveIDForWebApplication.ps1";
+          enable-LiveIDForServiceHost $RoleDatacenterSiteName $RoleDatacenterMsoSharedSiteName $RoleDatacenterWindowsLiveIdInstance
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <ServerTaskInfo Id="_9025cfb0befa4891adc6a780257ddeb7" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          $file = 'microsoft.exchange.servicehost.exe.config';
+          $fullPath = [System.IO.Path]::Combine([System.IO.Path]::Combine($RoleInstallPath, "bin"), $file);
+          set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'DiagnosticsAggregationLoggingEnabled' -NewValue:$true;
+          set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'DiagnosticsAggregationLogFileDirectoryPath' -NewValue:"$RoleDatacenterTransportRoleLogRoot\DiagnosticsAggregation";
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+  </ServerTasks>
+</SetupComponentInfo>

@@ -1,0 +1,118 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{09CD9476-CD82-489E-B9E2-84B47CA141D7}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Microsoft.Exchange.Transport.Sync.Migration.Rpc</RootNamespace>
+    <AssemblyName>Microsoft.Exchange.Transport.Sync.MigrationRpc</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AbstractCreateSyncSubscriptionArgs.cs" />
+    <Compile Include="CreateIMAPSyncSubscriptionArgs.cs" />
+    <Compile Include="CreateSyncSubscriptionResult.cs" />
+    <Compile Include="GetSyncSubscriptionStateArgs.cs" />
+    <Compile Include="GetSyncSubscriptionStateResult.cs" />
+    <Compile Include="IMigrationNotification.cs" />
+    <Compile Include="IMigrationService.cs" />
+    <Compile Include="ISubscriptionStatus.cs" />
+    <Compile Include="MigrationCommunicationException.cs" />
+    <Compile Include="MigrationNotificationRpcStub.cs" />
+    <Compile Include="MigrationObjectNotHostedException.cs" />
+    <Compile Include="MigrationRpcHelper.cs" />
+    <Compile Include="MigrationServicePropTag.cs" />
+    <Compile Include="MigrationServiceResultCodeType.cs" />
+    <Compile Include="MigrationServiceRpcException.cs" />
+    <Compile Include="MigrationServiceRpcMethodCode.cs" />
+    <Compile Include="MigrationServiceRpcResult.cs" />
+    <Compile Include="MigrationServiceRpcResultCode.cs" />
+    <Compile Include="MigrationServiceRpcStub.cs" />
+    <Compile Include="MigrationServiceRpcTransientException.cs" />
+    <Compile Include="MigrationSubscriptionNotFoundException.cs" />
+    <Compile Include="MigrationSubscriptionStatus.cs" />
+    <Compile Include="MigrationTargetInvocationException.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RegisterMigrationBatchArgs.cs" />
+    <Compile Include="RegisterMigrationBatchResult.cs" />
+    <Compile Include="SubscriptionStatusChangedResponse.cs" />
+    <Compile Include="UpdateMigrationRequestArgs.cs" />
+    <Compile Include="UpdateMigrationRequestResult.cs" />
+    <Compile Include="UpdateSyncSubscriptionAction.cs" />
+    <Compile Include="UpdateSyncSubscriptionArgs.cs" />
+    <Compile Include="UpdateSyncSubscriptionResult.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.DKM.Proxy\Microsoft.DKM.Proxy.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140D7}</Project>
+      <Name>Microsoft.DKM.Proxy</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Common\Microsoft.Exchange.Data.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140D3}</Project>
+      <Name>Microsoft.Exchange.Data.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Directory\Microsoft.Exchange.Data.Directory.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14105}</Project>
+      <Name>Microsoft.Exchange.Data.Directory</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Storage\Microsoft.Exchange.Data.Storage.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1410F}</Project>
+      <Name>Microsoft.Exchange.Data.Storage</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data\Microsoft.Exchange.Data.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14106}</Project>
+      <Name>Microsoft.Exchange.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Diagnostics\Microsoft.Exchange.Diagnostics.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14113}</Project>
+      <Name>Microsoft.Exchange.Diagnostics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Net\Microsoft.Exchange.Net.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14178}</Project>
+      <Name>Microsoft.Exchange.Net</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Rpc\Microsoft.Exchange.Rpc.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14188}</Project>
+      <Name>Microsoft.Exchange.Rpc</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Transport.Sync.Common\Microsoft.Exchange.Transport.Sync.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141D5}</Project>
+      <Name>Microsoft.Exchange.Transport.Sync.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\mscorlib\mscorlib.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141F1}</Project>
+      <Name>mscorlib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

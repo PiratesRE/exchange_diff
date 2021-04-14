@@ -1,0 +1,118 @@
+# Copyright (C) 2007 Microsoft Corporation.  All rights reserved.
+#
+# This file contains the regular expression used to parse RBAC queries in ECP.
+# The query string must be a cmdlet assignment.
+#
+# A cmdlet includes at least the name of the required
+# cmdlet but it can also include the name of the snap-in that implements the cmdlet,
+# a set of parameters and scopes where there user must have read or write access.
+#
+# The captures out of this query must be:
+#
+# - An optional 'snapinName', containing the name of the snap-in.
+#   Ex: Microsoft.Exchange.Management.PowerShell.E2010.
+#   If defined, the snapin name must be followed by a non-captured '\' to separate it from the cmdlet name
+#   and must not include the characters specified in MSDN "Writing a Windows PowerShell Snap-in".
+#   If the snap-in is not specified, then the RBAC query assumes the cmdlet is from the Exchange
+#   Microsoft.Exchange.Management.PowerShell.E2010 snap-in.
+#
+# - A mandatory 'cmdletName', containing the name of the cmdlet, in verb-noun form. Ex: get-mailbox.
+#
+# - An optional list of 'parameterName', following the cmdlet name and prefixed with a non-captured '?' or '%' (see E14 178569,202037).
+#   The parameter names are separated by a non-captured '&', to indicate an 'and' requirement.
+#
+# - After the parameter, an optional list of scopes must follow, prefixed by a non-captured '@'.
+#   Each one of the following scopes are optional, but at least one of them must be present if the '@'
+#   character is present. Scopes are separated from each other with non-captured '&' and they must follow 
+#   this order:
+#
+#   - The domain read scope is prefixed with R: and it is a single value, 
+#     returned by the 'domainReadScope' capture.
+#
+#   - The domain write scope is prefixed with W: and it is a list separated by a non-captured '|',
+#     to indicate an 'or' requirement. The domain write scopes are returned by the 'domainWriteScope' capture.
+#
+#   * The value of domain read and write scopes captures are limited to one of the following values:
+#     'Organization', 'MyGAL', 'Self', 'MyDirectReports', 'OU', 'MyDistributionGroups' or 'MyExecutive'.
+#
+#   - The config scope is prefixed with C: and it is a single value, returned by the 'configScope' capture.
+#     The value of the capture must be limited to 'OrganizationConfig'.
+#
+#   - The server scope is prefixed with S: and it is a single value, returned by the 'serverConfigScope' capture.
+#     The value of the capture must be limited to 'ServerScope'.
+#
+# A sample rbac query string using all cmdlet assignment fields would look like this:
+# Microsoft.Exchange.Management.PowerShell.E2010\move-mailbox?Identity&TargetDatabase@R:Organization&W:Self|MyDirectReports&C:OrganizationConfig&S:ServerScope
+# 
+# The above query can be read like this: 
+# "check if the user can run the Microsoft.Exchange.Management.PowerShell.E2010\get-mailbox cmdlet
+#  using the Identity and TargetDatabase parameters,
+#  having read access in the organization scope
+#  and write access to himself or to his direct reports 
+#  and having access to the configuration scope and the server scope".
+#
+# Since snapin name, parameters and scopes are optional, pages that just need to check if the user
+# has any type of access to a single Exchange cmdlet can simly state the cmdlet name, like 'get-mailbox'.
+# 
+# Other examples of valid queries:
+# 
+# move-mailbox
+# move-mailbox?Identity
+# move-mailbox?Identity&TargetDatabase
+# move-mailbox@R:Organization&W:Self
+# set-ExchangeServer?Identity&ErrorReportingEnabled@S:ServerScope
+# customSnapIn\custom-cmdlet
+#
+
+^                                                     # match the begining of the line
+(                                                     # group the OR expression so we match all as a single line
+
+                                                      # match a cmdlet assignment definition:
+ ((?<snapinName>[\w]+(\.[\w]+)*)\\)?                  # capture the optional snap-in name, followed by slash.
+ (?<cmdletName>\w+-\w+)                               # capture the mandatory cmdlet name (in verb-noun format)
+ ([\?|%]                                              # the parameter list, if present, starts with '?' or '%' (see E14 178569,202037)
+  (?<parameterName>\w+)                               # capture the paramter name
+  (&(?<parameterName>\w+))*                           # capture other parameters; the list is separated by '&'
+ )?                                                   # the entire list of paramters is optional
+
+ (@                                                   # the scope fields, if present, start with '@' followed by 
+  (?=R|W|C|S)                                         # at least one of the scope prefixes (so we don't match a lone @)
+  (?<readOrWriteOrConfig>                             # keep track if we have read, write or config scopes
+   (?<readOrWrite>                                    # keep track if we have read or write scopes
+    (?<read>                                          # keep track if we have read scope
+      R:                                              #   read scope prefix
+      (?<domainReadScope>                             #   capture the domain read scope
+        Organization|MyGAL|Self|MyDirectReports|OU|
+        MyDistributionGroups|MyExecutive
+      )
+    )?                                                # read block is optional                                        
+    (?<write>                                         # keep track if we have write scope
+      (?(read)&|)                                     #   if we captured a read block then we an '&'
+      W:                                              #   write scope prefix
+      (?<domainWriteScope>                            #   capture the domain write scope which is a list with at least one element
+        Organization|MyGAL|Self|MyDirectReports|OU|
+        MyDistributionGroups|MyExecutive
+      )
+      (\|                                             #   the domain write scope list is separated by '|'
+       (?<domainWriteScope>
+         Organization|MyGAL|Self|MyDirectReports|OU|
+         MyDistributionGroups|MyExecutive
+       )
+      )*                                              #   the others domain scopes are optional
+    )?                                                # write block is optional
+   )?                                                 # readOrWrite block is optional
+   (?<config>                                         # keep track if we have config scope
+     (?(readOrWrite)&|)                               #   if we captured a read or write block then we an '&'
+     C:                                               #   match the config scope prefix
+     (?<configScope>OrganizationConfig)               #   capture the config scope
+   )?                                                 # config block is optional
+  )?                                                  # readOrWriteOrConfig is optional
+  (?<server>                                          # keep track if we have server scope
+    (?(readOrWriteOrConfig)&|)                        #   if we have a read, write or config block then we need an '&'
+    S:                                                #   match the server scope prefix
+    (?<serverConfigScope>ServerScope)                 #   capture the server config scope
+  )?                                                  # server block is optional
+ )?                                                   # the '@' and all scopes are optional
+)                                                     # close the OR expression
+$                                                     # finish with the end of the line
+

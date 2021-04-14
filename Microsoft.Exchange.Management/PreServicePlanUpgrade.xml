@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!-- 
+    The tasks in this file are conditionally executed during Service Plan upgrade 
+    before Service plan features are applied.
+    $ServicePlanSettings variable contains delta ServicePlan and is always initialized.
+-->
+
+<SetupComponentInfo Name="Service Plan Pre-Update" DescriptionId="SetupComponentPreUpdatingServicePlan">
+  <ServicePlanOrgTasks>
+
+    <!-- When XML is processed from new-organization task Setup plug-in needs to be explicitly loaded
+         to allow use of setup tasks. -->
+    <ServicePlanTaskInfo FeatureName="LoadSetupSnapin">
+      <Install>
+        <!-- $TODO: E14:11806 Figure out precise condition or better solution. -->
+        <Tenant>
+            add-PSSnapin -Name Microsoft.Exchange.Management.PowerShell.Setup -ErrorAction SilentlyContinue;
+            $erroractionpreference="Stop";
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade/>
+      <Uninstall/>
+    </ServicePlanTaskInfo>
+
+    <!-- Starting service plan update. Stamp target service plan and flip the flag. -->
+    <ServicePlanTaskInfo FeatureName="ServicePlanUpgradeStart">
+      <Install>
+        <Tenant>
+          Set-Organization $RoleOrganizationHierarchicalPath `
+            -TargetServicePlan $TargetServicePlan `
+            -IsUpdatingServicePlan $true `
+            -DomainController $RoleDomainController;
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade />
+      <Uninstall />
+    </ServicePlanTaskInfo>
+    
+    <!-- 
+        For each MailboxPlan in $ServicePlanSettings.MailboxPlans rename it to well-known name and create its clone with the old name.
+        To ensure the task is restartable, we use the foolowing logic:
+        - if mailbox plan is not found by either new or old name, error out;
+        - if mailbox plan is found by original name, rename and continue;
+        - if mailbox plan is found only by new name, or has been just renamed, clone it with original name from the renamed object;
+        - if both are present, skip the task
+    -->
+    <ServicePlanTaskInfo FeatureName="CreateNewMailboxPlanObject">
+      <Install DescriptionId="SetupProgressCreateNewMailboxPlanObject">
+        <Tenant>
+          foreach ($mp in $ServicePlanSettings.MailboxPlans)
+          {
+              Write-ExchangeSetupLog -info ("Creating new version of mailbox plan " + $mp.Name);
+
+              $mpOldPrefix = ".OldVersion." + $mp.Name;
+
+              $mailboxPlans = Get-mailboxPlan -Organization $RoleOrganizationHierarchicalPath -DomainController $RoleDomainController -AllMailboxPlanReleases;
+
+              $mpOriginal = $mailboxPlans | where {$_.Name -like ($mp.Name + "-*")};
+              $mpRenamed  = $mailboxPlans | where {$_.Name -like ($mpOldPrefix + "-*")};
+
+              if($mpOriginal -eq $null -and $mpRenamed -eq $null)
+              {
+                  Write-ExchangeSetupLog -Info ("Mailbox plan " + $mp.Name + " does not exist, will create one");
+                  continue;
+              }
+
+              if($mpRenamed -eq $null)
+              {
+                  $upn = $mpOriginal.UserPrincipalName;
+                  $mpOldUpn = ".OldVersion." + $mpOriginal.UserPrincipalName;
+
+                  $mpOldDisplayName = ".OldVersion." + $mpOriginal.DisplayName;
+                  if ($mpOldDisplayName.Length -gt 256) { $mpOldDisplayName = $mpOldDisplayName.Substring(0, 256) };
+
+                  $mpOldName = ".OldVersion." + $mpOriginal.Name;
+                  if ($mpOldName.Length -gt 64) { $mpOldName = $mpOldName.Substring(0, 64) };
+
+                  $mpOriginal | Set-MailboxPlan -Name $mpOldName -DisplayName $mpOldDisplayName -UserPrincipalName $mpOldUpn -DomainController $RoleDomainController -MailboxPlanRelease NonCurrentRelease;
+              }
+              else
+              {
+                  $upn = "resume" + $mpRenamed.UserPrincipalName;
+              }
+
+              if($mpOriginal -eq $null -or $mpRenamed -eq $null)
+              {
+                  if ($mpOriginal -eq $null)
+                  {
+                      $mpOld = $mpRenamed;
+                  }
+                  else
+                  {
+                      $mpOld = $mpOriginal;
+                  }
+
+                  $mpIndex = $mpOld.MailboxPlanIndex;
+                  if( [string]::IsNullOrEmpty( $mpIndex ) )
+                  {
+                    $mpIndex = $mp.MailboxPlanIndex;
+                  }
+
+                  $mpName = $mp.Name + "-" + [System.Guid]::NewGuid().ToString();
+                  $mpNew = new-mailboxPlan `
+                      -name $mpName `
+                      -DisplayName $mpOld.DisplayName `
+                      -UserPrincipalName $upn `
+                      -IsDefault:($mpOld.IsDefault -or $mpOld.IsDefaultForPreviousVersion) `
+                      -MailboxPlanIndex $mpIndex `
+                      -MailboxPlan $mpOld.Guid.ToString() `
+                      -MailboxPlanRelease CurrentRelease `
+                      -Organization $RoleOrganizationHierarchicalPath `
+                      -OverrideRecipientQuotas `
+                      -DomainController $RoleDomainController;
+                      
+                  
+                  if( $mp.SkuCapability -ne "None" )
+                  {
+                     $mpNew | Set-MailboxPlan -SkuCapability $mp.SkuCapability -DomainController $RoleDomainController;
+                  }
+              }
+          }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade/>
+      <Uninstall />
+    </ServicePlanTaskInfo>
+
+  </ServicePlanOrgTasks>
+</SetupComponentInfo>

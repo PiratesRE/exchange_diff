@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo IsDatacenterOnly="true" IsDatacenterDedicatedOnly="true" Name="Datacenter Bridgehead PostSetup">
+
+  <ServerTasks>
+    <ServerTaskInfo Id="_130B3D786AAD4c74A6AA0BB3E58B6CD0" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install Weight="4" DescriptionId="SetupProgressStartingProtectedServiceHostService" IsFatal="false">
+        <Standalone>
+          stop-SetupService -ServiceName MSExchangeProtectedServiceHost;
+          start-SetupService -ServiceName MSExchangeProtectedServiceHost
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall/>
+    </ServerTaskInfo>
+    
+  </ServerTasks>
+</SetupComponentInfo>
+

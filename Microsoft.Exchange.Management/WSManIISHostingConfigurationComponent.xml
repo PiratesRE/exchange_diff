@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo Name="WSMan IIS Hosting Configuration" DescriptionId="WSManIISHostingConfigurationComponentDescription">
+
+	<ServerTasks>
+
+		<!-- Configure WSMan IIS Hosting for Remote PowerShell on non-Datacenter CAS server role -->
+		<ServerTaskInfo Id="_5cd9e3f8000e4019bb27b9ffc70ab482" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+			<Install>
+				<Standalone>
+					configure-WSManIISHosting -EnableKerberosModule;
+				</Standalone>
+			</Install>
+			<BuildToBuildUpgrade UseInstallTasks="true" />
+			<DisasterRecovery UseInstallTasks="true" />
+			<Uninstall>
+				<Standalone>
+					unconfigure-WSManIISHosting;
+        			</Standalone>
+			</Uninstall>
+		</ServerTaskInfo>
+
+	</ServerTasks>
+
+</SetupComponentInfo>

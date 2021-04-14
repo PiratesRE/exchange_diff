@@ -1,0 +1,138 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{09CD9476-CD82-489E-B9E2-84B47CA1413E}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Microsoft.Exchange</RootNamespace>
+    <AssemblyName>Microsoft.Exchange.JobQueueServicelet</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Exchange.Common.IL" />
+    <Reference Include="Microsoft.Exchange.ServiceHost" />
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Data\Storage\LinkedFolder\OAuthCredentialFactory.cs" />
+    <Compile Include="Data\Storage\LinkedFolder\TeamMailboxSyncActiveDirectoryResourceMonitorFactory.cs" />
+    <Compile Include="Data\Storage\LinkedFolder\TeamMailboxSyncResourceMonitorFactory.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Servicelets\JobQueue\AppConfig.cs" />
+    <Compile Include="Servicelets\JobQueue\Messages\MSExchangeJobQueueEventLogConstants.cs" />
+    <Compile Include="Servicelets\JobQueue\PublicFolder\FolderOperationCounter.cs" />
+    <Compile Include="Servicelets\JobQueue\PublicFolder\IHierarchySyncExecutor.cs" />
+    <Compile Include="Servicelets\JobQueue\PublicFolder\PublicFolderActivityPerformanceTracker.cs" />
+    <Compile Include="Servicelets\JobQueue\PublicFolder\PublicFolderHierarchyProxyPool.cs" />
+    <Compile Include="Servicelets\JobQueue\PublicFolder\PublicFolderHierarchySyncExecutor.cs" />
+    <Compile Include="Servicelets\JobQueue\PublicFolder\PublicFolderPerformanceLogger.cs" />
+    <Compile Include="Servicelets\JobQueue\PublicFolder\PublicFolderSynchronizer.cs" />
+    <Compile Include="Servicelets\JobQueue\PublicFolder\PublicFolderSynchronizerContext.cs" />
+    <Compile Include="Servicelets\JobQueue\PublicFolder\PublicFolderSynchronizerLogger.cs" />
+    <Compile Include="Servicelets\JobQueue\PublicFolder\PublicFolderSyncJob.cs" />
+    <Compile Include="Servicelets\JobQueue\PublicFolder\PublicFolderSyncJobQueue.cs" />
+    <Compile Include="Servicelets\JobQueue\PublicFolder\SyncActivity.cs" />
+    <Compile Include="Servicelets\JobQueue\PublicFolder\SyncStateCounter.cs" />
+    <Compile Include="Servicelets\JobQueue\PublicFolder\TransientExceptionHandler.cs" />
+    <Compile Include="Servicelets\JobQueue\Servicelet.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.Exchange.Common\Microsoft.Exchange.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140F0}</Project>
+      <Name>Microsoft.Exchange.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Common\Microsoft.Exchange.Data.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140D3}</Project>
+      <Name>Microsoft.Exchange.Data.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Directory\Microsoft.Exchange.Data.Directory.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14105}</Project>
+      <Name>Microsoft.Exchange.Data.Directory</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Storage\Microsoft.Exchange.Data.Storage.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1410F}</Project>
+      <Name>Microsoft.Exchange.Data.Storage</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data\Microsoft.Exchange.Data.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14106}</Project>
+      <Name>Microsoft.Exchange.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Diagnostics\Microsoft.Exchange.Diagnostics.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14113}</Project>
+      <Name>Microsoft.Exchange.Diagnostics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.MailboxReplicationService.Common\Microsoft.Exchange.MailboxReplicationService.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14147}</Project>
+      <Name>Microsoft.Exchange.MailboxReplicationService.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.MailboxReplicationService.ProxyClient\Microsoft.Exchange.MailboxReplicationService.ProxyClient.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1414D}</Project>
+      <Name>Microsoft.Exchange.MailboxReplicationService.ProxyClient</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.MailboxReplicationService.RemoteProvider\Microsoft.Exchange.MailboxReplicationService.RemoteProvider.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14150}</Project>
+      <Name>Microsoft.Exchange.MailboxReplicationService.RemoteProvider</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.MailboxReplicationService.StorageProvider\Microsoft.Exchange.MailboxReplicationService.StorageProvider.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14151}</Project>
+      <Name>Microsoft.Exchange.MailboxReplicationService.StorageProvider</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Management.Recipient\Microsoft.Exchange.Management.Recipient.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14162}</Project>
+      <Name>Microsoft.Exchange.Management.Recipient</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Net\Microsoft.Exchange.Net.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14178}</Project>
+      <Name>Microsoft.Exchange.Net</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.RpcClientAccess.Parser\Microsoft.Exchange.RpcClientAccess.Parser.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1418D}</Project>
+      <Name>Microsoft.Exchange.RpcClientAccess.Parser</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Security\Microsoft.Exchange.Security.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14198}</Project>
+      <Name>Microsoft.Exchange.Security</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.StoreProvider\Microsoft.Exchange.StoreProvider.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141B9}</Project>
+      <Name>Microsoft.Exchange.StoreProvider</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.WorkloadManagement\Microsoft.Exchange.WorkloadManagement.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141E1}</Project>
+      <Name>Microsoft.Exchange.WorkloadManagement</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\mscorlib\mscorlib.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141F1}</Project>
+      <Name>mscorlib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

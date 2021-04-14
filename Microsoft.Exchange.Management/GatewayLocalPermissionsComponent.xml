@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo Name="Gateway Permissions Configuration" DescriptionId="SetupComponentGatewayLocal">
+
+	<ServerTasks>
+    <!-- 
+      Set Folder/Registry Permissions when installing, recovering or upgrade the Edge Role
+    
+      Requires local admin rights
+    -->
+	  <ServerTaskInfo Id="_c9d860c661894018888b6c9ca3abaec3" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+			  <Install>
+				  <Standalone>Set-LocalPermissions -Feature:"Gateway"</Standalone>
+			  </Install>
+			  <BuildToBuildUpgrade UseInstallTasks="true" />
+			  <DisasterRecovery />
+
+        <!-- 
+          In general, the objects (files, regkeys) that recieve the permissions are 
+          removed on uninstall, so there is no need to separately remove persmissions.  
+        -->
+			  <Uninstall/>
+		  </ServerTaskInfo>
+	</ServerTasks>
+</SetupComponentInfo>

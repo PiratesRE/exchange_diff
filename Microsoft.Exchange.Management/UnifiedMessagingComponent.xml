@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo Name="Unified Messaging Configuration">
+
+  <ServerTasks>
+
+    <!-- PS 266525:  During build-to-build upgrade, we should uninstall Essex (es.msi) if it exists -->
+    <ServerTaskInfo Id="_74f1ddb0-06a611df8a390800200c9a66" Component="EXCHANGE14:\Current\Release\Client Access\Unified Messaging">
+      <Install/>
+      <BuildToBuildUpgrade>
+        <Standalone>
+          if ($RoleProductPlatform -eq "amd64")
+          {
+          $MSSProductId = '{84A6E864-10A5-47C0-AC31-426FE71E4906}';
+          }
+          else
+          {
+          $MSSProductId = '{84A6E832-10A5-47C0-AC31-426FE71E4906}';
+          }
+
+          uninstall-MsiPackage `
+          -ProductCode $MSSProductId `
+          -LogFile ($RoleSetupLoggingPath + "\UninstallEs.msilog") `
+          -PropertyValues ("ESE=1");
+        </Standalone> 
+      </BuildToBuildUpgrade>
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall/>
+    </ServerTaskInfo>
+
+    <!-- PS 266525:  During build-to-build upgrade, we should uninstall MSExchangeUM and reinstall it so that it installs without the Essex dependency -->
+    <ServerTaskInfo Id="_3dede27006bd11df8a390800200c9a66" Component="EXCHANGE14:\Current\Release\Client Access\Unified Messaging">
+      <Install/>
+      <BuildToBuildUpgrade>
+        <Standalone>
+          uninstall-UMService
+        </Standalone>
+      </BuildToBuildUpgrade>
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall/>
+    </ServerTaskInfo>
+
+    <!-- Install/remove UM service -->
+    <ServerTaskInfo Id="_baa5c8f87dc9410faaaed5c95c53a07c" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+            install-UMService
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>uninstall-UMService</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+    
+    <!-- 
+    Increase the default TCP port range beyond 16K ports and set default TCP start port beyond 6000
+    so that UM reserved ports and not in the dynamic allocation range.
+    -->
+    <ServerTaskInfo Id="_ab15f4fcffc94ed99fd6ddf7060e854c" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          . "$RoleInstallPath\Scripts\ConfigureNetworkProtocolParameters.ps1"; 
+          Enable-ExtendedTcpPortRange
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall/>
+    </ServerTaskInfo>
+
+    <!-- Add/remove by port firewall exceptions -->
+    <ServerTaskInfo Id="_495be2718b974e04b6a0cfefb27d50c3" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+            Add-FirewallException -FirewallRule (New-Object Microsoft.Exchange.Security.WindowsFirewall.MSExchangeUMServiceNumberedByPort);
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>
+	   Remove-FirewallException -FirewallRule (New-Object Microsoft.Exchange.Security.WindowsFirewall.MSExchangeUMServiceNumberedByPort);
+	</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <ServerTaskInfo Id="_d03458e49df04d149bd4e60e452954b0" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+            Add-FirewallException -FirewallRule (New-Object Microsoft.Exchange.Security.WindowsFirewall.MSExchangeUMWorkerProcessNumberedByPort);
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>
+	   Remove-FirewallException -FirewallRule (New-Object Microsoft.Exchange.Security.WindowsFirewall.MSExchangeUMWorkerProcessNumberedByPort);
+	</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Add/remove firewall exception for UMWorkerProcess.exe service process -->
+    <!-- E14:160046 - add the numbered and RPC exceptions for this binary -->
+    <ServerTaskInfo Id="_dbfc67bb50704e41b2cb9f14a83c231e" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+            Add-FirewallException -FirewallRule (New-Object Microsoft.Exchange.Security.WindowsFirewall.MSExchangeUMWorkerProcessNumbered);
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>
+	   Remove-FirewallException -FirewallRule (New-Object Microsoft.Exchange.Security.WindowsFirewall.MSExchangeUMWorkerProcessNumbered);
+	</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <ServerTaskInfo Id="_11bfeb00a77642ae940034291f06ab00" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+            Add-FirewallException -FirewallRule (New-Object Microsoft.Exchange.Security.WindowsFirewall.MSExchangeUMWorkerProcessRPC);
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>
+	   Remove-FirewallException -FirewallRule (New-Object Microsoft.Exchange.Security.WindowsFirewall.MSExchangeUMWorkerProcessRPC);
+	</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Set Unified Messaging role -->
+    <ServerTaskInfo Id="_b1e19f84b010493db222fa3749a0c1f9" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>set-ExchangeServerRole -Identity $RoleFqdnOrName -IsUnifiedMessagingServer:$true -DomainController $RoleDomainController</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery />
+      <Uninstall>
+        <Standalone>set-ExchangeServerRole -Identity $RoleFqdnOrName -IsUnifiedMessagingServer:$false -DomainController $RoleDomainController</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/remove umserver Languages ; 1 means English ; have to change later when Monad fixes their bugs -->
+    <ServerTaskInfo Id="_60d7be20673d445e904ffeadb5e36be3" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          $lochost=hostname;
+          $ums=Get-UMService -Identity $lochost -DomainController $RoleDomainController;
+          Set-UMService $ums.Identity `
+          -MaxCallsAllowed 100 `
+          -DomainController $RoleDomainController `
+          -IrmLogPath ($RoleInstallPath + "\Logging\IRMLogs") `
+          -IrmLogMaxDirectorySize 262144000 `
+          -IrmLogMaxFileSize 10485760
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade>
+        <Standalone>
+          $lochost=hostname;
+          $ums=Get-UMService -Identity $lochost -DomainController $RoleDomainController;
+          Set-UMService $ums.Identity `
+          -DomainController $RoleDomainController `
+          -IrmLogPath ($RoleInstallPath + "\Logging\IRMLogs") `
+          -IrmLogMaxDirectorySize 262144000 `
+          -IrmLogMaxFileSize 10485760 `
+          -IrmLogEnabled $true
+        </Standalone>
+      </BuildToBuildUpgrade>
+      <DisasterRecovery />
+      <Uninstall>
+        <Standalone>
+          $lochost=hostname;
+          $ums=Get-UMService -Identity $lochost -DomainController $RoleDomainController;
+          Set-UMService $ums.Identity -DialPlans $null -MaxCallsAllowed $null -DomainController $RoleDomainController
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Set the UM Service to listen on 5062/5063. -->
+    <ServerTaskInfo Id="_a48378cf125448fb9268ee107af674c0" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          $lochost=hostname;
+          $ums=Get-UMService -Identity $lochost -DomainController $RoleDomainController;
+          Set-UMService $ums.Identity `
+          -SipTcpListeningPort 5062 `
+          -SipTlsListeningPort 5063
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Remove any preexisting name grammar files -->
+    <ServerTaskInfo Id="_99d8be02cb8d413eafc6ff15e437e13d" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install />
+      <BuildToBuildUpgrade IsFatal="true">
+        <Standalone>
+          $grammarPath = join-path $RoleInstallPath "UnifiedMessaging\grammars\*";
+          
+          $dirs = get-item $grammarPath;
+          
+          foreach($d in $dirs)
+          {
+	          if($d -isnot [System.IO.DirectoryInfo])
+	          {
+	            continue;
+	          }
+            
+            $path1 = $d.FullName + "\*";
+            
+            $items = get-item $path1 -include *.cfg;
+
+            if($items -ne $null)
+            {
+              foreach($i in $items)
+              {
+                remove-item $i;
+              }
+            }
+          }
+        </Standalone>
+      </BuildToBuildUpgrade>
+      <DisasterRecovery />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- When a new file is added to precompile-ManagedBinary list, make sure to add it to customactions.wxi to sync install and uninstall the binary -->
+    <ServerTaskInfo Id="_5cdc1bd46e2a4207921d4fdfd56de164" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <!-- NGEN umservice.exe to avoid delays when service is starting up. See E14 #11725. It appears 
+           that speech doesnt deploy all dependencies, so ngen will always fail (although it will compile all it can  
+          , so we declare task non fatal  -->
+      <Install Weight="5" DescriptionId="SetupProgressPrecompilingBinaries" IsFatal="false">
+        <Standalone>
+          precompile-ManagedBinary -BinaryName  ($RoleInstallPath + "\bin\UMservice.exe");
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall Weight="5" DescriptionId="SetupProgressPrecompilingBinaries" IsFatal="false">
+        <Standalone>
+          precompile-ManagedBinary -BinaryName  ($RoleInstallPath + "\bin\UMservice.exe") -Action uninstall;
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+    <ServerTaskInfo Id="_5036ad2413a84ec198bf7dbbca887323" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <!-- NGEN umworkerprocess.exe to avoid delays when service is starting up. See E14 #11725. It appears 
+           that speech doesnt deploy all dependencies, so ngen will always fail (although it will compile all it can  
+          , so we declare task non fatal  -->
+      <Install Weight="5" DescriptionId="SetupProgressPrecompilingBinaries" IsFatal="false">
+        <Standalone>
+          precompile-ManagedBinary -BinaryName  ($RoleInstallPath + "\bin\UMworkerprocess.exe");
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall Weight="5" DescriptionId="SetupProgressPrecompilingBinaries" IsFatal="false">
+        <Standalone>
+          precompile-ManagedBinary -BinaryName  ($RoleInstallPath + "\bin\UMworkerprocess.exe") -Action uninstall;
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+    <ServerTaskInfo Id="_1079fd1077fe44a3bd84bc970a80c33c" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <!-- Tweak UMservice.exe.config so that it skips authenticode verification. See E14 #11725 -->
+      <Install>
+        <Standalone>
+	  Set-Content -path ($RoleInstallPath + "\bin\UMservice.exe.config") -value '&lt;configuration&gt;&lt;startup useLegacyV2RuntimeActivationPolicy="true"&gt;&lt;supportedRuntime version="v4.0.30319"/&gt;&lt;/startup&gt;&lt;runtime&gt;&lt;generatePublisherEvidence enabled="false"/&gt;&lt;/runtime&gt;&lt;/configuration&gt;'
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+  </ServerTasks>
+</SetupComponentInfo>
+
+
+

@@ -1,0 +1,83 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{09CD9476-CD82-489E-B9E2-84B47CA141E6}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Microsoft.Forefront.Reporting.Common</RootNamespace>
+    <AssemblyName>Microsoft.Forefront.Reporting.Common</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Constants.cs" />
+    <Compile Include="Directionality.cs" />
+    <Compile Include="DownloadableReportType.cs" />
+    <Compile Include="InvalidQueryException.cs" />
+    <Compile Include="InvalidTenantIdException.cs" />
+    <Compile Include="LSHDelegate.cs" />
+    <Compile Include="OverSystemQuotaException.cs" />
+    <Compile Include="OverTenantQuotaException.cs" />
+    <Compile Include="PIIDecryptionDelegate.cs" />
+    <Compile Include="PIIHashingDelegate.cs" />
+    <Compile Include="PiiUtil.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="PropertyAccessDelegate.cs" />
+    <Compile Include="QueryCompiler.cs" />
+    <Compile Include="QueryField.cs" />
+    <Compile Include="QueryGroupField.cs" />
+    <Compile Include="QueryGroupName.cs" />
+    <Compile Include="QueryIdNotFoundException.cs" />
+    <Compile Include="QueryProperty.cs" />
+    <Compile Include="QueryPropertyField.cs" />
+    <Compile Include="ReportingException.cs" />
+    <Compile Include="StatusFlags.cs" />
+    <Compile Include="StructuredStreamType.cs" />
+    <Compile Include="Util.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.Exchange.Diagnostics\Microsoft.Exchange.Diagnostics.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14113}</Project>
+      <Name>Microsoft.Exchange.Diagnostics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Hygiene.Data\Microsoft.Exchange.Hygiene.Data.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14135}</Project>
+      <Name>Microsoft.Exchange.Hygiene.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\mscorlib\mscorlib.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141F1}</Project>
+      <Name>mscorlib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo IsDatacenterOnly="true" IsDatacenterDedicatedOnly="true" Name="Protected Service Host Configuration" DescriptionId="SetupComponentConfiguringProtectedServiceHost">
+
+  <ServerTasks>
+   <!-- E14 82092: In the appconfig file for ProtectedServiceHost service, set Code Access Security (CAS) policy to skip publisher (certificate) validation.-->
+    <ServerTaskInfo Id="_1940abeb03b144db9de00b88955260a2" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          $file = 'microsoft.exchange.protectedservicehost.exe.config';
+          $fullPath = [System.IO.Path]::Combine([System.IO.Path]::Combine($RoleInstallPath, "bin"), $file);
+          set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/runtime/generatePublisherEvidence -Attribute:enabled -NewValue:false
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+   <!-- E14 450318 - The protected service host sometimes fails to contact the SCM in the 30 second window after being loaded
+	after a server reboot.  This causes SCM to terminate the process and leave the service unstarted.  Looks to be getting
+	stuck in Inoculan.   Change the SCM timeout from 30 seconds to 90 -->
+    <ServerTaskInfo Id="_9EE97038C8EA434bBD99790F00E694D8" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+            # Configure SCM timeout
+            $scmParentKey = "HKLM:\SYSTEM\CurrentControlSet\Control";
+            $scmKey = "ServicesPipeTimeout";
+            $scmTimeout = 90000;
+            $parentKeyValue = Get-ItemProperty $scmParentKey -ErrorAction:Continue;
+              
+            if( $parentKeyValue -ne $null )
+            {
+                # Configure SCM timeout
+                if ( $parentKeyValue.$scmKey -eq $null )
+                {
+                    # Property doesn't exist. Create it
+                    Write-exchangeSetupLog -info "Creating property '$scmKey' on key '$scmParentKey' with value of $scmTimeout";
+                    New-ItemProperty -Path $scmParentKey -Name $scmKey -Value $scmTimeout -PropertyType "DWORD";
+                }
+                else
+                {
+                    # Update property.
+                    Write-exchangeSetupLog -info "Updating property '$scmKey' on key '$scmParentKey' with value of $scmTimeout";
+                    Set-ItemProperty -Path $scmParentKey -Name $scmKey -Value $scmTimeout;
+                }
+            }
+            else
+            {
+                Write-exchangeSetupLog -error "Key '$scmParentKey' NOT FOUND";
+            }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <ServerTaskInfo Id="_0bdadd8b5aea4d6f8ac472f98b73a7a0" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install Weight="5" DescriptionId="SetupProgressPrecompilingBinaries" IsFatal="false">
+        <Standalone>
+          $fullPath = [System.IO.Path]::Combine($RoleInstallPath, "bin\microsoft.exchange.protectedservicehost.exe");
+          precompile-ManagedBinary -BinaryName  $fullPath;
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall Weight="5" DescriptionId="SetupProgressPrecompilingBinaries" IsFatal="false">
+        <Standalone>
+          $fullPath = [System.IO.Path]::Combine($RoleInstallPath, "bin\microsoft.exchange.protectedservicehost.exe");
+          precompile-ManagedBinary -BinaryName  $fullPath -Action uninstall;
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/remove Protected Service Host service -->
+    <ServerTaskInfo Id="_5710606e64524575b7fc2a72300a7ad9" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          if (!(get-service MSExchangeProtectedServiceHost* | where {$_.name -eq "MSExchangeProtectedServiceHost"}))
+          {
+            install-ProtectedServiceHost
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>uninstall-ProtectedServiceHost</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+  </ServerTasks>
+
+</SetupComponentInfo>
+

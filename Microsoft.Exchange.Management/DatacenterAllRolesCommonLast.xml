@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo IsDatacenterOnly="true" IsDatacenterDedicatedOnly="true" Name="Datacenter Common Configuration Last" AlwaysExecute="true">
+
+  <ServerTasks>
+
+    <!-- Create Exchange shares on datacenter exchange servers.  Also adjusts permissions on the IISLOGS share if it exists, for single-sign on -->
+    <ServerTaskInfo Id="_00f5561ae9694160ba0e44f5be7c80c6" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          &amp; "$RoleInstallPath\Scripts\SetExchangeShares.ps1" -InstallPath $RoleInstallPath -ForeignForestFQDN $RoleDatacenterManagementForestFQDN -TransportRoleLogRoot $RoleDatacenterTransportRoleLogRoot -CASRoleLogRoot $RoleDatacenterCASRoleLogRoot -InterceptorArchiveRoot $RoleDatacenterInterceptorArchiveRoot;
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery />
+      <Uninstall />
+    </ServerTaskInfo>
+
+
+    <!-- Start  MSMessageTracingClient if not disabled, after the log folder permission is set -->
+    <ServerTaskInfo Id="StartMessageTracingClientService" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup" ExcludeInDatacenterDedicated="true">
+      <Install>
+        <Standalone>
+          $MessageTracingClientService = Get-WmiObject -Query "Select StartMode From Win32_Service Where Name='MSMessageTracingClient'"
+          if($MessageTracingClientService -ne $null -and $MessageTracingClientService.StartMode -ne "Disabled")
+          {
+            start-SetupService -ServiceName MSMessageTracingClient
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="false" />
+      <DisasterRecovery />
+      <Uninstall />
+    </ServerTaskInfo>    
+
+    <!-- Sets the NMICrashDump value in the registry which will allow us to take crash dumps when a system is hard hung via the NMI button. -->
+    <ServerTaskInfo Id="_e6a3c1f363164fccae9225227e3628e6" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          $keyPath = "HKLM:\SYSTEM\CurrentControlSet\Control\CrashControl";
+          if (!(Get-Item $keyPath -ErrorAction SilentlyContinue)) { New-Item $keyPath -Force }
+          Set-ItemProperty -path $keyPath -name "NMICrashDump" -value 0x1 -Type DWORD -Force;
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="false" />
+      <DisasterRecovery />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- In Datacenter we want to ensure users who have logged onto servers get automatically logged off so that resources are not consumed. -->
+    <ServerTaskInfo Id="SettingRDPRegistryValuesforDatacenter" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Service Engineering">
+      <Install>
+        <Standalone>
+          if ($RoleDatacenterConfigureRdpOptions)
+          {
+              Write-ExchangeSetupLog -Info "Creating RDP session overrides for datacenter servers.  Idle Session set to one hour, Disconnected session set to 24 hours.";
+              if (!(test-path "Registry::HKLM\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp\UserOverride\Control Panel\Desktop"))
+              {
+                  new-item "Registry::HKLM\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp\UserOverride\Control Panel\Desktop" -Force
+              }
+              Set-ItemProperty "Registry::HKLM\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp" -Name fInheritMaxDisconnectionTime -Value 0x0 -Force            
+              Set-ItemProperty "Registry::HKLM\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp" -Name fInheritMaxIdleTime -Value 0x0 -Force
+              Set-ItemProperty "Registry::HKLM\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp" -Name MaxDisconnectionTime -Value ([TimeSpan]::FromDays(1).TotalMilliSeconds) -Force
+              Set-ItemProperty "Registry::HKLM\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp" -Name MaxIdleTime -Value ([TimeSpan]::FromHours(1).TotalMilliSeconds) -Force
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+      <!-- Sets the disable SSL 2.0 value in the registry which will prevent SSL connections from using the outdated protocol. -->
+      <ServerTaskInfo Id="SettingSSLRegistryValuesForDatacenter" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+          <Install>
+              <Standalone>
+                  $IsValid = Test-Path HKLM:"System\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\SSL 2.0\Server"
+                  if (!(Test-Path HKLM:"System\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\SSL 2.0\Server"))
+                  {
+                    New-Item -path hklm:"System\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\SSL 2.0" -ItemType key -Name Server -Force
+                  }
+                  Set-ItemProperty -Path hklm:"System\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\SSL 2.0\Server" -Name Enabled -Type DWORD -Value 0 -Force
+              </Standalone>
+          </Install>
+          <BuildToBuildUpgrade UseInstallTasks="false" />
+          <DisasterRecovery />
+          <Uninstall />
+      </ServerTaskInfo>
+
+      <!-- Windows Shellex icon handler mitigation. -->
+      <ServerTaskInfo Id="SettingKB2286198RegistryValueForDatacenter" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+          <Install>
+              <Standalone>
+                  <!--MS KB2286198: Windows Shell Shortcut Icon Parsing ....-->
+                  $keyPath = "Registry::HKEY_CLASSES_ROOT\lnkfile\shellex\IconHandler"
+                  Clear-ItemProperty -ErrorAction SilentlyContinue -path $keyPath -Name "(Default)" -Force
+              </Standalone>
+          </Install>
+          <BuildToBuildUpgrade UseInstallTasks="false" />
+          <DisasterRecovery />
+          <Uninstall />
+      </ServerTaskInfo>
+
+      <!-- Windows Loadlib mitigation. -->
+      <ServerTaskInfo Id="SettingKB2269637RegistryValueForDatacenter" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+          <Install>
+              <Standalone>
+                  <!--MS KB2269637: Insecure Library Loading Could Allow....-->
+                  $keyPath = "Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Session Manager"
+                  Set-ItemProperty -path $keyPath -name "CWDIllegalInDllSearch" -value 0x2 -Type DWORD -Force
+              </Standalone>
+          </Install>
+          <BuildToBuildUpgrade UseInstallTasks="false" />
+          <DisasterRecovery />
+          <Uninstall />
+      </ServerTaskInfo>
+
+      <!-- Disables the weak ciphers via registry key. -->
+      <ServerTaskInfo Id="SettingWeakCiphersRegistryValuesForDatacenter" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+          <Install>
+              <Standalone>
+                  $cipherPath = 'SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Ciphers'
+                  $HKLM =2147483650
+                  $comptuer = '.'
+                  $reg = [WMIClass]"ROOT\DEFAULT:StdRegProv"
+                  $Key = $cipherPath  + '\RC2 56/56'
+                  $results = $reg.CreateKey($HKLM,$key)
+                  $keyPath = 'hklm:' + $Key
+                  Set-ItemProperty -Path $keyPath -Name Enabled -Type DWORD -Value 0
+
+                  $Key = $cipherPath  + '\RC2 40/128'
+                  $results = $reg.CreateKey($HKLM,$key)
+                  $keyPath = 'hklm:' + $Key
+                  Set-ItemProperty -Path $keyPath -Name Enabled -Type DWORD -Value 0
+
+                  $Key = $cipherPath  + '\RC4 64/128'
+                  $results = $reg.CreateKey($HKLM,$key)
+                  $keyPath = 'hklm:' + $Key
+                  Set-ItemProperty -Path $keyPath -Name Enabled -Type DWORD -Value 0
+
+                  $Key = $cipherPath  + '\RC4 56/128'
+                  $results = $reg.CreateKey($HKLM,$key)
+                  $keyPath = 'hklm:' + $Key
+                  Set-ItemProperty -Path $keyPath -Name Enabled -Type DWORD -Value 0
+
+                  $Key = $cipherPath  + '\RC4 40/128'
+                  $results = $reg.CreateKey($HKLM,$key)
+                  $keyPath = 'hklm:' + $Key
+                  Set-ItemProperty -Path $keyPath -Name Enabled -Type DWORD -Value 0
+              </Standalone>
+          </Install>
+          <BuildToBuildUpgrade UseInstallTasks="false" />
+          <DisasterRecovery />
+          <Uninstall />
+      </ServerTaskInfo>
+
+      <!-- Microsoft Windows Remote Desktop Protocol Server Man-in-the-Middle Weakness mitigation. -->
+      <ServerTaskInfo Id="RDP-MITMMitigation" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+          <Install>
+              <Standalone>
+                  <!--RDP MITM mitigation ....-->
+                  $keyPath = "Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp"
+                  Set-ItemProperty -ErrorAction SilentlyContinue -Path $keyPath -Name Securitylayer -Type DWORD -Value 2
+              </Standalone>
+          </Install>
+          <BuildToBuildUpgrade UseInstallTasks="false" />
+          <DisasterRecovery />
+          <Uninstall />
+      </ServerTaskInfo>
+
+      <!-- Microsoft unquoted vulnerability mitigation -->
+      <ServerTaskInfo Id="UnquotedVulnerability" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+          <Install>
+              <Standalone>
+                  $servicesRegistryPath = "HKLM:\System\CurrentControlSet\Services"
+                  $impactedServices = @("c2wts", "MSExchangeFileUpload", "MSOfficeDataLoader", "VSPerfSrv");
+
+                  foreach($service in $impactedServices)
+                  {
+                      Write-ExchangeSetupLog -Info "Working on service $service";
+                      $serviceRegistryFullPath = Join-Path $servicesRegistryPath $service;
+
+                      $registryKeyValue = Get-ItemProperty $serviceRegistryFullPath -Name ImagePath -ErrorAction:SilentlyContinue;
+	
+                      if($registryKeyValue -ne $null)
+                      {
+                          if(!($registryKeyValue.ImagePath.StartsWith('"')))
+                          {
+                              $secureValue = '"' + $registryKeyValue.ImagePath + '"';
+
+                              Set-ItemProperty -Path $serviceRegistryFullPath -Name ImagePath -Value $secureValue
+
+                              Write-ExchangeSetupLog -Info "Changed ImagePath property to secure value $secureValue";
+                          }
+                          else
+                          {
+                              Write-ExchangeSetupLog -Info "ImagePath property was already secure.  Nothing changed.";
+                          }
+                      }
+                      else
+                      {
+                          Write-ExchangeSetupLog -Info "Service $service was not found on the machine";
+                      }
+                  }
+              </Standalone>
+          </Install>
+          <BuildToBuildUpgrade UseInstallTasks="true" />
+          <DisasterRecovery />
+          <Uninstall />
+      </ServerTaskInfo>
+
+      <!-- Microsoft Windows SMB Registry: Winlogon Cached Password Weakness Mitigation -->
+      <ServerTaskInfo Id="CachedPasswordWeaknessVulnerability" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+          <Install>
+              <Standalone>
+                  if (Test-Path "Registry::HKLM\Software\Microsoft\Windows NT\CurrentVersion\Winlogon")
+                  {
+                      Set-ItemProperty "Registry::HKLM\Software\Microsoft\Windows NT\CurrentVersion\Winlogon" -Name CachedLogonsCount -Value 0 -Force;
+                  }
+              </Standalone>
+          </Install>
+          <BuildToBuildUpgrade UseInstallTasks="true" />
+          <DisasterRecovery />
+          <Uninstall />
+      </ServerTaskInfo>
+	  
+	   <!-- Disable automatic Machine account password change -->
+      <ServerTaskInfo Id="DisableAutomaticPasswordChange" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+          <Install>
+              <Standalone>
+                  if (Test-Path "Registry::HKLM\SYSTEM\CurrentControlSet\Services\Netlogon\Parameters")
+                  {					  
+                      Set-ItemProperty "Registry::HKLM\SYSTEM\CurrentControlSet\Services\Netlogon\Parameters" -Name DisablePasswordChange -Value 1 -Force;
+                  }
+              </Standalone>
+          </Install>
+          <BuildToBuildUpgrade UseInstallTasks="true" />
+          <DisasterRecovery />
+          <Uninstall />
+      </ServerTaskInfo>
+
+      <!-- Microsoft Windows LM / NTLMv1 Authentication Enabled -->
+      <ServerTaskInfo Id="DisableNTLMv1" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+          <Install>
+              <Standalone>
+                  # Remove lmcompatibilitylevel
+                  $lmcompat = Get-ItemProperty -Path HKLM:\System\currentcontrolset\Control\Lsa -Name lmcompatibilitylevel -ErrorAction SilentlyContinue
+                  if ($lmcompat -ne $null)
+                  {
+                      Remove-ItemProperty -Path HKLM:\System\currentcontrolset\Control\Lsa -Name lmcompatibilitylevel -Force -ErrorAction SilentlyContinue
+                  }
+              </Standalone>
+          </Install>
+          <BuildToBuildUpgrade UseInstallTasks="true" />
+          <DisasterRecovery />
+          <Uninstall />
+      </ServerTaskInfo>
+  </ServerTasks>
+
+</SetupComponentInfo>

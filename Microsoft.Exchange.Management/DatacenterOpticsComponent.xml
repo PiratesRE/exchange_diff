@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo IsDatacenterOnly="true" IsDatacenterDedicatedOnly="true" Name="Datacenter Optics Configuration">
+  <ServerTasks>
+    <!-- Install/Uninstall the Exchange Upload service -->
+    <ServerTaskInfo Id="_9F90B587-FF6F-4E98-A4EB-75F8A73EFFD6" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Optics">
+      <Install>
+        <Standalone>
+              $loggingScript = {
+                Param(
+                  [String] $Message
+                )
+                Write-ExchangeSetupLog -Info $Message
+              }
+              
+              $localDataminingDeployment = join-path $env:SystemDrive "LocalFiles\Datacenter\Datamining\Deployment"
+              $sourceDataminingDeployment = join-path $RoleLanguagePacksPath "Datacenter\DataMining\Core\Deployment"
+              $sourceDataminingPath = join-path $RoleLanguagePacksPath "Datacenter\DataMining"
+              $targetDataminingPath = join-path $RoleInstallPath "Datacenter\DataMining"
+              $installScriptPath = join-path $localDataminingDeployment "Install-DataMining.ps1"
+              $configureScriptPath = join-path $localDataminingDeployment "Config-DataMiningUploader.ps1"
+              $certsPath = join-path $RoleLanguagePacksPath "Datacenter\Certs\PIIScrubing"
+
+              if((test-path $localDataminingDeployment) -eq $false)
+              {
+                 mkdir $localDataminingDeployment
+              }
+
+              copy -force $sourceDataminingDeployment\*.* $localDataminingDeployment
+              
+              &amp; "$installScriptPath" -SourcePath $sourceDataminingPath -TargetPath $targetDataminingPath -Uploader -OfficeDataLoader -LoggerOverride $loggingScript -CertsPath $certsPath
+              if ((Get-Command "$configureScriptPath").Parameters.ContainsKey("Region"))
+              {
+                &amp; "$configureScriptPath" -ConfigurationScope $RoleDatacenterBlackBoxScope -LoggerOverride $loggingScript -Region $RoleDatacenterTargetMachineRegion -IncludeOfficeDataLoader
+              }
+              else
+              {
+                &amp; "$configureScriptPath" -ConfigurationScope $RoleDatacenterBlackBoxScope -LoggerOverride $loggingScript -IncludeOfficeDataLoader
+              }
+
+              $traceFilePath = "D:\OfficeDataLoader"
+              if((Test-Path $traceFilePath) -eq $false)
+              {
+                  new-item -path $traceFilePath -type directory -force
+              }
+
+              logman create trace ODL_Trace -p "{c9ba221c-d677-535e-d460-6d2bea4cc8ff}" -o ([System.IO.Path]::Combine($traceFilePath, 'ODL_Trace.etl')) -f bincirc -max 50
+              logman start ODL_Trace
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>
+          if (get-service MSExchangeFileUpload* | where {$_.name -eq "MSExchangeFileUpload"})
+          {
+              Uninstall-ExchangeFileUploadService
+          }
+
+          if (get-service MSOfficeDataLoader* | where {$_.name -eq "MSOfficeDataLoader"})
+          {
+              Uninstall-OfficeDataLoaderService
+          }
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+  </ServerTasks>
+</SetupComponentInfo>

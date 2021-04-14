@@ -1,0 +1,157 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{09CD9476-CD82-489E-B9E2-84B47CA14116}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Microsoft.Exchange.Diagnostics.Service.ExchangeJobs</RootNamespace>
+    <AssemblyName>Microsoft.Exchange.Diagnostics.Service.ExchangeJobs</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Exchange.Diagnostics.Service" />
+    <Reference Include="Microsoft.Exchange.LogAnalyzer.Analyzers.CertificateLog" />
+    <Reference Include="Microsoft.Exchange.LogAnalyzer.Analyzers.PerfLog" />
+    <Reference Include="Microsoft.Exchange.LogAnalyzer.Core" />
+    <Reference Include="Microsoft.Exchange.LogAnalyzer.Extensions.Auditing" />
+    <Reference Include="Microsoft.Exchange.LogAnalyzer.Extensions.CertificateLog" />
+    <Reference Include="Microsoft.Exchange.LogAnalyzer.Extensions.CmdletInfraLog" />
+    <Reference Include="Microsoft.Exchange.LogAnalyzer.Extensions.EwsLog" />
+    <Reference Include="Microsoft.Exchange.LogAnalyzer.Extensions.GroupEscalationLog" />
+    <Reference Include="Microsoft.Exchange.LogAnalyzer.Extensions.HttpProxyLog" />
+    <Reference Include="Microsoft.Exchange.LogAnalyzer.Extensions.HxServiceLog" />
+    <Reference Include="Microsoft.Exchange.LogAnalyzer.Extensions.IisLog" />
+    <Reference Include="Microsoft.Exchange.LogAnalyzer.Extensions.MigrationLog" />
+    <Reference Include="Microsoft.Exchange.LogAnalyzer.Extensions.OAuthCafeLog" />
+    <Reference Include="Microsoft.Exchange.LogAnalyzer.Extensions.OutlookServiceLog" />
+    <Reference Include="Microsoft.Exchange.LogAnalyzer.Extensions.OwaLog" />
+    <Reference Include="Microsoft.Exchange.LogAnalyzer.Extensions.PerfLog" />
+    <Reference Include="Microsoft.Exchange.LogAnalyzer.Extensions.PFAssistantLog" />
+    <Reference Include="Microsoft.Exchange.LogAnalyzer.Extensions.Rca" />
+    <Reference Include="Microsoft.Exchange.LogAnalyzer.Extensions.Store" />
+    <Reference Include="Microsoft.Exchange.LogAnalyzer.Extensions.TransportSyncHealthLog" />
+    <Reference Include="Microsoft.Web.Administration" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.DirectoryServices" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Analyzers\LoadBalancerAggregatorAnalyzer.cs" />
+    <Compile Include="CalculatedCounters\ClrGCCalculatedCounters.cs" />
+    <Compile Include="CalculatedCounters\DatabaseMountedBitmapCalculatedCounter.cs" />
+    <Compile Include="CalculatedCounters\DiskFreeSpaceCalculatedCounter.cs" />
+    <Compile Include="CalculatedCounters\MailboxDatabaseCalculatedCounters.cs" />
+    <Compile Include="CalculatedCounters\UnhealthyDatabaseCountCalculatedCounter.cs" />
+    <Compile Include="Common\MailboxDatabase.cs" />
+    <Compile Include="Common\TraceUploaderAgent.cs" />
+    <Compile Include="ConfigurationOverrides.cs" />
+    <Compile Include="Etw\EtwTraceCollector.cs" />
+    <Compile Include="Etw\EtwTraceNativeComponents.cs" />
+    <Compile Include="Etw\GCPerHeapHistoryTraceEvent.cs" />
+    <Compile Include="Etw\GCPrivateEventsParser.cs" />
+    <Compile Include="Etw\Gens.cs" />
+    <Compile Include="Etw\IParser.cs" />
+    <Compile Include="Etw\TraceEvent.cs" />
+    <Compile Include="EventLogger.cs" />
+    <Compile Include="Inference\ClassificationSLACounter.cs" />
+    <Compile Include="Inference\ClassificationSLATrigger.cs" />
+    <Compile Include="Inference\CounterNames.cs" />
+    <Compile Include="Inference\CounterValueHistory.cs" />
+    <Compile Include="Inference\MultiInstanceFailurePercentageCalculatedCounter.cs" />
+    <Compile Include="Inference\TrainingFailurePercentageCounter.cs" />
+    <Compile Include="Inference\TrainingFailurePercentageTrigger.cs" />
+    <Compile Include="Jobs.cs" />
+    <Compile Include="OwaClientLogOutputStream.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Triggers\ActiveMonitoringSchedulingLatencyTrigger.cs" />
+    <Compile Include="Triggers\BootloaderOutstandingItemsTrigger.cs" />
+    <Compile Include="Triggers\CASRoutingFailureTrigger.cs" />
+    <Compile Include="Triggers\CASRoutingLatencyTrigger.cs" />
+    <Compile Include="Triggers\CASTriggerBase.cs" />
+    <Compile Include="Triggers\DatabaseDiskReadLatencyTrigger.cs" />
+    <Compile Include="Triggers\DatabaseLogicalPhysicalSizeRatioTrigger.cs" />
+    <Compile Include="Triggers\DraPendingReplicationTrigger.cs" />
+    <Compile Include="Triggers\DsNotificationQueueTrigger.cs" />
+    <Compile Include="Triggers\E2ETransportLatencyHighTrigger.cs" />
+    <Compile Include="Triggers\E2ETransportLatencyLowTrigger.cs" />
+    <Compile Include="Triggers\ExchangeCertificateLogTrigger.cs" />
+    <Compile Include="Triggers\LogicalDiskFreeMegabytesTrigger.cs" />
+    <Compile Include="Triggers\MessagesCompletingCategorizationTrigger.cs" />
+    <Compile Include="Triggers\OAuthAcsTimeoutTrigger.cs" />
+    <Compile Include="Triggers\OAuthRequestFailureTrigger.cs" />
+    <Compile Include="Triggers\OutStandingATQRequestsTrigger.cs" />
+    <Compile Include="Triggers\Search\FastNumDiskPartsTrigger.cs" />
+    <Compile Include="Triggers\ServerDiskLatencyTrigger.cs" />
+    <Compile Include="Triggers\StoreNumberOfActiveBackgroundTasksTrigger.cs" />
+    <Compile Include="Triggers\StorePercentRpcRequestsTrigger.cs" />
+    <Compile Include="Triggers\StoreQuarantinedMailboxCountTrigger.cs" />
+    <Compile Include="Triggers\StoreRpcAverageLatencyTrigger.cs" />
+    <Compile Include="Triggers\StoreVersionBucketsAllocatedTrigger.cs" />
+    <Compile Include="Triggers\TransportGatedTrigger.cs" />
+    <Compile Include="Triggers\TransportMessagesDeferredDuringCategorizationTrigger.cs" />
+    <Compile Include="Triggers\TransportOverThresholdGatedTrigger.cs" />
+    <Compile Include="Triggers\TransportUnderThresholdGatedTrigger.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.Exchange.Common\Microsoft.Exchange.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140F0}</Project>
+      <Name>Microsoft.Exchange.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Diagnostics.Service.Common\Microsoft.Exchange.Diagnostics.Service.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14115}</Project>
+      <Name>Microsoft.Exchange.Diagnostics.Service.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Diagnostics\Microsoft.Exchange.Diagnostics.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14113}</Project>
+      <Name>Microsoft.Exchange.Diagnostics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.LogAnalyzer.Extensions.OABDownloadLog\Microsoft.Exchange.LogAnalyzer.Extensions.OABDownloadLog.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14141}</Project>
+      <Name>Microsoft.Exchange.LogAnalyzer.Extensions.OABDownloadLog</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.StoreProvider\Microsoft.Exchange.StoreProvider.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141B9}</Project>
+      <Name>Microsoft.Exchange.StoreProvider</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Office.Datacenter.ActiveMonitoringLocal\Microsoft.Office.Datacenter.ActiveMonitoringLocal.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141ED}</Project>
+      <Name>Microsoft.Office.Datacenter.ActiveMonitoringLocal</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\mscorlib\mscorlib.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141F1}</Project>
+      <Name>mscorlib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

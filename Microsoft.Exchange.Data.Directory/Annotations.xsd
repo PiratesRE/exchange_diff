@@ -1,0 +1,487 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema
+    elementFormDefault="qualified"
+    targetNamespace="http://schemas.microsoft.com/online/directoryservices/annotations/2008/06"
+    xmlns:ser="http://schemas.microsoft.com/2003/10/Serialization/"
+    xmlns:tns="http://schemas.microsoft.com/online/directoryservices/annotations/2008/06"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <xs:simpleType name="FunctionalLevel">
+    <xs:annotation>
+      <xs:documentation>
+        Functional level of the directory service.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="V20Beta">
+        <xs:annotation>
+          <xs:documentation>
+            Functional level in version 2.0 beta (~2010/10).
+          </xs:documentation>
+          <xs:appinfo>
+            <ser:EnumerationValue>0</ser:EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="V20PB">
+        <xs:annotation>
+          <xs:documentation>
+            Functional level in version 2.0 Public Beta (~2011/04).
+          </xs:documentation>
+          <xs:appinfo>
+            <ser:EnumerationValue>1</ser:EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="V20GeneralAvailability">
+        <xs:annotation>
+          <xs:documentation>
+            Functional level in version 2.0 General Availability (~2011/06).
+          </xs:documentation>
+          <xs:appinfo>
+            <ser:EnumerationValue>2</ser:EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="V21Edf2">
+        <xs:annotation>
+          <xs:documentation>
+            Functional level in version 2.1 EDF2 (~2011/08).
+          </xs:documentation>
+          <xs:appinfo>
+            <ser:EnumerationValue>3</ser:EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="V21Edf5">
+        <xs:annotation>
+          <xs:documentation>
+            Functional level in version 2.1 EDF5 (~2011/11).
+          </xs:documentation>
+          <xs:appinfo>
+            <ser:EnumerationValue>4</ser:EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="V22Edf6">
+        <xs:annotation>
+          <xs:documentation>
+            Functional level in version 2.2 EDF6 (~2012/2).
+          </xs:documentation>
+          <xs:appinfo>
+            <ser:EnumerationValue>5</ser:EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="V22Edf7">
+        <xs:annotation>
+          <xs:documentation>
+            Functional level in version 2.2 EDF7 (~2012/3).
+          </xs:documentation>
+          <xs:appinfo>
+            <ser:EnumerationValue>6</ser:EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="V22Edf8">
+        <xs:annotation>
+          <xs:documentation>
+            Functional level in version 2.2 EDF8 (~2012/4).
+          </xs:documentation>
+          <xs:appinfo>
+            <ser:EnumerationValue>7</ser:EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="V22Edf9">
+        <xs:annotation>
+          <xs:documentation>
+            Functional level in version 2.2 EDF9 (~2012/6).
+          </xs:documentation>
+          <xs:appinfo>
+            <ser:EnumerationValue>8</ser:EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="V22Edf10">
+        <xs:annotation>
+          <xs:documentation>
+            Functional level in version 2.2 EDF10 (~2012/8).
+          </xs:documentation>
+          <xs:appinfo>
+            <ser:EnumerationValue>9</ser:EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Fall12M2">
+        <xs:annotation>
+          <xs:documentation>
+            Functional level in Fall 2012 M2 (~2012/10).
+          </xs:documentation>
+          <xs:appinfo>
+            <ser:EnumerationValue>10</ser:EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Winter12M3">
+        <xs:annotation>
+          <xs:documentation>
+            Functional level in Winter 2012 M3 (~2012/12).
+          </xs:documentation>
+          <xs:appinfo>
+            <ser:EnumerationValue>11</ser:EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Spring13M5">
+        <xs:annotation>
+          <xs:documentation>
+            Functional level in Spring 2013 M5 (~2013/3).
+          </xs:documentation>
+          <xs:appinfo>
+            <ser:EnumerationValue>12</ser:EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Summer13M7">
+        <xs:annotation>
+          <xs:documentation>
+            Functional level in Summer 2013 M7 (~2013/6).
+          </xs:documentation>
+          <xs:appinfo>
+            <ser:EnumerationValue>13</ser:EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Summer13M8">
+        <xs:annotation>
+          <xs:documentation>
+            Functional level in Summer 2013 M8 (~2013/7).
+          </xs:documentation>
+          <xs:appinfo>
+            <ser:EnumerationValue>14</ser:EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Summer13M9">
+        <xs:annotation>
+          <xs:documentation>
+            Functional level in Summer 2013 M9 (~2013/8).
+          </xs:documentation>
+          <xs:appinfo>
+            <ser:EnumerationValue>15</ser:EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Fall13M10">
+        <xs:annotation>
+          <xs:documentation>
+            Functional level in Fall 2013 M10 (~2013/11).
+          </xs:documentation>
+          <xs:appinfo>
+            <ser:EnumerationValue>16</ser:EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Winter14M5">
+        <xs:annotation>
+          <xs:documentation>
+            Functional level in Winter 2014, FY14-M5 (~2014/02).
+          </xs:documentation>
+          <xs:appinfo>
+            <ser:EnumerationValue>17</ser:EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Spring14M7">
+        <xs:annotation>
+          <xs:documentation>
+            Functional level in Spring 2014, FY14-M7 (~2014/05).
+          </xs:documentation>
+          <xs:appinfo>
+            <ser:EnumerationValue>18</ser:EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Minimum">
+        <xs:annotation>
+          <xs:documentation>
+            Minimum functional level supported by this version of the software.
+          </xs:documentation>
+          <xs:appinfo>
+            <ser:EnumerationValue>2</ser:EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Maximum">
+        <xs:annotation>
+          <xs:documentation>
+            Maximum known functional level in the current environment.
+          </xs:documentation>
+          <xs:appinfo>
+            <ser:EnumerationValue>18</ser:EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  
+  <xs:attribute name="required" type="xs:boolean" fixed="true">
+    <xs:annotation>
+      <xs:documentation>
+        When appearing in a property element in an object class definition, indicates that objects
+        of the class must have one or more values for the property.  Because only updated properties
+        of an object are synchronized, this does not imply that the object change always specifies
+        values for the property -- only that once the receiver applies the change to its local
+        state, the resulting object is guaranteed to have one or more values for the property.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:attribute>
+
+  <xs:attribute name="immutable" type="xs:boolean" fixed="true">
+    <xs:annotation>
+      <xs:documentation>
+        When appearing in a property element in an object class definition, indicates that the
+        values of the property do not change over the lifetime of the object.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:attribute>
+
+  <xs:attribute name="name" type="xs:string">
+    <xs:annotation>
+      <xs:documentation>
+        "Friendly" name.  If not specified, the name of the global type or element is used as
+        the friendly name.
+
+        The friendly name is utilized by DSCodeGen to determine the name of the corresponding CLR
+        types, properties, and enum literals.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:attribute>
+
+  <xs:attribute name="ldapName" type="xs:string">
+    <xs:annotation>
+      <xs:documentation>
+        When appearing in a property or link class definition, indicates the equivalent LDAP
+        attribute name in the MSO DS Active Directory.
+
+        When appearing in an object class definition, indicates the equivalent LDAP object class in
+        the MSO DS Active Directory.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:attribute>
+
+  <xs:attribute name="ldapMetadataName" type="xs:string">
+    <xs:annotation>
+      <xs:documentation>
+        When appearing in a property or link class definition, specifies the name of the LDAP
+        attribute containing multi-authority metadata, if any.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:attribute>
+
+  <xs:attribute name="ldapGlobalIndexMinLevel" type="tns:FunctionalLevel">
+    <xs:annotation>
+      <xs:documentation>
+        When appearing in a property definition, indicates that the property is associated with
+        an LDAP global index, and its value indicates the minimum FunctionalLevel required to
+        perform a search that uses the global index.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:attribute>
+
+  <xs:attribute name="ldapContainerIndexMinLevel" type="tns:FunctionalLevel">
+    <xs:annotation>
+      <xs:documentation>
+        When appearing in a property definition, indicates that the property is associated with
+        an LDAP container index, and its value indicates the minimum FunctionalLevel required to
+        perform a search that uses the container index.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:attribute>
+
+  <xs:attribute name="ldapPreserveOnTombstoneMinLevel" type="tns:FunctionalLevel">
+    <xs:annotation>
+      <xs:documentation>
+        When appearing in a property definition, indicates that the property will be maintained
+        on the LDAP tombstone object when the object is deleted, and its value indicates the 
+        minimum FunctionalLevel required to guarantee preservation.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:attribute>
+
+  <xs:attribute name="enumType" type="xs:string">
+    <xs:annotation>
+      <xs:documentation>
+        When appearing in a property definition of Int32 syntax, indicates the name of the
+        corresponding .NET enum type.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:attribute>
+
+  <xs:attribute name="enumValue" type="xs:int">
+    <xs:annotation>
+      <xs:documentation>
+        When appearing in a property, object class, or link class definition, specifies the unique
+        value of the corresponding .NET enum constant.  This value is never changed or reused in
+        future revisions of the DS schema, making it a version-safe key.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:attribute>
+
+  <xs:attribute name="syncDirection">
+    <xs:annotation>
+      <xs:documentation>
+        When appearing in a property, object class, or link class definition, indicates whether
+        its instances are synchronized forward to federated services, back from federated services,
+        both, or not at all.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:simpleType>
+      <xs:restriction base="xs:string">
+        <xs:enumeration value="forward" />
+        <xs:enumeration value="backward" />
+        <xs:enumeration value="both" />
+        <xs:enumeration value="none" />
+      </xs:restriction>
+    </xs:simpleType>
+  </xs:attribute>
+
+  <xs:attribute name="internal" type="xs:boolean" fixed="true">
+    <xs:annotation>
+      <xs:documentation>
+        Indicates the XML schema element and its child nodes should not appear in the version
+        published to federated services.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:attribute>
+
+  <xs:attribute name="unique" type="xs:boolean" fixed="true">
+    <xs:annotation>
+      <xs:documentation>
+        When appearing in a property definition, indicates that the directory makes a best effort to
+        ensure that values of the property are distinct across all objects, except for the Company object,
+        in the same context. Because of limitation to the directory store, uniqueness check is preformed
+        only on data not longer than 240 bytes, or 120 Unicode characters.
+        
+        Uniqueness is never guaranteed.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:attribute>
+
+  <xs:attribute name="obsolete" type="xs:boolean" fixed="true">
+    <xs:annotation>
+      <xs:documentation>
+        Indicates a definition is obsolete and will be removed in a future revision.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:attribute>
+
+  <xs:attribute name="backLinkLdapName" type="xs:string">
+    <xs:annotation>
+      <xs:documentation>
+        When appearing in a link class definition, indicates the LDAP attribute name of the
+        back link in the MSO DS Active Directory.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:attribute>
+
+  <xs:attribute name="subsets">
+    <xs:annotation>
+      <xs:documentation>
+        When appearing in a property, object class, or link class definition, specifies a list of
+        named schema subsets of which it is a member.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:simpleType>
+      <xs:list itemType="xs:NCName" />
+    </xs:simpleType>
+  </xs:attribute>
+
+  <xs:attribute name="syncBase">
+    <xs:annotation>
+      <xs:documentation>
+        When appearing in an xs:restriction, specifies the qualified name to substitute as the
+        value of the base attribute when creating the external XML Schema.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:simpleType>
+      <xs:list itemType="xs:QName" />
+    </xs:simpleType>
+  </xs:attribute>
+
+  <xs:attribute name="singleValued" type="xs:boolean" fixed="true">
+    <xs:annotation>
+      <xs:documentation>
+        When appearing in a link class definition, indicates whether the link class allows at
+        most one link.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:attribute>
+    
+  <xs:attribute name="systemOnly" type="xs:boolean" fixed="true">
+    <xs:annotation>
+      <xs:documentation>
+        When appearing in a property, indicates that the value(s) can be modified only by the directory.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:attribute>
+
+  <xs:attribute name="caseSensitive" type="xs:boolean" fixed="true">
+    <xs:annotation>
+      <xs:documentation>
+        When appearing in a property, indicates that the value(s) is/are case-sensitive.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:attribute>
+
+  <xs:attribute name="linkProperty" type="xs:boolean" fixed="true">
+    <xs:annotation>
+      <xs:documentation>
+        When appearing in a property, indicates that the value(s) belong to a directory link 
+        as opposed to a directory object.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:attribute>
+
+  <xs:attribute name="targetReferenceName" type="xs:string">
+    <xs:annotation>
+      <xs:documentation>
+        When appearing in a link class definition, indicates the name of the DirectoryReference type 
+        to be used for the directory link target.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:attribute>
+
+  <xs:attribute name="restrictedSync" type="xs:boolean" fixed="true">
+    <xs:annotation>
+      <xs:documentation>
+        When appearing in a property definition, SyncWS will constrain synchronization of this property to 
+        pre-configured services only.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:attribute>
+
+  <xs:attribute name="objectKeys">
+    <xs:annotation>
+      <xs:documentation>
+        When appearing in an object class, specifies a list of sets of properties. The values of properties in each set,
+        considered together, must be unique across all objects of the same class within the same context. Each property 
+        must have the required, immutable and singleValued attributes set to true.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:simpleType>
+      <xs:list itemType="xs:string" />
+    </xs:simpleType>
+  </xs:attribute>
+
+  <xs:attribute name="availableInForwardSyncFrom" type="xs:int">
+    <xs:annotation>
+      <xs:documentation>
+        When appearing in a property, object class, or link class definition, specifies the earliest
+        sync schema version that is supported to forward sync the current value.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:attribute>
+  
+</xs:schema>

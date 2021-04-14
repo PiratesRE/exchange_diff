@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo IsDatacenterOnly="true" DatacenterMode="Ffo" Name="Datacenter Exchange Streaming Optics Component">
+  <ServerTasks>
+    <!-- Install/uninstall "MSExchangeStreamingOptics, stop the service and start after log folder permission is set" -->
+    <ServerTaskInfo Id="_44F6660C-1FAF-47A8-875F-61CEDF20E67E" Component="Office15:\Current\Forefront for Office Datacenter\Deployment and Configuration Management\Deployment">
+      <Install>
+        <Standalone>
+          if (!(get-service MSExchangeStreamingOptics* | where {$_.name -eq "MSExchangeStreamingOptics"}))
+          {
+            Install-ExchangeStreamingOptics
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>
+            Uninstall-ExchangeStreamingOptics
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+  </ServerTasks>
+</SetupComponentInfo>
+

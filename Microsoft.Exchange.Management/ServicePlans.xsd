@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- ********************************************************
+      PLEASE ADD ELEMENTS IN GROUPS/ALPHABETICAL ORDER
+     ********************************************************
+-->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="Configuration">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Organization" minOccurs="1" maxOccurs="1">
+          <xs:complexType>
+            <xs:sequence>
+              <!-- Global Elements -->
+              <xs:element name="AcceptedDomains" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+              <xs:element name="AddressListsEnabled" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+              <xs:element name="AdvancedHydrateableObjectsSharedEnabled" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+              <xs:element name="AllowDeleteOfExternalIdentityUponRemove" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+              <xs:element name="ApplicationImpersonationEnabled" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+              <xs:element name="ApplicationImpersonationRegularRoleAssignmentEnabled" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+              <xs:element name="AutoForwardEnabled" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+              <xs:element name="AutoReplyEnabled" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+              <xs:element name="CalendarVersionStoreEnabled" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+              <xs:element name="CommonConfiguration" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+              <xs:element name="CommonHydrateableObjectsSharedEnabled" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+              <xs:element name="DataLossPreventionEnabled" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+              <xs:element name="DeviceFiltersSetupEnabled" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+              <xs:element name="ExchangeHostedFilteringAdminCenterAvailabilityEnabled" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+              <xs:element name="ExchangeHostedFilteringPerimeterEnabled" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+              <xs:element name="EXOCoreFeatures" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+              <xs:element name="FastRecipientCountingDisabled" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+              <xs:element name="GALSyncEnabled" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+              <xs:element name="HideAdminAccessWarningEnabled" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+              <xs:element name="HostedSpamFilteringPolicyCustomizationEnabled" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+              <xs:element name="MSOSyncEnabled" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+              <xs:element name="LicenseEnforcementEnabled" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+              <xs:element name="MailboxImportExportRegularRoleAssignmentEnabled" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+              <xs:element name="MailTipsEnabled" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+              <xs:element name="MalwareFilteringPolicyCustomizationEnabled" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+              <xs:element name="MessageTrace" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+              <xs:element name="MultiEngineAVEnabled" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+              <xs:element name="OfflineAddressBookEnabled" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+              <xs:element name="OpenDomainRoutingEnabled" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="AddOutlookAcceptedDomains" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+              <xs:element name="OwaInstantMessagingType" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="PerimeterSafelistingUIMode" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="PerMBXPlanOWAPolicyEnabled" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+              <xs:element name="PerMBXPlanRetentionPolicyEnabled" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+              <xs:element name="PerMBXPlanRoleAssignmentPolicyEnabled" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+              <xs:element name="PermissionManagementEnabled" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+              <xs:element name="PilotEnabled" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+              <xs:element name="PrivacyLink" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="PublicFoldersEnabled" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+              <xs:element name="QuarantineEnabled" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+              <xs:element name="ReducedOutOfTheBoxMrmTagsEnabled" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+              <xs:element name="SearchMessageEnabled" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+              <xs:element name="ServiceConnectors" type="xs:boolean" minOccurs="0" maxOccurs="1" />              
+              <xs:element name="ShareableConfigurationEnabled" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+              <xs:element name="SkipToUAndParentalControlCheckEnabled" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+              <xs:element name="SMTPAddressCheckWithAcceptedDomainEnabled" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+              <xs:element name="SupervisionEnabled" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+              <xs:element name="SyncAccountsEnabled" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+              <xs:element name="TemplateTenant" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+              <xs:element name="TransportRulesCollectionsEnabled" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+              <xs:element name="UseServicePlanAsCounterInstanceName" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+              <xs:element name="RIMRoleGroupEnabled" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+
+              <!-- Permission Elements -->
+              <xs:element name="ActiveSyncDeviceDataAccessPermissions" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+              <xs:element name="ActiveSyncPermissions" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+              <xs:element name="AddressBookPolicyPermissions" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+              <xs:element name="AddSecondaryDomainPermissions" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+              <xs:element name="ArchivePermissions" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+              <xs:element name="ChangeMailboxPlanAssignmentPermissions" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+              <xs:element name="ConfigCustomizationsPermissions" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+              <xs:element name="EwsPermissions" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+              <xs:element name="ExchangeMigrationPermissions" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+              <xs:element name="GroupAsGroupSyncPermissions" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+              <xs:element name="HotmailMigrationPermissions" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+              <xs:element name="HotmailSyncPermissions" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+              <xs:element name="ImapMigrationPermissions" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+              <xs:element name="ImapPermissions" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+              <xs:element name="ImapSyncPermissions" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+              <xs:element name="IRMPremiumFeaturesPermissions" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+              <xs:element name="JournalingRulesPermissions" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+              <xs:element name="LitigationHoldPermissions" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+              <xs:element name="MOWADeviceDataAccessPermissions" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+              <xs:element name="MSOIdPermissions" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+              <xs:element name="MailboxQuotaPermissions" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+              <xs:element name="MailboxSIRPermissions" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+              <xs:element name="MailboxRecoveryPermissions" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+              <xs:element name="MailTipsPermissions" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+              <xs:element name="ManagedFoldersPermissions" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+              <xs:element name="MessageTrackingPermissions" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+              <xs:element name="ModeratedRecipientsPermissions" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+              <xs:element name="NewUserPasswordManagementPermissions" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+              <xs:element name="NewUserResetPasswordOnNextLogonPermissions" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+              <xs:element name="OpenDomainProfileUpdatePermissions" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+              <xs:element name="OrganizationalAffinityPermissions" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+              <xs:element name="OutlookAnywherePermissions" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+              <xs:element name="OWAMailboxPolicyPermissions" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+              <xs:element name="OWAPermissions" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+              <xs:element name="PopPermissions" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+              <xs:element name="PopSyncPermissions" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+              <xs:element name="ProfileUpdatePermissions" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+              <xs:element name="RBACManagementPermissions" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+              <xs:element name="RecipientManagementPermissions" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+              <xs:element name="ResetUserPasswordManagementPermissions" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+              <xs:element name="RoleAssignmentPolicyPermissions" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+              <xs:element name="SearchMessagePermissions" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+              <xs:element name="SetHiddenFromAddressListPermissions" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+              <xs:element name="TeamMailboxPermissions" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+              <xs:element name="SMSPermissions" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+              <xs:element name="SupervisionPermissions" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+              <xs:element name="TransportRulesPermissions" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+              <xs:element name="UMAutoAttendantPermissions" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+              <xs:element name="UMCloudServicePermissions" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+              <xs:element name="UMFaxPermissions" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+              <xs:element name="UMOutDialingPermissions" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+              <xs:element name="UMPBXPermissions" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+              <xs:element name="UMPermissions" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+              <xs:element name="UMPersonalAutoAttendantPermissions" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+              <xs:element name="UMSMSMsgWaitingPermissions" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+              <xs:element name="UserLiveIdManagementPermissions" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+              <xs:element name="UserMailboxAccessPermissions" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+              <xs:element name="SoftDeletedFeatureManagementPermissions" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+
+              <!-- Quota Elements (Always Required)-->
+              <xs:element name="ContactCountQuota" type="xs:string" minOccurs="1" maxOccurs="1" />
+              <xs:element name="DistributionListCountQuota" type="xs:string" minOccurs="1" maxOccurs="1" />
+              <xs:element name="MailboxCountQuota" type="xs:string" minOccurs="1" maxOccurs="1" />
+              <xs:element name="MailPublicFolderCountQuota" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="MailUserCountQuota" type="xs:string" minOccurs="1" maxOccurs="1" />
+              <xs:element name="PublicFolderMailboxCountQuota" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="RecipientMailSubmissionRateQuota" type="xs:string" minOccurs="1" maxOccurs="1" />
+              <xs:element name="TeamMailboxCountQuota" type="xs:string" minOccurs="0" maxOccurs="1" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="MailboxPlans" minOccurs="1" maxOccurs="1">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="MailboxPlan" minOccurs="1" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:sequence>
+                    <!-- Boolean Elements -->
+                    <xs:element name="ActiveSyncEnabled" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="EwsEnabled" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="ImapEnabled" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="MOWAEnabled" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="OrganizationalQueryBaseDNEnabled" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="OutlookAnywhereEnabled" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="PopEnabled" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="ShowInAddressListsEnabled" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="SingleItemRecoveryEnabled" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="SkipResetPasswordOnFirstLogonEnabled" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="SyncAccountsEnabled" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="SyncAccountsSyncNowEnabled" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+
+                    <!-- Enum Elements -->
+                    <xs:element name="SkuCapability" type="xs:string" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="UMEnabled" type="xs:string" minOccurs="0" maxOccurs="1" />
+
+                    <!-- Permission Elements -->
+                    <xs:element name="ActiveSyncDeviceDataAccessPermissions" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="ActiveSyncPermissions" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="AutoGroupPermissions" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="EXOCoreFeatures" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="HotmailSyncPermissions" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="ImapPermissions" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="ImapSyncPermissions" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="MailTipsPermissions" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="MessageTrackingPermissions" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="ModeratedRecipientsPermissions" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="MOWADeviceDataAccessPermissions" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="OpenDomainProfileUpdatePermissions" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="OrganizationalAffinityPermissions" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="PopPermissions" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="PopSyncPermissions" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="ProfileUpdatePermissions" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="ResetUserPasswordManagementPermissions" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="TeamMailboxPermissions" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="SMSPermissions" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="UMCloudServicePermissions" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="UMPermissions" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="UMSMSMsgWaitingPermissions" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="UserMailboxAccessPermissions" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="ViewSupervisionListPermissions" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+
+                    <!-- Quotas Elements -->
+                    <xs:element name="MaxReceiveTransportQuota" type="xs:string" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="MaxRecipientsTransportQuota" type="xs:short" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="MaxSendTransportQuota" type="xs:string" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="ProhibitSendReceiveMaiboxQuota" type="xs:string" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="SyncAccountsMaxAccountsQuota" type="xs:byte" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="ArchiveQuota" type="xs:string" minOccurs="0" maxOccurs="1" />
+
+                    <!-- TimeSpan Elements -->
+                    <xs:element name="SyncAccountsPollingInterval" type="xs:string" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="SyncAccountsTimeBeforeDormant" type="xs:string" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="SyncAccountsTimeBeforeInactive" type="xs:string" minOccurs="0" maxOccurs="1" />
+                  </xs:sequence>
+                  <xs:attribute name="Name" use="required"  type="xs:string" />
+                  <xs:attribute name="MailboxPlanIndex" use="required" type="xs:byte"/>
+                  <xs:attribute name="ProvisionAsDefault" type="xs:boolean"/>
+                  <xs:attribute name="IsPilotMailboxPlan" type="xs:boolean"/>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+      <xs:attribute name="Version" use="optional" type="xs:decimal"/>
+      <xs:attribute name="Name" use="optional" type="xs:string"/>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

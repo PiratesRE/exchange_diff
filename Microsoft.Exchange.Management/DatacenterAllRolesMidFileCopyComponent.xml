@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo IsDatacenterOnly="true" IsDatacenterDedicatedOnly="true" Name="Datacenter All Roles MidFileCopy">
+
+  <ServerTasks>
+
+    <!-- Only upgrade mode is used by the binding tasks-->
+
+    <ServerTaskInfo Id="_a246d37d6b1140b8a32d2564949752be" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install />
+
+      <BuildToBuildUpgrade>
+        <!--# Forcefully remove the management binary if it exists.-->
+        <!-- The dll would be in use, so we first copy the file to a temp file and then do a Pinvoke call to Win32 API function MoveFileEx. -->
+        <!-- MoveFileEx(string srcfile,string $null,MoveFileFlag MOVEFILE_DELAY_UNTIL_REBOOT) in kernel32.dll is the Win32 API call we make to ensure that the dll gets removed on reboot.-->
+        <!-- This is a workaround for some binaries being marked as permanent in MSI. -->
+        <Standalone>
+          $RoleInstallPath = "$env:SystemDrive\Program Files\Microsoft\Exchange Server\v15\Bin";
+
+          Get-ChildItem $RoleInstallPath -Recurse -Include "*.dll","*.exe" |
+          %{$_.FullName} |
+          %{
+            $originalPath = $_;
+            $pathToDelete = "$originalPath.$([Guid]::NewGuid())";
+
+            Move-Item  $originalPath $pathToDelete -Force -ErrorAction SilentlyContinue;
+            if (Test-Path $originalPath) {$pathToDelete = $originalPath}
+
+            $domain = [AppDomain]::CurrentDomain;
+            $name = New-Object Reflection.AssemblyName 'DynamicAssembly';
+            $assembly = $domain.DefineDynamicAssembly($name, 'Run');
+            $module = $assembly.DefineDynamicModule('DynamicModule');
+            $type = $module.DefineType('DynamicType');
+
+            [Type[]]$parameterTypes = [string], [string], [int64];
+            $method = $type.DefineMethod("MoveFileEx", 'Public,Static,PinvokeImpl', [bool], $parameterTypes) ;
+
+            $ctor = [Runtime.InteropServices.DllImportAttribute].GetConstructor([string]);
+            $attr = New-Object Reflection.Emit.CustomAttributeBuilder $ctor, 'kernel32';
+            $method.SetCustomAttribute($attr) ;
+            $realType = $type.CreateType() ;
+            [object[]]$args = [string]$pathToDelete, $null, [int64]4;
+            $realType.InvokeMember('MoveFileEx', 'Public,Static,InvokeMethod', $null,$null, $args) ;
+          }
+        </Standalone>
+      </BuildToBuildUpgrade>
+
+      <DisasterRecovery />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <ServerTaskInfo Id="FailIfRebootRequired" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install />
+
+      <BuildToBuildUpgrade>
+        <Standalone>
+          $RoleInstallPath = "$env:SystemDrive\Program Files\Microsoft\Exchange Server\v15\Bin";
+
+          if (Get-ChildItem $RoleInstallPath -Recurse -Include "*.dll","*.exe")
+          {
+            Write-ExchangeSetupLog -Error "Some DLL or EXE files could not be renamed. Reboot is required."
+          }
+        </Standalone>
+      </BuildToBuildUpgrade>
+
+      <DisasterRecovery />
+      <Uninstall />
+    </ServerTaskInfo>
+
+  </ServerTasks>
+
+</SetupComponentInfo>
+

@@ -1,0 +1,399 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{09CD9476-CD82-489E-B9E2-84B47CA141E0}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Microsoft</RootNamespace>
+    <AssemblyName>Microsoft.Exchange.VariantConfiguration</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Search.Platform.Parallax" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Exchange\AirSync\IMdmNotificationSettings.cs" />
+    <Compile Include="Exchange\AirSync\IMdmSupportedPlatformsSettings.cs" />
+    <Compile Include="Exchange\AirSync\_DataOnly_IMdmNotificationSettings_Implementation_.cs" />
+    <Compile Include="Exchange\AirSync\_DataOnly_IMdmSupportedPlatformsSettings_Implementation_.cs" />
+    <Compile Include="Exchange\AirSync\_DynamicStorageSelection_IMdmNotificationSettings_DataAccess.cs" />
+    <Compile Include="Exchange\AirSync\_DynamicStorageSelection_IMdmNotificationSettings_Implementa.cs" />
+    <Compile Include="Exchange\AirSync\_DynamicStorageSelection_IMdmSupportedPlatformsSettings_Data.cs" />
+    <Compile Include="Exchange\AirSync\_DynamicStorageSelection_IMdmSupportedPlatformsSettings_Impl.cs" />
+    <Compile Include="Exchange\AirSync\_ParallaxSchemaProvider_SchemaProvider_.cs" />
+    <Compile Include="Exchange\Assistants\ICalendarRepairLoggerSettings.cs" />
+    <Compile Include="Exchange\Assistants\IMailboxAssistantServiceSettings.cs" />
+    <Compile Include="Exchange\Assistants\IMailboxAssistantSettings.cs" />
+    <Compile Include="Exchange\Assistants\_DataOnly_ICalendarRepairLoggerSettings_Implementation_.cs" />
+    <Compile Include="Exchange\Assistants\_DataOnly_IMailboxAssistantServiceSettings_Implementation_.cs" />
+    <Compile Include="Exchange\Assistants\_DataOnly_IMailboxAssistantSettings_Implementation_.cs" />
+    <Compile Include="Exchange\Assistants\_DynamicStorageSelection_ICalendarRepairLoggerSettings_DataA.cs" />
+    <Compile Include="Exchange\Assistants\_DynamicStorageSelection_ICalendarRepairLoggerSettings_Imple.cs" />
+    <Compile Include="Exchange\Assistants\_DynamicStorageSelection_IMailboxAssistantServiceSettings_Da.cs" />
+    <Compile Include="Exchange\Assistants\_DynamicStorageSelection_IMailboxAssistantServiceSettings_Im.cs" />
+    <Compile Include="Exchange\Assistants\_DynamicStorageSelection_IMailboxAssistantSettings_DataAcces.cs" />
+    <Compile Include="Exchange\Assistants\_DynamicStorageSelection_IMailboxAssistantSettings_Implement.cs" />
+    <Compile Include="Exchange\AutoDiscover\IOWAUrl.cs" />
+    <Compile Include="Exchange\AutoDiscover\_DataOnly_IOWAUrl_Implementation_.cs" />
+    <Compile Include="Exchange\AutoDiscover\_DynamicStorageSelection_IOWAUrl_DataAccessor_.cs" />
+    <Compile Include="Exchange\AutoDiscover\_DynamicStorageSelection_IOWAUrl_Implementation_.cs" />
+    <Compile Include="Exchange\Calendar\ICalendarIcalConversionSettings.cs" />
+    <Compile Include="Exchange\Calendar\ICalendarUpgradeSettings.cs" />
+    <Compile Include="Exchange\Calendar\_DataOnly_ICalendarIcalConversionSettings_Implementation_.cs" />
+    <Compile Include="Exchange\Calendar\_DataOnly_ICalendarUpgradeSettings_Implementation_.cs" />
+    <Compile Include="Exchange\Calendar\_DynamicStorageSelection_ICalendarIcalConversionSettings_Dat.cs" />
+    <Compile Include="Exchange\Calendar\_DynamicStorageSelection_ICalendarIcalConversionSettings_Imp.cs" />
+    <Compile Include="Exchange\Calendar\_DynamicStorageSelection_ICalendarUpgradeSettings_DataAccess.cs" />
+    <Compile Include="Exchange\Calendar\_DynamicStorageSelection_ICalendarUpgradeSettings_Implementa.cs" />
+    <Compile Include="Exchange\Cluster\Shared\DxStoreMode.cs" />
+    <Compile Include="Exchange\Cluster\Shared\IActiveManagerSettings.cs" />
+    <Compile Include="Exchange\Cluster\Shared\_DataOnly_IActiveManagerSettings_Implementation_.cs" />
+    <Compile Include="Exchange\Cluster\Shared\_DynamicStorageSelection_IActiveManagerSettings_DataAccessor.cs" />
+    <Compile Include="Exchange\Cluster\Shared\_DynamicStorageSelection_IActiveManagerSettings_Implementati.cs" />
+    <Compile Include="Exchange\Flighting\DelegatedSetupRoleGroupValueEnum.cs" />
+    <Compile Include="Exchange\Flighting\ICacheExpiryTimeInMinutes.cs" />
+    <Compile Include="Exchange\Flighting\ICmdletSettings.cs" />
+    <Compile Include="Exchange\Flighting\IDelegatedSetupRoleGroupSettings.cs" />
+    <Compile Include="Exchange\Flighting\IEacWebRequest.cs" />
+    <Compile Include="Exchange\Flighting\IFlight.cs" />
+    <Compile Include="Exchange\Flighting\IInlineExploreSettings.cs" />
+    <Compile Include="Exchange\Flighting\ISettingsValue.cs" />
+    <Compile Include="Exchange\Flighting\ITeam.cs" />
+    <Compile Include="Exchange\Flighting\IUrl.cs" />
+    <Compile Include="Exchange\Flighting\IUrlMapping.cs" />
+    <Compile Include="Exchange\Flighting\IVersion.cs" />
+    <Compile Include="Exchange\Flighting\_DataOnly_ICacheExpiryTimeInMinutes_Implementation_.cs" />
+    <Compile Include="Exchange\Flighting\_DataOnly_ICmdletSettings_Implementation_.cs" />
+    <Compile Include="Exchange\Flighting\_DataOnly_IDelegatedSetupRoleGroupSettings_Implementation_.cs" />
+    <Compile Include="Exchange\Flighting\_DataOnly_IEacWebRequest_Implementation_.cs" />
+    <Compile Include="Exchange\Flighting\_DataOnly_IFlight_Implementation_.cs" />
+    <Compile Include="Exchange\Flighting\_DataOnly_IInlineExploreSettings_Implementation_.cs" />
+    <Compile Include="Exchange\Flighting\_DataOnly_ISettingsValue_Implementation_.cs" />
+    <Compile Include="Exchange\Flighting\_DataOnly_ITeam_Implementation_.cs" />
+    <Compile Include="Exchange\Flighting\_DataOnly_IUrlMapping_Implementation_.cs" />
+    <Compile Include="Exchange\Flighting\_DataOnly_IUrl_Implementation_.cs" />
+    <Compile Include="Exchange\Flighting\_DataOnly_IVersion_Implementation_.cs" />
+    <Compile Include="Exchange\Flighting\_DynamicStorageSelection_ICacheExpiryTimeInMinutes_DataAcces.cs" />
+    <Compile Include="Exchange\Flighting\_DynamicStorageSelection_ICacheExpiryTimeInMinutes_Implement.cs" />
+    <Compile Include="Exchange\Flighting\_DynamicStorageSelection_ICmdletSettings_DataAccessor_.cs" />
+    <Compile Include="Exchange\Flighting\_DynamicStorageSelection_ICmdletSettings_Implementation_.cs" />
+    <Compile Include="Exchange\Flighting\_DynamicStorageSelection_IDelegatedSetupRoleGroupSettings_Da.cs" />
+    <Compile Include="Exchange\Flighting\_DynamicStorageSelection_IDelegatedSetupRoleGroupSettings_Im.cs" />
+    <Compile Include="Exchange\Flighting\_DynamicStorageSelection_IEacWebRequest_DataAccessor_.cs" />
+    <Compile Include="Exchange\Flighting\_DynamicStorageSelection_IEacWebRequest_Implementation_.cs" />
+    <Compile Include="Exchange\Flighting\_DynamicStorageSelection_IFlight_DataAccessor_.cs" />
+    <Compile Include="Exchange\Flighting\_DynamicStorageSelection_IFlight_Implementation_.cs" />
+    <Compile Include="Exchange\Flighting\_DynamicStorageSelection_IInlineExploreSettings_DataAccessor.cs" />
+    <Compile Include="Exchange\Flighting\_DynamicStorageSelection_IInlineExploreSettings_Implementati.cs" />
+    <Compile Include="Exchange\Flighting\_DynamicStorageSelection_ISettingsValue_DataAccessor_.cs" />
+    <Compile Include="Exchange\Flighting\_DynamicStorageSelection_ISettingsValue_Implementation_.cs" />
+    <Compile Include="Exchange\Flighting\_DynamicStorageSelection_ITeam_DataAccessor_.cs" />
+    <Compile Include="Exchange\Flighting\_DynamicStorageSelection_ITeam_Implementation_.cs" />
+    <Compile Include="Exchange\Flighting\_DynamicStorageSelection_IUrlMapping_DataAccessor_.cs" />
+    <Compile Include="Exchange\Flighting\_DynamicStorageSelection_IUrlMapping_Implementation_.cs" />
+    <Compile Include="Exchange\Flighting\_DynamicStorageSelection_IUrl_DataAccessor_.cs" />
+    <Compile Include="Exchange\Flighting\_DynamicStorageSelection_IUrl_Implementation_.cs" />
+    <Compile Include="Exchange\Flighting\_DynamicStorageSelection_IVersion_DataAccessor_.cs" />
+    <Compile Include="Exchange\Flighting\_DynamicStorageSelection_IVersion_Implementation_.cs" />
+    <Compile Include="Exchange\HolidayCalendars\IHostSettings.cs" />
+    <Compile Include="Exchange\HolidayCalendars\_DataOnly_IHostSettings_Implementation_.cs" />
+    <Compile Include="Exchange\HolidayCalendars\_DynamicStorageSelection_IHostSettings_DataAccessor_.cs" />
+    <Compile Include="Exchange\HolidayCalendars\_DynamicStorageSelection_IHostSettings_Implementation_.cs" />
+    <Compile Include="Exchange\Inference\Common\IClutterDataSelectionSettings.cs" />
+    <Compile Include="Exchange\Inference\Common\IClutterModelConfigurationSettings.cs" />
+    <Compile Include="Exchange\Inference\Common\IInferenceTrainingConfigurationSettings.cs" />
+    <Compile Include="Exchange\Inference\Common\_DataOnly_IClutterDataSelectionSettings_Implementation_.cs" />
+    <Compile Include="Exchange\Inference\Common\_DataOnly_IClutterModelConfigurationSettings_Implementation_.cs" />
+    <Compile Include="Exchange\Inference\Common\_DataOnly_IInferenceTrainingConfigurationSettings_Implementa.cs" />
+    <Compile Include="Exchange\Inference\Common\_DynamicStorageSelection_IClutterDataSelectionSettings_DataA.cs" />
+    <Compile Include="Exchange\Inference\Common\_DynamicStorageSelection_IClutterDataSelectionSettings_Imple.cs" />
+    <Compile Include="Exchange\Inference\Common\_DynamicStorageSelection_IClutterModelConfigurationSettings_.2.cs" />
+    <Compile Include="Exchange\Inference\Common\_DynamicStorageSelection_IClutterModelConfigurationSettings_.cs" />
+    <Compile Include="Exchange\Inference\Common\_DynamicStorageSelection_IInferenceTrainingConfigurationSett.2.cs" />
+    <Compile Include="Exchange\Inference\Common\_DynamicStorageSelection_IInferenceTrainingConfigurationSett.cs" />
+    <Compile Include="Exchange\MessageDepot\DayOfWeek.cs" />
+    <Compile Include="Exchange\MessageDepot\IMessageDepotSettings.cs" />
+    <Compile Include="Exchange\MessageDepot\_DataOnly_IMessageDepotSettings_Implementation_.cs" />
+    <Compile Include="Exchange\MessageDepot\_DynamicStorageSelection_IMessageDepotSettings_DataAccessor_.cs" />
+    <Compile Include="Exchange\MessageDepot\_DynamicStorageSelection_IMessageDepotSettings_Implementatio.cs" />
+    <Compile Include="Exchange\Search\ICompletions.cs" />
+    <Compile Include="Exchange\Search\IDocumentFeederSettings.cs" />
+    <Compile Include="Exchange\Search\IFeederSettings.cs" />
+    <Compile Include="Exchange\Search\IIndexStatusSettings.cs" />
+    <Compile Include="Exchange\Search\IInstantSearch.cs" />
+    <Compile Include="Exchange\Search\ILanguageDetection.cs" />
+    <Compile Include="Exchange\Search\IMemoryModelSettings.cs" />
+    <Compile Include="Exchange\Search\ITransportFlowSettings.cs" />
+    <Compile Include="Exchange\Search\_DataOnly_ICompletions_Implementation_.cs" />
+    <Compile Include="Exchange\Search\_DataOnly_IDocumentFeederSettings_Implementation_.cs" />
+    <Compile Include="Exchange\Search\_DataOnly_IFeederSettings_Implementation_.cs" />
+    <Compile Include="Exchange\Search\_DataOnly_IIndexStatusSettings_Implementation_.cs" />
+    <Compile Include="Exchange\Search\_DataOnly_IInstantSearch_Implementation_.cs" />
+    <Compile Include="Exchange\Search\_DataOnly_ILanguageDetection_Implementation_.cs" />
+    <Compile Include="Exchange\Search\_DataOnly_IMemoryModelSettings_Implementation_.cs" />
+    <Compile Include="Exchange\Search\_DataOnly_ITransportFlowSettings_Implementation_.cs" />
+    <Compile Include="Exchange\Search\_DynamicStorageSelection_ICompletions_DataAccessor_.cs" />
+    <Compile Include="Exchange\Search\_DynamicStorageSelection_ICompletions_Implementation_.cs" />
+    <Compile Include="Exchange\Search\_DynamicStorageSelection_IDocumentFeederSettings_DataAccesso.cs" />
+    <Compile Include="Exchange\Search\_DynamicStorageSelection_IDocumentFeederSettings_Implementat.cs" />
+    <Compile Include="Exchange\Search\_DynamicStorageSelection_IFeederSettings_DataAccessor_.cs" />
+    <Compile Include="Exchange\Search\_DynamicStorageSelection_IFeederSettings_Implementation_.cs" />
+    <Compile Include="Exchange\Search\_DynamicStorageSelection_IIndexStatusSettings_DataAccessor_.cs" />
+    <Compile Include="Exchange\Search\_DynamicStorageSelection_IIndexStatusSettings_Implementation.cs" />
+    <Compile Include="Exchange\Search\_DynamicStorageSelection_IInstantSearch_DataAccessor_.cs" />
+    <Compile Include="Exchange\Search\_DynamicStorageSelection_IInstantSearch_Implementation_.cs" />
+    <Compile Include="Exchange\Search\_DynamicStorageSelection_ILanguageDetection_DataAccessor_.cs" />
+    <Compile Include="Exchange\Search\_DynamicStorageSelection_ILanguageDetection_Implementation_.cs" />
+    <Compile Include="Exchange\Search\_DynamicStorageSelection_IMemoryModelSettings_DataAccessor_.cs" />
+    <Compile Include="Exchange\Search\_DynamicStorageSelection_IMemoryModelSettings_Implementation.cs" />
+    <Compile Include="Exchange\Search\_DynamicStorageSelection_ITransportFlowSettings_DataAccessor.cs" />
+    <Compile Include="Exchange\Search\_DynamicStorageSelection_ITransportFlowSettings_Implementati.cs" />
+    <Compile Include="Exchange\TextProcessing\Boomerang\IBoomerangSettings.cs" />
+    <Compile Include="Exchange\TextProcessing\Boomerang\_DataOnly_IBoomerangSettings_Implementation_.cs" />
+    <Compile Include="Exchange\TextProcessing\Boomerang\_DynamicStorageSelection_IBoomerangSettings_DataAccessor_.cs" />
+    <Compile Include="Exchange\TextProcessing\Boomerang\_DynamicStorageSelection_IBoomerangSettings_Implementation_.cs" />
+    <Compile Include="Exchange\VariantConfiguration\ComponentNameValidationException.cs" />
+    <Compile Include="Exchange\VariantConfiguration\ConstraintCollection.cs" />
+    <Compile Include="Exchange\VariantConfiguration\DataLoad\ChainedDataSourceReader.cs" />
+    <Compile Include="Exchange\VariantConfiguration\DataLoad\FilesDataSourceReader.cs" />
+    <Compile Include="Exchange\VariantConfiguration\DataLoad\FlightReader.cs" />
+    <Compile Include="Exchange\VariantConfiguration\DataLoad\IDataSourceReader.cs" />
+    <Compile Include="Exchange\VariantConfiguration\DataLoad\IFlightReader.cs" />
+    <Compile Include="Exchange\VariantConfiguration\DataLoad\ResourcesDataSourceReader.cs" />
+    <Compile Include="Exchange\VariantConfiguration\DataLoad\VariantConfigurationDataLoader.cs" />
+    <Compile Include="Exchange\VariantConfiguration\FlightDependencyTransformation.cs" />
+    <Compile Include="Exchange\VariantConfiguration\FlightNameValidationException.cs" />
+    <Compile Include="Exchange\VariantConfiguration\IConstraintProvider.cs" />
+    <Compile Include="Exchange\VariantConfiguration\IFeature.cs" />
+    <Compile Include="Exchange\VariantConfiguration\ISettings.cs" />
+    <Compile Include="Exchange\VariantConfiguration\MachineSettingsContext.cs" />
+    <Compile Include="Exchange\VariantConfiguration\NullOverrideException.cs" />
+    <Compile Include="Exchange\VariantConfiguration\OverrideDataTransformation.cs" />
+    <Compile Include="Exchange\VariantConfiguration\OverridesChangedEventArgs.cs" />
+    <Compile Include="Exchange\VariantConfiguration\OverrideValidationException.cs" />
+    <Compile Include="Exchange\VariantConfiguration\ParameterNameValidationException.cs" />
+    <Compile Include="Exchange\VariantConfiguration\ParameterSyntaxValidationException.cs" />
+    <Compile Include="Exchange\VariantConfiguration\Parser\ConfigurationComponent.cs" />
+    <Compile Include="Exchange\VariantConfiguration\Parser\ConfigurationComponentType.cs" />
+    <Compile Include="Exchange\VariantConfiguration\Parser\ConfigurationParameter.cs" />
+    <Compile Include="Exchange\VariantConfiguration\Parser\ConfigurationParser.cs" />
+    <Compile Include="Exchange\VariantConfiguration\Parser\ConfigurationSection.cs" />
+    <Compile Include="Exchange\VariantConfiguration\Parser\VariantConfigurationConventionException.cs" />
+    <Compile Include="Exchange\VariantConfiguration\Parser\VariantConfigurationIniParseException.cs" />
+    <Compile Include="Exchange\VariantConfiguration\Parser\VariantConfigurationSyntaxException.cs" />
+    <Compile Include="Exchange\VariantConfiguration\Reflection\VariantConfigurationActiveMonitoringComponent.cs" />
+    <Compile Include="Exchange\VariantConfiguration\Reflection\VariantConfigurationActiveSyncComponent.cs" />
+    <Compile Include="Exchange\VariantConfiguration\Reflection\VariantConfigurationADComponent.cs" />
+    <Compile Include="Exchange\VariantConfiguration\Reflection\VariantConfigurationAutodiscoverComponent.cs" />
+    <Compile Include="Exchange\VariantConfiguration\Reflection\VariantConfigurationBoomerangComponent.cs" />
+    <Compile Include="Exchange\VariantConfiguration\Reflection\VariantConfigurationCafeComponent.cs" />
+    <Compile Include="Exchange\VariantConfiguration\Reflection\VariantConfigurationCalendarLoggingComponent.cs" />
+    <Compile Include="Exchange\VariantConfiguration\Reflection\VariantConfigurationClientAccessRulesCommonComponent.cs" />
+    <Compile Include="Exchange\VariantConfiguration\Reflection\VariantConfigurationCmdletInfraComponent.cs" />
+    <Compile Include="Exchange\VariantConfiguration\Reflection\VariantConfigurationCompliancePolicyComponent.cs" />
+    <Compile Include="Exchange\VariantConfiguration\Reflection\VariantConfigurationComponent.cs" />
+    <Compile Include="Exchange\VariantConfiguration\Reflection\VariantConfigurationDataStorageComponent.cs" />
+    <Compile Include="Exchange\VariantConfiguration\Reflection\VariantConfigurationDiagnosticsComponent.cs" />
+    <Compile Include="Exchange\VariantConfiguration\Reflection\VariantConfigurationDiscoveryComponent.cs" />
+    <Compile Include="Exchange\VariantConfiguration\Reflection\VariantConfigurationE4EComponent.cs" />
+    <Compile Include="Exchange\VariantConfiguration\Reflection\VariantConfigurationEacComponent.cs" />
+    <Compile Include="Exchange\VariantConfiguration\Reflection\VariantConfigurationEwsComponent.cs" />
+    <Compile Include="Exchange\VariantConfiguration\Reflection\VariantConfigurationFlights.cs" />
+    <Compile Include="Exchange\VariantConfiguration\Reflection\VariantConfigurationGlobalComponent.cs" />
+    <Compile Include="Exchange\VariantConfiguration\Reflection\VariantConfigurationHighAvailabilityComponent.cs" />
+    <Compile Include="Exchange\VariantConfiguration\Reflection\VariantConfigurationHolidayCalendarsComponent.cs" />
+    <Compile Include="Exchange\VariantConfiguration\Reflection\VariantConfigurationHxComponent.cs" />
+    <Compile Include="Exchange\VariantConfiguration\Reflection\VariantConfigurationImapComponent.cs" />
+    <Compile Include="Exchange\VariantConfiguration\Reflection\VariantConfigurationInferenceComponent.cs" />
+    <Compile Include="Exchange\VariantConfiguration\Reflection\VariantConfigurationIpaedComponent.cs" />
+    <Compile Include="Exchange\VariantConfiguration\Reflection\VariantConfigurationMailboxAssistantsComponent.cs" />
+    <Compile Include="Exchange\VariantConfiguration\Reflection\VariantConfigurationMailboxPlansComponent.cs" />
+    <Compile Include="Exchange\VariantConfiguration\Reflection\VariantConfigurationMailboxTransportComponent.cs" />
+    <Compile Include="Exchange\VariantConfiguration\Reflection\VariantConfigurationMalwareAgentComponent.cs" />
+    <Compile Include="Exchange\VariantConfiguration\Reflection\VariantConfigurationMessageTrackingComponent.cs" />
+    <Compile Include="Exchange\VariantConfiguration\Reflection\VariantConfigurationMexAgentsComponent.cs" />
+    <Compile Include="Exchange\VariantConfiguration\Reflection\VariantConfigurationMrsComponent.cs" />
+    <Compile Include="Exchange\VariantConfiguration\Reflection\VariantConfigurationNotificationBrokerServiceComponent.cs" />
+    <Compile Include="Exchange\VariantConfiguration\Reflection\VariantConfigurationOABComponent.cs" />
+    <Compile Include="Exchange\VariantConfiguration\Reflection\VariantConfigurationOfficeGraphComponent.cs" />
+    <Compile Include="Exchange\VariantConfiguration\Reflection\VariantConfigurationOwaClientComponent.cs" />
+    <Compile Include="Exchange\VariantConfiguration\Reflection\VariantConfigurationOwaClientServerComponent.cs" />
+    <Compile Include="Exchange\VariantConfiguration\Reflection\VariantConfigurationOwaDeploymentComponent.cs" />
+    <Compile Include="Exchange\VariantConfiguration\Reflection\VariantConfigurationOwaServerComponent.cs" />
+    <Compile Include="Exchange\VariantConfiguration\Reflection\VariantConfigurationPopComponent.cs" />
+    <Compile Include="Exchange\VariantConfiguration\Reflection\VariantConfigurationRpcClientAccessComponent.cs" />
+    <Compile Include="Exchange\VariantConfiguration\Reflection\VariantConfigurationSearchComponent.cs" />
+    <Compile Include="Exchange\VariantConfiguration\Reflection\VariantConfigurationSection.cs" />
+    <Compile Include="Exchange\VariantConfiguration\Reflection\VariantConfigurationSettings.cs" />
+    <Compile Include="Exchange\VariantConfiguration\Reflection\VariantConfigurationSharedCacheComponent.cs" />
+    <Compile Include="Exchange\VariantConfiguration\Reflection\VariantConfigurationSharedMailboxComponent.cs" />
+    <Compile Include="Exchange\VariantConfiguration\Reflection\VariantConfigurationTest2Component.cs" />
+    <Compile Include="Exchange\VariantConfiguration\Reflection\VariantConfigurationTestComponent.cs" />
+    <Compile Include="Exchange\VariantConfiguration\Reflection\VariantConfigurationTransportComponent.cs" />
+    <Compile Include="Exchange\VariantConfiguration\Reflection\VariantConfigurationUCCComponent.cs" />
+    <Compile Include="Exchange\VariantConfiguration\Reflection\VariantConfigurationUMComponent.cs" />
+    <Compile Include="Exchange\VariantConfiguration\Reflection\VariantConfigurationVariantConfigComponent.cs" />
+    <Compile Include="Exchange\VariantConfiguration\Reflection\VariantConfigurationWorkingSetComponent.cs" />
+    <Compile Include="Exchange\VariantConfiguration\Reflection\VariantConfigurationWorkloadManagementComponent.cs" />
+    <Compile Include="Exchange\VariantConfiguration\RotationHash.cs" />
+    <Compile Include="Exchange\VariantConfiguration\SectionNameValidationException.cs" />
+    <Compile Include="Exchange\VariantConfiguration\Settings\IOrganizationNameSettings.cs" />
+    <Compile Include="Exchange\VariantConfiguration\Settings\IOverrideSyncSettings.cs" />
+    <Compile Include="Exchange\VariantConfiguration\Settings\_DataOnly_IOrganizationNameSettings_Implementation_.cs" />
+    <Compile Include="Exchange\VariantConfiguration\Settings\_DataOnly_IOverrideSyncSettings_Implementation_.cs" />
+    <Compile Include="Exchange\VariantConfiguration\Settings\_DynamicStorageSelection_IOrganizationNameSettings_DataAcces.cs" />
+    <Compile Include="Exchange\VariantConfiguration\Settings\_DynamicStorageSelection_IOrganizationNameSettings_Implement.cs" />
+    <Compile Include="Exchange\VariantConfiguration\Settings\_DynamicStorageSelection_IOverrideSyncSettings_DataAccessor_.cs" />
+    <Compile Include="Exchange\VariantConfiguration\Settings\_DynamicStorageSelection_IOverrideSyncSettings_Implementatio.cs" />
+    <Compile Include="Exchange\VariantConfiguration\SyntaxValidationException.cs" />
+    <Compile Include="Exchange\VariantConfiguration\UpdateCommittedEventArgs.cs" />
+    <Compile Include="Exchange\VariantConfiguration\UserConstraintProvider.cs" />
+    <Compile Include="Exchange\VariantConfiguration\VariantConfiguration.cs" />
+    <Compile Include="Exchange\VariantConfiguration\VariantConfigurationBehavior.cs" />
+    <Compile Include="Exchange\VariantConfiguration\VariantConfigurationFlightOverride.cs" />
+    <Compile Include="Exchange\VariantConfiguration\VariantConfigurationOverride.cs" />
+    <Compile Include="Exchange\VariantConfiguration\VariantConfigurationOverrideValidation.cs" />
+    <Compile Include="Exchange\VariantConfiguration\VariantConfigurationSettingOverride.cs" />
+    <Compile Include="Exchange\VariantConfiguration\VariantConfigurationSnapshot.cs" />
+    <Compile Include="Exchange\VariantConfiguration\VariantConfigurationSnapshotProvider.cs" />
+    <Compile Include="Exchange\VariantConfiguration\VariantConfigurationTypeInformation.cs" />
+    <Compile Include="Exchange\VariantConfiguration\VariantConfigurationTypeResolver.cs" />
+    <Compile Include="Exchange\VariantConfiguration\VariantConfigurationUserType.cs" />
+    <Compile Include="Exchange\VariantConfiguration\VariantConfigurationValidator.cs" />
+    <Compile Include="Exchange\VariantConfiguration\VariantNameValidationException.cs" />
+    <Compile Include="Exchange\VariantConfiguration\VariantType.cs" />
+    <Compile Include="Exchange\VariantConfiguration\VariantTypeCollection.cs" />
+    <Compile Include="Exchange\VariantConfiguration\VariantTypeFlags.cs" />
+    <Compile Include="Exchange\VariantConfiguration\VariantValueValidationException.cs" />
+    <Compile Include="Exchange\VariantConfiguration\_DataOnly_IFeature_Implementation_.cs" />
+    <Compile Include="Exchange\VariantConfiguration\_DataOnly_ISettings_Implementation_.cs" />
+    <Compile Include="Exchange\VariantConfiguration\_DynamicStorageSelection_IFeature_DataAccessor_.cs" />
+    <Compile Include="Exchange\VariantConfiguration\_DynamicStorageSelection_IFeature_Implementation_.cs" />
+    <Compile Include="Exchange\VariantConfiguration\_DynamicStorageSelection_ISettings_DataAccessor_.cs" />
+    <Compile Include="Exchange\VariantConfiguration\_DynamicStorageSelection_ISettings_Implementation_.cs" />
+    <Compile Include="Exchange\WorkloadManagement\IBlackoutSettings.cs" />
+    <Compile Include="Exchange\WorkloadManagement\IDiskLatencyMonitorSettings.cs" />
+    <Compile Include="Exchange\WorkloadManagement\IResourceSettings.cs" />
+    <Compile Include="Exchange\WorkloadManagement\ISystemWorkloadManagerSettings.cs" />
+    <Compile Include="Exchange\WorkloadManagement\IWorkloadSettings.cs" />
+    <Compile Include="Exchange\WorkloadManagement\WorkloadClassification.cs" />
+    <Compile Include="Exchange\WorkloadManagement\_DataOnly_IBlackoutSettings_Implementation_.cs" />
+    <Compile Include="Exchange\WorkloadManagement\_DataOnly_IDiskLatencyMonitorSettings_Implementation_.cs" />
+    <Compile Include="Exchange\WorkloadManagement\_DataOnly_IResourceSettings_Implementation_.cs" />
+    <Compile Include="Exchange\WorkloadManagement\_DataOnly_ISystemWorkloadManagerSettings_Implementation_.cs" />
+    <Compile Include="Exchange\WorkloadManagement\_DataOnly_IWorkloadSettings_Implementation_.cs" />
+    <Compile Include="Exchange\WorkloadManagement\_DynamicStorageSelection_IBlackoutSettings_DataAccessor_.cs" />
+    <Compile Include="Exchange\WorkloadManagement\_DynamicStorageSelection_IBlackoutSettings_Implementation_.cs" />
+    <Compile Include="Exchange\WorkloadManagement\_DynamicStorageSelection_IDiskLatencyMonitorSettings_DataAcc.cs" />
+    <Compile Include="Exchange\WorkloadManagement\_DynamicStorageSelection_IDiskLatencyMonitorSettings_Impleme.cs" />
+    <Compile Include="Exchange\WorkloadManagement\_DynamicStorageSelection_IResourceSettings_DataAccessor_.cs" />
+    <Compile Include="Exchange\WorkloadManagement\_DynamicStorageSelection_IResourceSettings_Implementation_.cs" />
+    <Compile Include="Exchange\WorkloadManagement\_DynamicStorageSelection_ISystemWorkloadManagerSettings_Data.cs" />
+    <Compile Include="Exchange\WorkloadManagement\_DynamicStorageSelection_ISystemWorkloadManagerSettings_Impl.cs" />
+    <Compile Include="Exchange\WorkloadManagement\_DynamicStorageSelection_IWorkloadSettings_DataAccessor_.cs" />
+    <Compile Include="Exchange\WorkloadManagement\_DynamicStorageSelection_IWorkloadSettings_Implementation_.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Search\Platform\Parallax\DataLoad\FileChangesAccumulator.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="ActiveMonitoring.settings.ini" />
+    <EmbeddedResource Include="ActiveSync.settings.ini" />
+    <EmbeddedResource Include="AD.settings.ini" />
+    <EmbeddedResource Include="Autodiscover.settings.ini" />
+    <EmbeddedResource Include="Boomerang.settings.ini" />
+    <EmbeddedResource Include="Cafe.settings.ini" />
+    <EmbeddedResource Include="CalendarLogging.settings.ini" />
+    <EmbeddedResource Include="ClientAccessRulesCommon.settings.ini" />
+    <EmbeddedResource Include="CmdletInfra.settings.ini" />
+    <EmbeddedResource Include="CompliancePolicy.settings.ini" />
+    <EmbeddedResource Include="DataStorage.settings.ini" />
+    <EmbeddedResource Include="Diagnostics.settings.ini" />
+    <EmbeddedResource Include="Discovery.settings.ini" />
+    <EmbeddedResource Include="E4E.settings.ini" />
+    <EmbeddedResource Include="Eac.settings.ini" />
+    <EmbeddedResource Include="Ews.settings.ini" />
+    <EmbeddedResource Include="Flighting.settings.ini" />
+    <EmbeddedResource Include="Global.settings.ini" />
+    <EmbeddedResource Include="HighAvailability.settings.ini" />
+    <EmbeddedResource Include="HolidayCalendars.settings.ini" />
+    <EmbeddedResource Include="Hx.settings.ini" />
+    <EmbeddedResource Include="Imap.settings.ini" />
+    <EmbeddedResource Include="Inference.settings.ini" />
+    <EmbeddedResource Include="Ipaed.settings.ini" />
+    <EmbeddedResource Include="MailboxAssistants.settings.ini" />
+    <EmbeddedResource Include="MailboxPlans.settings.ini" />
+    <EmbeddedResource Include="MailboxTransport.settings.ini" />
+    <EmbeddedResource Include="MalwareAgent.settings.ini" />
+    <EmbeddedResource Include="MessageTracking.settings.ini" />
+    <EmbeddedResource Include="MexAgents.settings.ini" />
+    <EmbeddedResource Include="Mrs.settings.ini" />
+    <EmbeddedResource Include="NotificationBrokerService.settings.ini" />
+    <EmbeddedResource Include="OAB.settings.ini" />
+    <EmbeddedResource Include="OfficeGraph.settings.ini" />
+    <EmbeddedResource Include="OwaClient.settings.ini" />
+    <EmbeddedResource Include="OwaClientServer.settings.ini" />
+    <EmbeddedResource Include="OwaDeployment.settings.ini" />
+    <EmbeddedResource Include="OwaServer.settings.ini" />
+    <EmbeddedResource Include="Pop.settings.ini" />
+    <EmbeddedResource Include="RpcClientAccess.settings.ini" />
+    <EmbeddedResource Include="Search.settings.ini" />
+    <EmbeddedResource Include="SharedCache.settings.ini" />
+    <EmbeddedResource Include="SharedMailbox.settings.ini" />
+    <EmbeddedResource Include="Test.settings.ini" />
+    <EmbeddedResource Include="Test2.settings.ini" />
+    <EmbeddedResource Include="Transport.settings.ini" />
+    <EmbeddedResource Include="UCC.settings.ini" />
+    <EmbeddedResource Include="UM.settings.ini" />
+    <EmbeddedResource Include="VariantConfig.settings.ini" />
+    <EmbeddedResource Include="WorkingSet.settings.ini" />
+    <EmbeddedResource Include="WorkloadManagement.settings.ini" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.Exchange.Common\Microsoft.Exchange.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140F0}</Project>
+      <Name>Microsoft.Exchange.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Diagnostics\Microsoft.Exchange.Diagnostics.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14113}</Project>
+      <Name>Microsoft.Exchange.Diagnostics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Net\Microsoft.Exchange.Net.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14178}</Project>
+      <Name>Microsoft.Exchange.Net</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\mscorlib\mscorlib.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141F1}</Project>
+      <Name>mscorlib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

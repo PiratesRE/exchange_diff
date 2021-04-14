@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo Name="Client Access MidFileCopy" DescriptionId="SetupComponentMidFileCopyClientAccess">
+
+  <ServerTasks>
+
+    <ServerTaskInfo Id="_e3a366de350d46a2a75fc64a8ae7a059" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install />
+
+      <!-- Only upgrade mode is used by the binding tasks-->
+      <BuildToBuildUpgrade>
+        <Standalone></Standalone>
+      </BuildToBuildUpgrade>
+
+      <DisasterRecovery />
+      <Uninstall />
+    </ServerTaskInfo>
+
+  </ServerTasks>
+
+</SetupComponentInfo>
+

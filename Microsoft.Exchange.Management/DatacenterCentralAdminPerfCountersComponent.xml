@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo IsDatacenterOnly="true" Name="Datacenter Central Admin Perf Counters">
+
+  <ServerTasks>
+
+    <!-- Install Central Admin service counters -->
+    <ServerTaskInfo Id="_e7dd1dfcdb6d40dfa7ca7b6280f56389" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Central Admin">
+      <Install IsFatal="false">
+        <Standalone>new-PerfCounters -DefinitionFileName CentralAdminPerfCounters.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-PerfCounters -DefinitionFileName CentralAdminPerfCounters.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install Central Admin PowerShell service counters -->
+    <ServerTaskInfo Id="_0ede59d94586487797f3fc25af7d1e82" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Central Admin">
+      <Install IsFatal="false">
+        <Standalone>new-PerfCounters -DefinitionFileName CentralAdminPowerShellPerfCounters.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-PerfCounters -DefinitionFileName CentralAdminPowerShellPerfCounters.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <ServerTaskInfo Id="_9960FCCD073F4C1E97E77A55E9EBC6E1" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Central Admin">
+      <Install IsFatal="false">
+        <Standalone>new-PerfCounters -DefinitionFileName CentralAdminSnapinPerfCounters.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-PerfCounters -DefinitionFileName CentralAdminSnapinPerfCounters.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+	
+	<!-- Install Recovery Action Arbiter counters -->
+    <ServerTaskInfo Id="_7e257431435840d29ecc192940fd0412" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Central Admin">
+      <Install IsFatal="false">
+        <Standalone>
+			if($RoleDatacenterFfoEnvironment -eq "True")
+            {
+				new-PerfCounters -DefinitionFileName RecoveryActionArbiterPerfCounters.xml
+			}
+		</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>
+			if($RoleDatacenterFfoEnvironment -eq "True")
+            {
+				remove-PerfCounters -DefinitionFileName RecoveryActionArbiterPerfCounters.xml
+			}
+		</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+  </ServerTasks>
+
+</SetupComponentInfo>
+

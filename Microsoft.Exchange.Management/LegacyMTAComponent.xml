@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo Name="Exchange 2003 Pseudo-MTA Configuration" DescriptionId="SetupComponentMTAConfiguration">
+
+  <ServerTasks>
+
+	  <!-- Create/delete the MTA object in the AD
+         This task modifies the MTA object in the AD, the user requires permissions that allow 
+         access to AD 
+    -->
+    <ServerTaskInfo Id="_5adc27b7c9ce49ee84d0a4848faa27da" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>install-ExsetdataAtom -AtomName MTA -DomainController $RoleDomainController</Standalone>
+      </Install>
+      <BuildToBuildUpgrade>
+        <Standalone>buildToBuildUpgrade-ExsetdataAtom -AtomName MTA -DomainController $RoleDomainController</Standalone>
+      </BuildToBuildUpgrade>
+      <DisasterRecovery>
+        <Standalone>disasterRecovery-ExsetdataAtom -AtomName MTA -DomainController $RoleDomainController</Standalone>
+      </DisasterRecovery>
+      <Uninstall>
+        <Standalone>uninstall-ExsetdataAtom -AtomName MTA -DomainController $RoleDomainController</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+  </ServerTasks>
+
+</SetupComponentInfo>
+

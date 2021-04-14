@@ -1,0 +1,119 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{09CD9476-CD82-489E-B9E2-84B47CA1419F}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Microsoft.Exchange.Server.Storage</RootNamespace>
+    <AssemblyName>Microsoft.Exchange.Server.Storage.HA</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Exchange.Cluster.Common" />
+    <Reference Include="Microsoft.Exchange.Common.IL" />
+    <Reference Include="ReplayCrimsonMsg" />
+    <Reference Include="System" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BlockMode\BlockModeCollector.cs" />
+    <Compile Include="BlockMode\BlockModeMessageStream.cs" />
+    <Compile Include="BlockMode\BlockModeSender.cs" />
+    <Compile Include="HA\ActiveDatabasePerformanceCounters.cs" />
+    <Compile Include="HA\ActiveDatabasePerformanceCountersInstance.cs" />
+    <Compile Include="HA\ActiveDatabaseSenderPerformanceCounters.cs" />
+    <Compile Include="HA\ActiveDatabaseSenderPerformanceCountersInstance.cs" />
+    <Compile Include="HA\ClusterWriter.cs" />
+    <Compile Include="HA\CopyType.cs" />
+    <Compile Include="HA\EsebackCallbacks.cs" />
+    <Compile Include="HA\FailureItem.cs" />
+    <Compile Include="HA\GranularReplicationInitFailedException.cs" />
+    <Compile Include="HA\IClusterWriter.cs" />
+    <Compile Include="HA\JetBackupRestore.cs" />
+    <Compile Include="HA\JetHADatabase.cs" />
+    <Compile Include="HA\LastLogWriter.cs" />
+    <Compile Include="HA\LogCopyStatus.cs" />
+    <Compile Include="HA\ThrottlingData.cs" />
+    <Compile Include="HA\ThrottlingUpdater.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.Exchange.Cluster.Shared\Microsoft.Exchange.Cluster.Shared.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140EE}</Project>
+      <Name>Microsoft.Exchange.Cluster.Shared</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Common\Microsoft.Exchange.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140F0}</Project>
+      <Name>Microsoft.Exchange.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Common\Microsoft.Exchange.Data.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140D3}</Project>
+      <Name>Microsoft.Exchange.Data.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Diagnostics\Microsoft.Exchange.Diagnostics.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14113}</Project>
+      <Name>Microsoft.Exchange.Diagnostics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.EseRepl\Microsoft.Exchange.EseRepl.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14124}</Project>
+      <Name>Microsoft.Exchange.EseRepl</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Net\Microsoft.Exchange.Net.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14178}</Project>
+      <Name>Microsoft.Exchange.Net</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Server.Storage.Common\Microsoft.Exchange.Server.Storage.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1419A}</Project>
+      <Name>Microsoft.Exchange.Server.Storage.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Server.Storage.DirectoryServices\Microsoft.Exchange.Server.Storage.DirectoryServices.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1419C}</Project>
+      <Name>Microsoft.Exchange.Server.Storage.DirectoryServices</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Server.Storage.PhysicalAccess\Microsoft.Exchange.Server.Storage.PhysicalAccess.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141A4}</Project>
+      <Name>Microsoft.Exchange.Server.Storage.PhysicalAccess</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Server.Storage.StoreCommonServices\Microsoft.Exchange.Server.Storage.StoreCommonServices.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141A8}</Project>
+      <Name>Microsoft.Exchange.Server.Storage.StoreCommonServices</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Isam.Esent.Interop\Microsoft.Isam.Esent.Interop.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141E8}</Project>
+      <Name>Microsoft.Isam.Esent.Interop</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\mscorlib\mscorlib.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141F1}</Project>
+      <Name>mscorlib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

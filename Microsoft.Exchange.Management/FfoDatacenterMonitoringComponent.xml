@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo IsDatacenterOnly="true" Name="Ffo datacenter monitoring component" DatacenterMode="Ffo">
+  <ServerTasks>
+
+    <ServerTaskInfo Id="_4946f0736ff84969af475718f5e5b44e" Component="Office15:\Current\Forefront for Office Datacenter\Deployment and Configuration Management\Deployment">
+        <Install>
+            <Standalone>
+              $keyPath = "HKLM:\Software\Microsoft\ForefrontOnline";
+              New-Item -type Directory $keyPath -Force
+              Set-ItemProperty -Path $keyPath -Name "Milestone" -Value "M2" -Force
+            </Standalone>
+        </Install>
+        <BuildToBuildUpgrade UseInstallTasks="true" />
+        <DisasterRecovery UseInstallTasks="true"/>
+        <Uninstall />
+    </ServerTaskInfo>
+
+  </ServerTasks>
+</SetupComponentInfo>

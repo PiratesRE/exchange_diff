@@ -1,0 +1,1335 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{09CD9476-CD82-489E-B9E2-84B47CA140E8}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Microsoft</RootNamespace>
+    <AssemblyName>Microsoft.Exchange.Clients.Owa2.Server</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.CobaltCore" />
+    <Reference Include="Microsoft.Exchange.Clients.Strings" />
+    <Reference Include="Microsoft.Exchange.InstantMessaging" />
+    <Reference Include="Microsoft.Exchange.PushNotifications.CrimsonEvents" />
+    <Reference Include="Microsoft.Exchange.SafeHtml" />
+    <Reference Include="Microsoft.Filtering" />
+    <Reference Include="Microsoft.SharePoint.Client" />
+    <Reference Include="Microsoft.SharePoint.Client.Runtime" />
+    <Reference Include="Microsoft.Web.Administration" />
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.DirectoryServices" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.ServiceModel.Activation" />
+    <Reference Include="System.ServiceModel.Web" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\AcceptChatSession.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\AcpInformationType.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\ActivityConverter.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\ADCacheUtils.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\AddAttachmentDataProvider.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\AddMembersToUnifiedGroupCommand.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\AddMembersToUnifiedGroupRequest.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\AddMembersToUnifiedGroupResponse.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\AddressLists.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\AddSharedFolders.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\ADUtils.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\AggregatedBaseConfiguration.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\AmazonLinkPreviewBuilder.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\AnonymousUserContext.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\ApplicationSettingsType.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\AttachmentDataProvider.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\AttachmentDataProviderChangedEventArgs.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\AttachmentDataProviderChangedEventHandler.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\AttachmentDataProviderItem.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\AttachmentDataProviderItemType.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\AttachmentDataProviderManager.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\AttachmentDataProviderPermissions.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\AttachmentDataProviderScope.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\AttachmentDataProviderType.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\AttachmentDataProviderUtilities.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\AttachmentHandler.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\AttachmentItemsPagingDetails.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\AttachmentItemsPagingMetadata.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\AttachmentItemsSort.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\AttachmentItemsSortColumn.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\AttachmentItemsSortOrder.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\AttachmentOperationCorrelationIdNotificationPayload.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\AttachmentOperationCorrelationIdNotifier.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\AttachmentPermissionAssignment.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\AttachmentPermissionLevel.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\AttachmentPolicy.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\AttachmentPolicyChecker.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\AttachmentPolicyInfo.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\AttachmentPolicyLevel.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\AttachmentPolicyType.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\AttachmentResultCode.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\AttachmentRetriever.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\AttachmentsFilePickerViewType.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\AttachmentTypeEx.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\AttachmentUtilities.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\AttachmentWebBeaconFilterCallback.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\AttachmentWebOperationContext.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\attachment\DataUriStream.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\BaseApplication.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\BaseLinkPreview.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\BposAssetCache.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\BposAssetReader.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\BposHeaderFlight.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\BposNavBarInfo.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\BposNavBarInfoAssetReader.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\BposShellInfo.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\BposShellInfoAssetReader.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\Breadcrumb.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\BreadcrumbBuffer.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\BrokerGateway.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\BrokerHandler.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\BrokerHandlerReferenceCounter.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\BrokerLogEvent.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\BrokerNotificationManager.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\ByteBuffer.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\CachedAttachmentInfo.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\CalendarItemNotificationHandler.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\CalendarItemNotificationPayload.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\CalendarRequestHandler.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\CalendarSpeechRecoResultType.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\CalendarViewType.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\CallContextUtilities.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\CancelAttachment.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\CancelAttachmentManager.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\ChangePresence.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\ChannelLocation.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\ChatMessage.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\ChunkedHttpResponse.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\ClientLogEvent.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\ClientScanResultParseException.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\ClientScanResultStorage.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\ClientScanResultStorageProvider.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\CobaltHostServices.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\CobaltServerLockingStore.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\CobaltStore.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\CobaltStoreCleaner.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\CobaltStoreSaver.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\CombinedScenarioRecognitionResultHandler.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\CombinedScenarioRecoResult.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\CombinedScenarioResultType.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\CombinedSpeechRecognitionScenario.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\ComplianceConfiguration.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\ComplianceEntryType.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\ConfigurationBase.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\ConfigurationCachePerfCounters.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\ConfigurationCachePerfCountersInstance.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\ConfigurationContext.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\ConfigurationContextBase.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\ConnectedAccountsConfiguration.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\ConnectedAccountsNotificationManagerBase.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\ConnectionDroppedNotificationHandler.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\ConnectionDroppedNotifier.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\ContactFolderResponse.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\ConversationRowNotificationHandler.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\ConversationSortOrder.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\CraigsListLinkPreviewBuilder.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\CreateAttachmentFromAttachmentDataProvider.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\CreateAttachmentFromAttachmentDataProviderRequest.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\CreateAttachmentFromForm.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\CreateAttachmentFromLocalFile.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\CreateAttachmentFromUri.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\CreateAttachmentHelper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\CreateAttachmentNotificationPayload.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\CreateAttachmentNotifier.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\CreateContactFolder.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\CreateGroupNotificationPayload.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\CreateGroupNotifier.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\CreateMeetingBase.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\CreateMeetNow.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\CreateOnlineMeeting.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\CreateReferenceAttachmentFromAttachmentDataProvider.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\CreateReferenceAttachmentFromAttachmentDataProviderRequest.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\CreateReferenceAttachmentFromLocalFile.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\CreateReferenceAttachmentFromLocalFileRequest.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\CreateResendDraft.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\CreateUnifiedGroupCommand.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\CreateUnifiedGroupRequest.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\CreateUnifiedGroupResponse.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\Culture.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\CultureInfoData.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\CurrentWeatherLocationBookmarkIndexOption.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\DataAvailableEventHandler.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\Datapoint.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\DatapointConsumer.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\DataProviderCallLogEvent.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\DataProviderInformation.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\DataWipeReason.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\DateTimeandDurationRecognitionResultHandler.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\DaySearchRecognitionResultHandler.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\DayTimeDurationRecoResult.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\DefaultFolderConfigurationAccessStrategy.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\DeleteContactFolder.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\DeliverySuccessNotification.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\DialInNumberType.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\DispatchStepResult.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\DistributionListMemberComparerByDisplayName.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\DlpPolicyMatchDetail.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\DlpPolicyTipAction.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\DlpPolicyTipsPerformanceCounters.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\DownloadItemAsyncResult.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\EcpUserSettings.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\EmailComposeMode.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\EmailPeopleSpeechRecognitionResultHandler.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\EmailSignatureConfiguration.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\ErrorHandlerUtilities.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\EvaluateRulesKeys.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\EvaluationResult.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\EventTrigger.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\Feature.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\FileAttachmentDataProviderItem.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\FilteredViewHierarchyNotificationPayload.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\FindFlowConversationItemResponse.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\FindInGALSpeechRecognition.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\FindInGALSpeechRecognitionEWSBinding.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\FindMembersInUnifiedGroupCommand.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\FindMembersInUnifiedGroupRequest.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\FindMembersInUnifiedGroupResponse.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\FindPeopleSpeechRecognitionResultHandler.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\FindPeopleSpeechRecognitionScenario.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\FlagAction.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\FlowConversationItem.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\FlowItem.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\FolderAttachmentDataProviderItem.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\FolderConfiguration.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\FontFlags.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\FormatBarButtonGroups.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\GetAllAttachmentsAsZip.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\GetAttachment.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\GetAttachmentDataProviderGroups.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\GetAttachmentDataProviderItems.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\GetAttachmentDataProviderItemsRequest.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\GetAttachmentDataProviderItemsResponse.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\GetAttachmentDataProviders.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\GetAttachmentDataProvidersRecentItems.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\GetAttachmentDataProvidersRequest.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\GetAttachmentDataProviderTypes.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\GetAttachmentDataProviderUploadFolderName.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\GetBingMapsPreview.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\GetBingMapsPreviewRequest.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\GetBingMapsPreviewResponse.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\GetBposNavBarData.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\GetBposShellInfoNavBarData.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\GetCertsErrorStatus.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\GetCertsInfoResponse.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\GetCertsRequest.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\GetCertsResponse.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\GetComplianceConfiguration.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\GetDlpPolicyTipsAsyncResult.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\GetDlpPolicyTipsRequest.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\GetDlpPolicyTipsResponse.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\GetEmailSignature.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\GetFlightsSettings.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\GetFlowConversationResponse.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\GetFolderMruConfiguration.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\GetGroupInfoRequest.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\GetGroupResponse.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\GetGroupResultSet.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\GetInlineExploreSpContentCommand.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\GetInstantMessageProxySettings.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\GetInstantMessageProxySettingsRequest.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\GetLinkPreview.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\GetLinkPreviewRequest.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\GetLinkPreviewResponse.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\GetModernAttachmentsRequest.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\GetModernAttachmentsResponse.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\GetNotesForPersonaRequest.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\GetOptionSummary.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\GetOrganizationHierarchyForPersonaRequest.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\GetOtherMailboxConfiguration.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\GetOwaUserConfiguration.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\GetOwaViewStateConfiguration.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\GetPeopleFilters.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\GetPersonaNotesResponse.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\GetPersonaOrganizationHierarchyResponse.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\GetPersonaPhoto.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\GetPresence.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\GetPresenceRequest.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\GetRegionalConfigurationRequest.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\GetRegionalConfigurationResponse.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\GetThemes.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\GetTimeZone.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\GetUcwaUserConfiguration.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\GetUserOofSettings.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\GetUserPhotoRequestDispatcher.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\GetWacAttachmentInfo.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\GetWacIframeUrl.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\GetWacIframeUrlForOneDrive.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\GetWacIframeUrlForOneDriveRequest.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\GetWellKnownShapes.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\GetWellKnownShapesResponse.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\Global.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\Globals.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\GroupAssociationNotificationHandler.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\GroupAssociationNotificationPayload.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\GroupAssociationNotifier.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\GroupAttachmentDataProviderItem.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\GroupConcurrencyLogEvent.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\HierachyNotificationHandlerFactory.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\HierarchyNotificationHandler.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\HierarchyNotificationPayload.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\HierarchyNotifier.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\HttpHandlerFactoryBase.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\HttpUtilities.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\IAttachmentDataProviderChanged.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\IAttachmentWebOperationContext.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\IBrokerGateway.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\IConfigurationContext.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\IConnectedAccountsConfiguration.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\IConnectedAccountsNotificationManager.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\IDestinationInfo.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\IMailboxContext.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\IMobileSpeechRecognitionResultHandler.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\InferenceHierarchyNotificationHandler.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\InferenceNewMailNotificationHandler.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\InferenceSettingsPropertySchema.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\InferenceSettingsType.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\InlineExploreSpResultItemType.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\InlineExploreSpResultListType.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\INotificationManager.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\InstantMessageBuddy.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\InstantMessageCertUtils.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\InstantMessageCommandBase.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\InstantMessageContact.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\InstantMessageConversationCommand.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\InstantMessageGroup.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\InstantMessageGroupType.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\InstantMessageManager.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\InstantMessageNotifier.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\InstantMessageOCSNotifier.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\InstantMessageOCSProvider.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\InstantMessageOperationError.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\InstantMessageOperationType.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\InstantMessagePayload.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\InstantMessagePayloadType.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\InstantMessagePayloadUtilities.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\InstantMessagePresence.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\InstantMessagePresenceType.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\InstantMessageProvider.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\InstantMessageQueue.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\InstantMessageServiceError.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\InstantMessageSignIn.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\InstantMessageSignOut.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\InstantMessageUtilities.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\InstantMessagingBuddyMetadata.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\InstantMessagingConfiguration.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\InstantMessagingLogMetadata.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\InstantMessagingQueryPresenceData.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\InstantMessagingSubscriptionMetadata.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\InstantSearchNotificationHandler.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\InstantSearchNotificationPayload.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\InstantSearchNotifier.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\InstantSearchRemoteNotificationHandler.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\InstrumentationSettings.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\InvalidDataResultException.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\InvalidRequestSpeechRecognitionScenario.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\IOWAAnonymousCalendarService.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\IOWAService.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\IOwaServiceMessageInspector.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\IOWAStreamingService.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\IPendingRequestNotifier.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\IPlayOnPhoneStateProvider.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\ISubscriptionInfo.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\IUserConfigurationAccessStrategy.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\IUserContext.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\JsMvvmPerfTraceLevel.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\JsonConverter.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\JsonFaultBody.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\JsonFaultResponse.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\LayoutSettingsType.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\LinkClickedSignalSource.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\LinkClickedSignalStats.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\LinkPreview.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\LinkPreviewBuilder.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\LinkPreviewDataProvider.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\LinkPreviewError.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\ListenerChannelsManager.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\ListenerDelivery.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\ListenerEventType.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\ListenerLogEvent.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\LoadCustomStringsKeys.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\LoadItemKeys.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\LoadRulesKeys.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\LocalSpeechRecognition.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\LogDatapoint.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\LogDatapointRequest.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\LogEventCommonData.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\LogStage.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\MailboxConfigurationAccessStrategy.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\MailboxContextBase.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\MailboxLocation.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\MailReadingPanePosition.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\MapiNotificationHandlerBase.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\MapiNotificationsLogEvent.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\MarkAsRead.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\Markup.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\MdbCache.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\MdbCacheQuery.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\MembershipChecker.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\MessageClassificationType.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\MessageInspectorBehavior.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\MessageItemRowNotificationHandler.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\MessageProperty.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\MethodCallLatencyStatisticsLogger.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\MobileDevicePolicyCache.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\MobileDevicePolicyDataFactory.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\MobileDevicePolicyIdCacheByOrganization.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\MobileDevicePolicySettingsType.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\MockAttachmentDataProvider.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\ModernAttachment.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\ModernAttachmentGroup.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\MoveContactFolder.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\MowaPendingGetRequestHandler.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\MrsConnectedAccountsNotificationManager.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\MrsSyncNowNotificationClient.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\NavigationPaneView.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\NewMailBrokerHandler.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\NewMailNotificationHandler.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\NewMailNotificationHandlerFactory.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\NewMailNotificationPayload.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\NewMailNotifier.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\NewNotification.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\NextSelectionDirection.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\NoopAction.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\NoOpOwaCallback.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\NotificationChunkOrder.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\NotificationLocation.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\NotificationPayloadBase.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\NotificationState.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\NotificationStatistics.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\NotificationStatisticsEventType.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\NotificationStatisticsKey.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\NotificationStatisticsLogEvent.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\NotificationStatisticsManager.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\NotificationStatisticsValue.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\NotificationType.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\NotifyAppWipe.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\NotifyTyping.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OEmbedDataProvider.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OEmbedInformation.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OEmbedResponse.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OEmbedVideoPreview.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OEmbedVideoPreviewBuilder.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OneDriveProAttachmentDataProvider.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OneDriveProGroupsPagingMetadata.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OneDriveProItemsPage.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OneDriveProItemsPagingMetadata.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OneDriveProScope.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OneDriveProScopeType.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OneDriveProUtilities.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OneDrive\ClientContextFactory.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OneDrive\ClientContextWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OneDrive\ClientObjectWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OneDrive\ClientResultWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OneDrive\FileCollectionWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OneDrive\FileWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OneDrive\FolderCollectionWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OneDrive\FolderWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OneDrive\IClientContext.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OneDrive\IClientObject.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OneDrive\IClientObjectCollection.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OneDrive\IClientResult.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OneDrive\IFile.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OneDrive\IFileCollection.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OneDrive\IFolder.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OneDrive\IFolderCollection.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OneDrive\IList.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OneDrive\IListCollection.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OneDrive\IListItem.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OneDrive\IListItemCollection.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OneDrive\IUserSharingResult.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OneDrive\IWeb.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OneDrive\ListCollectionWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OneDrive\ListItemCollectionWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OneDrive\ListItemWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OneDrive\ListWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OneDrive\MockClientContext.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OneDrive\MockClientObject.2.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OneDrive\MockClientObject.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OneDrive\MockClientResult.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OneDrive\MockFile.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OneDrive\MockFileCollection.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OneDrive\MockFolder.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OneDrive\MockFolderCollection.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OneDrive\MockList.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OneDrive\MockListCollection.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OneDrive\MockListItem.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OneDrive\MockListItemCollection.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OneDrive\MockServerException.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OneDrive\MockUserSharingResult.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OneDrive\MockWeb.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OneDrive\UserSharingResultWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OneDrive\WebWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OnlineMeetingType.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OptimizationResult.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OptionSummary.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OrgIdADObjectWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OtherMailboxConfigEntry.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OwaADObjectNotFoundException.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OwaADUserNotFoundException.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OwaAnonymousApplication.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OWAAnonymousService.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OwaAppConfigLoader.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OwaApplication.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OwaAsyncResult.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OWAAuthorizationManager.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OwaCanaryException.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OwaCannotSanitizeHtmlException.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OwaClientSecurityContextIdentity.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OwaCompositeIdentity.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OwaConfigurationParserException.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OwaDeviceNotProvisionedException.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OwaDiagnostics.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OWADispatchOperationSelector.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OwaEventAsyncHttpHandler.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OwaEventAttribute.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OwaEventContentType.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OwaEventHandlerBase.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OwaEventHandlerFactory.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OwaEventHandlerHttpHeader.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OwaEventHttpHandler.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OwaEventNamespaceAttribute.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OwaEventParameterAttribute.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OwaEventParserBase.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OwaEventRegistry.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OwaEventUrlParser.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OwaEventVerb.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OwaEventVerbAttribute.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OwaEventXmlParser.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OwaException.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OwaExceptionMapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OwaExistentNotificationPipeException.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OwaExplicitLogonException.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OwaExtendedErrorCodeException.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OwaFaultExceptionUtilities.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OWAFaultHandler.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OwaFilteringServiceInvokerRequest.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OwaHttpHeader.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OwaIdentity.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OwaIdentityException.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OwaInvalidIdFormatException.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OwaInvalidMobileDevicePolicyException.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OwaInvalidOperationException.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OwaInvalidRequestException.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OwaIsSameUserPredicate.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OwaLockException.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OwaLockRecursionException.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OwaLockTimeoutException.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OwaMailboxPolicyCache.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OwaMailboxPolicyIdCacheByOrganization.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OwaMapiNotificationManager.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OwaMessageHeaderProcessor.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OWAMessageInspector.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OwaMethodArgumentException.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OwaMimeConstants.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OwaMiniRecipientIdentity.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OwaModule.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OwaMowaDisabledException.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OwaNotificationPipeException.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OwaNotificationPipeWriteException.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OwaNotSupportedException.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OwaOperationNotSupportedException.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OwaOtherMailboxConfiguration.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OwaPermanentException.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OwaPerTenantAcceptedDomains.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OwaPerTenantRemoteDomains.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OwaPerTenantTransportSettings.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OwaPhotoRequestorWriter.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OwaRegistryKey.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OwaRegistryKeys.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OwaRemoteWipeException.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OwaRequestHandler.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OwaRequestType.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OwaResponseShapeResolver.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OwaRulesEvaluationContext.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OwaRulesEvaluator.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OwaRWLockWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OwaSaveConflictException.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OwaSecurityContextSidLimitException.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OwaSerializationException.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OWAService.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OWAServiceFactory.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OwaServiceFaultException.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OwaServiceHttpAsyncHandler.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OwaServiceHttpHandler.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OwaServiceHttpHandlerBase.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OwaServiceHttpHandlerFactory.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OwaServiceMessage.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OwaServiceMessageInspector.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OwaServiceMethodDispatcher.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OwaServiceMethodMap.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OwaStoreObjectId.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OwaStoreObjectIdType.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OwaThemeManagerInitializationException.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OwaThrottlingException.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OwaTransientException.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OwaUrl.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OwaUserAgentUtilities.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OwaUserConfiguration.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OwaUserConfigurationLogType.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OwaUserConfigurationLogUtilities.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OwaUserHasNoMailboxAndNoLicenseAssignedException.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OwaVersionException.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OwaVersionId.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OwaViewStateConfiguration.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OWAWebHttpBehavior.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OWAWebHttpBehaviorExtensionElement.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OwaWin32Exception.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\OwaWindowsIdentity.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\PendingNotifierLockTracker.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\PendingRequestChannel.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\PendingRequestChannelLogEvent.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\PendingRequestEventData.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\PendingRequestEventHandler.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\PendingRequestManager.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\PendingRequestNotifierBase.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\PendingRequestUtilities.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\PeopleDisplayOptionsType.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\PeopleFilter.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\PeopleFilterComparer.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\PeopleFilterGroupPriorities.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\PeopleFilterGroupPriorityManager.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\PeopleIKnowRowNotificationHandler.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\PeopleIKnowRowNotificationLogEvent.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\PeopleIKnowRowNotificationPayload.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\PeopleSortOptionsType.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\PeopleSpeechPersonObject.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\PerfTraceLevel.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\PersonaComparerByDisplayName.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\PerTenantCachePerformanceCounters.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\PerTenantCacheTracer.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\PerTenantPolicyTipMessageConfig.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\PingOwa.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\PlayOnPhoneNotificationHandler.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\PlayOnPhoneNotificationManager.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\PlayOnPhoneNotificationPayload.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\PlayOnPhoneNotifier.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\PlayOnPhoneStateProvider.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\PolicyConfiguration.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\PolicySettingsType.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\PolicyTipCustomizedStrings.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\PolicyTipPerfMon.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\PolicyTipProtocolLog.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\PolicyTipRequestLogger.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\PolicyTipRule.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\PolicyTipRuleParser.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\PolicyTipRulesPerTenantSettings.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\PolymorphicConfiguration.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\PontType.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\PresenceChange.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\ProxySettings.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\PublishO365Notification.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\Pusher.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\PusherEventType.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\PusherLogEvent.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\PusherQueue.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\PusherQueuePayload.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\ReadReceiptResponse.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\ReceiveRequestKeys.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\RefreshClassificationsKeys.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\ReloadAllNotificationPayload.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\ReminderNotificationHandler.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\ReminderNotificationPayload.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\ReminderNotifier.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\RemoteChannelInfo.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\RemoteDestinationInfo.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\RemoteNotificationManager.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\RemoteNotificationPayload.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\RemoteNotifier.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\RemoteRequestProcessor.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\RemoteSubscriptionEventArgs.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\RemoteSubscriptionsInfo.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\RemoveFavoriteMetadata.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\RemoveSharedFolders.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\RequestContext.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\RequestContextHelper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\RequestDispatcher.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\RequestDispatcherUtilities.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\RequestHandlerBase.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\RequestParameters.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\ResendInformation.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\ResetPresence.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\RmsTemplateType.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\RowBrokerHandler.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\RowNotificationHandler.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\RowNotificationPayload.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\RowNotifier.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\SanitizeHtmlCommand.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\ScanResultExtensions.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\ScanResultStorageProvider.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\ScopeFlightsSetting.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\ScopeType.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\SearchFolderConversationRetriever.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\SearchFolderDataRetrieverBase.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\SearchFolderItemDataRetriever.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\SearchNotificationHandler.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\SearchNotificationPayload.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\SearchNotifier.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\SegmentationSettingsType.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\SendChatMessage.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\SendClientWatsonReportAction.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\SenderNotify.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\SendLinkClickedSignalToSP.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\SendLinkClickedSignalToSPRequest.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\SendResponseKeys.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\SentToPredicate.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\SentToScopePredicate.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\SerializedClientSecurityContext.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\ServerLocation.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\ServiceCommands\AcceptBuddy.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\ServiceCommands\AddFavorite.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\ServiceCommands\AddFavoriteCommand.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\ServiceCommands\AddImBuddy.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\ServiceCommands\Anonymous\BaseAnonymousCommand.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\ServiceCommands\Anonymous\FindItemAnonymous.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\ServiceCommands\Anonymous\GetItemAnonymous.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\ServiceCommands\AttachmentFile.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\ServiceCommands\AttachmentMessageBodyGenerator.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\ServiceCommands\ConnectedAccountsNotification.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\ServiceCommands\DeclineBuddy.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\ServiceCommands\FindFlowConversationItem.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\ServiceCommands\GetCerts.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\ServiceCommands\GetCertsInfo.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\ServiceCommands\GetDaysUntilPasswordExpiration.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\ServiceCommands\GetDlpPolicyTipsCommand.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\ServiceCommands\GetEncryptionCerts.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\ServiceCommands\GetFlowConversation.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\ServiceCommands\GetGroupCommand.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\ServiceCommands\GetMime.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\ServiceCommands\GetModernAttachmentsCommand.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\ServiceCommands\GetPersonaNotesCommand.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\ServiceCommands\GetPersonaOrganizationHierarchyCommand.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\ServiceCommands\GetRegionalConfiguration.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\ServiceCommands\GetRoomsInternal.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\ServiceCommands\GetSystemAlerts.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\ServiceCommands\RemoveBuddy.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\ServiceCommands\RemoveFavorite.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\ServiceCommands\RemoveFavoriteCommand.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\ServiceCommands\UpdateAttachmentPermissions.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\ServiceCommands\UploadPhoto.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\ServiceCommands\UploadPhotoFromForm.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\ServiceCommands\ValidateAggregatedConfiguration.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\ServiceCommands\VerifyCert.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\ServiceMethodInfo.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\SessionDataCache.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\SessionDataCacheState.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\SessionDataMetadata.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\SessionSettingsType.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\SetEmailSignature.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\SetFolderMruConfiguration.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\SetLayoutSettings.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\SetNotificationSettings.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\SetTimeZone.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\SetUserLocale.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\SetUserOofSettings.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\SetUserTheme.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\SetUserThemeRequest.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\SetUserThemeResponse.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\SharedContext.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\SimpleConfiguration.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\SimpleConfigurationAttribute.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\SimpleConfigurationPropertyAttribute.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\SimulatedWebRequestContext.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\SingleSpeechRecognitionScenario.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\SmimeAdminSettingsType.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\SpeechLoggerProcessType.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\SpeechProcessorStatisticsLogger.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\SpeechRecoContext.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\SpeechRecognition.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\SpeechRecognitionAsyncResult.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\SpeechRecognitionHandler.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\SpeechRecognitionProcessor.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\SpeechRecognitionResultHandler.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\SpeechRecognitionResultsPriority.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\SpeechRecognitionScenarioBase.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\SpeechRecognitionUtils.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\StoreItemScanResultStorageProvider.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\StructuredError.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\StructuredErrors.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\SubscribeForPresenceUpdates.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\SubscriberConcurrencyTracker.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\SubscribeToGroupNotification.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\SubscribeToGroupUnseenNotification.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\SubscribeToNotification.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\SubscribeToNotificationBase.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\SubscriptionData.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\SubscriptionParameters.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\SubscriptionResponseData.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\SuiteServiceProxyHelper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\SupportedVersionProvider.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\SynchronizeWacAttachment.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\SynchronizeWacAttachmentRequest.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\SynchronizeWacAttachmentResponse.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\SynchronizeWacAttachmentResult.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\TargetFolderMruConfiguration.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\TargetFolderMRUEntry.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\TerminateChatSession.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\Theme.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\ThemeManager.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\ThemeManagerFactory.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\ThemeSelectionInfoType.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\TimeZoneConfiguration.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\TimeZoneEntry.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\TraceLevel.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\TraceLogEvent.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\TraceLogger.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\TxSyncConnectedAccountsNotificationManager.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\TypeLocation.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\UcwaConfigurationUtilities.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\UcwaUserConfiguration.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\UnconditionalTruePredicate.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\UnseenCountBrokerHandler.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\UnseenItemNotificationHandler.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\UnseenItemNotificationPayload.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\UnseenItemNotifier.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\UnsubscribeFromPresenceUpdates.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\UnsubscribeToGroupNotification.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\UnsubscribeToGroupUnseenNotification.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\UnsubscribeToNotification.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\UnsubscribeToNotificationBase.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\UnsubscribeToNotificationRequest.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\UpdateAttachmentPermissionsRequest.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\UpdatePermissionsAsyncResult.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\UploadItemAsyncResult.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\UploadPhotoCommand.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\UploadPhotoRequest.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\UploadPhotoResponse.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\UserActivityType.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\UserComparer.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\UserConfigurationBaseType.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\UserConfigurationPropertyDefinition.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\UserConfigurationPropertyId.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\UserConfigurationPropertySchemaBase.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\UserConfigurationPropertyValidationUtility.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\UserContext.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\UserContextCookie.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\UserContextKey.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\UserContextManager.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\UserContextState.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\UserContextTerminationStatus.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\UserContextUtilities.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\UserOofSettingsType.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\UserOptionPropertySchema.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\UserOptionsLearnabilityTypes.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\UserOptionsMigrationState.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\UserOptionsType.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\ValidateAggregatedConfigurationRequest.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\ValidateAggregatedConfigurationResponse.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\VdirConfiguration.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\ViewStateProperties.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\ViewStatePropertySchema.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\WacActiveMonitoringHandler.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\WacAttachmentCreationType.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\WacAttachmentLogEvent.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\WacAttachmentStatus.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\WacAttachmentType.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\WacCheckFileResponse.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\WacConfiguration.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\WacDiscoveryClient.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\WacDiscoveryFailureException.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\WacDiscoveryManager.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\WacDiscoveryResultBase.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\WacDiscoveryResultFailure.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\WacDiscoveryResultSuccess.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\WacFileRep.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\WacRequest.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\WacRequestHandler.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\WacRequestType.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\WacSecurityAccessToken.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\WacUtilities.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\WebBeaconFilterLevels.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\WebPageDataProvider.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\WebPageInformation.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\WebPageLinkPreviewBuilder.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\WellKnownProperties.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\WellKnownShapeName.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\WellKnownShapes.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\WikipediaDataProvider.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\WikipediaLinkPreviewBuilder.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\Wrappers\AcceptBuddyRequestWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\Wrappers\AcceptChatSessionRequestWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\Wrappers\AcceptPersonaLinkSuggestionRequestWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\Wrappers\AddAttachmentDataProviderRequestWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\Wrappers\AddBuddyRequestWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\Wrappers\AddEventToMyCalendarRequestWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\Wrappers\AddFavoriteRequestWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\Wrappers\AddImBuddyRequestWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\Wrappers\AddMembersToUnifiedGroupRequestWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\Wrappers\AddSharedCalendarRequestWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\Wrappers\AddSharedFoldersRequestWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\Wrappers\AddTrustedSenderRequestWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\Wrappers\ConnectedAccountsNotificationRequestWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\Wrappers\CreateAttachmentFromUriRequestWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\Wrappers\CreateCalendarGroupRequestWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\Wrappers\CreateCalendarRequestWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\Wrappers\CreateContactFolderRequestWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\Wrappers\CreateMeetNowRequestWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\Wrappers\CreateModernGroupRequestWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\Wrappers\CreateOnlineMeetingRequestWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\Wrappers\CreatePersonaRequestWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\Wrappers\CreateReferenceAttachmentFromLocalFileRequestWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\Wrappers\CreateResendDraftRequestWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\Wrappers\CreateTaskFolderRequestWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\Wrappers\CreateUnifiedGroupRequestWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\Wrappers\DeclineBuddyRequestWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\Wrappers\DeleteCalendarGroupRequestWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\Wrappers\DeleteCalendarRequestWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\Wrappers\DeleteContactFolderRequestWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\Wrappers\DeletePersonaRequestWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\Wrappers\DeletePlaceRequestWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\Wrappers\DeleteTaskFolderRequestWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\Wrappers\EndInstantSearchSessionRequestWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\Wrappers\GetAggregatedAccountRequestWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\Wrappers\GetAttachmentDataProviderItemsRequestWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\Wrappers\GetCalendarFolderConfigurationRequestWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\Wrappers\GetCalendarSharingPermissionsRequestWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\Wrappers\GetCalendarSharingRecipientInfoRequestWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\Wrappers\GetCertsInfoRequestWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\Wrappers\GetCertsRequestWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\Wrappers\GetEncryptionCertsRequestWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\Wrappers\GetExtensibilityContextRequestWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\Wrappers\GetGroupInfoRequestWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\Wrappers\GetGroupRequestWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\Wrappers\GetInlineExploreSpContentRequestWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\Wrappers\GetLinkPreviewRequestWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\Wrappers\GetMasterCategoryListRequestWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\Wrappers\GetMimeRequestWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\Wrappers\GetModernAttachmentsRequestWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\Wrappers\GetModernGroupRequestWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\Wrappers\GetModernGroupUnseenItemsRequestWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\Wrappers\GetPeopleIKnowGraphCommandRequestWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\Wrappers\GetPersonaModernGroupMembershipRequestWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\Wrappers\GetPersonaNotesRequestWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\Wrappers\GetPersonaOrganizationHierarchyRequestWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\Wrappers\GetPersonaSuggestionsRequestWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\Wrappers\GetRoomsInternalRequestWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\Wrappers\GetTimeZoneRequestWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\Wrappers\GetUcwaUserConfigurationRequestWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\Wrappers\GetUserAvailabilityInternalRequestWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\Wrappers\GetWacAttachmentInfoRequestWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\Wrappers\GetWacIframeUrlRequestWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\Wrappers\InstantMessageSignInRequestWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\Wrappers\InstantMessageSignOutRequestWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\Wrappers\LikeItemRequestWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\Wrappers\LinkPersonaRequestWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\Wrappers\LoadExtensionCustomPropertiesRequestWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\Wrappers\ModernGroupMembershipRequestMessageDetailsRequestWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\Wrappers\MoveCalendarRequestWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\Wrappers\MoveContactFolderRequestWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\Wrappers\NotifyAppWipeRequestWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\Wrappers\NotifyTypingRequestWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\Wrappers\PerformInstantSearchRequestWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\Wrappers\RejectPersonaLinkSuggestionRequestWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\Wrappers\RemoveBuddyRequestWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\Wrappers\RemoveFavoriteRequestWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\Wrappers\RemoveModernGroupRequestWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\Wrappers\RemoveSharedFoldersRequestWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\Wrappers\RenameCalendarGroupRequestWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\Wrappers\RenameCalendarRequestWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\Wrappers\RenameTaskFolderRequestWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\Wrappers\SanitizeHtmlRequestWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\Wrappers\SaveExtensionCustomPropertiesRequestWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\Wrappers\SaveExtensionSettingsRequestWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\Wrappers\SendCalendarSharingInviteRequestWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\Wrappers\SendChatMessageRequestWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\Wrappers\SendLinkClickedSignalToSPRequestWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\Wrappers\SendReadReceiptRequestWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\Wrappers\SetCalendarColorRequestWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\Wrappers\SetCalendarGroupOrderRequestWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\Wrappers\SetCalendarNotificationRequestWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\Wrappers\SetCalendarProcessingRequestWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\Wrappers\SetCalendarPublishingRequestWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\Wrappers\SetCalendarSharingPermissionsRequestWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\Wrappers\SetFolderMruConfigurationRequestWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\Wrappers\SetLayoutSettingsRequestWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\Wrappers\SetMailboxAutoReplyConfigurationRequestWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\Wrappers\SetMailboxCalendarConfigurationRequestWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\Wrappers\SetMailboxMessageConfigurationRequestWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\Wrappers\SetModernGroupMembershipRequestWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\Wrappers\SetModernGroupPinStateRequestWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\Wrappers\SetOwaUserEmailSignatureRequestWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\Wrappers\SetOwaUserOofSettingsRequestWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\Wrappers\SetPresenceRequestWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\Wrappers\SetThemeRequestWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\Wrappers\SetTimeZoneRequestWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\Wrappers\SetUserLocaleRequestWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\Wrappers\SubscribeInternalCalendarRequestWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\Wrappers\SubscribeInternetCalendarRequestWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\Wrappers\SubscribeToGroupNotificationRequestWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\Wrappers\SubscribeToGroupUnseenNotificationRequestWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\Wrappers\SubscribeToNotificationRequestWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\Wrappers\SyncCalendarRequestWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\Wrappers\TerminateChatSessionRequestWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\Wrappers\UnlinkPersonaRequestWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\Wrappers\UnsubscribeFromPresenceUpdatesRequestWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\Wrappers\UpdateAttachmentPermissionsRequestWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\Wrappers\UpdateFavoriteFolderRequestWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\Wrappers\UpdateMasterCategoryListRequestWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\Wrappers\UpdateModernGroupRequestWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\Wrappers\UpdatePersonaRequestWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\Wrappers\UploadPhotoRequestWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\Wrappers\ValidateModernGroupAliasRequestWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\Wrappers\VerifyCertRequestWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\YouTubeLinkPreview.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\YouTubeLinkPreviewBuilder.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\ZipConstants.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\ZipEntryAttachment.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Core\ZipFileAttachments.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Diagnostics\AjaxMinSourceMapLoader.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Diagnostics\AjaxMinSymbolForJavaScript.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Diagnostics\AjaxMinSymbolForScriptSharp.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Diagnostics\AjaxMinSymbolParser.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Diagnostics\AjaxMinSymbolParserForJavaScript.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Diagnostics\AjaxMinSymbolParserForScriptSharp.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Diagnostics\CallStackFrameInfo.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Diagnostics\CanaryLogEvent.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Diagnostics\ClientWatsonDatapointHandler.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Diagnostics\ClientWatsonFunctionNamePool.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Diagnostics\ClientWatsonParameters.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Diagnostics\ClientWatsonParametersFactory.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Diagnostics\ClientWatsonReportData.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Diagnostics\ClientWatsonSymbolParser.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Diagnostics\ConsolidationSymbolsMap.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Diagnostics\CreateOnlineMeetingMetadata.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Diagnostics\ExceptionLogEvent.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Diagnostics\FrameSourceType.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Diagnostics\GetAttachmentMetadata.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Diagnostics\GetLinkPreviewMetadata.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Diagnostics\GetUcwaUserConfigurationMetaData.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Diagnostics\GetWacAttachmentInfoMetadata.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Diagnostics\IClientWatsonParameters.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Diagnostics\IConsolidationSymbolsMap.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Diagnostics\IJavaScriptSymbol.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Diagnostics\IJavaScriptSymbolsMap.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Diagnostics\JavaScriptSymbolComparer.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Diagnostics\JavaScriptSymbolsMap.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Diagnostics\LogDatapointMetadata.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Diagnostics\OwaAppStartLogEvent.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Diagnostics\OwaClientLogConfiguration.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Diagnostics\OwaClientLogger.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Diagnostics\OwaClientTraceLogConfiguration.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Diagnostics\OwaClientTraceLogger.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Diagnostics\OwaServerLogConfiguration.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Diagnostics\OwaServerLogger.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Diagnostics\OwaServerTraceLogConfiguration.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Diagnostics\OwaServerTraceLogger.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Diagnostics\ProcessingResult.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Diagnostics\ResultCode.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Diagnostics\RmsLoadingLogEvent.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Diagnostics\ScriptSharpSourceMapLoader.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Diagnostics\ScriptSharpSymbol.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Diagnostics\ScriptSharpSymbolWrapper.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Diagnostics\SignInLogEvent.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Diagnostics\SourceMapLoader.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Diagnostics\SubActivityScopeLogger.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Diagnostics\SubscribeToNotificationMetadata.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Diagnostics\SymbolMapLoadLogEvent.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Diagnostics\SynchronizeWacAttachmentMetadata.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Diagnostics\UpdateAttachmentPermissionsMetadata.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Diagnostics\UserContextCreationError.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Diagnostics\UserContextStatistics.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Diagnostics\WacRequestHandlerMetadata.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Web\AnonymousCalendar.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Web\AppCacheManifestHandler.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Web\AppCacheManifestHandlerBase.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Web\BootSlabDefinition.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Web\BufferedStreamReader.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Web\Default.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Web\DefaultPageBase.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Web\FeaturesManager.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Web\FeaturesManagerFactory.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Web\FeaturesStateOverride.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Web\FlightConfigurationException.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Web\FlightedFeatureScope.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Web\GlobalizeCultureScriptResource.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Web\GlobalizeScriptResource.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Web\GroupSubscriptionHandler.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Web\IFeaturesStateOverride.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Web\IPageContext.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Web\LayoutDependentResource.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Web\LocalizedExtensibilityStringsScriptResource.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Web\LocalizedStringsScriptResource.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Web\LocalizedThemeStyleResource.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Web\Plt1WebHandler.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Web\PreloadSessionDataHandler.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Web\RemoteNotificationHandler.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Web\RemoteNotificationRequester.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Web\ResourceBase.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Web\ResourceLayout.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Web\ResourcePathBuilderUtilities.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Web\ResourceTarget.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Web\ScopeFlightsSettingsProvider.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Web\ScriptResource.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Web\SessionDataHandler.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Web\Slab.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Web\SlabBinding.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Web\SlabBindingNotFoundException.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Web\SlabConfiguration.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Web\SlabDefinition.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Web\SlabFontFile.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Web\SlabImageFile.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Web\SlabManifest.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Web\SlabManifestCollection.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Web\SlabManifestCollectionFactory.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Web\SlabManifestException.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Web\SlabManifestFormatException.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Web\SlabManifestLoader.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Web\SlabManifestType.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Web\SlabSourceFile.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Web\SlabStringFile.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Web\SlabStyleFile.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Web\StyleResource.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Web\ThemeStyleResource.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Web\UserResourcesFinder.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Web\UserSpecificResourceInjector.cs" />
+    <Compile Include="Exchange\Clients\Owa2\Server\Web\UserSpecificResourceInjectorBase.cs" />
+    <Compile Include="Exchange\Clients\Owa\Server\LyncIMLogging\ExTraceGlobals.cs" />
+    <Compile Include="Exchange\Clients\Owa\Server\LyncIMLogging\LogConfiguration.cs" />
+    <Compile Include="Exchange\MessagingPolicies\Rules\OwaRulesTracer.cs" />
+    <Compile Include="IShellService.cs" />
+    <Compile Include="IShellServiceChannel.cs" />
+    <Compile Include="Online\BOX\Shell\BrandInfo.cs" />
+    <Compile Include="Online\BOX\Shell\FaultCode.cs" />
+    <Compile Include="Online\BOX\Shell\Filters.cs" />
+    <Compile Include="Online\BOX\Shell\GetAlertRequest.cs" />
+    <Compile Include="Online\BOX\Shell\GetSuiteServiceInfoRequest.cs" />
+    <Compile Include="Online\BOX\Shell\NavBarInfo.cs" />
+    <Compile Include="Online\BOX\Shell\NavBarInfoRequest.cs" />
+    <Compile Include="Online\BOX\Shell\Options.cs" />
+    <Compile Include="Online\BOX\Shell\SetUserThemeRequest.cs" />
+    <Compile Include="Online\BOX\Shell\SetYammerEnabledRequest.cs" />
+    <Compile Include="Online\BOX\Shell\ShellInfo.cs" />
+    <Compile Include="Online\BOX\Shell\ShellInfoRequest.cs" />
+    <Compile Include="Online\BOX\Shell\ShellServiceRequest.cs" />
+    <Compile Include="Online\BOX\Shell\ShellWebServiceFault.cs" />
+    <Compile Include="Online\BOX\Shell\SuiteServiceInfo.cs" />
+    <Compile Include="Online\BOX\Shell\ThemeData.cs" />
+    <Compile Include="Online\BOX\Shell\UserInfo.cs" />
+    <Compile Include="Online\BOX\Shell\WorkloadAuthenticationId.cs" />
+    <Compile Include="Online\BOX\UI\Shell\Alert.cs" />
+    <Compile Include="Online\BOX\UI\Shell\AlertPriority.cs" />
+    <Compile Include="Online\BOX\UI\Shell\AllSettings\ShellSetting.cs" />
+    <Compile Include="Online\BOX\UI\Shell\AllSettings\ShellSettingsRequest.cs" />
+    <Compile Include="Online\BOX\UI\Shell\AllSettings\ShellSettingsResponse.cs" />
+    <Compile Include="Online\BOX\UI\Shell\NavBarData.cs" />
+    <Compile Include="Online\BOX\UI\Shell\NavBarImageClipInfo.cs" />
+    <Compile Include="Online\BOX\UI\Shell\NavBarImageData.cs" />
+    <Compile Include="Online\BOX\UI\Shell\NavBarLinkData.cs" />
+    <Compile Include="Online\BOX\UI\Shell\NavBarMainLinkID.cs" />
+    <Compile Include="Online\BOX\UI\Shell\NavBarUnclusteredImageData.cs" />
+    <Compile Include="Online\BOX\UI\Shell\ShellBaseFlight.cs" />
+    <Compile Include="Online\BOX\UI\Shell\ShellDimensions.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ShellServiceClient.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="FindConversationShape.txt" />
+    <EmbeddedResource Include="FindFoldersShape.txt" />
+    <EmbeddedResource Include="GetConversationItemsShape.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.Exchange.Clients.Common\Microsoft.Exchange.Clients.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140E6}</Project>
+      <Name>Microsoft.Exchange.Clients.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Clients.Security\Microsoft.Exchange.Clients.Security.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140E9}</Project>
+      <Name>Microsoft.Exchange.Clients.Security</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Common\Microsoft.Exchange.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140F0}</Project>
+      <Name>Microsoft.Exchange.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Compliance\Microsoft.Exchange.Compliance.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140F2}</Project>
+      <Name>Microsoft.Exchange.Compliance</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Configuration.ObjectModel\Microsoft.Exchange.Configuration.ObjectModel.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140FC}</Project>
+      <Name>Microsoft.Exchange.Configuration.ObjectModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.ApplicationLogic\Microsoft.Exchange.Data.ApplicationLogic.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14104}</Project>
+      <Name>Microsoft.Exchange.Data.ApplicationLogic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Common\Microsoft.Exchange.Data.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140D3}</Project>
+      <Name>Microsoft.Exchange.Data.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Directory\Microsoft.Exchange.Data.Directory.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14105}</Project>
+      <Name>Microsoft.Exchange.Data.Directory</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.GroupMailboxAccessLayer\Microsoft.Exchange.Data.GroupMailboxAccessLayer.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14107}</Project>
+      <Name>Microsoft.Exchange.Data.GroupMailboxAccessLayer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Storage.ClientStrings\Microsoft.Exchange.Data.Storage.ClientStrings.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1410E}</Project>
+      <Name>Microsoft.Exchange.Data.Storage.ClientStrings</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Storage\Microsoft.Exchange.Data.Storage.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1410F}</Project>
+      <Name>Microsoft.Exchange.Data.Storage</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Transport\Microsoft.Exchange.Data.Transport.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140D5}</Project>
+      <Name>Microsoft.Exchange.Data.Transport</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data\Microsoft.Exchange.Data.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14106}</Project>
+      <Name>Microsoft.Exchange.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Diagnostics\Microsoft.Exchange.Diagnostics.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14113}</Project>
+      <Name>Microsoft.Exchange.Diagnostics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Extensibility.Internal\Microsoft.Exchange.Extensibility.Internal.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14126}</Project>
+      <Name>Microsoft.Exchange.Extensibility.Internal</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.FederatedDirectory\Microsoft.Exchange.FederatedDirectory.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14128}</Project>
+      <Name>Microsoft.Exchange.FederatedDirectory</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.HelpProvider\Microsoft.Exchange.HelpProvider.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1412B}</Project>
+      <Name>Microsoft.Exchange.HelpProvider</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.InfoWorker.Common\Microsoft.Exchange.InfoWorker.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1413C}</Project>
+      <Name>Microsoft.Exchange.InfoWorker.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Management.Recipient\Microsoft.Exchange.Management.Recipient.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14162}</Project>
+      <Name>Microsoft.Exchange.Management.Recipient</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Management\Microsoft.Exchange.Management.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1415C}</Project>
+      <Name>Microsoft.Exchange.Management</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.MessageSecurity\Microsoft.Exchange.MessageSecurity.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1416A}</Project>
+      <Name>Microsoft.Exchange.MessageSecurity</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.MessagingPolicies.Rules\Microsoft.Exchange.MessagingPolicies.Rules.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14170}</Project>
+      <Name>Microsoft.Exchange.MessagingPolicies.Rules</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Net\Microsoft.Exchange.Net.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14178}</Project>
+      <Name>Microsoft.Exchange.Net</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Notifications.BrokerAPI\Microsoft.Exchange.Notifications.BrokerAPI.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14179}</Project>
+      <Name>Microsoft.Exchange.Notifications.BrokerAPI</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.PushNotifications.Publishers\Microsoft.Exchange.PushNotifications.Publishers.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14186}</Project>
+      <Name>Microsoft.Exchange.PushNotifications.Publishers</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Rules.Common\Microsoft.Exchange.Rules.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14191}</Project>
+      <Name>Microsoft.Exchange.Rules.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Security\Microsoft.Exchange.Security.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14198}</Project>
+      <Name>Microsoft.Exchange.Security</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Services.OnlineMeetings\Microsoft.Exchange.Services.OnlineMeetings.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141AD}</Project>
+      <Name>Microsoft.Exchange.Services.OnlineMeetings</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Services\Microsoft.Exchange.Services.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141AC}</Project>
+      <Name>Microsoft.Exchange.Services</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.SharePointSignalStore\Microsoft.Exchange.SharePointSignalStore.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141B6}</Project>
+      <Name>Microsoft.Exchange.SharePointSignalStore</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.StoreProvider\Microsoft.Exchange.StoreProvider.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141B9}</Project>
+      <Name>Microsoft.Exchange.StoreProvider</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Transport.Sync.Common\Microsoft.Exchange.Transport.Sync.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141D5}</Project>
+      <Name>Microsoft.Exchange.Transport.Sync.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.UM.UMCommon\Microsoft.Exchange.UM.UMCommon.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141DB}</Project>
+      <Name>Microsoft.Exchange.UM.UMCommon</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.UM.UMCore\Microsoft.Exchange.UM.UMCore.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141DC}</Project>
+      <Name>Microsoft.Exchange.UM.UMCore</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.UnifiedContent.Exchange\Microsoft.Exchange.UnifiedContent.Exchange.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141DE}</Project>
+      <Name>Microsoft.Exchange.UnifiedContent.Exchange</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.VariantConfiguration\Microsoft.Exchange.VariantConfiguration.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141E0}</Project>
+      <Name>Microsoft.Exchange.VariantConfiguration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.WorkloadManagement\Microsoft.Exchange.WorkloadManagement.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141E1}</Project>
+      <Name>Microsoft.Exchange.WorkloadManagement</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Filtering.Exchange\Microsoft.Filtering.Exchange.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141E2}</Project>
+      <Name>Microsoft.Filtering.Exchange</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Office.Datacenter.ActiveMonitoringLocal\Microsoft.Office.Datacenter.ActiveMonitoringLocal.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141ED}</Project>
+      <Name>Microsoft.Office.Datacenter.ActiveMonitoringLocal</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\mscorlib\mscorlib.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141F1}</Project>
+      <Name>mscorlib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

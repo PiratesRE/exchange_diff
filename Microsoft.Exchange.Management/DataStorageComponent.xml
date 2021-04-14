@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo Name="Data Storage Configuration" DescriptionId="SetupComponentDataStorageConfiguration">
+
+  <ServerTasks>
+
+    <!-- Install/uninstall OLE converter -->
+    <ServerTaskInfo Id="_7e55b63653a84be193d42ead5a6b4719" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>install-OleConverter</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>uninstall-OleConverter</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+  </ServerTasks>
+
+</SetupComponentInfo>
+

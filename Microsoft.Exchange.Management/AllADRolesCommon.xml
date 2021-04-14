@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo Name="All Active-Directory Roles Common" DescriptionId="SetupComponentAllADRolesCommon">
+
+  <ServerTasks>
+
+    <!-- Create/delete local machine settings - at this point this is nothing but -->
+    <!-- removing "log on locally" rights for Domain Users                        -->
+    <!-- This is to secure the Exchange machines and don't allow regular domain user to log on, this requires Local server administrator permisions -->
+    <ServerTaskInfo Id="ExsetdataSharedMachineSettings" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>install-ExsetdataAtom -AtomName SharedMachineSettings -DomainController $RoleDomainController</Standalone>
+      </Install>
+      <BuildToBuildUpgrade>
+        <Standalone>buildToBuildUpgrade-ExsetdataAtom -AtomName SharedMachineSettings -DomainController $RoleDomainController</Standalone>
+      </BuildToBuildUpgrade>
+      <DisasterRecovery>
+        <Standalone>disasterRecovery-ExsetdataAtom -AtomName SharedMachineSettings -DomainController $RoleDomainController</Standalone>
+      </DisasterRecovery>
+      <Uninstall>
+        <Standalone>uninstall-ExsetdataAtom -AtomName SharedMachineSettings -DomainController $RoleDomainController</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Create/delete the server object in the AD -->
+    <!-- This assumes that Organization is already present and the Servers container under the E12 admin group is already created -->
+    <!-- This requires at least ServerAdmin role or higher if the server has not been provisioned -->
+    <ServerTaskInfo Id="ExsetdataServer" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressCreateServerObject">
+        <Standalone>install-ExsetdataAtom -AtomName Server -DomainController $RoleDomainController</Standalone>
+      </Install>
+      <BuildToBuildUpgrade DescriptionId="SetupProgressCreateServerObject">
+        <Standalone>buildToBuildUpgrade-ExsetdataAtom -AtomName Server -DomainController $RoleDomainController</Standalone>
+      </BuildToBuildUpgrade>
+      <DisasterRecovery DescriptionId="SetupProgressCreateServerObject">
+        <Standalone>disasterRecovery-ExsetdataAtom -AtomName Server -DomainController $RoleDomainController</Standalone>
+      </DisasterRecovery>
+      <Uninstall DescriptionId="SetupProgressRemoveServerObject">
+        <Standalone>uninstall-ExsetdataAtom -AtomName Server -DomainController $RoleDomainController</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+      <!--Server CEIP Opt-in/Out-->
+      <!--Make sure that Global CustomerFeedbackEnabled is not null-->
+    <ServerTaskInfo Id="CustomerFeedback" Component="EXCHANGE14:\Current\Release\UA\Global\Setup">
+        <Install>
+          <Standalone>
+            if ($RoleCustomerFeedbackEnabled -ne $null)
+            {
+              $organizationConfig = get-OrganizationConfig;
+              if ($organizationConfig.CustomerFeedbackEnabled -ne $False)
+              {
+                Set-ExchangeServer -Identity $RoleFqdnOrName -CustomerFeedbackEnabled $RoleCustomerFeedbackEnabled;
+              }
+            }
+          </Standalone>
+        </Install>
+        <BuildToBuildUpgrade/>
+        <DisasterRecovery/>
+        <Uninstall/>
+      </ServerTaskInfo>
+
+    <!-- During uninstall IsProvisioned bit needs to be set before
+    'uninstall-ExsetdataAtom -AtomName Server'
+    are executed. If this bit is set those tasks will clean up server object object
+    but they won't delete it. Note that this task after those tasks because uninstall
+    tasks are executed in reverse order.
+    Note that if org admin is running uninstall of an active node in cluster we don't
+    want to set Exchange server to provisioned state to allow clean up of both EVS and
+    node. -->
+    <ServerTaskInfo Id="SetExchangeServerRole" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\AD Core\AD Driver">
+      <Install />
+      <BuildToBuildUpgrade />
+      <DisasterRecovery />
+      <Uninstall>
+        <Standalone>
+          set-ExchangeServerRole -Identity $RoleNetBIOSName -IsProvisionedServer:$true -DomainController $RoleDomainController
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Adds the server admins USG and Org Admin USG to local administrators group -->
+    <!-- This requires local administrator and at least Exchange viewOnly administrators -->
+    <ServerTaskInfo Id="AddDelegatedGroupsToLocalAdminGroup" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\AD Core\AD Driver">
+      <Install>
+        <Standalone>Add-DelegatedGroupsToLocalAdminGroup -DomainController $RoleDomainController</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Set permissions on this server object -->
+    <!-- This requires at least ServerAdmin role -->
+    <ServerTaskInfo Id="InitializeServerPermissions" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\AD Core\AD Driver">
+      <Install>
+        <Standalone>initialize-ServerPermissions -DomainController $RoleDomainController</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery>
+        <Standalone />
+      </DisasterRecovery>
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- 
+    	If neccessary, stop and restart the w3svc service to ensure its worker processes terminate.
+    	The worker processes may be holding files from a previous Exchange installation, which can
+    	cause versioning problems when the new code runs.  (PS#94811)  This is only required for install
+    	and DR because upgrade bounces all services in pre-setup and uninstall won't be updating any files. 
+
+    	The start and stop steps are in one task entry so that we only try to start the service if it was
+    	previously running.
+    -->
+    <!-- This requires local administrator permission. -->
+    <ServerTaskInfo Id="RestartW3Svc" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressStoppingW3SVCService">
+        <Standalone>
+		$w3svc = get-service -include w3svc;
+		$wasRunning = $( ($w3svc -ne $null) -and ($w3svc.Status -eq [System.ServiceProcess.ServiceControllerStatus]::Running) );
+		if($wasRunning)
+		{
+			stop-SetupService -ServiceName W3SVC;
+			start-SetupService -ServiceName W3SVC;
+		}
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade />
+      <DisasterRecovery  UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Add firewall rule for WCF AD Topology Service -->
+    <ServerTaskInfo Id="_898C1973E32E4307B4F10A99ED33B508" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\AD Core\DS Access">
+      <Install>
+        <Standalone>
+          Add-FirewallException -FirewallRule (New-Object Microsoft.Exchange.Security.WindowsFirewall.MSExchangeADTopologyWCFFirewallRule)
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>remove-firewallexception -FirewallRule (New-Object Microsoft.Exchange.Security.WindowsFirewall.MSExchangeADTopologyWCFFirewallRule)</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/uninstall the AD Topology service -->
+    <!-- This requires local administrator permission -->
+    <ServerTaskInfo Id="InstallADTopologyService" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\AD Core\DS Access">
+      <Install>
+        <Standalone>
+          if (!(get-service MSExchangeADTopology* | where {$_.name -eq "MSExchangeADTopology"}))
+          {
+             Install-ADTopologyService
+          }
+          else
+          {
+            Update-ServiceExecutable -ServiceName:MSExchangeADTopology -Executable:"Microsoft.Exchange.Directory.TopologyService.exe"
+            invoke-expression "sc.exe config MSExchangeADTopology depend= NetTcpPortSharing"
+            Uninstall-TopologyService
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>uninstall-ADTopologyService</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/uninstall MAPI.NET perf counters -->
+    <!-- This is machine setting, it requires local administrator permissions -->
+    <ServerTaskInfo Id="_adb95deb6df44ef7a84eaef9c8aa675c" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>new-PerfCounters -DefinitionFileName MapiNetPerfCounters.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-PerfCounters -DefinitionFileName MapiNetPerfCounters.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+
+    <!-- E14 PS 166714: Set the UseMachineId registry key so that process running as LocalSystem can authenticate with RMS servers -->
+    <!-- This allows machine accounts to authenticate as themselves with NTLM, instead of Anonymous and is default in Windows7 -->
+    <ServerTaskInfo Id="_f0c76d2962aa4aa3a2f4b4f6eb9d158e" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+        $win7Ver = New-Object Version -ArgumentList "6.1";
+        if ([Environment]::OSVersion.Version -lt $win7Ver)
+        {
+            $useMachineKey = get-itemproperty -Path HKLM:\SYSTEM\CurrentControlSet\Control\Lsa -Name "UseMachineId" -ErrorAction:SilentlyContinue;	
+            if ($useMachineKey -eq $null)
+            {
+                New-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Control\Lsa -Name "UseMachineId" -Value 1 -PropertyType Dword;
+            }
+            Set-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Control\Lsa -Name "UseMachineId" -Value 1 -Type:Dword;			
+        }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+     <Uninstall />
+    </ServerTaskInfo>
+
+   <ServerTaskInfo Id="_2b30c47b153d42b8b43dabe68324e4fb" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          Install-CrimsonManifest `
+          -DefinitionXml "bin\PushNotificationEvents.man" `
+          -MessageDll "bin\Microsoft.Exchange.PushNotifications.CrimsonEvents.dll" `
+          -ProviderName "Microsoft-Exchange-PushNotifications";
+
+          if (!$RoleIsDatacenter -and !$RoleIsDatacenterDedicated)
+          {
+              $pathForwevutilcmd = join-path $env:SystemRoot System32\wevtutil.exe;
+              if (Test-Path $pathForwevutilcmd)
+              {
+                  invoke-expression ($pathForwevutilcmd + " sl 'Microsoft-Exchange-PushNotifications/Analytics' /e:false");
+              }
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade>
+        <Standalone>
+          Uninstall-CrimsonManifest -DefinitionXml "bin\PushNotificationEvents.man";
+
+          Install-CrimsonManifest `
+          -DefinitionXml "bin\PushNotificationEvents.man" `
+          -MessageDll "bin\Microsoft.Exchange.PushNotifications.CrimsonEvents.dll" `
+          -ProviderName "Microsoft-Exchange-PushNotifications";
+
+          if (!$RoleIsDatacenter -and !$RoleIsDatacenterDedicated)
+          {
+              $pathForwevutilcmd = join-path $env:SystemRoot System32\wevtutil.exe;
+              if (Test-Path $pathForwevutilcmd)
+              {
+                  invoke-expression ($pathForwevutilcmd + " sl 'Microsoft-Exchange-PushNotifications/Analytics' /e:false");
+              }
+          }
+        </Standalone>
+      </BuildToBuildUpgrade>
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>
+          Uninstall-CrimsonManifest -DefinitionXml "bin\PushNotificationEvents.man"
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!--Install IP Crimson Manifest -->
+    <ServerTaskInfo Id="_8817ff17abc54ebf8e97306a4c4f7bc3" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          Install-CrimsonManifest `
+          -DefinitionXml "bin\ComplianceEvents.man" `
+          -MessageDll "bin\Microsoft.Exchange.Compliance.CrimsonEvents.dll" `
+          -ProviderName "Microsoft-Exchange-Compliance";
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade>
+        <Standalone>
+          Uninstall-CrimsonManifest -DefinitionXml "bin\ComplianceEvents.man";
+          
+          Install-CrimsonManifest `
+          -DefinitionXml "bin\ComplianceEvents.man" `
+          -MessageDll "bin\Microsoft.Exchange.Compliance.CrimsonEvents.dll" `
+          -ProviderName "Microsoft-Exchange-Compliance";
+        </Standalone>
+      </BuildToBuildUpgrade>
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>
+          Uninstall-CrimsonManifest -DefinitionXml "bin\ComplianceEvents.man"
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+    
+  </ServerTasks>
+
+</SetupComponentInfo>

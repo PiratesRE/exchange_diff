@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo Name="CentralAdmin FrontEnd Configuration" DescriptionId="CentralAdminFrontEndComponentDescription">
+
+  <ServerTasks>
+    <!-- 
+      See http://support.microsoft.com/kb/896861 for details on this setting.
+      Disables NTLM loopback check that prevents NTLM authentication from 
+      succeeding against a local server if an FQDN was used to address it.
+    -->
+    <ServerTaskInfo Id="_178a10624c88445093855c4ede7e9b9c" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          . "$RoleInstallPath\Scripts\ConfigureNetworkProtocolParameters.ps1"; 
+          Set-NtlmLoopbackCheck $false
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall/>
+    </ServerTaskInfo>
+
+    <!-- Install/uninstall CA IIS web service extensions -->
+    <ServerTaskInfo Id="_14a6761e144e428b93c62249acc814fe" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>install-ClientAccessIisWebServiceExtensions</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>uninstall-ClientAccessIisWebServiceExtensions</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>    
+    
+    <!-- Set ClientAccess role -->
+    <ServerTaskInfo Id="_e95499b43bd1484dbc03098fb1b4e592" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+           set-ExchangeServerRole -Identity $RoleFqdnOrName -IsClientAccessServer:$true -DomainController $RoleDomainController                     
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery />
+      <Uninstall>
+        <Standalone>
+          set-ExchangeServerRole -Identity $RoleFqdnOrName -IsClientAccessServer:$false -DomainController $RoleDomainController           
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install TranscodingService run as password -->
+    <ServerTaskInfo Id="_f4c48e196e374cf3af269b1cea0602c8" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="InstallingTranscodingService">
+        <Standalone>Install-TranscodingServiceEx</Standalone>
+      </Install>
+      <BuildToBuildUpgrade />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall DescriptionId="UninstallingTranscodingService">
+        <Standalone>Uninstall-TranscodingServiceEx</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+   
+    <!-- Create the "back end" website -->
+    <ServerTaskInfo Id="_1c7a7da2ab9d41bb8db75522ad28b9db" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          $tpath = "$env:SystemRoot\system32\inetsrv\microsoft.web.administration.dll";
+          add-type -Path $tpath;
+          $sm = new-object Microsoft.Web.Administration.ServerManager;
+          if ($sm.Sites["Exchange Back End"] -eq $null)
+          {
+            $backEndWebSitePath = [System.IO.Path]::Combine($RoleInstallPath, "ClientAccess");
+            $s = $sm.Sites.Add("Exchange Back End","http", "*:81:", $backEndWebSitePath);
+            $s.ServerAutoStart = $true;
+            $sb =$s.Bindings;
+            $b = $sb.Add("*:444:","https");
+            $sm.CommitChanges();
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>
+          $tpath = "$env:SystemRoot\system32\inetsrv\microsoft.web.administration.dll";
+          add-type -Path $tpath;
+          $sm = new-object Microsoft.Web.Administration.ServerManager;
+          $sr = $sm.Sites["Exchange Back End"];
+          if ($sr -ne $null)
+          {
+            $s = $sm.Sites.Remove($sr);
+            $sm.CommitChanges();
+          }
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Configure Resource Health registry flags -->
+    <ServerTaskInfo Id="_023036e43f004bda9f4f4e0b1e0d233f" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          Install-ResourceHealthActiveFlags
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall/>
+    </ServerTaskInfo>
+    <!--
+    Add X-DiagInfo custom response header in order to identity target BE server for all requests processed by the cafe server
+    Note: please DO NOT add customer header for ReportingWebService, since rws inherit the config from ecp. Otherwise, it will cause duplicated key error. See bug 2940683 for more details.
+    -->
+    <ServerTaskInfo Id="_240c7e5d07f941cfbe69a692dc33a31a" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          ."$RoleInstallPath\Scripts\ConfigureCafeResponseHeaders.ps1";
+          CreateCustomHeadersNodeForBackend 'powershell'
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall/>
+    </ServerTaskInfo>       
+
+   <!-- ClientAccessExchangeCertificate -->
+    <ServerTaskInfo Id="_fb5e9028e669404d94dba90aace8c2f9" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          Install-ExchangeCertificate -WebSiteName "Exchange Back End" -services "IIS" -DomainController $RoleDomainController -InstallInTrustedRootCAIfSelfSigned $true
+          Install-ExchangeCertificate -services "IIS" -DomainController $RoleDomainController       
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="false" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall/>
+    </ServerTaskInfo>
+  </ServerTasks>
+</SetupComponentInfo>

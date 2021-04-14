@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo Name="FrontendTransport MidFileCopy" DescriptionId="SetupComponentMidFileCopyFrontendTransport">
+
+  <ServerTasks>
+
+    <ServerTaskInfo Id="_a0b546f6d89d460bb53d5b7dcb4990c4" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install />
+      <BuildToBuildUpgrade/>
+      <DisasterRecovery />
+      <Uninstall />
+    </ServerTaskInfo>
+
+  </ServerTasks>
+
+</SetupComponentInfo>
+

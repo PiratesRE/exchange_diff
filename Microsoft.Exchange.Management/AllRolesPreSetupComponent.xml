@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo Name="All Roles Pre Setup" DescriptionId="SetupComponentPreSetupAllRoles">
+
+  <ServerTasks>
+  <!-- At the start of setup, set the server state to InActive.
+       If the server can not be identified as an Exchange Server (exchange not installed or installed with only MT role), then log message and continue with setup.
+       If unable to set the server state, throw an exception and setup fails. -->
+    <ServerTaskInfo Id="SetServerStateForSetup" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone> 
+          try
+          {
+            $Target = $env:COMPUTERNAME
+            try
+            { 
+              $exSrv = get-ExchangeServer $Target -ErrorAction SilentlyContinue -DomainController $RoleDomainController
+            } 
+            catch 
+            {
+              Write-ExchangeSetupLog -Warning "Unable to set monitoring and server state to inactive.  Setup will continue.";
+            }
+
+            if ($exSrv -eq $null)
+            {
+              Write-ExchangeSetupLog -Warning "$Target is not an Exchange Server. Unable to set monitoring and server state to inactive.  Setup will continue.";
+              return
+            }
+
+            Set-ServerComponentState $Target -Component Monitoring -Requester Functional -State Inactive -DomainController $RoleDomainController
+            Write-ExchangeSetupLog -Info "Monitoring has been set to Inactive while setup is running."
+
+            Set-ServerComponentState $Target -Component RecoveryActionsEnabled -Requester Functional -State Inactive -DomainController $RoleDomainController
+            Write-ExchangeSetupLog -Info "RecoveryActionsEnabled has been set to Inactive while setup is running."
+
+            Set-ServerComponentState $Target -Component ServerWideOffline -Requester Functional -State InActive -DomainController $RoleDomainController
+            Write-ExchangeSetupLog -Info "The server state has been set to Inactive while setup is running."
+          }
+          catch 
+          {
+            Write-ExchangeSetupLog -Warning "Unable to set monitoring and server state to inactive.  Setup can not continue.";
+            throw;
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />        
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- 
+      Save service state 
+      
+      During installation, upgrade, or disaster recovery some services might be holding
+      Exchange or C-Runtime files open, thereby thwarting our attempt to install or
+      reinstall them without reboot. To prevent this, we need to stop these services
+      before replacing files.
+      To do this, we first save the state of the services if the file
+      StoppedServices.xml is not present. We always stop the services and disable only
+      if we have saved the state.
+      This is required in case setup fails during configuration of a role. A resume
+      will uninstall-install the msi, so we need to stop the services. To preserve the 
+      state that was there on the first attempt of upgrade, the state files are not
+      overwritten. 
+      During post-setup, we'll restore the services to the state recorded here.
+
+      We do the same for uninstall just in diffent component files because uninstall
+      run tasks in reverse order.
+
+      We're passed a comma-separated list of role names from the role manager.
+      The service control script expects an array of role names that don't end in 'Role'.
+      Do that conversion here.
+      
+      This requires local machine admin permissions.
+    -->
+    <ServerTaskInfo Id="_1bc6fa93fa2b43c486f330374bc0300e" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install />
+      <BuildToBuildUpgrade>
+        <Standalone>
+          &amp; $RoleBinPath\ServiceControl.ps1 Save
+        </Standalone>
+      </BuildToBuildUpgrade>
+      <DisasterRecovery />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- 
+      Backup MSI Keys
+      
+      Setup needs a few registry values to perform an upgrade.  These values
+      can be erased while removing the MSI.  If a failure occurs after the values
+      are removed, but before the new MSI installs them, setup would normally be
+      unable to start.  To recover from this situation, setup makes backups of the 
+      important keys.  We do this here in pre-setup, before any MSI operations have 
+      happened.
+    -->
+    <ServerTaskInfo Id="_25e47cf261194843b2fdb6e12094944d" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone />
+      </Install>
+      <BuildToBuildUpgrade>
+        <Standalone>
+          $origPath = 'HKLM:\SOFTWARE\Microsoft\ExchangeServer\v15\Setup';
+          $backupPath = 'HKLM:\SOFTWARE\Microsoft\ExchangeServer\v15\Setup-Save';
+          if(test-path $origPath)
+          {
+            if((test-path $backupPath) -eq $false)
+            {              
+                copy-item -Recurse:$true -path:$origPath -destination:$backupPath
+            }
+          }
+        </Standalone>
+      </BuildToBuildUpgrade>
+      <DisasterRecovery />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Log all active processes and the files in use during uninstall-->
+    <ServerTaskInfo Id="_3e1812d1fd2e4078815c9bc92b3c6fd6" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install/>
+      <BuildToBuildUpgrade/>
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false" DescriptionId="SetupProgressListOpenFiles">
+        <Standalone>
+    Write-ExchangeSetupLog -Info "Listing all processes and the files held open by each process";
+    $sb=new-object system.text.stringbuilder;
+    get-process |sort Id | %{ $o = @{}; $p = $_; $p.Modules| %{ $m = $_; if($m.FileName -like '*') {$o.Id = $p.Id; $o.Process = $p.Name; $o.Module = $m.FileName }; $o } } |
+     %{ $null = $sb.AppendFormat("{0}, {1}, {2}",$_.Id,$_.Process,$_.Module); $sb.AppendLine(); };
+    Write-ExchangeSetupLog -Info $sb.ToString();
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+  </ServerTasks>
+</SetupComponentInfo>

@@ -1,0 +1,117 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{09CD9476-CD82-489E-B9E2-84B47CA140F4}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Microsoft.Exchange.Compliance.TaskDistributionFabric</RootNamespace>
+    <AssemblyName>Microsoft.Exchange.Compliance.TaskDistributionFabric</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Caching" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Threading.Tasks.Dataflow" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Blocks\BlockBase.cs" />
+    <Compile Include="Blocks\DistributeBlock.cs" />
+    <Compile Include="Blocks\EchoRequestBlock.cs" />
+    <Compile Include="Blocks\FinalBlockBase.cs" />
+    <Compile Include="Blocks\RecordBlock.cs" />
+    <Compile Include="Blocks\RetrievePayloadBlock.cs" />
+    <Compile Include="Blocks\ReturnBlock.cs" />
+    <Compile Include="Blocks\SendBlock.cs" />
+    <Compile Include="Blocks\StoreResultsBlock.cs" />
+    <Compile Include="Blocks\WorkBlock.cs" />
+    <Compile Include="Dataflow\DriverProcessor.cs" />
+    <Compile Include="Dataflow\JobReceiver.cs" />
+    <Compile Include="Dataflow\MessageProcessorBase.cs" />
+    <Compile Include="Dataflow\MessageReceiverBase.cs" />
+    <Compile Include="Dataflow\ResultReceiver.cs" />
+    <Compile Include="Dataflow\WorkReceiver.cs" />
+    <Compile Include="Endpoint\MessageProcessor.cs" />
+    <Compile Include="Endpoint\MessageReceiver.cs" />
+    <Compile Include="Optics\PerformanceCounterAccessor.cs" />
+    <Compile Include="Optics\PerformanceCounterAccessorRegistry.cs" />
+    <Compile Include="Optics\PerformanceCounterRefresher.cs" />
+    <Compile Include="Payload\IPayloadRetriever.cs" />
+    <Compile Include="Payload\PayloadRetriever.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Routing\DispatchBlock.cs" />
+    <Compile Include="Routing\Entry.cs" />
+    <Compile Include="Routing\IncomingEntry.cs" />
+    <Compile Include="Routing\IRoutingManager.cs" />
+    <Compile Include="Routing\OutgoingEntry.cs" />
+    <Compile Include="Routing\RoutingCache.cs" />
+    <Compile Include="Routing\RoutingManager.cs" />
+    <Compile Include="Scheduling\ResourceBasedTaskScheduler.cs" />
+    <Compile Include="TaskDistributionComponent.cs" />
+    <Compile Include="TaskDistributionFabricPerfCounters.cs" />
+    <Compile Include="TaskDistributionFabricPerfCountersInstance.cs" />
+    <Compile Include="TaskDistributionSettings.cs" />
+    <Compile Include="Utility\ApplicationHelper.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.Exchange.Compliance.TaskDistributionCommon\Microsoft.Exchange.Compliance.TaskDistributionCommon.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140F3}</Project>
+      <Name>Microsoft.Exchange.Compliance.TaskDistributionCommon</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Common\Microsoft.Exchange.Data.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140D3}</Project>
+      <Name>Microsoft.Exchange.Data.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Directory\Microsoft.Exchange.Data.Directory.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14105}</Project>
+      <Name>Microsoft.Exchange.Data.Directory</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Storage\Microsoft.Exchange.Data.Storage.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1410F}</Project>
+      <Name>Microsoft.Exchange.Data.Storage</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Diagnostics\Microsoft.Exchange.Diagnostics.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14113}</Project>
+      <Name>Microsoft.Exchange.Diagnostics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.WorkloadManagement\Microsoft.Exchange.WorkloadManagement.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141E1}</Project>
+      <Name>Microsoft.Exchange.WorkloadManagement</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\mscorlib\mscorlib.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141F1}</Project>
+      <Name>mscorlib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

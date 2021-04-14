@@ -1,0 +1,150 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{09CD9476-CD82-489E-B9E2-84B47CA14196}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Microsoft.Exchange.Search</RootNamespace>
+    <AssemblyName>Microsoft.Exchange.Search.Mdb</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Exchange.Search.OperatorSchema" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Mdb\AdDataProvider.cs" />
+    <Compile Include="Mdb\CrawlerDocIdViewIterator.cs" />
+    <Compile Include="Mdb\CrawlerFeeder.cs" />
+    <Compile Include="Mdb\CrawlerMailboxIterator.cs" />
+    <Compile Include="Mdb\CrawlerWatermarkManager.cs" />
+    <Compile Include="Mdb\DatabaseCache.cs" />
+    <Compile Include="Mdb\Factory.cs" />
+    <Compile Include="Mdb\FeederDelayThrottlingManager.cs" />
+    <Compile Include="Mdb\FeederRateThrottlingManager.cs" />
+    <Compile Include="Mdb\ICrawlerItemIterator.cs" />
+    <Compile Include="Mdb\IFeederDelayThrottlingManager.cs" />
+    <Compile Include="Mdb\IFeederRateThrottlingManager.cs" />
+    <Compile Include="Mdb\IMdbCollection.cs" />
+    <Compile Include="Mdb\IMdbWatcher.cs" />
+    <Compile Include="Mdb\INotificationsEventSource.cs" />
+    <Compile Include="Mdb\LocDescriptionAttribute.cs" />
+    <Compile Include="Mdb\MailboxInfo.cs" />
+    <Compile Include="Mdb\MailboxLockedException.cs" />
+    <Compile Include="Mdb\MailboxLoginFailedException.cs" />
+    <Compile Include="Mdb\MailboxQuarantinedException.cs" />
+    <Compile Include="Mdb\MapiUtil.cs" />
+    <Compile Include="Mdb\MdbChangedEntry.cs" />
+    <Compile Include="Mdb\MdbChangedEventArgs.cs" />
+    <Compile Include="Mdb\MdbChangedType.cs" />
+    <Compile Include="Mdb\MdbCopy.cs" />
+    <Compile Include="Mdb\MdbInfo.cs" />
+    <Compile Include="Mdb\MdbItemIdentity.cs" />
+    <Compile Include="Mdb\MdbWatcher.cs" />
+    <Compile Include="Mdb\NotificationData.cs" />
+    <Compile Include="Mdb\NotificationsEventSource.cs" />
+    <Compile Include="Mdb\NotificationsFeeder.cs" />
+    <Compile Include="Mdb\NotificationsQueue.cs" />
+    <Compile Include="Mdb\NotificationsWatermarkManager.cs" />
+    <Compile Include="Mdb\NotificationType.cs" />
+    <Compile Include="Mdb\RetryFeeder.cs" />
+    <Compile Include="Mdb\ServerNotFoundException.cs" />
+    <Compile Include="Mdb\ServerSchemaVersionSource.cs" />
+    <Compile Include="Mdb\StoreSessionCache.cs" />
+    <Compile Include="Mdb\StoreSessionCacheKey.cs" />
+    <Compile Include="Mdb\StoreSessionManager.cs" />
+    <Compile Include="Mdb\Strings.cs" />
+    <Compile Include="Mdb\UnavailableSessionException.cs" />
+    <Compile Include="Mdb\XsoStreamWrapper.cs" />
+    <Compile Include="Mdb\XsoUtil.cs" />
+    <Compile Include="Performance\MdbCachePerfCounters.cs" />
+    <Compile Include="Performance\MdbCachePerfCountersInstance.cs" />
+    <Compile Include="Performance\MdbPerfCounters.cs" />
+    <Compile Include="Performance\MdbPerfCountersInstance.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Mdb\Strings.resources" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Common\Microsoft.Exchange.Data.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140D3}</Project>
+      <Name>Microsoft.Exchange.Data.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Directory\Microsoft.Exchange.Data.Directory.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14105}</Project>
+      <Name>Microsoft.Exchange.Data.Directory</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Storage\Microsoft.Exchange.Data.Storage.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1410F}</Project>
+      <Name>Microsoft.Exchange.Data.Storage</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data\Microsoft.Exchange.Data.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14106}</Project>
+      <Name>Microsoft.Exchange.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Diagnostics\Microsoft.Exchange.Diagnostics.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14113}</Project>
+      <Name>Microsoft.Exchange.Diagnostics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Net\Microsoft.Exchange.Net.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14178}</Project>
+      <Name>Microsoft.Exchange.Net</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Rpc\Microsoft.Exchange.Rpc.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14188}</Project>
+      <Name>Microsoft.Exchange.Rpc</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Search.Core\Microsoft.Exchange.Search.Core.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14193}</Project>
+      <Name>Microsoft.Exchange.Search.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.StoreProvider\Microsoft.Exchange.StoreProvider.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141B9}</Project>
+      <Name>Microsoft.Exchange.StoreProvider</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.VariantConfiguration\Microsoft.Exchange.VariantConfiguration.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141E0}</Project>
+      <Name>Microsoft.Exchange.VariantConfiguration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.WorkloadManagement\Microsoft.Exchange.WorkloadManagement.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141E1}</Project>
+      <Name>Microsoft.Exchange.WorkloadManagement</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\mscorlib\mscorlib.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141F1}</Project>
+      <Name>mscorlib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

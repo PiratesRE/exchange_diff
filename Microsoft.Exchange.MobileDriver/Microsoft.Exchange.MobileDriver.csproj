@@ -1,0 +1,203 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{09CD9476-CD82-489E-B9E2-84B47CA14175}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Microsoft.Exchange.TextMessaging</RootNamespace>
+    <AssemblyName>Microsoft.Exchange.MobileDriver</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ExSmsCounters.cs" />
+    <Compile Include="MobileDriver\Bookmark.cs" />
+    <Compile Include="MobileDriver\BookmarkHelper.cs" />
+    <Compile Include="MobileDriver\BookmarkRetriever.cs" />
+    <Compile Include="MobileDriver\CodedShortPartComposer.cs" />
+    <Compile Include="MobileDriver\CodedShortPartSplitter.cs" />
+    <Compile Include="MobileDriver\CodedText.cs" />
+    <Compile Include="MobileDriver\CoderBase.cs" />
+    <Compile Include="MobileDriver\CodingCategory.cs" />
+    <Compile Include="MobileDriver\CodingScheme.cs" />
+    <Compile Include="MobileDriver\CodingSchemeInfo.cs" />
+    <Compile Include="MobileDriver\CodingSupportability.cs" />
+    <Compile Include="MobileDriver\Eas.cs" />
+    <Compile Include="MobileDriver\EasCapability.cs" />
+    <Compile Include="MobileDriver\EasManager.cs" />
+    <Compile Include="MobileDriver\EasSelector.cs" />
+    <Compile Include="MobileDriver\EllipsisTrailer.cs" />
+    <Compile Include="MobileDriver\EmailMessageHelper.cs" />
+    <Compile Include="MobileDriver\EmailMessageToMessageItem.cs" />
+    <Compile Include="MobileDriver\EucKrCoder.cs" />
+    <Compile Include="MobileDriver\FeatureSupportability.cs" />
+    <Compile Include="MobileDriver\GsmConcatenatedPartSplitter.cs" />
+    <Compile Include="MobileDriver\GsmDefaultCoder.cs" />
+    <Compile Include="MobileDriver\GsmShortPartComposer.cs" />
+    <Compile Include="MobileDriver\GsmShortPartSplitter.cs" />
+    <Compile Include="MobileDriver\Ia5Coder.cs" />
+    <Compile Include="MobileDriver\ICoder.cs" />
+    <Compile Include="MobileDriver\IComposer.cs" />
+    <Compile Include="MobileDriver\IMobileActionProvider.cs" />
+    <Compile Include="MobileDriver\IMobileService.cs" />
+    <Compile Include="MobileDriver\IMobileServiceManager.cs" />
+    <Compile Include="MobileDriver\IMobileServiceSelector.cs" />
+    <Compile Include="MobileDriver\Iso_8859_1Coder.cs" />
+    <Compile Include="MobileDriver\Iso_8859_8Coder.cs" />
+    <Compile Include="MobileDriver\ISplitter.cs" />
+    <Compile Include="MobileDriver\Message.cs" />
+    <Compile Include="MobileDriver\MessageItem.cs" />
+    <Compile Include="MobileDriver\MessageItemToTextSendingPackages.cs" />
+    <Compile Include="MobileDriver\MobileRecipient.cs" />
+    <Compile Include="MobileDriver\MobileServiceCapability.cs" />
+    <Compile Include="MobileDriver\MobileServiceCreator.cs" />
+    <Compile Include="MobileDriver\MobileServiceType.cs" />
+    <Compile Include="MobileDriver\MobileSession.cs" />
+    <Compile Include="MobileDriver\MobileSessionSendMode.cs" />
+    <Compile Include="MobileDriver\OmsAuthenticationType.cs" />
+    <Compile Include="MobileDriver\OmsErrorCategory.cs" />
+    <Compile Include="MobileDriver\OmsErrorCode.cs" />
+    <Compile Include="MobileDriver\OmsErrorSeverity.cs" />
+    <Compile Include="MobileDriver\PartType.cs" />
+    <Compile Include="MobileDriver\ProportionedContent.cs" />
+    <Compile Include="MobileDriver\ProportionedText.cs" />
+    <Compile Include="MobileDriver\PureSplitterBase.cs" />
+    <Compile Include="MobileDriver\Resources\LocDescriptionAttribute.cs" />
+    <Compile Include="MobileDriver\Resources\MobileDriverCantBeCodedException.cs" />
+    <Compile Include="MobileDriver\Resources\MobileDriverDataException.cs" />
+    <Compile Include="MobileDriver\Resources\MobileDriverEmailNotificationDeadLoopException.cs" />
+    <Compile Include="MobileDriver\Resources\MobileDriverFatalErrorException.cs" />
+    <Compile Include="MobileDriver\Resources\MobileDriverObjectNotFoundException.cs" />
+    <Compile Include="MobileDriver\Resources\MobileDriverPartnerDeliveryException.cs" />
+    <Compile Include="MobileDriver\Resources\MobileDriverPermanentException.cs" />
+    <Compile Include="MobileDriver\Resources\MobileDriverStateException.cs" />
+    <Compile Include="MobileDriver\Resources\MobileDriverTooManyRetriesException.cs" />
+    <Compile Include="MobileDriver\Resources\MobileDriverTransientException.cs" />
+    <Compile Include="MobileDriver\Resources\MobilePermanentException.cs" />
+    <Compile Include="MobileDriver\Resources\MobileServiceBalanceException.cs" />
+    <Compile Include="MobileDriver\Resources\MobileServiceCapabilityException.cs" />
+    <Compile Include="MobileDriver\Resources\MobileServiceContentException.cs" />
+    <Compile Include="MobileDriver\Resources\MobileServiceInvocationException.cs" />
+    <Compile Include="MobileDriver\Resources\MobileServiceNetworkException.cs" />
+    <Compile Include="MobileDriver\Resources\MobileServicePermanentException.cs" />
+    <Compile Include="MobileDriver\Resources\MobileServiceRecipientException.cs" />
+    <Compile Include="MobileDriver\Resources\MobileServiceTransientException.cs" />
+    <Compile Include="MobileDriver\Resources\MobileServiceUserException.cs" />
+    <Compile Include="MobileDriver\Resources\MobileTransientException.cs" />
+    <Compile Include="MobileDriver\Resources\Strings.cs" />
+    <Compile Include="MobileDriver\SharedComponents.cs" />
+    <Compile Include="MobileDriver\ShiftJisCoder.cs" />
+    <Compile Include="MobileDriver\ShortPartComposerBase.cs" />
+    <Compile Include="MobileDriver\SmtpToSmsGateway.cs" />
+    <Compile Include="MobileDriver\SmtpToSmsGatewayCapability.cs" />
+    <Compile Include="MobileDriver\SmtpToSmsGatewayManager.cs" />
+    <Compile Include="MobileDriver\SmtpToSmsGatewaySelector.cs" />
+    <Compile Include="MobileDriver\StringNormalizer.cs" />
+    <Compile Include="MobileDriver\TextMessageDeliverer.cs" />
+    <Compile Include="MobileDriver\TextMessageDeliveringPipeline.cs" />
+    <Compile Include="MobileDriver\TextMessageDeliveryContext.cs" />
+    <Compile Include="MobileDriver\TextMessagingDeliveryAgent.cs" />
+    <Compile Include="MobileDriver\TextMessagingDeliveryAgentFactory.cs" />
+    <Compile Include="MobileDriver\TextMessagingDeliveryAgentManager.cs" />
+    <Compile Include="MobileDriver\TextMessagingRoutingAgent.cs" />
+    <Compile Include="MobileDriver\TextMessagingRoutingAgentFactory.cs" />
+    <Compile Include="MobileDriver\TextSendingPackage.cs" />
+    <Compile Include="MobileDriver\ThreadSafeCache.cs" />
+    <Compile Include="MobileDriver\TransportAgentWrapper.cs" />
+    <Compile Include="MobileDriver\UnicodeCoder.cs" />
+    <Compile Include="MobileDriver\UnicodeToGsmMap.cs" />
+    <Compile Include="MobileDriver\UsAsciiCoder.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="MobileDriver\Resources\Strings.resources" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.Exchange.Configuration.ObjectModel\Microsoft.Exchange.Configuration.ObjectModel.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140FC}</Project>
+      <Name>Microsoft.Exchange.Configuration.ObjectModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.ApplicationLogic\Microsoft.Exchange.Data.ApplicationLogic.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14104}</Project>
+      <Name>Microsoft.Exchange.Data.ApplicationLogic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Common\Microsoft.Exchange.Data.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140D3}</Project>
+      <Name>Microsoft.Exchange.Data.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Directory\Microsoft.Exchange.Data.Directory.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14105}</Project>
+      <Name>Microsoft.Exchange.Data.Directory</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Storage\Microsoft.Exchange.Data.Storage.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1410F}</Project>
+      <Name>Microsoft.Exchange.Data.Storage</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Transport\Microsoft.Exchange.Data.Transport.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140D5}</Project>
+      <Name>Microsoft.Exchange.Data.Transport</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data\Microsoft.Exchange.Data.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14106}</Project>
+      <Name>Microsoft.Exchange.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Diagnostics\Microsoft.Exchange.Diagnostics.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14113}</Project>
+      <Name>Microsoft.Exchange.Diagnostics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Extensibility.Internal\Microsoft.Exchange.Extensibility.Internal.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14126}</Project>
+      <Name>Microsoft.Exchange.Extensibility.Internal</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Net\Microsoft.Exchange.Net.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14178}</Project>
+      <Name>Microsoft.Exchange.Net</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.StoreDriver\Microsoft.Exchange.StoreDriver.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141B8}</Project>
+      <Name>Microsoft.Exchange.StoreDriver</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Transport\Microsoft.Exchange.Transport.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141CD}</Project>
+      <Name>Microsoft.Exchange.Transport</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\mscorlib\mscorlib.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141F1}</Project>
+      <Name>mscorlib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

@@ -1,0 +1,781 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo Name="Mailbox Global AD Configuration" DescriptionId="SetupComponentMailboxGlobalConfig">
+
+  <OrgTasks>
+
+    <!-- Create ELC Mailbox Policies container (CN=ELC Mailbox Policies,CN=<Org Name>,... ) -->
+    <ServicePlanTaskInfo FeatureName="ManagedFoldersPermissions">
+      <Install DescriptionId="SetupProgressCreateMailboxContainers">
+        <Global>install-Container -Name "ELC Mailbox Policies" -DomainController $RoleDomainController</Global>
+        <Tenant>
+            if($ServicePlanSettings.Organization.ManagedFoldersPermissions)
+            {
+                install-Container -Name "ELC Mailbox Policies" -DomainController $RoleDomainController -Organization $RoleOrganizationHierarchicalPath;
+            }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </ServicePlanTaskInfo>
+
+    <!-- Create Retention Policies Container (CN=Retention Policies Container,CN=<Org Name>,... ) -->
+    <ServicePlanTaskInfo FeatureName="ReducedOutOfTheBoxMrmTagsEnabled">
+      <Install DescriptionId="SetupProgressCreateMailboxContainers">
+        <Global>install-Container -Name "Retention Policies Container" -DomainController $RoleDomainController</Global>
+        <Tenant>
+          if(!$CommonHydrateableObjectsSharedEnabled)
+          {
+            install-Container -Name "Retention Policies Container" -DomainController $RoleDomainController -Organization $RoleOrganizationHierarchicalPath
+          }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </ServicePlanTaskInfo>
+
+    <!-- Create UM Mailbox Policies container (CN=UM Mailbox Policies,CN=<Org Name>,... ) in first org context.
+        In tenant context this container is created implicitly by New-UMMailboxPolicy cmdlet
+    -->
+    <OrgTaskInfo Id="_30955460a423441fbc89ced7d55a419c" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressCreateMailboxContainers">
+        <Global>install-Container -Name "UM Mailbox Policies" -DomainController $RoleDomainController</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+
+    <!-- Create Mobile Mailbox Policies container (CN=Mobile Mailbox Policies,CN=<Org Name>,... )-->
+    <OrgTaskInfo Id="_0ee1164cd8c849a8af553655b341ad1c" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressCreateMailboxContainers">
+        <Global>install-Container -Name "Mobile Mailbox Policies" -DomainController $RoleDomainController</Global>
+        <Tenant>
+          if (!$CreateSharedConfiguration)
+          {
+            install-Container -Name "Mobile Mailbox Policies" -DomainController $RoleDomainController -Organization $RoleOrganizationHierarchicalPath
+          }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+
+    <!-- Create AddressBook Mailbox Policies container (CN=AddressBook Mailbox Policies,CN=<Org Name>,... )-->
+      <OrgTaskInfo Id="_0ce2264cd8c749a8af553644b341ae16" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+        <Install DescriptionId="SetupProgressCreateMailboxContainers">
+          <Global>install-Container -Name "AddressBook Mailbox Policies" -DomainController $RoleDomainController</Global>
+            <Tenant>
+              if(-not $RoleIsDehydrated -and !$CreateSharedConfiguration)
+              {
+                  install-Container -Name "AddressBook Mailbox Policies" -DomainController $RoleDomainController -Organization $TenantOrganizationFullPath
+              }
+            </Tenant>
+          </Install>
+        <BuildToBuildUpgrade UseInstallTasks="true" />
+        <Uninstall />
+    </OrgTaskInfo>
+
+    <!-- Create Hybrid Configuration container (CN=Hybrid Configuration,CN=<Org Name>,... )-->
+    <OrgTaskInfo Id="_0ce2264cd8c748a8ae553645b341af16" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup" >
+      <Install DescriptionId="SetupProgressCreateMailboxContainers">
+        <Global> if ($RoleIsDatacenter -eq $false) { install-Container -Name "Hybrid Configuration" -DomainController $RoleDomainController } </Global>
+        <Tenant> </Tenant>
+      </Install> <BuildToBuildUpgrade UseInstallTasks="true"/> <Uninstall/>
+    </OrgTaskInfo>
+
+    <!-- Create Team Mailbox Provisioning Policies Container (CN=Team Mailbox Provisioning Policies,CN=<Org Name>,... ),
+         and install default policy for hydrateable object enabled tenant.
+    -->
+    <ServicePlanTaskInfo FeatureName="AdvancedHydrateableObjectsSharedEnabled">
+      <Install DescriptionId="SetupProgressCreateTeamMailboxProvisioningPolicyContainers">
+        <Global>install-Container -Name "Team Mailbox Provisioning Policies" -DomainController $RoleDomainController</Global>
+        <Tenant>
+          if(!$AdvancedHydrateableObjectsSharedEnabled)
+          {
+            #1. Install container.
+            install-Container -Name "Team Mailbox Provisioning Policies" -DomainController $RoleDomainController -Organization $RoleOrganizationHierarchicalPath;
+
+            #2. Create default policy if it's not there.
+            $defaultPolicy = Get-SiteMailboxProvisioningPolicy -IgnoreDehydratedFlag -DomainController $RoleDomainController -Organization $RoleOrganizationHierarchicalPath | where {$_.IsDefault -eq $true};
+          
+            if($defaultPolicy -eq $null)
+            {
+              $policyDefault = Get-SiteMailboxProvisioningPolicy -IgnoreDehydratedFlag -DomainController $RoleDomainController -Organization $RoleOrganizationHierarchicalPath | where {$_.Name -eq "Default"};
+
+              if($policyDefault -eq $null)
+              {
+                New-SiteMailboxProvisioningPolicy -IgnoreDehydratedFlag -Name "Default" -IsDefault -DomainController $RoleDomainController -Organization $RoleOrganizationHierarchicalPath;
+              }
+              else
+              {
+                Set-SiteMailboxProvisioningPolicy -IgnoreDehydratedFlag -Identity:$policyDefault.Identity -IsDefault -DomainController $RoleDomainController;
+              }
+            }
+          }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </ServicePlanTaskInfo>
+
+    <!-- Create the default Team Mailbox provisioning policy for Ent. -->
+    <OrgTaskInfo Id="_c189631832d547daae52b24e2df9c905" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressCreateDefaultTeamMailboxProvisioningPolicy">
+        <Global>
+          $defaultPolicy = Get-SiteMailboxProvisioningPolicy | where {$_.IsDefault -eq $true};
+
+          if($defaultPolicy -eq $null)
+          {
+            $policyDefault = Get-SiteMailboxProvisioningPolicy | where {$_.Identity -eq "Default"};
+
+            if($policyDefault -eq $null)
+            {
+              New-SiteMailboxProvisioningPolicy "Default" -IsDefault -Confirm:$false;
+            }
+            else
+            {
+              Set-SiteMailboxProvisioningPolicy -Identity:$policyDefault.Identity -IsDefault;
+            }
+          }
+        </Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+
+    <!-- Create Resource Config container (CN=Resource Schema,CN=Global Settings,CN=<Org Name>,... ) -->
+    <ServicePlanTaskInfo FeatureName="AdvancedHydrateableObjectsSharedEnabled">
+      <Install DescriptionId="SetupProgressCreateMailboxContainers">
+        <Global>install-ResourceConfig -DomainController $RoleDomainController</Global>
+        <Tenant>
+          # AdminAuditLogConfig object is:
+          # -Static object in tiny tenants  (BPOS_L)
+          # -Hydrated objects in dehydrated tenants (BPOS_S)
+          if(!$AdvancedHydrateableObjectsSharedEnabled)
+          {
+            install-ResourceConfig -DomainController $RoleDomainController -Organization $RoleOrganizationHierarchicalPath;
+          }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </ServicePlanTaskInfo>
+
+    <!-- Create the Retention Policy Tag container (CN=Retention Policy Tag Container,CN=<Org Name>,... ) -->
+    <ServicePlanTaskInfo FeatureName="ReducedOutOfTheBoxMrmTagsEnabled">
+      <Install DescriptionId="SetupProgressCreateMailboxContainers">
+        <Global>install-container -Name "Retention Policy Tag Container" -DomainController $RoleDomainController</Global>
+        <Tenant>
+          if(!$CommonHydrateableObjectsSharedEnabled)
+          {
+            install-container -Name "Retention Policy Tag Container" -DomainController $RoleDomainController -Organization $RoleOrganizationHierarchicalPath
+          }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </ServicePlanTaskInfo>
+
+    <!-- Create the ELC Folders container (CN=ELC Folders Container,CN=<Org Name>,... ) -->
+    <ServicePlanTaskInfo FeatureName="ManagedFoldersPermissions">
+      <Install DescriptionId="SetupProgressCreateMailboxContainers">
+        <Global>install-container -Name "ELC Folders Container"-DomainController $RoleDomainController</Global>
+        <Tenant>
+            if($ServicePlanSettings.Organization.ManagedFoldersPermissions)
+            {
+                install-container -Name "ELC Folders Container"-DomainController $RoleDomainController -Organization $RoleOrganizationHierarchicalPath;
+            }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </ServicePlanTaskInfo>
+
+    <!-- Create the AutoGroup Retention Policy Tag (CN=AutoGroupContentSettings,CN=AutoGroup,CN=RetentionPolicyTag,CN=Retention Policy Tag Container,CN=<Org Name>,...) -->
+    <ServicePlanTaskInfo FeatureName="ReducedOutOfTheBoxMrmTagsEnabled">
+      <Install DescriptionId="SetupProgressCreateAutoGroupRetentionPolicyTag">
+        <Global>
+          $tagName = [Microsoft.Exchange.Management.SystemConfigurationTasks.RetentionPolicyTagConstant]::AutoGroup;
+          $autoGroupRPT = @(Get-RetentionPolicyTag -IncludeSystemTags -DomainController $RoleDomainController | where {$_.Name -eq $tagName});
+          if ($autoGroupRPT.length -eq 0)
+          {
+            [Guid] $retentionId = [Microsoft.Exchange.Management.SystemConfigurationTasks.RetentionPolicyTagConstant]::RetentionTagGuidMap[$tagName];
+            new-RetentionPolicyTag -Name $tagName -Type Personal -SystemTag:$true -RetentionEnabled:$true -RetentionAction DeleteAndAllowRecovery -AgeLimitForRetention 30 -MessageClass * -DomainController $RoleDomainController -RetentionId $retentionId;
+          }
+        </Global>
+        <Tenant>
+          if(!$CommonHydrateableObjectsSharedEnabled)
+          {
+            $tagName = [Microsoft.Exchange.Management.SystemConfigurationTasks.RetentionPolicyTagConstant]::AutoGroup;
+            $autoGroupRPT = @(Get-RetentionPolicyTag -IgnoreDehydratedFlag -IncludeSystemTags -DomainController $RoleDomainController -Organization $RoleOrganizationHierarchicalPath | where {$_.Name -eq $tagName});
+            if ($autoGroupRPT.length -eq 0)
+            {
+              [Guid] $retentionId = [Microsoft.Exchange.Management.SystemConfigurationTasks.RetentionPolicyTagConstant]::RetentionTagGuidMap[$tagName];
+              new-RetentionPolicyTag -IgnoreDehydratedFlag -Name $tagName -Type Personal -SystemTag:$true -RetentionEnabled:$true -RetentionAction DeleteAndAllowRecovery -AgeLimitForRetention 30 -MessageClass * -DomainController $RoleDomainController -Organization $RoleOrganizationHierarchicalPath -IsDefaultAutoGroupPolicyTag -RetentionId $retentionId;
+            }
+          }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </ServicePlanTaskInfo>
+
+    <!-- Create the ModeratedRecipients Retention Policy Tag (CN=ModeratedRecipientContentSettings,CN=ModeratedRecipients,CN=RetentionPolicyTag,CN=Retention Policy Tag Container,CN=<Org Name>,...) -->
+    <ServicePlanTaskInfo FeatureName="ReducedOutOfTheBoxMrmTagsEnabled">
+      <Install DescriptionId="SetupProgressCreateModeratedRecipientsRetentionPolicyTag">
+        <Global>
+          $tagName = [Microsoft.Exchange.Management.SystemConfigurationTasks.RetentionPolicyTagConstant]::ModeratedRecipients;
+          $moderatedRPT = @(Get-RetentionPolicyTag -IncludeSystemTags -DomainController $RoleDomainController | where {$_.Name -eq $tagName});
+          if ($moderatedRPT.length -eq 0)
+          {
+            [Guid] $retentionId = [Microsoft.Exchange.Management.SystemConfigurationTasks.RetentionPolicyTagConstant]::RetentionTagGuidMap[$tagName];
+            new-RetentionPolicyTag -Name $tagName -Type Personal -SystemTag:$true -RetentionEnabled:$true -RetentionAction DeleteAndAllowRecovery -AgeLimitForRetention 2 -MessageClass * -DomainController $RoleDomainController -RetentionId $retentionId;
+          }
+        </Global>
+        <Tenant>
+          if(!$CommonHydrateableObjectsSharedEnabled)
+          {
+            $tagName = [Microsoft.Exchange.Management.SystemConfigurationTasks.RetentionPolicyTagConstant]::ModeratedRecipients;
+            $moderatedRPT = @(Get-RetentionPolicyTag -IgnoreDehydratedFlag -IncludeSystemTags -DomainController $RoleDomainController -Organization $RoleOrganizationHierarchicalPath | where {$_.Name -eq $tagName});
+            if ($moderatedRPT.length -eq 0)
+            {
+              [Guid] $retentionId = [Microsoft.Exchange.Management.SystemConfigurationTasks.RetentionPolicyTagConstant]::RetentionTagGuidMap[$tagName];
+              new-RetentionPolicyTag -IgnoreDehydratedFlag -Name $tagName -Type Personal -SystemTag:$true -RetentionEnabled:$true -RetentionAction DeleteAndAllowRecovery -AgeLimitForRetention 2 -MessageClass * -DomainController $RoleDomainController -Organization $RoleOrganizationHierarchicalPath -IsDefaultModeratedRecipientsPolicyTag -RetentionId $retentionId;
+            }
+          }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </ServicePlanTaskInfo>
+
+    <!-- Create the AsyncOperationNotification Retention Policy Tag (CN=AsyncOperationNotification_cs,CN=AsyncOperationNotification,CN=Retention Policy Tag Container,CN=<Org Name>,...) -->
+    <ServicePlanTaskInfo FeatureName="ReducedOutOfTheBoxMrmTagsEnabled">
+      <Install DescriptionId="SetupProgressCreateAsyncOperationNotificationRetentionPolicyTag">
+        <Global>
+          $tagName = [Microsoft.Exchange.Management.SystemConfigurationTasks.RetentionPolicyTagConstant]::AsyncOperationNotification;
+          $notificationRPT = @(Get-RetentionPolicyTag -IncludeSystemTags -DomainController $RoleDomainController | where {$_.Name -eq $tagName});
+          if ($notificationRPT.length -eq 0)
+          {
+            [Guid] $retentionId = [Microsoft.Exchange.Management.SystemConfigurationTasks.RetentionPolicyTagConstant]::RetentionTagGuidMap[$tagName];
+            new-RetentionPolicyTag -Name $tagName -Type Personal -SystemTag:$true -RetentionEnabled:$true -RetentionAction DeleteAndAllowRecovery -AgeLimitForRetention 30 -MessageClass * -DomainController $RoleDomainController -RetentionId $retentionId;
+          }
+        </Global>
+        <Tenant>
+          if(!$CommonHydrateableObjectsSharedEnabled)
+          {
+            $tagName = [Microsoft.Exchange.Management.SystemConfigurationTasks.RetentionPolicyTagConstant]::AsyncOperationNotification;
+            $notificationRPT = @(Get-RetentionPolicyTag -IgnoreDehydratedFlag -IncludeSystemTags -DomainController $RoleDomainController -Organization $RoleOrganizationHierarchicalPath | where {$_.Name -eq $tagName});
+            if ($notificationRPT.length -eq 0)
+            {
+              [Guid] $retentionId = [Microsoft.Exchange.Management.SystemConfigurationTasks.RetentionPolicyTagConstant]::RetentionTagGuidMap[$tagName];
+              new-RetentionPolicyTag -IgnoreDehydratedFlag -Name $tagName -Type Personal -SystemTag:$true -RetentionEnabled:$true -RetentionAction DeleteAndAllowRecovery -AgeLimitForRetention 30 -MessageClass * -DomainController $RoleDomainController -Organization $RoleOrganizationHierarchicalPath -RetentionId $retentionId;
+            }
+          }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </ServicePlanTaskInfo>
+
+    <!-- Create the MoveToArchive Retention Policy Tag (CN=ContentSettings,CN=ModeratedRecipients,CN=RetentionPolicyTag,CN=Retention Policy Tag Container,CN=<Org Name>,...) -->
+    <ServicePlanTaskInfo FeatureName="ReducedOutOfTheBoxMrmTagsEnabled">
+      <Install DescriptionId="SetupProgressCreateMoveToArchiveRetentionPolicyTag">
+        <Global>
+          $tagConstant = [Microsoft.Exchange.Management.SystemConfigurationTasks.RetentionPolicyTagConstant];
+          $rptNames = $tagConstant::PersonalOneYearMoveToArchive,`
+                      $tagConstant::DefaultTwoYearMoveToArchive,`
+                      $tagConstant::PersonalFiveYearMoveToArchive,`
+                      $tagConstant::PersonalNeverMoveToArchive;
+          $rptTypes = 'Personal', 'All', 'Personal', 'Personal';
+          $rptMCs = '*', '*', '*', '*';
+          $rptAges = '365', '730', '1825', '0';
+          $tagGuidMap = $tagConstant::RetentionTagGuidMap;
+          for($i=0; $i -lt $rptNames.Length; $i++)
+          {
+            [Guid] $retentionId = $tagGuidMap[$rptNames[$i]];
+            $archiveRPT = Get-RetentionPolicyTag -IncludeSystemTags -DomainController $RoleDomainController | where {$_.Name -eq $rptNames[$i] -or $_.RetentionId -eq $retentionId};
+            if ( !$archiveRPT )
+            {
+              Write-ExchangeSetupLog -Info "Retention policy tag '$($rptNames[$i])' does not exist, create new."
+              if( $i -ne $rptNames.Length-1 )
+              {
+                new-RetentionPolicyTag -Name $rptNames[$i] -Type $rptTypes[$i] -SystemTag:$false -RetentionEnabled:$true -RetentionAction MoveToArchive -AgeLimitForRetention $rptAges[$i] -MessageClass $rptMCs[$i] -DomainController $RoleDomainController -RetentionId $retentionId;
+              }
+              else
+              {
+                new-RetentionPolicyTag -Name $rptNames[$i] -Type $rptTypes[$i] -SystemTag:$false -RetentionEnabled:$false -RetentionAction MoveToArchive -MessageClass $rptMCs[$i] -DomainController $RoleDomainController -RetentionId $retentionId;
+              }
+            }
+            else
+            {
+              if ( $archiveRPT.SystemTag -eq $true )
+              {
+                Write-ExchangeSetupLog -Info "Retention policy tag '$($rptNames[$i])' exist and it is a system tag, set it to non-system tag."
+                Set-RetentionPolicyTag -Identity $archiveRPT.Identity -SystemTag:$false;
+              }
+            }
+          }
+
+          $deleteRptNames = $tagConstant::OneWeekDelete,`
+                            $tagConstant::OneMonthDelete,`
+                            $tagConstant::SixMonthDelete,`
+                            $tagConstant::OneYearDelete,`
+                            $tagConstant::FiveYearDelete,`
+                            $tagConstant::NeverDelete;
+          $deleteRptTypes = 'Personal', 'Personal', 'Personal', 'Personal', 'Personal', 'Personal';
+          $deleteRptMCs = '*', '*', '*', '*', '*', '*';
+          $deleteRptAges = '7', '30', '180', '365', '1825', '0';
+          for($i=0; $i -lt $deleteRptNames.Length; $i++)
+          {
+            [Guid] $retentionId = $tagGuidMap[$deleteRptNames[$i]];
+            $deleteRPT = Get-RetentionPolicyTag -IncludeSystemTags -DomainController $RoleDomainController | where {$_.Name -eq $deleteRptNames[$i] -or $_.RetentionId -eq $retentionId};
+            if ( !$deleteRPT )
+            {
+              Write-ExchangeSetupLog -Info "Retention policy tag '$($deleteRptNames[$i])' does not exist, create new."
+              if( $i -ne $deleteRptNames.Length-1 )
+              {
+                new-RetentionPolicyTag -Name $deleteRptNames[$i] -Type $deleteRptTypes[$i] -SystemTag:$false -RetentionEnabled:$true -RetentionAction DeleteAndAllowRecovery -AgeLimitForRetention $deleteRptAges[$i] -MessageClass $deleteRptMCs[$i] -DomainController $RoleDomainController -RetentionId $retentionId;
+              }
+              else
+              {
+                new-RetentionPolicyTag -Name $deleteRptNames[$i] -Type $deleteRptTypes[$i] -SystemTag:$false -RetentionEnabled:$false -RetentionAction DeleteAndAllowRecovery -MessageClass $deleteRptMCs[$i] -DomainController $RoleDomainController -RetentionId $retentionId;
+              }
+            }
+          }
+
+          $dumpsterRPTName = $tagConstant::RecoverableItemsFourteenDaysMoveToArchive;
+          [Guid] $retentionId = $tagGuidMap[$dumpsterRPTName];
+          $dumpsterRPT = Get-RetentionPolicyTag -DomainController $RoleDomainController | where {$_.Name -eq $dumpsterRPTName -or $_.RetentionId -eq $retentionId};
+          if (!$dumpsterRPT)
+          {
+            New-RetentionPolicyTag -Name $dumpsterRPTName -Type RecoverableItems -RetentionAction MoveToArchive -AgeLimitForRetention 14 -DomainController $RoleDomainController -RetentionId $retentionId;
+          }
+          else
+          {
+            Write-ExchangeSetupLog -warning "Was not able to create new RecoverableItems tag because a tag with the name '$dumpsterRPTName' already exists. Please run 'new-RetentionPolicyTag -Type RecoverableItems' to create a RecoverableItems tag."
+          }
+
+          $policyName = [Microsoft.Exchange.Management.Common.RecipientConstants]::DefaultArchiveAndRetentionPolicyName;
+          $defaultArchivePolicy = Get-RetentionPolicy -DomainController $RoleDomainController | where {$_.Name -eq $policyName};
+          if ( !$defaultArchivePolicy )
+          {
+            Write-ExchangeSetupLog -Info "Retention policy '$($policyName)' does not exist, create new."
+            new-RetentionPolicy -Name $policyName -RetentionPolicyTagLinks $rptNames[0],$rptNames[1],$rptNames[2],$rptNames[3],$dumpsterRPTName,$deleteRptNames[0],$deleteRptNames[1],$deleteRptNames[2],$deleteRptNames[3],$deleteRptNames[4],$deleteRptNames[5]  -DomainController $RoleDomainController;
+          }
+        </Global>
+        <Tenant>
+          # NeverDelete retention tag is used by ArbirationMailbox retention policy, which is create in this file,
+          # so we need to create NeverDelete tag for new tenant here always. The other personal tags will be created in ProvisioningFeatureCatalog.xml
+          if(!$CommonHydrateableObjectsSharedEnabled)
+          {
+            $tagName = [Microsoft.Exchange.Management.SystemConfigurationTasks.RetentionPolicyTagConstant]::NeverDelete;
+            [Guid] $retentionId = [Microsoft.Exchange.Management.SystemConfigurationTasks.RetentionPolicyTagConstant]::RetentionTagGuidMap[$tagName];
+            $deleteRPT = @(Get-RetentionPolicyTag -IgnoreDehydratedFlag -DomainController $RoleDomainController -Organization $RoleOrganizationHierarchicalPath | where {$_.Name -eq $tagName -or $_.RetentionId -eq $retentionId});
+            if ($deleteRPT.length -eq 0)
+            {
+              new-RetentionPolicyTag -IgnoreDehydratedFlag -Name $tagName -Type Personal -SystemTag:$false -RetentionEnabled:$false -RetentionAction DeleteAndAllowRecovery -MessageClass * -DomainController $RoleDomainController -Organization $RoleOrganizationHierarchicalPath -RetentionId $retentionId;
+            }
+          }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </ServicePlanTaskInfo>
+
+    <!-- Create the ArbitrationMailbox Retention Policy (CN=ArbMbxRpt,CN=Retention Policies Container,CN=<Org Name>,...) -->
+    <!-- Temporary for R2. Remove when using the new retention api in R3 PS78300 -->
+    <ServicePlanTaskInfo FeatureName="ReducedOutOfTheBoxMrmTagsEnabled">
+      <Install DescriptionId="SetupProgressCreateArbitrationMailboxRetentionPolicy">
+        <Global>
+          $neverDeleteTagName = [Microsoft.Exchange.Management.SystemConfigurationTasks.RetentionPolicyTagConstant]::NeverDelete;
+          [Guid] $neverDeleteRetentionId = [Microsoft.Exchange.Management.SystemConfigurationTasks.RetentionPolicyTagConstant]::RetentionTagGuidMap[$neverDeleteTagName];
+
+          $moderatedRPT = @(Get-RetentionPolicyTag -IncludeSystemTags -DomainController $RoleDomainController | where {$_.Name -eq 'ModeratedRecipients'});
+          $autoGroupRPT = @(Get-RetentionPolicyTag -IncludeSystemTags -DomainController $RoleDomainController | where {$_.Name -eq 'AutoGroup'});
+          $notificationRPT = @(Get-RetentionPolicyTag -IncludeSystemTags -DomainController $RoleDomainController | where {$_.Name -eq [Microsoft.Exchange.Management.SystemConfigurationTasks.RetentionPolicyTagConstant]::AsyncOperationNotification});
+          $neverDeleteRPT = @(Get-RetentionPolicyTag -IncludeSystemTags -DomainController $RoleDomainController | where {$_.Name -eq $neverDeleteTagName -or $_.RetentionId -eq $neverDeleteRetentionId});
+          $arbitrationRetentionPolicy = @(Get-RetentionPolicy -DomainController $RoleDomainController | where {$_.Name -eq 'ArbitrationMailbox'});
+          if ($arbitrationRetentionPolicy.length -eq 0)
+          {
+            new-RetentionPolicy -Name ArbitrationMailbox -RetentionPolicyTagLinks $moderatedRPT[0].Identity,$autoGroupRPT[0].Identity,$notificationRPT[0].Identity,$neverDeleteRPT[0].Identity  -DomainController $RoleDomainController;
+          }
+          else
+          {
+            if (!$arbitrationRetentionPolicy[0].RetentionPolicyTagLinks.Contains($notificationRPT[0].Identity))
+            {
+              # Add Notification Retention Tag to the existing ArbitrationMailbox Retention Policy
+              $arbitrationRetentionPolicy[0].RetentionPolicyTagLinks += $notificationRPT[0].Identity;
+            }
+            
+            if (!$arbitrationRetentionPolicy[0].RetentionPolicyTagLinks.Contains($neverDeleteRPT[0].Identity))
+            {
+              # Add NeverDelete Retention Tag to the existing ArbitrationMailbox Retention Policy
+              $arbitrationRetentionPolicy[0].RetentionPolicyTagLinks += $neverDeleteRPT[0].Identity;
+            }
+            
+            if ($arbitrationRetentionPolicy[0].RetentionPolicyTagLinks.Changed)
+            {
+              set-RetentionPolicy -Identity $arbitrationRetentionPolicy[0].Identity -RetentionPolicyTagLinks $arbitrationRetentionPolicy[0].RetentionPolicyTagLinks -DomainController $RoleDomainController;
+            }
+          }
+        </Global>
+        <Tenant>
+          if(!$CommonHydrateableObjectsSharedEnabled)
+          {
+            $neverDeleteTagName = [Microsoft.Exchange.Management.SystemConfigurationTasks.RetentionPolicyTagConstant]::NeverDelete;
+            [Guid] $neverDeleteRetentionId = [Microsoft.Exchange.Management.SystemConfigurationTasks.RetentionPolicyTagConstant]::RetentionTagGuidMap[$neverDeleteTagName];
+
+            $moderatedRPT = @(Get-RetentionPolicyTag -IgnoreDehydratedFlag -IncludeSystemTags -DomainController $RoleDomainController -Organization $RoleOrganizationHierarchicalPath | where {$_.Name -eq 'ModeratedRecipients'});
+            $autoGroupRPT = @(Get-RetentionPolicyTag -IgnoreDehydratedFlag -IncludeSystemTags -DomainController $RoleDomainController -Organization $RoleOrganizationHierarchicalPath | where {$_.Name -eq 'AutoGroup'});
+            $notificationRPT = @(Get-RetentionPolicyTag -IgnoreDehydratedFlag -IncludeSystemTags -DomainController $RoleDomainController -Organization $RoleOrganizationHierarchicalPath | where {$_.Name -eq [Microsoft.Exchange.Management.SystemConfigurationTasks.RetentionPolicyTagConstant]::AsyncOperationNotification});
+            $neverDeleteRPT = @(Get-RetentionPolicyTag -IgnoreDehydratedFlag -IncludeSystemTags -DomainController $RoleDomainController -Organization $RoleOrganizationHierarchicalPath | where {$_.Name -eq $neverDeleteTagName -or $_.RetentionId -eq $neverDeleteRetentionId});
+            $arbitrationRetentionPolicy = @(Get-RetentionPolicy -IgnoreDehydratedFlag -DomainController $RoleDomainController -Organization $RoleOrganizationHierarchicalPath | where {$_.Name -eq 'ArbitrationMailbox'});
+            if ($arbitrationRetentionPolicy.length -eq 0)
+            {
+              new-RetentionPolicy -Name ArbitrationMailbox -RetentionPolicyTagLinks $moderatedRPT[0].Identity,$autoGroupRPT[0].Identity,$notificationRPT[0].Identity,$neverDeleteRPT[0].Identity -DomainController $RoleDomainController -Organization $RoleOrganizationHierarchicalPath -IgnoreDehydratedFlag -IsDefaultArbitrationMailbox;
+            }
+            else
+            {
+              if (!$arbitrationRetentionPolicy[0].RetentionPolicyTagLinks.Contains($notificationRPT[0].Identity))
+              {
+                # Add Notification Retention Tag to the existing ArbitrationMailbox Retention Policy
+                $arbitrationRetentionPolicy[0].RetentionPolicyTagLinks += $notificationRPT[0].Identity;
+              }
+              
+              if (!$arbitrationRetentionPolicy[0].RetentionPolicyTagLinks.Contains($neverDeleteRPT[0].Identity))
+              {
+                # Add NeverDelete Retention Tag to the existing ArbitrationMailbox Retention Policy
+                $arbitrationRetentionPolicy[0].RetentionPolicyTagLinks += $neverDeleteRPT[0].Identity;
+              }
+              
+              if ($arbitrationRetentionPolicy[0].RetentionPolicyTagLinks.Changed)
+              {
+                set-RetentionPolicy -Identity $arbitrationRetentionPolicy[0].Identity -RetentionPolicyTagLinks $arbitrationRetentionPolicy[0].RetentionPolicyTagLinks -DomainController $RoleDomainController -IgnoreDehydratedFlag;
+              }
+            }
+          }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </ServicePlanTaskInfo>
+
+    <!-- Create the Approval Applications container (CN=Approval Applications,CN=<Org Name>,CN=Microsoft Exchange,...)-->
+    <OrgTaskInfo Id="_66b42de27a54410693337af7dde36e88" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressCreateApprovalApplicationsContainer">
+        <Global>new-ApprovalApplicationContainer -DomainController $RoleDomainController</Global>
+        <Tenant>
+          if (!$CreateSharedConfiguration)
+          {
+            new-ApprovalApplicationContainer -DomainController $RoleDomainController -Organization $RoleOrganizationHierarchicalPath
+          }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+
+
+    <!-- Create the AutoGroup Approval Application (CN=AutoGroup,CN=Approval Applications,CN=<Org Name>,CN=Microsoft Exchange,...) -->
+    <OrgTaskInfo Id="_7afe6ee1371f4c7d9ddaed7b86278c8a" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressCreateAutoGroup">
+        <Global>
+          $rpt = @(Get-RetentionPolicyTag -IncludeSystemTags -DomainController $RoleDomainController | where {$_.Name -eq 'AutoGroup'});
+          new-ApprovalApplication -AutoGroup -ELCRetentionPolicyTag $rpt[0].Identity -DomainController $RoleDomainController;
+        </Global>
+        <Tenant>
+          if (!$CreateSharedConfiguration)
+          {
+            new-ApprovalApplication -AutoGroup -DomainController $RoleDomainController -Organization $RoleOrganizationHierarchicalPath;
+          }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+
+    <!-- Create the ModeratedRecipients Approval Application (CN=ModeratedRecipients,CN=Approval Applications,CN=<Org Name>,CN=Microsoft Exchange,...) -->
+    <OrgTaskInfo Id="_4ca9a2dc677b4975aea464201b2d07b3" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressCreateModeratedRecipients">
+        <Global>
+          $rpt = @(Get-RetentionPolicyTag -IncludeSystemTags -DomainController $RoleDomainController | where {$_.Name -eq 'ModeratedRecipients'});
+          new-ApprovalApplication -ModeratedRecipients -ELCRetentionPolicyTag $rpt[0].Identity -DomainController $RoleDomainController;
+        </Global>
+        <Tenant>
+          if (!$CreateSharedConfiguration)
+          {
+            new-ApprovalApplication -ModeratedRecipients -DomainController $RoleDomainController -Organization $RoleOrganizationHierarchicalPath;
+          }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+
+    <!-- Create E15 system mailbox for tenants only -->
+    <!-- The enterprise arbitration mailbox is created in SystemAttendantDependant.xml because it depends on the SA running-->
+    <OrgTaskInfo Id="_55BA407C8E1141719882F4A3A0F0B289" Component="EXCHANGE14:\Current\Release\Client Access\Unified Messaging">
+      <Install DescriptionId="SetupProgressCreateE15SystemMailbox">
+        <Global/>
+        <Tenant>
+          if (!$CreateSharedConfiguration)
+          {
+              $sysMbx = $null;
+              $name = "SystemMailbox{bb558c35-97f1-4cb9-8ff7-d53741dc928c}";
+              $dispName = "Microsoft Exchange";
+              $mbxs = @(Get-Mailbox -Arbitration -DomainController $RoleDomainController -Organization  $RoleOrganizationHierarchicalPath | where {$_.Name -eq $name});
+              if ($mbxs.Length -eq 0)
+              {
+                $upn = $name + "@" + $RoleTenantDomainName;
+                Write-ExchangeSetupLog -Info ("Creating mailbox with UPN=$upn,Name=$name,DisplayName=$dispName.");
+                $sysMbx = New-Mailbox -Organization $RoleOrganizationHierarchicalPath -Name $name -DisplayName $dispName -UserPrincipalName $upn -Arbitration -OverrideRecipientQuotas -DomainController $RoleDomainController;
+              }
+              else
+              {
+                if ($mbxs[0].DisplayName -ne $dispName)
+                {
+                  Write-ExchangeSetupLog -Info ("Setting DisplayName=$dispName.");
+                  Set-Mailbox -Arbitration -Identity $mbxs[0] -DisplayName $dispName -Force;
+                }
+                $sysMbx = $mbxs[0];
+              }
+              # Set the Organization Capabilities needed for this mailbox
+              if ($sysMbx -ne $null)
+              {
+                # We need 1 GB for uploading large OAB files to the organization mailbox
+                Write-ExchangeSetupLog -Info ("Setting mailbox properties.");
+                set-mailbox -Arbitration -identity $sysMbx -UMGrammar:$true -OABGen:$true -GMGen:$true -ClientExtensions:$true -SuiteServiceStorage:$true -MailRouting:$true -MessageTracking:$true -OMEncryption:$true -MaxSendSize 1GB -Force;
+              }
+              else
+              {
+                Write-ExchangeSetupLog -Info ("Cannot find arbitration mailbox with name=$name for organization=$RoleOrganizationHierarchicalPath");
+              }
+          }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall>
+        <Global/>
+        <Tenant>
+          $name = "SystemMailbox{bb558c35-97f1-4cb9-8ff7-d53741dc928c}";
+          Get-Mailbox -Arbitration -Organization $RoleTenantOrganizationFullPath | where {$_.Name -eq $name} | Remove-ArbitrationMailbox -Confirm:$false;
+        </Tenant>
+      </Uninstall>
+    </OrgTaskInfo>
+
+    <!-- Create Arbitration Mailbox for tenants only -->
+    <!-- The enterprise arbitration mailbox is created in SystemAttendantDependant.xml because it depends on the SA running-->
+    <!-- We create a second arbitration mailbox to be used as the DiscoveryMailbox for cross-mailbox search.-->
+    <!-- Arbitration Mailbox is created in the same site as the organization to reduce replication delay problems at least right after the org is created -->
+    <OrgTaskInfo Id="_7b327be7e86c430f92b243ad8af63ca7" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressCreateArbitrationMailbox">
+        <Global/>
+        <Tenant>
+          if (!$CreateSharedConfiguration)
+          {
+            $mbxs = @( get-mailbox -arbitration -DomainController $RoleDomainController -Organization  $RoleOrganizationHierarchicalPath -resultSize 1);
+            if ($mbxs.length -eq 0)
+            {
+              $name = "SystemMailbox{" + [System.Guid]::NewGuid().ToString() + "}";
+              $upn = $name + "@" + $RoleTenantDomainName;
+              new-mailbox -Organization $RoleOrganizationHierarchicalPath -Name $name -UserPrincipalName $upn -Arbitration -OverrideRecipientQuotas -DomainController $RoleDomainController;
+            }
+
+            $sysMbx = $null;
+            $name = "SystemMailbox{e0dc1c29-89c3-4034-b678-e6c29d823ed9}";
+            $dispname = "Microsoft Exchange";
+            $mbxs = @( get-mailbox -arbitration -DomainController $RoleDomainController -Organization  $RoleOrganizationHierarchicalPath | where {$_.Name -eq $name} );
+            if ($mbxs.length -eq 0)
+            {
+              $upn = $name + "@" + $RoleTenantDomainName;
+              $sysMbx = new-mailbox -Organization $RoleOrganizationHierarchicalPath -Name $name -DisplayName $dispname -UserPrincipalName $upn -Arbitration -OverrideRecipientQuotas -DomainController $RoleDomainController;
+            }
+            else
+            {
+              if ($mbxs[0].DisplayName -ne $dispname)
+              {
+                set-mailbox -Arbitration -identity $mbxs[0] -DisplayName $dispname -Force;
+              }
+              $sysMbx = $mbxs[0];
+            }
+            # Set the Organization Capabilities needed for this mailbox
+            if ($sysMbx -ne $null)
+            {
+              Write-ExchangeSetupLog -Info ("Setting mailbox properties.");
+              set-mailbox -Arbitration -identity $sysMbx -UMDataStorage:$true -Force;
+            }
+            else
+            {
+              Write-ExchangeSetupLog -Info ("Cannot find arbitration mailbox with name=$name for organization=$RoleOrganizationHierarchicalPath");
+            }
+          }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall>
+        <Global/>
+        <Tenant>
+          get-mailbox -Arbitration -Organization $RoleTenantOrganizationFullPath | remove-ArbitrationMailbox
+        </Tenant>
+      </Uninstall>
+    </OrgTaskInfo>
+
+    <!-- Create E15 migration mailbox for tenants only -->
+    <!-- The enterprise arbitration mailbox is created in SystemAttendantDependant.xml because it depends on the SA running-->
+    <OrgTaskInfo Id="_938ECAC92F194154A30509F9E87A4EFF" Component="OFFICE15:\Current\Exchange\Mailbox Intelligence\Migration\Simple Migration">
+      <Install DescriptionId="SetupProgressCreateMigrationMailbox">
+        <Global/>
+        <Tenant>
+          if (!$CreateSharedConfiguration -and -not $PilotEnabled)
+          {
+              $mailboxId = [Microsoft.Exchange.Management.Migration.MigrationBatchIdParameter]::MigrationMailboxName;
+              $dispName = "Microsoft Exchange Migration";
+              $mbxs = @(Get-Mailbox -Arbitration -DomainController $RoleDomainController -Organization $RoleOrganizationHierarchicalPath -Filter {Name -eq $mailboxId});
+              if ($mbxs.Length -le 0)
+              {
+                  $upn = $mailboxId + "@" + $RoleTenantDomainName;
+                  Write-ExchangeSetupLog -Info ("Creating mailbox with UPN=$upn,Name=$mailboxId,DisplayName=$dispName.");
+                  New-Mailbox -Organization $RoleOrganizationHierarchicalPath -Name $mailboxId -DisplayName $dispName -UserPrincipalName $upn -Arbitration -OverrideRecipientQuotas -DomainController $RoleDomainController;
+                  $mbxs = @(Get-Mailbox -Arbitration -DomainController $RoleDomainController -Organization $RoleOrganizationHierarchicalPath -Filter {Name -eq $mailboxId});
+              }
+
+              # Set the Organization Capabilities and quotas needed for this mailbox
+              if ($mbxs.Length -gt 0)
+              {
+                  # migration needs to disable quotas
+                  Set-Mailbox -Arbitration -Identity $mbxs[0] -ProhibitSendReceiveQuota 10GB -ProhibitSendQuota 10GB -IssueWarningQuota 9GB -RecoverableItemsQuota 30GB -RecoverableItemsWarningQuota 20GB -UseDatabaseQuotaDefaults $false -SCLDeleteEnabled $false -SCLJunkEnabled $false -SCLQuarantineEnabled $false -SCLRejectEnabled $false -HiddenFromAddressListsEnabled $true -DisplayName $dispName -Management:$true -Force;
+              }
+          }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall>
+        <Global/>
+        <Tenant>
+          $mailboxId = [Microsoft.Exchange.Management.Migration.MigrationBatchIdParameter]::MigrationMailboxName;
+          Get-Mailbox -Arbitration -Organization $RoleOrganizationHierarchicalPath -Filter {Name -eq $mailboxId} | Remove-ArbitrationMailbox -Confirm:$false;
+        </Tenant>
+      </Uninstall>
+    </OrgTaskInfo>
+
+    <!-- Create Federated Email Mailbox for tenants only -->
+    <!-- The enterprise mailbox is created in SystemAttendantDependant.xml along with other system mailboxes -->
+    <!-- The migration feature also depends on the federated mailbox, hence the 300MB quota limit on federated mailboxes -->
+    <OrgTaskInfo Id="_7830fef978c94fe58b5df1ef9fabe3b5" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressCreateFederatedEmailMailbox">
+        <Global/>
+        <Tenant>
+          <!-- This user object is used by federated delivery. Federated delivery only works if it can get delegation tokens from a STS (like Microsoft Federation Gateway - AKA: LiveID) -->
+          <!-- In order to get delegation tokens from MFG, the hoster would need to be "federated" with LiveID. This is a scenario that is not covered today with federation for Exchange.-->
+          <!-- All features that depend on delegation tokens should only be enabled in a Microsoft Hosted Datacenter.-->
+          <!-- Federated Mailbox is created in the same site as the organization to reduce replication delay problems at least right after the org is created -->
+          if ($RoleIsDatacenter -eq $true -and !$CreateSharedConfiguration)
+          {
+            $mailboxId = [Microsoft.Exchange.Management.Deployment.UpdateRmsSharedIdentity]::SharedIdentityCommonName;
+            $displayName = "Microsoft Exchange"
+            $smtpAddress = $mailboxId + "@" + $RoleTenantDomainName;
+            $existingFederatedUserMailboxes = @(Get-Mailbox -Filter {Name -eq $mailboxId} -DomainController $RoleDomainController -Organization $RoleOrganizationHierarchicalPath -ResultSize 1);
+            $existingFederatedArbitrationMailboxes = @(Get-Mailbox -Arbitration -Filter {Name -eq $mailboxId} -DomainController $RoleDomainController -Organization $RoleOrganizationHierarchicalPath -ResultSize 1);
+            if (($existingFederatedUserMailboxes.Length -eq 0) -and ($existingFederatedArbitrationMailboxes.Length -eq 0))
+            {
+              New-Mailbox -Arbitration -Name $mailboxId -LastName $mailboxId -DisplayName $displayName -UserPrincipalName $smtpAddress -OverrideRecipientQuotas -DomainController $RoleDomainController -Organization $RoleOrganizationHierarchicalPath;
+            }
+
+            $existingFederatedArbitrationMailboxes = @(Get-Mailbox -Arbitration -Filter {Name -eq $mailboxId} -DomainController $RoleDomainController -Organization $RoleOrganizationHierarchicalPath -ResultSize 1);
+            if ($existingFederatedArbitrationMailboxes.Length -ne 0)
+            {
+              Set-Mailbox -Arbitration -Identity $existingFederatedArbitrationMailboxes[0] -ProhibitSendReceiveQuota 10GB -ProhibitSendQuota 10GB -IssueWarningQuota 9GB -RecoverableItemsQuota 30GB -RecoverableItemsWarningQuota 20GB -UseDatabaseQuotaDefaults $false -SCLDeleteEnabled $false -SCLJunkEnabled $false -SCLQuarantineEnabled $false -SCLRejectEnabled $false -HiddenFromAddressListsEnabled $true -DisplayName $displayName -Force;
+            }
+
+            $existingFederatedUserMailboxes = @(Get-Mailbox -Filter {Name -eq $mailboxId} -DomainController $RoleDomainController -Organization $RoleOrganizationHierarchicalPath -ResultSize 1);
+            if ($existingFederatedUserMailboxes.Length -ne 0)
+            {
+              Set-Mailbox -Identity $existingFederatedUserMailboxes[0] -ProhibitSendReceiveQuota 300MB -ProhibitSendQuota 300MB -IssueWarningQuota 150MB -RecoverableItemsQuota 30GB -RecoverableItemsWarningQuota 20GB -UseDatabaseQuotaDefaults $false -SCLDeleteEnabled $false -SCLJunkEnabled $false -SCLQuarantineEnabled $false -SCLRejectEnabled $false -HiddenFromAddressListsEnabled $true -DisplayName $displayName -Force;
+            }
+
+            Set-TransportConfig -OrganizationFederatedMailbox $smtpAddress -DomainController $RoleDomainController -Identity $RoleOrganizationHierarchicalPath;
+          }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall>
+        <Global/>
+        <Tenant>
+          $mailboxId = [Microsoft.Exchange.Management.Deployment.UpdateRmsSharedIdentity]::SharedIdentityCommonName;
+          Get-Mailbox -Arbitration -Filter {Name -eq $mailboxId} -Organization $RoleTenantOrganizationFullPath | Remove-ArbitrationMailbox -KeepWindowsLiveID
+        </Tenant>
+      </Uninstall>
+    </OrgTaskInfo>
+
+    <!-- In reconciliation mode we need to remove the recipients -->
+    <OrgTaskInfo Id="_99ef1a1f93694ff98fe5ba2d5606dbb7" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install />
+      <BuildToBuildUpgrade />
+      <Uninstall>
+        <Global/>
+        <Tenant UseForReconciliation="true">
+          if (!$CreateSharedConfiguration)
+          {
+            # Load the provisioning throttling class used for script work and create an instance of it.
+            # Do this early in the function to help give time to WLM to get an accurate AD Health status
+            $binPath = (Get-ItemProperty -path 'HKLM:SOFTWARE\Microsoft\ExchangeServer\v15\Setup').MsiInstallPath + 'Bin';
+            $exProvThrottlePath = [System.IO.Path]::Combine($binPath,"Microsoft.Exchange.ProvisioningThrottling.dll");
+            [System.reflection.Assembly]::LoadFrom($exProvThrottlePath);
+            $provisioningThrottlePolicy = New-Object -TypeName Microsoft.Exchange.ProvisioningThrottling.ScriptThrottler;
+
+            # remove a group of objects in chunks. Checking between chunks if the wlm AD health monitor
+            # shows replication issues and if so abort the removal of the objects and the remove-organization
+            # call as it can worsen the AD replication health status by deleting lots more objects.
+            function removeObjects([string]$getCommand, [string]$removeCommand, [object]$wlmHealthMonitor)
+            {
+              $objs = @();
+              $lastCount = 0;
+
+              do
+              {
+                  $objs = @( invoke-expression $getCommand );
+
+                  # If the function has removed some objects (ie obj.count was greater than 0) then sleep some time
+                  # to allow AD replication to occur and for WLM health monitor to update its status. Only
+                  # do this check after some deletes occur because in the base case (99.9% of all tenants) of a
+                  # small tenant we won't delete a lot of objects and dont want to un-necessarily slow down
+                  # the remove-organization cmdlet.
+                  if (($lastCount -gt 0) -and ($objs.count -gt 0))
+                  {
+                      sleep $RoleRemoveObjectsChunkSleepTime;
+                  }
+
+                  if ($wlmHealthMonitor.Throttle("default", $true) -eq $true)
+                  {
+                      throw "Aborting because Active Directory replication is not healthy. Please retry later or consult with the directory team";
+                  }
+
+                  $cmd = "`$objs | " + $removeCommand;
+
+                  $error.clear();
+                  invoke-expression $cmd;
+                  if (($error.Count -gt 0) -and ($error[0] -ne $null))
+                  {
+                      throw $error[0];
+                  }
+
+                  $lastCount = $objs.count;
+              }
+              while ($objs.count -gt 0);
+            }
+
+            # remove all the recipient objects in chunks here
+            removeObjects "get-syncgroup -Organization `$RoleTenantOrganizationFullPath -ReadFromDomainController -ResultSize `$RoleRemoveObjectsChunkSize"                                                                           "remove-syncgroup -ForReconciliation:`$true"                                                      $provisioningThrottlePolicy;
+            removeObjects "get-rolegroup -Organization `$RoleTenantOrganizationFullPath -ReadFromDomainController -ResultSize $RoleRemoveObjectsChunkSize | where {![System.String]::IsNullOrEmpty(`$_.ExternalDirectoryObjectId)}"   "remove-rolegroup -Force -BypassSecurityGroupManagerCheck -ForReconciliation:`$true"              $provisioningThrottlePolicy;
+            removeObjects "get-mailuser -Organization `$RoleTenantOrganizationFullPath -ReadFromDomainController -ResultSize `$RoleRemoveObjectsChunkSize"                                                                            "remove-mailuser -IgnoreLegalHold -KeepWindowsLiveID -ForReconciliation:`$true -Permanent:`$true" $provisioningThrottlePolicy;
+            removeObjects "get-syncuser -Organization `$RoleTenantOrganizationFullPath -ReadFromDomainController -ResultSize `$RoleRemoveObjectsChunkSize"                                                                            "remove-syncuser -ForReconciliation:`$true -Permanent:`$true -KeepWindowsLiveID"                  $provisioningThrottlePolicy;
+            removeObjects "get-mailcontact -Organization `$RoleTenantOrganizationFullPath -ReadFromDomainController -ResultSize `$RoleRemoveObjectsChunkSize"                                                                         "remove-mailcontact -ForReconciliation:`$true"                                                    $provisioningThrottlePolicy;
+            removeObjects "get-distributiongroup -Organization `$RoleTenantOrganizationFullPath -ReadFromDomainController -ResultSize `$RoleRemoveObjectsChunkSize"                                                                   "remove-distributiongroup -ForReconciliation:`$true -BypassSecurityGroupManagerCheck"             $provisioningThrottlePolicy;
+            removeObjects "get-mailbox -IncludeSoftDeletedMailbox -Organization `$RoleTenantOrganizationFullPath -ReadFromDomainController -ResultSize `$RoleRemoveObjectsChunkSize"                                                  "remove-mailbox -KeepWindowsLiveID -ForReconciliation:`$true -IgnoreLegalHold -Disconnect"        $provisioningThrottlePolicy;
+          }
+        </Tenant>
+      </Uninstall>
+    </OrgTaskInfo>
+  
+</OrgTasks>
+</SetupComponentInfo>

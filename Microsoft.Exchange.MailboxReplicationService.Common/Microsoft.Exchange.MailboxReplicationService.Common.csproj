@@ -1,0 +1,969 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{09CD9476-CD82-489E-B9E2-84B47CA14147}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Microsoft.Exchange</RootNamespace>
+    <AssemblyName>Microsoft.Exchange.MailboxReplicationService.Common</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.PowerShell.HostingTools" />
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Management.Automation" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Data\Directory\ResourceHealth\ILegacyResourceHealthProvider.cs" />
+    <Compile Include="MailboxReplicationService\AccountSettings.cs" />
+    <Compile Include="MailboxReplicationService\AclFlags.cs" />
+    <Compile Include="MailboxReplicationService\ActionId.cs" />
+    <Compile Include="MailboxReplicationService\ActionNotSupportedException.cs" />
+    <Compile Include="MailboxReplicationService\ADHandler.cs" />
+    <Compile Include="MailboxReplicationService\AdminRoleDefinition.cs" />
+    <Compile Include="MailboxReplicationService\ADObjectIdXML.cs" />
+    <Compile Include="MailboxReplicationService\AdrEntryConverter.cs" />
+    <Compile Include="MailboxReplicationService\AdrEntryData.cs" />
+    <Compile Include="MailboxReplicationService\ADReplicationHealthMonitor.cs" />
+    <Compile Include="MailboxReplicationService\AggregatedAccountConfigurationWrapper.cs" />
+    <Compile Include="MailboxReplicationService\AggregatedAccountListConfigurationWrapper.cs" />
+    <Compile Include="MailboxReplicationService\Alias.cs" />
+    <Compile Include="MailboxReplicationService\AndRestrictionData.cs" />
+    <Compile Include="MailboxReplicationService\ArrayComparer.cs" />
+    <Compile Include="MailboxReplicationService\AsynchronousTransmitter.cs" />
+    <Compile Include="MailboxReplicationService\AttachmentRestrictionData.cs" />
+    <Compile Include="MailboxReplicationService\AuditLogRecord.cs" />
+    <Compile Include="MailboxReplicationService\AuthenticationInfo.cs" />
+    <Compile Include="MailboxReplicationService\AuthorizationManagerBase.cs" />
+    <Compile Include="MailboxReplicationService\BadItemKind.cs" />
+    <Compile Include="MailboxReplicationService\BadMessageRec.cs" />
+    <Compile Include="MailboxReplicationService\BitMaskRestrictionData.cs" />
+    <Compile Include="MailboxReplicationService\BlockedTypeException.cs" />
+    <Compile Include="MailboxReplicationService\BudgetWrapperBase.cs" />
+    <Compile Include="MailboxReplicationService\BufferBatchMessage.cs" />
+    <Compile Include="MailboxReplicationService\CalendarEventContentAction.cs" />
+    <Compile Include="MailboxReplicationService\CalendarFolderSettings.cs" />
+    <Compile Include="MailboxReplicationService\CalendarItemProperties.cs" />
+    <Compile Include="MailboxReplicationService\CalendarUserSettings.cs" />
+    <Compile Include="MailboxReplicationService\CallChargeType.cs" />
+    <Compile Include="MailboxReplicationService\CannotCreateEntryIdException.cs" />
+    <Compile Include="MailboxReplicationService\CannotCreateMessageIdException.cs" />
+    <Compile Include="MailboxReplicationService\CannotPreventCompletionForCompletingMovePermanentException.cs" />
+    <Compile Include="MailboxReplicationService\CannotPreventCompletionForOfflineMovePermanentException.cs" />
+    <Compile Include="MailboxReplicationService\CannotSetCompletedPermanentException.cs" />
+    <Compile Include="MailboxReplicationService\CannotSetCompletingPermanentException.cs" />
+    <Compile Include="MailboxReplicationService\CapabilityCheck.cs" />
+    <Compile Include="MailboxReplicationService\CapacityExceededReservationException.cs" />
+    <Compile Include="MailboxReplicationService\CategorySettings.cs" />
+    <Compile Include="MailboxReplicationService\CertificateLoadErrorException.cs" />
+    <Compile Include="MailboxReplicationService\CIAgeOfLastNotificationHealthMonitor.cs" />
+    <Compile Include="MailboxReplicationService\ClusterIPMissingHostsPermanentException.cs" />
+    <Compile Include="MailboxReplicationService\ClusterIPNotFoundPermanentException.cs" />
+    <Compile Include="MailboxReplicationService\ClusterNotFoundPermanentException.cs" />
+    <Compile Include="MailboxReplicationService\CommentRestrictionData.cs" />
+    <Compile Include="MailboxReplicationService\CommonFailureLog.cs" />
+    <Compile Include="MailboxReplicationService\CommonUtils.cs" />
+    <Compile Include="MailboxReplicationService\CommunicationWithRemoteServiceFailedTransientException.cs" />
+    <Compile Include="MailboxReplicationService\ComparePropertyRestrictionData.cs" />
+    <Compile Include="MailboxReplicationService\CompressedReport.cs" />
+    <Compile Include="MailboxReplicationService\CompressedReportHelper.cs" />
+    <Compile Include="MailboxReplicationService\ConfigurableObjectXML.cs" />
+    <Compile Include="MailboxReplicationService\ConflictResolutionOption.cs" />
+    <Compile Include="MailboxReplicationService\ConnectivityRec.cs" />
+    <Compile Include="MailboxReplicationService\ContainerMailboxesChangedTransientException.cs" />
+    <Compile Include="MailboxReplicationService\ContainerMailboxInformation.cs" />
+    <Compile Include="MailboxReplicationService\ContentChangesFetcherUtils.cs" />
+    <Compile Include="MailboxReplicationService\ContentFilterBuilder.cs" />
+    <Compile Include="MailboxReplicationService\ContentFilterPermanentException.cs" />
+    <Compile Include="MailboxReplicationService\ContentFilterSchema.cs" />
+    <Compile Include="MailboxReplicationService\ContentRestrictionData.cs" />
+    <Compile Include="MailboxReplicationService\CorruptNamedPropDataException.cs" />
+    <Compile Include="MailboxReplicationService\CorruptRestrictionDataException.cs" />
+    <Compile Include="MailboxReplicationService\CorruptSortOrderDataException.cs" />
+    <Compile Include="MailboxReplicationService\CorruptSyncStateException.cs" />
+    <Compile Include="MailboxReplicationService\CorruptSyncStatePermanentException.cs" />
+    <Compile Include="MailboxReplicationService\CouldNotFindDCHavingUmmUpdateTransientException.cs" />
+    <Compile Include="MailboxReplicationService\CountRestrictionData.cs" />
+    <Compile Include="MailboxReplicationService\CreateCalendarEventAction.cs" />
+    <Compile Include="MailboxReplicationService\CreateCalendarEventActionResult.cs" />
+    <Compile Include="MailboxReplicationService\CreateFolderFlags.cs" />
+    <Compile Include="MailboxReplicationService\CreateMailboxResult.cs" />
+    <Compile Include="MailboxReplicationService\CrossSiteLogonTransientException.cs" />
+    <Compile Include="MailboxReplicationService\DailyTimeSlot.cs" />
+    <Compile Include="MailboxReplicationService\DatabaseCouldNotBeMappedPermanentException.cs" />
+    <Compile Include="MailboxReplicationService\DatabaseInformation.cs" />
+    <Compile Include="MailboxReplicationService\DatabaseNotFoundByGuidPermanentException.cs" />
+    <Compile Include="MailboxReplicationService\DatabaseReadResource.cs" />
+    <Compile Include="MailboxReplicationService\DatabaseResource.cs" />
+    <Compile Include="MailboxReplicationService\DatabaseWriteResource.cs" />
+    <Compile Include="MailboxReplicationService\DatacenterMissingHostsPermanentException.cs" />
+    <Compile Include="MailboxReplicationService\DataContext.cs" />
+    <Compile Include="MailboxReplicationService\DataConverter.cs" />
+    <Compile Include="MailboxReplicationService\DataExportBatch.cs" />
+    <Compile Include="MailboxReplicationService\DataExportCanceledPermanentException.cs" />
+    <Compile Include="MailboxReplicationService\DataExportPermanentException.cs" />
+    <Compile Include="MailboxReplicationService\DataExportTimeoutTransientException.cs" />
+    <Compile Include="MailboxReplicationService\DataExportTransientException.cs" />
+    <Compile Include="MailboxReplicationService\DataMessageBase.cs" />
+    <Compile Include="MailboxReplicationService\DataMessageOpcode.cs" />
+    <Compile Include="MailboxReplicationService\DataMessageSerializer.cs" />
+    <Compile Include="MailboxReplicationService\DeleteAction.cs" />
+    <Compile Include="MailboxReplicationService\DeliverySettings.cs" />
+    <Compile Include="MailboxReplicationService\DestinationADNotUpToDatePermanentException.cs" />
+    <Compile Include="MailboxReplicationService\DestinationFolderHierarchyInconsistentTransientException.cs" />
+    <Compile Include="MailboxReplicationService\DestinationMailboxNotCleanedUpPermanentException.cs" />
+    <Compile Include="MailboxReplicationService\DestMailboxAlreadyBeingMovedPermanentException.cs" />
+    <Compile Include="MailboxReplicationService\DestMailboxAlreadyBeingMovedTransientException.cs" />
+    <Compile Include="MailboxReplicationService\DiskLatencyHealthMonitor.cs" />
+    <Compile Include="MailboxReplicationService\DisposableWrapper.cs" />
+    <Compile Include="MailboxReplicationService\DownlevelBadItemsPermanentException.cs" />
+    <Compile Include="MailboxReplicationService\DownlevelClientsNotSupportedPermanentException.cs" />
+    <Compile Include="MailboxReplicationService\DownlevelReportHelper.cs" />
+    <Compile Include="MailboxReplicationService\DurationInfo.cs" />
+    <Compile Include="MailboxReplicationService\EasBusyStatus.cs" />
+    <Compile Include="MailboxReplicationService\EasConnectFailedException.cs" />
+    <Compile Include="MailboxReplicationService\EasCountFailedPermanentException.cs" />
+    <Compile Include="MailboxReplicationService\EasCountFailedTransientException.cs" />
+    <Compile Include="MailboxReplicationService\EasFetchFailedPermanentException.cs" />
+    <Compile Include="MailboxReplicationService\EasFetchFailedTransientException.cs" />
+    <Compile Include="MailboxReplicationService\EasFolderCreateFailedPermanentException.cs" />
+    <Compile Include="MailboxReplicationService\EasFolderCreateFailedTransientException.cs" />
+    <Compile Include="MailboxReplicationService\EasFolderDeleteFailedPermanentException.cs" />
+    <Compile Include="MailboxReplicationService\EasFolderDeleteFailedTransientException.cs" />
+    <Compile Include="MailboxReplicationService\EasFolderSyncFailedPermanentException.cs" />
+    <Compile Include="MailboxReplicationService\EasFolderSyncFailedTransientException.cs" />
+    <Compile Include="MailboxReplicationService\EasFolderUpdateFailedPermanentException.cs" />
+    <Compile Include="MailboxReplicationService\EasFolderUpdateFailedTransientException.cs" />
+    <Compile Include="MailboxReplicationService\EasMissingMessageCategoryException.cs" />
+    <Compile Include="MailboxReplicationService\EasMoveFailedPermanentException.cs" />
+    <Compile Include="MailboxReplicationService\EasMoveFailedTransientException.cs" />
+    <Compile Include="MailboxReplicationService\EasObjectNotFoundException.cs" />
+    <Compile Include="MailboxReplicationService\EasRecurrenceType.cs" />
+    <Compile Include="MailboxReplicationService\EasSendFailedPermanentException.cs" />
+    <Compile Include="MailboxReplicationService\EasSendFailedTransientException.cs" />
+    <Compile Include="MailboxReplicationService\EasSyncCouldNotFindFolderException.cs" />
+    <Compile Include="MailboxReplicationService\EasSyncFailedPermanentException.cs" />
+    <Compile Include="MailboxReplicationService\EasSyncFailedTransientException.cs" />
+    <Compile Include="MailboxReplicationService\EntryIdMap.cs" />
+    <Compile Include="MailboxReplicationService\EntryIDsDataContext.cs" />
+    <Compile Include="MailboxReplicationService\EnumerateContentChangesFlags.cs" />
+    <Compile Include="MailboxReplicationService\EnumerateFolderHierarchyFlags.cs" />
+    <Compile Include="MailboxReplicationService\EnumerateHierarchyChangesFlags.cs" />
+    <Compile Include="MailboxReplicationService\EnumerateMessagesFlags.cs" />
+    <Compile Include="MailboxReplicationService\ErrorNoCASServersInSitePermanentException.cs" />
+    <Compile Include="MailboxReplicationService\ExceptionSide.cs" />
+    <Compile Include="MailboxReplicationService\ExecutionContext.cs" />
+    <Compile Include="MailboxReplicationService\ExecutionContextWrapper.cs" />
+    <Compile Include="MailboxReplicationService\ExistRestrictionData.cs" />
+    <Compile Include="MailboxReplicationService\ExpiredReservationException.cs" />
+    <Compile Include="MailboxReplicationService\ExportFoldersDataToCopyFlags.cs" />
+    <Compile Include="MailboxReplicationService\ExportMessagesFlags.cs" />
+    <Compile Include="MailboxReplicationService\ExtraPropTag.cs" />
+    <Compile Include="MailboxReplicationService\FAICopyOption.cs" />
+    <Compile Include="MailboxReplicationService\FailureEvent.cs" />
+    <Compile Include="MailboxReplicationService\FailureHistory.cs" />
+    <Compile Include="MailboxReplicationService\FailureRec.cs" />
+    <Compile Include="MailboxReplicationService\FalseRestrictionData.cs" />
+    <Compile Include="MailboxReplicationService\FastTransferArgumentException.cs" />
+    <Compile Include="MailboxReplicationService\FastTransferBufferException.cs" />
+    <Compile Include="MailboxReplicationService\FastTransferFlags.cs" />
+    <Compile Include="MailboxReplicationService\FeatureSetSettings.cs" />
+    <Compile Include="MailboxReplicationService\FilterOperatorMustBeEQorNEPermanentException.cs" />
+    <Compile Include="MailboxReplicationService\FinalizationIsBlockedPermanentException.cs" />
+    <Compile Include="MailboxReplicationService\FindServerFlags.cs" />
+    <Compile Include="MailboxReplicationService\FixedTimeSumProgress.cs" />
+    <Compile Include="MailboxReplicationService\FixedTimeSumSlot.cs" />
+    <Compile Include="MailboxReplicationService\FlagAction.cs" />
+    <Compile Include="MailboxReplicationService\FlagClearAction.cs" />
+    <Compile Include="MailboxReplicationService\FlagCompleteAction.cs" />
+    <Compile Include="MailboxReplicationService\FlushMessage.cs" />
+    <Compile Include="MailboxReplicationService\FolderAcl.cs" />
+    <Compile Include="MailboxReplicationService\FolderAliasIsInvalidPermanentException.cs" />
+    <Compile Include="MailboxReplicationService\FolderAlreadyExistsException.cs" />
+    <Compile Include="MailboxReplicationService\FolderAlreadyInTargetPermanentException.cs" />
+    <Compile Include="MailboxReplicationService\FolderChangesManifest.cs" />
+    <Compile Include="MailboxReplicationService\FolderClass.cs" />
+    <Compile Include="MailboxReplicationService\FolderCopyFailedPermanentException.cs" />
+    <Compile Include="MailboxReplicationService\FolderFilterParser.cs" />
+    <Compile Include="MailboxReplicationService\FolderFilterPermanentException.cs" />
+    <Compile Include="MailboxReplicationService\FolderHierarchyContainsDuplicatesPermanentException.cs" />
+    <Compile Include="MailboxReplicationService\FolderHierarchyContainsMultipleRootsTransientException.cs" />
+    <Compile Include="MailboxReplicationService\FolderHierarchyContainsNoRootsPermanentException.cs" />
+    <Compile Include="MailboxReplicationService\FolderHierarchyContainsParentChainLoopPermanentException.cs" />
+    <Compile Include="MailboxReplicationService\FolderHierarchyFlags.cs" />
+    <Compile Include="MailboxReplicationService\FolderHierarchyIsInconsistentPermanentException.cs" />
+    <Compile Include="MailboxReplicationService\FolderHierarchyIsInconsistentTransientException.cs" />
+    <Compile Include="MailboxReplicationService\FolderHierarchyUtils.cs" />
+    <Compile Include="MailboxReplicationService\FolderIdDataContext.cs" />
+    <Compile Include="MailboxReplicationService\FolderIsLivePermanentException.cs" />
+    <Compile Include="MailboxReplicationService\FolderIsMissingPermanentException.cs" />
+    <Compile Include="MailboxReplicationService\FolderIsMissingTransientException.cs" />
+    <Compile Include="MailboxReplicationService\FolderMappingFlags.cs" />
+    <Compile Include="MailboxReplicationService\FolderMoveRequest.cs" />
+    <Compile Include="MailboxReplicationService\FolderMoveRequestIdParameter.cs" />
+    <Compile Include="MailboxReplicationService\FolderMoveRequestStatistics.cs" />
+    <Compile Include="MailboxReplicationService\FolderPathIsInvalidPermanentException.cs" />
+    <Compile Include="MailboxReplicationService\FolderRec.cs" />
+    <Compile Include="MailboxReplicationService\FolderRecDataContext.cs" />
+    <Compile Include="MailboxReplicationService\FolderSizeRec.cs" />
+    <Compile Include="MailboxReplicationService\FolderToMailboxMapping.cs" />
+    <Compile Include="MailboxReplicationService\ForestType.cs" />
+    <Compile Include="MailboxReplicationService\FxPropertyBag.cs" />
+    <Compile Include="MailboxReplicationService\FxProxyBudgetWrapper.cs" />
+    <Compile Include="MailboxReplicationService\FxProxyCallbackWrapper.cs" />
+    <Compile Include="MailboxReplicationService\FxProxyGetObjectDataRequestMessage.cs" />
+    <Compile Include="MailboxReplicationService\FxProxyGetObjectDataResponseMessage.cs" />
+    <Compile Include="MailboxReplicationService\FxProxyImportBufferMessage.cs" />
+    <Compile Include="MailboxReplicationService\FxProxyPool.cs" />
+    <Compile Include="MailboxReplicationService\FxProxyPoolBudgetWrapper.cs" />
+    <Compile Include="MailboxReplicationService\FxProxyPoolCloseEntryMessage.cs" />
+    <Compile Include="MailboxReplicationService\FxProxyPoolCreateFolderMessage.cs" />
+    <Compile Include="MailboxReplicationService\FxProxyPoolCreateItemMessage.cs" />
+    <Compile Include="MailboxReplicationService\FxProxyPoolDeleteItemMessage.cs" />
+    <Compile Include="MailboxReplicationService\FxProxyPoolFxCallbackWrapper.cs" />
+    <Compile Include="MailboxReplicationService\FxProxyPoolGetFolderDataRequestMessage.cs" />
+    <Compile Include="MailboxReplicationService\FxProxyPoolGetFolderDataResponseMessage.cs" />
+    <Compile Include="MailboxReplicationService\FxProxyPoolGetUploadedIDsRequestMessage.cs" />
+    <Compile Include="MailboxReplicationService\FxProxyPoolGetUploadedIDsResponseMessage.cs" />
+    <Compile Include="MailboxReplicationService\FxProxyPoolOpenFolderMessage.cs" />
+    <Compile Include="MailboxReplicationService\FxProxyPoolOpenItemMessage.cs" />
+    <Compile Include="MailboxReplicationService\FxProxyPoolReceiver.cs" />
+    <Compile Include="MailboxReplicationService\FxProxyPoolSaveChangesMessage.cs" />
+    <Compile Include="MailboxReplicationService\FxProxyPoolSetExtendedAclMessage.cs" />
+    <Compile Include="MailboxReplicationService\FxProxyPoolSetItemPropertiesMessage.cs" />
+    <Compile Include="MailboxReplicationService\FxProxyPoolSetPropsMessage.cs" />
+    <Compile Include="MailboxReplicationService\FxProxyPoolTransmitter.cs" />
+    <Compile Include="MailboxReplicationService\FxProxyPoolWrapper.cs" />
+    <Compile Include="MailboxReplicationService\FxProxyPoolWriteToMimeMessage.cs" />
+    <Compile Include="MailboxReplicationService\FxProxyReceiver.cs" />
+    <Compile Include="MailboxReplicationService\FxProxyTransmitter.cs" />
+    <Compile Include="MailboxReplicationService\FxProxyWrapper.cs" />
+    <Compile Include="MailboxReplicationService\FxSession.cs" />
+    <Compile Include="MailboxReplicationService\FxUtils.cs" />
+    <Compile Include="MailboxReplicationService\GetCountRatePerfCounterDelegate.cs" />
+    <Compile Include="MailboxReplicationService\GetFolderRecFlags.cs" />
+    <Compile Include="MailboxReplicationService\GetIdsFromNamesCalledOnDestinationException.cs" />
+    <Compile Include="MailboxReplicationService\GetMailboxSettingsFlags.cs" />
+    <Compile Include="MailboxReplicationService\GetPerfCounterDelegate.cs" />
+    <Compile Include="MailboxReplicationService\HandleNotFoundPermanentException.cs" />
+    <Compile Include="MailboxReplicationService\HierarchyChangesFetcherUtils.cs" />
+    <Compile Include="MailboxReplicationService\HierRestrictionData.cs" />
+    <Compile Include="MailboxReplicationService\HourlyTimeSlot.cs" />
+    <Compile Include="MailboxReplicationService\IActionsSource.cs" />
+    <Compile Include="MailboxReplicationService\IActionWatermark.cs" />
+    <Compile Include="MailboxReplicationService\IAggregatedAccountConfigurationWrapper.cs" />
+    <Compile Include="MailboxReplicationService\IAuthenticationInfo.cs" />
+    <Compile Include="MailboxReplicationService\IContentChangesFetcher.cs" />
+    <Compile Include="MailboxReplicationService\ICSViewData.cs" />
+    <Compile Include="MailboxReplicationService\ICSViewDataContext.cs" />
+    <Compile Include="MailboxReplicationService\IDataConverter.cs" />
+    <Compile Include="MailboxReplicationService\IDataExport.cs" />
+    <Compile Include="MailboxReplicationService\IDataImport.cs" />
+    <Compile Include="MailboxReplicationService\IDataMessage.cs" />
+    <Compile Include="MailboxReplicationService\IDestinationFolder.cs" />
+    <Compile Include="MailboxReplicationService\IDestinationMailbox.cs" />
+    <Compile Include="MailboxReplicationService\IEntryIdTranslator.cs" />
+    <Compile Include="MailboxReplicationService\IFilterBuilderHelper.cs" />
+    <Compile Include="MailboxReplicationService\IFolder.cs" />
+    <Compile Include="MailboxReplicationService\IFolderProxy.cs" />
+    <Compile Include="MailboxReplicationService\IFxProxy.cs" />
+    <Compile Include="MailboxReplicationService\IFxProxyPool.cs" />
+    <Compile Include="MailboxReplicationService\IHierarchyChangesFetcher.cs" />
+    <Compile Include="MailboxReplicationService\ILogProcessable.cs" />
+    <Compile Include="MailboxReplicationService\IMailbox.cs" />
+    <Compile Include="MailboxReplicationService\IMailboxReplicationProxyService.cs" />
+    <Compile Include="MailboxReplicationService\IMailboxReplicationService.cs" />
+    <Compile Include="MailboxReplicationService\IMailboxReplicationServiceChannel.cs" />
+    <Compile Include="MailboxReplicationService\IMapiFxProxyEx.cs" />
+    <Compile Include="MailboxReplicationService\ImapObjectNotFoundException.cs" />
+    <Compile Include="MailboxReplicationService\IMessageProxy.cs" />
+    <Compile Include="MailboxReplicationService\ImplicitSplitPermanentException.cs" />
+    <Compile Include="MailboxReplicationService\ImportanceEnum.cs" />
+    <Compile Include="MailboxReplicationService\IMRSRemoteException.cs" />
+    <Compile Include="MailboxReplicationService\InboxFolderMapping.cs" />
+    <Compile Include="MailboxReplicationService\InboxIndexedFolderMapping.cs" />
+    <Compile Include="MailboxReplicationService\InboxNamedPropFolderMapping.cs" />
+    <Compile Include="MailboxReplicationService\InboxRuleSettings.cs" />
+    <Compile Include="MailboxReplicationService\InputDataIsInvalidPermanentException.cs" />
+    <Compile Include="MailboxReplicationService\InternalAccessFolderCreationIsNotSupportedException.cs" />
+    <Compile Include="MailboxReplicationService\InvalidContentFilterPermanentException.cs" />
+    <Compile Include="MailboxReplicationService\InvalidEndpointAddressPermanentException.cs" />
+    <Compile Include="MailboxReplicationService\InvalidEscapedCharPermanentException.cs" />
+    <Compile Include="MailboxReplicationService\InvalidHandleTypePermanentException.cs" />
+    <Compile Include="MailboxReplicationService\InvalidProxyOperationOrderPermanentException.cs" />
+    <Compile Include="MailboxReplicationService\InvalidServerNamePermanentException.cs" />
+    <Compile Include="MailboxReplicationService\InvalidUidException.cs" />
+    <Compile Include="MailboxReplicationService\IReplayProvider.cs" />
+    <Compile Include="MailboxReplicationService\IReportHelper.cs" />
+    <Compile Include="MailboxReplicationService\IRequestIndexEntry.cs" />
+    <Compile Include="MailboxReplicationService\IRequestIndexEntryHandler.cs" />
+    <Compile Include="MailboxReplicationService\IReservation.cs" />
+    <Compile Include="MailboxReplicationService\IsInteg.cs" />
+    <Compile Include="MailboxReplicationService\IsIntegAttemptsExceededTransientException.cs" />
+    <Compile Include="MailboxReplicationService\IsIntegMask.cs" />
+    <Compile Include="MailboxReplicationService\ISourceFolder.cs" />
+    <Compile Include="MailboxReplicationService\ISourceMailbox.cs" />
+    <Compile Include="MailboxReplicationService\ISupportMime.cs" />
+    <Compile Include="MailboxReplicationService\ItemPropertiesBase.cs" />
+    <Compile Include="MailboxReplicationService\ItemPropertiesDataContext.cs" />
+    <Compile Include="MailboxReplicationService\JobCanceledPermanentException.cs" />
+    <Compile Include="MailboxReplicationService\JobIsPoisonedPermananentException.cs" />
+    <Compile Include="MailboxReplicationService\JobProcessingState.cs" />
+    <Compile Include="MailboxReplicationService\JobRehomingDisallowedPermanentException.cs" />
+    <Compile Include="MailboxReplicationService\JobStalledPermanentException.cs" />
+    <Compile Include="MailboxReplicationService\JobStalledTransientException.cs" />
+    <Compile Include="MailboxReplicationService\JobStuckPermanentException.cs" />
+    <Compile Include="MailboxReplicationService\JunkEmailSettings.cs" />
+    <Compile Include="MailboxReplicationService\LatencyInfo.cs" />
+    <Compile Include="MailboxReplicationService\LegacyReservationStatus.cs" />
+    <Compile Include="MailboxReplicationService\LegacyReservationType.cs" />
+    <Compile Include="MailboxReplicationService\LegacyResourceHealthMonitor.cs" />
+    <Compile Include="MailboxReplicationService\LegacyResourceHealthMonitorKey.cs" />
+    <Compile Include="MailboxReplicationService\LegacyResourceHealthMonitorWrapper.cs" />
+    <Compile Include="MailboxReplicationService\LinkMailPublicFolderFlags.cs" />
+    <Compile Include="MailboxReplicationService\LocalCPUHealthMonitor.cs" />
+    <Compile Include="MailboxReplicationService\LocalMailboxFlags.cs" />
+    <Compile Include="MailboxReplicationService\LocalServerReadResource.cs" />
+    <Compile Include="MailboxReplicationService\LocalServerResource.cs" />
+    <Compile Include="MailboxReplicationService\LocalServerWriteResource.cs" />
+    <Compile Include="MailboxReplicationService\LocDescriptionAttribute.cs" />
+    <Compile Include="MailboxReplicationService\LookupIndex.cs" />
+    <Compile Include="MailboxReplicationService\LookupIndexEntry.cs" />
+    <Compile Include="MailboxReplicationService\LookupTable.cs" />
+    <Compile Include="MailboxReplicationService\MailboxCapabilities.cs" />
+    <Compile Include="MailboxReplicationService\MailboxChangesManifest.cs" />
+    <Compile Include="MailboxReplicationService\MailboxConnectFlags.cs" />
+    <Compile Include="MailboxReplicationService\MailboxCorruptionRepairAbandonedPermanentException.cs" />
+    <Compile Include="MailboxReplicationService\MailboxCorruptionTransientException.cs" />
+    <Compile Include="MailboxReplicationService\MailboxDatabaseNotFoundByIdPermanentException.cs" />
+    <Compile Include="MailboxReplicationService\MailboxDatabaseNotOnServerTransientException.cs" />
+    <Compile Include="MailboxReplicationService\MailboxDatabaseNotUniquePermanentException.cs" />
+    <Compile Include="MailboxReplicationService\MailboxDataReplicationFailedPermanentException.cs" />
+    <Compile Include="MailboxReplicationService\MailboxDoesNotExistPermanentException.cs" />
+    <Compile Include="MailboxReplicationService\MailboxExportRequest.cs" />
+    <Compile Include="MailboxReplicationService\MailboxExportRequestIdParameter.cs" />
+    <Compile Include="MailboxReplicationService\MailboxExportRequestStatistics.cs" />
+    <Compile Include="MailboxReplicationService\MailboxImportRequest.cs" />
+    <Compile Include="MailboxReplicationService\MailboxImportRequestIdParameter.cs" />
+    <Compile Include="MailboxReplicationService\MailboxImportRequestStatistics.cs" />
+    <Compile Include="MailboxReplicationService\MailboxInformation.cs" />
+    <Compile Include="MailboxReplicationService\MailboxIsNotInExpectedMDBPermanentException.cs" />
+    <Compile Include="MailboxReplicationService\MailboxMergeResource.cs" />
+    <Compile Include="MailboxReplicationService\MailboxMergeSourceResource.cs" />
+    <Compile Include="MailboxReplicationService\MailboxMergeTargetResource.cs" />
+    <Compile Include="MailboxReplicationService\MailboxMoveResource.cs" />
+    <Compile Include="MailboxReplicationService\MailboxMoveSourceResource.cs" />
+    <Compile Include="MailboxReplicationService\MailboxMoveTargetResource.cs" />
+    <Compile Include="MailboxReplicationService\MailboxNotSyncedPermanentException.cs" />
+    <Compile Include="MailboxReplicationService\MailboxOptions.cs" />
+    <Compile Include="MailboxReplicationService\MailboxProviderBase.cs" />
+    <Compile Include="MailboxReplicationService\MailboxRelocationRequest.cs" />
+    <Compile Include="MailboxReplicationService\MailboxRelocationRequestIdParameter.cs" />
+    <Compile Include="MailboxReplicationService\MailboxRelocationRequestStatistics.cs" />
+    <Compile Include="MailboxReplicationService\MailboxReplicationPermanentException.cs" />
+    <Compile Include="MailboxReplicationService\MailboxReplicationServiceClient.cs" />
+    <Compile Include="MailboxReplicationService\MailboxReplicationServiceFault.cs" />
+    <Compile Include="MailboxReplicationService\MailboxReplicationServicePerformanceCounters.cs" />
+    <Compile Include="MailboxReplicationService\MailboxReplicationServicePerMdbPerformanceCounters.cs" />
+    <Compile Include="MailboxReplicationService\MailboxReplicationServicePerMdbPerformanceCountersInstance.cs" />
+    <Compile Include="MailboxReplicationService\MailboxReplicationTransientException.cs" />
+    <Compile Include="MailboxReplicationService\MailboxRequestIndexEntryHandler.cs" />
+    <Compile Include="MailboxReplicationService\MailboxReservation.cs" />
+    <Compile Include="MailboxReplicationService\MailboxResource.cs" />
+    <Compile Include="MailboxReplicationService\MailboxRestoreRequest.cs" />
+    <Compile Include="MailboxReplicationService\MailboxRestoreRequestIdParameter.cs" />
+    <Compile Include="MailboxReplicationService\MailboxRestoreRequestStatistics.cs" />
+    <Compile Include="MailboxReplicationService\MailboxRestoreType.cs" />
+    <Compile Include="MailboxReplicationService\MailboxRootFolderMapping.cs" />
+    <Compile Include="MailboxReplicationService\MailboxServerInformation.cs" />
+    <Compile Include="MailboxReplicationService\MailboxSettingsJunkMailErrorPermanentException.cs" />
+    <Compile Include="MailboxReplicationService\MailboxSignatureChangedTransientException.cs" />
+    <Compile Include="MailboxReplicationService\MailboxSignatureConverter.cs" />
+    <Compile Include="MailboxReplicationService\MailboxSizeRec.cs" />
+    <Compile Include="MailboxReplicationService\MailboxType.cs" />
+    <Compile Include="MailboxReplicationService\ManifestContentChangesFetcher.cs" />
+    <Compile Include="MailboxReplicationService\ManifestContentsCallback.cs" />
+    <Compile Include="MailboxReplicationService\ManifestHierarchyCallback.cs" />
+    <Compile Include="MailboxReplicationService\ManifestHierarchyChangesFetcher.cs" />
+    <Compile Include="MailboxReplicationService\MapiPropertiesIndex.cs" />
+    <Compile Include="MailboxReplicationService\MapiSyncState.cs" />
+    <Compile Include="MailboxReplicationService\MapiUtils.cs" />
+    <Compile Include="MailboxReplicationService\MappedPrincipal.cs" />
+    <Compile Include="MailboxReplicationService\MappedPrincipalFields.cs" />
+    <Compile Include="MailboxReplicationService\MarkAsReadAction.cs" />
+    <Compile Include="MailboxReplicationService\MarkAsUnReadAction.cs" />
+    <Compile Include="MailboxReplicationService\MDBAvailabilityHealthMonitor.cs" />
+    <Compile Include="MailboxReplicationService\MdbIsOfflineTransientException.cs" />
+    <Compile Include="MailboxReplicationService\MDBLatencyHealthMonitor.cs" />
+    <Compile Include="MailboxReplicationService\MDBPerfCounterHelper.cs" />
+    <Compile Include="MailboxReplicationService\MDBPerfCounterHelperCollection.cs" />
+    <Compile Include="MailboxReplicationService\MDBReplicationHealthMonitor.cs" />
+    <Compile Include="MailboxReplicationService\MergeRequest.cs" />
+    <Compile Include="MailboxReplicationService\MergeRequestIdParameter.cs" />
+    <Compile Include="MailboxReplicationService\MergeRequestStatistics.cs" />
+    <Compile Include="MailboxReplicationService\MessageEnumerationFailedException.cs" />
+    <Compile Include="MailboxReplicationService\MessageExportResults.cs" />
+    <Compile Include="MailboxReplicationService\MessageExportResultsMessage.cs" />
+    <Compile Include="MailboxReplicationService\MessageKindEnum.cs" />
+    <Compile Include="MailboxReplicationService\MessageRec.cs" />
+    <Compile Include="MailboxReplicationService\MessageRecFlags.cs" />
+    <Compile Include="MailboxReplicationService\MessageRecSortBy.cs" />
+    <Compile Include="MailboxReplicationService\MessageWithBuffer.cs" />
+    <Compile Include="MailboxReplicationService\MigrationAccount.cs" />
+    <Compile Include="MailboxReplicationService\MigrationNotifications.cs" />
+    <Compile Include="MailboxReplicationService\MissingMessageRec.cs" />
+    <Compile Include="MailboxReplicationService\MonthlyTimeSlot.cs" />
+    <Compile Include="MailboxReplicationService\MoveAction.cs" />
+    <Compile Include="MailboxReplicationService\MoveActionResult.cs" />
+    <Compile Include="MailboxReplicationService\MoveFolderInfo.cs" />
+    <Compile Include="MailboxReplicationService\MoveHistoryEntryInternal.cs" />
+    <Compile Include="MailboxReplicationService\MoveInProgressReservationException.cs" />
+    <Compile Include="MailboxReplicationService\MoveJobDeserializationFailedPermanentException.cs" />
+    <Compile Include="MailboxReplicationService\MoveObjectInfo.cs" />
+    <Compile Include="MailboxReplicationService\MoveRequest.cs" />
+    <Compile Include="MailboxReplicationService\MoveRequestIdParameter.cs" />
+    <Compile Include="MailboxReplicationService\MoveRequestInfo.cs" />
+    <Compile Include="MailboxReplicationService\MoveRequestMissingInfoDeletePermanentException.cs" />
+    <Compile Include="MailboxReplicationService\MoveRequestMissingInfoSavePermanentException.cs" />
+    <Compile Include="MailboxReplicationService\MoveRequestNotification.cs" />
+    <Compile Include="MailboxReplicationService\MoveRequestStatistics.cs" />
+    <Compile Include="MailboxReplicationService\MoveRequestUserSchema.cs" />
+    <Compile Include="MailboxReplicationService\MrsAndProxyActivityContextLogFields.cs" />
+    <Compile Include="MailboxReplicationService\MrsAndProxyActivityLogger.cs" />
+    <Compile Include="MailboxReplicationService\MrsAndProxyLoggerSettings.cs" />
+    <Compile Include="MailboxReplicationService\MRSCapabilities.cs" />
+    <Compile Include="MailboxReplicationService\MrsCmdlet.cs" />
+    <Compile Include="MailboxReplicationService\MRSConfig.cs" />
+    <Compile Include="MailboxReplicationService\MRSConfigSchema.cs" />
+    <Compile Include="MailboxReplicationService\MRSConfigurableFeatures.cs" />
+    <Compile Include="MailboxReplicationService\MrsConnectionsLog.cs" />
+    <Compile Include="MailboxReplicationService\MRSDiagnosticArgument.cs" />
+    <Compile Include="MailboxReplicationService\MRSErrorFlags.cs" />
+    <Compile Include="MailboxReplicationService\MRSEventLogConstants.cs" />
+    <Compile Include="MailboxReplicationService\MRSInstanceFailedPermanentException.cs" />
+    <Compile Include="MailboxReplicationService\MRSJobType.cs" />
+    <Compile Include="MailboxReplicationService\MRSProxyCannotProcessRequestOnUnthrottledConnectionPermanent.cs" />
+    <Compile Include="MailboxReplicationService\MRSProxyCapabilities.cs" />
+    <Compile Include="MailboxReplicationService\MRSProxyConnectionLimitReachedTransientException.cs" />
+    <Compile Include="MailboxReplicationService\MRSProxyTooManyConnectionsTransientException.cs" />
+    <Compile Include="MailboxReplicationService\MrsPSHandler.cs" />
+    <Compile Include="MailboxReplicationService\MRSRecurrentOperationConfigSchema.cs" />
+    <Compile Include="MailboxReplicationService\MRSRequestIdParameter.cs" />
+    <Compile Include="MailboxReplicationService\MRSRequestMailboxEntry.cs" />
+    <Compile Include="MailboxReplicationService\MRSRequestWrapper.cs" />
+    <Compile Include="MailboxReplicationService\MRSReservation.cs" />
+    <Compile Include="MailboxReplicationService\MRSResource.cs" />
+    <Compile Include="MailboxReplicationService\MRSScheduledLog.cs" />
+    <Compile Include="MailboxReplicationService\MRSSettingsData.cs" />
+    <Compile Include="MailboxReplicationService\MRSSettingsLog.cs" />
+    <Compile Include="MailboxReplicationService\MRSSettingsLogCollection.cs" />
+    <Compile Include="MailboxReplicationService\MrsStrings.cs" />
+    <Compile Include="MailboxReplicationService\MrsTracer.cs" />
+    <Compile Include="MailboxReplicationService\MrsVersion.cs" />
+    <Compile Include="MailboxReplicationService\MsaSettings.cs" />
+    <Compile Include="MailboxReplicationService\MsgRecFlags.cs" />
+    <Compile Include="MailboxReplicationService\MSInternal1.cs" />
+    <Compile Include="MailboxReplicationService\MSInternal2.cs" />
+    <Compile Include="MailboxReplicationService\MSInternal3.cs" />
+    <Compile Include="MailboxReplicationService\MSInternal4.cs" />
+    <Compile Include="MailboxReplicationService\MSInternal5.cs" />
+    <Compile Include="MailboxReplicationService\MSInternal6.cs" />
+    <Compile Include="MailboxReplicationService\NamedFolderMapping.cs" />
+    <Compile Include="MailboxReplicationService\NamedPropConverter.cs" />
+    <Compile Include="MailboxReplicationService\NamedPropData.cs" />
+    <Compile Include="MailboxReplicationService\NamedPropertyData.cs" />
+    <Compile Include="MailboxReplicationService\NamedPropMapper.cs" />
+    <Compile Include="MailboxReplicationService\NamedPropsDataContext.cs" />
+    <Compile Include="MailboxReplicationService\NameValuePair.cs" />
+    <Compile Include="MailboxReplicationService\NearRestrictionData.cs" />
+    <Compile Include="MailboxReplicationService\NetworkCredentialXML.cs" />
+    <Compile Include="MailboxReplicationService\NoMRSAvailableTransientException.cs" />
+    <Compile Include="MailboxReplicationService\NoPublicFolderMailboxFoundInSourceException.cs" />
+    <Compile Include="MailboxReplicationService\NotConnectedPermanentException.cs" />
+    <Compile Include="MailboxReplicationService\NotEnoughInformationToFindMoveRequestPermanentException.cs" />
+    <Compile Include="MailboxReplicationService\NotImplementedPermanentException.cs" />
+    <Compile Include="MailboxReplicationService\NotRestrictionData.cs" />
+    <Compile Include="MailboxReplicationService\NotSupportedCodePagePermanentException.cs" />
+    <Compile Include="MailboxReplicationService\NullRestrictionData.cs" />
+    <Compile Include="MailboxReplicationService\ObjectInvolvedInMultipleRelocationsPermanentException.cs" />
+    <Compile Include="MailboxReplicationService\OfflinePublicFolderMigrationNotSupportedException.cs" />
+    <Compile Include="MailboxReplicationService\OlcAccountStatus.cs" />
+    <Compile Include="MailboxReplicationService\OlcActionType.cs" />
+    <Compile Include="MailboxReplicationService\OlcArchiveType.cs" />
+    <Compile Include="MailboxReplicationService\OlcAutoReplyFormat.cs" />
+    <Compile Include="MailboxReplicationService\OlcAutoReplyMode.cs" />
+    <Compile Include="MailboxReplicationService\OlcCalendarType.cs" />
+    <Compile Include="MailboxReplicationService\OlcCategoryAttributeFlags.cs" />
+    <Compile Include="MailboxReplicationService\OlcConfig.cs" />
+    <Compile Include="MailboxReplicationService\OlcConfigSchema.cs" />
+    <Compile Include="MailboxReplicationService\OlcFolderState.cs" />
+    <Compile Include="MailboxReplicationService\OlcFolderType.cs" />
+    <Compile Include="MailboxReplicationService\OlcForwardingMode.cs" />
+    <Compile Include="MailboxReplicationService\OlcInboxRule.cs" />
+    <Compile Include="MailboxReplicationService\OlcLegacyMessageProperties.cs" />
+    <Compile Include="MailboxReplicationService\OlcMailboxConfiguration.cs" />
+    <Compile Include="MailboxReplicationService\OlcMessageCategory.cs" />
+    <Compile Include="MailboxReplicationService\OlcMessageProperties.cs" />
+    <Compile Include="MailboxReplicationService\OlcMessageProperty.cs" />
+    <Compile Include="MailboxReplicationService\OlcMessageReadState.cs" />
+    <Compile Include="MailboxReplicationService\OlcMessageStringPropertyComparisionRestriction.cs" />
+    <Compile Include="MailboxReplicationService\OlcMessageType.cs" />
+    <Compile Include="MailboxReplicationService\OlcRuleActionAssignCategory.cs" />
+    <Compile Include="MailboxReplicationService\OlcRuleActionBase.cs" />
+    <Compile Include="MailboxReplicationService\OlcRuleActionForward.cs" />
+    <Compile Include="MailboxReplicationService\OlcRuleActionMarkAsRead.cs" />
+    <Compile Include="MailboxReplicationService\OlcRuleActionMobileAlert.cs" />
+    <Compile Include="MailboxReplicationService\OlcRuleActionMoveToFolder.cs" />
+    <Compile Include="MailboxReplicationService\OlcRuleActionRemoveCategory.cs" />
+    <Compile Include="MailboxReplicationService\OlcRuleAndRestriction.cs" />
+    <Compile Include="MailboxReplicationService\OlcRuleCategoryActionBase.cs" />
+    <Compile Include="MailboxReplicationService\OlcRuleCategoryRestriction.cs" />
+    <Compile Include="MailboxReplicationService\OlcRuleFolderRestriction.cs" />
+    <Compile Include="MailboxReplicationService\OlcRuleHasAttachmentRestriction.cs" />
+    <Compile Include="MailboxReplicationService\OlcRuleHierarchyRestriction.cs" />
+    <Compile Include="MailboxReplicationService\OlcRuleMarkedAsReadRestriction.cs" />
+    <Compile Include="MailboxReplicationService\OlcRuleNotRestriction.cs" />
+    <Compile Include="MailboxReplicationService\OlcRuleOrRestriction.cs" />
+    <Compile Include="MailboxReplicationService\OlcRuleRestrictionBase.cs" />
+    <Compile Include="MailboxReplicationService\OlcSettingNotImplementedPermanentException.cs" />
+    <Compile Include="MailboxReplicationService\OlcStringComparison.cs" />
+    <Compile Include="MailboxReplicationService\OlcTopology.cs" />
+    <Compile Include="MailboxReplicationService\OnlineMoveNotSupportedPermanentException.cs" />
+    <Compile Include="MailboxReplicationService\OperationDataContext.cs" />
+    <Compile Include="MailboxReplicationService\OperationSideDataContext.cs" />
+    <Compile Include="MailboxReplicationService\OperationType.cs" />
+    <Compile Include="MailboxReplicationService\OrganizationIdXML.cs" />
+    <Compile Include="MailboxReplicationService\OrganizationRelationshipNotFoundPermanentException.cs" />
+    <Compile Include="MailboxReplicationService\OrRestrictionData.cs" />
+    <Compile Include="MailboxReplicationService\PagedDataMessage.cs" />
+    <Compile Include="MailboxReplicationService\ParallelPublicFolderMigrationVersionChecker.cs" />
+    <Compile Include="MailboxReplicationService\ParsingMessageEntryIdFailedException.cs" />
+    <Compile Include="MailboxReplicationService\PerfCounterWithAverageRate.cs" />
+    <Compile Include="MailboxReplicationService\PerMinuteTimeSlot.cs" />
+    <Compile Include="MailboxReplicationService\PopAccountInfo.cs" />
+    <Compile Include="MailboxReplicationService\PopAccountSettings.cs" />
+    <Compile Include="MailboxReplicationService\PrincipalMapper.cs" />
+    <Compile Include="MailboxReplicationService\PropertyBinaryValueXML.cs" />
+    <Compile Include="MailboxReplicationService\PropertyMismatchException.cs" />
+    <Compile Include="MailboxReplicationService\PropertyRestrictionData.cs" />
+    <Compile Include="MailboxReplicationService\PropertyStringValueXML.cs" />
+    <Compile Include="MailboxReplicationService\PropertyTagsDoNotMatchPermanentException.cs" />
+    <Compile Include="MailboxReplicationService\PropertyUpdateOperation.cs" />
+    <Compile Include="MailboxReplicationService\PropertyUpdateXML.cs" />
+    <Compile Include="MailboxReplicationService\PropertyValueBaseXML.cs" />
+    <Compile Include="MailboxReplicationService\PropertyXML.cs" />
+    <Compile Include="MailboxReplicationService\PropProblemConverter.cs" />
+    <Compile Include="MailboxReplicationService\PropProblemData.cs" />
+    <Compile Include="MailboxReplicationService\PropTagConverter.cs" />
+    <Compile Include="MailboxReplicationService\PropTagFolderMapping.cs" />
+    <Compile Include="MailboxReplicationService\PropTagsDataContext.cs" />
+    <Compile Include="MailboxReplicationService\PropTagToPropertyDefinitionConversionException.cs" />
+    <Compile Include="MailboxReplicationService\PropValueConverter.cs" />
+    <Compile Include="MailboxReplicationService\PropValueData.cs" />
+    <Compile Include="MailboxReplicationService\PropValuesDataContext.cs" />
+    <Compile Include="MailboxReplicationService\ProviderInfo.cs" />
+    <Compile Include="MailboxReplicationService\ProxyConfiguration.cs" />
+    <Compile Include="MailboxReplicationService\ProxyControlFlags.cs" />
+    <Compile Include="MailboxReplicationService\ProxyScenarios.cs" />
+    <Compile Include="MailboxReplicationService\ProxyServerInformation.cs" />
+    <Compile Include="MailboxReplicationService\ProxyServerSettings.cs" />
+    <Compile Include="MailboxReplicationService\PSTIOExceptionTransientException.cs" />
+    <Compile Include="MailboxReplicationService\PSTPathMustBeAFilePermanentException.cs" />
+    <Compile Include="MailboxReplicationService\PublicFolderMailboxesNotProvisionedForMigrationException.cs" />
+    <Compile Include="MailboxReplicationService\PublicFolderMailboxMigrationRequest.cs" />
+    <Compile Include="MailboxReplicationService\PublicFolderMailboxMigrationRequestIdParameter.cs" />
+    <Compile Include="MailboxReplicationService\PublicFolderMailboxMigrationRequestStatistics.cs" />
+    <Compile Include="MailboxReplicationService\PublicFolderMigrationNotSupportedFromVersionException.cs" />
+    <Compile Include="MailboxReplicationService\PublicFolderMigrationRequest.cs" />
+    <Compile Include="MailboxReplicationService\PublicFolderMigrationRequestIdParameter.cs" />
+    <Compile Include="MailboxReplicationService\PublicFolderMigrationRequestStatistics.cs" />
+    <Compile Include="MailboxReplicationService\PublicFolderMoveRequest.cs" />
+    <Compile Include="MailboxReplicationService\PublicFolderMoveRequestIdParameter.cs" />
+    <Compile Include="MailboxReplicationService\PublicFolderMoveRequestStatistics.cs" />
+    <Compile Include="MailboxReplicationService\ReadJobFlags.cs" />
+    <Compile Include="MailboxReplicationService\ReadObjectFlags.cs" />
+    <Compile Include="MailboxReplicationService\ReadReservation.cs" />
+    <Compile Include="MailboxReplicationService\RecipientAggregatedMailboxNotFoundPermanentException.cs" />
+    <Compile Include="MailboxReplicationService\RecipientArchiveGuidMismatchPermanentException.cs" />
+    <Compile Include="MailboxReplicationService\RecipientIsNotAMailboxPermanentException.cs" />
+    <Compile Include="MailboxReplicationService\RecipientMissingLegDNPermanentException.cs" />
+    <Compile Include="MailboxReplicationService\RecipientNotFoundPermanentException.cs" />
+    <Compile Include="MailboxReplicationService\RecipientPropertyIsNotWriteablePermanentException.cs" />
+    <Compile Include="MailboxReplicationService\RecipientRestrictionData.cs" />
+    <Compile Include="MailboxReplicationService\RecoverySyncNotImplementedException.cs" />
+    <Compile Include="MailboxReplicationService\RegKeyNotExistMigrationException.cs" />
+    <Compile Include="MailboxReplicationService\RehomeRequestPermanentException.cs" />
+    <Compile Include="MailboxReplicationService\RehomeRequestTransientException.cs" />
+    <Compile Include="MailboxReplicationService\RelinquishCancelPostponedTransientException.cs" />
+    <Compile Include="MailboxReplicationService\RelinquishJobCIStallTransientException.cs" />
+    <Compile Include="MailboxReplicationService\RelinquishJobDatabaseFailoverTransientException.cs" />
+    <Compile Include="MailboxReplicationService\RelinquishJobDGTimeoutTransientException.cs" />
+    <Compile Include="MailboxReplicationService\RelinquishJobGenericTransientException.cs" />
+    <Compile Include="MailboxReplicationService\RelinquishJobHAStallTransientException.cs" />
+    <Compile Include="MailboxReplicationService\RelinquishJobLongRunTransientException.cs" />
+    <Compile Include="MailboxReplicationService\RelinquishJobMailboxLockoutTransientException.cs" />
+    <Compile Include="MailboxReplicationService\RelinquishJobOfflineTransientException.cs" />
+    <Compile Include="MailboxReplicationService\RelinquishJobRehomeTransientException.cs" />
+    <Compile Include="MailboxReplicationService\RelinquishJobResourceReservationTransientException.cs" />
+    <Compile Include="MailboxReplicationService\RelinquishJobServerBusyTransientException.cs" />
+    <Compile Include="MailboxReplicationService\RelinquishJobSuspendedTransientException.cs" />
+    <Compile Include="MailboxReplicationService\RelinquishJobThrottledTransientException.cs" />
+    <Compile Include="MailboxReplicationService\RelinquishJobTransientException.cs" />
+    <Compile Include="MailboxReplicationService\RemotePermanentException.cs" />
+    <Compile Include="MailboxReplicationService\RemoteTransientException.cs" />
+    <Compile Include="MailboxReplicationService\ReplayAction.cs" />
+    <Compile Include="MailboxReplicationService\ReplayActionResult.cs" />
+    <Compile Include="MailboxReplicationService\ReplayExtensions.cs" />
+    <Compile Include="MailboxReplicationService\Report.cs" />
+    <Compile Include="MailboxReplicationService\ReportData.cs" />
+    <Compile Include="MailboxReplicationService\ReportEntry.cs" />
+    <Compile Include="MailboxReplicationService\ReportEntryFlags.cs" />
+    <Compile Include="MailboxReplicationService\ReportEntryType.cs" />
+    <Compile Include="MailboxReplicationService\ReportHelper.cs" />
+    <Compile Include="MailboxReplicationService\ReportVersion.cs" />
+    <Compile Include="MailboxReplicationService\RequestBase.cs" />
+    <Compile Include="MailboxReplicationService\RequestDirection.cs" />
+    <Compile Include="MailboxReplicationService\RequestGuidNotUniquePermanentException.cs" />
+    <Compile Include="MailboxReplicationService\RequestIndexEntryHandler.cs" />
+    <Compile Include="MailboxReplicationService\RequestIndexEntryObjectId.cs" />
+    <Compile Include="MailboxReplicationService\RequestIndexEntryProvider.cs" />
+    <Compile Include="MailboxReplicationService\RequestIndexEntryQueryFilter.cs" />
+    <Compile Include="MailboxReplicationService\RequestIndexId.cs" />
+    <Compile Include="MailboxReplicationService\RequestIndexLocation.cs" />
+    <Compile Include="MailboxReplicationService\RequestJobBase.cs" />
+    <Compile Include="MailboxReplicationService\RequestJobDiagnosticInfoXML.cs" />
+    <Compile Include="MailboxReplicationService\RequestJobDurationData.cs" />
+    <Compile Include="MailboxReplicationService\RequestJobInternalFlags.cs" />
+    <Compile Include="MailboxReplicationService\RequestJobLog.cs" />
+    <Compile Include="MailboxReplicationService\RequestJobLogData.cs" />
+    <Compile Include="MailboxReplicationService\RequestJobNamedPropertySet.cs" />
+    <Compile Include="MailboxReplicationService\RequestJobObjectId.cs" />
+    <Compile Include="MailboxReplicationService\RequestJobProvider.cs" />
+    <Compile Include="MailboxReplicationService\RequestJobQueryFilter.cs" />
+    <Compile Include="MailboxReplicationService\RequestJobSchema.cs" />
+    <Compile Include="MailboxReplicationService\RequestJobStateNode.cs" />
+    <Compile Include="MailboxReplicationService\RequestJobTimestamp.cs" />
+    <Compile Include="MailboxReplicationService\RequestJobTimestampData.cs" />
+    <Compile Include="MailboxReplicationService\RequestJobTimeTracker.cs" />
+    <Compile Include="MailboxReplicationService\RequestJobTimeTrackerXML.cs" />
+    <Compile Include="MailboxReplicationService\RequestJobXML.cs" />
+    <Compile Include="MailboxReplicationService\RequestPriority.cs" />
+    <Compile Include="MailboxReplicationService\RequestSchema.cs" />
+    <Compile Include="MailboxReplicationService\RequestState.cs" />
+    <Compile Include="MailboxReplicationService\RequestStatisticsBase.cs" />
+    <Compile Include="MailboxReplicationService\RequestStatisticsDiagnosticArgument.cs" />
+    <Compile Include="MailboxReplicationService\RequestStyle.cs" />
+    <Compile Include="MailboxReplicationService\RequestTypeNotUnderstoodPermanentException.cs" />
+    <Compile Include="MailboxReplicationService\RequestWorkloadType.cs" />
+    <Compile Include="MailboxReplicationService\ReservationBase.cs" />
+    <Compile Include="MailboxReplicationService\ReservationFlags.cs" />
+    <Compile Include="MailboxReplicationService\ReservationManager.cs" />
+    <Compile Include="MailboxReplicationService\ResourceBase.cs" />
+    <Compile Include="MailboxReplicationService\ResourceCache.cs" />
+    <Compile Include="MailboxReplicationService\ResourceDiagnosticInfoXML.cs" />
+    <Compile Include="MailboxReplicationService\ResourceDirection.cs" />
+    <Compile Include="MailboxReplicationService\ResourceHealthTracker.cs" />
+    <Compile Include="MailboxReplicationService\ResourceReservationException.cs" />
+    <Compile Include="MailboxReplicationService\RestartMoveCorruptSyncStateTransientException.cs" />
+    <Compile Include="MailboxReplicationService\RestartMoveOfflineTransientException.cs" />
+    <Compile Include="MailboxReplicationService\RestartMoveSignatureChangeTransientException.cs" />
+    <Compile Include="MailboxReplicationService\RestartMoveSignatureVersionMismatchTransientException.cs" />
+    <Compile Include="MailboxReplicationService\RestartMoveSourceCorruptionTransientException.cs" />
+    <Compile Include="MailboxReplicationService\RestoringConnectedMailboxPermanentException.cs" />
+    <Compile Include="MailboxReplicationService\RestrictionConverter.cs" />
+    <Compile Include="MailboxReplicationService\RestrictionData.cs" />
+    <Compile Include="MailboxReplicationService\RestrictionDataContext.cs" />
+    <Compile Include="MailboxReplicationService\RootFolderNotFoundPermananentException.cs" />
+    <Compile Include="MailboxReplicationService\RpcClientAccessServerNotConfiguredForMdbPermanentException.cs" />
+    <Compile Include="MailboxReplicationService\RuleActionBaseReplyData.cs" />
+    <Compile Include="MailboxReplicationService\RuleActionBounceData.cs" />
+    <Compile Include="MailboxReplicationService\RuleActionConverter.cs" />
+    <Compile Include="MailboxReplicationService\RuleActionCopyData.cs" />
+    <Compile Include="MailboxReplicationService\RuleActionData.cs" />
+    <Compile Include="MailboxReplicationService\RuleActionDeferData.cs" />
+    <Compile Include="MailboxReplicationService\RuleActionDelegateData.cs" />
+    <Compile Include="MailboxReplicationService\RuleActionDeleteData.cs" />
+    <Compile Include="MailboxReplicationService\RuleActionExternalCopyData.cs" />
+    <Compile Include="MailboxReplicationService\RuleActionExternalMoveCopyData.cs" />
+    <Compile Include="MailboxReplicationService\RuleActionExternalMoveData.cs" />
+    <Compile Include="MailboxReplicationService\RuleActionForwardData.cs" />
+    <Compile Include="MailboxReplicationService\RuleActionFwdDelegateData.cs" />
+    <Compile Include="MailboxReplicationService\RuleActionInMailboxCopyData.cs" />
+    <Compile Include="MailboxReplicationService\RuleActionInMailboxMoveCopyData.cs" />
+    <Compile Include="MailboxReplicationService\RuleActionInMailboxMoveData.cs" />
+    <Compile Include="MailboxReplicationService\RuleActionMarkAsReadData.cs" />
+    <Compile Include="MailboxReplicationService\RuleActionMoveCopyData.cs" />
+    <Compile Include="MailboxReplicationService\RuleActionMoveData.cs" />
+    <Compile Include="MailboxReplicationService\RuleActionOOFReplyData.cs" />
+    <Compile Include="MailboxReplicationService\RuleActionReplyData.cs" />
+    <Compile Include="MailboxReplicationService\RuleActionTagData.cs" />
+    <Compile Include="MailboxReplicationService\RuleConverter.cs" />
+    <Compile Include="MailboxReplicationService\RuleData.cs" />
+    <Compile Include="MailboxReplicationService\RulesDataContext.cs" />
+    <Compile Include="MailboxReplicationService\SafeLocalizedStringSerializer.cs" />
+    <Compile Include="MailboxReplicationService\SatchmoFolderSettings.cs" />
+    <Compile Include="MailboxReplicationService\SendAction.cs" />
+    <Compile Include="MailboxReplicationService\SeparatorDataContext.cs" />
+    <Compile Include="MailboxReplicationService\ServerHealthState.cs" />
+    <Compile Include="MailboxReplicationService\ServerHealthStatus.cs" />
+    <Compile Include="MailboxReplicationService\ServerKind.cs" />
+    <Compile Include="MailboxReplicationService\ServerNotFoundByGuidPermanentException.cs" />
+    <Compile Include="MailboxReplicationService\ServerNotFoundPermanentException.cs" />
+    <Compile Include="MailboxReplicationService\ServerThrottlingResource.cs" />
+    <Compile Include="MailboxReplicationService\ServiceIsStoppingPermanentException.cs" />
+    <Compile Include="MailboxReplicationService\SessionStatistics.cs" />
+    <Compile Include="MailboxReplicationService\SessionStatisticsFlags.cs" />
+    <Compile Include="MailboxReplicationService\SimpleObjectLogConfiguration.cs" />
+    <Compile Include="MailboxReplicationService\SimpleValueDataContext.cs" />
+    <Compile Include="MailboxReplicationService\SizeRestrictionData.cs" />
+    <Compile Include="MailboxReplicationService\SkippedItemCounts.cs" />
+    <Compile Include="MailboxReplicationService\SmtpClientHelper.cs" />
+    <Compile Include="MailboxReplicationService\SmtpServerInfoMissingException.cs" />
+    <Compile Include="MailboxReplicationService\SortLCIDContext.cs" />
+    <Compile Include="MailboxReplicationService\SortOrderConverter.cs" />
+    <Compile Include="MailboxReplicationService\SortOrderData.cs" />
+    <Compile Include="MailboxReplicationService\SortOrderDataContext.cs" />
+    <Compile Include="MailboxReplicationService\SortOrderMember.cs" />
+    <Compile Include="MailboxReplicationService\SourceFolderHierarchyInconsistentTransientException.cs" />
+    <Compile Include="MailboxReplicationService\SourceMailboxAlreadyBeingMovedPermanentException.cs" />
+    <Compile Include="MailboxReplicationService\SourceMailboxAlreadyBeingMovedTransientException.cs" />
+    <Compile Include="MailboxReplicationService\SourceMailboxConnectionStalePermanentException.cs" />
+    <Compile Include="MailboxReplicationService\StaticCapacityExceededReservationException.cs" />
+    <Compile Include="MailboxReplicationService\StorageConnectionTypeException.cs" />
+    <Compile Include="MailboxReplicationService\StoreIntegFailedTransientException.cs" />
+    <Compile Include="MailboxReplicationService\StoreIntegrityCheckJob.cs" />
+    <Compile Include="MailboxReplicationService\SyncCalendarUtils.cs" />
+    <Compile Include="MailboxReplicationService\SyncContactSchema.cs" />
+    <Compile Include="MailboxReplicationService\SyncContentsManifestState.cs" />
+    <Compile Include="MailboxReplicationService\SyncEmailContext.cs" />
+    <Compile Include="MailboxReplicationService\SyncEmailUtils.cs" />
+    <Compile Include="MailboxReplicationService\SyncHierarchyManifestState.cs" />
+    <Compile Include="MailboxReplicationService\SyncMessageResponseType.cs" />
+    <Compile Include="MailboxReplicationService\SyncProtocol.cs" />
+    <Compile Include="MailboxReplicationService\SyncRequest.cs" />
+    <Compile Include="MailboxReplicationService\SyncRequestIdParameter.cs" />
+    <Compile Include="MailboxReplicationService\SyncRequestStatistics.cs" />
+    <Compile Include="MailboxReplicationService\SyncStage.cs" />
+    <Compile Include="MailboxReplicationService\SystemMailboxNotFoundPermanentException.cs" />
+    <Compile Include="MailboxReplicationService\TargetDeliveryDomainMismatchPermanentException.cs" />
+    <Compile Include="MailboxReplicationService\TargetExcludedFromProvisioningPermanentException.cs" />
+    <Compile Include="MailboxReplicationService\TargetMailboxConnectionStalePermanentException.cs" />
+    <Compile Include="MailboxReplicationService\TargetMailboxConnectionWasLostPermanentException.cs" />
+    <Compile Include="MailboxReplicationService\TargetRecipientIsNotAnMEUPermanentException.cs" />
+    <Compile Include="MailboxReplicationService\TaskSchedulerStoppedPermanentException.cs" />
+    <Compile Include="MailboxReplicationService\TestIntegration.cs" />
+    <Compile Include="MailboxReplicationService\TestIntegrationBase.cs" />
+    <Compile Include="MailboxReplicationService\ThrottleDurations.cs" />
+    <Compile Include="MailboxReplicationService\Throttles.cs" />
+    <Compile Include="MailboxReplicationService\TimeSlot.cs" />
+    <Compile Include="MailboxReplicationService\TimeSlotXML.cs" />
+    <Compile Include="MailboxReplicationService\TitaniumContentChangesFetcher.cs" />
+    <Compile Include="MailboxReplicationService\TooManyBadItemsPermanentException.cs" />
+    <Compile Include="MailboxReplicationService\TooManyCleanupRetriesPermanentException.cs" />
+    <Compile Include="MailboxReplicationService\TooManyLargeItemsPermanentException.cs" />
+    <Compile Include="MailboxReplicationService\TooManyMissingItemsPermanentException.cs" />
+    <Compile Include="MailboxReplicationService\TraceLog.cs" />
+    <Compile Include="MailboxReplicationService\TraceLogData.cs" />
+    <Compile Include="MailboxReplicationService\TransactionalRequestJob.cs" />
+    <Compile Include="MailboxReplicationService\TransferProgressTracker.cs" />
+    <Compile Include="MailboxReplicationService\TransferProgressTrackerXML.cs" />
+    <Compile Include="MailboxReplicationService\TrueRestrictionData.cs" />
+    <Compile Include="MailboxReplicationService\UnableToApplyFolderHierarchyChangesTransientException.cs" />
+    <Compile Include="MailboxReplicationService\UnableToClosePSTPermanentException.cs" />
+    <Compile Include="MailboxReplicationService\UnableToCreatePSTMessagePermanentException.cs" />
+    <Compile Include="MailboxReplicationService\UnableToCreateTokenPermanentException.cs" />
+    <Compile Include="MailboxReplicationService\UnableToDeleteMoveRequestMessagePermanentException.cs" />
+    <Compile Include="MailboxReplicationService\UnableToDetermineMDBSitePermanentException.cs" />
+    <Compile Include="MailboxReplicationService\UnableToFetchMimeStreamException.cs" />
+    <Compile Include="MailboxReplicationService\UnableToFindMbxServerPermanentException.cs" />
+    <Compile Include="MailboxReplicationService\UnableToGetPSTFolderPropsPermanentException.cs" />
+    <Compile Include="MailboxReplicationService\UnableToGetPSTFolderPropsTransientException.cs" />
+    <Compile Include="MailboxReplicationService\UnableToGetPSTHierarchyPermanentException.cs" />
+    <Compile Include="MailboxReplicationService\UnableToGetPSTHierarchyTransientException.cs" />
+    <Compile Include="MailboxReplicationService\UnableToGetPSTPropsPermanentException.cs" />
+    <Compile Include="MailboxReplicationService\UnableToGetPSTPropsTransientException.cs" />
+    <Compile Include="MailboxReplicationService\UnableToGetPSTReceiveFolderPermanentException.cs" />
+    <Compile Include="MailboxReplicationService\UnableToGetPSTReceiveFolderTransientException.cs" />
+    <Compile Include="MailboxReplicationService\UnableToLoadPSTSyncStatePermanentException.cs" />
+    <Compile Include="MailboxReplicationService\UnableToLoadPSTSyncStateTransientException.cs" />
+    <Compile Include="MailboxReplicationService\UnableToObtainServersInLocalSitePermanentException.cs" />
+    <Compile Include="MailboxReplicationService\UnableToOpenPSTPermanentException.cs" />
+    <Compile Include="MailboxReplicationService\UnableToOpenPSTTransientException.cs" />
+    <Compile Include="MailboxReplicationService\UnableToReadADPermanentException.cs" />
+    <Compile Include="MailboxReplicationService\UnableToReadADTransientException.cs" />
+    <Compile Include="MailboxReplicationService\UnableToReadADUserException.cs" />
+    <Compile Include="MailboxReplicationService\UnableToReadPSTFolderPermanentException.cs" />
+    <Compile Include="MailboxReplicationService\UnableToReadPSTFolderTransientException.cs" />
+    <Compile Include="MailboxReplicationService\UnableToReadPSTMessagePermanentException.cs" />
+    <Compile Include="MailboxReplicationService\UnableToReadPSTMessageTransientException.cs" />
+    <Compile Include="MailboxReplicationService\UnableToSavePSTSyncStatePermanentException.cs" />
+    <Compile Include="MailboxReplicationService\UnableToStreamPSTPropPermanentException.cs" />
+    <Compile Include="MailboxReplicationService\UnableToVerifyMailboxConnectivityTransientException.cs" />
+    <Compile Include="MailboxReplicationService\UnexpectedErrorPermanentException.cs" />
+    <Compile Include="MailboxReplicationService\UnexpectedFilterTypePermanentException.cs" />
+    <Compile Include="MailboxReplicationService\UnexpectedValuePermanentException.cs" />
+    <Compile Include="MailboxReplicationService\UnknownRestrictionTypeException.cs" />
+    <Compile Include="MailboxReplicationService\UnknownSecurityPropException.cs" />
+    <Compile Include="MailboxReplicationService\UnschematizedSettings.cs" />
+    <Compile Include="MailboxReplicationService\UnsupportedClientVersionPermanentException.cs" />
+    <Compile Include="MailboxReplicationService\UnsupportedImapMessageEntryIdVersionException.cs" />
+    <Compile Include="MailboxReplicationService\UnsupportedRecipientTypePermanentException.cs" />
+    <Compile Include="MailboxReplicationService\UnsupportedRehomeTargetVersionPermanentException.cs" />
+    <Compile Include="MailboxReplicationService\UnsupportedRemoteServerVersionWithOperationPermanentExceptio.cs" />
+    <Compile Include="MailboxReplicationService\UnsupportedSyncProtocolException.cs" />
+    <Compile Include="MailboxReplicationService\UpdateCalendarEventAction.cs" />
+    <Compile Include="MailboxReplicationService\UpdateFolderFailedTransientException.cs" />
+    <Compile Include="MailboxReplicationService\UpdateMovedMailboxFlags.cs" />
+    <Compile Include="MailboxReplicationService\UpdateMovedMailboxOperation.cs" />
+    <Compile Include="MailboxReplicationService\UpdateMovedMailboxPermanentException.cs" />
+    <Compile Include="MailboxReplicationService\UpdateMovedMailboxTransientException.cs" />
+    <Compile Include="MailboxReplicationService\UserMailboxFlags.cs" />
+    <Compile Include="MailboxReplicationService\UserMailboxHandler.cs" />
+    <Compile Include="MailboxReplicationService\UXSettings.cs" />
+    <Compile Include="MailboxReplicationService\VerifyMailboxConnectionFlags.cs" />
+    <Compile Include="MailboxReplicationService\VersionInformation.cs" />
+    <Compile Include="MailboxReplicationService\WcfClientWithFaultHandling.cs" />
+    <Compile Include="MailboxReplicationService\WellKnownException.cs" />
+    <Compile Include="MailboxReplicationService\WellKnownFolder.cs" />
+    <Compile Include="MailboxReplicationService\WellKnownFolderMapping.cs" />
+    <Compile Include="MailboxReplicationService\WellKnownFolderType.cs" />
+    <Compile Include="MailboxReplicationService\WellKnownPrincipalMapper.cs" />
+    <Compile Include="MailboxReplicationService\WindowsLiveIDAddressIsMissingPermanentException.cs" />
+    <Compile Include="MailboxReplicationService\WlmCapacityExceededReservationException.cs" />
+    <Compile Include="MailboxReplicationService\WlmHealthCounters.cs" />
+    <Compile Include="MailboxReplicationService\WlmHealthSLA.cs" />
+    <Compile Include="MailboxReplicationService\WlmHealthStatistics.cs" />
+    <Compile Include="MailboxReplicationService\WlmResource.cs" />
+    <Compile Include="MailboxReplicationService\WlmResourceCache.cs" />
+    <Compile Include="MailboxReplicationService\WlmResourceHealthMonitor.cs" />
+    <Compile Include="MailboxReplicationService\WlmResourceHealthMonitorDiagnosticInfoXML.cs" />
+    <Compile Include="MailboxReplicationService\WLMResourceStatsData.cs" />
+    <Compile Include="MailboxReplicationService\WLMResourceStatsLog.cs" />
+    <Compile Include="MailboxReplicationService\WlmResourceUnhealthyException.cs" />
+    <Compile Include="MailboxReplicationService\WrappedDataContext.cs" />
+    <Compile Include="MailboxReplicationService\WrapperBase.cs" />
+    <Compile Include="MailboxReplicationService\WriteReservation.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="MailboxReplicationService\Strings.resources" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.Exchange.Common\Microsoft.Exchange.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140F0}</Project>
+      <Name>Microsoft.Exchange.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Configuration.ObjectModel\Microsoft.Exchange.Configuration.ObjectModel.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140FC}</Project>
+      <Name>Microsoft.Exchange.Configuration.ObjectModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Connections.Common\Microsoft.Exchange.Connections.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140FF}</Project>
+      <Name>Microsoft.Exchange.Connections.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Connections.Eas\Microsoft.Exchange.Connections.Eas.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14100}</Project>
+      <Name>Microsoft.Exchange.Connections.Eas</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.ApplicationLogic\Microsoft.Exchange.Data.ApplicationLogic.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14104}</Project>
+      <Name>Microsoft.Exchange.Data.ApplicationLogic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Common\Microsoft.Exchange.Data.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140D3}</Project>
+      <Name>Microsoft.Exchange.Data.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Directory\Microsoft.Exchange.Data.Directory.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14105}</Project>
+      <Name>Microsoft.Exchange.Data.Directory</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Storage\Microsoft.Exchange.Data.Storage.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1410F}</Project>
+      <Name>Microsoft.Exchange.Data.Storage</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data\Microsoft.Exchange.Data.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14106}</Project>
+      <Name>Microsoft.Exchange.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Diagnostics\Microsoft.Exchange.Diagnostics.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14113}</Project>
+      <Name>Microsoft.Exchange.Diagnostics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Entities.Common\Microsoft.Exchange.Entities.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1411F}</Project>
+      <Name>Microsoft.Exchange.Entities.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Entities.DataModel\Microsoft.Exchange.Entities.DataModel.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14120}</Project>
+      <Name>Microsoft.Exchange.Entities.DataModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Net\Microsoft.Exchange.Net.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14178}</Project>
+      <Name>Microsoft.Exchange.Net</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.RpcClientAccess.Handler\Microsoft.Exchange.RpcClientAccess.Handler.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1418B}</Project>
+      <Name>Microsoft.Exchange.RpcClientAccess.Handler</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.RpcClientAccess.Parser\Microsoft.Exchange.RpcClientAccess.Parser.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1418D}</Project>
+      <Name>Microsoft.Exchange.RpcClientAccess.Parser</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.StoreProvider\Microsoft.Exchange.StoreProvider.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141B9}</Project>
+      <Name>Microsoft.Exchange.StoreProvider</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.VariantConfiguration\Microsoft.Exchange.VariantConfiguration.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141E0}</Project>
+      <Name>Microsoft.Exchange.VariantConfiguration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.WorkloadManagement\Microsoft.Exchange.WorkloadManagement.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141E1}</Project>
+      <Name>Microsoft.Exchange.WorkloadManagement</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Office.Datacenter.ActiveMonitoringLocal\Microsoft.Office.Datacenter.ActiveMonitoringLocal.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141ED}</Project>
+      <Name>Microsoft.Office.Datacenter.ActiveMonitoringLocal</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\mscorlib\mscorlib.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141F1}</Project>
+      <Name>mscorlib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

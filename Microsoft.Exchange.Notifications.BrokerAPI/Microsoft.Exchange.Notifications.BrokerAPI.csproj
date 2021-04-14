@@ -1,0 +1,139 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{09CD9476-CD82-489E-B9E2-84B47CA14179}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Microsoft.Exchange.Notifications.Broker</RootNamespace>
+    <AssemblyName>Microsoft.Exchange.Notifications.BrokerAPI</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ApplicationNotification.cs" />
+    <Compile Include="BaseNotification.cs" />
+    <Compile Include="BaseSubscription.cs" />
+    <Compile Include="BrokerNotification.cs" />
+    <Compile Include="BrokerSubscription.cs" />
+    <Compile Include="BrokerSubscriptionFactory.cs" />
+    <Compile Include="BrokerSubscriptionSchema.cs" />
+    <Compile Include="CalendarItemNotification.cs" />
+    <Compile Include="CalendarItemSubscription.cs" />
+    <Compile Include="ClientAPIStrings.cs" />
+    <Compile Include="ConnectionDroppedSubscription.cs" />
+    <Compile Include="Consumer.cs" />
+    <Compile Include="ConsumerId.cs" />
+    <Compile Include="ConversationNotification.cs" />
+    <Compile Include="ConversationSubscription.cs" />
+    <Compile Include="DroppedNotification.cs" />
+    <Compile Include="IBrokerDatabaseData.cs" />
+    <Compile Include="IBrokerMailboxData.cs" />
+    <Compile Include="INotificationBrokerClient.cs" />
+    <Compile Include="INotificationHandler.cs" />
+    <Compile Include="InvalidBrokerSubscriptionOnLoadException.cs" />
+    <Compile Include="LocDescriptionAttribute.cs" />
+    <Compile Include="MessageItemNotification.cs" />
+    <Compile Include="MessageItemSubscription.cs" />
+    <Compile Include="MissedNotification.cs" />
+    <Compile Include="NewMailNotification.cs" />
+    <Compile Include="NewMailSubscription.cs" />
+    <Compile Include="NotificationBrokerClient.cs" />
+    <Compile Include="NotificationBrokerClientLogConfiguration.cs" />
+    <Compile Include="NotificationBrokerClientLogEvent.cs" />
+    <Compile Include="NotificationBrokerClientLogger.cs" />
+    <Compile Include="NotificationParticipant.cs" />
+    <Compile Include="NotificationParticipantFactory.cs" />
+    <Compile Include="NotificationParticipantLocationKind.cs" />
+    <Compile Include="NotificationsBrokerException.cs" />
+    <Compile Include="NotificationsBrokerPermanentException.cs" />
+    <Compile Include="NotificationsBrokerStatusException.cs" />
+    <Compile Include="NotificationsBrokerTransientException.cs" />
+    <Compile Include="NotificationType.cs" />
+    <Compile Include="PeopleIKnowNotification.cs" />
+    <Compile Include="PeopleIKnowSubscription.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RowNotification.cs" />
+    <Compile Include="RowSubscription.cs" />
+    <Compile Include="SequenceIssueNotification.cs" />
+    <Compile Include="UnseenCountNotification.cs" />
+    <Compile Include="UnseenCountSubscription.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Strings.resources" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.Exchange.Common\Microsoft.Exchange.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140F0}</Project>
+      <Name>Microsoft.Exchange.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Common\Microsoft.Exchange.Data.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140D3}</Project>
+      <Name>Microsoft.Exchange.Data.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Directory\Microsoft.Exchange.Data.Directory.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14105}</Project>
+      <Name>Microsoft.Exchange.Data.Directory</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Storage\Microsoft.Exchange.Data.Storage.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1410F}</Project>
+      <Name>Microsoft.Exchange.Data.Storage</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data\Microsoft.Exchange.Data.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14106}</Project>
+      <Name>Microsoft.Exchange.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Diagnostics\Microsoft.Exchange.Diagnostics.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14113}</Project>
+      <Name>Microsoft.Exchange.Diagnostics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Net\Microsoft.Exchange.Net.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14178}</Project>
+      <Name>Microsoft.Exchange.Net</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Rpc\Microsoft.Exchange.Rpc.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14188}</Project>
+      <Name>Microsoft.Exchange.Rpc</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Services\Microsoft.Exchange.Services.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141AC}</Project>
+      <Name>Microsoft.Exchange.Services</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\mscorlib\mscorlib.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141F1}</Project>
+      <Name>mscorlib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

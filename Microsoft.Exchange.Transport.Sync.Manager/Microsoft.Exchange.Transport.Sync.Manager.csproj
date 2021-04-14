@@ -1,0 +1,194 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{09CD9476-CD82-489E-B9E2-84B47CA141D6}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Microsoft.Exchange.Transport.Sync.Manager</RootNamespace>
+    <AssemblyName>Microsoft.Exchange.Transport.Sync.Manager</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CacheCorruptException.cs" />
+    <Compile Include="CacheExceptionUtilities.cs" />
+    <Compile Include="CacheNotFoundException.cs" />
+    <Compile Include="CachePermanentException.cs" />
+    <Compile Include="CacheTransientException.cs" />
+    <Compile Include="ContentAggregationConfig.cs" />
+    <Compile Include="ContentAggregationHubServer.cs" />
+    <Compile Include="DataAccessLayer.cs" />
+    <Compile Include="DatabaseManager.cs" />
+    <Compile Include="DatabasePicker.cs" />
+    <Compile Include="DispatchManager.cs" />
+    <Compile Include="DispatchResult.cs" />
+    <Compile Include="GlobalDatabaseHandler.cs" />
+    <Compile Include="ICoreDatabaseManager.cs" />
+    <Compile Include="ICoreGlobalDatabaseHandler.cs" />
+    <Compile Include="IDispatchDriver.cs" />
+    <Compile Include="IDispatcher.cs" />
+    <Compile Include="ISubscriptionCoreCacheManager.cs" />
+    <Compile Include="ISubscriptionInformation.cs" />
+    <Compile Include="ISubscriptionProcessPermitterConfig.cs" />
+    <Compile Include="ISyncManagerConfiguration.cs" />
+    <Compile Include="MailboxManager.cs" />
+    <Compile Include="MailboxNotFoundException.cs" />
+    <Compile Include="MailboxTableManager.cs" />
+    <Compile Include="ManagerPerfCounterHandler.cs" />
+    <Compile Include="ManualResetEventPool.cs" />
+    <Compile Include="MrsAdapter.cs" />
+    <Compile Include="MsExchangeTransportSyncManagerByDatabasePerf.cs" />
+    <Compile Include="MsExchangeTransportSyncManagerByDatabasePerfInstance.cs" />
+    <Compile Include="MsExchangeTransportSyncManagerByProtocolPerf.cs" />
+    <Compile Include="MsExchangeTransportSyncManagerByProtocolPerfInstance.cs" />
+    <Compile Include="MsExchangeTransportSyncManagerBySLAPerf.cs" />
+    <Compile Include="MsExchangeTransportSyncManagerBySLAPerfInstance.cs" />
+    <Compile Include="MsExchangeTransportSyncManagerPerf.cs" />
+    <Compile Include="OnDatabaseDismountedEventArgs.cs" />
+    <Compile Include="OnSyncCompletedEventArgs.cs" />
+    <Compile Include="Pool.cs" />
+    <Compile Include="PoolItem.cs" />
+    <Compile Include="PrimingDispatchDriver.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StatefulHubPicker.cs" />
+    <Compile Include="Strings.cs" />
+    <Compile Include="SubscriptionCacheEntry.cs" />
+    <Compile Include="SubscriptionCacheManager.cs" />
+    <Compile Include="SubscriptionCacheMessage.cs" />
+    <Compile Include="SubscriptionCacheMessageProcessingCallback.cs" />
+    <Compile Include="SubscriptionCacheServer.cs" />
+    <Compile Include="SubscriptionCompletionData.cs" />
+    <Compile Include="SubscriptionCompletionDataUnpacker.cs" />
+    <Compile Include="SubscriptionCompletionServer.cs" />
+    <Compile Include="SubscriptionDispatcher.cs" />
+    <Compile Include="SubscriptionInformation.cs" />
+    <Compile Include="SubscriptionNotificationProcessor.cs" />
+    <Compile Include="SubscriptionNotificationServer.cs" />
+    <Compile Include="SubscriptionProcessPermitter.cs" />
+    <Compile Include="SyncDiagnosticMode.cs" />
+    <Compile Include="SyncDiagnostics.cs" />
+    <Compile Include="SyncHealthLogger.cs" />
+    <Compile Include="SyncHealthLogManager.cs" />
+    <Compile Include="SyncManagerConfiguration.cs" />
+    <Compile Include="SystemMailboxSessionPool.cs" />
+    <Compile Include="Throttling\ConnectSubscriptionPolicySettings.cs" />
+    <Compile Include="Throttling\DatabaseQueueManager.cs" />
+    <Compile Include="Throttling\DispatchEntry.cs" />
+    <Compile Include="Throttling\DispatchEntryManager.cs" />
+    <Compile Include="Throttling\DispatchTrigger.cs" />
+    <Compile Include="Throttling\DispatchWorkChecker.cs" />
+    <Compile Include="Throttling\IDispatchEntryManager.cs" />
+    <Compile Include="Throttling\IHealthLogDispatchEntryReporter.cs" />
+    <Compile Include="Throttling\MailboxPolicyConstraint.cs" />
+    <Compile Include="Throttling\MiniSubscriptionInformation.cs" />
+    <Compile Include="Throttling\PollingIntervalSyncQueue.cs" />
+    <Compile Include="Throttling\SortedQueue.cs" />
+    <Compile Include="Throttling\SyncQueue.cs" />
+    <Compile Include="Throttling\SyncQueueEntry.cs" />
+    <Compile Include="Throttling\SyncQueueEventArgs.cs" />
+    <Compile Include="Throttling\SyncQueueManager.cs" />
+    <Compile Include="Throttling\WorkType.cs" />
+    <Compile Include="Throttling\WorkTypeBudgetManager.cs" />
+    <Compile Include="Throttling\WorkTypeDefinition.cs" />
+    <Compile Include="Throttling\WorkTypeManager.cs" />
+    <Compile Include="Token.cs" />
+    <Compile Include="TokenManager.cs" />
+    <Compile Include="TransportSyncManagerEventLogConstants.cs" />
+    <Compile Include="VersionMismatchException.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Strings.resources" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.Exchange.Common\Microsoft.Exchange.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140F0}</Project>
+      <Name>Microsoft.Exchange.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.ApplicationLogic\Microsoft.Exchange.Data.ApplicationLogic.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14104}</Project>
+      <Name>Microsoft.Exchange.Data.ApplicationLogic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Common\Microsoft.Exchange.Data.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140D3}</Project>
+      <Name>Microsoft.Exchange.Data.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Directory\Microsoft.Exchange.Data.Directory.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14105}</Project>
+      <Name>Microsoft.Exchange.Data.Directory</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Storage\Microsoft.Exchange.Data.Storage.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1410F}</Project>
+      <Name>Microsoft.Exchange.Data.Storage</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data\Microsoft.Exchange.Data.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14106}</Project>
+      <Name>Microsoft.Exchange.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Diagnostics\Microsoft.Exchange.Diagnostics.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14113}</Project>
+      <Name>Microsoft.Exchange.Diagnostics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.MailboxReplicationService.Common\Microsoft.Exchange.MailboxReplicationService.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14147}</Project>
+      <Name>Microsoft.Exchange.MailboxReplicationService.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Net\Microsoft.Exchange.Net.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14178}</Project>
+      <Name>Microsoft.Exchange.Net</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Rpc\Microsoft.Exchange.Rpc.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14188}</Project>
+      <Name>Microsoft.Exchange.Rpc</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.StoreProvider\Microsoft.Exchange.StoreProvider.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141B9}</Project>
+      <Name>Microsoft.Exchange.StoreProvider</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Transport.Sync.Common\Microsoft.Exchange.Transport.Sync.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141D5}</Project>
+      <Name>Microsoft.Exchange.Transport.Sync.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.VariantConfiguration\Microsoft.Exchange.VariantConfiguration.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141E0}</Project>
+      <Name>Microsoft.Exchange.VariantConfiguration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\mscorlib\mscorlib.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141F1}</Project>
+      <Name>mscorlib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

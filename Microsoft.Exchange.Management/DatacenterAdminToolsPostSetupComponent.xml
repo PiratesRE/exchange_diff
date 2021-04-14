@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo IsDatacenterOnly="true" IsDatacenterDedicatedOnly="true" Name="Datacenter Admin Tools PostSetup">
+
+  <ServerTasks>
+
+    <ServerTaskInfo Id="_eadb97a8d197493ea13b3c94c81499c0" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install />
+      <BuildToBuildUpgrade />
+      <DisasterRecovery />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <ServerTaskInfo Id="_eadb97a8d197493ea13b3c94c81499c1" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          $keyPath = "HKLM:SOFTWARE\Microsoft\ExchangeServer\v15\Cxp";
+          if (!(Test-Path $keyPath))
+          {
+            New-Item -Path $keyPath
+          }
+
+          New-ItemProperty -Path:$keyPath -Name:'ECServiceUrl' -Value $RoleDatacenterMgmtSHDServiceUrl -Force;
+          New-ItemProperty -Path:$keyPath -Name:'ECIdentityDNS' -Value $RoleDatacenterMgmtSHDServiceCertificateIssuerName -Force;
+          New-ItemProperty -Path:$keyPath -Name:'ECCertificateThumbprint' -Value $RoleDatacenterIISSHA1Thumbprint -Force;
+		  New-ItemProperty -Path:$keyPath -Name:'ECCertificateExpiryNotificationDays' -Value 15 -Force;
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade />
+      <DisasterRecovery />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Set Squeaky Lobster for ESE -->
+    <ServerTaskInfo Id="_fdef2013f16e4e3da52b6760128637a7" Component="EXCHANGE14:\Current\Release\PIM Storage\JET">
+      <Install>
+        <Standalone>
+          $keyPath = "HKLM:System\CurrentControlSet\Services\ESE\Performance";
+       
+          if (!(Get-Item $keyPath -ErrorAction SilentlyContinue)) { New-Item $keyPath -Force }
+
+          New-ItemProperty -Path:$keyPath -Name:'Show Advanced Counters' -Value 1 -Force -PropertyType:Dword
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery />
+      <Uninstall />
+    </ServerTaskInfo>
+
+  </ServerTasks>
+
+</SetupComponentInfo>
+

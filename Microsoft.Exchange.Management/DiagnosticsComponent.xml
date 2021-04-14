@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo Name="Diagnostics Component" DescriptionId="SetupDiagnosticsServiceComponent">
+  <ServerTasks>
+    <!-- uninstall old  Diagnostics service -->
+    <ServerTaskInfo Id="_UninstallOldDiagnosticService" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install />
+      <BuildToBuildUpgrade>
+        <Standalone>
+          Write-ExchangeSetupLog -Info "Removing any existing poison files"
+          $diagnosticsLogPath = (Get-ItemProperty -Path HKLM:Software\Microsoft\ExchangeServer\v15\Diagnostics -Name "LogFolderPath" -ErrorAction SilentlyContinue).LogFolderPath
+          if (-not $diagnosticLogPath)
+          { 
+            $diagnosticsLogPath = Join-Path $RoleLoggingPath 'Diagnostics'
+          }
+
+          $poisonPath = Join-Path $diagnosticsLogPath '\Poison'
+          if (Test-Path $poisonPath)
+          {
+            Remove-Item -Path $poisonPath\* -Force -Recurse
+          }
+        </Standalone>
+      </BuildToBuildUpgrade>
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall/>
+    </ServerTaskInfo>
+
+    <!-- Install Diagnostics. -->
+    <ServerTaskInfo Id="_InstallDiagnosticService" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          if (!(get-service MSExchangeDiagnostics* | where {$_.name -eq "MSExchangeDiagnostics"}))
+          {
+            Write-ExchangeSetupLog -Info "Installing EDS"
+            Install-DiagnosticsService
+
+            $diagnosticsLogPath = (Get-ItemProperty -Path HKLM:Software\Microsoft\ExchangeServer\v15\Diagnostics -Name "LogFolderPath" -ErrorAction SilentlyContinue).LogFolderPath
+            if (($diagnosticsLogPath -ne $null) -and ($diagnosticsLogPath -ne "") -and -not (Test-Path $diagnosticsLogPath))
+            {
+              Write-ExchangeSetupLog -Info "Creating the EDS log directory"
+              New-Item -Path $diagnosticsLogPath -Type directory
+            }          
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall>
+        <Standalone>
+          Uninstall-DiagnosticsService
+        </Standalone>
+      </Uninstall>    
+    </ServerTaskInfo>
+
+    <!-- Install/remove Eds performance counters -->
+    <ServerTaskInfo Id="_InstallEdsPerformanceCounter" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>new-PerfCounters -DefinitionFileName Microsoft.Exchange.Diagnostics.Service.Common.EdsPerformanceCounters.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-PerfCounters -DefinitionFileName Microsoft.Exchange.Diagnostics.Service.Common.EdsPerformanceCounters.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+  </ServerTasks>
+</SetupComponentInfo>

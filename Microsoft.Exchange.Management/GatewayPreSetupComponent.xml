@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo Name="Gateway PreSetup" DescriptionId="SetupComponentPreSetupGateway">
+
+  <ServerTasks>
+
+    <ServerTaskInfo Id="_70eb914e1fb9437b84ab15fc6e9b137d" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install />
+
+      <!-- Only upgrade mode is used by the binding tasks-->
+      <BuildToBuildUpgrade>
+        <Standalone></Standalone>
+      </BuildToBuildUpgrade>
+
+      <DisasterRecovery />
+      <Uninstall />
+    </ServerTaskInfo>
+
+  </ServerTasks>
+
+</SetupComponentInfo>
+

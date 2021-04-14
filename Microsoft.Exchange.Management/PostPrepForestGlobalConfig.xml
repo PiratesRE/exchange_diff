@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo Name="PostPrepForest Global AD Configuration" DescriptionId="SetupComponentPostPrepForestGlobalConfig">
+
+  <OrgTasks>    
+    <!-- Set the version on the org CU. This task should be run at the end of installation\upgrade. -->
+    <OrgTaskInfo Id="_4c8362a243064e4a9c3ec3f26e0ab917" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Global>Set-SetupOnlyOrganizationConfig -ObjectVersion $RoleOrgConfigVersion -DomainController $RoleDomainController</Global>
+        <Tenant>
+            if (-not $PilotEnabled)
+            {
+                Set-TenantObjectVersion $TenantOrganizationFullPath -DomainController $RoleDomainController
+            }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+
+    <!-- Perform service plan upgrade. This process relies on the org version set correctly.
+         If there is no changes in service plan remap file, this will be no-op. Otherwise, tenant config will be updated.
+    -->
+    <OrgTaskInfo Id="_4bfe62756ffc474b96ef2d672baa3230" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Tenant />
+      </Install>
+        <BuildToBuildUpgrade>
+          <Tenant>
+            if ($ConfigOnly)
+            {
+              Update-ServicePlan $TenantOrganizationFullPath -DomainController $RoleDomainController -ProgramId $TargetProgramId -OfferId $TargetOfferId -ConfigOnly: $ConfigOnly -IncludeUserUpdatePhase
+            }
+            else
+            {
+              Update-ServicePlan $TenantOrganizationFullPath -DomainController $RoleDomainController -ProgramId $TargetProgramId -OfferId $TargetOfferId -IncludeUserUpdatePhase
+            }
+          </Tenant>
+        </BuildToBuildUpgrade>
+      <Uninstall />
+    </OrgTaskInfo>
+
+    <!-- 
+         Ensure that in R2R upgrade with no new mailbox plan generation we re-stamp IsDefault flag on default mailbox plan.
+         The previous version flag will be exposed as IsDefaultForPreviousVersion
+    -->
+    <OrgTaskInfo Id="_ce810d5e9d1847d4a9a8535343cfd70d" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Tenant />
+      </Install>
+        <BuildToBuildUpgrade>
+          <Tenant>
+            $allMailboxPlans = get-mailboxplan -organization $TenantOrganizationFullPath -DomainController $RoleDomainController;
+            $default = $allMailboxPlans | where {$_.IsDefault};
+            $previousVersionDefault = $allMailboxPlans | where {$_.IsDefaultForPreviousVersion};
+  
+            if($default -eq $null -and $previousVersionDefault -ne $null)
+            {
+              $previousVersionDefault | set-mailboxplan -IsDefault -DomainController $RoleDomainController;
+            }
+          </Tenant>
+        </BuildToBuildUpgrade>
+      <Uninstall />
+    </OrgTaskInfo>
+
+    <!-- Set-AdminAuditLogConfig to enable the auditing by default. -->
+    <ServicePlanTaskInfo FeatureName="AdvancedHydrateableObjectsSharedEnabled">
+      <Install>
+        <Global />
+        <Tenant>
+          # AdminAuditLogConfig object is:
+          # -Static object in tiny tenants  (BPOS_L)
+          # -Hydrated objects in dehydrated tenants (BPOS_S)
+          if(!$AdvancedHydrateableObjectsSharedEnabled)
+          {
+            Set-AdminAuditLogConfig $TenantOrganizationFullPath -DomainController $RoleDomainController -AdminAuditLogEnabled $true -IgnoreDehydratedFlag;
+          }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall>
+        <Global />
+        <!-- Disabling auditing when starting to remove the tenant, since the log mailbox will no longer exist soon. -->
+        <Tenant>
+          # AdminAuditLogConfig object is:
+          # -Static object in tiny tenants  (BPOS_L)
+          # -Hydrated objects in dehydrated tenants (BPOS_S)
+          if(!$AdvancedHydrateableObjectsSharedEnabled)
+          {
+            Set-AdminAuditLogConfig $TenantOrganizationFullPath -DomainController $RoleDomainController -AdminAuditLogEnabled $false -IgnoreDehydratedFlag;
+          }
+        </Tenant>
+      </Uninstall>
+    </ServicePlanTaskInfo>
+
+    <!-- Add the global directory entry that globally identifies the completion of this domain. -->
+    <OrgTaskInfo Id="_dabcd0c60a6c4fc490bfce15cc7cbeb8" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Global/>
+        <Tenant>
+          if(!$CreateSharedConfiguration)
+          {
+            Add-ManagementEndpointHook -DomainName:$RoleTenantDomainName -ExternalDirectoryOrganizationId:$RoleTenantExternalDirectoryOrganizationId -InitialDomain:$true
+          }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade>
+        <Global/>
+        <Tenant>
+          if (-not $PilotEnabled -and !$CreateSharedConfiguration)
+          {
+            $acceptedDomains = get-accepteddomain -organization $RoleTenantOrganizationDN | where {-not $_.PendingRemoval}
+            if ($AuthoritativeOnly)
+            {
+              $acceptedDomains = $acceptedDomains | where {$_.DomainType -eq "Authoritative"}
+            }
+            if($acceptedDomains -ne $null)
+            {
+              foreach($acceptedDomain in $acceptedDomains)
+              {
+                $domainname = $acceptedDomain.DomainName.ToString();
+                Set-ManagementEndpointHook -DomainName:$domainname -ExternalDirectoryOrganizationId:$RoleTenantExternalDirectoryOrganizationId
+              }
+            }
+          }
+        </Tenant>
+      </BuildToBuildUpgrade>
+      <Uninstall>
+        <Global/>
+        <Tenant>
+          if(!$CreateSharedConfiguration)
+          {
+            if ($AuthoritativeOnly)
+            {
+               $acceptedDomains = @(get-accepteddomain -organization $RoleTenantOrganizationFullPath | where {$_.DomainType -eq "Authoritative"});
+            }
+            else
+            {
+               $acceptedDomains = @(get-accepteddomain -organization $RoleTenantOrganizationFullPath);
+            }
+
+            # sort the domains and put the initial domain at the end of the list. This is because failures after the primary GLS domain is related cause
+            # organization lookup (get-organization -XXXX or set-foo -organization XXX) to fail because it isnt not in GLS. So this makes retries
+            # more successfull if the primary GLS entry for the organization name still exists.
+            $acceptedDomains = @($acceptedDomains | sort -Property InitialDomain);
+
+            foreach($acceptedDomain in $acceptedDomains)
+            {
+               $domainname = $acceptedDomain.DomainName.ToString();
+               remove-managementendpointhook -DomainName:$domainname -ExternalDirectoryOrganizationId:$RoleTenantExternalDirectoryOrganizationId
+            }
+          }
+        </Tenant>
+      </Uninstall>
+    </OrgTaskInfo>
+    
+    <!-- Set shared configuration, hydration flags and active status at the end of successful tenant provisioning. -->
+    <OrgTaskInfo Id="_12fb5a3128eb4069b5d8f8ee140e3e8e" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Tenant>
+          $currentMailboxRelease = [Microsoft.Exchange.Data.Directory.SystemConfiguration.ExchangeConfigurationUnit]::CurrentMailboxRelease;
+          
+          if ($CreateSharedConfiguration)
+          {
+            Set-Organization $RoleOrganizationHierarchicalPath `
+              -OrganizationStatus:Active `
+              -MailboxRelease:$currentMailboxRelease `
+              -IsDehydrated:$CommonHydrateableObjectsSharedEnabled `
+              -IsStaticConfigurationShared:$AdvancedHydrateableObjectsSharedEnabled `
+              -EnableAsSharedConfiguration:$CreateSharedConfiguration `
+              -ImmutableConfiguration:$CreateSharedConfiguration `
+              -DomainController $RoleDomainController;
+          }
+          elseif ($RoleSharedConfiguration -ne $null)
+          {
+            Set-Organization $RoleOrganizationHierarchicalPath `
+             -OrganizationStatus:Active `
+             -MailboxRelease:$currentMailboxRelease `
+             -SharedConfiguration $RoleSharedConfiguration `
+             -IsDehydrated:$CommonHydrateableObjectsSharedEnabled `
+             -IsStaticConfigurationShared:$AdvancedHydrateableObjectsSharedEnabled `
+             -DomainController $RoleDomainController;
+          }
+          else
+          {
+            Set-Organization $RoleOrganizationHierarchicalPath `
+              -OrganizationStatus:Active `
+              -MailboxRelease:$currentMailboxRelease `
+              -DomainController $RoleDomainController;
+          }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade>
+        <Tenant>
+          if ($RoleUpdateSupportedSharedConfigurations)
+          {
+            Set-Organization $RoleOrganizationHierarchicalPath -SharedConfiguration $RoleSharedConfiguration -DomainController $RoleDomainController;
+          }
+        </Tenant>
+      </BuildToBuildUpgrade>
+      <Uninstall />
+    </OrgTaskInfo>
+    
+    <!-- Reset IsUpgradeOperationInProgress in orgs ProvisioningFlags at the end of successful org pilot/upgrade. -->
+    <OrgTaskInfo Id="_8520e8c97466451ca82244ce011d6dfb" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Tenant />
+      </Install>
+        <BuildToBuildUpgrade>
+          <Tenant>
+            Set-OrganizationFlags $RoleOrganizationHierarchicalPath -IsUpgradeOperationInProgress:$false -DomainController $RoleDomainController;
+          </Tenant>
+        </BuildToBuildUpgrade>
+      <Uninstall />
+    </OrgTaskInfo>
+
+    <!--  NO STEPS SHOULD BE ADDED FOR UPGRADE/PILOT AFTER RESETTING UPGRADE OPERATION IN PROGRESS FLAG !!!  -->
+
+    <!-- Load the setup snapin. This is specifically for Unistall section as the sequence of tasks is reversed. -->
+    <OrgTaskInfo Id="_30fdb89e58fa4dfba5df5b49c0984012" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install />
+      <BuildToBuildUpgrade />
+      <Uninstall>
+        <Global />
+         <!-- $TODO: E14:11806 Figure out precise condition or better solution.
+        The goal is to ingore the following error:
+         Add-PSSnapin : Windows PowerShell snap-in "Microsoft.Exchange.Management.PowerShell.Setup" is loaded with the following warnings:	There were errors in loading the format data file:
+        Microsoft.Exchange.Management.PowerShell.Setup, D:\Program Files\Microsoft\Exchange Server\bin\Exchange.format.ps1xml : File skipped because it was already present from "Microsoft.Exchange.Management.PowerShell.E2010".
+        -->
+        <Tenant UseForReconciliation="true">
+          add-PSSnapin -Name Microsoft.Exchange.Management.PowerShell.Setup -ErrorAction SilentlyContinue;
+        </Tenant>
+      </Uninstall>
+    </OrgTaskInfo>
+
+  </OrgTasks>
+
+</SetupComponentInfo>
+

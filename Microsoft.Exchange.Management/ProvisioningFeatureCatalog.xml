@@ -1,0 +1,2620 @@
+<?xml version="1.0" encoding="us-ascii"?>
+
+<SetupComponentInfo Name="Service Plan Provisioning" DescriptionId="SetupComponentProvisioningFeatures">
+    <!--
+        For more details on how to add new Features to this file, please check
+        http://exweb/14/Teams/Shared/DIY/Service%20Plans/
+    -->
+
+  <OrgTasks>
+
+    <!-- Change error action preference workaround. TODO: remove after 98858 is fixed -->
+    <OrgTaskInfo Id="_bda70e67b3004588b0e4f71bbedf93f9" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Tenant>
+          $erroractionpreference="Stop";
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall/>
+    </OrgTaskInfo>
+
+    <!-- Boolean features on org -->
+
+    <!-- 'AddressListsEnabled' feature; -->
+    <!-- Create the "All Address Lists" container and canned address lists -->
+    <!-- 1. Creates "All Address Lists" container (CN=All Address Lists,CN=Address Lists Container,...) -->
+    <!-- 2. Adds the All Address Lists container to addressBookRoots attribute on Exchange Configuration Container  -->
+    <!-- 3. Creates "All Contacts", "All Distribution Lists", "All Rooms", "All Users", "Public Folders" containers under "All Address Lists" container -->
+    <!-- 4. Adds the "All Rooms" container to the msExchResourceAddressLists attribute of the Exchange Organization Container -->
+    <!-- 5. For on-prem and datacenter tenants, updates the "All Users" address list to exclude modern groups. -->
+    <!-- 6. For datacenter tenants, create the "All Groups" address list for modern groups -->
+    <ServicePlanTaskInfo FeatureName="AddressListsEnabled">
+      <Install DescriptionId="SetupProgressAddressListsEnabled">
+        <Tenant>
+          if ($ServicePlanSettings.Organization.AddressListsEnabled -and !$CreateSharedConfiguration)
+          {
+            Write-ExchangeSetupLog -info "AddressListsEnabled feature provisioning";
+            Install-CannedAddressLists -DomainController $RoleDomainController -Organization $RoleOrganizationHierarchicalPath -CreateModernGroupsAddressList;
+          }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </ServicePlanTaskInfo>
+
+    <!-- 'GALSyncEnabled' feature  -->
+    <ServicePlanTaskInfo FeatureName="GALSyncEnabled">
+      <Install DescriptionId="SetupProgressGALSyncEnabled">
+        <Tenant>
+          if ($ServicePlanSettings.Organization.GALSyncEnabled -and !$CreateSharedConfiguration)
+          {
+              Write-ExchangeSetupLog -info "GALSyncEnabled feature provisioning";
+              $orgRole = Get-ManagementRole -RoleType GALSynchronizationManagement -Organization $RoleOrganizationHierarchicalPath -DomainController $RoleDomainController |
+                  where {$_.IsRootRole};
+
+              $name = "GALSync-ServiceAccount";
+              $upn = $name + '@' + $RoleTenantDomainName;
+              $galSyncUser = Get-LinkedUser -Organization $RoleOrganizationHierarchicalPath -DomainController $RoleDomainController |
+                  where {$_.Name -ieq $name};
+
+              if($galSyncUser -eq $null)
+              {
+                  $galSyncUser = New-LinkedUser -Name $name -UserPrincipalName $upn -Organization $RoleOrganizationHierarchicalPath -DomainController $RoleDomainController;
+                  New-ManagementRoleAssignment -User $galSyncUser.Identity -Role $orgRole -Force -Organization $RoleOrganizationHierarchicalPath -DomainController $RoleDomainController;
+              }
+              Set-User $galSyncUser.Identity -RemotePowerShellEnabled $true -DomainController $RoleDomainController;
+          }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <Uninstall />
+    </ServicePlanTaskInfo>
+
+    <!-- 'MailTipsEnabled' feature -->
+    <ServicePlanTaskInfo FeatureName="MailTipsEnabled">
+      <Install DescriptionId="SetupProgressMailTipsEnabled">
+        <Tenant>
+          if (!$CreateSharedConfiguration)
+          {
+            Write-ExchangeSetupLog -info "MailTipsEnabled feature provisioning";
+            $MailTipsEnabled = $ServicePlanSettings.Organization.MailTipsEnabled;
+
+            if ($MailTipsEnabled)
+            {
+                Set-OrganizationConfig -MailTipsLargeAudienceThreshold 25                   -DomainController $RoleDomainController -Identity $RoleOrganizationHierarchicalPath;
+            }
+
+            Set-organizationconfig -MailTipsAllTipsEnabled $MailTipsEnabled                 -DomainController $RoleDomainController -Identity $RoleOrganizationHierarchicalPath;
+            Set-organizationconfig -MailTipsMailboxSourcedTipsEnabled $MailTipsEnabled      -DomainController $RoleDomainController -Identity $RoleOrganizationHierarchicalPath;
+            Set-organizationconfig -MailTipsGroupMetricsEnabled $MailTipsEnabled            -DomainController $RoleDomainController -Identity $RoleOrganizationHierarchicalPath;
+          }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="false" />
+      <Uninstall />
+    </ServicePlanTaskInfo>
+
+    <!-- 'AutoReplyEnabled' feature -->
+    <ServicePlanTaskInfo FeatureName="AutoReplyEnabled">
+      <Install DescriptionId="SetupProgressAutoReplyEnabled">
+        <Tenant>
+          if (!$CreateSharedConfiguration)
+          {
+            $AutoReplyEnabled = $ServicePlanSettings.Organization.AutoReplyEnabled;
+
+            $remoteDomain = get-remotedomain -DomainController $RoleDomainController -Organization $RoleOrganizationHierarchicalPath | where {$_.DomainName -eq "*"};
+
+            if ($remoteDomain -ne $null)
+            {
+              Write-ExchangeSetupLog -info "Service plan feature: AutoReplyEnabled.";
+
+              if ($AutoReplyEnabled)
+              {
+                set-remotedomain $remoteDomain.Identity -AutoReplyEnabled $true;
+              }
+              else
+              {
+                set-remotedomain $remoteDomain.Identity -AutoReplyEnabled $false;
+              }
+            }
+            else
+            {
+              Write-ExchangeSetupLog -warning "Service plan feature AutoReplyEnabled is not complete: no default remote domain to set.";
+            }
+          }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="false" />
+      <Uninstall />
+    </ServicePlanTaskInfo>
+
+    <!-- 'AutoForwardEnabled' feature -->
+    <ServicePlanTaskInfo FeatureName="AutoForwardEnabled">
+      <Install DescriptionId="SetupProgressAutoForwardEnabled">
+        <Tenant>
+          if (!$CreateSharedConfiguration)
+          {
+            $AutoForwardEnabled = $ServicePlanSettings.Organization.AutoForwardEnabled;
+
+            $remoteDomain = get-remotedomain -DomainController $RoleDomainController -Organization $RoleOrganizationHierarchicalPath | where {$_.DomainName -eq "*"};
+
+            if ($remoteDomain -ne $null)
+            {
+              Write-ExchangeSetupLog -info "Service plan feature: AutoForwardEnabled.";
+
+              if ($AutoForwardEnabled)
+              {
+                set-remotedomain $remoteDomain.Identity -AutoForwardEnabled $true;
+              }
+              else
+              {
+                set-remotedomain $remoteDomain.Identity -AutoForwardEnabled $false;
+              }
+            }
+            else
+            {
+              Write-ExchangeSetupLog -warning "Service plan feature AutoForwardEnabled is not complete: no default remote domain to set.";
+            }
+          }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="false" />
+      <Uninstall />
+    </ServicePlanTaskInfo>
+
+    <!-- 'AllowDeleteOfExternalIdentityUponRemove' feature; -->
+    <ServicePlanTaskInfo FeatureName="AllowDeleteOfExternalIdentityUponRemove">
+      <Install DescriptionId="SetupProgressAllowDeleteOfExternalIdentityUponRemove">
+        <Tenant>
+          if (!$CreateSharedConfiguration)
+          {
+            Write-ExchangeSetupLog -info "AllowDeleteOfExternalIdentityUponRemove feature provisioning";
+            Set-OrganizationFlags $RoleOrganizationHierarchicalPath -AllowDeleteOfExternalIdentityUponRemove:$ServicePlanSettings.Organization.AllowDeleteOfExternalIdentityUponRemove -DomainController $RoleDomainController;
+          }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </ServicePlanTaskInfo>
+
+    <!-- 'TemplateTenant' feature; -->
+    <ServicePlanTaskInfo FeatureName="TemplateTenant">
+      <Install DescriptionId="SetupProgressTemplateTenant">
+        <Tenant>
+          if ($CreateSharedConfiguration)
+          {
+            Write-ExchangeSetupLog -info "TemplateTenant feature provisioning";
+            Set-OrganizationFlags $RoleOrganizationHierarchicalPath -IsTemplateTenant:$ServicePlanSettings.Organization.TemplateTenant -DomainController $RoleDomainController;
+          }
+
+          if(!$CreateSharedConfiguration -and $ServicePlanSettings.Organization.TemplateTenant)
+          {
+              Write-ExchangeSetupLog -Error "Service plan feature TemplateTenant is enabled, but New-Organization is invoked without -CreateSharedConfiguration parameter.";
+          }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade/>
+      <Uninstall />
+    </ServicePlanTaskInfo>
+    
+    <!-- 'DeviceFiltersSetupEnabled' feature; currently used only by outlook.com tenant -->
+    <ServicePlanTaskInfo FeatureName="DeviceFiltersSetupEnabled">
+      <Install DescriptionId="SetupProgressDeviceFiltersSetupEnabled">
+        <Tenant>
+          if ($ServicePlanSettings.Organization.DeviceFiltersSetupEnabled)
+          {
+            $activeSyncOrganizationSettings = Get-ActiveSyncOrganizationSettings -DomainController $RoleDomainController -Organization $TenantOrganizationFullPath;
+
+            if($activeSyncOrganizationSettings -eq $null)
+            {
+              Write-ExchangeSetupLog -info "Creating ActiveSyncOrganizationSettings container";
+              New-ActiveSyncOrganizationSettings -DomainController $RoleDomainController -Organization $TenantOrganizationFullPath;
+            }
+
+            Write-ExchangeSetupLog -info "Provisioning Device filters";
+
+            $mobileMailboxSettingsContainerName = [Microsoft.Exchange.Data.Directory.SystemConfiguration.ActiveSyncOrganizationSettings]::ContainerName
+            Set-ActiveSyncOrganizationSettings -Identity "$RoleOrganizationHierarchicalPath\$mobileMailboxSettingsContainerName" -AddDeviceFilterRule -DeviceFilterName ContactsOnly -DeviceFilterRuleName WindowsSkype -DeviceFilterCharacteristic XMSWLHeader -DeviceFilterOperator StartsWith -DeviceFilterValue "WindowsSkype/1."
+            Set-ActiveSyncOrganizationSettings -Identity "$RoleOrganizationHierarchicalPath\$mobileMailboxSettingsContainerName" -AddDeviceFilterRule -DeviceFilterName ContactsOnly -DeviceFilterRuleName ClassicSkype -DeviceFilterCharacteristic XMSWLHeader -DeviceFilterOperator StartsWith -DeviceFilterValue "ClassicSkype/1."
+            Set-ActiveSyncOrganizationSettings -Identity "$RoleOrganizationHierarchicalPath\$mobileMailboxSettingsContainerName" -AddDeviceFilterRule -DeviceFilterName ContactsOnly -DeviceFilterRuleName WindowsPhotos -DeviceFilterCharacteristic XMSWLHeader -DeviceFilterOperator StartsWith -DeviceFilterValue "WindowsPhotos/1."
+
+            Set-ActiveSyncOrganizationSettings -Identity "$RoleOrganizationHierarchicalPath\$mobileMailboxSettingsContainerName" -AddDeviceFilterRule -DeviceFilterName V25OnlyInOptions -DeviceFilterRuleName WindowsPhone -DeviceFilterCharacteristic XMSWLHeader -DeviceFilterOperator StartsWith -DeviceFilterValue "1.0"
+            Set-ActiveSyncOrganizationSettings -Identity "$RoleOrganizationHierarchicalPath\$mobileMailboxSettingsContainerName" -AddDeviceFilterRule -DeviceFilterName V25OnlyInOptions -DeviceFilterRuleName WindowsPhone-Mango -DeviceFilterCharacteristic XMSWLHeader -DeviceFilterOperator StartsWith -DeviceFilterValue "7.5"
+            Set-ActiveSyncOrganizationSettings -Identity "$RoleOrganizationHierarchicalPath\$mobileMailboxSettingsContainerName" -AddDeviceFilterRule -DeviceFilterName V25OnlyInOptions -DeviceFilterRuleName Apache -DeviceFilterCharacteristic UserAgent -DeviceFilterOperator Contains -DeviceFilterValue "Apache-HttpClient/UNAVAILABLE (java 1.4)"
+            Set-ActiveSyncOrganizationSettings -Identity "$RoleOrganizationHierarchicalPath\$mobileMailboxSettingsContainerName" -AddDeviceFilterRule -DeviceFilterName V25OnlyInOptions -DeviceFilterRuleName Droid3 -DeviceFilterCharacteristic UserAgent -DeviceFilterOperator Contains -DeviceFilterValue "Moto-DROID3/5.5.1"
+            Set-ActiveSyncOrganizationSettings -Identity "$RoleOrganizationHierarchicalPath\$mobileMailboxSettingsContainerName" -AddDeviceFilterRule -DeviceFilterName V25OnlyInOptions -DeviceFilterRuleName Samsung -DeviceFilterCharacteristic UserAgent -DeviceFilterOperator Regex -DeviceFilterValue "SAMSUNG.*/(\d{0,2}|100)\."
+            Set-ActiveSyncOrganizationSettings -Identity "$RoleOrganizationHierarchicalPath\$mobileMailboxSettingsContainerName" -AddDeviceFilterRule -DeviceFilterName V25OnlyInOptions -DeviceFilterRuleName PalmWebOS -DeviceFilterCharacteristic UserAgent -DeviceFilterOperator Contains -DeviceFilterValue "Palm"
+            Set-ActiveSyncOrganizationSettings -Identity "$RoleOrganizationHierarchicalPath\$mobileMailboxSettingsContainerName" -AddDeviceFilterRule -DeviceFilterName V25OnlyInOptions -DeviceFilterRuleName PocketPC -DeviceFilterCharacteristic DeviceType -DeviceFilterOperator Contains -DeviceFilterValue "PocketPC"
+            Set-ActiveSyncOrganizationSettings -Identity "$RoleOrganizationHierarchicalPath\$mobileMailboxSettingsContainerName" -AddDeviceFilterRule -DeviceFilterName V25OnlyInOptions -DeviceFilterRuleName PocketPC -DeviceFilterCharacteristic UserAgent -DeviceFilterOperator Contains -DeviceFilterValue "MSFT-PPC"
+            Set-ActiveSyncOrganizationSettings -Identity "$RoleOrganizationHierarchicalPath\$mobileMailboxSettingsContainerName" -AddDeviceFilterRule -DeviceFilterName V25OnlyInOptions -DeviceFilterRuleName MotoDroid -DeviceFilterCharacteristic DeviceType -DeviceFilterOperator Contains -DeviceFilterValue "MotoDROID"
+            Set-ActiveSyncOrganizationSettings -Identity "$RoleOrganizationHierarchicalPath\$mobileMailboxSettingsContainerName" -AddDeviceFilterRule -DeviceFilterName V25OnlyInOptions -DeviceFilterRuleName MotoDroid -DeviceFilterCharacteristic UserAgent -DeviceFilterOperator Contains -DeviceFilterValue "Moto-DROID"
+            Set-ActiveSyncOrganizationSettings -Identity "$RoleOrganizationHierarchicalPath\$mobileMailboxSettingsContainerName" -AddDeviceFilterRule -DeviceFilterName V25OnlyInOptions -DeviceFilterRuleName MotoMB -DeviceFilterCharacteristic DeviceType -DeviceFilterOperator Contains -DeviceFilterValue "MotoMB"
+            Set-ActiveSyncOrganizationSettings -Identity "$RoleOrganizationHierarchicalPath\$mobileMailboxSettingsContainerName" -AddDeviceFilterRule -DeviceFilterName V25OnlyInOptions -DeviceFilterRuleName MotoMB -DeviceFilterCharacteristic UserAgent -DeviceFilterOperator Contains -DeviceFilterValue "Moto-MB"
+            Set-ActiveSyncOrganizationSettings -Identity "$RoleOrganizationHierarchicalPath\$mobileMailboxSettingsContainerName" -AddDeviceFilterRule -DeviceFilterName V25OnlyInOptions -DeviceFilterRuleName MotoXT -DeviceFilterCharacteristic DeviceType -DeviceFilterOperator Contains -DeviceFilterValue "MotoXT"
+            Set-ActiveSyncOrganizationSettings -Identity "$RoleOrganizationHierarchicalPath\$mobileMailboxSettingsContainerName" -AddDeviceFilterRule -DeviceFilterName V25OnlyInOptions -DeviceFilterRuleName MotoXT -DeviceFilterCharacteristic UserAgent -DeviceFilterOperator Contains -DeviceFilterValue "Moto-XT"
+            Set-ActiveSyncOrganizationSettings -Identity "$RoleOrganizationHierarchicalPath\$mobileMailboxSettingsContainerName" -AddDeviceFilterRule -DeviceFilterName V25OnlyInOptions -DeviceFilterRuleName SVNAndroidTerminal -DeviceFilterCharacteristic DeviceType -DeviceFilterOperator Contains -DeviceFilterValue "SVNAndroidTerminal"
+            Set-ActiveSyncOrganizationSettings -Identity "$RoleOrganizationHierarchicalPath\$mobileMailboxSettingsContainerName" -AddDeviceFilterRule -DeviceFilterName V25OnlyInOptions -DeviceFilterRuleName SVNAndroidTerminal -DeviceFilterCharacteristic UserAgent -DeviceFilterOperator Contains -DeviceFilterValue "Hotmail/"
+            Set-ActiveSyncOrganizationSettings -Identity "$RoleOrganizationHierarchicalPath\$mobileMailboxSettingsContainerName" -AddDeviceFilterRule -DeviceFilterName V25OnlyInOptions -DeviceFilterRuleName "Android/0.3/14.0" -DeviceFilterCharacteristic UserAgent -DeviceFilterOperator Contains -DeviceFilterValue "Android/0.3/14.0"
+            Set-ActiveSyncOrganizationSettings -Identity "$RoleOrganizationHierarchicalPath\$mobileMailboxSettingsContainerName" -AddDeviceFilterRule -DeviceFilterName V25OnlyInOptions -DeviceFilterRuleName "LGMC-LGEAS/7.20.5" -DeviceFilterCharacteristic UserAgent -DeviceFilterOperator Contains -DeviceFilterValue "LGMC-LGEAS/7.20.5"
+          }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade/>
+      <Uninstall />
+    </ServicePlanTaskInfo>
+
+    <!-- 'CreateMailboxPlan' section - driven by presence of MailboxPlans section in service plan -->
+    <!-- For pilot mailbox plans create them as current release only to not interfere with original plans in Vn-1 -->
+    <ServicePlanTaskInfo FeatureName="MailboxPlans">
+      <Install DescriptionId="SetupProgressCreateMailboxPlan">
+        <Tenant>
+          foreach ($mp in $ServicePlanSettings.MailboxPlans)
+          {
+              $mp.Instance = get-mailboxPlan -Organization $RoleOrganizationHierarchicalPath -DomainController $RoleDomainController | where {$_.Name -like ($mp.Name + "-*")};
+
+              if($mp.Instance -eq $null -or $mp.Instance.Length -eq 0)
+              {
+                  $release = "AllReleases";
+                  if ($mp.IsPilotMailboxPlan)
+                  {
+                    $release = "CurrentRelease";
+                  }
+
+                  Write-ExchangeSetupLog -info ("Creating Mailboxplan " + $mp.Name);
+                  $mpName = $mp.Name + "-" + [System.Guid]::NewGuid().ToString();
+                  if ($mpName.Length -gt 64) { $mpName = $mpName.Substring(0, 64); }
+                  $upn = $mpName + "@" + $RoleTenantDomainName;
+                  $mp.Instance = new-mailboxPlan `
+                      -name $mpName `
+                      -DisplayName $mp.Name `
+                      -UserPrincipalName $upn `
+                      -MailboxPlanIndex $mp.MailboxPlanIndex `
+                      -IsDefault:$mp.ProvisionAsDefault `
+                      -MailboxPlanRelease $release `
+                      -OverrideRecipientQuotas `
+                      -DomainController $RoleDomainController `
+                      -IsPilotMailboxPlan $mp.IsPilotMailboxPlan `
+                      -Organization $RoleOrganizationHierarchicalPath;
+              }
+
+              Write-ExchangeSetupLog -info ("Set RecoverableItemsQuota and RecoverableItemsWarningQuota for " + $mp.Name);
+              Set-MailboxPlan -Identity $mp.Instance.Identity -UseDatabaseRetentionDefaults $false -RecoverableItemsQuota:30GB -RecoverableItemsWarningQuota:20GB;
+           }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </ServicePlanTaskInfo>
+
+    <!-- 'PerMBXPlanRoleAssignmentPolicyEnabled' section - RAP creation -->
+    <ServicePlanTaskInfo FeatureName="PerMBXPlanRoleAssignmentPolicyEnabled">
+      <Install DescriptionId="SetupProgressPerMBXPlanRoleAssignmentPolicy">
+        <Tenant>
+          if (!$AdvancedHydrateableObjectsSharedEnabled)
+          {
+            $unifiedRAP = ($NewServicePlanSettings -eq $null -and -not $ServicePlanSettings.Organization.PerMBXPlanRoleAssignmentPolicyEnabled) -or ($NewServicePlanSettings -ne $null -and -not $NewServicePlanSettings.Organization.PerMBXPlanRoleAssignmentPolicyEnabled);
+            $raPolicyName = [Microsoft.Exchange.Data.Directory.SystemConfiguration.RoleAssignmentPolicy]::DefaultRoleAssignmentPolicyName;
+            $policyDescription = [Microsoft.Exchange.Data.Directory.SystemConfiguration.RoleAssignmentPolicy]::PrecannedRoleAssignmentPolicyDescription;
+            $raPolicy = $null;
+            Write-ExchangeSetupLog -info ("PerMBXPlanRoleAssignmentPolicyEnabled Task; unifiedRAP=" + $unifiedRAP);
+
+            if($unifiedRAP)
+            {
+              #Trying to find local RAP object with default name
+              $raPolicy = Get-RoleAssignmentPolicy -DomainController $RoleDomainController -Organization $RoleOrganizationHierarchicalPath -IgnoreDehydratedFlag | Where {$_.Name -eq $raPolicyName};
+              Write-ExchangeSetupLog -info ("PerMBXPlanRoleAssignmentPolicyEnabled Task; raPolicyFound=" + ($raPolicy -ne $null));
+            }
+
+            if($unifiedRAP)
+            {
+              if($raPolicy -eq $null)
+              {
+                  Write-ExchangeSetupLog -info ("Creating Default RAP " + $raPolicyName);
+                  $raPolicy = New-RoleAssignmentPolicy `
+                      -Name $raPolicyName `
+                      -DomainController $RoleDomainController `
+                      -Description $policyDescription `
+                      -IsDefault `
+                      -IgnoreDehydratedFlag `
+                      -Organization $RoleOrganizationHierarchicalPath;
+              }
+            }
+
+            Write-ExchangeSetupLog -info ("PerMBXPlanRoleAssignmentPolicyEnabled Task; looping through mailboxplans:" + $ServicePlanSettings.MailboxPlans.Count);
+
+            foreach ($mp in $ServicePlanSettings.MailboxPlans)
+            {
+                if($mp.Instance -eq $null)
+                {
+                  Write-ExchangeSetupLog -error ($mp.Name + " MailboxPlan instance value is not set");
+                }
+
+                #MailboxPlan has non-null RoleAssignmentPolicy property only if RAP link is stamped explicitly - no implicit default there
+                if($mp.Instance.RoleAssignmentPolicy -ne $null -and $unifiedRAP)
+                {
+                  Write-ExchangeSetupLog -info ("MailboxPlan already with RAP " + $mp.Name);
+                  continue;
+                }
+
+                if(!$unifiedRAP)
+                {
+                  $raPolicyName = "RoleAssignmentPolicy-" + $mp.Name;
+                  $raPolicy = Get-RoleAssignmentPolicy -DomainController $RoleDomainController -Organization $RoleOrganizationHierarchicalPath -IgnoreDehydratedFlag | Where {$_.Name -eq $raPolicyName};
+
+                  if($raPolicy -eq $null)
+                  {
+                      Write-ExchangeSetupLog -info ("Creating RAP for " + $mp.Name);
+                      $raPolicy = New-RoleAssignmentPolicy -Name $raPolicyName -DomainController $RoleDomainController -Description $policyDescription -Organization $RoleOrganizationHierarchicalPath -IgnoreDehydratedFlag;
+                  }
+                }
+
+                Set-MailboxPlan -Identity $mp.Instance.Identity -RoleAssignmentPolicy $raPolicy.Identity -DomainController $RoleDomainController;
+            }
+          }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade />
+      <Uninstall />
+    </ServicePlanTaskInfo>
+
+    <!-- 'MailboxPlans' section, part 2 - configuring permissions -->
+    <ServicePlanTaskInfo FeatureName="MailboxPlans">
+      <Install DescriptionId="SetupProgressCreateRAPassignments">
+        <Tenant>
+          # handle install, upgrade and transition to different service plan, including transition from/to tiny-tenant
+
+          #1. tiny           tenant   install/upgrade       -> skip - never do anything
+          #2. regular/shared tenant - install               -> Install-CannedRbacRoleAssignmentsRAP -InvocationMode $RoleInstallationMode
+          #3. regular/shared tenant - upgrade               -> Install-CannedRbacRoleAssignmentsRAP -InvocationMode $RoleInstallationMode
+          #4. regular        tenant - transition to regular -> Install-CannedRbacRoleAssignmentsRAP -InvocationMode "ServicePlanUpdate"
+          #5. regular        tenant - transition to tiny    -> skip - dehydration not supported
+          #6. tiny           tenant - transition to regular -> Install-CannedRbacRoleAssignmentsRAP -InvocationMode $RoleInstallationMode
+
+          $isServicePlanUpdate = ($OldServicePlanSettings -ne $null);
+
+          if($AdvancedHydrateableObjectsSharedEnabled)
+          {
+              # cases 1 or 5
+          }
+          else
+          {
+            if($isServicePlanUpdate)
+            {
+                if($OldServicePlanSettings.Organization.ShareableConfigurationEnabled)
+                {
+                  # case 6, Transition from tiny tenant to the regular one, creating all role assignments unconditionally ($RoleInstallationMode=Install)
+                  $TenantRoleInstallationMode = $RoleInstallationMode;
+                }
+                else
+                {
+                  # case 4, Service plan transition for regular tenant, creating all role assignments conditionally
+                  $TenantRoleInstallationMode = "ServicePlanUpdate";
+                }
+
+                Install-CannedRbacRoleAssignmentsRAP `
+                  -InvocationMode $TenantRoleInstallationMode `
+                  -ServicePlanSettings $NewServicePlanSettings `
+                  -PreviousServicePlanSettings $OldServicePlanSettings `
+                  -DomainController $RoleDomainController `
+                  -Organization $RoleOrganizationHierarchicalPath;
+            }
+            else
+            {
+                # case 2 "Install" or case 3 "Upgrade"
+                Install-CannedRbacRoleAssignmentsRAP `
+                  -InvocationMode $RoleInstallationMode `
+                  -ServicePlanSettings $ServicePlanSettings `
+                  -DomainController $RoleDomainController `
+                  -Organization $RoleOrganizationHierarchicalPath;
+            }
+          }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </ServicePlanTaskInfo>
+
+    <!-- 'PerMBXPlanOWAPolicyEnabled' section - OWA policies creation -->
+    <ServicePlanTaskInfo FeatureName="PerMBXPlanOWAPolicyEnabled">
+      <Install DescriptionId="SetupProgressPerMBXPlanOWAPolicyEnabled">
+        <Tenant>
+          if (!$CreateSharedConfiguration)
+          {
+          Write-ExchangeSetupLog -info "PerMBXPlanOWAPolicyEnabled feature provisioning";
+
+          # handle install and transition to different service plan, including transition to plan with larger number of mailbox plans
+          #1. tenant - install, UnifiedOWAPolicyEnabled=true     -> create shared OWA policy and link all plans to it
+          #2. tenant - install, UnifiedOWAPolicyEnabled=false    -> create individual OWA policies and link to individual plans
+          #3. tenant - transition, UnifiedOWAPolicyEnabled=true  -> find shared policy and link to individual plans if (new) mp has no link to it
+          #4. tenant - transition, UnifiedOWAPolicyEnabled=false -> create and link OWA policy if (new) mp has no link to it
+          #5. tenant - upgrade    -> skip
+
+          #in update-serviceplan scenario, new plan settings are stored in $NewServicePlanSettings variable
+          $UnifiedOWAPolicyEnabled = (-not $ServicePlanSettings.Organization.PerMBXPlanOWAPolicyEnabled) -or ($NewServicePlanSettings -ne $null -and -not $NewServicePlanSettings.Organization.PerMBXPlanOWAPolicyEnabled);
+          $owaPolicyName = "OwaMailboxPolicy-Default";
+          $createdPolicies = @();
+          $isServicePlanUpdate = ($OldServicePlanSettings -ne $null);
+
+          if($UnifiedOWAPolicyEnabled)
+          {
+          #if UnifiedOWAPolicyEnabled=TRUE, find/create single policy:
+
+          #2. Service plan update scenario, initializing $owaPolicy
+          $owaPolicy = get-OwaMailboxPolicy -Organization $RoleOrganizationHierarchicalPath -DomainController $RoleDomainController | ?{$_.Name -eq $owaPolicyName};
+          if($owaPolicy -eq $null)
+          {
+          #1. install scenario, or policy has been removed, initializing $owaPolicy
+          Write-ExchangeSetupLog -info ("Creating Default OWA Policy");
+          $owaPolicy = New-OwaMailboxPolicy -name $owaPolicyName -IsDefault -DomainController $RoleDomainController -Organization $RoleOrganizationHierarchicalPath;
+          $createdPolicies +=$owaPolicy;
+          }
+          }
+
+          foreach ($mp in $ServicePlanSettings.MailboxPlans)
+          {
+          #$mp.Instance is MailboxPlan and doesn't have OwaMailboxPolicy property, re-reading it as CASMailboxPlan
+          if(!$isServicePlanUpdate -or (Get-CASMailboxPlan -identity $mp.Instance.Identity -DomainController $RoleDomainController).OwaMailboxPolicy -eq $null)
+          {
+          if(!$UnifiedOWAPolicyEnabled)
+          {
+          #2a and $4a - create individual policies
+          #if UnifiedOWAPolicyEnabled=FALSE, find/create one policy per mailbox plan
+
+          $owaPolicyName = "OwaMailboxPolicy-" + $mp.Name;
+          $owaPolicy = get-OwaMailboxPolicy -Organization $RoleOrganizationHierarchicalPath -DomainController $RoleDomainController | ?{$_.Name -eq $owaPolicyName};
+          if($owaPolicy -eq $null)
+          {
+          Write-ExchangeSetupLog -info ("Creating OwaMailboxPolicy for " + $mp.Name);
+          $owaPolicy = New-OwaMailboxPolicy -name $owaPolicyName -DomainController $RoleDomainController -Organization $RoleOrganizationHierarchicalPath;
+          $createdPolicies +=$owaPolicy;
+          }
+          }
+          #1b, 2b, 3b, 4b
+          Set-CASMailboxPlan -Identity $mp.Instance.Identity -OwaMailboxPolicy $owaPolicy -DomainController $RoleDomainController;
+          }
+          }
+
+          #now, for each new OWA policy, provision defaults:
+          $createdPolicies | Set-OwaMailboxPolicy `
+          -PublicFoldersEnabled $false `
+          -WSSAccessOnPrivateComputersEnabled $false `
+          -WSSAccessOnPublicComputersEnabled $false `
+          -UNCAccessOnPrivateComputersEnabled $false `
+          -UNCAccessOnPublicComputersEnabled $false `
+          -SMimeEnabled $false `
+          -ChangePasswordEnabled ($RoleIsPartnerHosted -eq $true) `
+          -AllowedFileTypes .rpmsg,.xlsx,.xlsm,.xlsb,.tiff,.pptx,.pptm,.ppsx,.ppsm,.docx,.docm,.zip,.xls,.wmv,.wma,.wav,.vsd,.txt,.tif,.rtf,.pub,.ppt,.png,.pdf,.one,.mp3,.jpg,.gif,.doc,.bmp,.avi `
+          -AllowedMimeTypes image/jpeg,image/png,image/gif,image/bmp `
+          -BlockedFileTypes .vsmacros,.msh2xml,.msh1xml,.ps2xml,.ps1xml,.mshxml,.gadget,.mhtml,.psc2,.psc1,.msh2,.msh1,.aspx,.xml,.wsh,.wsf,.wsc,.vsw,.vst,.vss,.vbs,.vbe,.url,.tmp,.shs,.shb,.sct,.scr,.scf,.reg,.pst,.ps2,.ps1,.prg,.prf,.plg,.pif,.pcd,.ops,.mst,.msp,.msi,.msh,.msc,.mht,.mdz,.mdw,.mdt,.mde,.mdb,.mda,.maw,.mav,.mau,.mat,.mas,.mar,.maq,.mam,.mag,.maf,.mad,.lnk,.ksh,.jse,.its,.isp,.ins,.inf,.htc,.hta,.hlp,.fxp,.exe,.der,.csh,.crt,.cpl,.com,.cmd,.chm,.cer,.bat,.bas,.asx,.asp,.app,.adp,.ade,.ws,.vb,.js `
+          -BlockedMimeTypes application/x-javascript,application/javascript,application/msaccess,x-internet-signup,text/javascript,application/xml,application/prg,application/hta,text/scriplet,text/xml `
+          -ForceSaveFileTypes .htm,.html,.vsmacros,.ps2xml,.ps1xml,.mshxml,.gadget,.psc2,.psc1,.aspx,.wsh,.wsf,.wsc,.vsw,.vst,.vss,.vbs,.vbe,.url,.tmp,.swf,.spl,.shs,.shb,.sct,.scr,.scf,.reg,.pst,.ps2,.ps1,.prg,.prf,.plg,.pif,.pcd,.ops,.mst,.msp,.msi,.msh,.msc,.mdz,.mdw,.mdt,.mde,.mdb,.mda,.maw,.mav,.mau,.mat,.mas,.mar,.maq,.mam,.mag,.maf,.mad,.lnk,.ksh,.jse,.its,.isp,.ins,.inf,.hta,.hlp,.fxp,.exe,.dir,.dcr,.csh,.crt,.cpl,.com,.cmd,.chm,.cer,.bat,.bas,.asx,.asp,.app,.adp,.ade,.ws,.vb,.js `
+          -ForceSaveMimeTypes text/html,Application/x-shockwave-flash,Application/octet-stream,Application/futuresplash,Application/x-director `
+          -WebReadyFileTypes .doc,.dot,.rtf,.xls,.ppt,.pps,.pdf,.docx,.xlsx,.pptx `
+          -WebReadyMimeTypes application/msword,application/vnd.ms-excel,application/x-msexcel,application/vnd.ms-powerpoint,application/x-mspowerpoint,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.openxmlformats-officedocument.presentationml.presentation `
+          -DomainController $RoleDomainController;
+          }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </ServicePlanTaskInfo>
+
+    <!-- 'SkuCapability' section - stamp SkuCapability on MailboxPlans -->
+    <ServicePlanTaskInfo FeatureName="SkuCapability">
+      <Install DescriptionId="SetupProgressStampSkuCapability">
+        <Tenant>
+          if (!$CreateSharedConfiguration)
+          {
+            foreach ($mp in $ServicePlanSettings.MailboxPlans)
+            {
+              if($mp.SkuCapability -ne "None")
+              {
+                $mp.Instance | Set-MailboxPlan -SkuCapability $mp.SkuCapability -DomainController $RoleDomainController;
+              }
+            }
+          }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade />
+      <Uninstall />
+    </ServicePlanTaskInfo>
+
+    <!-- 'PerMBXPlanRetentionPolicyEnabled' section - stamp RetentionPolicy on MailboxPlans -->
+    <ServicePlanTaskInfo FeatureName="PerMBXPlanRetentionPolicyEnabled">
+      <Install DescriptionId="SetupProgressPerMBXPlanRetentionPolicyEnabled">
+        <Tenant>
+          if(!$CommonHydrateableObjectsSharedEnabled)
+          {
+            # handle install, upgrade and transition to different service plan, including transition to plan with larger number of mailbox plans
+
+            #1. tenant - install    -> create retention policy
+            #2. tenant - upgrade    -> skip
+            #3. tenant - transition -> create and link retention policy if mp has no link to it
+
+            $isServicePlanUpdate = ($OldServicePlanSettings -ne $null);
+            $buildToBuildUpgrade = ($RoleInstallationMode -eq "BuildToBuildUpgrade")
+            $retentionPolicyName = [Microsoft.Exchange.Management.Common.RecipientConstants]::DefaultArchiveAndRetentionPolicyName;
+
+            # PerMBXPlanRetentionPolicyEnabled is always run in service plan migrations to handle cases where new mailbox plans need to be created.
+            # For new organization and build to build upgrade, we can rely on $ServicePlanSettings.
+            # For service plan migration, we should rely on $NewServicePlanSettings, where new plan settings are stored.
+            $UnifiedRetentionPolicyEnabled = (-not $isServicePlanUpdate -and -not $ServicePlanSettings.Organization.PerMBXPlanRetentionPolicyEnabled) -or ($NewServicePlanSettings -ne $null -and -not $NewServicePlanSettings.Organization.PerMBXPlanRetentionPolicyEnabled);
+
+            # Get all retention policies for the organization
+            $policies = get-RetentionPolicy -IgnoreDehydratedFlag -Organization $RoleOrganizationHierarchicalPath -DomainController $RoleDomainController;
+
+            # Update existing Junk Email tag with the correct retention action
+            $oldJunkMailRPTName = 'JunkMail';
+            $oldJunkMailRPT = Get-RetentionPolicyTag -IgnoreDehydratedFlag -DomainController $RoleDomainController -Organization $RoleOrganizationHierarchicalPath | where {$_.Name -eq $oldJunkMailRPTName -and $_.RetentionAction -eq "PermanentlyDelete"};
+            if ($oldJunkMailRPT)
+            {
+                Write-ExchangeSetupLog -info ("Updating retention policy tag for Junk E-mail folder");
+                Set-RetentionPolicyTag $oldJunkMailRPT -RetentionAction DeleteAndAllowRecovery -DomainController $RoleDomainController;
+            }
+
+            if($UnifiedRetentionPolicyEnabled)
+            {
+                #if UnifiedRetentionPolicyEnabled=TRUE, find/create single policy:
+
+                # Get legacy retention policy so we can rename it to the new MRM policy
+                $oldRetentionPolicyName = "DefaultRetentionPolicy";
+                $oldRetentionPolicy =  $policies | ?{$_.Name -eq $oldRetentionPolicyName};
+
+                # Get new retention policy
+                $newRetentionPolicy =  $policies | ?{$_.Name -eq $retentionPolicyName};
+
+                # Rename the legacy policy with new name if the new policy has not been created.
+                if($oldRetentionPolicy -and !$newRetentionPolicy)
+                {
+                    Write-ExchangeSetupLog -info ("Rename Default Retention Policy");
+                    Set-RetentionPolicy $oldRetentionPolicy -name $retentionPolicyName -DomainController $RoleDomainController -IgnoreDehydratedFlag;
+
+                    if ($buildToBuildUpgrade)
+                    {
+                        $oldRetentionPolicyRenamed = $true;
+                    }
+                }
+
+                # Get legacy archive and retention policy so we can rename it to reflect legacy MRM policy
+                $oldMRMPolicyName = "Default Archive and Retention Policy";
+                $oldMRMPolicy = $policies | ?{$_.Name -eq $oldMRMPolicyName};
+
+                # Get new retention policy
+                $legacyMRMPolicyName = "Legacy MRM Policy";
+                $legacyMRMPolicy = $policies | ?{$_.Name -eq $legacyMRMPolicyName};
+
+                # Rename the legacy policy with new name if the new policy has not been created.
+                if($oldMRMPolicy -and !$legacyMRMPolicy)
+                {
+                    Write-ExchangeSetupLog -info ("Rename Default Archive and Retention Policy");
+                    Set-RetentionPolicy $oldMRMPolicy -name $legacyMRMPolicyName -DomainController $RoleDomainController -IgnoreDehydratedFlag;
+                }
+
+                #2. Service plan update scenario, initializing $retentionPolicy
+                $retentionPolicy = get-RetentionPolicy -IgnoreDehydratedFlag -Organization $RoleOrganizationHierarchicalPath -DomainController $RoleDomainController | ?{$_.Name -eq $retentionPolicyName};
+                if($retentionPolicy -eq $null -and !$buildToBuildUpgrade)
+                {
+                    #1. install scenario, or policy has been removed, initializing $retentionPolicy
+                    #   retention tags will be created in ReducedOutOfTheBoxMrmTagsEnabled feature
+                    Write-ExchangeSetupLog -info ("Creating Default Retention Policy");
+                    $retentionPolicy = New-RetentionPolicy -name $retentionPolicyName -DomainController $RoleDomainController -Organization $RoleOrganizationHierarchicalPath -IgnoreDehydratedFlag -IsDefault;
+                }
+            }
+
+            foreach ($mp in $ServicePlanSettings.MailboxPlans)
+            {
+                if($mp.Instance.RetentionPolicy -eq $null)
+                {
+                    if(!$UnifiedRetentionPolicyEnabled)
+                    {
+                        #if UnifiedRetentionPolicyEnabled=FALSE, find/create one policy per mailbox plan
+                        $retentionPolicyName = "MRMPolicy-" + $mp.Name;
+                        $retentionPolicy = get-RetentionPolicy -IgnoreDehydratedFlag -Organization $RoleOrganizationHierarchicalPath -DomainController $RoleDomainController|? {$_.Name -eq $retentionPolicyName};
+                        if($retentionPolicy -eq $null -and !$buildToBuildUpgrade)
+                        {
+                            Write-ExchangeSetupLog -info ("Creating Default Retention Policy for MailboxPlan " + $mp.Name);
+                            #retention tags will be created in ReducedOutOfTheBoxMrmTagsEnabled feature
+                            $retentionPolicy = New-RetentionPolicy -IgnoreDehydratedFlag -name $retentionPolicyName -DomainController $RoleDomainController -Organization $RoleOrganizationHierarchicalPath -IsDefault:$mp.ProvisionAsDefault;
+                        }
+                    }
+
+                    if ($retentionPolicy)
+                    {
+                        Set-MailboxPlan -Identity $mp.Instance.Identity -RetentionPolicy $retentionPolicy -Force:$true -DomainController $RoleDomainController;
+                    }
+                }
+                else
+                {
+                    if(!$UnifiedRetentionPolicyEnabled)
+                    {
+                        # Get legacy retention policy so we can rename it to the new MRM policy
+                        $oldMPPolicyName = "RetentionPolicy-" + $mp.Name;
+                        $oldMPPolicy =  $policies | ?{$_.Name -eq $oldMPPolicyName};
+
+                        # Get new retention policy
+                        $newMPPolicyName = "MRMPolicy-" + $mp.Name;
+                        $newMPPolicy =  $policies | ?{$_.Name -eq $newMPPolicyName};
+
+                        # Rename the legacy mailbox plan policy with new name if the new policy has not been created.
+                        if($oldMPPolicyName -and !$newMPPolicy)
+                        {
+                            Write-ExchangeSetupLog -info ("Rename Default Mailbox Plan Retention Policy");
+                            Set-RetentionPolicy $oldMPPolicy -name $newMPPolicyName -DomainController $RoleDomainController -IgnoreDehydratedFlag -IsDefault:$mp.ProvisionAsDefault;
+
+                            if ($buildToBuildUpgrade)
+                            {
+                                $oldRetentionPolicyRenamed = $true;
+                            }
+                        }
+                    }
+                }
+            }
+          }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </ServicePlanTaskInfo>
+
+    <!-- 'ReducedOutOfTheBoxMrmTagsEnabled' section - create out of box MRM tags part 1/4 -->
+    <ServicePlanTaskInfo FeatureName="ReducedOutOfTheBoxMrmTagsEnabled">
+      <Install DescriptionId="SetupProgressCreateOutOfTheBoxDefaultMRMTags">
+        <Tenant>
+          if(!$CommonHydrateableObjectsSharedEnabled)
+          {
+            Write-ExchangeSetupLog -info "ReducedOutOfTheBoxMrmTagsEnabled feature provisioning - create default and system folder tags";
+            $reducedTagsEnabled = $ServicePlanSettings.Organization.ReducedOutOfTheBoxMrmTagsEnabled;
+            $isServicePlanUpdate = ($OldServicePlanSettings -ne $null);
+            $buildToBuildUpgrade = ($RoleInstallationMode -eq "BuildToBuildUpgrade")
+
+            # PerMBXPlanRetentionPolicyEnabled is always run in service plan migrations to handle cases where new mailbox plans need to be created.
+            # For new organization and build to build upgrade, we can rely on $ServicePlanSettings.
+            # For service plan migration, we should rely on $NewServicePlanSettings, where new plan settings are stored.
+            $UnifiedRetentionPolicyEnabled = ($RoleIsBPOSLHydration -and !$ServicePlanSettings.Organization.PerMBXPlanRetentionPolicyEnabled) `
+                         -or                (!$isServicePlanUpdate -and !$ServicePlanSettings.Organization.PerMBXPlanRetentionPolicyEnabled) `
+                         -or ($NewServicePlanSettings -ne $null -and !$NewServicePlanSettings.Organization.PerMBXPlanRetentionPolicyEnabled);
+
+            # Skip for build to build upgrades if old retention policy was not renamed so that we don't change the default MRM policy
+            if (!$buildToBuildUpgrade -or $oldRetentionPolicyRenamed)
+            {
+                # Build tag links
+                $policyTagLinks = @();
+
+                # Get all existing policies
+                Write-ExchangeSetupLog -info ("Getting all retention policy tags");
+                $allPolicies = Get-RetentionPolicy -IgnoreDehydratedFlag -DomainController $RoleDomainController -Organization $RoleOrganizationHierarchicalPath;
+
+                # Get all existing policy tags
+                Write-ExchangeSetupLog -info ("Getting all retention policy tags");
+                $allPolicyTags = Get-RetentionPolicyTag -IgnoreDehydratedFlag -DomainController $RoleDomainController -Organization $RoleOrganizationHierarchicalPath;
+
+                # Do not create system folder and default tags on build to build upgrade or service plan migration
+                if ($RoleIsBPOSLHydration -or !$isServicePlanUpdate -and !$buildToBuildUpgrade)
+                {
+                    # Create dumpster tag
+                    $tagConstant = [Microsoft.Exchange.Management.SystemConfigurationTasks.RetentionPolicyTagConstant];
+                    $tagGuidMap = $tagConstant::RetentionTagGuidMap;
+                    $dumpsterRPTName = $tagConstant::RecoverableItemsFourteenDaysMoveToArchive;
+                    [Guid] $retentionId = $tagGuidMap[$dumpsterRPTName];
+                    $dumpsterRPT = $allPolicyTags | ?{$_.Name -eq $dumpsterRPTName -or $_.RetentionId -eq $retentionId};
+                    if (!$dumpsterRPT)
+                    {
+                        Write-ExchangeSetupLog -info ("Creating retention policy tag for recoverable items folder");
+                        $dumpsterRPT = New-RetentionPolicyTag -IgnoreDehydratedFlag -Name $dumpsterRPTName -Type RecoverableItems -RetentionAction MoveToArchive -AgeLimitForRetention 14 -DomainController $RoleDomainController -Organization $RoleOrganizationHierarchicalPath -RetentionId $retentionId;
+                    }
+                    else
+                    {
+                        Write-ExchangeSetupLog -warning "Was not able to create new RecoverableItems tag because a tag with the name '$($dumpsterRPTName)' already exists. Please run 'new-RetentionPolicyTag -Type RecoverableItems' to create a RecoverableItems tag."
+                    }
+
+                    # Add tag to tag links
+                    $policyTagLinks += $dumpsterRPT;
+
+                    # Create jumk email tag
+                    $junkMailRPTName = $tagConstant::JunkEmail;
+                    [Guid] $retentionId = $tagGuidMap[$junkMailRPTName];
+                    $junkMailRPT = $allPolicyTags | ?{$_.Name -eq $junkMailRPTName -or $_.RetentionId -eq $retentionId};
+                    if (!$junkMailRPT)
+                    {
+                        Write-ExchangeSetupLog -info ("Creating retention policy tag for Junk E-mail folder");
+                        $junkMailRPT = New-RetentionPolicyTag -IgnoreDehydratedFlag -Name $junkMailRPTName -Type JunkEmail -RetentionAction DeleteAndAllowRecovery -AgeLimitForRetention 30 -DomainController $RoleDomainController -Organization $RoleOrganizationHierarchicalPath -RetentionId $retentionId;
+                    }
+                    else
+                    {
+                        Write-ExchangeSetupLog -warning "Was not able to create new JunkEmail because a tag with the name '$($junkMailRPTName)' already exists. Please run 'new-RetentionPolicyTag -Type JunkEmail' to create a JunkEmail tag."
+                    }
+
+                    # Add tag to tag links
+                    $policyTagLinks += $junkMailRPT;
+
+                    # Create deleted items tag
+                    $deletedItemsRPTName = $tagConstant::DeletedItems;
+                    [Guid] $retentionId = $tagGuidMap[$deletedItemsRPTName];
+                    $deletedItemsRPT = $allPolicyTags | ?{$_.Name -eq $deletedItemsRPTName -or $_.RetentionId -eq $retentionId};
+                    if (!$deletedItemsRPT)
+                    {
+                        Write-ExchangeSetupLog -info ("Creating retention policy tag for deleted items folder");
+                        $deletedItemsRPT = New-RetentionPolicyTag -IgnoreDehydratedFlag -Name $deletedItemsRPTName -Type DeletedItems -RetentionAction DeleteAndAllowRecovery -AgeLimitForRetention 30 -DomainController $RoleDomainController -Organization $RoleOrganizationHierarchicalPath -RetentionId $retentionId;
+                    }
+                    else
+                    {
+                        Write-ExchangeSetupLog -warning "Was not able to create new DeletedItems tag because a tag with the name '$($deletedItemsRPTName)' already exists. Please run 'new-RetentionPolicyTag -Type DeletedItems' to create a DeletedItems tag."
+                    }
+
+                    # Add tag to tag links
+                    $policyTagLinks += $deletedItemsRPT;
+
+                    # Create default archive tag
+                    $defaultArchiveRPTName = $tagConstant::DefaultTwoYearMoveToArchive;
+                    [Guid] $retentionId = $tagGuidMap[$defaultArchiveRPTName];
+                    $defaultArchiveRPT = $allPolicyTags | ?{$_.Name -eq $defaultArchiveRPTName -or $_.RetentionId -eq $retentionId};
+                    if (!$defaultArchiveRPT)
+                    {
+                        Write-ExchangeSetupLog -info ("Creating default archive tag");
+                        $defaultArchiveRPT = New-RetentionPolicyTag -IgnoreDehydratedFlag -Name $defaultArchiveRPTName -Type All -RetentionAction MoveToArchive -AgeLimitForRetention 730 -DomainController $RoleDomainController -Organization $RoleOrganizationHierarchicalPath -RetentionId $retentionId;
+                    }
+                    else
+                    {
+                        Write-ExchangeSetupLog -warning "Was not able to create new default archive tag because a tag with the name '$($defaultArchiveRPTName)' already exists. Please run 'new-RetentionPolicyTag -Type All -RetentionAction MoveToArchive' to create a default archive tag."
+                    }
+
+                    # Add tag to tag links
+                    $policyTagLinks += $defaultArchiveRPT;
+                }
+            }
+          }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </ServicePlanTaskInfo>
+
+    <!-- 'ReducedOutOfTheBoxMrmTagsEnabled' section - create out of box MRM tags part 2/4 -->
+    <ServicePlanTaskInfo FeatureName="ReducedOutOfTheBoxMrmTagsEnabled">
+      <Install DescriptionId="SetupProgressCreateOutOfTheBoxReducedMrmTags">
+        <Tenant>
+          if(!$CommonHydrateableObjectsSharedEnabled)
+          {
+            Write-ExchangeSetupLog -info "ReducedOutOfTheBoxMrmTagsEnabled feature provisioning - create reduced personal tags";
+
+            # Skip for build to build upgrades if old retention policy was not renamed so that we don't change the default MRM policy
+            if (!$buildToBuildUpgrade -or $oldRetentionPolicyRenamed)
+            {
+                # Define common archive and delete tags
+                $tagConstant = [Microsoft.Exchange.Management.SystemConfigurationTasks.RetentionPolicyTagConstant];
+                $tagGuidMap = $tagConstant::RetentionTagGuidMap;
+                $archiveRPTNames = $tagConstant::PersonalOneYearMoveToArchive, $tagConstant::PersonalNeverMoveToArchive;
+                $archiveRPTTypes = 'Personal', 'Personal';
+                $archiveRPTMCs = '*', '*';
+                $archiveRPTAges = '365', '0';
+                $deleteRptNames = $tagConstant::OneWeekDelete,`
+                                  $tagConstant::OneMonthDelete,`
+                                  $tagConstant::NeverDelete;
+                $deleteRptTypes = 'Personal', 'Personal', 'Personal';
+                $deleteRptMCs = '*', '*', '*';
+                $deleteRptAges = '7', '30', '0';
+
+                # Create common archive tags
+                for($i=0; $i -lt $archiveRPTNames.Length; $i++)
+                {
+                    [Guid] $retentionId = $tagGuidMap[$archiveRPTNames[$i]];
+                    $archiveRPT = $allPolicyTags | ?{$_.Name -eq $archiveRPTNames[$i] -or $_.RetentionId -eq $retentionId};
+                    if (!$archiveRPT)
+                    {
+                        Write-ExchangeSetupLog -Info "Retention policy tag '$($archiveRPTNames[$i])' in tenant '$($RoleOrganizationHierarchicalPath)' does not exist, create new."
+                        if($archiveRPTNames[$i] -ne 'Personal never move to archive')
+                        {
+                            $archiveRPT = new-RetentionPolicyTag -IgnoreDehydratedFlag -Name $archiveRPTNames[$i] -Type $archiveRPTTypes[$i] -SystemTag:$false -RetentionEnabled:$true -RetentionAction MoveToArchive -AgeLimitForRetention $archiveRPTAges[$i] -MessageClass $archiveRPTMCs[$i] -DomainController $RoleDomainController -Organization $RoleOrganizationHierarchicalPath -RetentionId $retentionId;
+                        }
+                        else
+                        {
+                            # Create a never tag
+                            $archiveRPT = new-RetentionPolicyTag -IgnoreDehydratedFlag -Name $archiveRPTNames[$i] -Type $archiveRPTTypes[$i] -SystemTag:$false -RetentionEnabled:$false -RetentionAction MoveToArchive -MessageClass $archiveRPTMCs[$i] -DomainController $RoleDomainController -Organization $RoleOrganizationHierarchicalPath -RetentionId $retentionId;
+                        }
+                    }
+
+                    # Add tag to tag links
+                    $policyTagLinks += $archiveRPT;
+                }
+
+                # Create common delete tags
+                for($i=0; $i -lt $deleteRptNames.Length; $i++)
+                {
+                    [Guid] $retentionId = $tagGuidMap[$deleteRptNames[$i]];
+                    $deleteRPT = $allPolicyTags | ?{$_.Name -eq $deleteRptNames[$i] -or $_.RetentionId -eq $retentionId};
+                    if (!$deleteRPT)
+                    {
+                        Write-ExchangeSetupLog -Info "Retention policy tag '$($deleteRptNames[$i])' in tenant '$($RoleOrganizationHierarchicalPath)' does not exist, create new."
+                        if($deleteRptNames[$i] -ne 'Never Delete')
+                        {
+                            $deleteRPT = new-RetentionPolicyTag -IgnoreDehydratedFlag -Name $deleteRptNames[$i] -Type $deleteRptTypes[$i] -SystemTag:$false -RetentionEnabled:$true -RetentionAction DeleteAndAllowRecovery -AgeLimitForRetention $deleteRptAges[$i] -MessageClass $deleteRptMCs[$i] -DomainController $RoleDomainController -Organization $RoleOrganizationHierarchicalPath -RetentionId $retentionId;
+                        }
+                        else
+                        {
+                            # Create a never tag
+                            $deleteRPT = new-RetentionPolicyTag -IgnoreDehydratedFlag -Name $deleteRptNames[$i] -Type $deleteRptTypes[$i] -SystemTag:$false -RetentionEnabled:$false -RetentionAction DeleteAndAllowRecovery -MessageClass $deleteRptMCs[$i] -DomainController $RoleDomainController -Organization $RoleOrganizationHierarchicalPath -RetentionId $retentionId;
+                        }
+                    }
+
+                    # Add tag to tag links
+                    $policyTagLinks += $deleteRPT;
+                }
+            }
+          }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </ServicePlanTaskInfo>
+
+    <!-- 'ReducedOutOfTheBoxMrmTagsEnabled' section - create out of box MRM tags part 3/4 -->
+    <ServicePlanTaskInfo FeatureName="ReducedOutOfTheBoxMrmTagsEnabled">
+      <Install DescriptionId="SetupProgressCreateOutOfTheBoxAdditionalMrmTags">
+        <Tenant>
+          if(!$CommonHydrateableObjectsSharedEnabled)
+          {
+            Write-ExchangeSetupLog -info "ReducedOutOfTheBoxMrmTagsEnabled feature provisioning - create additional personal tags";
+
+            # Skip for build to build upgrades if old retention policy was not renamed so that we don't change the default MRM policy
+            if (!$buildToBuildUpgrade -or $oldRetentionPolicyRenamed)
+            {
+                # Create additional archive and delete tags for service plans requiring full tags
+                if(!$reducedTagsEnabled)
+                {
+                    $tagConstant = [Microsoft.Exchange.Management.SystemConfigurationTasks.RetentionPolicyTagConstant];
+                    $tagGuidMap = $tagConstant::RetentionTagGuidMap;
+                    $archiveRPTName = $tagConstant::PersonalFiveYearMoveToArchive;
+                    $archiveRPTType = 'Personal';
+                    $archiveRPTMC = '*';
+                    $archiveRPTAge = '1825';
+                    $deleteRptNames = $tagConstant::SixMonthDelete,`
+                                      $tagConstant::OneYearDelete,`
+                                      $tagConstant::FiveYearDelete;
+                    $deleteRptTypes = 'Personal', 'Personal', 'Personal';
+                    $deleteRptMCs = '*', '*', '*';
+                    $deleteRptAges = '180', '365', '1825';
+
+                    # Create additonal archive tag(s)
+                    [Guid] $retentionId = $tagGuidMap[$archiveRPTName];
+                    $archiveRPT = Get-RetentionPolicyTag -IgnoreDehydratedFlag -IncludeSystemTags -DomainController $RoleDomainController -Organization $RoleOrganizationHierarchicalPath | where {$_.Name -eq $archiveRPTName -or $_.RetentionId -eq $retentionId};
+                    $archiveRPT = $allPolicyTags | ?{$_.Name -eq $archiveRPTName -or $_.RetentionId -eq $retentionId};
+                    if (!$archiveRPT)
+                    {
+                        Write-ExchangeSetupLog -Info "Retention policy tag '$($archiveRPTName)' in tenant '$($RoleOrganizationHierarchicalPath)' does not exist, create new."
+                        $archiveRPT = new-RetentionPolicyTag -IgnoreDehydratedFlag -Name $archiveRPTName -Type $archiveRPTType -SystemTag:$false -RetentionEnabled:$true -RetentionAction MoveToArchive -AgeLimitForRetention $archiveRPTAge -MessageClass $archiveRPTMC -DomainController $RoleDomainController -Organization $RoleOrganizationHierarchicalPath -RetentionId $retentionId;
+                    }
+
+                    # Add tag to tag links
+                    $policyTagLinks += $archiveRPT;
+
+                    # Create additional delete tags
+                    for($i=0; $i -lt $deleteRptNames.Length; $i++)
+                    {
+                        [Guid] $retentionId = $tagGuidMap[$deleteRptNames[$i]];
+                        $deleteRPT = $allPolicyTags | ?{$_.Name -eq $deleteRptNames[$i] -or $_.RetentionId -eq $retentionId};
+                        if (!$deleteRPT)
+                        {
+                            Write-ExchangeSetupLog -Info "Retention policy tag '$($deleteRptNames[$i])' in tenant '$($RoleOrganizationHierarchicalPath)' does not exist, create new."
+                            $deleteRPT = new-RetentionPolicyTag -IgnoreDehydratedFlag -Name $deleteRptNames[$i] -Type $deleteRptTypes[$i] -SystemTag:$false -RetentionEnabled:$true -RetentionAction DeleteAndAllowRecovery -AgeLimitForRetention $deleteRptAges[$i] -MessageClass $deleteRptMCs[$i] -DomainController $RoleDomainController -Organization $RoleOrganizationHierarchicalPath -RetentionId $retentionId;
+                        }
+
+                        # Add tag to tag links
+                        $policyTagLinks += $deleteRPT;
+                    }
+                }
+            }
+          }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </ServicePlanTaskInfo>
+
+    <!-- 'ReducedOutOfTheBoxMrmTagsEnabled' section - create out of box MRM tags part 4/4 -->
+    <ServicePlanTaskInfo FeatureName="ReducedOutOfTheBoxMrmTagsEnabled">
+      <Install DescriptionId="SetupProgressLinkOutOfTheBoxMrmTags">
+        <Tenant>
+          if(!$CommonHydrateableObjectsSharedEnabled)
+          {
+            Write-ExchangeSetupLog -info "ReducedOutOfTheBoxMrmTagsEnabled feature provisioning - link tags";
+
+            # Skip for build to build upgrades if old retention policy was not renamed so that we don't change the default MRM policy
+            if (!$buildToBuildUpgrade -or $oldRetentionPolicyRenamed)
+            {
+                if ($UnifiedRetentionPolicyEnabled)
+                {
+                    # Get the default MRM policy to see if it exists
+                    $policyName = [Microsoft.Exchange.Management.Common.RecipientConstants]::DefaultArchiveAndRetentionPolicyName;
+                    $defaultMRMPolicy = $allPolicies | ?{$_.Name -eq $policyName};
+
+                    # Default retention policy should have been created in PerMBXPlanRetentionPolicyEnabled feature
+                    if ($defaultMRMPolicy)
+                    {
+                        $originalTagLinks = $defaultMRMPolicy.RetentionPolicyTagLinks;
+                        foreach ($tag in $policyTagLinks)
+                        {
+                            # Add tag to tag links
+                            if ($originalTagLinks -notcontains $tag.Guid)
+                            {
+                                $originalTagLinks.Add($tag.Guid);
+                            }
+                        }
+
+                        # Attach tag links to default MRM policy
+                        set-RetentionPolicy $defaultMRMPolicy -RetentionPolicyTagLinks $originalTagLinks -DomainController $RoleDomainController -IgnoreDehydratedFlag;
+                    }
+                }
+                else
+                {
+                    # For service plans that do not use unified retention policy, we need to update its mailbox plan retention policy to use the new tag links
+                    foreach ($mp in $ServicePlanSettings.MailboxPlans)
+                    {
+                        $mpPolicyName = "MRMPolicy-" + $mp.Name;
+                        $mpPolicy = $allPolicies | ?{$_.Name -eq $mpPolicyName};
+                        if($mpPolicy)
+                        {
+                            # Get existing tag links
+                            $mpPolicyTagLinks = $mpPolicy.RetentionPolicyTagLinks;
+                            foreach ($tag in $policyTagLinks)
+                            {
+                                # Add tag to tag links
+                                if ($mpPolicyTagLinks -notcontains $tag.Guid)
+                                {
+                                    $mpPolicyTagLinks.Add($tag.Guid);
+                                }
+                            }
+
+                            Write-ExchangeSetupLog -info ("Update RetentionPolicyTagLinks of Retention Policy for MailboxPlan " + $mp.Name);
+                            Set-RetentionPolicy $mpPolicy -RetentionPolicyTagLinks $mpPolicyTagLinks -DomainController $RoleDomainController -IgnoreDehydratedFlag;
+                        }
+                    }
+                }
+            }
+          }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </ServicePlanTaskInfo>
+
+    <!-- 'CalendarVersionStoreEnabled' feature -->
+    <ServicePlanTaskInfo FeatureName="CalendarVersionStoreEnabled">
+      <Install DescriptionId="SetupProgressCalendarVersionStoreEnabled">
+        <Tenant>
+          if (!$CreateSharedConfiguration)
+          {
+            Write-ExchangeSetupLog -info "CalendarVersionStoreEnabled feature provisioning";
+            $CalendarVersionStoreEnabled = $ServicePlanSettings.Organization.CalendarVersionStoreEnabled;
+
+            Set-organizationconfig -CalendarVersionStoreEnabled $CalendarVersionStoreEnabled  -DomainController $RoleDomainController -Identity $RoleOrganizationHierarchicalPath;
+          }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="false" />
+      <Uninstall />
+    </ServicePlanTaskInfo>
+
+    <!-- 'MessageTrackingPermissions' feature -->
+    <!-- MessageTrackingPermissions is used as a admin permissions feature to determine whether admin can track for the organization.
+         MessageTrackingPermissions is also used to control read tracking (which is a sub feature of message tracking):
+        * it controls whether the organization can do any read tracking at all.
+        * it also controls whether admin can modify ReadTrackingEnabled on the OrganizationConfig object.
+
+     The above translates to the following to handle new and upgrade organizations:
+            * If a service plan has no MessageTrackingPermission, make sure ReadTrackingEnabled on OrganizationConfig is also set to false.
+            * If a service plan has MessageTrackingPermission, we leave the setting as is because it could have been modified by an admin.
+    -->
+    <ServicePlanTaskInfo FeatureName="MessageTrackingPermissions">
+      <Install DescriptionId="SetupProgressMessageTrackingPermissions">
+        <Tenant>
+          if (!$CreateSharedConfiguration)
+          {
+            Write-ExchangeSetupLog -info "MessageTrackingPermissions feature provisioning";
+            $MessageTrackingPermissions = $ServicePlanSettings.Organization.MessageTrackingPermissions;
+
+            if (!$MessageTrackingPermissions)
+            {
+                Set-OrganizationConfig -ReadTrackingEnabled $false -DomainController $RoleDomainController -Identity $RoleOrganizationHierarchicalPath;
+            }
+          }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </ServicePlanTaskInfo>
+
+    <!-- OwaInstantMessagingType feature -->
+    <ServicePlanTaskInfo FeatureName="OwaInstantMessagingType">
+      <Install DescriptionId="SetupProgressOwaInstantMessagingType">
+        <Tenant>
+          if (!$CreateSharedConfiguration)
+          {
+            Write-ExchangeSetupLog -info "OwaInstantMessagingType feature provisioning";
+            $owaInstantMessagingType = $ServicePlanSettings.Organization.OwaInstantMessagingType;
+
+            if ($owaInstantMessagingType -eq $null)
+            {
+              $owaInstantMessagingType = "Ocs";
+            }
+
+            Get-OwaMailboxPolicy -Organization $RoleOrganizationHierarchicalPath |Set-OwaMailboxPolicy -InstantMessagingType $owaInstantMessagingType;
+          }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <Uninstall />
+    </ServicePlanTaskInfo>
+
+    <!-- Boolean features on Mailbox: -->
+
+    <!-- 'ImapEnabled' feature -->
+    <ServicePlanTaskInfo FeatureName="ImapEnabled">
+      <Install DescriptionId="SetupProgressImapEnabled">
+        <Tenant>
+          if (!$CreateSharedConfiguration)
+          {
+                foreach ($mp in $ServicePlanSettings.MailboxPlans)
+                {
+                    Write-ExchangeSetupLog -info ("ImapEnabled feature provisioning for " + $mp.Name);
+                    $mp.Instance | Set-CASMailboxPlan -ImapEnabled $mp.ImapEnabled -DomainController $RoleDomainController;
+                }
+          }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </ServicePlanTaskInfo>
+
+    <!-- 'PopEnabled' feature -->
+    <ServicePlanTaskInfo FeatureName="PopEnabled">
+      <Install DescriptionId="SetupProgressPopEnabled">
+        <Tenant>
+          if (!$CreateSharedConfiguration)
+          {
+                foreach ($mp in $ServicePlanSettings.MailboxPlans)
+                {
+                    Write-ExchangeSetupLog -info ("PopEnabled feature provisioning for " + $mp.Name);
+                    $mp.Instance | Set-CASMailboxPlan -PopEnabled $mp.PopEnabled -DomainController $RoleDomainController;
+                }
+          }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </ServicePlanTaskInfo>
+
+    <!-- 'ShowInAddressListsEnabled' feature -->
+    <ServicePlanTaskInfo FeatureName="ShowInAddressListsEnabled">
+      <Install DescriptionId="SetupProgressShowInAddressListsEnabled">
+        <Tenant>
+          if (!$CreateSharedConfiguration)
+          {
+                foreach ($mp in $ServicePlanSettings.MailboxPlans)
+                {
+                    Write-ExchangeSetupLog -info ("Setting ShowInAddressListsEnabled " + $mp.Name);
+                    $mp.Instance | Set-MailboxPlan -HiddenFromAddressListsEnabled (!$mp.ShowInAddressListsEnabled) -DomainController $RoleDomainController;
+                }
+          }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </ServicePlanTaskInfo>
+
+    <!-- 'OutlookAnywhereEnabled' feature -->
+    <ServicePlanTaskInfo FeatureName="OutlookAnywhereEnabled">
+      <Install DescriptionId="SetupProgressOutlookAnywhereEnabled">
+        <Tenant>
+          if (!$CreateSharedConfiguration)
+          {
+                foreach ($mp in $ServicePlanSettings.MailboxPlans)
+                {
+                    Write-ExchangeSetupLog -info ("OutlookAnywhereEnabled feature provisioning for " + $mp.Name);
+                    $mp.Instance | Set-CASMailboxPlan -MAPIEnabled $mp.OutlookAnywhereEnabled -MAPIBlockOutlookNonCachedMode $false -DomainController $RoleDomainController;
+                }
+          }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </ServicePlanTaskInfo>
+
+    <!-- 'ActiveSyncEnabled' feature -->
+    <ServicePlanTaskInfo FeatureName="ActiveSyncEnabled">
+      <Install DescriptionId="SetupProgressActiveSyncEnabled">
+        <Tenant>
+          if (!$CreateSharedConfiguration)
+          {
+                foreach ($mp in $ServicePlanSettings.MailboxPlans)
+                {
+                    Write-ExchangeSetupLog -info ("ActiveSyncEnabled feature provisioning for " + $mp.Name);
+                    $mp.Instance | Set-CASMailboxPlan -ActiveSyncEnabled $mp.ActiveSyncEnabled -DomainController $RoleDomainController;
+                }
+          }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </ServicePlanTaskInfo>
+
+    <!-- 'MOWAEnabled' feature -->
+    <ServicePlanTaskInfo FeatureName="MOWAEnabled">
+      <Install DescriptionId="SetupProgressMOWAEnabled">
+        <Tenant>
+          if (!$CreateSharedConfiguration)
+          {
+                foreach ($mp in $ServicePlanSettings.MailboxPlans)
+                {
+                    Write-ExchangeSetupLog -info ("OWAforDevicesEnabled feature provisioning for " + $mp.Name);
+                    $mp.Instance | Set-CASMailboxPlan -OWAforDevicesEnabled $mp.MOWAEnabled -DomainController $RoleDomainController;
+                }
+           }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </ServicePlanTaskInfo>
+
+    <!-- 'EwsEnabled' feature -->
+    <ServicePlanTaskInfo FeatureName="EwsEnabled">
+      <Install DescriptionId="SetupProgressEwsEnabled">
+        <Tenant>
+          if (!$CreateSharedConfiguration)
+          {
+                foreach ($mp in $ServicePlanSettings.MailboxPlans)
+                {
+                    Write-ExchangeSetupLog -info ("EwsEnabled feature provisioning for " + $mp.Name);
+                    $mp.Instance | Set-CASMailboxPlan -EwsEnabled $mp.EwsEnabled -DomainController $RoleDomainController;
+                }
+          }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </ServicePlanTaskInfo>
+
+    <!-- 'UMEnabled' feature -->
+    <!--
+        UMEanbled.SharedDialPlan depends on existence of UM server in the org and special dial plan in the first organization. It should be created like this:
+            new-umdialplan
+                -name MyDialPlan
+                -uritype E164
+                -SubscriberType consumer
+                -VoIPSecurity Unsecured
+                -AccessTelephoneNumbers "425-111-1111"
+                -GenerateUMMailboxPolicy $false
+                -NumberOfDigitsInExtension 10;
+
+        And can be verified like this:
+            Get-UMDialPlan | fl Name,UriType,SubscriberType,NumberOfDigitsInExtension;
+
+        If service plan is used in topology where either one of preconditions is not true, installation of UM features will be skipped
+    -->
+      <ServicePlanTaskInfo FeatureName="UMEnabled">
+      <Install DescriptionId="SetupProgressUMEnabled">
+        <Tenant>
+          if (!$CreateSharedConfiguration)
+          {
+                :outer foreach ($mp in $ServicePlanSettings.MailboxPlans)
+                {
+                    if ($mp.UMEnabled -ne [Microsoft.Exchange.Management.Deployment.UMDeploymentModeOptions]"ManualConfiguration")
+                    {
+                        $umServers = Get-UMService -DomainController $RoleDomainController;
+                        if ($umServers -eq $null -or $umServers.Length -eq 0)
+                        {
+                            Write-ExchangeSetupLog -warning "Prerequisite check for UMEnabled feature failed: no UM server role found";
+                            $mp.UMEnabled = [Microsoft.Exchange.Management.Deployment.UMDeploymentModeOptions]"ManualConfiguration";
+                            break;
+                        }
+
+                        switch ($mp.UMEnabled.ToString())
+                        {
+                            'SharedDialPlan'
+                            {
+                                $dialPlan = get-umdialplan -DomainController $RoleDomainController |
+                                    where {$_.SubscriberType -eq 'consumer' -and $_.uritype -eq 'E164' };
+
+                                if ($dialPlan -eq $null -or $dialPlan.Length -eq 0)
+                                {
+                                    Write-ExchangeSetupLog -warning "Prerequisite check for UMEnabled feature failed: shared UMDialPlan of consumer subscriber type not found in the first organization";
+                                    $mp.UMEnabled = [Microsoft.Exchange.Management.Deployment.UMDeploymentModeOptions]"ManualConfiguration";
+                                    continue outer;
+                                }
+                                elseif ($dialPlan.Length -gt 1)
+                                {
+                                    Write-ExchangeSetupLog -warning ("Multiple Consumer-E164 dialplans detected in the first organization. Implicitly selecting " + $dialPlan[0].Name);
+                                    $dialPlan = $dialPlan[0];
+                                }
+
+                                $policyName = "ummailboxpolicy-" + $mp.Name;
+                                $policy = get-ummailboxpolicy -Organization $RoleOrganizationHierarchicalPath -DomainController $RoleDomainController |
+                                    where {$_.Name -eq ($policyName)};
+
+                                if ($policy -eq $null -or $policy.Length -eq 0)
+                                {
+                                    $policy = New-ummailboxpolicy `
+                                        -Organization $RoleOrganizationHierarchicalPath `
+                                        -DomainController $RoleDomainController `
+                                        -Name $policyName `
+                                        -SharedUMDialPlan `
+                                        -UMDialPlan $dialPlan.Identity;
+
+                                    Write-ExchangeSetupLog -info ("Setting defaults for " + $policyName);
+                                    Set-ummailboxpolicy $policy `
+                                        -MinPINLength 4 `
+                                        -PINHistoryCount 1 `
+                                        -PINLifetime Unlimited `
+                                        -AllowCommonPatterns $true `
+                                        -AllowTUIAccessToDirectory $true `
+                                        -AllowPinlessVoiceMailAccess $true `
+                                        -AllowCallAnsweringRules $false `
+                                        -AllowVoiceMailPreview $true `
+                                        -AllowPlayOnPhone $false `
+                                        -AllowDialPlanSubscribers $false `
+                                        -AllowExtensions $false `
+                                        -DomainController $RoleDomainController;
+                                }
+
+                                Write-ExchangeSetupLog -info ("UMEnabled feature provisioning for " + $mp.Name);
+                                if ($mp.Instance.UMEnabled -eq $false)
+                                {
+                                    Enable-UMMailboxPlan -UMMailboxPolicy $policy.Identity -DomainController $RoleDomainController $mp.Instance;
+                                }
+                                else
+                                {
+                                    Write-ExchangeSetupLog -info ("Mailbox plan " + $mp.Name + " is already UMEnabled");
+                                }
+                            }
+                            default
+                            {
+                                Write-ExchangeSetupLog -error ($mp.UMEnabled.ToString() + " value is not a supported for UMEnabled");
+                                $mp.UMEnabled = [Microsoft.Exchange.Management.Deployment.UMDeploymentModeOptions]"ManualConfiguration";
+                            }
+                        }
+                    }
+                }
+            }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </ServicePlanTaskInfo>
+
+    <!-- 'SyncAccountsEnabled' feature -->
+    <ServicePlanTaskInfo FeatureName="SyncAccountsEnabled">
+      <Install DescriptionId="SetupProgressSyncAccountsEnabled">
+        <Tenant>
+            if (!$CreateSharedConfiguration)
+            {
+                foreach ($mp in $ServicePlanSettings.MailboxPlans)
+                {
+                    if($mp.SyncAccountsEnabled)
+                    {
+                        Write-ExchangeSetupLog -info ("SyncAccounts feature enabled for " + $mp.Name);
+
+                        $syncPolicyName = "SyncAccountsPolicy-" + $mp.Name;
+
+                        $remoteAccountPolicy = Get-RemoteAccountPolicy -Organization $RoleOrganizationHierarchicalPath | where {$_.Name -eq $syncPolicyName };
+
+                        if ($remoteAccountPolicy -eq $null)
+                        {
+                            $remoteAccountPolicy = New-RemoteAccountPolicy -Name $syncPolicyName -Organization $RoleOrganizationHierarchicalPath;
+                        }
+
+                        Set-MailboxPlan -Identity $mp.Instance.Identity -RemoteAccountPolicy $remoteAccountPolicy.Identity -DomainController $RoleDomainController;
+                    }
+                    else
+                    {
+                        if ($mp.Instance.RemoteAccountPolicy -ne $null)
+                        {
+                            Write-ExchangeSetupLog -info ("SyncAccounts feature not enabled for " + $mp.Name);
+
+                            Set-MailboxPlan -Identity $mp.Instance.Identity -RemoteAccountPolicy $null -DomainController $RoleDomainController;
+                        }
+                    }
+                }
+            }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </ServicePlanTaskInfo>
+
+    <!-- 'SyncAccountsSyncNowEnabled' feature -->
+    <ServicePlanTaskInfo FeatureName="SyncAccountsSyncNowEnabled">
+      <Install DescriptionId="SetupProgressSyncAccountsSyncNowEnabled">
+        <Tenant>
+            if (!$CreateSharedConfiguration)
+            {
+                foreach ($mp in $ServicePlanSettings.MailboxPlans)
+                {
+                    Write-ExchangeSetupLog -info ("SyncAccountsSyncNowEnabled feature provisioning for " + $mp.Name);
+
+                    $syncPolicyName = "SyncAccountsPolicy-" + $mp.Name;
+
+                    $remoteAccountPolicy = Get-RemoteAccountPolicy -Organization $RoleOrganizationHierarchicalPath | where {$_.Name -eq $syncPolicyName };
+
+                    if ($remoteAccountPolicy -ne $null)
+                    {
+                        Set-RemoteAccountPolicy -Identity $remoteAccountPolicy.Identity -SyncNowAllowed $mp.SyncAccountsSyncNowEnabled;
+                    }
+                }
+            }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </ServicePlanTaskInfo>
+
+    <!-- 'SingleItemRecoveryEnabled' feature -->
+    <!--
+           Stamp SingleItemRecoveryEnabled property of mailbox plan.
+           This property is cloned on new mailboxes but will not affect existing ones during upgrade.
+    -->
+    <ServicePlanTaskInfo FeatureName="SingleItemRecoveryEnabled">
+      <Install DescriptionId="SetupProgressSingleItemRecoveryEnabled">
+        <Tenant>
+          if (!$CreateSharedConfiguration)
+          {
+            foreach ($mp in $ServicePlanSettings.MailboxPlans)
+            {
+              Write-ExchangeSetupLog -info ("Setting SingleItemRecoveryEnabled for " + $mp.Name);
+              $mp.Instance | Set-MailboxPlan -SingleItemRecoveryEnabled $mp.SingleItemRecoveryEnabled;
+            }
+          }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </ServicePlanTaskInfo>
+
+    <!-- 'SkipResetPasswordOnFirstLogonEnabled' feature -->
+    <!--
+           Stamp ResetPasswordOnNextLogon property of mailbox plan.
+           This property is cloned on new mailboxes (therefore affecting only first logon)
+           but will not affect existing ones during upgrade.
+    -->
+    <ServicePlanTaskInfo FeatureName="SkipResetPasswordOnFirstLogonEnabled">
+      <Install DescriptionId="SetupProgressSkipResetPasswordOnFirstLogonEnabled">
+        <Tenant>
+            if (!$CreateSharedConfiguration)
+            {
+                foreach ($mp in $ServicePlanSettings.MailboxPlans)
+                {
+                    Write-ExchangeSetupLog -info ("Setting SkipResetPasswordOnFirstLogonEnabled for " + $mp.Name);
+                    $mp.Instance | Set-MailboxPlan -ResetPasswordOnNextLogon (!$mp.SkipResetPasswordOnFirstLogonEnabled) -DomainController $RoleDomainController;
+                }
+            }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </ServicePlanTaskInfo>
+
+    <!-- Numeric quotas on Mailbox: -->
+
+    <!-- 'ProhibitSendReceiveMaiboxQuota' feature -->
+    <ServicePlanTaskInfo FeatureName="ProhibitSendReceiveMaiboxQuota">
+      <Install DescriptionId="SetupProgressProhibitSendReceiveQuota">
+        <Tenant>
+        if (!$CreateSharedConfiguration)
+        {
+            foreach ($mp in $ServicePlanSettings.MailboxPlans)
+            {
+                Write-ExchangeSetupLog -info ("Setting IssueWarningMaiboxQuota, ProhibitSendMaiboxQuota and ProhibitSendReceiveMaiboxQuota for " + $mp.Name);
+                if($mp.ProhibitSendReceiveMaiboxQuota -ieq "Unlimited")
+                {
+                    [string] $ProhibitSendReceiveMaiboxQuota = $mp.ProhibitSendReceiveMaiboxQuota;
+                    [string] $IssueWarningMaiboxQuota = $mp.ProhibitSendReceiveMaiboxQuota;
+                    [string] $ProhibitSendMaiboxQuota = $mp.ProhibitSendReceiveMaiboxQuota;
+                }
+                else
+                {
+                    [Microsoft.Exchange.Data.ByteQuantifiedSize] $ProhibitSendReceiveMaiboxQuota = $mp.ProhibitSendReceiveMaiboxQuota;
+                    [Microsoft.Exchange.Data.ByteQuantifiedSize] $IssueWarningMaiboxQuota = 0;
+                    [Microsoft.Exchange.Data.ByteQuantifiedSize] $ProhibitSendMaiboxQuota = 0;
+
+                    if($ProhibitSendReceiveMaiboxQuota -eq "10737418240")
+                    {
+                        #maintain backward compatibility with 10GB/9900MB/9GB plans:
+                        $ProhibitSendMaiboxQuota = "9900MB";
+                        $IssueWarningMaiboxQuota = "9GB";
+                    }
+                    elseif ($ProhibitSendReceiveMaiboxQuota -le "1GB")
+                    {
+                        #if quota is 1GB or lower, use 90 and 95 percentile
+                        $IssueWarningMaiboxQuota = $ProhibitSendReceiveMaiboxQuota/100*90;
+                        $ProhibitSendMaiboxQuota = $ProhibitSendReceiveMaiboxQuota/100*95;
+                    }
+                    else
+                    {
+                        #otherwise use 98 and 99 percentile
+                        $IssueWarningMaiboxQuota = $ProhibitSendReceiveMaiboxQuota/100*98;
+                        $ProhibitSendMaiboxQuota = $ProhibitSendReceiveMaiboxQuota/100*99;
+                    }
+                }
+
+                $mp.Instance | Set-MailboxPlan `
+                    -IssueWarningQuota $IssueWarningMaiboxQuota `
+                    -ProhibitSendQuota $ProhibitSendMaiboxQuota `
+                    -ProhibitSendReceiveQuota $ProhibitSendReceiveMaiboxQuota `
+                    -UseDatabaseQuotaDefaults $false `
+                    -DomainController $RoleDomainController;
+            }
+        }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade />
+      <Uninstall />
+    </ServicePlanTaskInfo>
+
+    <!-- 'ArchiveQuota' feature -->
+    <ServicePlanTaskInfo FeatureName="ArchiveQuota">
+      <Install DescriptionId="SetupProgressArchiveQuota">
+        <Tenant>
+        if (!$CreateSharedConfiguration)
+        {
+            foreach ($mp in $ServicePlanSettings.MailboxPlans)
+            {
+                if($mp.ArchiveQuota -ne $null)
+                {
+                    [Microsoft.Exchange.Data.ByteQuantifiedSize] $ArchiveQuota = $mp.ArchiveQuota;
+                    [Microsoft.Exchange.Data.ByteQuantifiedSize] $ArchiveWarningQuota = $ArchiveQuota/10*9;
+
+                    Write-ExchangeSetupLog -info ("Setting ArchiveQuota for " + $mp.Name);
+                    $mp.Instance | Set-MailboxPlan -ArchiveQuota $ArchiveQuota -ArchiveWarningQuota $ArchiveWarningQuota -DomainController $RoleDomainController;
+                }
+            }
+        }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </ServicePlanTaskInfo>
+
+    <!-- 'MaxReceiveTransportQuota' feature -->
+    <ServicePlanTaskInfo FeatureName="MaxReceiveTransportQuota">
+      <Install DescriptionId="SetupProgressMaxReceiveTransportQuota">
+        <Tenant>
+            if (!$CreateSharedConfiguration)
+            {
+                foreach ($mp in $ServicePlanSettings.MailboxPlans)
+                {
+                    if($mp.MaxReceiveTransportQuota -ne $null)
+                    {
+                        Write-ExchangeSetupLog -info ("Setting MaxReceiveTransportQuota " + $mp.Name);
+                        $mp.Instance | Set-MailboxPlan -MaxReceiveSize $mp.MaxReceiveTransportQuota -DomainController $RoleDomainController;
+                    }
+                }
+            }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade />
+      <Uninstall />
+    </ServicePlanTaskInfo>
+
+    <!-- 'MaxSendTransportQuota' feature -->
+    <ServicePlanTaskInfo FeatureName="MaxSendTransportQuota">
+      <Install DescriptionId="SetupProgressMaxSendTransportQuota">
+        <Tenant>
+            if (!$CreateSharedConfiguration)
+            {
+                foreach ($mp in $ServicePlanSettings.MailboxPlans)
+                {
+                    if($mp.MaxSendTransportQuota -ne $null)
+                    {
+                        Write-ExchangeSetupLog -info ("Setting MaxSendTransportQuota " + $mp.Name);
+                        $mp.Instance | Set-MailboxPlan -MaxSendSize $mp.MaxSendTransportQuota -DomainController $RoleDomainController;
+                    }
+                }
+            }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade />
+      <Uninstall />
+    </ServicePlanTaskInfo>
+
+    <!-- 'MaxRecipientsTransportQuota' feature -->
+    <ServicePlanTaskInfo FeatureName="MaxRecipientsTransportQuota">
+      <Install DescriptionId="SetupProgressMaxRecipientsTransportQuota">
+        <Tenant>
+            if (!$CreateSharedConfiguration)
+            {
+                foreach ($mp in $ServicePlanSettings.MailboxPlans)
+                {
+                    if($mp.MaxRecipientsTransportQuota -ne $null)
+                    {
+                        Write-ExchangeSetupLog -info ("Setting MaxRecipientsTransportQuota " + $mp.Name);
+                        $mp.Instance | Set-MailboxPlan -RecipientLimits $mp.MaxRecipientsTransportQuota -DomainController $RoleDomainController;
+                    }
+                }
+            }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </ServicePlanTaskInfo>
+
+     <!-- 'SyncAccountsMaxAccountsQuota' feature -->
+    <ServicePlanTaskInfo FeatureName="SyncAccountsMaxAccountsQuota">
+      <Install DescriptionId="SetupProgressSyncAccountsMaxAccountsQuota">
+        <Tenant>
+            if (!$CreateSharedConfiguration)
+            {
+                foreach ($mp in $ServicePlanSettings.MailboxPlans)
+                {
+                    if ($mp.SyncAccountsMaxAccountsQuota -ne $null)
+                    {
+                        Write-ExchangeSetupLog -info ("SyncAccountsMaxAccountsQuota feature provisioning for " + $mp.Name);
+
+                        $syncPolicyName = "SyncAccountsPolicy-" + $mp.Name;
+
+                        $remoteAccountPolicy = Get-RemoteAccountPolicy -Organization $RoleOrganizationHierarchicalPath | where {$_.Name -eq $syncPolicyName };
+
+                        if ($remoteAccountPolicy -ne $null)
+                        {
+                            Set-RemoteAccountPolicy -Identity $remoteAccountPolicy.Identity -MaxSyncAccounts $mp.SyncAccountsMaxAccountsQuota;
+                        }
+                    }
+                }
+            }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </ServicePlanTaskInfo>
+
+    <!-- 'SyncAccountsPollingInterval' feature -->
+    <ServicePlanTaskInfo FeatureName="SyncAccountsPollingInterval">
+      <Install DescriptionId="SetupProgressSyncAccountsPollingInterval">
+        <Tenant>
+            if (!$CreateSharedConfiguration)
+            {
+                foreach ($mp in $ServicePlanSettings.MailboxPlans)
+                {
+                    if ($mp.SyncAccountsPollingInterval -ne $null)
+                    {
+                        Write-ExchangeSetupLog -info ("SyncAccountsPollingInterval feature provisioning for " + $mp.Name);
+
+                        $syncPolicyName = "SyncAccountsPolicy-" + $mp.Name;
+
+                        $remoteAccountPolicy = Get-RemoteAccountPolicy -Organization $RoleOrganizationHierarchicalPath | where {$_.Name -eq $syncPolicyName };
+
+                        if ($remoteAccountPolicy -ne $null)
+                        {
+                            $pollingInterval = [Microsoft.Exchange.Data.EnhancedTimeSpan]::Parse($mp.SyncAccountsPollingInterval);
+
+                            Set-RemoteAccountPolicy -Identity $remoteAccountPolicy.Identity -PollingInterval $pollingInterval;
+                        }
+                    }
+                }
+            }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </ServicePlanTaskInfo>
+
+    <!-- 'SyncAccountsTimeBeforeInactive' feature -->
+    <ServicePlanTaskInfo FeatureName="SyncAccountsTimeBeforeInactive">
+      <Install DescriptionId="SetupProgressSyncAccountsTimeBeforeInactive">
+        <Tenant>
+            if (!$CreateSharedConfiguration)
+            {
+                foreach ($mp in $ServicePlanSettings.MailboxPlans)
+                {
+                    if ($mp.SyncAccountsTimeBeforeInactive -ne $null)
+                    {
+                        Write-ExchangeSetupLog -info ("SyncAccountsPollingInterval feature provisioning for " + $mp.Name);
+
+                        $syncPolicyName = "SyncAccountsPolicy-" + $mp.Name;
+
+                        $remoteAccountPolicy = Get-RemoteAccountPolicy -Organization $RoleOrganizationHierarchicalPath | where {$_.Name -eq $syncPolicyName };
+
+                        if ($remoteAccountPolicy -ne $null)
+                        {
+                            $syncAccountsTimeBeforeInactive = [Microsoft.Exchange.Data.EnhancedTimeSpan]::Parse($mp.SyncAccountsTimeBeforeInactive);
+
+                            Set-RemoteAccountPolicy -Identity $remoteAccountPolicy.Identity -TimeBeforeInactive $syncAccountsTimeBeforeInactive;
+                        }
+                    }
+                }
+            }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </ServicePlanTaskInfo>
+
+    <!-- 'SyncAccountsTimeBeforeDormant' feature -->
+    <ServicePlanTaskInfo FeatureName="SyncAccountsTimeBeforeDormant">
+      <Install DescriptionId="SetupProgressSyncAccountsTimeBeforeDormant">
+        <Tenant>
+            if (!$CreateSharedConfiguration)
+            {
+                foreach ($mp in $ServicePlanSettings.MailboxPlans)
+                {
+                    if ($mp.SyncAccountsTimeBeforeDormant -ne $null)
+                    {
+                        Write-ExchangeSetupLog -info ("SyncAccountsPollingInterval feature provisioning for " + $mp.Name);
+
+                        $syncPolicyName = "SyncAccountsPolicy-" + $mp.Name;
+
+                        $remoteAccountPolicy = Get-RemoteAccountPolicy -Organization $RoleOrganizationHierarchicalPath | where {$_.Name -eq $syncPolicyName };
+
+                        if ($remoteAccountPolicy -ne $null)
+                        {
+                            $syncAccountsTimeBeforeDormant = [Microsoft.Exchange.Data.EnhancedTimeSpan]::Parse($mp.SyncAccountsTimeBeforeDormant);
+
+                            Set-RemoteAccountPolicy -Identity $remoteAccountPolicy.Identity -TimeBeforeDormant $syncAccountsTimeBeforeDormant;
+                        }
+                    }
+                }
+            }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </ServicePlanTaskInfo>
+
+    <!-- 'OrganizationalQueryBaseDNEnabled' feature -->
+    <ServicePlanTaskInfo FeatureName="OrganizationalQueryBaseDNEnabled">
+      <Install DescriptionId="SetupProgressOrganizationalQueryBaseDNEnabled">
+        <Tenant>
+          if (!$CreateSharedConfiguration)
+          {
+              foreach ($mp in $ServicePlanSettings.MailboxPlans)
+              {
+                  Write-ExchangeSetupLog -info ("Setting OrganizationalQueryBaseDNEnabled" + $mp.Name);
+                  $mp.Instance | Set-MailboxPlan -QueryBaseDNRestrictionEnabled (!$mp.OrganizationalQueryBaseDNEnabled) -DomainController $RoleDomainController;
+              }
+          }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </ServicePlanTaskInfo>
+
+    <!-- Features that depend on existence of mailboxplans -->
+
+    <!-- 'LicenseEnforcementEnabled' feature - apply the IsLicensingEnforced flag -->
+    <ServicePlanTaskInfo FeatureName="LicenseEnforcementEnabled">
+      <Install DescriptionId="SetupProgressLicenseEnforcement">
+        <Tenant>
+          if (!$CreateSharedConfiguration)
+          {
+            Set-OrganizationFlags $RoleOrganizationHierarchicalPath -IsLicensingEnforced:$ServicePlanSettings.Organization.LicenseEnforcementEnabled -DomainController $RoleDomainController;
+          }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade />
+      <Uninstall />
+    </ServicePlanTaskInfo>
+
+    <!-- 'HideAdminAccessWarningEnabled' feature - apply the HideAdminAccessWarning flag -->
+    <ServicePlanTaskInfo FeatureName="HideAdminAccessWarningEnabled">
+      <Install DescriptionId="SetupProgressHideAdminAccessWarning">
+        <Tenant>
+          if (!$CreateSharedConfiguration)
+          {
+            Set-OrganizationFlags $RoleOrganizationHierarchicalPath -HideAdminAccessWarning:$ServicePlanSettings.Organization.HideAdminAccessWarningEnabled -DomainController $RoleDomainController;
+          }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <Uninstall />
+    </ServicePlanTaskInfo>
+
+    <!-- 'SkipToUAndParentalControlCheckEnabled' feature - apply the SkipToUAndParentalControlCheck flag -->
+    <ServicePlanTaskInfo FeatureName="SkipToUAndParentalControlCheckEnabled">
+      <Install DescriptionId="SetupProgressSkipToUAndParentalControlCheckEnabled">
+        <Tenant>
+          if (!$CreateSharedConfiguration)
+          {
+            Set-OrganizationFlags $RoleOrganizationHierarchicalPath -SkipToUAndParentalControlCheck:$ServicePlanSettings.Organization.SkipToUAndParentalControlCheckEnabled -DomainController $RoleDomainController;
+          }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <Uninstall />
+    </ServicePlanTaskInfo>
+
+    <!-- 'UseServicePlanAsCounterInstanceName' feature - apply the UseServicePlanAsCounterInstanceName flag -->
+    <ServicePlanTaskInfo FeatureName="UseServicePlanAsCounterInstanceName">
+      <Install DescriptionId="SetupProgressUseServicePlanAsCounterInstanceName">
+        <Tenant>
+          if (!$CreateSharedConfiguration)
+          {
+            Set-OrganizationFlags $RoleOrganizationHierarchicalPath -UseServicePlanAsCounterInstanceName:$ServicePlanSettings.Organization.UseServicePlanAsCounterInstanceName -DomainController $RoleDomainController;
+          }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <Uninstall />
+    </ServicePlanTaskInfo>
+
+    <!-- Create mailbox for the AdministratorWindowsLiveId only if the new-organization task is run with the Datacenter switch.  -->
+    <ServicePlanTaskInfo FeatureName="CommonConfiguration">
+      <Install DescriptionId="SetupProgressCommonConfiguration">
+        <Tenant>
+          if( $RoleIsDatacenter -eq $true -and $RoleTenantAdministrator -ne $null -and !$CreateSharedConfiguration)
+          {
+            $OrganizationDefaultAdministrator = $null;
+            $smtpAddress = $null;
+
+            if(!$RoleTenantAdministrator.Contains('@'))
+            {
+                throw "Creating administrators by NETID is not allowed";
+            }
+            else
+            {
+                $smtpAddress = [Microsoft.Exchange.Data.SmtpAddress]($RoleTenantAdministrator);
+            }
+
+            if($RoleTenantDomainName -ne $smtpAddress.Domain)
+            {
+                throw "External tenant administrators are not allowed";
+            }
+
+
+            if($RoleAuthenticationType -ne [Microsoft.Exchange.Data.Directory.AuthenticationType]::Federated)
+            {
+                if($RoleTenantAdministratorNetID -ne $null)
+                {
+                    $OrganizationDefaultAdministrator = new-mailbox -DomainController $RoleDomainController -WindowsLiveId $RoleTenantAdministrator -Organization $RoleOrganizationHierarchicalPath -Name "Administrator" -UseExistingLiveId -NetID $RoleTenantAdministratorNetID -OverrideRecipientQuotas;
+                }
+                else
+                {
+                    $OrganizationDefaultAdministrator = new-mailbox -DomainController $RoleDomainController -WindowsLiveId $RoleTenantAdministrator -Organization $RoleOrganizationHierarchicalPath -Name "Administrator" -UseExistingLiveId -OverrideRecipientQuotas;
+                }
+            }
+            else
+            {
+              if($RoleTenantAdministratorNetID -ne $null)
+              {
+                $OrganizationDefaultAdministrator = new-mailuser -DomainController $RoleDomainController -WindowsLiveId $RoleTenantAdministrator -Organization $RoleOrganizationHierarchicalPath -Name "Administrator" -FederatedIdentity $RoleTenantAdministrator -NetID $RoleTenantAdministratorNetID -OverrideRecipientQuotas;
+              }
+              else
+              {
+                $OrganizationDefaultAdministrator = new-mailuser -DomainController $RoleDomainController -WindowsLiveId $RoleTenantAdministrator -Organization $RoleOrganizationHierarchicalPath -Name "Administrator" -FederatedIdentity $RoleTenantAdministrator -OverrideRecipientQuotas;
+              }
+            }
+          }
+          elseif ($RoleIsPartnerHosted -eq $true -and $TenantAdministratorPassword -ne $null)
+          {
+            $Name = "Administrator";
+            $UserPrincipalName = $Name + "@" + $RoleTenantDomainName;
+
+            $OrganizationDefaultAdministrator = new-mailbox -DomainController $RoleDomainController -Organization $RoleOrganizationHierarchicalPath -Name $Name -UserPrincipalName $UserPrincipalName -password $TenantAdministratorPassword -OverrideRecipientQuotas;
+          }
+
+          if ($OrganizationDefaultAdministrator -ne $null)
+          {
+            Get-RoleGroup -DomainController $RoleDomainController -Organization $RoleOrganizationHierarchicalPath | where {$_.Name -ne "Discovery Management"} | Add-RoleGroupMember -Member ($OrganizationDefaultAdministrator.Identity) -DomainController $RoleDomainController -BypassSecurityGroupManagerCheck;
+          }
+
+          $orgRoleGroupGuid = [Microsoft.Exchange.Data.Directory.Management.RoleGroup]::OrganizationManagement_InitInfo.WellKnownGuid;
+          $orgRoleGroup = Get-RoleGroup -Identity $orgRoleGroupGuid -Organization $RoleOrganizationHierarchicalPath -DomainController $RoleDomainController;
+
+          if( $orgRoleGroup -eq $null )
+          {
+            Write-ExchangeSetupLog -Error "Organization Management RoleGroup not found.";
+          }
+
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade />
+      <Uninstall/>
+    </ServicePlanTaskInfo>
+
+    <!-- 'OfflineAddressBookEnabled' feature  -->
+    <!-- The "Global" OAB is created in SystemAttendantDependent.xml -->
+    <ServicePlanTaskInfo FeatureName="OfflineAddressBookEnabled">
+      <Install DescriptionId="SetupProgressOfflineAddressBookEnabled">
+        <Tenant>
+            if (!$CreateSharedConfiguration -and -not $PilotEnabled)
+            {
+              if ($ServicePlanSettings.Organization.OfflineAddressBookEnabled)
+			  {
+                Write-ExchangeSetupLog -info "OfflineAddressBookEnabled feature provisioning";
+			    $createNewOab = $false;
+
+			    Write-ExchangeSetupLog -Info ("Looking for an existing default OAB");
+			    $defaultOab = Get-OfflineAddressBook -Organization $RoleOrganizationHierarchicalPath -DomainController:$RoleDomainController | where {$_.IsDefault};
+			    if ($defaultOab -ne $null)
+			    {
+			      Write-ExchangeSetupLog -Info ("Found a default OAB: " + $defaultOab.Name + "; checking its version");
+			      if ($defaultOab.ExchangeVersion.CompareTo([Microsoft.Exchange.Data.ExchangeObjectVersion]::Exchange2012) -lt 0)
+			      {
+			        Write-ExchangeSetupLog -Info ("Existing OAB is Exchange 2010 or older; will delete and create a new OAB");
+			        Remove-OfflineAddressBook $defaultOab.Identity -DomainController $RoleDomainController -Confirm:$false;
+			        $createNewOab = $true;
+			      }
+			      else
+			      {
+			        Write-ExchangeSetupLog -Info ("Existing OAB is Exchange 2012 or newer; will not create a new OAB");
+			      }
+			    }
+			    else
+			    {
+			      Write-ExchangeSetupLog -Info ("Did not find a default OAB; will create one");
+			      $createNewOab = $true;
+			    }
+
+			    if ($createNewOab)
+			    {
+                  install-AddressBookRoot -Organization $RoleOrganizationHierarchicalPath -DomainController $RoleDomainController;
+
+                  $defaultOabName = [Microsoft.Exchange.Data.Directory.SystemConfiguration.OfflineAddressBook]::DefaultName;
+
+                  $pseudoGalName = "Offline Global Address List";
+                  $tenantGal = get-GlobalAddressList -Organization $RoleOrganizationHierarchicalPath -DomainController $RoleDomainController;
+                  $tenantPseudoGal = get-AddressList -Organization $RoleOrganizationHierarchicalPath -DomainController $RoleDomainController | where {$_.Name -ieq $pseudoGalName };
+
+                  if($tenantPseudoGal -eq $null -or $tenantPseudoGal.Length -eq 0)
+                  {
+                      $tenantPseudoGal = new-AddressList -Name $pseudoGalName -RecipientFilter $tenantGal.RecipientFilter -Organization $RoleOrganizationHierarchicalPath -DomainController $RoleDomainController;
+                  }
+
+			      try
+			      {
+			        Write-ExchangeSetupLog -Info ("Creating new default OAB.");
+                    new-OfflineAddressBook `
+                      -Name $defaultOabName `
+                      -IsDefault $true `
+                      -AddressLists $tenantPseudoGal.DistinguishedName `
+                      -GlobalWebDistributionEnabled $true `
+                      -Organization $RoleOrganizationHierarchicalPath `
+                      -DomainController $RoleDomainController;
+			      }
+			      catch [Microsoft.Exchange.Data.Directory.ADObjectAlreadyExistsException]
+			      {
+			        Write-ExchangeSetupLog -Warning ("Tried to create new default OAB but the object already exists; it may have been created by another instance of setup.");
+			      }
+			    }
+		      }
+              else
+              {
+                Get-OfflineAddressBook -Organization $RoleOrganizationHierarchicalPath -DomainController $RoleDomainController | Remove-OfflineAddressBook -DomainController $RoleDomainController;
+              }
+            }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <Uninstall/>
+    </ServicePlanTaskInfo>
+
+    <!-- Features that depend on existence of admin mailbox -->
+
+    <!-- 'SearchMessageEnabled' feature - creating the default discovery search mailbox and grant full access permission of the mailbox to the discovery management role group -->
+    <ServicePlanTaskInfo FeatureName="SearchMessageEnabled">
+      <Install DescriptionId="SetupProgressSearchMessageEnabled" IsFatal="false">
+        <Tenant>
+
+          if (!$CreateSharedConfiguration)
+          {
+            Write-ExchangeSetupLog -info "Service plan feature SearchMessageEnabled being applied";
+            $errorMessage = $null;
+            $discoveryManagementRoleGroupGuid = [Microsoft.Exchange.Data.Directory.Management.RoleGroup]::DiscoveryManagement_InitInfo.WellKnownGuid;
+            $discoveryManagementRoleGroup = Get-RoleGroup -Identity $discoveryManagementRoleGroupGuid -Organization $RoleOrganizationHierarchicalPath -DomainController $RoleDomainController -ErrorAction:SilentlyContinue;
+
+            $name = [Microsoft.Exchange.Management.RecipientTasks.EnableMailbox]::DiscoveryMailboxUniqueName;
+            $name = $name.Replace(' ', '');
+            $dispname = [Microsoft.Exchange.Management.RecipientTasks.EnableMailbox]::DiscoveryMailboxDisplayName;
+            try
+            {
+                $discoveryMailbox = Get-Mailbox -Organization $RoleOrganizationHierarchicalPath -DomainController $RoleDomainController -Filter "Alias -eq '$name'";
+                if($ServicePlanSettings.Organization.SearchMessageEnabled)
+                {
+                    # upgrade the discovery mailboxes to R5 version, this will fix the RecipientDisplayType property of the discovery mailbox which was wrong in R4.
+                    get-mailbox -RecipientTypeDetails DiscoveryMailbox -Organization $RoleOrganizationHierarchicalPath -DomainController $RoleDomainController | set-mailbox -DomainController $RoleDomainController
+
+                    if ($discoveryMailbox -eq $null)
+                    {
+                        $upn = $name + "@" + $RoleTenantDomainName;
+                        $discoveryMailbox = New-Mailbox -Organization $RoleOrganizationHierarchicalPath -Name $name -DisplayName $dispname -UserPrincipalName $upn -Discovery -OverrideRecipientQuotas -DomainController $RoleDomainController;
+                    }
+                    if ($discoveryMailbox -ne $null)
+                    {
+                        trap [System.Exception]
+                        {
+                          Add-MailboxPermission $discoveryMailbox -User $discoveryManagementRoleGroup.Identity -AccessRights FullAccess -DomainController $RoleDomainController -ErrorAction SilentlyContinue;
+                          continue;
+                        }
+
+                        Add-MailboxPermission $discoveryMailbox -User $discoveryManagementRoleGroup.Identity -AccessRights FullAccess -DomainController $RoleDomainController;
+                    }
+                }
+                else
+                {
+                    if ($discoveryMailbox -ne $null)
+                    {
+                        $discoveryMailbox | remove-mailbox -DomainController $RoleDomainController;
+                    }
+                }
+            }
+            catch [Microsoft.Exchange.Data.Mapi.Common.DatabaseUnavailableException]
+            {
+                $errorMessage = "Service plan feature SearchMessageEnabled is not complete: mailbox database error - "  + $_.Exception.Message;
+            }
+            catch [Microsoft.Exchange.Data.Mapi.Common.MapiTransientException]
+            {
+                $errorMessage = "Service plan feature SearchMessageEnabled is not complete: transient mailbox error - "  + $_.Exception.Message;
+            }
+            catch [Microsoft.Exchange.Data.Mapi.Common.MapiOperationException]
+            {
+                $errorMessage = "Service plan feature SearchMessageEnabled is not complete: permanent mailbox error - "  + $_.Exception.Message;
+            }
+
+            if ($errorMessage -ne $null)
+            {
+                Write-ExchangeSetupLog -Error $errorMessage;
+            }
+          }
+         </Tenant>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <Uninstall />
+    </ServicePlanTaskInfo>
+
+    <!-- Grab the DistributionListCountQuota values from serviceplan file only in new-organization scenario (not during Start-OrganizationUpgrade and not in Update-Serviceplan-->
+    <ServicePlanTaskInfo FeatureName="DistributionListCountQuota">
+      <Install DescriptionId="SetupProgressDistributionListCountQuota">
+        <Tenant>
+          # RecipientEnforcementProvisioningPolicy object is:
+          # -Static object in tiny tenants  (BPOS_L)
+          # -Hydrated objects in dehydrated tenants (BPOS_S)
+          if(!$AdvancedHydrateableObjectsSharedEnabled)
+          {
+            if(($RoleInstallationMode -eq "Install") -and ($OldServicePlanSettings -eq $null -or $RoleIsCrossSKUMigration -or $RoleIsBPOSSHydration))
+            {
+                 $DistributionListCountQuota = $ServicePlanSettings.Organization.GetDistributionListCountQuota();
+
+                 $recipientPolicy = Get-RecipientEnforcementProvisioningPolicy -Organization $RoleOrganizationHierarchicalPath -DomainController $RoleDomainController -IgnoreDehydratedFlag;
+
+                 Write-ExchangeSetupLog -info ("Service plan feature: DistributionListCountQuota. Setting DistributionListCountQuota to " + $DistributionListCountQuota) ;
+                 Set-RecipientEnforcementProvisioningPolicy $recipientPolicy -DistributionListCountQuota $DistributionListCountQuota -DomainController $RoleDomainController -IgnoreDehydratedFlag;
+            }
+          }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade />
+      <Uninstall />
+    </ServicePlanTaskInfo>
+
+    <!-- Grab the MailboxCountQuota values from serviceplan file only in new-organization scenario (not during Start-OrganizationUpgrade and not in Update-Serviceplan-->
+    <ServicePlanTaskInfo FeatureName="MailboxCountQuota">
+      <Install DescriptionId="SetupProgressMailboxCountQuota">
+        <Tenant>
+          # RecipientEnforcementProvisioningPolicy object is:
+          # -Static object in tiny tenants  (BPOS_L)
+          # -Hydrated objects in dehydrated tenants (BPOS_S)
+          if(!$AdvancedHydrateableObjectsSharedEnabled)
+          {
+            if(($RoleInstallationMode -eq "Install") -and ($OldServicePlanSettings -eq $null -or $RoleIsCrossSKUMigration -or $RoleIsBPOSSHydration))
+            {
+                  $MailboxCountQuota = $ServicePlanSettings.Organization.GetMailboxCountQuota();
+
+                  $recipientPolicy = Get-RecipientEnforcementProvisioningPolicy -Organization $RoleOrganizationHierarchicalPath -DomainController $RoleDomainController -IgnoreDehydratedFlag;
+
+                  Write-ExchangeSetupLog -info ("Service plan feature: MailboxCountQuota. Setting MailboxCountQuota to " + $MailboxCountQuota) ;
+                  Set-RecipientEnforcementProvisioningPolicy $recipientPolicy -MailboxCountQuota $MailboxCountQuota -DomainController $RoleDomainController -IgnoreDehydratedFlag;
+            }
+          }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade />
+      <Uninstall />
+    </ServicePlanTaskInfo>
+
+    <!-- Grab the MailUserCountQuota values from serviceplan file only in new-organization scenario (not during Start-OrganizationUpgrade and not in Update-Serviceplan-->
+    <ServicePlanTaskInfo FeatureName="MailUserCountQuota">
+      <Install DescriptionId="SetupProgressMailUserCountQuota">
+        <Tenant>
+          # RecipientEnforcementProvisioningPolicy object is:
+          # -Static object in tiny tenants  (BPOS_L)
+          # -Hydrated objects in dehydrated tenants (BPOS_S)
+          if(!$AdvancedHydrateableObjectsSharedEnabled)
+          {
+            if(($RoleInstallationMode -eq "Install") -and ($OldServicePlanSettings -eq $null -or $RoleIsCrossSKUMigration -or $RoleIsBPOSSHydration))
+            {
+                  $MailUserCountQuota = $ServicePlanSettings.Organization.GetMailUserCountQuota();
+
+                  $recipientPolicy = Get-RecipientEnforcementProvisioningPolicy -Organization $RoleOrganizationHierarchicalPath -DomainController $RoleDomainController -IgnoreDehydratedFlag;
+
+                  Write-ExchangeSetupLog -info ("Service plan feature: MailUserCountQuota. Setting MailUserCountQuota to " + $MailUserCountQuota) ;
+                  Set-RecipientEnforcementProvisioningPolicy $recipientPolicy -MailUserCountQuota $MailUserCountQuota -DomainController $RoleDomainController -IgnoreDehydratedFlag;
+            }
+          }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade />
+      <Uninstall />
+    </ServicePlanTaskInfo>
+
+    <!-- Grab the ContactCountQuota values from serviceplan file only in new-organization scenario (not during Start-OrganizationUpgrade and not in Update-Serviceplan-->
+    <ServicePlanTaskInfo FeatureName="ContactCountQuota">
+      <Install DescriptionId="SetupProgressContactCountQuota">
+        <Tenant>
+          # RecipientEnforcementProvisioningPolicy object is:
+          # -Static object in tiny tenants  (BPOS_L)
+          # -Hydrated objects in dehydrated tenants (BPOS_S)
+          if(!$AdvancedHydrateableObjectsSharedEnabled)
+          {
+            if(($RoleInstallationMode -eq "Install") -and ($OldServicePlanSettings -eq $null -or $RoleIsCrossSKUMigration -or $RoleIsBPOSSHydration))
+            {
+                  $ContactCountQuota = $ServicePlanSettings.Organization.GetContactCountQuota();
+
+                  $recipientPolicy = Get-RecipientEnforcementProvisioningPolicy -Organization $RoleOrganizationHierarchicalPath -DomainController $RoleDomainController -IgnoreDehydratedFlag;
+
+                  Write-ExchangeSetupLog -info ("Service plan feature: ContactCountQuota. Setting ContactCountQuota to " + $ContactCountQuota) ;
+                  Set-RecipientEnforcementProvisioningPolicy $recipientPolicy -ContactCountQuota $ContactCountQuota -DomainController $RoleDomainController -IgnoreDehydratedFlag;
+            }
+           }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade />
+      <Uninstall />
+    </ServicePlanTaskInfo>
+
+    <!-- Grab the TeamMailboxCountQuota values from serviceplan file -->
+    <ServicePlanTaskInfo FeatureName="TeamMailboxCountQuota">
+      <Install DescriptionId="SetupProgressTeamMailboxCountQuota">
+        <Tenant>
+          # RecipientEnforcementProvisioningPolicy object is:
+          # -Static object in tiny tenants  (BPOS_L)
+          # -Hydrated objects in dehydrated tenants (BPOS_S)
+          if(!$AdvancedHydrateableObjectsSharedEnabled)
+          {
+            $TeamMailboxCountQuota = $ServicePlanSettings.Organization.GetTeamMailboxCountQuota();
+
+            # No. Update count quota    Use cases
+            # 1   Yes                   Install a new tenant
+            # 2   Yes                   Upgrade existing tenant to a service plan with different count quota
+            # 3   No                    Upgrade existing tenant to a service plan with same count quota
+            # 2 will override customized count quota. Service plan gets high priority.
+            # 3 will keep customized count quota if users are in similiar service plans.
+            if($OldServicePlanSettings -eq $null -or $RoleIsCrossSKUMigration -or $RoleIsBPOSSHydration -or ($TeamMailboxCountQuota -ne $OldServicePlanSettings.Organization.GetTeamMailboxCountQuota()))
+            {
+              $recipientPolicy = Get-RecipientEnforcementProvisioningPolicy -Organization $RoleOrganizationHierarchicalPath -DomainController $RoleDomainController -IgnoreDehydratedFlag;
+
+              Write-ExchangeSetupLog -info ("Service plan feature: TeamMailboxCountQuota. Setting TeamMailboxCountQuota to " + $TeamMailboxCountQuota) ;
+              Set-RecipientEnforcementProvisioningPolicy $recipientPolicy -TeamMailboxCountQuota $TeamMailboxCountQuota -DomainController $RoleDomainController -IgnoreDehydratedFlag;
+            }
+          }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade />
+      <Uninstall />
+    </ServicePlanTaskInfo>
+
+    <!-- Grab the PublicFolderMailboxCountQuota values from serviceplan file -->
+    <ServicePlanTaskInfo FeatureName="PublicFolderMailboxCountQuota">
+      <Install DescriptionId="SetupProgressPublicFolderMailboxCountQuota">
+        <Tenant>
+          # RecipientEnforcementProvisioningPolicy object is:
+          # -Static object in tiny tenants  (BPOS_L)
+          # -Hydrated objects in dehydrated tenants (BPOS_S)
+          if(!$AdvancedHydrateableObjectsSharedEnabled)
+          {
+            $PublicFolderMailboxCountQuota = $ServicePlanSettings.Organization.GetPublicFolderMailboxCountQuota();
+
+            # No. Update count quota    Use cases
+            # 1   Yes                   Install a new tenant
+            # 2   Yes                   Upgrade existing tenant to a service plan with different count quota
+            # 3   No                    Upgrade existing tenant to a service plan with same count quota
+            # 2 will override customized count quota. Service plan gets high priority.
+            # 3 will keep customized count quota if users are in similiar service plans.
+            if($OldServicePlanSettings -eq $null -or $RoleIsCrossSKUMigration -or $RoleIsBPOSSHydration -or ($PublicFolderMailboxCountQuota -ne $OldServicePlanSettings.Organization.GetPublicFolderMailboxCountQuota()))
+            {
+              $recipientPolicy = Get-RecipientEnforcementProvisioningPolicy -Organization $RoleOrganizationHierarchicalPath -DomainController $RoleDomainController -IgnoreDehydratedFlag;
+
+              Write-ExchangeSetupLog -info ("Service plan feature: PublicFolderMailboxCountQuota. Setting PublicFolderMailboxCountQuota to " + $PublicFolderMailboxCountQuota) ;
+              Set-RecipientEnforcementProvisioningPolicy $recipientPolicy -PublicFolderMailboxCountQuota $PublicFolderMailboxCountQuota -DomainController $RoleDomainController -IgnoreDehydratedFlag;
+            }
+          }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade />
+      <Uninstall />
+    </ServicePlanTaskInfo>
+
+    <!-- Grab the MailPublicFolderCountQuota values from serviceplan file -->
+    <ServicePlanTaskInfo FeatureName="MailPublicFolderCountQuota">
+      <Install DescriptionId="SetupProgressMailPublicFolderCountQuota">
+        <Tenant>
+          # RecipientEnforcementProvisioningPolicy object is:
+          # -Static object in tiny tenants  (BPOS_L)
+          # -Hydrated objects in dehydrated tenants (BPOS_S)
+          if(!$AdvancedHydrateableObjectsSharedEnabled)
+          {
+            $MailPublicFolderCountQuota = $ServicePlanSettings.Organization.GetMailPublicFolderCountQuota();
+
+            # No. Update count quota    Use cases
+            # 1   Yes                   Install a new tenant
+            # 2   Yes                   Upgrade existing tenant to a service plan with different count quota
+            # 3   No                    Upgrade existing tenant to a service plan with same count quota
+            # 2 will override customized count quota. Service plan gets high priority.
+            # 3 will keep customized count quota if users are in similiar service plans.
+            if($OldServicePlanSettings -eq $null -or $RoleIsCrossSKUMigration -or $RoleIsBPOSSHydration -or ($MailPublicFolderCountQuota -ne $OldServicePlanSettings.Organization.GetMailPublicFolderCountQuota()))
+            {
+              $recipientPolicy = Get-RecipientEnforcementProvisioningPolicy -Organization $RoleOrganizationHierarchicalPath -DomainController $RoleDomainController -IgnoreDehydratedFlag;
+
+              Write-ExchangeSetupLog -info ("Service plan feature: MailPublicFolderCountQuota. Setting MailPublicFolderCountQuota to " + $MailPublicFolderCountQuota) ;
+              Set-RecipientEnforcementProvisioningPolicy $recipientPolicy -MailPublicFolderCountQuota $MailPublicFolderCountQuota -DomainController $RoleDomainController -IgnoreDehydratedFlag;
+            }
+          }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade />
+      <Uninstall />
+    </ServicePlanTaskInfo>
+
+    <ServicePlanTaskInfo FeatureName="SupervisionEnabled">
+      <Install>
+        <Tenant>
+          if (!$CreateSharedConfiguration)
+          {
+          $closedCampusInboundRuleName = [Microsoft.Exchange.Management.Supervision.GetSupervisionPolicy]::ClosedCampusInboundRuleName;
+          $closedCampusOutboundRuleName = [Microsoft.Exchange.Management.Supervision.GetSupervisionPolicy]::ClosedCampusOutboundRuleName;
+          $badWordsRuleName = [Microsoft.Exchange.Management.Supervision.GetSupervisionPolicy]::BadWordsRuleName;
+          $antiBullyingRuleName = [Microsoft.Exchange.Management.Supervision.GetSupervisionPolicy]::AntiBullyingRuleName;
+
+          $closedCampusInboundRejectReasonText = [Microsoft.Exchange.Management.Supervision.GetSupervisionPolicy]::ClosedCampusInboundRejectReasonText;
+          $closedCampusOutboundRejectReasonText = [Microsoft.Exchange.Management.Supervision.GetSupervisionPolicy]::ClosedCampusOutboundRejectReasonText;
+          $badWordsRejectReasonText = [Microsoft.Exchange.Management.Supervision.GetSupervisionPolicy]::BadWordsRejectReasonText;
+          $antiBullyingRejectReasonText = [Microsoft.Exchange.Management.Supervision.GetSupervisionPolicy]::AntiBullyingRejectReasonText;
+
+          $existingRules=Get-transportrule -organization $RoleOrganizationHierarchicalPath;
+          $closedCampusInboundRuleFound = $existingRules | where {$_.Name  -eq $closedCampusInboundRuleName};
+          $closedCampusOutboundRuleFound = $existingRules | where {$_.Name -eq $closedCampusOutboundRuleName};
+          $badWordsRuleFound = $existingRules | where {$_.Name -eq $badWordsRuleName};
+          $antiBullyingRuleFound = $existingRules | where {$_.Name -eq $antiBullyingRuleName};
+
+          if ($ServicePlanSettings.Organization.SupervisionEnabled)
+          {
+            Write-ExchangeSetupLog -info "Service plan feature: Supervision. Creating Supervision policy";
+
+            If($closedCampusInboundRuleFound -eq $null)
+            {
+              New-TransportRule -Organization $RoleOrganizationHierarchicalPath -Name $closedCampusInboundRuleName -FromScope "NotInOrganization" -RejectMessageReasonText $closedCampusInboundRejectReasonText -RejectMessageEnhancedStatusCode "5.7.1" -ExceptIfSenderInRecipientList  "Allow" -Enabled $false;
+            }
+            else
+            {
+              if ($closedCampusInboundRuleFound.FromScope -ne "NotInOrganization" -OR
+                $closedCampusInboundRuleFound.ExceptIfSenderInRecipientList -NotContains "Allow")
+              {
+                Set-TransportRule -Identity $closedCampusInboundRuleFound.Identity.ToString() -FromScope "NotInOrganization" -ExceptIfSenderInRecipientList  "Allow";
+              }
+            }
+
+            If($closedCampusOutboundRuleFound -eq $null)
+            {
+              New-TransportRule -Organization $RoleOrganizationHierarchicalPath -Name $closedCampusOutboundRuleName -SentToScope "NotInOrganization" -RejectMessageReasonText $closedCampusOutboundRejectReasonText -RejectMessageEnhancedStatusCode "5.7.1" -ExceptIfRecipientInSenderList  "Allow" -Enabled $false;
+            }
+            else
+            {
+              if ($closedCampusOutboundRuleFound.SentToScope -ne "NotInOrganization" -OR
+                $closedCampusOutboundRuleFound.ExceptIfRecipientInSenderList -NotContains "Allow")
+              {
+                Set-TransportRule -Identity $closedCampusOutboundRuleFound.Identity.ToString() -SentToScope "NotInOrganization" -ExceptIfRecipientInSenderList  "Allow";
+              }
+            }
+
+            If($badWordsRuleFound -eq $null)
+            {
+              New-TransportRule -Organization $RoleOrganizationHierarchicalPath -Name $badWordsRuleName -RejectMessageReasonText $badWordsRejectReasonText -RejectMessageEnhancedStatusCode "5.7.1" -Enabled $false;
+            }
+
+            If($antiBullyingRuleFound -eq $null)
+            {
+              New-TransportRule -Organization $RoleOrganizationHierarchicalPath -Name $antiBullyingRuleName -SenderInRecipientList "Reject" -RejectMessageReasonText $antiBullyingRejectReasonText -RejectMessageEnhancedStatusCode "5.7.1" -Enabled $true;
+            }
+            else
+            {
+              if ($antiBullyingRuleFound.SenderInRecipientList -NotContains "Reject")
+              {
+                Set-TransportRule -Identity $antiBullyingRuleFound.Identity.ToString() -SenderInRecipientList "Reject";
+              }
+            }
+          }
+          else
+          {
+            If($closedCampusInboundRuleFound -ne $null)
+            {
+              Remove-TransportRule -Identity $closedCampusInboundRuleFound.Identity.ToString();
+            }
+
+            If($closedCampusOutboundRuleFound -ne $null)
+            {
+              Remove-TransportRule -Identity $closedCampusOutboundRuleFound.Identity.ToString();
+            }
+
+            If($badWordsRuleFound -ne $null)
+            {
+              Remove-TransportRule -Identity $badWordsRuleFound.Identity.ToString();
+            }
+
+            If($antiBullyingRuleFound -ne $null)
+            {
+              Remove-TransportRule -Identity $antiBullyingRuleFound.Identity.ToString();
+            }
+          }
+          }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <Uninstall />
+    </ServicePlanTaskInfo>
+
+    <!-- 'RecipientMailSubmissionRateQuota' feature -->
+    <ServicePlanTaskInfo FeatureName="RecipientMailSubmissionRateQuota">
+      <Install DescriptionId="SetupProgressRecipientMailSubmissionRateQuota">
+        <Tenant>
+            # ThrottlingPolicy object is:
+            # -Static object in tiny tenants  (BPOS_L)
+            # -Hydrated objects in dehydrated tenants (BPOS_S)
+            if(!$AdvancedHydrateableObjectsSharedEnabled)
+            {
+                $throttlingPolicies = Get-ThrottlingPolicy -DomainController $RoleDomainController -ThrottlingPolicyScope Organization -Organization $RoleOrganizationHierarchicalPath -IgnoreDehydratedFlag;
+
+                if (($throttlingPolicies -eq $null) -or ($throttlingPolicies.Length -eq 0))
+                {
+                    Write-ExchangeSetupLog -Error "Unable to find the organization throttling policy for the current tenant organization.";
+                }
+                elseif ($throttlingPolicies.Length -gt 1)
+                {
+                    Write-ExchangeSetupLog -Error "Found more than one organization throttling policy for the current tenant organization.";
+                }
+                else
+                {
+                    # Get the RecipientLimitRate to set to, by comparing with the current value and the value in service plan settings
+
+                    $recipientRateLimit = "Unlimited";
+                    if (-not ($ServicePlanSettings.Organization.GetRecipientMailSubmissionRateQuota().IsUnlimited))
+                    {
+                        $recipientRateLimit = $ServicePlanSettings.Organization.GetRecipientMailSubmissionRateQuota().Value;
+
+                        if ($recipientRateLimit -eq 0)
+                        {
+                            Write-ExchangeSetupLog -Error "RecipientMailSubmissionRateQuota is not specified in current service plan.";
+                        }
+
+                        # For all the org related tasks except for New-Organization (which has $RolePrepareOrganization as $true)
+                        if ($RolePrepareOrganization -ne $true)
+                        {
+                            # service plan upgrade and deployment build upgrade are mutually exclusive
+							# This is only a build to build upgrade and not a service plan upgrade
+							$buildToBuildUpgrade = ($RoleInstallationMode -eq "BuildToBuildUpgrade");
+							
+							# True if the recipient rate limit is larger than the servicePlan
+							$largerRecipientRateLimit = $throttlingPolicies.RecipientRateLimit.IsUnlimited -or ($recipientRateLimit -lt  $throttlingPolicies.RecipientRateLimit.Value);
+							
+							# We don't want to lose the customized value on the throttling policy (It could be modified by tenant
+                            # through escalation) for these reasons:
+							# 	1. For org upgrade or service plan upgrade where a bigger value is assigned to the tenant
+							# 	2. For only build upgrades and no servicePlan Upgrade
+                            if ($buildToBuildUpgrade -or $largerRecipientRateLimit)
+                            {
+                                $recipientRateLimit = $throttlingPolicies.RecipientRateLimit.Value;
+                                Write-ExchangeSetupLog -Info ("RecipientMailSubmissionRateQuota is not being updated. Keeping the old value of "+ $recipientRateLimit);
+                            }
+                        }
+                    }
+
+                    if ($recipientRateLimit -ne $throttlingPolicies.RecipientRateLimit.Value)
+                    {
+                        if ($throttlingPolicies.ThrottlingPolicyScope -eq "Global")
+                        {
+                            $policyName = "OrganizationThrottlingPolicy" + ([System.Guid]::NewGuid()).ToString();
+                            New-ThrottlingPolicy `
+                                -DomainController $RoleDomainController `
+                                -Name $policyName `
+                                -Organization $RoleOrganizationHierarchicalPath `
+                                -ThrottlingPolicyScope Organization `
+                                -RecipientRateLimit $recipientRateLimit `
+                                -IgnoreDehydratedFlag;
+                        }
+                        elseif ($throttlingPolicies.ThrottlingPolicyScope -eq "Organization")
+                        {
+                            Set-ThrottlingPolicy `
+                                -DomainController $RoleDomainController `
+                                -Identity $throttlingPolicies.Identity `
+                                -RecipientRateLimit $recipientRateLimit `
+                                -IgnoreDehydratedFlag;
+                        }
+                    }
+                }
+            }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </ServicePlanTaskInfo>
+
+    <ServicePlanTaskInfo FeatureName="MultiEngineAVEnabled">
+      <Install DescriptionId="SetupMultiEngineAVEnabled">
+        <Tenant>
+          if (!$CreateSharedConfiguration)
+          {
+            if ($ServicePlanSettings.Organization.MultiEngineAVEnabled)
+            {
+              Write-ExchangeSetupLog -info "Service plan feature: MultiEngineAVEnabled is true. Setting HygieneSuite to Premium";
+              Set-TransportConfig -DomainController $RoleDomainController -Identity $RoleOrganizationHierarchicalPath -HygieneSuite Premium;
+            }
+            else
+            {
+              Write-ExchangeSetupLog -info "Service plan feature: MultiEngineAVEnabled is false. Setting HygieneSuite to Standard";
+              Set-TransportConfig -DomainController $RoleDomainController -Identity $RoleOrganizationHierarchicalPath -HygieneSuite Standard;
+            }
+          }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <Uninstall />
+    </ServicePlanTaskInfo>
+
+    <!--ExchangeHostedFilteringAdminCenterAvailabilityEnabled feature-->
+    <ServicePlanTaskInfo FeatureName="ExchangeHostedFilteringAdminCenterAvailabilityEnabled">
+      <Install DescriptionId="SetupExchangeHostedFilteringAdminCenterAvailabilityEnabled">
+        <Tenant>
+          if (!$CreateSharedConfiguration)
+          {
+            $EnableEhfAdminAccountSync = $ServicePlanSettings.Organization.ExchangeHostedFilteringAdminCenterAvailabilityEnabled;
+
+            Write-ExchangeSetupLog -info "Setting EhfAdminAccountSyncEnabled to $EnableEhfAdminAccountSync";
+            Set-PerimeterConfig $RoleOrganizationHierarchicalPath -DomainController $RoleDomainController -EhfAdminAccountSyncEnabled $EnableEhfAdminAccountSync;
+          }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <Uninstall />
+    </ServicePlanTaskInfo>
+
+    <!--PerimeterSafelistingUIMode feature-->
+    <ServicePlanTaskInfo FeatureName="PerimeterSafelistingUIMode">
+      <Install DescriptionId="SetupPerimeterSafelistingUIMode">
+        <Tenant>
+          if (!$CreateSharedConfiguration)
+          {
+            $PerimeterSafelistingUIMode = $ServicePlanSettings.Organization.PerimeterSafelistingUIMode;
+
+            if ([String]::IsNullOrEmpty($PerimeterSafelistingUIMode))
+            {
+              Write-ExchangeSetupLog -info "PerimeterSafelistingUIMode is not specified. Defaulting to EhfAC.";
+
+              $PerimeterSafelistingUIMode = "EhfAC";
+            }
+
+            $EnableIPSafelistingSync = $true;
+            if($PerimeterSafelistingUIMode -eq "EhfAC")
+            {
+              # Do not sync IP safelisting information to EHF since user has access to EHF Admin center. Users are supposed to go to
+              # EHF admin center to populate this information.
+              $EnableIPSafelistingSync = $false;
+            }
+
+            Write-ExchangeSetupLog -info "Setting PerimeterSafelistingUIMode = $PerimeterSafelistingUIMode; IPSafelistingSyncEnabled = $EnableIPSafelistingSync";
+            Set-PerimeterConfig $RoleOrganizationHierarchicalPath -DomainController $RoleDomainController -SafelistingUIMode $PerimeterSafelistingUIMode -IPSafelistingSyncEnabled $EnableIPSafelistingSync;
+          }
+        </Tenant>
+      </Install>
+      <!--Do not Update SafelistingUIMode during build-to-build upgrade-->
+      <BuildToBuildUpgrade UseInstallTasks="false"/>
+      <Uninstall />
+    </ServicePlanTaskInfo>
+
+    <!-- ExchangeHostedFilteringPerimeterEnabled feature -->
+    <ServicePlanTaskInfo FeatureName="ExchangeHostedFilteringPerimeterEnabled">
+      <Install DescriptionId="SetupExchangeHostedFilteringPerimeterEnabled">
+        <Tenant>
+            if ($ServicePlanSettings.Organization.ExchangeHostedFilteringPerimeterEnabled -and !$CreateSharedConfiguration)
+            {
+              Write-ExchangeSetupLog -info "Enabling EHF Perimeter"
+              Set-PerimeterConfig `
+                  $RoleOrganizationHierarchicalPath `
+                  -DomainController $RoleDomainController `
+                  -EhfConfigSyncEnabled $true `
+                  -RouteOutboundViaEhfEnabled $false `
+                  -RouteOutboundViaFfoFrontendEnabled $true `
+                  -SyncToHotmailEnabled $false;
+            }
+            else
+            {
+              Write-ExchangeSetupLog -info "EHF Perimeter is not enabled"
+            }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="false"/>
+      <Uninstall />
+    </ServicePlanTaskInfo>
+
+    <!-- PrivacyLink feature-->
+    <ServicePlanTaskInfo FeatureName="PrivacyLink">
+      <Install DescriptionId="SetupProgressPrivacyLink">
+        <Tenant>
+            # ExchangeAssistanceConfig object is:
+            # -Static object in tiny tenants  (BPOS_L)
+            # -Hydrated objects in dehydrated tenants (BPOS_S)
+            if(!$AdvancedHydrateableObjectsSharedEnabled)
+            {
+              if ([String]::IsNullOrEmpty($ServicePlanSettings.Organization.PrivacyLink))
+              {
+                Set-ExchangeAssistanceConfig -Identity $RoleOrganizationHierarchicalPath -PrivacyLinkDisplayEnabled $false;
+              }
+              else
+              {
+                Set-ExchangeAssistanceConfig -Identity $RoleOrganizationHierarchicalPath -PrivacyStatementUrl $ServicePlanSettings.Organization.PrivacyLink -PrivacyLinkDisplayEnabled $true;
+              }
+            }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <Uninstall />
+    </ServicePlanTaskInfo>
+
+    <!-- PublicFoldersEnabled feature -->
+    <ServicePlanTaskInfo FeatureName="PublicFoldersEnabled">
+      <Install DescriptionId="SetupProgressPublicFoldersEnabled">
+        <Tenant>
+          if (!$CreateSharedConfiguration)
+          {
+            $PublicFoldersEnabled = $ServicePlanSettings.Organization.PublicFoldersEnabled;
+            Get-OwaMailboxPolicy -Organization $RoleOrganizationHierarchicalPath -DomainController $RoleDomainController | Set-OWAMailboxPolicy -PublicFoldersEnabled $PublicFoldersEnabled
+          }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade />
+      <Uninstall />
+    </ServicePlanTaskInfo>
+
+    <!-- HostedSpamFilteringPolicyCustomizationEnabled feature -->
+    <ServicePlanTaskInfo FeatureName="HostedSpamFilteringPolicyCustomizationEnabled">
+      <Install DescriptionId="SetupProgressHostedContentFilterPolicy">
+        <Tenant>
+          if (!$CommonHydrateableObjectsSharedEnabled)
+          {
+            $existing = Get-HostedContentFilterPolicy -IgnoreDehydratedFlag -DomainController $RoleDomainController -Organization $RoleOrganizationHierarchicalPath
+            if ($ServicePlanSettings.Organization.HostedSpamFilteringPolicyCustomizationEnabled)
+            {
+              if ($existing -eq $null)
+              {
+                New-HostedContentFilterPolicy -Name "Default" -IgnoreDehydratedFlag -DomainController $RoleDomainController -Organization $RoleOrganizationHierarchicalPath;
+              }
+            }
+            else
+            {
+              # Remove all existing policies if the feature was removed from tenant's service plan
+              if ($existing -ne $null)
+              {
+                $existing | Remove-HostedContentFilterPolicy -Force -Confirm:$false
+              }
+            }
+          }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <Uninstall />
+    </ServicePlanTaskInfo>
+
+    <!-- HostedSpamFilteringPolicyCustomizationEnabled feature -->
+    <ServicePlanTaskInfo FeatureName="HostedSpamFilteringPolicyCustomizationEnabled">
+      <Install DescriptionId="SetupProgressHostedConnectorFilterPolicy">
+        <Tenant>
+          if (!$CommonHydrateableObjectsSharedEnabled)
+          {
+            $existing = Get-HostedConnectionFilterPolicy -IgnoreDehydratedFlag -DomainController $RoleDomainController -Organization $RoleOrganizationHierarchicalPath
+            if ($ServicePlanSettings.Organization.HostedSpamFilteringPolicyCustomizationEnabled)
+            {
+              if ($existing -eq $null)
+              {
+                New-HostedConnectionFilterPolicy -Name "Default" -IgnoreDehydratedFlag -DomainController $RoleDomainController -Organization $RoleOrganizationHierarchicalPath;
+              }
+            }
+            else
+            {
+              if ($existing -ne $null)
+              {
+                $existing | Remove-HostedConnectionFilterPolicy -Force -Confirm:$false
+              }
+            }
+          }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <Uninstall />
+    </ServicePlanTaskInfo>
+
+    <!-- HostedSpamFilteringPolicyCustomizationEnabled feature -->
+    <ServicePlanTaskInfo FeatureName="HostedSpamFilteringPolicyCustomizationEnabled">
+      <Install DescriptionId="SetupProgressHostedOutboundSpamFilterPolicy">
+        <Tenant>
+          if (!$CommonHydrateableObjectsSharedEnabled)
+          {
+            $existing = Get-HostedOutboundSpamFilterPolicy -IgnoreDehydratedFlag -DomainController $RoleDomainController -Organization $RoleOrganizationHierarchicalPath
+            if ($ServicePlanSettings.Organization.HostedSpamFilteringPolicyCustomizationEnabled)
+            {
+              if ($existing -eq $null)
+              {
+                Install-HostedOutboundSpamFilterPolicy -Name "Default" -IgnoreDehydratedFlag -DomainController $RoleDomainController -Organization $RoleOrganizationHierarchicalPath;
+              }
+            }
+            else
+            {
+              if ($existing -ne $null)
+              {
+                $existing | Remove-HostedOutboundSpamFilterPolicy
+              }
+            }
+          }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <Uninstall />
+    </ServicePlanTaskInfo>
+
+    <!-- MalwareFilteringPolicyCustomizationEnabled feature -->
+    <ServicePlanTaskInfo FeatureName="MalwareFilteringPolicyCustomizationEnabled">
+      <Install DescriptionId="SetupProgressMalwareFilterPolicy">
+        <Tenant>
+          if (!$CommonHydrateableObjectsSharedEnabled)
+          {
+            $existing = Get-MalwareFilterPolicy -IgnoreDehydratedFlag -DomainController $RoleDomainController -Organization $RoleOrganizationHierarchicalPath
+            if ($ServicePlanSettings.Organization.MalwareFilteringPolicyCustomizationEnabled)
+            {
+              if ($existing -eq $null)
+              {
+                New-MalwareFilterPolicy -Name "Default" -IgnoreDehydratedFlag -DomainController $RoleDomainController -Organization $RoleOrganizationHierarchicalPath;
+              }
+            }
+            else
+            {
+              if ($existing -ne $null)
+              {
+                # Remove all existing policies if the feature was removed from tenant's service plan
+                $existing | Remove-MalwareFilterPolicy -Force -Confirm:$false
+              }
+            }
+          }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <Uninstall />
+    </ServicePlanTaskInfo>
+
+    <!-- 'PilotEnabled' section - driven by presence of PilotEnabled section in service plan -->
+    <!-- Nothing special to do on enabling pilot since Pilot mailbox plans get created in CreateMailboxPlan section. -->
+    <!-- On transition from pilot to upgrade move all mailboxes on Pilot mailbox plans to target mailbox plans and remove Pilot plans.  -->
+    <ServicePlanTaskInfo FeatureName="PilotEnabled">
+      <Install DescriptionId="SetupProgressManagePilotMailboxPlans">
+        <Tenant>
+          if (-not $PilotEnabled -and !$CreateSharedConfiguration)
+          {
+          $pilotPlans = @(get-mailboxPlan -Organization $RoleOrganizationHierarchicalPath -DomainController $RoleDomainController | where {$_.IsPilotMailboxPlan});
+          $targetPlans = @(get-mailboxPlan -Organization $RoleOrganizationHierarchicalPath -DomainController $RoleDomainController | where {-not $_.IsPilotMailboxPlan} | where {$_.MailboxPlanRelease -ne 'NonCurrentRelease'});
+
+          foreach($pilotPlan in $pilotPlans)
+          {
+          $targetPlan = $targetPlans | where {$pilotPlan.PersistedCapabilities[0] -eq $_.PersistedCapabilities[0]};
+          $mbxes = @(get-mailbox -Organization $RoleOrganizationHierarchicalPath -DomainController $RoleDomainController -MailboxPlan $pilotPlan.Identity);
+          $mbxes | %{
+          Write-ExchangeSetupLog -info ("Moving mailbox '{0}' to non pilot mailbox plan '{1}'." -f $_.Name, $targetPlan.Name);
+
+          # Use -DoNotCheckAcceptedDomains to avoid triggering some per user valdiations. This allows the updates to continue and not block
+          # service level changes (upgrades/migrations) for individual user issues that are not related.
+          set-syncmailbox $_.Identity -DoNotCheckAcceptedDomains -DomainController $RoleDomainController -MailboxPlan $targetPlan.Identity;
+          }
+
+          Write-ExchangeSetupLog -info ("Removing pilot mailbox plan '{0}'." -f $_.Name);
+          remove-mailboxplan $pilotPlan.Identity -DomainController $RoleDomainController
+          }
+          }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade/>
+      <Uninstall />
+    </ServicePlanTaskInfo>
+
+  </OrgTasks>
+</SetupComponentInfo>

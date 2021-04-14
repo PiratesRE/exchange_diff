@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:mce="http://schemas.microsoft.com/office/2011/mce"
+           targetNamespace="http://schemas.microsoft.com/office/2011/mce" 
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           elementFormDefault="qualified"
+           attributeFormDefault="unqualified"
+           id="RulePackageSchema">
+  <!-- Use include if this schema has the same target namespace as the schema being referenced, otherwise use import -->
+  <xs:include schemaLocation="RulePackageTypes.xsd"/>
+  <xs:element name="RulePackage" type="mce:RulePackageType"/>
+</xs:schema>

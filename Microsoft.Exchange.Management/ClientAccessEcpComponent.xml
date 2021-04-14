@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo Name="ECP Configuration" DescriptionId="ClientAccessEcpComponentDescription">
+
+  <ServerTasks>
+
+    <!-- Note: create HTTP container already covered by OWA -->
+
+    <!-- Create ECP virtual directory -->
+    <ServerTaskInfo Id="_9b61914c88354a1ca625560e0a59451c" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          $BEVdirIdentity = $RoleNetBIOSName + "\ECP (Exchange Back End)";
+          new-EcpVirtualDirectory -Role Mailbox -WebSiteName "Exchange Back End" -DomainController $RoleDomainController ;
+          set-EcpVirtualdirectory -Identity $BEVdirIdentity -FormsAuthentication:$false -WindowsAuthentication:$true;
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade>
+        <Standalone>
+          $BEVdirIdentity = $RoleNetBIOSName + "\ECP (Exchange Back End)";
+          $be = get-EcpVirtualDirectory -ShowMailboxVirtualDirectories -Identity $BEVdirIdentity -DomainController $RoleDomainController -ErrorAction SilentlyContinue;
+          if ($be -eq $null)
+          {
+          new-EcpVirtualDirectory -Role Mailbox -WebSiteName "Exchange Back End" -DomainController $RoleDomainController;
+          set-EcpVirtualdirectory -Identity $BEVdirIdentity -FormsAuthentication:$false -WindowsAuthentication:$true;
+          }
+          set-EcpVirtualdirectory -Identity $BEVdirIdentity -InternalUrl $null -ExternalUrl $null;
+          . "$RoleInstallPath\Scripts\Update-AppPoolManagedFrameworkVersion.ps1" -AppPoolName:"MSExchangeECPAppPool" -Version:"v4.0";
+        </Standalone>
+      </BuildToBuildUpgrade>
+      <DisasterRecovery>
+        <Standalone>
+          get-EcpVirtualDirectory -ShowMailboxVirtualDirectories -server $RoleFqdnOrName -DomainController $RoleDomainController | remove-EcpVirtualDirectory -DomainController $RoleDomainController;
+          $BEVdirIdentity = $RoleNetBIOSName + "\ECP (Exchange Back End)";
+          new-EcpVirtualDirectory -Role Mailbox -WebSiteName "Exchange Back End" -DomainController $RoleDomainController;
+          set-EcpVirtualdirectory -Identity $BEVdirIdentity -FormsAuthentication:$false -WindowsAuthentication:$true;
+        </Standalone>
+      </DisasterRecovery>
+      <Uninstall>
+        <Standalone>
+          get-EcpVirtualDirectory -ShowMailboxVirtualDirectories -server $RoleFqdnOrName -DomainController $RoleDomainController | remove-EcpVirtualDirectory -DomainController $RoleDomainController;
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Set install path in app config "ClientAccess/Ecp" -->
+    <ServerTaskInfo Id="_6e10b3045b254fecb67cab783b203c66" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>set-InstallPathInAppConfig -ConfigFileRelativePath "ClientAccess\ecp\" -ConfigFileName web.config</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Precompile the ECP virtual directory -->
+    <ServerTaskInfo Id="_2c8fea5dec1b407b8e653c90dcd339ff" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          [Reflection.Assembly]::LoadWithPartialName('System.Web');
+          . (join-path ([System.Web.HttpRuntime]::AspInstallDirectory) aspnet_compiler.exe) -v /ecp -c -errorstack
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Set install path in app config "ClientAccess/Ecp/ReportingWebService" -->
+    <ServerTaskInfo Id="_9ED6C750AC04475AA63C5A62711E1F8B" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>set-InstallPathInAppConfig -ConfigFileRelativePath "ClientAccess\ReportingWebService" -ConfigFileName web.config</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+  </ServerTasks>
+
+</SetupComponentInfo>
+

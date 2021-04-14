@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo IsDatacenterOnly="true" IsDatacenterDedicatedOnly="true" Name="Datacenter Mailbox Perf Counters" DescriptionId="DatacenterSetupComponentPerfCountersMailbox">
+
+  <ServerTasks>
+
+    <!-- Install/remove Forward Sync status perf counters -->
+    <ServerTaskInfo Id="_43466AE07AB34463A110C2A3B1F81A19" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup" ExcludeInDatacenterDedicated="true">
+      <Install IsFatal="false">
+        <Standalone>new-PerfCounters -DefinitionFileName ForwardSyncStatusCounters.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-PerfCounters -DefinitionFileName ForwardSyncStatusCounters.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/remove Forward Sync Service perf counters -->
+    <ServerTaskInfo Id="_0c5917995cd94165b904b0fd7f133d05" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup" ExcludeInDatacenterDedicated="true">
+      <Install IsFatal="false">
+        <Standalone>new-PerfCounters -DefinitionFileName ForwardSyncPerfCounters.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-PerfCounters -DefinitionFileName ForwardSyncPerfCounters.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/remove Forward Sync Service Queue perf counters -->
+    <ServerTaskInfo Id="_884df4b211194cb9ab7fadac0facfb2d" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup" ExcludeInDatacenterDedicated="true">
+      <Install IsFatal="false">
+        <Standalone>new-PerfCounters -DefinitionFileName ForwardSyncQueueCounters.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-PerfCounters -DefinitionFileName ForwardSyncQueueCounters.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/remove Forward Sync Service Queue Processor perf counters -->
+    <ServerTaskInfo Id="_93a6eb12e934427385767573e5cd22d0" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup" ExcludeInDatacenterDedicated="true">
+      <Install IsFatal="false">
+        <Standalone>new-PerfCounters -DefinitionFileName ForwardSyncQueueProcessorCounters.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-PerfCounters -DefinitionFileName ForwardSyncQueueProcessorCounters.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/remove Forward Sync Service Stream perf counters -->
+    <ServerTaskInfo Id="_bffd9df00aef41cea877067f9196b3c1" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup" ExcludeInDatacenterDedicated="true">
+      <Install IsFatal="false">
+        <Standalone>new-PerfCounters -DefinitionFileName ForwardSyncStreamCounters.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-PerfCounters -DefinitionFileName ForwardSyncStreamCounters.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/remove Forward Sync Service PowerShell Command perf counters -->
+    <ServerTaskInfo Id="_3910A1F1CA954C27BC93D3B6240EB6DE" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup" ExcludeInDatacenterDedicated="true">
+      <Install IsFatal="false">
+        <Standalone>new-PerfCounters -DefinitionFileName ForwardSyncPowerShellCommandCounters.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-PerfCounters -DefinitionFileName ForwardSyncPowerShellCommandCounters.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/remove Forward Sync Service PowerShell Object Operation perf counters -->
+    <ServerTaskInfo Id="_824887363E7C473A854B20B66304679D" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup" ExcludeInDatacenterDedicated="true">
+      <Install IsFatal="false">
+        <Standalone>new-PerfCounters -DefinitionFileName ForwardSyncObjectOperationCounters.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-PerfCounters -DefinitionFileName ForwardSyncObjectOperationCounters.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/remove Transport Sync Manager perf counters -->
+    <ServerTaskInfo Id="_a8db6cc2996d4b46815e2ff4495b88ff" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>new-PerfCounters -DefinitionFileName TransportSyncManagerPerfCounters.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-PerfCounters -DefinitionFileName TransportSyncManagerPerfCounters.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <ServerTaskInfo Id="_56494bc9906f4098ae03cbb74e537fe8" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>new-PerfCounters -DefinitionFileName TransportSyncManagerByProtocolPerfCounters.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-PerfCounters -DefinitionFileName TransportSyncManagerByProtocolPerfCounters.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <ServerTaskInfo Id="Install_Uninstall_TransportSyncManagerByDatabasePerfCounters" Component="EXCHANGE14:\Current\Release\Transport\Sync\Manager">
+      <Install IsFatal="false">
+        <Standalone>new-PerfCounters -DefinitionFileName TransportSyncManagerByDatabasePerfCounters.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-PerfCounters -DefinitionFileName TransportSyncManagerByDatabasePerfCounters.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <ServerTaskInfo Id="_ea00bbb3081442328184db89049e5e95" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>new-PerfCounters -DefinitionFileName TransportSyncManagerBySlaPerfCounters.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-PerfCounters -DefinitionFileName TransportSyncManagerBySlaPerfCounters.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/uninstall cmdlet infra perf counters -->
+    <!-- This requires local administrator permission -->
+    <ServerTaskInfo Id="_70ef9de391e74d1e80692258c56ac08b" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>new-perfcounters -DefinitionFileName MSExchangeTenantMonitoringPerformanceCounters.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-perfcounters -DefinitionFileName MSExchangeTenantMonitoringPerformanceCounters.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/remove Provisioning Cache perf counters -->
+    <ServerTaskInfo Id="_224687361A7C473A814C21A66104679f" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>new-PerfCounters -DefinitionFileName ProvisioningCachePerformanceCounters.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-PerfCounters -DefinitionFileName ProvisioningCachePerformanceCounters.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Increase the size of the shared memory to 2 MB (1000 instances)-->
+    <ServerTaskInfo Id="_50a773fb57494f6ba9e17aaaf556a5cd" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>
+        	$keyPath = "HKLM:\SYSTEM\CurrentControlSet\Services\MSExchangeTenantMonitoring\Performance";
+	  
+		new-itemproperty -path $keyPath -name "FileMappingSize" -value 2000000 -force -PropertyType DWORD;
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Install/remove Interceptor Agent perf counters -->
+    <ServerTaskInfo Id="_68c71ba2b3884123930ddc934ee91b3a" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>new-PerfCounters -DefinitionFileName InterceptorAgentPerfCounters.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-PerfCounters -DefinitionFileName InterceptorAgentPerfCounters.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/remove MSExchangeInference Classification Processing perf counters -->
+    <ServerTaskInfo Id="_5EF3DAF4-EA34-4FAF-97B8-E92274C6F81F" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>new-PerfCounters -DefinitionFileName InferenceClassificationProcessingPerformanceCounters.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-PerfCounters -DefinitionFileName InferenceClassificationProcessingPerformanceCounters.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+    
+    <!-- Install/remove MSExchangeInference Classification Latency Counters -->
+    <ServerTaskInfo Id="_D92C06B2-06F8-4FF4-AD39-DB1C32C7805B" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>new-PerfCounters -DefinitionFileName ClassificationLatencyDeliveryPerformanceCounters.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-PerfCounters -DefinitionFileName ClassificationLatencyDeliveryPerformanceCounters.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/remove MSExchangeInference Model Counters -->
+    <ServerTaskInfo Id="_FBBB1E80-E118-4C78-AE12-99B782B6D61C" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>new-PerfCounters -DefinitionFileName InferenceModelPerformanceCounters.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-PerfCounters -DefinitionFileName InferenceModelPerformanceCounters.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/remove ComplianceAuditService Counters -->
+    <ServerTaskInfo Id="_979F5E1C-DE98-41D5-87F2-F0798AF34565" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>new-PerfCounters -DefinitionFileName UnifiedAuditLogUploaderPerfCounters.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-PerfCounters -DefinitionFileName UnifiedAuditLogUploaderPerfCounters.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo> 
+
+    <!-- Install/remove Mailbox Delivery Filter Agent Counters -->
+    <ServerTaskInfo Id="_CB740AAF-3E5F-4FFA-A217-2E868B95948D" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>new-PerfCounters -DefinitionFileName MailboxDeliveryFilterAgentPerfCounters.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-PerfCounters -DefinitionFileName MailboxDeliveryFilterAgentPerfCounters.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo> 
+  </ServerTasks>
+</SetupComponentInfo>
+

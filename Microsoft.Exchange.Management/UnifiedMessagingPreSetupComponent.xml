@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo Name="Unified Messaging PreSetup" DescriptionId="SetupComponentPreSetupUnifiedMessaging">
+
+  <ServerTasks>
+
+    <ServerTaskInfo Id="_0029999177504dc88cf8e8127c0b4e11" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install />
+
+      <!-- Only upgrade mode is used by the binding tasks-->
+      <BuildToBuildUpgrade>
+        <Standalone></Standalone>
+      </BuildToBuildUpgrade>
+
+      <DisasterRecovery />
+      <Uninstall />
+    </ServerTaskInfo>
+
+  </ServerTasks>
+
+</SetupComponentInfo>
+

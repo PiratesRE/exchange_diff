@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SetupComponentInfo IsDatacenterOnly="true" IsDatacenterDedicatedOnly="true" Name="Compliance Service Configuration" DescriptionId="SetupComponentConfiguringComplianceService">
+  <ServerTasks>
+    <ServerTaskInfo Id="_C792D79E45654F098D59E669012C2754" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install Weight="5" DescriptionId="SetupProgressPrecompilingBinaries" IsFatal="false">
+        <Standalone>
+          $fullPath = [System.IO.Path]::Combine($RoleInstallPath, "bin\MSExchangeCompliance.exe");
+          precompile-ManagedBinary -BinaryName  $fullPath;
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall Weight="5" DescriptionId="SetupProgressPrecompilingBinaries" IsFatal="false">
+        <Standalone>
+          $fullPath = [System.IO.Path]::Combine($RoleInstallPath, "bin\MSExchangeCompliance.exe");
+          precompile-ManagedBinary -BinaryName  $fullPath -Action uninstall;
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Configure compliance service app config appropriately -->
+    <ServerTaskInfo Id="_0412f03c21b611e48cf1b8ac6f879216" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          Write-ExchangeSetupLog -Info "Modifying MSExchangeCompliance.exe.config.";
+          $fullPath = "$RoleBinPath\MSExchangeCompliance.exe.config";
+          copy-item $fullPath "$fullPath.backup";
+
+          set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'ExoClientCertificateSubject' -NewValue:"$RoleDatacenterComplianceExoClientCertificateSubject";
+          set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'EopClientCertificateSubject' -NewValue:"$RoleDatacenterComplianceEopClientCertificateSubject";
+
+          # In Exo, there is a parameter called RegionTag, but in EOP, there are two parameters, Region and RegionServiceInstance where RegionTag is a concatenation of the two (for some legacy reasons)
+          $regionTag = ${RoleDatacenterRegionTag};
+          if ([string]::IsNullOrEmpty($regionTag))
+          {
+              $regionTag = "${RoleDatacenterRegion}${RoleDatacenterRegionServiceInstance}"
+          }
+
+          set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'DriverHostName' -NewValue:"${regionTag}.${RoleDatacenterComplianceWorkDriverHost}";
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Install/Remove Compliance service -->
+    <ServerTaskInfo Id="_B9351A4757CB4E52A1F55BDB4546849C" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          if (!(get-service MSExchangeCompliance* | where {$_.name -eq "MSExchangeCompliance"}))
+          {
+          install-ComplianceService
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>uninstall-ComplianceService</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <ServerTaskInfo Id="_5C08BD896EA84B9C9715512C83E4D30E" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>
+          new-perfcounters -DefinitionFileName TaskDistributionFabricPerfCounters.xml
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>
+          remove-perfcounters -DefinitionFileName TaskDistributionFabricPerfCounters.xml
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+  </ServerTasks>
+</SetupComponentInfo>

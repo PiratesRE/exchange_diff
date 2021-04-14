@@ -1,0 +1,115 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{09CD9476-CD82-489E-B9E2-84B47CA141A7}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Microsoft.Exchange.Server.Storage.RpcProxy</RootNamespace>
+    <AssemblyName>Microsoft.Exchange.Server.Storage.RpcProxy</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CreateSessionInfo.cs" />
+    <Compile Include="DoRpcCompleteCallback.cs" />
+    <Compile Include="DoRpcRequest.cs" />
+    <Compile Include="Globals.cs" />
+    <Compile Include="InstanceMdbStatus.cs" />
+    <Compile Include="IPoolSessionManager.cs" />
+    <Compile Include="IRpcInstanceManager.cs" />
+    <Compile Include="OnPoolNotificationsReceivedCallback.cs" />
+    <Compile Include="OnRpcInstanceClosedCallback.cs" />
+    <Compile Include="PoolConnectFlags.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ProxyAdminRpcServer.cs" />
+    <Compile Include="ProxyMapiRpcServer.cs" />
+    <Compile Include="ProxyPoolRpcServer.cs" />
+    <Compile Include="ProxyRpcEndpoints.cs" />
+    <Compile Include="ProxySession.cs" />
+    <Compile Include="ProxySessionManager.cs" />
+    <Compile Include="RpcInstanceManager.cs" />
+    <Compile Include="RpcInstancePool.cs" />
+    <Compile Include="UnmountFlags.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.Exchange.Common\Microsoft.Exchange.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140F0}</Project>
+      <Name>Microsoft.Exchange.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Diagnostics\Microsoft.Exchange.Diagnostics.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14113}</Project>
+      <Name>Microsoft.Exchange.Diagnostics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Net\Microsoft.Exchange.Net.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14178}</Project>
+      <Name>Microsoft.Exchange.Net</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.RpcClientAccess.Parser\Microsoft.Exchange.RpcClientAccess.Parser.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1418D}</Project>
+      <Name>Microsoft.Exchange.RpcClientAccess.Parser</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Rpc\Microsoft.Exchange.Rpc.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14188}</Project>
+      <Name>Microsoft.Exchange.Rpc</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Server.Storage.AdminInterface\Microsoft.Exchange.Server.Storage.AdminInterface.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14199}</Project>
+      <Name>Microsoft.Exchange.Server.Storage.AdminInterface</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Server.Storage.Common\Microsoft.Exchange.Server.Storage.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1419A}</Project>
+      <Name>Microsoft.Exchange.Server.Storage.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Server.Storage.DirectoryServices\Microsoft.Exchange.Server.Storage.DirectoryServices.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1419C}</Project>
+      <Name>Microsoft.Exchange.Server.Storage.DirectoryServices</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Server.Storage.MapiDisp\Microsoft.Exchange.Server.Storage.MapiDisp.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141A2}</Project>
+      <Name>Microsoft.Exchange.Server.Storage.MapiDisp</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Server.Storage.WorkerManager\Microsoft.Exchange.Server.Storage.WorkerManager.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141AA}</Project>
+      <Name>Microsoft.Exchange.Server.Storage.WorkerManager</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Office.Datacenter.ActiveMonitoringLocal\Microsoft.Office.Datacenter.ActiveMonitoringLocal.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141ED}</Project>
+      <Name>Microsoft.Office.Datacenter.ActiveMonitoringLocal</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\mscorlib\mscorlib.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141F1}</Project>
+      <Name>mscorlib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo Name="OAB Configuration" DescriptionId="ClientAccessOabComponentDescription">
+
+  <ServerTasks>
+
+    <!-- Set install path in app config "ClientAccess/OAB" -->
+    <ServerTaskInfo Id="_6ff56675b9614886b8dfe464ce0cf8e1" Component="EXCHANGE14:\Current\Release\Shared\DIY\Recipients&amp;Provisioning\OAB">
+      <Install>
+        <Standalone>set-InstallPathInAppConfig -ConfigFileRelativePath "ClientAccess\OAB\" -ConfigFileName web.config</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- 
+    Create OAB virtual directory
+    CAS deployment will create or modify BE vdirs.  FE vdirs will be created and modified by Cafe role deployment
+    -->
+    <ServerTaskInfo Id="_62bd834915a7470798aa47ba1f2b6800" Component="EXCHANGE14:\Current\Release\Shared\DIY\Recipients&amp;Provisioning\OAB">
+      <Install>
+        <Standalone>
+          new-OabVirtualDirectory -Role Mailbox -WebSiteName "Exchange Back End" -DomainController $RoleDomainController;
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade>
+        <Standalone>
+          $BEVdirIdentity = $RoleNetBIOSName + "\OAB (Exchange Back End)";
+          $be = get-OabVirtualDirectory -ShowMailboxVirtualDirectories -Identity $BEVdirIdentity -DomainController $RoleDomainController -ErrorAction SilentlyContinue;
+          if ($be -eq $null)
+          {
+          new-OabVirtualDirectory -Role Mailbox -WebSiteName "Exchange Back End" -DomainController $RoleDomainController;
+          }
+          set-OabVirtualdirectory -Identity $BEVdirIdentity -InternalUrl $null -ExternalUrl $null;
+          . "$RoleInstallPath\Scripts\Update-AppPoolManagedFrameworkVersion.ps1" -AppPoolName:"MSExchangeOABAppPool" -Version:"v4.0";
+        </Standalone>
+      </BuildToBuildUpgrade>
+      <DisasterRecovery>
+        <Standalone>
+          get-OabVirtualDirectory -ShowMailboxVirtualDirectories -server $RoleFqdnOrName -DomainController $RoleDomainController | remove-OabVirtualDirectory -DomainController $RoleDomainController;
+          new-OabVirtualDirectory -Role Mailbox -WebSiteName "Exchange Back End" -DomainController $RoleDomainController;
+        </Standalone>
+      </DisasterRecovery>
+      <Uninstall>
+        <Standalone>
+          get-OabVirtualDirectory -ShowMailboxVirtualDirectories -server $RoleFqdnOrName -DomainController $RoleDomainController | remove-OabVirtualDirectory -DomainController $RoleDomainController;
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Configurate external URL for OAB Virtual Directory-->
+    <ServerTaskInfo Id="_328bed392a364894ae964502e6f7cefa" Component="EXCHANGE14:\Current\Release\Shared\DIY\Recipients&amp;Provisioning\OAB">
+      <Install IsFatal="false">
+        <Standalone>
+          $ExternalUrl = $null;
+          if ($RoleExternalCASServerDomain -ne $null)
+          {
+          $ExternalUrl = "https://" + $RoleExternalCASServerDomain + "/oab";
+          }
+          get-OabVirtualDirectory -ShowMailboxVirtualDirectories -server $RoleFqdnOrName -DomainController $RoleDomainController | Set-OabVirtualDirectory -ExternalUrl $ExternalUrl;
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade/>
+      <DisasterRecovery/>
+      <Uninstall/>
+    </ServerTaskInfo>
+
+  </ServerTasks>
+
+</SetupComponentInfo>
+

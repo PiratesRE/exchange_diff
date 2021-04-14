@@ -1,0 +1,361 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{09CD9476-CD82-489E-B9E2-84B47CA14154}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Microsoft.Exchange</RootNamespace>
+    <AssemblyName>Microsoft.Exchange.MailboxTransport.StoreDriverDelivery</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Exchange.Inference.Learning" />
+    <Reference Include="Microsoft.Exchange.Inference.Mdb" />
+    <Reference Include="Microsoft.Exchange.Search.OperatorSchema" />
+    <Reference Include="Microsoft.Exchange.WorkingSetAbstraction.SignalApiAbstraction" />
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="MailboxTransport\Delivery\DeliveryThrottlingLog.cs" />
+    <Compile Include="MailboxTransport\Delivery\IDeliveryThrottlingLog.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\AccessCheckResult.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\ACRTraceString.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\Agents\ApprovalEngine.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\Agents\ApprovalProcessingAgent.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\Agents\ApprovalProcessingAgentFactory.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\Agents\ApprovalRequestUpdater.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\Agents\ApprovalRequestWriter.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\Agents\ArbitrationMailboxReport.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\Agents\AutoGroupApprovalRequestWriter.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\Agents\ClassificationApplicationAgent.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\Agents\ClassificationApplicationAgentFactory.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\Agents\ClassificationLatency.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\Agents\ClassificationLatencyInstance.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\Agents\ClassificationStrategyFactory.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\Agents\ContentAggregationAgentFactory.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\Agents\ConversationsProcessingAgent.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\Agents\ConversationsProcessingAgentFactory.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\Agents\DecisionHandler.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\Agents\DefaultApprovalRequestWriter.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\Agents\DeliveryStage.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\Agents\DeliveryThrottlingAgent.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\Agents\DeliveryThrottlingAgentFactory.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\Agents\EmailMessageHash.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\Agents\FindMessageUtils.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\Agents\FolderBasedClassificationStrategy.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\Agents\GroupEscalationAgent.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\Agents\GroupEscalationAgentFactory.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\Agents\IDeliveryClassificationStrategy.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\Agents\IndexDeliveryAgent.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\Agents\IndexDeliveryAgentFactory.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\Agents\InferenceClassificationAgent.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\Agents\InferenceClassificationAgentFactory.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\Agents\InferenceClassificationAgentLogger.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\Agents\InferenceClassificationComparisonLogger.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\Agents\InitiationMessage.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\Agents\InitiationProcessor.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\Agents\MailboxRulesAgent.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\Agents\MailboxRulesAgentFactory.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\Agents\MeetingMessageProcessingAgent.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\Agents\MeetingMessageProcessingAgentFactory.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\Agents\MeetingSeriesMessageOrdering.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\Agents\MeetingSeriesMessageOrderingAgent.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\Agents\MeetingSeriesMessageOrderingAgentFactory.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\Agents\MessageItemApprovalRequest.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\Agents\ModerationApprovalRequestWriter.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\Agents\MSExchangeConversationsProcessing.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\Agents\MSExchangeInboundSmsDelivery.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\Agents\MSExchangeTransportApproval.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\Agents\MSExchangeTransportApprovalInstance.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\Agents\NdrOofHandler.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\Agents\OfficeGraph.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\Agents\OfficeGraphAgent.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\Agents\OfficeGraphAgentFactory.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\Agents\OfficeGraphAgentUtils.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\Agents\OfficeGraphLog.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\Agents\PeopleIKnow.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\Agents\PeopleIKnowAgent.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\Agents\PeopleIKnowAgentFactory.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\Agents\PeopleIKnowInstance.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\Agents\ProcessedMessageTracker.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\Agents\RetentonPolicyTagProcessingAgent.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\Agents\RetentonPolicyTagProcessingAgentFactory.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\Agents\SharedMailboxSentitemsAgentFactory.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\Agents\SharedMailboxSentItemsDeliveryAgent.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\Agents\SharedMailboxSentItemsDeliveryAgentInstance.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\Agents\SharedMailboxSentItems\AgentInfoWriter.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\Agents\SharedMailboxSentItems\IAgentInfoWriter.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\Agents\SharedMailboxSentItems\ILogger.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\Agents\SharedMailboxSentItems\IPerformanceCounters.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\Agents\SharedMailboxSentItems\IPerformanceCountersFactory.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\Agents\SharedMailboxSentItems\IStoreOperations.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\Agents\SharedMailboxSentItems\Logger.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\Agents\SharedMailboxSentItems\PerformanceCounters.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\Agents\SharedMailboxSentItems\PerformanceCountersFactory.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\Agents\SharedMailboxSentItems\SharedMailboxSentItemsAgent.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\Agents\SharedMailboxSentItems\StoreOperations.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\Agents\SmsDeliveryAgent.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\Agents\SmsDeliveryAgentFactory.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\Agents\TransportAgentFlags.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\Agents\TransportGroupEscalation.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\Agents\UMAgentUtil.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\Agents\UMPartnerMessageAgent.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\Agents\UMPartnerMessageAgentFactory.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\Agents\UMPlayonPhoneAgent.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\Agents\UMPlayonPhoneAgentFactory.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\Agents\UnJournalAgent.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\Agents\UnJournalAgentFactory.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\Agents\WorkingSet.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\Agents\WorkingSetActionProcessors\AbstractActionProcessor.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\Agents\WorkingSetActionProcessors\ActionProcessorFactory.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\Agents\WorkingSetActionProcessors\ActionProcessorType.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\Agents\WorkingSetActionProcessors\AddActionProcessor.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\Agents\WorkingSetActionProcessors\AddExchangeItemProcessor.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\Agents\WorkingSetActionProcessors\DeletePartitionProcessor.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\Agents\WorkingSetActionProcessors\IActionProcessor.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\Agents\WorkingSetAgent.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\Agents\WorkingSetAgentFactory.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\Agents\WorkingSetAgentPerfLogging.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\Agents\WorkingSetUtils.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\Agents\XHeaderUtils.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\AppConfig.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\CalendarFlags.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\CalendarSettings.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\DatabaseHealthBreadcrumb.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\DeliveriesInProgress.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\DeliveryConfiguration.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\DeliveryDatabaseThreadMap.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\DeliveryItem.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\DeliveryPoisonContext.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\DeliveryPoisonHandler.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\DeliveryProcessorBase.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\DeliveryProcessorFactory.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\DeliveryRecipientThreadMap.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\DeliveryServerThreadMap.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\DeliveryThrottling.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\DeliveryThrottlingLogData.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\DeliveryThrottlingLogWorker.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\GetMDBThreadLimitAndHealth.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\IAppConfiguration.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\IDeliveryConfiguration.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\IDeliveryItem.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\IDeliveryProcessor.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\IDeliveryThrottling.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\IDeliveryThrottlingLogWorker.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\IMailboxDatabaseCollectionManager.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\IMailboxDatabaseConnectionInfo.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\IMailboxDatabaseConnectionManager.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\IMbxDeliveryListener.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\IThrottlingConfig.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\MailboxDatabaseCollectionManager.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\MailboxDatabaseCollectionManagerFactory.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\MailboxDatabaseConnectionInfo.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\MailboxDatabaseConnectionManager.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\MailboxRulesPerformanceTracker.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\MailboxTransportEventLogConstants.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\MailItemDeliver.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\MailPublicFolderPermissionHandler.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\MbxMailItemWrapper.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\MbxTransportMailItem.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\MDBThrottleType.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\MeetingMessageProcessing.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\MeetingMessageProcessingLog.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\MeetingMessageProcessingTrackingInfo.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\MeetingMessageProcessStages.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\MemorySubmissionItem.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\MSExchangeStoreDriver.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\MSExchangeStoreDriverDatabase.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\MSExchangeStoreDriverDatabaseInstance.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\MSExchangeStoreDriverDeliveryAgent.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\MSExchangeStoreDriverDeliveryAgentInstance.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\NotificationGenerator.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\PooledEvent.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\RetryAgentMessageSubmissionProcessor.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\RetryException.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\SmtpResponseGenerator.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\StoreDriverDatabasePerfCounters.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\StoreDriverDelivery.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\StoreDriverDeliveryAgentPerfCounters.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\StoreDriverDeliveryDiagnostics.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\StoreDriverDeliveryEventArgsImpl.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\StoreDriverDeliveryPerfCounters.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\StoreDriverDeliveryServer.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\StoreDriverEventSourceImpl.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\Strings.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\ThrottleSession.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\ThrottleSessionMap.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\ThrottlingConfig.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\ThrottlingConfigFactory.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\UnexpectedMessageCountException.cs" />
+    <Compile Include="MailboxTransport\StoreDriverDelivery\Utils.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Transport\MailboxRules\AttachmentContext.cs" />
+    <Compile Include="Transport\MailboxRules\MessageContext.cs" />
+    <Compile Include="Transport\MailboxRules\RecipientContext.cs" />
+    <Compile Include="Transport\MailboxRules\RuleConfig.cs" />
+    <Compile Include="Transport\MailboxRules\RuleEvaluationContext.cs" />
+    <Compile Include="Transport\MailboxRules\SmtpSubmissionItem.cs" />
+    <Compile Include="Transport\MailboxRules\StoreDriverLimitChecker.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="MailboxTransport\StoreDriverDelivery\Strings.resources" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.Exchange.Common.Inference\Microsoft.Exchange.Common.Inference.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140F1}</Project>
+      <Name>Microsoft.Exchange.Common.Inference</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Common\Microsoft.Exchange.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140F0}</Project>
+      <Name>Microsoft.Exchange.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Configuration.ObjectModel\Microsoft.Exchange.Configuration.ObjectModel.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140FC}</Project>
+      <Name>Microsoft.Exchange.Configuration.ObjectModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Core.Strings\Microsoft.Exchange.Core.Strings.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14103}</Project>
+      <Name>Microsoft.Exchange.Core.Strings</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.ApplicationLogic\Microsoft.Exchange.Data.ApplicationLogic.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14104}</Project>
+      <Name>Microsoft.Exchange.Data.ApplicationLogic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Common\Microsoft.Exchange.Data.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140D3}</Project>
+      <Name>Microsoft.Exchange.Data.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Directory\Microsoft.Exchange.Data.Directory.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14105}</Project>
+      <Name>Microsoft.Exchange.Data.Directory</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Storage\Microsoft.Exchange.Data.Storage.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1410F}</Project>
+      <Name>Microsoft.Exchange.Data.Storage</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Transport\Microsoft.Exchange.Data.Transport.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140D5}</Project>
+      <Name>Microsoft.Exchange.Data.Transport</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data\Microsoft.Exchange.Data.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14106}</Project>
+      <Name>Microsoft.Exchange.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Diagnostics\Microsoft.Exchange.Diagnostics.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14113}</Project>
+      <Name>Microsoft.Exchange.Diagnostics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Entities.Calendaring\Microsoft.Exchange.Entities.Calendaring.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1411E}</Project>
+      <Name>Microsoft.Exchange.Entities.Calendaring</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Extensibility.Internal\Microsoft.Exchange.Extensibility.Internal.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14126}</Project>
+      <Name>Microsoft.Exchange.Extensibility.Internal</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Inference.Common\Microsoft.Exchange.Inference.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14136}</Project>
+      <Name>Microsoft.Exchange.Inference.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Inference.MdbCommon\Microsoft.Exchange.Inference.MdbCommon.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14137}</Project>
+      <Name>Microsoft.Exchange.Inference.MdbCommon</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.InfoWorker.Common\Microsoft.Exchange.InfoWorker.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1413C}</Project>
+      <Name>Microsoft.Exchange.InfoWorker.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.MailboxTransport.StoreDriverCommon\Microsoft.Exchange.MailboxTransport.StoreDriverCommon.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14153}</Project>
+      <Name>Microsoft.Exchange.MailboxTransport.StoreDriverCommon</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.MessageSecurity\Microsoft.Exchange.MessageSecurity.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1416A}</Project>
+      <Name>Microsoft.Exchange.MessageSecurity</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Net\Microsoft.Exchange.Net.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14178}</Project>
+      <Name>Microsoft.Exchange.Net</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Search.Core\Microsoft.Exchange.Search.Core.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14193}</Project>
+      <Name>Microsoft.Exchange.Search.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.SharePointSignalStore\Microsoft.Exchange.SharePointSignalStore.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141B6}</Project>
+      <Name>Microsoft.Exchange.SharePointSignalStore</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.StoreProvider\Microsoft.Exchange.StoreProvider.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141B9}</Project>
+      <Name>Microsoft.Exchange.StoreProvider</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.TextProcessing\Microsoft.Exchange.TextProcessing.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141BB}</Project>
+      <Name>Microsoft.Exchange.TextProcessing</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Transport.Common\Microsoft.Exchange.Transport.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141CC}</Project>
+      <Name>Microsoft.Exchange.Transport.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Transport.LoggingCommon\Microsoft.Exchange.Transport.LoggingCommon.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141CF}</Project>
+      <Name>Microsoft.Exchange.Transport.LoggingCommon</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Transport\Microsoft.Exchange.Transport.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141CD}</Project>
+      <Name>Microsoft.Exchange.Transport</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.VariantConfiguration\Microsoft.Exchange.VariantConfiguration.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141E0}</Project>
+      <Name>Microsoft.Exchange.VariantConfiguration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.WorkloadManagement\Microsoft.Exchange.WorkloadManagement.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141E1}</Project>
+      <Name>Microsoft.Exchange.WorkloadManagement</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Office.Datacenter.ActiveMonitoringLocal\Microsoft.Office.Datacenter.ActiveMonitoringLocal.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141ED}</Project>
+      <Name>Microsoft.Office.Datacenter.ActiveMonitoringLocal</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\mscorlib\mscorlib.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141F1}</Project>
+      <Name>mscorlib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

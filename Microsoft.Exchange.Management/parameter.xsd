@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="us-ascii" ?>
+
+<!-- Copyright (c) 2007 Microsoft Corporation.  All rights reserved. -->
+<!-- Schema definition for datacenter configuration file. -->
+
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <xsd:complexType name="ValuesType">
+    <xsd:choice minOccurs="0" maxOccurs="unbounded">
+      <xsd:element name="Value" type="xsd:string"/>
+    </xsd:choice>
+  </xsd:complexType>
+  
+  <xsd:complexType name="ParameterType">
+    <xsd:choice minOccurs="0" maxOccurs="1">
+      <xsd:element name="Values" type="ValuesType"/>
+    </xsd:choice>
+    <xsd:attribute name="Name" type="xsd:string" use="required"/>
+    <xsd:attribute name="Value" type="xsd:string" use="optional"/>
+  </xsd:complexType>
+
+  <xsd:complexType name="ParametersType">
+    <xsd:choice minOccurs="0" maxOccurs="unbounded">
+      <xsd:element name="Parameter" type="ParameterType"/>
+    </xsd:choice>
+  </xsd:complexType>
+
+  <!-- The root document element -->
+  <xsd:element name="Parameters" type="ParametersType"/>
+
+</xsd:schema>
+

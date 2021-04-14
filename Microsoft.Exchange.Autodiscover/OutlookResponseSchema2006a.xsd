@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="responseschema2006" targetNamespace="http://schemas.microsoft.com/exchange/autodiscover/outlook/responseschema/2006a" elementFormDefault="qualified" xmlns="http://schemas.microsoft.com/exchange/autodiscover/outlook/responseschema/2006a" xmlns:mstns="http://schemas.microsoft.com/exchange/autodiscover/outlook/responseschema/2006a" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    
+    <xs:element name="Autodiscover">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="Response" type="ResponseType" />
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    
+    <xs:complexType name="ResponseType">
+        <xs:sequence>
+            <xs:sequence>
+                <xs:element name="DisplayName" type="xs:string" minOccurs="1"/>
+            </xs:sequence>
+        </xs:sequence>
+    </xs:complexType>
+
+</xs:schema>

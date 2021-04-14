@@ -1,0 +1,571 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo Name="Mailbox System Attendant Dependent Tasks" DescriptionId="ConfiguringMailboxSystemAttendantDependentTasks">
+
+  <ServerTasks>
+
+    <!-- Start/stop MSExchangeSA service -->
+    <!-- NOTE: (PS# 94013) BuildToBuildUpgrade should use install tasks because even though the ServiceControl.ps1 -->
+    <!-- can automatically start the services that were running when upgrade was started, the tasks that follow -->
+    <!-- the systemattendant service start requres system attendant to be running. so in this -->
+    <!-- case we override the ServiceControl.ps1 and start Systen attendant unconditionaly -->
+    <ServerTaskInfo Id="_f3888a181f7a45f5a7448640166d599f" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install/>
+      <BuildToBuildUpgrade DescriptionId="SetupProgressStartingSystemAttendantService">
+        <Standalone>stop-SetupService -ServiceName MSExchangeSA</Standalone>
+      </BuildToBuildUpgrade>
+      <!-- NOTE: (E12 #104172) Databases should not mount after Server Recovery -->
+      <!-- For Standalone DR, it's ok for Store & SA to be started this late since the MountAtStartup property on the DB's is honored. -->
+      <DisasterRecovery> 
+          <Standalone>stop-SetupService -ServiceName MSExchangeSA</Standalone>
+      </DisasterRecovery>
+      <Uninstall Weight="2" DescriptionId="SetupProgressStoppingSystemAttendantService">
+        <Standalone>stop-SetupService -ServiceName MSExchangeSA</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Stop MSExchangeIS service (not on cluster node) -->
+    <ServerTaskInfo Id="_452aaca051254de3a60b0a67b7cae34f" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install />
+      <BuildToBuildUpgrade />
+      <DisasterRecovery />
+      <Uninstall Weight="2" DescriptionId="SetupProgressStoppingInformationStoreService">
+        <Standalone>stop-SetupService -ServiceName MSExchangeIS -MaximumWaitTime "unlimited"</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Stop Replay service -->
+    <ServerTaskInfo Id="_cd10947616eb4a5f8cc2b81a7755c067" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install />
+      <BuildToBuildUpgrade />
+      <DisasterRecovery />
+      <Uninstall Weight="2" DescriptionId="SetupProgressStoppingReplayService">
+        <Standalone>stop-SetupService -ServiceName MSExchangeRepl</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Stop DAG Management service -->
+    <ServerTaskInfo Id="_8BE5831CF02647A0B6C03127C37264A5" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install />
+      <BuildToBuildUpgrade />
+      <DisasterRecovery />
+      <Uninstall Weight="2" DescriptionId="SetupProgressStoppingDagMgmtService">
+        <Standalone>stop-SetupService -ServiceName MSExchangeDagMgmt</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Create or conditionally modify existing default Offline Address Book to enable web distribution -->
+    <ServerTaskInfo Id="_b06ea38070354e2c9fe8bac2b971306a" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressConfiguringOAB">
+        <Standalone>
+          if (!$RoleIsDatacenter -and !$RoleIsDatacenterDedicated)
+          {
+            $createNewOab = $false;
+            $oabName = $null;
+            $oabAddressList = $null;
+            $oabVdirs = $null;
+            $oabGlobalWebDistribution = $false;
+            $oabConfiguredAttributes = $null;
+
+            Write-ExchangeSetupLog -Info ("Looking for an existing default OAB");
+            $defaultOab = Get-OfflineAddressBook -DomainController:$RoleDomainController | where {$_.IsDefault};
+            if ($defaultOab -ne $null)
+            {
+              Write-ExchangeSetupLog -Info ("Found a default OAB: " + $defaultOab.Name + "; checking its version");
+              if ($defaultOab.ExchangeVersion.CompareTo([Microsoft.Exchange.Data.ExchangeObjectVersion]::Exchange2012) -lt 0)
+              {
+                $e15Oab = Get-OfflineAddressBook -DomainController:$RoleDomainController | where {$_.ExchangeVersion.CompareTo([Microsoft.Exchange.Data.ExchangeObjectVersion]::Exchange2012) -eq 0};
+                if ($e15Oab -eq $null)
+                {
+                  Write-ExchangeSetupLog -Info ("Existing OAB is Exchange 2010 or older; will create a new OAB");
+                  $createNewOab = $true;
+                  $oabName = $defaultOab.Name + " (Ex2013)";
+                  $oabAddressList = $defaultOab.AddressLists;
+                  $oabGlobalWebDistribution = $defaultOab.GlobalWebDistributionEnabled;
+                  $oabConfiguredAttributes = $defaultOab.ConfiguredAttributes;
+                }
+                else
+                {
+                  Write-ExchangeSetupLog -Info ("Already has an existing Exchange 2013 OAB:" + $e15Oab.Name + "; will not create a new OAB");
+                }
+              }
+              else
+              {
+                Write-ExchangeSetupLog -Info ("Existing OAB is Exchange 2013 or newer; will not create a new OAB");
+              }
+            }
+            else
+            {
+              Write-ExchangeSetupLog -Info ("Did not find a default OAB; will create one");
+              $createNewOab = $true;
+              
+              $oabName = [Microsoft.Exchange.Data.Directory.SystemConfiguration.OfflineAddressBook]::DefaultName;
+              $nonDefaultOabWithDefaultName = Get-OfflineAddressBook $oabName -DomainController:$RoleDomainController -ErrorAction SilentlyContinue | where {$_.IsDefault -eq $false};
+              if ($nonDefaultOabWithDefaultName -ne $null)
+              {
+                $createNewOab = $false;
+                Write-ExchangeSetupLog -Warning `
+                  ("Offline address book " + `
+                  $nonDefaultOabWithDefaultName.Name + `
+                  " already exists: " + `
+                  $nonDefaultOabWithDefaultName.DistinguishedName + `
+                  ". Use administrative tools to change it to default OAB.");
+              }
+
+              $allGals = @(Get-GlobalAddressList -DomainController:$RoleDomainController | where {$_.IsDefaultGlobalAddressList});
+              if ($allGals -eq $null -or $allGals.Count -eq 0)
+              {
+                $createNewOab = $false;
+                Write-ExchangeSetupLog -Warning `
+                  ("Couldn't find the default global address list. The default offline address book can't be created.");
+              }
+              elseif ($allGals.Count -gt 1)
+              {
+                $createNewOab = $false;
+                Write-ExchangeSetupLog -Warning `
+                  ("Found " + $allGals.Count + " default global address lists. You can have only one default global address list in your organization. The default offline address book will not be created.");
+              }
+              else
+              {
+                $oabAddressList = $allGals[0];
+                Write-ExchangeSetupLog -Info ("OAB will be based on default GAL: " + $oabAddressList.Name);
+              }
+            }
+
+            if ($createNewOab)
+            {
+              if ($oabGlobalWebDistribution -eq $false)
+              {
+                $currentAdSiteDn = (Get-ExchangeServer $RoleFqdnOrName -DomainController:$RoleDomainController).Site.DistinguishedName;
+                $allOabVdirs = @(Get-OabVirtualDirectory -ADPropertiesOnly -DomainController:$RoleDomainController);
+                $e15MinimumServerVersion = New-Object Microsoft.Exchange.Data.ServerVersion([Microsoft.Exchange.Data.Directory.SystemConfiguration.Server]::E15MinVersion);
+                if ($allOabVdirs -ne $null -and $allOabVdirs.Count -gt 0)
+                {
+                  foreach ($oabVdir in $allOabVdirs)
+                  {
+                    if ([Microsoft.Exchange.Data.ServerVersion]::Compare($oabVdir.AdminDisplayVersion, $e15MinimumServerVersion) -gt 0)
+                    {
+                      $oabVdirSiteDn = (Get-ExchangeServer $oabVdir.Server -DomainController:$RoleDomainController).Site.DistinguishedName;
+                      if ($oabVdirSiteDn -eq $currentAdSiteDn)
+                      {
+                        $oabVdirs = $oabVdir;
+                        break;
+                      }
+                      elseif ($oabVdirs -eq $null)
+                      {
+                        $oabVdirs = $oabVdir;
+                      }
+                    }
+                  }
+                }
+
+                if ($oabVdirs -ne $null)
+                {
+                  Write-ExchangeSetupLog -Info ("OAB will be distributed to OAB virtual directory " + $oabVdirs.Name);
+                }
+                else
+                {
+                  Write-ExchangeSetupLog -Info ("Could not find any OAB virtual directories; OAB will be configured without distribution.");
+                }
+              }
+
+              try
+              {
+                Write-ExchangeSetupLog -Info ("Creating new default OAB.");
+                $newOab = New-OfflineAddressBook `
+                  -Name $oabName `
+                  -AddressLists $oabAddressList `
+                  -VirtualDirectories $oabVdirs `
+                  -GlobalWebDistributionEnabled $oabGlobalWebDistribution `
+                  -IsDefault $true `
+                  -DomainController:$RoleDomainController;
+              }
+              catch [Microsoft.Exchange.Data.Directory.ADObjectAlreadyExistsException]
+              {
+                Write-ExchangeSetupLog -Warning ("Tried to create new default OAB but the object already exists; it may have been created by another instance of setup.");
+              }
+
+              if ($oabConfiguredAttributes -ne $null)
+              {
+                Write-ExchangeSetupLog -Info ("Setting OAB ConfiguredAttributes to: " + $oabConfiguredAttributes);
+                Set-OfflineAddressBook $newOab -ConfiguredAttributes $oabConfiguredAttributes -DomainController:$RoleDomainController;
+              }
+            }
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade />
+      <DisasterRecovery />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- This task needs to be called again because we just created a PMDB resource     -->
+    <!-- Mail-enable logged-on user -->
+    <!-- Mail-enabling the current logged doesn't make sense in enterprise deployments and it doesn't work in
+         large topologies where the admin account is not in the same domain with the server on which setup runs.
+         However, it works in simple topologies and it makes it easier for reviewers to try out Exchange,
+         since after running a typical install they will be able to log on to OWA and send emails immediately.
+    -->
+    <ServerTaskInfo Id="_a82152bf4e4c4284b9b41f0c90843a41" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <!-- [REVIEW] Task is non fatal. Component XML guidelines discourages having non-fatal tasks in setup -->
+      <Install IsFatal="false">
+        <Standalone>
+          $admin=get-user $RoleLoggedOnUser;
+          if (($admin.RecipientType -eq "User") -or ($admin.RecipientType -eq "UserMailbox"))
+          {
+            if (!$RoleIsDatacenter -and !$RoleIsDatacenterDedicated)
+            {
+              $DBs = @(get-MailboxDatabase -Server:$RoleFqdnOrName);
+              if($DBs.Length -ne 0)
+              {
+                enable-mailbox -Identity:$admin.Identity -Database:$DBs[0].Identity;
+              }
+            }
+            else
+            {
+              # for datacenter or DatacenterDedicated environment, we will create the admin mailbox in a replicated DB later.
+            }
+
+            if (-not $admin.UserPrincipalName)
+            {
+              $DomainName = ($RoleDomainController.split('.',2))[1];
+              $upn = $admin.Name + "@"+ $DomainName;
+              set-user -Identity:$admin.Identity -UserPrincipalName:$upn;
+            }
+            Set-User -Identity:$admin.Identity -RemotePowerShellEnabled $true;
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade />
+      <DisasterRecovery />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Mail-enable the system attendant service -->
+    <ServerTaskInfo Id="_57d8187db9444dfc8614c0018cfbaf01" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <!-- [REVIEW] Task is non fatal. Component XML guidelines discourages having non-fatal tasks in setup -->
+      <Install IsFatal="false">
+        <Standalone>enable-SystemAttendantMailbox -Identity:$RoleFqdnOrName -DomainController $RoleDomainController</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery />
+      <!-- [REVIEW] Should uninstall do mail-disable?? -->
+      <Uninstall />
+    </ServerTaskInfo>
+
+
+
+    <!-- Create the arbitration mailboxes, if none already exist.  Since the first server install requires org admin privileges this has the rights to enable a mailbox.
+         Subsequent installs see that the arbitration mailbox exists and don't run the enable mailbox task.-->
+    <!-- Try search by Identity at the very last. Also, we leverage the get- task to report localized error if missing. -->
+    
+    <!-- Create Approval arbitration mailbox -->
+    <ServerTaskInfo Id="_04bbd8c4a86b4d2c9403cdddf5b39579" Component="EXCHANGE14:\Current\Release\Transport\BCM\Moderated Transport">
+      <Install>
+        <Standalone>
+          if (!$RoleIsDatacenter -and !$RoleIsDatacenterDedicated)
+          {
+          $arbUsers = @(get-user -Filter {lastname -eq "MSExchApproval 1f05a927-3be2-4fb9-aa03-b59fe3b56f4c"} -IgnoreDefaultScope -ResultSize 1);
+          if ($arbUsers.Length -ne 0)
+          {
+          $mbxname = $arbUsers[0].name;
+          $mbxs = @( get-mailbox -arbitration -Filter {name -eq $mbxname} -IgnoreDefaultScope -resultSize 1 );
+          if ( $mbxs.length -eq 0)
+          {
+          $dbs = @(get-MailboxDatabase -Server:$RoleFqdnOrName -DomainController $RoleDomainController);
+          if ($dbs.Length -ne 0)
+          {
+          enable-mailbox -Arbitration -identity $arbUsers[0] -database $dbs[0].Identity;
+          }
+          }
+          }
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Create E15 system mailbox -->
+    <ServerTaskInfo Id="_1DEE95834DBA48F2BB211C2FB6765A5A" Component="EXCHANGE14:\Current\Release\Client Access\Unified Messaging">
+      <Install>
+        <Standalone>
+          if ($RoleIsDatacenter -ne $true -and $RoleIsDatacenterDedicated -ne $true)
+          {
+          if (Test-ExchangeServersWriteAccess -DomainController $RoleDomainController -ErrorAction SilentlyContinue)
+          {
+          $sysMbx = $null;
+          $name = "SystemMailbox{bb558c35-97f1-4cb9-8ff7-d53741dc928c}";
+          $dispName = "Microsoft Exchange";
+          Write-ExchangeSetupLog -Info ("Retrieving mailboxes with Name=$name.");
+          $mbxs = @(Get-Mailbox -Arbitration -Filter {name -eq $name} -IgnoreDefaultScope -ResultSize 1 );
+          if ($mbxs.Length -eq 0)
+          {
+          Write-ExchangeSetupLog -Info ("Retrieving mailbox databases on Server=$RoleFqdnOrName.");
+          $dbs = @(Get-MailboxDatabase -Server:$RoleFqdnOrName -DomainController $RoleDomainController);
+          if ($dbs.Length -ne 0)
+          {
+          Write-ExchangeSetupLog -Info ("Retrieving users with Name=$name.");
+          $arbUsers = @(Get-User -Filter {name -eq $name} -IgnoreDefaultScope -ResultSize 1);
+          if ($arbUsers.Length -ne 0)
+          {
+          Write-ExchangeSetupLog -Info ("Enabling mailbox $name.");
+          $sysMbx = Enable-Mailbox -Arbitration -Identity $arbUsers[0] -DisplayName $dispName -database $dbs[0].Identity;
+          }
+          }
+          }
+          else
+          {
+          if ($mbxs[0].DisplayName -ne $dispName )
+          {
+          Write-ExchangeSetupLog -Info ("Setting DisplayName=$dispName.");
+          Set-Mailbox -Arbitration -Identity $mbxs[0] -DisplayName $dispName -Force;
+          }
+          $sysMbx = $mbxs[0];
+          }
+
+          # Set the Organization Capabilities needed for this mailbox
+          if ($sysMbx -ne $null)
+          {
+          # We need 1 GB for uploading large OAB files to the organization mailbox
+          Write-ExchangeSetupLog -Info ("Setting mailbox properties.");
+          set-mailbox -Arbitration -identity $sysMbx -UMGrammar:$true -OABGen:$true -GMGen:$true -ClientExtensions:$true -MailRouting:$true -MessageTracking:$true -PstProvider:$true -MaxSendSize 1GB -Force;
+
+          Write-ExchangeSetupLog -Info ("Configuring offline address book(s) for this mailbox");
+          Get-OfflineAddressBook | where {$_.ExchangeVersion.CompareTo([Microsoft.Exchange.Data.ExchangeObjectVersion]::Exchange2012) -ge 0 -and $_.GeneratingMailbox -eq $null} | Set-OfflineAddressBook -GeneratingMailbox $sysMbx.Identity;
+          }
+          else
+          {
+          Write-ExchangeSetupLog -Info ("Cannot find arbitration mailbox with name=$name.");
+          }
+          }
+          else
+          {
+          Write-ExchangeSetupLog -Info "Skipping creating E15 System Mailbox because of insufficient permission."
+          }
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery />
+      <Uninstall />
+    </ServerTaskInfo>      
+    
+    <!-- Create E-Discovery arbitration mailbox -->
+    <ServerTaskInfo Id="_04cc4ecfc25f40a6bf13fe2fb767ae60" Component="EXCHANGE14:\Current\Release\PIM Storage\Discovery">
+      <Install>
+        <Standalone>
+          if (($RoleIsDatacenter -ne $true) -and ($RoleIsDatacenterDedicated -ne $true))
+          {
+          if (test-ExchangeServersWriteAccess -DomainController $RoleDomainController -ErrorAction SilentlyContinue)
+          {
+          $sysMbx = $null;
+          $name = "SystemMailbox{e0dc1c29-89c3-4034-b678-e6c29d823ed9}";
+          $dispname = "Microsoft Exchange";
+          $mbxs = @( get-mailbox -arbitration -Filter {name -eq $name} -IgnoreDefaultScope -resultSize 1 );
+          if ( $mbxs.length -eq 0)
+          {
+          $dbs = @(get-MailboxDatabase -Server:$RoleFqdnOrName -DomainController $RoleDomainController);
+          if ($dbs.Length -ne 0)
+          {
+          $arbUsers = @(get-user -Filter {name -eq $name} -IgnoreDefaultScope -ResultSize 1);
+          if ($arbUsers.Length -ne 0)
+          {
+          $sysMbx = enable-mailbox -Arbitration -identity $arbUsers[0] -DisplayName $dispname -database $dbs[0].Identity;
+          }
+          }
+          }
+          else
+          {
+          if ($mbxs[0].DisplayName -ne $dispname )
+          {
+          set-mailbox -Arbitration -identity $mbxs[0] -DisplayName $dispname -Force;
+          }
+          $sysMbx = $mbxs[0];
+          }
+
+          # Set the Organization Capabilities needed for this mailbox
+          if ($sysMbx -ne $null)
+          {
+          Write-ExchangeSetupLog -Info ("Setting mailbox properties.");
+          set-mailbox -Arbitration -identity $sysMbx -UMDataStorage:$true -Force;
+
+          # No RetentionPolicy assigned to E-Discovery arbitration mailbox currently, we need to set it here.
+          # This can be remove after BUG(O15#2555914) is fixed.
+          if ($sysMbx.RetentionPolicy -eq $null )
+          {
+          $arbitrationRetentionPolicy = @(Get-RetentionPolicy -DomainController $RoleDomainController | where {$_.Name -eq 'ArbitrationMailbox'});
+          set-mailbox -Arbitration -identity $sysMbx -RetentionPolicy $arbitrationRetentionPolicy[0].Identity -Force;
+          }
+          }
+          else
+          {
+          Write-ExchangeSetupLog -Info ("Cannot find E-discovery arbitration mailbox with name=$name.");
+          }
+          }
+          else
+          {
+          write-exchangesetuplog -info "Skipping creating Discovery Arbitration Mailbox because of insufficient permission."
+          }
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery />
+      <Uninstall />
+    </ServerTaskInfo>
+    
+    <!-- Create Discovery Search mailbox -->
+    <ServerTaskInfo Id="_590e51a8a98846d3a7fa8ddcc5472c74" Component="EXCHANGE14:\Current\Release\PIM Storage\Discovery">
+      <Install>
+        <Standalone>
+          if (($RoleIsDatacenter -ne $true) -and ($RoleIsDatacenterDedicated -ne $true))
+          {
+            if (test-ExchangeServersWriteAccess -DomainController $RoleDomainController -ErrorAction SilentlyContinue)
+            {
+              # upgrade the discovery mailboxes to R5 version, this will fix the RecipientDisplayType property of the discovery mailbox which was wrong in R4.
+              get-mailbox -RecipientTypeDetails DiscoveryMailbox -DomainController $RoleDomainController | where {$_.IsValid -eq $false} | set-mailbox -DomainController $RoleDomainController
+              $name = [Microsoft.Exchange.Management.RecipientTasks.EnableMailbox]::DiscoveryMailboxUniqueName;
+              $dispname = [Microsoft.Exchange.Management.RecipientTasks.EnableMailbox]::DiscoveryMailboxDisplayName;
+              $mbxs = @( get-mailbox -Filter {name -eq $name} -IgnoreDefaultScope -resultSize 1 );
+              if ( $mbxs.length -eq 0) 
+              {
+                $dbs = @(get-MailboxDatabase -Server:$RoleFqdnOrName -DomainController $RoleDomainController);
+                if($dbs.Length -ne 0) 
+                {
+                  $mbxUser = @(get-user -Filter {name -eq $name} -IgnoreDefaultScope -ResultSize 1);
+                  if ($mbxUser.Length -ne 0) 
+                  {
+                    enable-mailbox -Discovery -identity $mbxUser[0] -DisplayName $dispname -database $dbs[0].Identity;
+                  }
+                }
+              }
+            }
+            else
+            {
+              write-exchangesetuplog -info "Skipping creating Discovery Search Mailbox because of insufficient permission."
+            }  
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Create arbitration migration mailbox -->
+    <ServerTaskInfo Id="_da057fa43af04e07930eaeaf9d176571" Component="OFFICE15:\Current\Exchange\Mailbox Intelligence\Migration\Simple Migration">
+      <Install>
+        <Standalone>
+          if (!$RoleIsDatacenter -and !$RoleIsDatacenterDedicated)
+          {
+          $mailboxId = [Microsoft.Exchange.Management.Migration.MigrationBatchIdParameter]::MigrationMailboxName;
+          $dispName = "Microsoft Exchange Migration";
+          $mbxs = @(Get-Mailbox -Arbitration -DomainController $RoleDomainController -Filter {Name -eq $mailboxId});
+          $migrationMailbox = $null;
+
+          if ($mbxs.Length -eq 0)
+          {
+          Write-ExchangeSetupLog -Info ("Retrieving mailbox databases on Server=$RoleFqdnOrName.");
+          $dbs = @(Get-MailboxDatabase -Server:$RoleFqdnOrName -DomainController $RoleDomainController);
+          if ($dbs.Length -ne 0)
+          {
+          Write-ExchangeSetupLog -Info ("Retrieving users with Name=$mailboxId.");
+          $arbUsers = @(Get-User -Filter {Name -eq $mailboxId} -IgnoreDefaultScope -ResultSize 1);
+          if ($arbUsers.Length -ne 0)
+          {
+          Write-ExchangeSetupLog -Info ("Enabling mailbox $mailboxId.");
+          $migrationMailbox = Enable-Mailbox -Arbitration -Identity $arbUsers[0] -DisplayName $dispName -database $dbs[0].Identity;
+          }
+          }
+          }
+          else
+          {
+          $migrationMailbox = $mbxs[0];
+          }
+
+          # Set the Organization Capabilities and quotas needed for this mailbox
+          if ($migrationMailbox -ne $null)
+          {
+          Set-Mailbox -Arbitration -Identity $migrationMailbox -ProhibitSendReceiveQuota 300MB -ProhibitSendQuota 300MB -IssueWarningQuota 150MB -RecoverableItemsQuota 30GB -RecoverableItemsWarningQuota 20GB -UseDatabaseQuotaDefaults $false -SCLDeleteEnabled $false -SCLJunkEnabled $false -SCLQuarantineEnabled $false -SCLRejectEnabled $false -HiddenFromAddressListsEnabled $true -DisplayName $dispName -Management:$true -Force;
+          }
+          else
+          {
+          Write-ExchangeSetupLog -Info ("Cannot find migration mailbox with name=$mailboxId.");
+          }
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Create Federated delivery arbitration mailbox -->
+    <ServerTaskInfo Id="_a5f453e312d0462d81d676dd43c79488" Component="EXCHANGE14:\Current\Release\Transport\Internet">
+      <Install>
+        <Standalone>
+          if (!$RoleIsDatacenter -and !$RoleIsDatacenterDedicated)
+          {
+          $mailboxId = [Microsoft.Exchange.Management.Deployment.UpdateRmsSharedIdentity]::SharedIdentityCommonName;
+          $displayName = "Microsoft Exchange Federation Mailbox";
+
+          $existingFederatedUserMailboxes = @(Get-Mailbox -Filter {Name -eq $mailboxId} -IgnoreDefaultScope -ResultSize 1);
+          $existingFederatedArbitrationMailboxes = @(Get-Mailbox -Arbitration -Filter {Name -eq $mailboxId} -IgnoreDefaultScope -ResultSize 1);
+          if (($existingFederatedUserMailboxes.Length -eq 0) -and ($existingFederatedArbitrationMailboxes.Length -eq 0))
+          {
+          $mailboxDatabase = @(get-MailboxDatabase -Server:$RoleFqdnOrName -DomainController $RoleDomainController);
+          if ($mailboxDatabase.Length -ne 0)
+          {
+          $mailboxUsers = @(Get-User -Filter {LastName -eq $mailboxId} -IgnoreDefaultScope -ResultSize 1);
+          if ($mailboxUsers.Length -ne 0)
+          {
+          $federatedMailbox = Enable-Mailbox -Arbitration -Identity $mailboxUsers[0] -Database $mailboxDatabase[0].Identity;
+          Set-Mailbox -Arbitration -Identity $federatedMailbox -RequireSenderAuthenticationEnabled $false -ProhibitSendReceiveQuota 1MB -ProhibitSendQuota 1MB -IssueWarningQuota 1MB -UseDatabaseQuotaDefaults $false -SCLDeleteEnabled $false -SCLJunkEnabled $false -SCLQuarantineEnabled $false -SCLRejectEnabled $false -HiddenFromAddressListsEnabled $true -DisplayName $displayName -Force;
+          Set-TransportConfig -OrganizationFederatedMailbox $federatedMailbox.WindowsEmailAddress.ToString();
+          }
+          }
+          }
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Call RUS on the Microsoft Exchange Recipient object-->
+    <!-- This task must be after the mailox server role has been set-->
+    <!-- If there is another mailbox server whose build number is greater than 641, we needn't to execute this task-->
+    <!-- This task depends on SA serverice-->
+    <ServerTaskInfo Id="_a6c133dadd054a70a4721d5478e02b41" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          $count=0;
+          $ExchangeServers = Get-ExchangeServer -DomainController $RoleDomainController;
+
+          $minVersion = New-Object -typeName Version -argumentlist "8.0.642.0";
+
+          foreach ($server in  $ExchangeServers)
+          {
+            $currentVersion = [Version]$server.AdminDisplayVersion;
+            if (($currentVersion -ge $minVersion) -and ($server.IsMailboxServer -eq $true))
+            {
+              $count++;
+            }
+          }
+
+          if ($count -eq 1)
+          {
+            Set-OrganizationConfig -DomainController $RoleDomainController;
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery />
+      <Uninstall />
+    </ServerTaskInfo>
+
+  </ServerTasks>
+</SetupComponentInfo>
+

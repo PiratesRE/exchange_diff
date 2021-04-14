@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo Name="UnifiedMessaging Permissions Configuration">
+
+  <ServerTasks>
+	  <!-- Set Folder/Registry Permissions when installing, recovering or upgrade UnifiedMessaging Role-->
+	  <ServerTaskInfo Id="_b1efdf07d70946dfa65404d6df9aa077" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+		  <Install>
+			  <Standalone>Set-LocalPermissions -Feature:"UnifiedMessaging"</Standalone>
+		  </Install>
+		  <BuildToBuildUpgrade UseInstallTasks="true" />
+		  <DisasterRecovery UseInstallTasks="true" />
+		  <Uninstall/>
+	  </ServerTaskInfo>
+  </ServerTasks>
+</SetupComponentInfo>
+
+
+

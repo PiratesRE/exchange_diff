@@ -1,0 +1,355 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{09CD9476-CD82-489E-B9E2-84B47CA14186}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Microsoft.Exchange.PushNotifications.Publishers</RootNamespace>
+    <AssemblyName>Microsoft.Exchange.PushNotifications.Publishers</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Exchange.PushNotifications.CrimsonEvents" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.IO.Compression.FileSystem" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AcsAccessToken.cs" />
+    <Compile Include="AcsAuthRequest.cs" />
+    <Compile Include="AcsUriTemplate.cs" />
+    <Compile Include="ADConfigurationManager.cs" />
+    <Compile Include="ADConfigurationProvider.cs" />
+    <Compile Include="ApnsAlert.cs" />
+    <Compile Include="ApnsCertificateException.cs" />
+    <Compile Include="ApnsCertProvider.cs" />
+    <Compile Include="ApnsCertStore.cs" />
+    <Compile Include="ApnsChannel.cs" />
+    <Compile Include="ApnsChannelContext.cs" />
+    <Compile Include="ApnsChannelCounters.cs" />
+    <Compile Include="ApnsChannelCountersInstance.cs" />
+    <Compile Include="ApnsChannelSettings.cs" />
+    <Compile Include="ApnsChannelState.cs" />
+    <Compile Include="ApnsEndPoint.cs" />
+    <Compile Include="ApnsFeedbackAppFile.cs" />
+    <Compile Include="ApnsFeedbackException.cs" />
+    <Compile Include="ApnsFeedbackExpiredTokenException.cs" />
+    <Compile Include="ApnsFeedbackFileBase.cs" />
+    <Compile Include="ApnsFeedbackFileId.cs" />
+    <Compile Include="ApnsFeedbackFileIO.cs" />
+    <Compile Include="ApnsFeedbackManager.cs" />
+    <Compile Include="ApnsFeedbackManagerSettings.cs" />
+    <Compile Include="ApnsFeedbackMetadata.cs" />
+    <Compile Include="ApnsFeedbackPackage.cs" />
+    <Compile Include="ApnsFeedbackResponse.cs" />
+    <Compile Include="ApnsFeedbackScheduler.cs" />
+    <Compile Include="ApnsFeedbackStream.cs" />
+    <Compile Include="ApnsFeedbackValidationResult.cs" />
+    <Compile Include="ApnsMonitoringNotification.cs" />
+    <Compile Include="ApnsNotification.cs" />
+    <Compile Include="ApnsNotificationFactory.cs" />
+    <Compile Include="ApnsPayload.cs" />
+    <Compile Include="ApnsPayloadBasicData.cs" />
+    <Compile Include="ApnsPublisher.cs" />
+    <Compile Include="ApnsPublisherFactory.cs" />
+    <Compile Include="ApnsPublisherSettings.cs" />
+    <Compile Include="ApnsResponse.cs" />
+    <Compile Include="ApnsResponseStatus.cs" />
+    <Compile Include="ApnsSslStream.cs" />
+    <Compile Include="ApnsTcpClient.cs" />
+    <Compile Include="AzureBaseChannel.cs" />
+    <Compile Include="AzureChallengeRequestChannel.cs" />
+    <Compile Include="AzureChallengeRequestChannelSettings.cs" />
+    <Compile Include="AzureChallengeRequestChannelState.cs" />
+    <Compile Include="AzureChallengeRequestInfoMapping.cs" />
+    <Compile Include="AzureChallengeRequestMonitoringNotification.cs" />
+    <Compile Include="AzureChallengeRequestNotification.cs" />
+    <Compile Include="AzureChallengeRequestPayload.cs" />
+    <Compile Include="AzureChallengeRequestPayloadWriter.cs" />
+    <Compile Include="AzureChallengeRequestPublisher.cs" />
+    <Compile Include="AzureChallengeRequestPublisherFactory.cs" />
+    <Compile Include="AzureChallengeRequestPublisherSettings.cs" />
+    <Compile Include="AzureChannel.cs" />
+    <Compile Include="AzureChannelSettings.cs" />
+    <Compile Include="AzureChannelState.cs" />
+    <Compile Include="AzureClient.cs" />
+    <Compile Include="AzureCreateOrUpdateRegistrationRequest.cs" />
+    <Compile Include="AzureDeviceRegistrationChannel.cs" />
+    <Compile Include="AzureDeviceRegistrationChannelSettings.cs" />
+    <Compile Include="AzureDeviceRegistrationChannelState.cs" />
+    <Compile Include="AzureDeviceRegistrationInfoMapping.cs" />
+    <Compile Include="AzureDeviceRegistrationMonitoringNotification.cs" />
+    <Compile Include="AzureDeviceRegistrationNotification.cs" />
+    <Compile Include="AzureDeviceRegistrationPayload.cs" />
+    <Compile Include="AzureDeviceRegistrationPayloadWriter.cs" />
+    <Compile Include="AzureDeviceRegistrationPublisher.cs" />
+    <Compile Include="AzureDeviceRegistrationPublisherFactory.cs" />
+    <Compile Include="AzureDeviceRegistrationPublisherSettings.cs" />
+    <Compile Include="AzureErrorTracker.cs" />
+    <Compile Include="AzureErrorType.cs" />
+    <Compile Include="AzureFixedHubUriTemplate.cs" />
+    <Compile Include="AzureHubCreationChannel.cs" />
+    <Compile Include="AzureHubCreationChannelSettings.cs" />
+    <Compile Include="AzureHubCreationChannelState.cs" />
+    <Compile Include="AzureHubCreationErrorTracker.cs" />
+    <Compile Include="AzureHubCreationErrorType.cs" />
+    <Compile Include="AzureHubCreationMonitoringNotification.cs" />
+    <Compile Include="AzureHubCreationNotification.cs" />
+    <Compile Include="AzureHubCreationPublisher.cs" />
+    <Compile Include="AzureHubCreationPublisherFactory.cs" />
+    <Compile Include="AzureHubCreationPublisherSettings.cs" />
+    <Compile Include="AzureHubCreationRequest.cs" />
+    <Compile Include="AzureHubDefinitionMapping.cs" />
+    <Compile Include="AzureHubEventHandler.cs" />
+    <Compile Include="AzureHubPayload.cs" />
+    <Compile Include="AzureHubPayloadWriter.cs" />
+    <Compile Include="AzureMonitoringNotification.cs" />
+    <Compile Include="AzureNewRegistrationIdRequest.cs" />
+    <Compile Include="AzureNewRegistrationIdResponse.cs" />
+    <Compile Include="AzureNewRegistrationRequest.cs" />
+    <Compile Include="AzureNotification.cs" />
+    <Compile Include="AzureNotificationFactory.cs" />
+    <Compile Include="AzureOutlookNotificationMapping.cs" />
+    <Compile Include="AzurePartitionUriTemplate.cs" />
+    <Compile Include="AzurePayload.cs" />
+    <Compile Include="AzurePayloadWriter.cs" />
+    <Compile Include="AzurePublisher.cs" />
+    <Compile Include="AzurePublisherFactory.cs" />
+    <Compile Include="AzurePublisherSettings.cs" />
+    <Compile Include="AzureReadRegistrationRequest.cs" />
+    <Compile Include="AzureReadRegistrationResponse.cs" />
+    <Compile Include="AzureRegistrationChallengeRequest.cs" />
+    <Compile Include="AzureRequestBase.cs" />
+    <Compile Include="AzureResponse.cs" />
+    <Compile Include="AzureSasKey.cs" />
+    <Compile Include="AzureSasToken.cs" />
+    <Compile Include="AzureSendRequest.cs" />
+    <Compile Include="AzureUriTemplate.cs" />
+    <Compile Include="AzureVariableHubUriTemplate.cs" />
+    <Compile Include="ConfigurationChangedEventArgs.cs" />
+    <Compile Include="ConfigurationReadEventArgs.cs" />
+    <Compile Include="GcmChannel.cs" />
+    <Compile Include="GcmChannelSettings.cs" />
+    <Compile Include="GcmChannelState.cs" />
+    <Compile Include="GcmClient.cs" />
+    <Compile Include="GcmErrorTracker.cs" />
+    <Compile Include="GcmErrorType.cs" />
+    <Compile Include="GcmMonitoringNotification.cs" />
+    <Compile Include="GcmNotification.cs" />
+    <Compile Include="GcmNotificationFactory.cs" />
+    <Compile Include="GcmPayload.cs" />
+    <Compile Include="GcmPayloadReader.cs" />
+    <Compile Include="GcmPayloadWriter.cs" />
+    <Compile Include="GcmPublisher.cs" />
+    <Compile Include="GcmPublisherFactory.cs" />
+    <Compile Include="GcmPublisherSettings.cs" />
+    <Compile Include="GcmRequest.cs" />
+    <Compile Include="GcmResponse.cs" />
+    <Compile Include="GcmResponseFormatException.cs" />
+    <Compile Include="GcmResponseStatusCode.cs" />
+    <Compile Include="GcmTransportStatusCode.cs" />
+    <Compile Include="HttpClientBase.cs" />
+    <Compile Include="IApnsFeedbackFile.cs" />
+    <Compile Include="IApnsFeedbackProvider.cs" />
+    <Compile Include="IAzureSasTokenProvider.cs" />
+    <Compile Include="IMonitoringMailboxNotificationRecipientFactory.cs" />
+    <Compile Include="InvalidNotificationEventArgs.cs" />
+    <Compile Include="InvalidPushNotificationException.cs" />
+    <Compile Include="IPendingGetConnection.cs" />
+    <Compile Include="IPendingGetConnectionCache.cs" />
+    <Compile Include="IPendingGetResponse.cs" />
+    <Compile Include="IPushNotificationMapping.cs" />
+    <Compile Include="IPushNotificationOptics.cs" />
+    <Compile Include="IPushNotificationPublisherConfigurationProvider.cs" />
+    <Compile Include="IThrottlingManager.cs" />
+    <Compile Include="LocDescriptionAttribute.cs" />
+    <Compile Include="MissingHubEventArgs.cs" />
+    <Compile Include="MonitoringMailboxNotificationFactory.cs" />
+    <Compile Include="OrganizationIdConverter.cs" />
+    <Compile Include="PendingGetChannel.cs" />
+    <Compile Include="PendingGetConnection.cs" />
+    <Compile Include="PendingGetConnectionCache.cs" />
+    <Compile Include="PendingGetContext.cs" />
+    <Compile Include="PendingGetCounters.cs" />
+    <Compile Include="PendingGetNotification.cs" />
+    <Compile Include="PendingGetNotificationFactory.cs" />
+    <Compile Include="PendingGetPayload.cs" />
+    <Compile Include="PendingGetPublisher.cs" />
+    <Compile Include="PendingGetPublisherFactory.cs" />
+    <Compile Include="PendingGetPublisherSettings.cs" />
+    <Compile Include="PendingGetRequestHandler.cs" />
+    <Compile Include="PendingGetRequestUrl.cs" />
+    <Compile Include="PendingGetResponse.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ProxyChannel.cs" />
+    <Compile Include="ProxyChannelAppData.cs" />
+    <Compile Include="ProxyChannelAppDataState.cs" />
+    <Compile Include="ProxyChannelLegacy.cs" />
+    <Compile Include="ProxyChannelLegacyState.cs" />
+    <Compile Include="ProxyChannelSettings.cs" />
+    <Compile Include="ProxyCounters.cs" />
+    <Compile Include="ProxyErrorTracker.cs" />
+    <Compile Include="ProxyErrorType.cs" />
+    <Compile Include="ProxyNotification.cs" />
+    <Compile Include="ProxyPublisher.cs" />
+    <Compile Include="ProxyPublisherFactory.cs" />
+    <Compile Include="ProxyPublisherSettings.cs" />
+    <Compile Include="PublisherConfigurationWatcher.cs" />
+    <Compile Include="PublisherCounters.cs" />
+    <Compile Include="PublisherCountersInstance.cs" />
+    <Compile Include="PublisherManagerCounters.cs" />
+    <Compile Include="PushNotification.cs" />
+    <Compile Include="PushNotificationChannel.cs" />
+    <Compile Include="PushNotificationChannelContext.cs" />
+    <Compile Include="PushNotificationConfigurationException.cs" />
+    <Compile Include="PushNotificationDataProtector.cs" />
+    <Compile Include="PushNotificationFactory.cs" />
+    <Compile Include="PushNotificationOptics.cs" />
+    <Compile Include="PushNotificationPublisher.cs" />
+    <Compile Include="PushNotificationPublisherBase.cs" />
+    <Compile Include="PushNotificationPublisherConfiguration.cs" />
+    <Compile Include="PushNotificationPublisherFactory.cs" />
+    <Compile Include="PushNotificationPublisherManager.cs" />
+    <Compile Include="PushNotificationPublisherManagerBuilder.cs" />
+    <Compile Include="PushNotificationPublisherSettings.cs" />
+    <Compile Include="PushNotificationPublisherSettingsFactory.cs" />
+    <Compile Include="PushNotificationPublishingContext.cs" />
+    <Compile Include="PushNotificationQueue.cs" />
+    <Compile Include="PushNotificationQueueItem.cs" />
+    <Compile Include="PushNotificationSettingsBase.cs" />
+    <Compile Include="PushNotificationsOutboundTracer.cs" />
+    <Compile Include="PushNotificationTracker.cs" />
+    <Compile Include="RegistryConfigurationProvider.cs" />
+    <Compile Include="RegistryPushNotificationApp.cs" />
+    <Compile Include="Strings.cs" />
+    <Compile Include="WebAppChannel.cs" />
+    <Compile Include="WebAppChannelSettings.cs" />
+    <Compile Include="WebAppChannelState.cs" />
+    <Compile Include="WebAppErrorTracker.cs" />
+    <Compile Include="WebAppErrorType.cs" />
+    <Compile Include="WebAppMonitoringNotification.cs" />
+    <Compile Include="WebAppNotification.cs" />
+    <Compile Include="WebAppNotificationFactory.cs" />
+    <Compile Include="WebAppPublisher.cs" />
+    <Compile Include="WebAppPublisherFactory.cs" />
+    <Compile Include="WebAppPublisherSettings.cs" />
+    <Compile Include="WnsAccessToken.cs" />
+    <Compile Include="WnsAudio.cs" />
+    <Compile Include="WnsAuthRequest.cs" />
+    <Compile Include="WnsBadgeNotification.cs" />
+    <Compile Include="WnsBinding.cs" />
+    <Compile Include="WnsBranding.cs" />
+    <Compile Include="WnsCachePolicy.cs" />
+    <Compile Include="WnsChannel.cs" />
+    <Compile Include="WnsChannelSettings.cs" />
+    <Compile Include="WnsChannelState.cs" />
+    <Compile Include="WnsClient.cs" />
+    <Compile Include="WnsErrorTracker.cs" />
+    <Compile Include="WnsGlyph.cs" />
+    <Compile Include="WnsImage.cs" />
+    <Compile Include="WnsMonitoringNotification.cs" />
+    <Compile Include="WnsNotification.cs" />
+    <Compile Include="WnsNotificationFactory.cs" />
+    <Compile Include="WnsOutlookNotificationMapping.cs" />
+    <Compile Include="WnsPayloadWriter.cs" />
+    <Compile Include="WnsPublisher.cs" />
+    <Compile Include="WnsPublisherFactory.cs" />
+    <Compile Include="WnsPublisherSettings.cs" />
+    <Compile Include="WnsRawNotification.cs" />
+    <Compile Include="WnsRequest.cs" />
+    <Compile Include="WnsResponse.cs" />
+    <Compile Include="WnsResult.cs" />
+    <Compile Include="WnsResultErrorType.cs" />
+    <Compile Include="WnsSound.cs" />
+    <Compile Include="WnsTemplateDescription.cs" />
+    <Compile Include="WnsText.cs" />
+    <Compile Include="WnsTile.cs" />
+    <Compile Include="WnsTileBinding.cs" />
+    <Compile Include="WnsTileNotification.cs" />
+    <Compile Include="WnsTileVisual.cs" />
+    <Compile Include="WnsToast.cs" />
+    <Compile Include="WnsToastBinding.cs" />
+    <Compile Include="WnsToastDuration.cs" />
+    <Compile Include="WnsToastNotification.cs" />
+    <Compile Include="WnsToastVisual.cs" />
+    <Compile Include="WnsVisual.cs" />
+    <Compile Include="WnsXmlNotification.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Strings.resources" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.DKM.Proxy\Microsoft.DKM.Proxy.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140D7}</Project>
+      <Name>Microsoft.DKM.Proxy</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Common\Microsoft.Exchange.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140F0}</Project>
+      <Name>Microsoft.Exchange.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Common\Microsoft.Exchange.Data.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140D3}</Project>
+      <Name>Microsoft.Exchange.Data.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Directory\Microsoft.Exchange.Data.Directory.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14105}</Project>
+      <Name>Microsoft.Exchange.Data.Directory</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data\Microsoft.Exchange.Data.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14106}</Project>
+      <Name>Microsoft.Exchange.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Diagnostics\Microsoft.Exchange.Diagnostics.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14113}</Project>
+      <Name>Microsoft.Exchange.Diagnostics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Net\Microsoft.Exchange.Net.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14178}</Project>
+      <Name>Microsoft.Exchange.Net</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.PushNotifications\Microsoft.Exchange.PushNotifications.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14185}</Project>
+      <Name>Microsoft.Exchange.PushNotifications</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Security\Microsoft.Exchange.Security.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14198}</Project>
+      <Name>Microsoft.Exchange.Security</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\mscorlib\mscorlib.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141F1}</Project>
+      <Name>mscorlib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

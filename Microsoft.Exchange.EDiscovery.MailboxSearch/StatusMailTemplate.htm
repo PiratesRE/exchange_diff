@@ -1,0 +1,175 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:m="http://schemas.microsoft.com/office/2004/12/omml">
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title></title>
+<style type="text/css">
+body {
+	font-family: Tahoma, Arial, Helvetica, sans-serif;
+	font-size:x-small
+}
+
+H1 {
+	FONT-WEIGHT: bold;
+	FONT-SIZE: small;
+	MARGIN: 0in;
+	COLOR: #000066;
+	FONT-FAMILY: Tahoma, Arial, Helvetica, sans-serif;
+}
+TABLE {
+	VERTICAL-ALIGN: top;
+	COLOR: #000000;
+	border-width: 0px;
+}
+TR {
+}
+TD {
+
+	FONT-SIZE: x-small;
+	VERTICAL-ALIGN: top;
+	COLOR: #000000;
+	font-family: Tahoma, Arial, Helvetica, sans-serif;
+}
+.header {
+	border-width: 0px;
+	FONT-SIZE: x-small;
+	COLOR: #808080;
+	font-weight: bold;
+	white-space: nowrap;
+	width: 5%;
+	padding-right: 6px;
+}
+A:link {
+	COLOR: rgb(51,153,255)
+}
+P {
+	MARGIN: 0in
+}
+.footer {
+	BORDER-TOP: #cccccc 1px solid; FONT-SIZE: smaller; COLOR: #808080; FONT-FAMILY: Arial
+}
+.line {
+	font-size: 4px;
+	border-top: 1px #ccc solid
+}
+td {
+	font-family: "Segoe UI";
+	font-size: 80%;
+}
+.lefttd {
+	border-right-style: solid;
+	border-bottom-style: solid;
+	border-width: 1px;
+	border-color: #999;
+	padding:0 4px 3px 4px;
+
+}
+.rightttd {
+	border-bottom-style: solid;
+	border-width: 1px;
+	border-color: #999;
+	padding:0 4px 3px 4px;
+}
+
+.margins {
+	padding:6px;
+}
+</style>
+</head>
+
+<body>
+
+
+<h1>{LabelLogMailHeader}&nbsp;&nbsp;{LabelLogMailHeaderInstructions}</h1>
+<table width="100%" border="0">
+		<tr>
+		<td width="2%">&nbsp;</td>
+		<td class="header">{LabelPercentComplete}</td>
+		<td width="72%">{PercentComplete}</td>
+	</tr>
+	<tr>
+		<td width="2%">&nbsp;</td>
+		<td class="header">{LabelLastRunBy}</td>
+		<td width="72%">{LastRunBy}</td>
+	</tr>
+	<tr>
+		<td width="2%">&nbsp;</td>
+		<td class="header">{LabelStoppedBy}</td>
+		<td width="72%">{StoppedBy}</td>
+	</tr>
+	<tr>
+		<td width="2%">&nbsp;</td>
+		<td class="header">{LabelLastStartTime}</td>
+		<td width="72%">{LastStartTime}</td>
+	</tr>
+	<tr>
+		<td width="2%">&nbsp;</td>
+		<td class="header">{LabelLastEndTime}</td>
+		<td width="72%">{LastEndTime}</td>
+	</tr>
+	<tr>
+		<td width="2%">&nbsp;</td>
+		<td class="header">{LabelSourceRecipients}</td>
+		<td width="72%">({NumberMailboxesToSearch}) {SourceRecipients}</td>
+	</tr>
+    <tr>
+		<td width="2%">&nbsp;</td>
+		<td class="header">{LabelSuccessfulMailboxes}</td>
+		<td width="72%">({NumberSuccessfulMailboxes}) {SuccessfulMailboxes}</td>
+	</tr>
+    <tr>
+		<td width="2%">&nbsp;</td>
+		<td class="header">{LabelUnsuccessfulMailboxes}</td>
+		<td width="72%">({NumberUnsuccessfulMailboxes}) {UnsuccessfulMailboxes}</td>
+	</tr>
+	<tr>
+		<td width="2%">&nbsp;</td>
+		<td class="header">{LabelExcludeDuplicateMessages}</td>
+		<td width="72%">{ExcludeDuplicateMessages}</td>
+	</tr>
+	<tr>
+		<td width="2%">&nbsp;</td>
+		<td class="header">{LabelResume}</td>
+		<td width="72%">{Resume}</td>
+	</tr>
+	<tr>
+		<td width="2%">&nbsp;</td>
+		<td class="header">{LabelIncludeKeywordStatistics}</td>
+		<td width="72%">{IncludeKeywordStatistics}</td>
+	</tr>
+	<tr>
+		<td width="2%">&nbsp;</td>
+		<td class="header">{LabelResultSize}</td>
+		<td width="72%">{ResultSize}, {LabelResultSizeEstimate} {ResultSizeEstimate}</td>
+	</tr>
+	<tr>
+		<td width="2%">&nbsp;</td>
+		<td class="header">{LabelResultNumber}</td>
+		<td width="72%">{ResultNumber}, {LabelResultNumberEstimate} {ResultNumberEstimate} {EstimateNotExcludeDuplicates}</td>
+	</tr>
+	<tr>
+		<td width="2%">&nbsp;</td>
+		<td class="header">{LabelTargetMailbox}</td>
+		<td width="72%">{TargetMailbox}</td>
+	</tr>
+	<tr>
+		<td width="2%">&nbsp;</td>
+		<td class="header">{LabelErrors}</td>
+		<td width="72%">{Errors}</td>
+	</tr>
+	<tr>
+		<td width="2%">&nbsp;</td>
+		<td class="header">{LabelKeywordHits}</td>
+		<td width="72%">{KeywordHits}</td>
+	</tr>
+
+</table>
+<br />
+<br />
+<br />
+<p class="footer">{LabelLogMailFooter}</p>
+
+</body>
+
+</html>

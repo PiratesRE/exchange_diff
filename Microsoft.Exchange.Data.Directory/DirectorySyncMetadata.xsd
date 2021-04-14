@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema
+    elementFormDefault="qualified"
+    targetNamespace="http://schemas.microsoft.com/online/directoryservices/sync/metadata/2010/01"
+    xmlns:tns="http://schemas.microsoft.com/online/directoryservices/sync/metadata/2010/01"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <xs:attribute name="Timestamp" type="xs:dateTime">
+    <xs:annotation>
+      <xs:documentation>
+        When appearing on a property element (substitution of a DirectoryProperty element) or a link
+        element (of a type derived from DirectoryLink), indicates the date/time of the originating
+        change resulting in the specified state.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:attribute>
+
+  <xs:element name="SingleAuthorityMetadata">
+    <xs:annotation>
+      <xs:documentation>
+        When appearing as a child element in an object element (of a type derived from DirectoryObject), specifies the
+        authority for each single-authority attribute of the object.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="tns:AttributeSet" minOccurs="1" maxOccurs="unbounded" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="AttributeSet">
+    <xs:complexType>
+      <xs:attribute name="Name" type="xs:string" use="required">
+        <xs:annotation>
+          <xs:documentation>
+            Name of the attribute set containing the attributes that are the subject of this element.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="ExchangeMastered" type="xs:boolean" use="required">
+        <xs:annotation>
+          <xs:documentation>
+            True if Exchange is authoritative for all single-authority attributes in the attribute set; otherwise,
+            false.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="Version" type="xs:positiveInteger" use="required">
+        <xs:annotation>
+          <xs:documentation>
+            Integer that starts at 1 and is incremented whenever one or more fields in the value is modified.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="LastVersionSeized" type="xs:positiveInteger">
+        <xs:annotation>
+          <xs:documentation>
+            Value of Version just prior to the last authority seizure; absent if no seizure has been performed.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+
+</xs:schema>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo Name="Enable RPC over HTTP redirector firewall exception" >
+	<ServerTasks>
+		<!-- E14:143740- Windows firewall blocks RpcHttp redirector traffic.
+        Enable the svchost.exe (rpchttplbs) RPC exception in the Windows Firewall for CAS servers
+        On uninstall, remove from the windows firewall exception list in LH.-->
+		<ServerTaskInfo Id="_653184838b334e749dbc87a567e865b2" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+			<Install IsFatal="false">
+				<Standalone>
+          if ([Environment]::OSVersion.Version.Major -ge 6)
+          {
+          Add-FirewallException -FirewallRule (New-Object Microsoft.Exchange.Security.WindowsFirewall.RpcHttpRedirectorRule)
+          }
+        </Standalone>
+			</Install>
+			<BuildToBuildUpgrade UseInstallTasks="true"/>
+			<DisasterRecovery/>
+			<Uninstall IsFatal="false">
+				<Standalone>
+          if ([Environment]::OSVersion.Version.Major -ge 6)
+          {
+          Remove-FirewallException -FirewallRule (New-Object Microsoft.Exchange.Security.WindowsFirewall.RpcHttpRedirectorRule)
+          }
+        </Standalone>
+			</Uninstall>
+		</ServerTaskInfo>
+	</ServerTasks>
+</SetupComponentInfo>

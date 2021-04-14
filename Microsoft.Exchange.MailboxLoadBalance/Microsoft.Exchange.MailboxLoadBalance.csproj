@@ -1,0 +1,381 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{09CD9476-CD82-489E-B9E2-84B47CA14144}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Microsoft.Exchange.MailboxLoadBalance</RootNamespace>
+    <AssemblyName>Microsoft.Exchange.MailboxLoadBalance</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Management.Automation" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Anchor\AutomaticLoadBalanceCacheComponent.cs" />
+    <Compile Include="Anchor\LoadBalanceAnchorContext.cs" />
+    <Compile Include="AutomaticLoadBalancer.cs" />
+    <Compile Include="Band\Band.cs" />
+    <Compile Include="Band\BandBasedLoadBalance.cs" />
+    <Compile Include="Band\BandData.cs" />
+    <Compile Include="Band\BandDataAggregator.cs" />
+    <Compile Include="Band\BandMailboxRebalanceData.cs" />
+    <Compile Include="Band\BandSettingsStorage.cs" />
+    <Compile Include="Band\BatchSizeReducerFactory.cs" />
+    <Compile Include="Band\BatchSizeReducerType.cs" />
+    <Compile Include="Band\DatabaseWeightAggregator.cs" />
+    <Compile Include="Band\DropEntriesBatchSizeReducer.cs" />
+    <Compile Include="Band\DropLargestEntriesBatchSizeReducer.cs" />
+    <Compile Include="Band\DropSmallestEntriesBatchSizeReducer.cs" />
+    <Compile Include="Band\FactorBasedBatchSizeReducer.cs" />
+    <Compile Include="Band\IBatchSizeReducer.cs" />
+    <Compile Include="Band\PersistedBandDefinition.cs" />
+    <Compile Include="CapacityData\AvailableCapacityProjection.cs" />
+    <Compile Include="CapacityData\BatchCapacityDatum.cs" />
+    <Compile Include="CapacityData\BatchCapacityProjection.cs" />
+    <Compile Include="CapacityData\CapacityProjectionData.cs" />
+    <Compile Include="CapacityData\ConsumerSizeProjection.cs" />
+    <Compile Include="CapacityData\HeatMapCapacityData.cs" />
+    <Compile Include="CapacityData\ICapacityProjection.cs" />
+    <Compile Include="CapacityData\MinimumCapacityProjection.cs" />
+    <Compile Include="ClientFactory.cs" />
+    <Compile Include="Clients\CachedClient.cs" />
+    <Compile Include="Clients\CachedInjectorClient.cs" />
+    <Compile Include="Clients\CachedLoadBalanceClient.cs" />
+    <Compile Include="Clients\CachedPhysicalDatabase.cs" />
+    <Compile Include="Clients\CachingClientFactory.cs" />
+    <Compile Include="Clients\IWcfClient.cs" />
+    <Compile Include="Config\ILoadBalanceSettings.cs" />
+    <Compile Include="Config\LoadBalanceADSettings.cs" />
+    <Compile Include="Config\LoadBalanceLoggingConfig.cs" />
+    <Compile Include="Constraints\AllAcceptConstraint.cs" />
+    <Compile Include="Constraints\AllocationConstraints.cs" />
+    <Compile Include="Constraints\AnyAcceptConstraint.cs" />
+    <Compile Include="Constraints\AnyLoadConstraint.cs" />
+    <Compile Include="Constraints\ConstraintValidationResult.cs" />
+    <Compile Include="Constraints\IAllocationConstraint.cs" />
+    <Compile Include="Constraints\LoadCapacityConstraint.cs" />
+    <Compile Include="Constraints\LoadCapacityConstraintValidationResult.cs" />
+    <Compile Include="Constraints\NoLoadContraint.cs" />
+    <Compile Include="Constraints\SpecialMailboxPlacementConstraint.cs" />
+    <Compile Include="Data\BandRandomEntitySelector.cs" />
+    <Compile Include="Data\BatchName.cs" />
+    <Compile Include="Data\ContainerType.cs" />
+    <Compile Include="Data\DatabaseSizeInfo.cs" />
+    <Compile Include="Data\DirectoryReconnectionVisitor.cs" />
+    <Compile Include="Data\EntitySelector.cs" />
+    <Compile Include="Data\ILoadEntityVisitor.cs" />
+    <Compile Include="Data\LoadContainer.cs" />
+    <Compile Include="Data\LoadEntity.cs" />
+    <Compile Include="Data\LoadMetric.cs" />
+    <Compile Include="Data\LoadMetricStorage.cs" />
+    <Compile Include="Data\LoadMetrics\ConsumedCpu.cs" />
+    <Compile Include="Data\LoadMetrics\ConsumerMailboxCount.cs" />
+    <Compile Include="Data\LoadMetrics\ConsumerMailboxSize.cs" />
+    <Compile Include="Data\LoadMetrics\InProgressLoadBalancingMoveCount.cs" />
+    <Compile Include="Data\LoadMetrics\ItemCount.cs" />
+    <Compile Include="Data\LoadMetrics\LoadMetricRepository.cs" />
+    <Compile Include="Data\LoadMetrics\LogicalSize.cs" />
+    <Compile Include="Data\LoadMetrics\PhysicalSize.cs" />
+    <Compile Include="Data\LoadPartition.cs" />
+    <Compile Include="Data\NullEntitySelector.cs" />
+    <Compile Include="Data\NumberOfEntitiesSelector.cs" />
+    <Compile Include="Data\TotalSizeEntitySelector.cs" />
+    <Compile Include="Diagnostics\CmdletRequestDiagnosticData.cs" />
+    <Compile Include="Diagnostics\DiagnosticLog.cs" />
+    <Compile Include="Diagnostics\DiagnosticLogger.cs" />
+    <Compile Include="Diagnostics\InjectMoveRequestDiagnosticData.cs" />
+    <Compile Include="Diagnostics\LoadBalanceBandSettingsStorageDiagnosable.cs" />
+    <Compile Include="Diagnostics\LoadBalanceBandSettingsStorageDiagnosableArguments.cs" />
+    <Compile Include="Diagnostics\LoadBalanceBandSettingsStorageDiagnosableResult.cs" />
+    <Compile Include="Diagnostics\LoadBalanceDiagnosableArgumentBase.cs" />
+    <Compile Include="Diagnostics\LoadBalanceDiagnosableBase.cs" />
+    <Compile Include="Diagnostics\LoadBalanceDiagnosableResult.cs" />
+    <Compile Include="Diagnostics\LoadBalanceServiceDiagnosable.cs" />
+    <Compile Include="Diagnostics\LoadBalanceServiceDiagnosableArgument.cs" />
+    <Compile Include="Diagnostics\LoadBalanceTopologyDiagnosable.cs" />
+    <Compile Include="Diagnostics\LoadBalanceTopologyDiagnosableArgument.cs" />
+    <Compile Include="Diagnostics\PowershellCommandDiagnosticData.cs" />
+    <Compile Include="Diagnostics\QueueDiagnosticData.cs" />
+    <Compile Include="Diagnostics\QueueManagerDiagnosticData.cs" />
+    <Compile Include="Diagnostics\RequestDiagnosticData.cs" />
+    <Compile Include="Diagnostics\SoftDeletedMailboxRemovalDiagnosticData.cs" />
+    <Compile Include="Diagnostics\SoftDeletedMailboxRemovalResult.cs" />
+    <Compile Include="Diagnostics\SoftDeletedMoveHistoryResult.cs" />
+    <Compile Include="Diagnostics\TraceDecoratedResult.cs" />
+    <Compile Include="Directory\CloudArchive.cs" />
+    <Compile Include="Directory\DatabaseProcessor.cs" />
+    <Compile Include="Directory\DirectoryContainerParent.cs" />
+    <Compile Include="Directory\DirectoryDatabase.cs" />
+    <Compile Include="Directory\DirectoryDatabaseAvailabilityGroup.cs" />
+    <Compile Include="Directory\DirectoryForest.cs" />
+    <Compile Include="Directory\DirectoryIdentity.cs" />
+    <Compile Include="Directory\DirectoryMailbox.cs" />
+    <Compile Include="Directory\DirectoryMailboxType.cs" />
+    <Compile Include="Directory\DirectoryObject.cs" />
+    <Compile Include="Directory\DirectoryObjectType.cs" />
+    <Compile Include="Directory\DirectoryServer.cs" />
+    <Compile Include="Directory\DummyDatabaseAvailabilityGroup.cs" />
+    <Compile Include="Directory\EmptyPhysicalMailbox.cs" />
+    <Compile Include="Directory\ExchangeDirectory\RecipientSessionAdapter.cs" />
+    <Compile Include="Directory\ExchangeDirectory\TenantPartitionHintAdapter.cs" />
+    <Compile Include="Directory\ExchangeDirectory\TopologyConfigurationSessionAdapter.cs" />
+    <Compile Include="Directory\IDirectoryListener.cs" />
+    <Compile Include="Directory\IPhysicalDatabase.cs" />
+    <Compile Include="Directory\IPhysicalMailbox.cs" />
+    <Compile Include="Directory\NonConnectedMailbox.cs" />
+    <Compile Include="Directory\NullDirectory.cs" />
+    <Compile Include="Directory\PhysicalDatabase.cs" />
+    <Compile Include="Directory\PhysicalMailbox.cs" />
+    <Compile Include="Directory\VirtualPhysicalMailbox.cs" />
+    <Compile Include="Drain\DatabaseDrainControl.cs" />
+    <Compile Include="Drain\DatabaseDrainRequest.cs" />
+    <Compile Include="IInjectorService.cs" />
+    <Compile Include="ILoadBalance.cs" />
+    <Compile Include="Injector\BackCompatibleInjectorClient.cs" />
+    <Compile Include="Injector\ConsumerMetricsInjectorCapabilityDecorator.cs" />
+    <Compile Include="Injector\InjectorClient.cs" />
+    <Compile Include="Injector\InjectorService.cs" />
+    <Compile Include="Injector\InjectorServiceCapabilities.cs" />
+    <Compile Include="Injector\MissingCapabilityInjectorClientDecorator.cs" />
+    <Compile Include="IVersionedService.cs" />
+    <Compile Include="LoadBalanceDataContractSerializationBehavior.cs" />
+    <Compile Include="LoadBalanceDiagnosticArgument.cs" />
+    <Compile Include="LoadBalancerVersionInformation.cs" />
+    <Compile Include="LoadBalanceServiceBootstrapper.cs" />
+    <Compile Include="LoadBalanceServiceCapabilities.cs" />
+    <Compile Include="LoadBalanceUtils.cs" />
+    <Compile Include="LoadBalance\BackCompatibleLoadBalanceClient.cs" />
+    <Compile Include="LoadBalance\BandAsMetricCapabilityDecorator.cs" />
+    <Compile Include="LoadBalance\CapacitySummaryCapabilityDecorator.cs" />
+    <Compile Include="LoadBalance\ConsumerMetricsLoadBalanceCapabilityDecorator.cs" />
+    <Compile Include="LoadBalance\ILoadBalanceService.cs" />
+    <Compile Include="LoadBalance\LoadBalancerClient.cs" />
+    <Compile Include="LoadBalance\LoadBalanceService.cs" />
+    <Compile Include="LoadBalance\MissingCapabilityLoadBalanceClientDecorator.cs" />
+    <Compile Include="LoadBalance\SoftDeletedRemovalCapabilityDecorator.cs" />
+    <Compile Include="Logging\BandRebalanceLog.cs" />
+    <Compile Include="Logging\BandRebalanceLogEntry.cs" />
+    <Compile Include="Logging\DatabaseRequestLog.cs" />
+    <Compile Include="Logging\DummyObjectSchema.cs" />
+    <Compile Include="Logging\MailboxStatistics\LoadBalanceMailboxType.cs" />
+    <Compile Include="Logging\MailboxStatistics\MailboxState.cs" />
+    <Compile Include="Logging\MailboxStatistics\MailboxStatisticsLog.cs" />
+    <Compile Include="Logging\MailboxStatistics\MailboxStatisticsLogEntry.cs" />
+    <Compile Include="Logging\MailboxStatistics\MailboxStatisticsLogEntrySchema.cs" />
+    <Compile Include="Logging\ObjectLogCollector.cs" />
+    <Compile Include="Logging\ProvisioningConstraintFixStateLog.cs" />
+    <Compile Include="Logging\ProvisioningConstraintFixStateLogEntry.cs" />
+    <Compile Include="Logging\SoftDeletedMailboxRemoval\SoftDeletedMailboxRemovalLog.cs" />
+    <Compile Include="Logging\SoftDeletedMailboxRemoval\SoftDeletedMailboxRemovalLogEntry.cs" />
+    <Compile Include="Logging\SoftDeletedMailboxRemoval\SoftDeletedMailboxRemovalLogEntrySchema.cs" />
+    <Compile Include="MailboxLoadBalanceService.cs" />
+    <Compile Include="MailboxProcessors\EventNotificationSender.cs" />
+    <Compile Include="MailboxProcessors\GetMoveInfo.cs" />
+    <Compile Include="MailboxProcessors\IEventNotificationSender.cs" />
+    <Compile Include="MailboxProcessors\IGetMoveInfo.cs" />
+    <Compile Include="MailboxProcessors\MailboxProcessor.cs" />
+    <Compile Include="MailboxProcessors\MailboxProcessorDispatcher.cs" />
+    <Compile Include="MailboxProcessors\MailboxStatisticsLogger.cs" />
+    <Compile Include="MailboxProcessors\MoveInfo.cs" />
+    <Compile Include="MailboxProcessors\MoveStatus.cs" />
+    <Compile Include="MailboxProcessors\Policies\IMailboxPolicy.cs" />
+    <Compile Include="MailboxProcessors\Policies\MailboxPolicyProcessor.cs" />
+    <Compile Include="MailboxProcessors\Policies\MailboxProvisioningConstraintPolicy.cs" />
+    <Compile Include="MailboxProcessors\Policies\PolicyActivationControl.cs" />
+    <Compile Include="MailboxProcessors\Policies\ZeroItemsPendingUpgradePolicy.cs" />
+    <Compile Include="MailboxProcessors\ProcessMailboxRequest.cs" />
+    <Compile Include="MoveInjector.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Providers\DirectoryProvider.cs" />
+    <Compile Include="Providers\IBandSettingsProvider.cs" />
+    <Compile Include="Providers\IDirectoryProvider.cs" />
+    <Compile Include="Providers\IStorePort.cs" />
+    <Compile Include="Providers\MailboxTableEntry.cs" />
+    <Compile Include="Providers\MailboxTablePropertyDefinitions.cs" />
+    <Compile Include="Providers\StoreAdapter.cs" />
+    <Compile Include="Provisioning\CachedHeatMap.cs" />
+    <Compile Include="Provisioning\ChainedHeatMap.cs" />
+    <Compile Include="Provisioning\DatabaseCollector.cs" />
+    <Compile Include="Provisioning\DatabaseSelector.cs" />
+    <Compile Include="Provisioning\ForestHeatMap.cs" />
+    <Compile Include="Provisioning\ForestHeatMapConstructionRequest.cs" />
+    <Compile Include="Provisioning\HeatMap.cs" />
+    <Compile Include="Provisioning\HeatMapConstructionRequest.cs" />
+    <Compile Include="Provisioning\HeatMapDatabaseSelector.cs" />
+    <Compile Include="Provisioning\IHeatMap.cs" />
+    <Compile Include="Provisioning\LocalServerHeatMapConstructionRequest.cs" />
+    <Compile Include="Provisioning\MailboxProvisioningData.cs" />
+    <Compile Include="Provisioning\MailboxProvisioningResult.cs" />
+    <Compile Include="Provisioning\MailboxProvisioningResultStatus.cs" />
+    <Compile Include="Provisioning\ProvisioningLayerDatabaseSelector.cs" />
+    <Compile Include="QueueProcessing\BandRebalanceRequest.cs" />
+    <Compile Include="QueueProcessing\BaseRequest.cs" />
+    <Compile Include="QueueProcessing\CmdletExecutionRequest.cs" />
+    <Compile Include="QueueProcessing\ForestLoadBalanceRequest.cs" />
+    <Compile Include="QueueProcessing\GetMoveRequestStatistics.cs" />
+    <Compile Include="QueueProcessing\InjectionQueueCounters.cs" />
+    <Compile Include="QueueProcessing\InjectMoveRequest.cs" />
+    <Compile Include="QueueProcessing\IQueueCounters.cs" />
+    <Compile Include="QueueProcessing\IRebalancingRequestProcessor.cs" />
+    <Compile Include="QueueProcessing\IRequest.cs" />
+    <Compile Include="QueueProcessing\IRequestQueue.cs" />
+    <Compile Include="QueueProcessing\IRequestQueueManager.cs" />
+    <Compile Include="QueueProcessing\MailboxRebalanceRequest.cs" />
+    <Compile Include="QueueProcessing\ProcessingQueueCounters.cs" />
+    <Compile Include="QueueProcessing\RebalancingRequestMoveStarter.cs" />
+    <Compile Include="QueueProcessing\RequestQueue.cs" />
+    <Compile Include="QueueProcessing\RequestQueueManager.cs" />
+    <Compile Include="QueueProcessing\Rubs\LoadBalanceActivityLogger.cs" />
+    <Compile Include="QueueProcessing\Rubs\LoadBalanceTask.cs" />
+    <Compile Include="QueueProcessing\Rubs\LoadBalanceWorkload.cs" />
+    <Compile Include="QueueProcessing\Rubs\RubsQueue.cs" />
+    <Compile Include="QueueProcessing\ScheduledRequest.cs" />
+    <Compile Include="QueueProcessing\SoftDeletedCleanUpRequest.cs" />
+    <Compile Include="ServiceSupport\ByteQuantifiedSizeSurrogate.cs" />
+    <Compile Include="ServiceSupport\CmdletExecutionPool.cs" />
+    <Compile Include="ServiceSupport\IClientFactory.cs" />
+    <Compile Include="ServiceSupport\ITimer.cs" />
+    <Compile Include="ServiceSupport\LoadBalanceDataContractResolver.cs" />
+    <Compile Include="ServiceSupport\LoadBalanceDataContractSurrogate.cs" />
+    <Compile Include="ServiceSupport\LoadBalanceFault.cs" />
+    <Compile Include="ServiceSupport\LoadBalanceOperationRetryManager.cs" />
+    <Compile Include="ServiceSupport\RunspaceReservation.cs" />
+    <Compile Include="ServiceSupport\ServiceEndpointAddress.cs" />
+    <Compile Include="ServiceSupport\SimpleTimer.cs" />
+    <Compile Include="ServiceSupport\VersionedClientBase.cs" />
+    <Compile Include="SoftDeletedRemoval\DisconnectDateCheck.cs" />
+    <Compile Include="SoftDeletedRemoval\ItemCountCheck.cs" />
+    <Compile Include="SoftDeletedRemoval\LocalDatabaseSoftDeletedCleanupRequest.cs" />
+    <Compile Include="SoftDeletedRemoval\MoveHistoryCheck.cs" />
+    <Compile Include="SoftDeletedRemoval\SoftDeletedDatabaseCleanupRequest.cs" />
+    <Compile Include="SoftDeletedRemoval\SoftDeletedMailboxRemovalCheck.cs" />
+    <Compile Include="SoftDeletedRemoval\SoftDeletedMailboxRemovalRequest.cs" />
+    <Compile Include="SoftDeletedRemoval\SoftDeletedMailboxRemover.cs" />
+    <Compile Include="SoftDeletedRemoval\SoftDeletedMoveHistory.cs" />
+    <Compile Include="SoftDeletedRemoval\SoftDeletedRemovalData.cs" />
+    <Compile Include="SoftDeletedRemoval\SoftDeleteMailboxRemovalCheckRemoval.cs" />
+    <Compile Include="TopologyExtractors\CachingTopologyExtractor.cs" />
+    <Compile Include="TopologyExtractors\CachingTopologyExtractorFactory.cs" />
+    <Compile Include="TopologyExtractors\CentralServerLoadBalancingExtractorFactory.cs" />
+    <Compile Include="TopologyExtractors\ChildContainerExtractor.cs" />
+    <Compile Include="TopologyExtractors\DetailedMailboxInfoDatabaseExtractor.cs" />
+    <Compile Include="TopologyExtractors\FullMailboxInfoDatabaseTopologyExtractor.cs" />
+    <Compile Include="TopologyExtractors\LocalLoadBalancingWithEntitiesExtractorFactory.cs" />
+    <Compile Include="TopologyExtractors\MailboxEntityExtractor.cs" />
+    <Compile Include="TopologyExtractors\ParallelParentContainerExtractor.cs" />
+    <Compile Include="TopologyExtractors\ParentContainerExtractor.cs" />
+    <Compile Include="TopologyExtractors\PartitionExtractor.cs" />
+    <Compile Include="TopologyExtractors\RegularLoadBalancingExtractorFactory.cs" />
+    <Compile Include="TopologyExtractors\RemoteServerTopologyExtractor.cs" />
+    <Compile Include="TopologyExtractors\TopologyExtractor.cs" />
+    <Compile Include="TopologyExtractors\TopologyExtractorFactory.cs" />
+    <Compile Include="TopologyExtractors\TopologyExtractorFactoryContext.cs" />
+    <Compile Include="TopologyExtractors\TopologyExtractorFactoryContextPool.cs" />
+    <Compile Include="VersionedServiceBase.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.Exchange.AnchorService\Microsoft.Exchange.AnchorService.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140DB}</Project>
+      <Name>Microsoft.Exchange.AnchorService</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Common\Microsoft.Exchange.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140F0}</Project>
+      <Name>Microsoft.Exchange.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Configuration.ObjectModel\Microsoft.Exchange.Configuration.ObjectModel.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140FC}</Project>
+      <Name>Microsoft.Exchange.Configuration.ObjectModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Common\Microsoft.Exchange.Data.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140D3}</Project>
+      <Name>Microsoft.Exchange.Data.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Directory\Microsoft.Exchange.Data.Directory.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14105}</Project>
+      <Name>Microsoft.Exchange.Data.Directory</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Mapi\Microsoft.Exchange.Data.Mapi.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1410A}</Project>
+      <Name>Microsoft.Exchange.Data.Mapi</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Storage\Microsoft.Exchange.Data.Storage.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1410F}</Project>
+      <Name>Microsoft.Exchange.Data.Storage</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data\Microsoft.Exchange.Data.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14106}</Project>
+      <Name>Microsoft.Exchange.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Diagnostics\Microsoft.Exchange.Diagnostics.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14113}</Project>
+      <Name>Microsoft.Exchange.Diagnostics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.MailboxLoadBalance.ServerStrings\Microsoft.Exchange.MailboxLoadBalance.ServerStrings.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14145}</Project>
+      <Name>Microsoft.Exchange.MailboxLoadBalance.ServerStrings</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.MailboxReplicationService.Common\Microsoft.Exchange.MailboxReplicationService.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14147}</Project>
+      <Name>Microsoft.Exchange.MailboxReplicationService.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Net\Microsoft.Exchange.Net.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14178}</Project>
+      <Name>Microsoft.Exchange.Net</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.StoreProvider\Microsoft.Exchange.StoreProvider.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141B9}</Project>
+      <Name>Microsoft.Exchange.StoreProvider</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.VariantConfiguration\Microsoft.Exchange.VariantConfiguration.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141E0}</Project>
+      <Name>Microsoft.Exchange.VariantConfiguration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.WorkloadManagement\Microsoft.Exchange.WorkloadManagement.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141E1}</Project>
+      <Name>Microsoft.Exchange.WorkloadManagement</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Office.Datacenter.ActiveMonitoringLocal\Microsoft.Office.Datacenter.ActiveMonitoringLocal.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141ED}</Project>
+      <Name>Microsoft.Office.Datacenter.ActiveMonitoringLocal</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\mscorlib\mscorlib.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141F1}</Project>
+      <Name>mscorlib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

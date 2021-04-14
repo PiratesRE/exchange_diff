@@ -1,0 +1,231 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{09CD9476-CD82-489E-B9E2-84B47CA1411C}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Microsoft.Exchange.EDiscovery</RootNamespace>
+    <AssemblyName>Microsoft.Exchange.EDiscovery.MailboxSearch</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60DC8134-EBA5-43B8-BCC9-BB4BC16C2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Ceres.InteractionEngine.Services" />
+    <Reference Include="Microsoft.Exchange.Compliance.CrimsonEvents" />
+    <Reference Include="Microsoft.Exchange.Search.OperatorSchema" />
+    <Reference Include="Microsoft.Exchange.WebServices" />
+    <Reference Include="System" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Export\ServerToServerAutoDiscoveryCallingContext.cs" />
+    <Compile Include="Export\ServerToServerCallingContextFactory.cs" />
+    <Compile Include="Export\ServerToServerEwsCallingContext.cs" />
+    <Compile Include="MailboxSearch\AttachmentLog.cs" />
+    <Compile Include="MailboxSearch\Constants.cs" />
+    <Compile Include="MailboxSearch\CopyTargetLocation.cs" />
+    <Compile Include="MailboxSearch\IMailboxSearchConfigurationProvider.cs" />
+    <Compile Include="MailboxSearch\IMailboxSearchTask.cs" />
+    <Compile Include="MailboxSearch\ITargetMailbox.cs" />
+    <Compile Include="MailboxSearch\MailboxExportContext.cs" />
+    <Compile Include="MailboxSearch\MailboxExportMetadata.cs" />
+    <Compile Include="MailboxSearch\MailboxItemIdList.cs" />
+    <Compile Include="MailboxSearch\MailboxSearchConfigurationProvider.cs" />
+    <Compile Include="MailboxSearch\MailboxSearchServer.cs" />
+    <Compile Include="MailboxSearch\MailboxSearchTask.cs" />
+    <Compile Include="MailboxSearch\MailboxSearchWorkItem.cs" />
+    <Compile Include="MailboxSearch\MailboxStatusLog.cs" />
+    <Compile Include="MailboxSearch\MailboxTargetFolderProvider.cs" />
+    <Compile Include="MailboxSearch\MailboxWriter.cs" />
+    <Compile Include="MailboxSearch\SourceMailbox.cs" />
+    <Compile Include="MailboxSearch\TargetMailbox.cs" />
+    <Compile Include="MailboxSearch\Util.cs" />
+    <Compile Include="MailboxSearch\WebService\Controller.cs" />
+    <Compile Include="MailboxSearch\WebService\ExchangeProxy.cs" />
+    <Compile Include="MailboxSearch\WebService\External\ActiveDirectoryProvider.cs" />
+    <Compile Include="MailboxSearch\WebService\External\ArbitrationSearchConfigurationProvider.cs" />
+    <Compile Include="MailboxSearch\WebService\External\AutoDiscoveryServerProvider.cs" />
+    <Compile Include="MailboxSearch\WebService\External\FastLocalSearchResultsProvider.cs" />
+    <Compile Include="MailboxSearch\WebService\External\LocalNonIndexedResultProvider.cs" />
+    <Compile Include="MailboxSearch\WebService\External\LocalSearchResultsProvider.cs" />
+    <Compile Include="MailboxSearch\WebService\External\PublicFolderSourceConverter.cs" />
+    <Compile Include="MailboxSearch\WebService\Infrastructure\BatchedExecutor.cs" />
+    <Compile Include="MailboxSearch\WebService\Infrastructure\Executor.cs" />
+    <Compile Include="MailboxSearch\WebService\Infrastructure\Recorder.cs" />
+    <Compile Include="MailboxSearch\WebService\Infrastructure\SearchFactory.cs" />
+    <Compile Include="MailboxSearch\WebService\Infrastructure\SearchHelper.cs" />
+    <Compile Include="MailboxSearch\WebService\Infrastructure\SearchPolicy.cs" />
+    <Compile Include="MailboxSearch\WebService\Infrastructure\SearchTask.cs" />
+    <Compile Include="MailboxSearch\WebService\Logging\LogItem.cs" />
+    <Compile Include="MailboxSearch\WebService\Logging\LogSettings.cs" />
+    <Compile Include="MailboxSearch\WebService\Model\DirectoryQueryParameters.cs" />
+    <Compile Include="MailboxSearch\WebService\Model\ExecutorContext.cs" />
+    <Compile Include="MailboxSearch\WebService\Model\FanoutParameters.cs" />
+    <Compile Include="MailboxSearch\WebService\Model\GetSearchableMailboxesInputs.cs" />
+    <Compile Include="MailboxSearch\WebService\Model\GetSearchableMailboxesResults.cs" />
+    <Compile Include="MailboxSearch\WebService\Model\IDirectoryProvider.cs" />
+    <Compile Include="MailboxSearch\WebService\Model\IExchangeProxy.cs" />
+    <Compile Include="MailboxSearch\WebService\Model\IExecutionSettings.cs" />
+    <Compile Include="MailboxSearch\WebService\Model\IExecutor.cs" />
+    <Compile Include="MailboxSearch\WebService\Model\ISearchConfigurationProvider.cs" />
+    <Compile Include="MailboxSearch\WebService\Model\ISearchPolicy.cs" />
+    <Compile Include="MailboxSearch\WebService\Model\ISearchResultProvider.cs" />
+    <Compile Include="MailboxSearch\WebService\Model\IServerProvider.cs" />
+    <Compile Include="MailboxSearch\WebService\Model\ISourceConverter.cs" />
+    <Compile Include="MailboxSearch\WebService\Model\IThrottlingSettings.cs" />
+    <Compile Include="MailboxSearch\WebService\Model\KnownError.cs" />
+    <Compile Include="MailboxSearch\WebService\Model\SearchException.cs" />
+    <Compile Include="MailboxSearch\WebService\Model\SearchMailboxesInputs.cs" />
+    <Compile Include="MailboxSearch\WebService\Model\SearchMailboxesResults.cs" />
+    <Compile Include="MailboxSearch\WebService\Model\SearchRecipient.cs" />
+    <Compile Include="MailboxSearch\WebService\Model\SearchSource.cs" />
+    <Compile Include="MailboxSearch\WebService\Model\SearchTaskContext.cs" />
+    <Compile Include="MailboxSearch\WebService\Model\SourceLocation.cs" />
+    <Compile Include="MailboxSearch\WebService\Model\SourceType.cs" />
+    <Compile Include="MailboxSearch\WebService\Task\CompleteGetSearchableMailbox.cs" />
+    <Compile Include="MailboxSearch\WebService\Task\CompleteSearchMailbox.cs" />
+    <Compile Include="MailboxSearch\WebService\Task\CompleteSourceLookup.cs" />
+    <Compile Include="MailboxSearch\WebService\Task\DirectoryLookup.cs" />
+    <Compile Include="MailboxSearch\WebService\Task\DirectoryQueryFormatting.cs" />
+    <Compile Include="MailboxSearch\WebService\Task\FanoutSearchMailboxes.cs" />
+    <Compile Include="MailboxSearch\WebService\Task\InitializeGetSearchablebleMailbox.cs" />
+    <Compile Include="MailboxSearch\WebService\Task\InitializeSearchMailbox.cs" />
+    <Compile Include="MailboxSearch\WebService\Task\MailboxInfoCreation.cs" />
+    <Compile Include="MailboxSearch\WebService\Task\SearchDatabase.cs" />
+    <Compile Include="MailboxSearch\WebService\Task\ServerLookup.cs" />
+    <Compile Include="MailboxSearch\WebService\Task\ValidateSource.cs" />
+    <Compile Include="MailboxSearch\WorkItemAction.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="LogMailTemplate.htm" />
+    <EmbeddedResource Include="StatusMailTemplate.htm" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.Exchange.Common\Microsoft.Exchange.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140F0}</Project>
+      <Name>Microsoft.Exchange.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Configuration.ObjectModel\Microsoft.Exchange.Configuration.ObjectModel.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140FC}</Project>
+      <Name>Microsoft.Exchange.Configuration.ObjectModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.ApplicationLogic\Microsoft.Exchange.Data.ApplicationLogic.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14104}</Project>
+      <Name>Microsoft.Exchange.Data.ApplicationLogic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Common\Microsoft.Exchange.Data.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140D3}</Project>
+      <Name>Microsoft.Exchange.Data.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Directory\Microsoft.Exchange.Data.Directory.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14105}</Project>
+      <Name>Microsoft.Exchange.Data.Directory</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Storage\Microsoft.Exchange.Data.Storage.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1410F}</Project>
+      <Name>Microsoft.Exchange.Data.Storage</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data\Microsoft.Exchange.Data.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14106}</Project>
+      <Name>Microsoft.Exchange.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Diagnostics\Microsoft.Exchange.Diagnostics.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14113}</Project>
+      <Name>Microsoft.Exchange.Diagnostics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.EDiscovery.Export\Microsoft.Exchange.EDiscovery.Export.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1411B}</Project>
+      <Name>Microsoft.Exchange.EDiscovery.Export</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Extensibility.Internal\Microsoft.Exchange.Extensibility.Internal.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14126}</Project>
+      <Name>Microsoft.Exchange.Extensibility.Internal</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.InfoWorker.Common\Microsoft.Exchange.InfoWorker.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1413C}</Project>
+      <Name>Microsoft.Exchange.InfoWorker.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Net\Microsoft.Exchange.Net.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14178}</Project>
+      <Name>Microsoft.Exchange.Net</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Rpc\Microsoft.Exchange.Rpc.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14188}</Project>
+      <Name>Microsoft.Exchange.Rpc</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Search.Core\Microsoft.Exchange.Search.Core.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14193}</Project>
+      <Name>Microsoft.Exchange.Search.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Search.Engine\Microsoft.Exchange.Search.Engine.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14194}</Project>
+      <Name>Microsoft.Exchange.Search.Engine</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Search.Fast\Microsoft.Exchange.Search.Fast.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14195}</Project>
+      <Name>Microsoft.Exchange.Search.Fast</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Security\Microsoft.Exchange.Security.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14198}</Project>
+      <Name>Microsoft.Exchange.Security</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.VariantConfiguration\Microsoft.Exchange.VariantConfiguration.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141E0}</Project>
+      <Name>Microsoft.Exchange.VariantConfiguration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.WorkloadManagement\Microsoft.Exchange.WorkloadManagement.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141E1}</Project>
+      <Name>Microsoft.Exchange.WorkloadManagement</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Office.Datacenter.ActiveMonitoringLocal\Microsoft.Office.Datacenter.ActiveMonitoringLocal.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141ED}</Project>
+      <Name>Microsoft.Office.Datacenter.ActiveMonitoringLocal</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Office.Datacenter.WorkerTaskFrameworkInternalProvi\Microsoft.Office.Datacenter.WorkerTaskFrameworkInternalProvi.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141EF}</Project>
+      <Name>Microsoft.Office.Datacenter.WorkerTaskFrameworkInternalProvider</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\mscorlib\mscorlib.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141F1}</Project>
+      <Name>mscorlib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\mscorlib\mscorlib.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141F1}</Project>
+      <Name>mscorlib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

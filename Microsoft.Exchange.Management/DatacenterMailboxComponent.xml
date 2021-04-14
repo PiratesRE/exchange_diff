@@ -1,0 +1,383 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo IsDatacenterOnly="true" IsDatacenterDedicatedOnly="true" Name="Datacenter Mailbox Configuration" DescriptionId="SetupComponentConfiguringDatacenterMailbox">
+
+<!-- e14:161928: The script part is getting checked in prior to the Component XML
+  getting cleaned up. Whenever the Component XML gets deleted and the script
+  is called instead, this file can be reduced to the two following tasks:
+  -Configure SSL certificates
+  -Creates the TransportLogs network share.
+-->
+
+
+  <ServerTasks>
+    <!-- Configure SSL certificates -->
+    <ServerTaskInfo Id="_66c1f1959bf847bf8644a170d6a04de5" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>Install-ExchangeCertificate -Thumbprint $RoleDatacenterIisSHA1Thumbprint -Services IIS</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Precompile (ngen) Transport Sync Manager service binaries -->
+    <ServerTaskInfo Id="_e151ba4d49714fe49c9fcaba77c0ffc5" Component="EXCHANGE14:\Current\Release\Transport\Sync\Manager">
+      <Install Weight="5" DescriptionId="SetupProgressPrecompilingBinaries" IsFatal="false">
+        <Standalone>
+            $fullPath = [System.IO.Path]::Combine($RoleInstallPath, "bin\Microsoft.Exchange.TransportSyncManagerSvc.exe");
+            precompile-ManagedBinary -BinaryName  $fullPath;
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall Weight="5" DescriptionId="SetupProgressPrecompilingBinaries" IsFatal="false">
+        <Standalone>
+            $fullPath = [System.IO.Path]::Combine($RoleInstallPath, "bin\Microsoft.Exchange.TransportSyncManagerSvc.exe");
+            precompile-ManagedBinary -BinaryName  $fullPath -Action uninstall;
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/remove Transport Sync Manager service -->
+    <ServerTaskInfo Id="_b81e99794cc7425e97c1b4450188b9d1" Component="EXCHANGE14:\Current\Release\Transport\Sync\Manager">
+      <Install>
+        <Standalone>
+          if (!(get-service MSExchangeTransportSyncManager* | where {$_.name -eq "MSExchangeTransportSyncManagerSvc"}))
+          {
+            install-TransportSyncManagerService
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>uninstall-TransportSyncManagerService</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/remove Compliance Audit service -->
+    <ServerTaskInfo Id="_3726b1a899ab4cb5bc3302557027667f" Component="EXCHANGE14:\Current\Release\Transport\Sync\Manager">
+      <Install>
+        <Standalone>
+          if ((get-service -name MSComplianceAudit -ErrorAction SilentlyContinue) -eq $null)
+          {
+            install-ComplianceAuditService
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>uninstall-ComplianceAuditService</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Enabling content aggregation and setting log paths. -->
+    <ServerTaskInfo Id="_e000ffd6e7b2432b90332f0a2d81e36a" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          Write-ExchangeSetupLog -Info "Enabling content aggregation.";
+          Set-MailboxServer `
+            -Identity $RoleNetBiosName `
+            -MigrationLogFilePath "$RoleBinPath\..\Logging\MigrationLogs" `
+            -TransportSyncDispatchEnabled $true `
+            -TransportSyncLogEnabled $RoleDatacenterTransportSyncLogEnabled `
+            -TransportSyncLogLoggingLevel $RoleDatacenterTransportSyncLogLoggingLevel `
+            -TransportSyncLogFilePath "$RoleBinPath\..\TransportRoles\Logs\SyncLog\Mailbox" `
+            -TransportSyncMailboxHealthLogEnabled $true `
+            -TransportSyncMailboxHealthLogFilePath "$RoleBinPath\..\TransportRoles\Logs\SyncHealth\Mailbox"
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall />
+    </ServerTaskInfo>
+    
+    <!-- Changing Log Paths -->
+    <ServerTaskInfo Id="_89177F6E5CEB4C5DA4CE69C342048FF0" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+            Write-ExchangeSetupLog -Info "Changing Mailbox Transport Logs Path.";
+            Set-MailboxTransportService `
+            -Identity $RoleNetBiosName `
+            -MailboxDeliveryConnectorProtocolLoggingLevel Verbose `
+            -MailboxDeliveryConnectorSmtpUtf8Enabled $true `
+            -ReceiveProtocolLogPath "$RoleDatacenterTransportRoleLogRoot\Mailbox\ProtocolLog\SmtpReceive" `
+            -ReceiveProtocolLogMaxAge:7.00:00:00 `
+            -SendProtocolLogPath "$RoleDatacenterTransportRoleLogRoot\Mailbox\ProtocolLog\SmtpSend" `
+            -SendProtocolLogMaxDirectorySize:15000MB -SendProtocolLogMaxAge:7.00:00:00 `
+            -ConnectivityLogPath "$RoleDatacenterTransportRoleLogRoot\Mailbox\Connectivity" `
+            -ConnectivityLogEnabled:$TRUE -ConnectivityLogMaxDirectorySize:1500MB -ConnectivityLogMaxAge:7.00:00:00 `
+            -MailboxSubmissionAgentLogPath "$RoleDatacenterTransportRoleLogRoot\Mailbox\AgentLog\Submission" `
+            -MailboxSubmissionAgentLogMaxAge:7.00:00:00 `
+            -MailboxDeliveryAgentLogPath "$RoleDatacenterTransportRoleLogRoot\Mailbox\AgentLog\Submission" `
+            -MailboxDeliveryAgentLogMaxAge:7.00:00:00 `
+            -MailboxDeliveryThrottlingLogEnabled $true `
+            -MailboxDeliveryThrottlingLogPath "$RoleDatacenterTransportRoleLogRoot\Throttling\Delivery" `
+            -PipelineTracingPath "$RoleDatacenterTransportRoleLogRoot\Mailbox\PipelineTracing" `
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <ServerTaskInfo Id="_96a0147d1f864bd18c5cd24dc1378aff" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          Write-ExchangeSetupLog -Info "Modifying MSExchangeDelivery.exe.config.";
+          $fullPath = "$RoleBinPath\MSExchangeDelivery.exe.config";
+          copy-item $fullPath "$fullPath.backup";
+
+          set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'MsgTrkLogBufferSize' -NewValue:"100KB";
+          set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'MsgTrkLogFlushInterval' -NewValue:"00:00:15";
+
+          # 1460372: change routing config reload interval to 15 minutes to reduce CPU usage.
+          set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'RoutingConfigReloadInterval' -NewValue:'00:15:00';
+
+          # set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'EnableResourceMonitoring' -NewValue:$false;
+          # set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'ResourceTrackingEnabled' -NewValue:$true;
+          # set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'ResourceThrottlingEnabled' -NewValue:$true;
+          
+          #  Add the following assembly binding for "Newtonsoft.Json" in MSExchangeDelivery.exe.Config
+          . "$RoleInstallPath\Scripts\Set-AssemblyVersionRedirect.ps1" -AppConfigPath $fullPath -AssemblyName "Newtonsoft.Json" -PublicKeyToken "30ad4fe6b2a6aeed" -CodeBaseCulture "neutral" -OldVersion "0.0.0.0-6.0.0.0" -NewVersion "6.0.0.0"
+
+          # Anti-Spam Agent Logging Config
+          set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'AntiSpamLogEnabled' -NewValue:"SpamEngineLog";
+          set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'AntiSpamLogPath' -NewValue:"$RoleDatacenterTransportRoleLogRoot\Mailbox\SpamEngine\Delivery";
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <ServerTaskInfo Id="_071945d5a774418683878842e316f1b9" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          Write-ExchangeSetupLog -Info "Modifying MSExchangeSubmission.exe.config.";
+          $fullPath = "$RoleBinPath\MSExchangeSubmission.exe.config";
+          copy-item $fullPath "$fullPath.backup";
+
+          # 1460372: change routing config reload interval to 15 minutes to reduce CPU usage.
+          set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'RoutingConfigReloadInterval' -NewValue:'00:15:00';
+          set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'EnableMailboxQuarantine' -NewValue:'True';
+
+          # set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'EnableResourceMonitoring' -NewValue:$false;
+          # set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'ResourceTrackingEnabled' -NewValue:$true;
+          # set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'ResourceThrottlingEnabled' -NewValue:$true;
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Start/stop Transport Sync Manager service -->
+    <ServerTaskInfo Id="_d733e247d4ca44479fb2a0893cb8e54c" Component="EXCHANGE14:\Current\Release\Transport\Sync\Manager">
+      <Install DescriptionId="SetupProgressStartingTransportSyncManagerService">
+        <Standalone>start-SetupService -ServiceName MSExchangeTransportSyncManagerSvc</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall DescriptionId="SetupProgressStoppingTransportSyncManagerService">
+        <Standalone>stop-SetupService -ServiceName MSExchangeTransportSyncManagerSvc</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Turn on circular logging for the default databases. -->
+    <ServerTaskInfo Id="_c3c8cb5e59774bdcad40ad2b915c1225" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          Get-MailboxDatabase -Server $RoleNetBiosName | set-mailboxdatabase -CircularLoggingEnabled:$true -ErrorAction:SilentlyContinue
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade />
+      <DisasterRecovery />
+      <Uninstall />
+    </ServerTaskInfo>
+    
+    <!-- Creates the TransportLogs network share. -->
+    <ServerTaskInfo Id="_7b46bba34b7441a09fe70a9740b465fd" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          . "$RoleBinPath\..\Scripts\Enable-DataCenterMailboxConfig.ps1"
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Disables unnecessary mailbox assistants in datacenter -->
+    <ServerTaskInfo Id="_6b4ded91858847a3b23ce21c8b6a5a5e" Component="EXCHANGE14:\Current\Release\PIM Storage\Store\Public Folders">
+      <Install>
+        <Standalone>
+          [string[]]$DisabledAssistants = [string[]]@($((Get-ItemProperty registry::HKLM\SYSTEM\CurrentControlSet\services\MSExchangeMailboxAssistants\Parameters -name DisabledAssistants -ErrorAction:SilentlyContinue).DisabledAssistants; "FreeBusyAssistant","CalendarRepairAssistant") | sort | unique)
+          set-ItemProperty registry::HKLM\SYSTEM\CurrentControlSet\services\MSExchangeMailboxAssistants\Parameters -name DisabledAssistants -Value $DisabledAssistants
+    	  <!-- O15:2445480 Replaced the cmdlet for restart of MSExchangeMailboxAssistants with Start/Stop-SetupService, which enforces timeouts for hung service -->
+          stop-SetupService -ServiceName MSExchangeMailboxAssistants
+          start-SetupService -ServiceName MSExchangeMailboxAssistants
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Enable Rpc Etw tracing for trace collection. see bug E14:346577-->
+    <ServerTaskInfo Id="_68B0369046464A22B850F65718646F60" Component="EXCHANGE14:\Current\Release\PIM Storage\Store">
+      <Install>
+        <Standalone>
+          set-itemproperty -path HKLM:\SYSTEM\CurrentControlSet\Services\MSExchangeIS\ParametersSystem -Name "RpcEtwTracing" -Type DWORD -Value "00000001" -erroraction:silentlycontinue;
+          set-itemproperty -path HKLM:\SYSTEM\CurrentControlSet\Control\WMI\Trace -Name "UsePerformanceClock" -Type DWORD -Value "00000001" -erroraction:silentlycontinue;
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall />
+    </ServerTaskInfo>
+	
+	<!-- Change the AD Driver event log levels to low for the datacenter -->
+    <ServerTaskInfo Id="_F1A9FCCF97924150A443381CE967AC08" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\AD Core">
+      <Install>
+        <Standalone>
+          Set-EventLogLevel -Identity "MSExchange ADAccess\LDAP" -Level Low
+          Set-EventLogLevel -Identity "MSExchange ADAccess\Topology" -Level Low
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- In datacenter, set maximum number of logs that a lag copy can keep. See bug O15:2579184-->
+    <ServerTaskInfo Id="_50C0BB44C8EF4257BBE07D937BA793E5" Component="EXCHANGE14:\Current\Release\PIM Storage\High Availability">
+      <Install>
+        <Standalone>
+          [string]$version = [Microsoft.Exchange.Diagnostics.BuildVersionConstants]::RegistryVersionSubKey
+          set-itemproperty -path HKLM:\Software\Microsoft\ExchangeServer\$version\Replay\Parameters -Name "LogReplayerMaximumLogsForReplayLag" -Type DWORD -Value 100000 -erroraction:silentlycontinue
+          set-itemproperty -path HKLM:\Software\Microsoft\ExchangeServer\$version\Replay\Parameters -Name "ReplayLagLowSpacePlaydownThresholdInMB" -Type DWORD -Value 300000 -erroraction:silentlycontinue
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- In datacenter, enable loose truncation. See bug 3215134. Protecting 2 passives means that the third passive will be ignored in low disk space situations on the active copy.  -->
+    <ServerTaskInfo Id="_3fe10adfb21d4952a412036948257d8a" Component="EXCHANGE14:\Current\Release\PIM Storage\High Availability">
+      <Install>
+        <Standalone>
+          [string]$version = [Microsoft.Exchange.Diagnostics.BuildVersionConstants]::RegistryVersionSubKey
+          $rootPath = "HKLM:\Software\Microsoft\ExchangeServer\$version\BackupInformation"
+          new-item $rootPath -erroraction:silentlycontinue
+          set-itemproperty -path $rootPath -Name "LooseTruncation_MinCopiesToProtect" -Type DWORD -Value 2 -erroraction:silentlycontinue
+          set-itemproperty -path $rootPath -Name "LooseTruncation_MinDiskFreeSpaceThresholdInMB" -Type DWORD -Value 300000 -erroraction:silentlycontinue
+          set-itemproperty -path $rootPath -Name "LooseTruncation_MinLogsToProtect" -Type DWORD -Value 50000 -erroraction:silentlycontinue
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- In datacenter, we use ntfs, so ordered file scan need not sort. See OfficeMain.746177 -->
+    <ServerTaskInfo Id="_2cc715c9db5445f8b1c2dfadf2d5c933" Component="EXCHANGE14:\Current\Release\PIM Storage\High Availability">
+      <Install>
+        <Standalone>
+          [string]$version = [Microsoft.Exchange.Diagnostics.BuildVersionConstants]::RegistryVersionSubKey
+          set-itemproperty -path HKLM:\Software\Microsoft\ExchangeServer\$version\Replay\Parameters -Name "FilesystemMaintainsOrder" -Type DWORD -Value 1 -erroraction:silentlycontinue
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Creating Log directory structure for data center so that SetExchangeShares.ps1 script can set the ACLs on them. -->
+    <ServerTaskInfo Id="_F2762D86214E4ECA8F9C1DAEBF760CDB" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>
+          $TransportLogs = $RoleInstallPath + "\TransportRoles\Logs";
+          $InterceptorArchivePath = $RoleDatacenterInterceptorArchiveRoot + "\Interceptor";
+
+          $MailboxTransportLogs = $RoleDatacenterTransportRoleLogRoot + "\Mailbox";
+          $ProtocolLogPath =  $MailboxTransportLogs + "\ProtocolLog";
+          $ConnectivityLogPath =  $MailboxTransportLogs + "\Connectivity";
+          $PipelineTracingPath =  $MailboxTransportLogs + "\PipelineTracing";
+
+          if (!(Test-Path -Path $TransportLogs)) {New-Item $TransportLogs -type directory};
+          if (!(Test-Path -Path $InterceptorArchivePath)) {New-Item $InterceptorArchivePath -type directory};
+
+          if (!(Test-Path -Path $ProtocolLogPath)) {New-Item $ProtocolLogPath -type directory};
+          if (!(Test-Path -Path $ConnectivityLogPath)) {New-Item $ConnectivityLogPath -type directory};
+          if (!(Test-Path -Path $PipelineTracingPath)) {New-Item $PipelineTracingPath -type directory};
+
+          Start-SetupProcess -Name "icacls.exe" -args "`"$TransportLogs`" /grant `"$env:USERDOMAIN\View-Only Organization Management:(OI)(CI)(R)`" /T /C /inheritance:e";
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Set the reg key to enable cross-server connection block & logging -->
+    <ServerTaskInfo Id="_812479c0-7219-4435-8b34-30a71816befd" Component="EXCHANGE14:\Current\Release\PIM Storage\RPC Client Access">
+        <Install>
+            <Standalone>
+                if ($RoleDatacenterEnableCrossServerConnectionLog)
+                {
+                    $backendEnableCrossServerConnectionLog = "HKLM:SOFTWARE\Microsoft\ExchangeServer\v15\Setup";
+                    Set-ItemProperty -Path $backendEnableCrossServerConnectionLog -Name "EnableCrossServerConnectionLog" -Value 1 -Type:Dword;
+                }
+
+                if ($RoleDatacenterEnableCrossServerConnectionBlock)
+                {
+                    $backendEnableCrossServerConnectionBlock = "HKLM:SOFTWARE\Microsoft\ExchangeServer\v15\Setup";
+                    Set-ItemProperty -Path $backendEnableCrossServerConnectionBlock -Name "EnableCrossServerConnectionBlock" -Value 1 -Type:Dword;
+                }
+            </Standalone>
+        </Install>
+        <BuildToBuildUpgrade UseInstallTasks="true"/>
+        <DisasterRecovery UseInstallTasks="true"/>
+        <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Enable the registry setting to enable publishing from the Assistant -->
+    <!-- If the parameter PushNotificationEnvironment is not present then we disable the Assistant publishing behavior by removing the registry key -->
+    <ServerTaskInfo Id="_556dfffb-e470-4889-9003-9fe74370ec30" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup" >
+        <Install>
+            <Standalone>
+                if ([string]::IsNullOrEmpty($RoleDatacenterPushNotificationEnvironment))
+                {
+                    $pathToPublishingRegistryKey = "HKLM:\System\CurrentControlSet\Services\MSExchangeMailboxAssistants\Parameters\PushNotificationAssistant";
+                    if (Test-Path -Path $pathToPublishingRegistryKey)
+                    {
+                        Remove-ItemProperty -Path $pathToPublishingRegistryKey -Name PublishingEnabled -EA:SilentlyContinue;
+                    }
+                }
+            </Standalone>
+        </Install>
+        <BuildToBuildUpgrade UseInstallTasks="true"/>
+        <DisasterRecovery UseInstallTasks="true"/>
+        <Uninstall />
+    </ServerTaskInfo>
+
+    <!--create audit log local queue directory -->
+    <ServerTaskInfo Id="_895721A808B54E2F9CD76629BAFF4A3D" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+        <Install>
+            <Standalone>
+                [string]$ComplianceAuditLocalQueueDirectory = "D:\ComplianceAudit\LocalQueue"
+                New-Item -Path "$ComplianceAuditLocalQueueDirectory" -Type Directory -Force
+                New-Item -Path "$ComplianceAuditLocalQueueDirectory\Exchange" -Type Directory -Force
+            </Standalone>
+        </Install>
+        <BuildToBuildUpgrade UseInstallTasks="true" />
+        <DisasterRecovery />
+        <Uninstall />
+    </ServerTaskInfo>
+
+  </ServerTasks>
+
+</SetupComponentInfo>

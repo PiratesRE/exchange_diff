@@ -1,0 +1,885 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{09CD9476-CD82-489E-B9E2-84B47CA14165}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Microsoft.Exchange.Management</RootNamespace>
+    <AssemblyName>Microsoft.Exchange.Management.SystemManager</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60DC8134-EBA5-43B8-BCC9-BB4BC16C2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.ManagementConsole" />
+    <Reference Include="Microsoft.ManagementGUI" />
+    <Reference Include="Microsoft.PowerShell.HostingTools" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Design" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Management.Automation" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SnapIn\AcKnowledgeCommand.cs" />
+    <Compile Include="SnapIn\ADServerSettingsSingleton.cs" />
+    <Compile Include="SnapIn\CommandActionAdapter.cs" />
+    <Compile Include="SnapIn\CommandsActionsAdapter.cs" />
+    <Compile Include="SnapIn\CommunicationChannelCollection.cs" />
+    <Compile Include="SnapIn\ConnectedForestsInfoSingleton.cs" />
+    <Compile Include="SnapIn\ConnectionRetryDiscoverer.cs" />
+    <Compile Include="SnapIn\EMCRunspaceConfigurationSingleton.cs" />
+    <Compile Include="SnapIn\ExchangeADServerSettings.cs" />
+    <Compile Include="SnapIn\ExchangeDynamicServerSnapIn.cs" />
+    <Compile Include="SnapIn\ExchangeExtensionSnapIn.cs" />
+    <Compile Include="SnapIn\ExchangeFormView.cs" />
+    <Compile Include="SnapIn\ExchangeHelpService.cs" />
+    <Compile Include="SnapIn\ExchangeScopeNode.cs" />
+    <Compile Include="SnapIn\ExchangeSharedDataCommand.cs" />
+    <Compile Include="SnapIn\ExchangeSnapIn.cs" />
+    <Compile Include="SnapIn\ExchangeSnapInHelper.cs" />
+    <Compile Include="SnapIn\HelpId.cs" />
+    <Compile Include="SnapIn\IAcceptExternalSelection.cs" />
+    <Compile Include="SnapIn\IEHelper.cs" />
+    <Compile Include="SnapIn\IExchangeExtensionSnapIn.cs" />
+    <Compile Include="SnapIn\IExchangeSnapIn.cs" />
+    <Compile Include="SnapIn\INodeSelectionService.cs" />
+    <Compile Include="SnapIn\ISharedViewDataService.cs" />
+    <Compile Include="SnapIn\ITestStub.cs" />
+    <Compile Include="SnapIn\MMCCommunicationChannel.cs" />
+    <Compile Include="SnapIn\NodeStructureSetting.cs" />
+    <Compile Include="SnapIn\NodeStructureSettingsStore.cs" />
+    <Compile Include="SnapIn\NodeStructureSettingState.cs" />
+    <Compile Include="SnapIn\NotificationSharedDataCommand.cs" />
+    <Compile Include="SnapIn\OrganizationSetting.cs" />
+    <Compile Include="SnapIn\OrganizationType.cs" />
+    <Compile Include="SnapIn\PSConnectionInfoSingleton.cs" />
+    <Compile Include="SnapIn\RefreshRequestEventArgsToIProgressAdapter.cs" />
+    <Compile Include="SnapIn\ScopeNodeProgressProvider.cs" />
+    <Compile Include="SnapIn\SelectedObjects.cs" />
+    <Compile Include="SnapIn\Slot.cs" />
+    <Compile Include="SnapIn\SnapInUIService.cs" />
+    <Compile Include="SnapIn\StatusProgress.cs" />
+    <Compile Include="SnapIn\SyncContextUIInteractionHandler.cs" />
+    <Compile Include="SnapIn\SynchronizeInvokeSynchronizationContext.cs" />
+    <Compile Include="SnapIn\SyncQueue.cs" />
+    <Compile Include="SnapIn\SyncQueueSharedDataCommand.cs" />
+    <Compile Include="SnapIn\UIInteractionHandler.cs" />
+    <Compile Include="SnapIn\ViewSharedData.cs" />
+    <Compile Include="SnapIn\ViewUIService.cs" />
+    <Compile Include="SnapIn\WindowUIInteractionHandler.cs" />
+    <Compile Include="SystemManager\AddressListType.cs" />
+    <Compile Include="SystemManager\AdminPropertyDefinition.cs" />
+    <Compile Include="SystemManager\AdvancedBindingSource.cs" />
+    <Compile Include="SystemManager\AggregateDataTableLoadersRefreshableSource.cs" />
+    <Compile Include="SystemManager\ArchiveType.cs" />
+    <Compile Include="SystemManager\ArrayExtension.cs" />
+    <Compile Include="SystemManager\AutomatedObjectPicker.cs" />
+    <Compile Include="SystemManager\BoolAsYesNoListSource.cs" />
+    <Compile Include="SystemManager\BoolListSource.cs" />
+    <Compile Include="SystemManager\CachedDelegate.cs" />
+    <Compile Include="SystemManager\CasMailboxCreator.cs" />
+    <Compile Include="SystemManager\CeipCommon.cs" />
+    <Compile Include="SystemManager\CertificateIconType.cs" />
+    <Compile Include="SystemManager\ClassFactory.cs" />
+    <Compile Include="SystemManager\ClientPermissionSaveTask.cs" />
+    <Compile Include="SystemManager\ClientPermissionUpdateType.cs" />
+    <Compile Include="SystemManager\ColumnExpression.cs" />
+    <Compile Include="SystemManager\ColumnValueCalculator.cs" />
+    <Compile Include="SystemManager\ComparableTypeConverter.cs" />
+    <Compile Include="SystemManager\ContactCreator.cs" />
+    <Compile Include="SystemManager\CredentialHelper.cs" />
+    <Compile Include="SystemManager\DatabaseAvailabilityGroupNetworkCreator.cs" />
+    <Compile Include="SystemManager\DatabaseStatus.cs" />
+    <Compile Include="SystemManager\DataList.cs" />
+    <Compile Include="SystemManager\DataRowExtension.cs" />
+    <Compile Include="SystemManager\DataTableExtension.cs" />
+    <Compile Include="SystemManager\DataTableLoader.cs" />
+    <Compile Include="SystemManager\DataTableLoaderConfiguration.cs" />
+    <Compile Include="SystemManager\DataTableLoaderCreator.cs" />
+    <Compile Include="SystemManager\DataTableLoaderSet.cs" />
+    <Compile Include="SystemManager\DataTableLoaderView.cs" />
+    <Compile Include="SystemManager\DataTableRelation.cs" />
+    <Compile Include="SystemManager\DistributionGroupCreator.cs" />
+    <Compile Include="SystemManager\DynamicClass.cs" />
+    <Compile Include="SystemManager\DynamicDistributionGroupCreator.cs" />
+    <Compile Include="SystemManager\DynamicExpression.cs" />
+    <Compile Include="SystemManager\DynamicOrdering.cs" />
+    <Compile Include="SystemManager\DynamicProperty.cs" />
+    <Compile Include="SystemManager\EnumListSource.2.cs" />
+    <Compile Include="SystemManager\EnumListSource.cs" />
+    <Compile Include="SystemManager\EnvironmentAnalyzer.cs" />
+    <Compile Include="SystemManager\ErrorReportResultPane.cs" />
+    <Compile Include="SystemManager\ExceptionHelper.cs" />
+    <Compile Include="SystemManager\ExchangeDataObject.cs" />
+    <Compile Include="SystemManager\ExpressionCalculator.cs" />
+    <Compile Include="SystemManager\ExpressionParser.cs" />
+    <Compile Include="SystemManager\FilterablePropertyDescription.cs" />
+    <Compile Include="SystemManager\FilterablePropertyValueEditor.cs" />
+    <Compile Include="SystemManager\FilterColumnProfile.cs" />
+    <Compile Include="SystemManager\FilteredDataTableLoaderView.cs" />
+    <Compile Include="SystemManager\FilterNode.cs" />
+    <Compile Include="SystemManager\FilterNodeSynchronizer.cs" />
+    <Compile Include="SystemManager\FilterSupportDescription.cs" />
+    <Compile Include="SystemManager\FilterValuePropertyDescriptor.cs" />
+    <Compile Include="SystemManager\Func.2.cs" />
+    <Compile Include="SystemManager\Func.cs" />
+    <Compile Include="SystemManager\GroupSaveTask.cs" />
+    <Compile Include="SystemManager\HygieneAgent.cs" />
+    <Compile Include="SystemManager\IAdvancedBindingListView.cs" />
+    <Compile Include="SystemManager\IDataTableLoaderCreator.cs" />
+    <Compile Include="SystemManager\IFilterableConverter.cs" />
+    <Compile Include="SystemManager\IObjectComparer.cs" />
+    <Compile Include="SystemManager\IPropertyConstraintProvider.cs" />
+    <Compile Include="SystemManager\IResultsLoaderConfiguration.cs" />
+    <Compile Include="SystemManager\ISupportResolvingIds.cs" />
+    <Compile Include="SystemManager\ISupportTextComparer.cs" />
+    <Compile Include="SystemManager\ItemLoadStatus.cs" />
+    <Compile Include="SystemManager\ITextComparer.cs" />
+    <Compile Include="SystemManager\MailboxCreator.cs" />
+    <Compile Include="SystemManager\MailboxMoveType.cs" />
+    <Compile Include="SystemManager\MailboxStatisticsCreator.cs" />
+    <Compile Include="SystemManager\MailContactCreator.cs" />
+    <Compile Include="SystemManager\MailUserCreator.cs" />
+    <Compile Include="SystemManager\MarkupParser.cs" />
+    <Compile Include="SystemManager\MembersSaveTask.cs" />
+    <Compile Include="SystemManager\MonadDataTableLoader.cs" />
+    <Compile Include="SystemManager\MonadPipelineSaveTask.cs" />
+    <Compile Include="SystemManager\MultiRefreshableSource.cs" />
+    <Compile Include="SystemManager\MultiValuedPropertyDataTableLoader.cs" />
+    <Compile Include="SystemManager\MultiValuedPropertyListSource.cs" />
+    <Compile Include="SystemManager\ObjectComparer.cs" />
+    <Compile Include="SystemManager\ObjectExtension.cs" />
+    <Compile Include="SystemManager\ObjectListSource.cs" />
+    <Compile Include="SystemManager\ObjectListSourceItem.cs" />
+    <Compile Include="SystemManager\ObjectToFilterableConverter.cs" />
+    <Compile Include="SystemManager\OrganizationRelationshipSaveTask.cs" />
+    <Compile Include="SystemManager\ParseException.cs" />
+    <Compile Include="SystemManager\PartialRefreshRequestEventArgs.cs" />
+    <Compile Include="SystemManager\PropertyConstraintProvider.cs" />
+    <Compile Include="SystemManager\PropertyFilterOperator.cs" />
+    <Compile Include="SystemManager\PSCredentialExtension.cs" />
+    <Compile Include="SystemManager\PSRemoteServer.cs" />
+    <Compile Include="SystemManager\PSRemoteServerSchema.cs" />
+    <Compile Include="SystemManager\PublicFolderSettingsManageType.cs" />
+    <Compile Include="SystemManager\RefreshableComponent.cs" />
+    <Compile Include="SystemManager\RefreshProgressChangedEventArgs.cs" />
+    <Compile Include="SystemManager\RefreshProgressChangedEventHandler.cs" />
+    <Compile Include="SystemManager\RefreshRequestEventArgs.cs" />
+    <Compile Include="SystemManager\RefreshRequestEventHandler.cs" />
+    <Compile Include="SystemManager\RemoteMailboxCreator.cs" />
+    <Compile Include="SystemManager\RemotePSDataHandler.cs" />
+    <Compile Include="SystemManager\Res.cs" />
+    <Compile Include="SystemManager\ResultCommandsProfile.cs" />
+    <Compile Include="SystemManager\ResultsColumnProfile.cs" />
+    <Compile Include="SystemManager\ResultsLoaderProfile.cs" />
+    <Compile Include="SystemManager\ScopeSettings.cs" />
+    <Compile Include="SystemManager\ScopeSettingsSchema.cs" />
+    <Compile Include="SystemManager\Signature.cs" />
+    <Compile Include="SystemManager\SizeExtension.cs" />
+    <Compile Include="SystemManager\SmtpDomainWithSubdomainsMvpExtension.cs" />
+    <Compile Include="SystemManager\SortMode.cs" />
+    <Compile Include="SystemManager\SortSupportDescription.cs" />
+    <Compile Include="SystemManager\StaticLinkTopics.cs" />
+    <Compile Include="SystemManager\SupportTextComparerAdapter.cs" />
+    <Compile Include="SystemManager\Tasks\TaskDataSource.cs" />
+    <Compile Include="SystemManager\TextComparer.cs" />
+    <Compile Include="SystemManager\TypeExtension.cs" />
+    <Compile Include="SystemManager\UIPresentationProfile.cs" />
+    <Compile Include="SystemManager\UMLanguageListSource.cs" />
+    <Compile Include="SystemManager\UMMailboxCreator.cs" />
+    <Compile Include="SystemManager\UriExtension.cs" />
+    <Compile Include="SystemManager\UserCreator.cs" />
+    <Compile Include="SystemManager\WindowsGroupCreator.cs" />
+    <Compile Include="SystemManager\WinForms\AbstractResultPane.cs" />
+    <Compile Include="SystemManager\WinForms\AcceptedDomainConfigurable.cs" />
+    <Compile Include="SystemManager\WinForms\AcceptedDomainFilterBuilder.cs" />
+    <Compile Include="SystemManager\WinForms\AcceptedDomainUPNSuffixesConfigurable.cs" />
+    <Compile Include="SystemManager\WinForms\AddressListScopeBuilder.cs" />
+    <Compile Include="SystemManager\WinForms\AdObjectIdAsNameCoverter.cs" />
+    <Compile Include="SystemManager\WinForms\ADObjectIdToNameConverter.cs" />
+    <Compile Include="SystemManager\WinForms\ADOFilterObjectSchema.cs" />
+    <Compile Include="SystemManager\WinForms\ADRMSTemplateConfigurable.cs" />
+    <Compile Include="SystemManager\WinForms\AlignSettings.cs" />
+    <Compile Include="SystemManager\WinForms\AlignUnit.cs" />
+    <Compile Include="SystemManager\WinForms\AlignUnitsCollection.cs" />
+    <Compile Include="SystemManager\WinForms\AtomResultPaneProfile.cs" />
+    <Compile Include="SystemManager\WinForms\AutoAttendantDataObjectStatusSetter.cs" />
+    <Compile Include="SystemManager\WinForms\AutoAttendantDataObjectUMDialPlanSetter.cs" />
+    <Compile Include="SystemManager\WinForms\AutoAttendantFilterBuilder.cs" />
+    <Compile Include="SystemManager\WinForms\AutoHeightCheckBox.cs" />
+    <Compile Include="SystemManager\WinForms\AutoHeightRadioButton.cs" />
+    <Compile Include="SystemManager\WinForms\AutomatedDataHandler.cs" />
+    <Compile Include="SystemManager\WinForms\AutomatedDataHandlerBase.cs" />
+    <Compile Include="SystemManager\WinForms\AutomatedNestedDataHandler.cs" />
+    <Compile Include="SystemManager\WinForms\AutoSizePanel.cs" />
+    <Compile Include="SystemManager\WinForms\AutoTableLayoutPanel.cs" />
+    <Compile Include="SystemManager\WinForms\BackgroundWorkerProgressDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SystemManager\WinForms\BackgroundWorkerProgressDialog.Designer.cs">
+      <DependentUpon>BackgroundWorkerProgressDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SystemManager\WinForms\BaseErrorDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SystemManager\WinForms\BaseErrorDialog.Designer.cs">
+      <DependentUpon>BaseErrorDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SystemManager\WinForms\BinaryFileObject.cs" />
+    <Compile Include="SystemManager\WinForms\BindableUserControl.cs" />
+    <Compile Include="SystemManager\WinForms\BindableUserControlBase.cs" />
+    <Compile Include="SystemManager\WinForms\BooleanAsMountStatusCoverter.cs" />
+    <Compile Include="SystemManager\WinForms\BooleanAsStatusCoverter.cs" />
+    <Compile Include="SystemManager\WinForms\BooleanAsYesNoConverter.cs" />
+    <Compile Include="SystemManager\WinForms\BridgeheadEdgeSubServerConfigurable.cs" />
+    <Compile Include="SystemManager\WinForms\BulkEditReaderTask.cs" />
+    <Compile Include="SystemManager\WinForms\BulkEditSummaryPage.cs" />
+    <Compile Include="SystemManager\WinForms\BulkSaveDataHandler.cs" />
+    <Compile Include="SystemManager\WinForms\ButtonBaseBulkEditorAdapter.cs" />
+    <Compile Include="SystemManager\WinForms\ByteQuantifiedSizeAsDetailedFormatCoverter.cs" />
+    <Compile Include="SystemManager\WinForms\ByteQuantifiedSizeAsKbCoverter.cs" />
+    <Compile Include="SystemManager\WinForms\ByteQuantifiedSizeAsMbCoverter.cs" />
+    <Compile Include="SystemManager\WinForms\CanExcludeLocalGroupRecipientConfigurable.cs" />
+    <Compile Include="SystemManager\WinForms\CaptionedResultPane.cs" />
+    <Compile Include="SystemManager\WinForms\CaptionedTextBox.cs" />
+    <Compile Include="SystemManager\WinForms\CaseInSensitveComparer.cs" />
+    <Compile Include="SystemManager\WinForms\CeipServerConfigurable.cs" />
+    <Compile Include="SystemManager\WinForms\CheckBoxBulkEditorAdapter.cs" />
+    <Compile Include="SystemManager\WinForms\CheckedCredentialControl.cs" />
+    <Compile Include="SystemManager\WinForms\CheckedPickerLauncherTextBox.cs" />
+    <Compile Include="SystemManager\WinForms\CheckedTextBox.cs" />
+    <Compile Include="SystemManager\WinForms\CollapsiblePanel.cs" />
+    <Compile Include="SystemManager\WinForms\CollapsiblePanelsPanel.cs" />
+    <Compile Include="SystemManager\WinForms\ColumnPickerDialog.cs" />
+    <Compile Include="SystemManager\WinForms\ColumnProfile.cs" />
+    <Compile Include="SystemManager\WinForms\ColumnProfileList.cs" />
+    <Compile Include="SystemManager\WinForms\ComboBoxBulkEditorAdapter.cs" />
+    <Compile Include="SystemManager\WinForms\ComboBoxPicker.cs" />
+    <Compile Include="SystemManager\WinForms\ComboBoxPickerDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SystemManager\WinForms\ComboBoxPickerDialog.Designer.cs">
+      <DependentUpon>ComboBoxPickerDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SystemManager\WinForms\CommandExecutionContext.cs" />
+    <Compile Include="SystemManager\WinForms\CommandLoggingDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SystemManager\WinForms\CommandLoggingDialog.Designer.cs">
+      <DependentUpon>CommandLoggingDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SystemManager\WinForms\CommandLoggingSession.cs" />
+    <Compile Include="SystemManager\WinForms\CommandOperation.cs" />
+    <Compile Include="SystemManager\WinForms\CommandToolStripButton.cs" />
+    <Compile Include="SystemManager\WinForms\CommandToolStripMenuItem.cs" />
+    <Compile Include="SystemManager\WinForms\CompletionWizardPage.cs" />
+    <Compile Include="SystemManager\WinForms\ConditionDescriptor.cs" />
+    <Compile Include="SystemManager\WinForms\ConditionsEditorControl.cs" />
+    <Compile Include="SystemManager\WinForms\ConfigObjectsSchemaNames.cs" />
+    <Compile Include="SystemManager\WinForms\ConfigurableHelper.cs" />
+    <Compile Include="SystemManager\WinForms\ConnectionToRemotePSServerControl.cs" />
+    <Compile Include="SystemManager\WinForms\ConnectToServerControl.cs" />
+    <Compile Include="SystemManager\WinForms\ConnectToServerParams.cs" />
+    <Compile Include="SystemManager\WinForms\ConstLeftPaddingRule.cs" />
+    <Compile Include="SystemManager\WinForms\ContactConfigurable.cs" />
+    <Compile Include="SystemManager\WinForms\ContainerResultPane.cs" />
+    <Compile Include="SystemManager\WinForms\ContainerType.cs" />
+    <Compile Include="SystemManager\WinForms\ContentResultPane.cs" />
+    <Compile Include="SystemManager\WinForms\ControlsPropertySettingsRule.cs" />
+    <Compile Include="SystemManager\WinForms\ConvertTypeCalculator.cs" />
+    <Compile Include="SystemManager\WinForms\CreateDataObjectReader.cs" />
+    <Compile Include="SystemManager\WinForms\CredentialControl.cs" />
+    <Compile Include="SystemManager\WinForms\CustomAddressDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SystemManager\WinForms\CustomAddressDialog.Designer.cs">
+      <DependentUpon>CustomAddressDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SystemManager\WinForms\CustomDataListControl.cs" />
+    <Compile Include="SystemManager\WinForms\CustomDateTimePicker.cs" />
+    <Compile Include="SystemManager\WinForms\CustomProxyAddressDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SystemManager\WinForms\CustomProxyAddressDialog.Designer.cs">
+      <DependentUpon>CustomProxyAddressDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SystemManager\WinForms\CustomProxyAddressTemplateDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SystemManager\WinForms\CustomProxyAddressTemplateDialog.Designer.cs">
+      <DependentUpon>CustomProxyAddressTemplateDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SystemManager\WinForms\CustomToolStripList.cs" />
+    <Compile Include="SystemManager\WinForms\CustomUserControl.cs" />
+    <Compile Include="SystemManager\WinForms\DAGNetworkDataFiller.cs" />
+    <Compile Include="SystemManager\WinForms\DAGNetworkFilterBuilder.cs" />
+    <Compile Include="SystemManager\WinForms\DataAdapterExecutionContext.cs" />
+    <Compile Include="SystemManager\WinForms\DatabaseFilterBuilder.cs" />
+    <Compile Include="SystemManager\WinForms\DatabaseMasterServerFilterBuilder.cs" />
+    <Compile Include="SystemManager\WinForms\DatabaseStatusFiller.cs" />
+    <Compile Include="SystemManager\WinForms\DataContext.cs" />
+    <Compile Include="SystemManager\WinForms\DataContextFlags.cs" />
+    <Compile Include="SystemManager\WinForms\DataDrivenConstants.cs" />
+    <Compile Include="SystemManager\WinForms\DataHandler.cs" />
+    <Compile Include="SystemManager\WinForms\DataListControl.cs" />
+    <Compile Include="SystemManager\WinForms\DataListPropertyPage.cs" />
+    <Compile Include="SystemManager\WinForms\DataListView.cs" />
+    <Compile Include="SystemManager\WinForms\DataListViewBulkEditorAdapter.cs" />
+    <Compile Include="SystemManager\WinForms\DataListViewResultPane.cs" />
+    <Compile Include="SystemManager\WinForms\DataListViewSettings.cs" />
+    <Compile Include="SystemManager\WinForms\DataObjectProfile.cs" />
+    <Compile Include="SystemManager\WinForms\DataObjectProfileList.cs" />
+    <Compile Include="SystemManager\WinForms\DataObjectStore.cs" />
+    <Compile Include="SystemManager\WinForms\DataTreeListView.cs" />
+    <Compile Include="SystemManager\WinForms\DataTreeListViewColumnMappingCollection.cs" />
+    <Compile Include="SystemManager\WinForms\DataTreeListViewItem.cs" />
+    <Compile Include="SystemManager\WinForms\DataTreeListViewItemCollection.cs" />
+    <Compile Include="SystemManager\WinForms\DateDuration.cs" />
+    <Compile Include="SystemManager\WinForms\DateDurationEditor.cs" />
+    <Compile Include="SystemManager\WinForms\DateTimePickerBulkEditorAdapter.cs" />
+    <Compile Include="SystemManager\WinForms\DateToColorFormatter.cs" />
+    <Compile Include="SystemManager\WinForms\DDIAttribute.cs" />
+    <Compile Include="SystemManager\WinForms\DDICollectionDecoratorAttribute.cs" />
+    <Compile Include="SystemManager\WinForms\DDIDataColumnExistAttribute.cs" />
+    <Compile Include="SystemManager\WinForms\DDIDataObjectNameExistAttribute.cs" />
+    <Compile Include="SystemManager\WinForms\DDIDecoratorAttribute.cs" />
+    <Compile Include="SystemManager\WinForms\DDIDictionaryDecorateAttribute.cs" />
+    <Compile Include="SystemManager\WinForms\DDIMandatoryValueAttribute.cs" />
+    <Compile Include="SystemManager\WinForms\DDINoDuplicationAttribute.cs" />
+    <Compile Include="SystemManager\WinForms\DDIObjectInstanceConverter.cs" />
+    <Compile Include="SystemManager\WinForms\DDIObjectTypeConverter.cs" />
+    <Compile Include="SystemManager\WinForms\DDIPropertyExistInDataObjectAttribute.cs" />
+    <Compile Include="SystemManager\WinForms\DDIValidateAttribute.cs" />
+    <Compile Include="SystemManager\WinForms\DDIValidationHelper.cs" />
+    <Compile Include="SystemManager\WinForms\DDIValidCommandTextAttribute.cs" />
+    <Compile Include="SystemManager\WinForms\DDIValidLambdaExpressionAttribute.cs" />
+    <Compile Include="SystemManager\WinForms\DDIValidPropertyPageNameAttribute.cs" />
+    <Compile Include="SystemManager\WinForms\DefaultAlignRule.cs" />
+    <Compile Include="SystemManager\WinForms\DelegationFilterBuilder.cs" />
+    <Compile Include="SystemManager\WinForms\DeliverRestrictionRecipientConfigurable.cs" />
+    <Compile Include="SystemManager\WinForms\DependentColumnExistRule.cs" />
+    <Compile Include="SystemManager\WinForms\DescriptionControl.cs" />
+    <Compile Include="SystemManager\WinForms\Design\AutoSizePanelDesigner.cs" />
+    <Compile Include="SystemManager\WinForms\Design\WorkCenterDesigner.cs" />
+    <Compile Include="SystemManager\WinForms\DisplayFormats.cs" />
+    <Compile Include="SystemManager\WinForms\DistributionGroupModeratorConfigurable.cs" />
+    <Compile Include="SystemManager\WinForms\DistributionGroupOwnerConfigurable.cs" />
+    <Compile Include="SystemManager\WinForms\DomainControllerCommandBuilder.cs" />
+    <Compile Include="SystemManager\WinForms\DomainControllerConfigurable.cs" />
+    <Compile Include="SystemManager\WinForms\DomainFilterBuilder.cs" />
+    <Compile Include="SystemManager\WinForms\DomainNameConverter.cs" />
+    <Compile Include="SystemManager\WinForms\DummyExecutionContext.cs" />
+    <Compile Include="SystemManager\WinForms\ElcFoldeFilterBuilder.cs" />
+    <Compile Include="SystemManager\WinForms\ElcFolderFilter.cs" />
+    <Compile Include="SystemManager\WinForms\EmptyStringToNullCoverter.cs" />
+    <Compile Include="SystemManager\WinForms\EndDateTimeCoverter.cs" />
+    <Compile Include="SystemManager\WinForms\EnhancedTimeSpanAsDaysCoverter.cs" />
+    <Compile Include="SystemManager\WinForms\EnhancedTimeSpanAsDetailedFormatCoverter.cs" />
+    <Compile Include="SystemManager\WinForms\EnhancedTimeSpanAsHoursCoverter.cs" />
+    <Compile Include="SystemManager\WinForms\EnhancedTimeSpanAsMinutesCoverter.cs" />
+    <Compile Include="SystemManager\WinForms\EnhancedTimeSpanAsSecondsCoverter.cs" />
+    <Compile Include="SystemManager\WinForms\EnumObjectToColorFormatter.cs" />
+    <Compile Include="SystemManager\WinForms\EnumToRadioButtonAdapter.cs" />
+    <Compile Include="SystemManager\WinForms\EumProxyAddressDataHandler.cs" />
+    <Compile Include="SystemManager\WinForms\EumProxyAddressDataHandlerSchema.cs" />
+    <Compile Include="SystemManager\WinForms\EumProxyAddressDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SystemManager\WinForms\EumProxyAddressDialog.Designer.cs">
+      <DependentUpon>EumProxyAddressDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SystemManager\WinForms\ExceptionDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SystemManager\WinForms\ExceptionDialog.Designer.cs">
+      <DependentUpon>ExceptionDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SystemManager\WinForms\ExchangeColumnHeader.cs" />
+    <Compile Include="SystemManager\WinForms\ExchangeColumnHeaderCollection.cs" />
+    <Compile Include="SystemManager\WinForms\ExchangeComboBox.cs" />
+    <Compile Include="SystemManager\WinForms\ExchangeCommandBuilder.cs" />
+    <Compile Include="SystemManager\WinForms\ExchangeConfigObjectInfoRetriever.cs" />
+    <Compile Include="SystemManager\WinForms\ExchangeDataHandler.cs" />
+    <Compile Include="SystemManager\WinForms\ExchangeDataObjectValidator.cs" />
+    <Compile Include="SystemManager\WinForms\ExchangeDateTimePicker.cs" />
+    <Compile Include="SystemManager\WinForms\ExchangeDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SystemManager\WinForms\ExchangeDialog.Designer.cs">
+      <DependentUpon>ExchangeDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SystemManager\WinForms\ExchangeDynamicServerSettings.cs" />
+    <Compile Include="SystemManager\WinForms\ExchangeErrorProvider.cs" />
+    <Compile Include="SystemManager\WinForms\ExchangeForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SystemManager\WinForms\ExchangeForm.Designer.cs">
+      <DependentUpon>ExchangeForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SystemManager\WinForms\ExchangeNumericUpDown.cs" />
+    <Compile Include="SystemManager\WinForms\ExchangeOUScopeBuilder.cs" />
+    <Compile Include="SystemManager\WinForms\ExchangePage.cs" />
+    <Compile Include="SystemManager\WinForms\ExchangePageCollection.cs" />
+    <Compile Include="SystemManager\WinForms\ExchangePictureBox.cs" />
+    <Compile Include="SystemManager\WinForms\ExchangePropertyPageControl.cs" />
+    <Compile Include="SystemManager\WinForms\ExchangeServerFilterBuilder.cs" />
+    <Compile Include="SystemManager\WinForms\ExchangeSettings.cs" />
+    <Compile Include="SystemManager\WinForms\ExchangeSettings.Designer.cs">
+      <DependentUpon>ExchangeSettings.settings</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="SystemManager\WinForms\ExchangeSettingsProvider.cs" />
+    <Compile Include="SystemManager\WinForms\ExchangeSummaryControl.cs" />
+    <Compile Include="SystemManager\WinForms\ExchangeTextBox.cs" />
+    <Compile Include="SystemManager\WinForms\ExchangeUserControl.cs" />
+    <Compile Include="SystemManager\WinForms\ExcludeObjectFilterBuilder.cs" />
+    <Compile Include="SystemManager\WinForms\ExtendedDateTimePicker.cs" />
+    <Compile Include="SystemManager\WinForms\ExtendedRecipientConfigurable.cs" />
+    <Compile Include="SystemManager\WinForms\FeatureLauncherBulkEditorAdapter.cs" />
+    <Compile Include="SystemManager\WinForms\FeatureLauncherDataListView.cs" />
+    <Compile Include="SystemManager\WinForms\FeatureLauncherListViewItem.cs" />
+    <Compile Include="SystemManager\WinForms\FeatureLauncherPropertyControl.cs" />
+    <Compile Include="SystemManager\WinForms\FeatureStatus.cs" />
+    <Compile Include="SystemManager\WinForms\FilePickerCreater.cs" />
+    <Compile Include="SystemManager\WinForms\FileReadSaver.cs" />
+    <Compile Include="SystemManager\WinForms\FileSaver.cs" />
+    <Compile Include="SystemManager\WinForms\FileSaveSaver.cs" />
+    <Compile Include="SystemManager\WinForms\FilterControl.cs" />
+    <Compile Include="SystemManager\WinForms\FilterControlHelper.cs" />
+    <Compile Include="SystemManager\WinForms\FilterItem.cs" />
+    <Compile Include="SystemManager\WinForms\FilterValueCollection.cs" />
+    <Compile Include="SystemManager\WinForms\FixedDataFiller.cs" />
+    <Compile Include="SystemManager\WinForms\FlagsEnumBinder.cs" />
+    <Compile Include="SystemManager\WinForms\FlowPanel.cs" />
+    <Compile Include="SystemManager\WinForms\FooteredFeatureLauncherListViewItem.cs" />
+    <Compile Include="SystemManager\WinForms\FooteredFeatureLauncherPropertyControl.cs" />
+    <Compile Include="SystemManager\WinForms\ForestConfigurable.cs" />
+    <Compile Include="SystemManager\WinForms\FormatListFileSaveSaver.cs" />
+    <Compile Include="SystemManager\WinForms\FullPathToFileNameObjectConverter.cs" />
+    <Compile Include="SystemManager\WinForms\GeneralPageHeader.cs" />
+    <Compile Include="SystemManager\WinForms\GeneralPropertyPageControl.cs" />
+    <Compile Include="SystemManager\WinForms\GroupReadTask.cs" />
+    <Compile Include="SystemManager\WinForms\IAlignRule.cs" />
+    <Compile Include="SystemManager\WinForms\IButtonBaseBulkEditSupport.cs" />
+    <Compile Include="SystemManager\WinForms\ICommandExecutionContextFactory.cs" />
+    <Compile Include="SystemManager\WinForms\IconedInfoControl.cs" />
+    <Compile Include="SystemManager\WinForms\IDataAdapterExecutionContextFactory.cs" />
+    <Compile Include="SystemManager\WinForms\IDataColumnsCalculator.cs" />
+    <Compile Include="SystemManager\WinForms\IDataListViewBulkEditSupport.cs" />
+    <Compile Include="SystemManager\WinForms\IDataObjectCreator.cs" />
+    <Compile Include="SystemManager\WinForms\IDataObjectInfoRetriever.cs" />
+    <Compile Include="SystemManager\WinForms\IDataObjectValidator.cs" />
+    <Compile Include="SystemManager\WinForms\IDDIValidator.cs" />
+    <Compile Include="SystemManager\WinForms\IExchangeCommandFilterBuilder.cs" />
+    <Compile Include="SystemManager\WinForms\IExchangeFormOwner.cs" />
+    <Compile Include="SystemManager\WinForms\IExchangeScopeBuilder.cs" />
+    <Compile Include="SystemManager\WinForms\IFeatureLauncherBulkEditSupport.cs" />
+    <Compile Include="SystemManager\WinForms\IHasPermission.cs" />
+    <Compile Include="SystemManager\WinForms\ILoadableFromProfile.cs" />
+    <Compile Include="SystemManager\WinForms\ImagedCheckBox.cs" />
+    <Compile Include="SystemManager\WinForms\IndentionRule.cs" />
+    <Compile Include="SystemManager\WinForms\InlineEditDataListControl.cs" />
+    <Compile Include="SystemManager\WinForms\InputValidationProvider.cs" />
+    <Compile Include="SystemManager\WinForms\IntegerAsPercentageConverter.cs" />
+    <Compile Include="SystemManager\WinForms\InternalNativeMethods.cs" />
+    <Compile Include="SystemManager\WinForms\InternalUnsafeNativeMethods.cs" />
+    <Compile Include="SystemManager\WinForms\InvisibleForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SystemManager\WinForms\InvisibleForm.Designer.cs">
+      <DependentUpon>InvisibleForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SystemManager\WinForms\IPAddressAnyCoverter.cs" />
+    <Compile Include="SystemManager\WinForms\IPropertySetter.cs" />
+    <Compile Include="SystemManager\WinForms\IResultPaneControl.cs" />
+    <Compile Include="SystemManager\WinForms\IRunnable.cs" />
+    <Compile Include="SystemManager\WinForms\ISelectedObjectsProvider.cs" />
+    <Compile Include="SystemManager\WinForms\ISpecifyPropertyState.cs" />
+    <Compile Include="SystemManager\WinForms\ITableCentricConfigurable.cs" />
+    <Compile Include="SystemManager\WinForms\IToColorFormatter.cs" />
+    <Compile Include="SystemManager\WinForms\IValidator.cs" />
+    <Compile Include="SystemManager\WinForms\LabeledTextBox.cs" />
+    <Compile Include="SystemManager\WinForms\LambdaExpressionCompilableRule.cs" />
+    <Compile Include="SystemManager\WinForms\LambdaExpressionRule.cs" />
+    <Compile Include="SystemManager\WinForms\LambdaSeparatorRule.cs" />
+    <Compile Include="SystemManager\WinForms\LegacyExchangeServerFilterBuilder.cs" />
+    <Compile Include="SystemManager\WinForms\LinkLabelCommand.cs" />
+    <Compile Include="SystemManager\WinForms\ListEditorBase.cs" />
+    <Compile Include="SystemManager\WinForms\LoggableMonadCommand.cs" />
+    <Compile Include="SystemManager\WinForms\MailboxConfigurable.cs" />
+    <Compile Include="SystemManager\WinForms\MailboxFilterBuilder.cs" />
+    <Compile Include="SystemManager\WinForms\MailboxOrMailUserConfigurable.cs" />
+    <Compile Include="SystemManager\WinForms\MerMailEnabledGroupConfigurable.cs" />
+    <Compile Include="SystemManager\WinForms\MerMailEnableRecipientConfigurable.cs" />
+    <Compile Include="SystemManager\WinForms\MerNonGroupRecipientsConfigurable.cs" />
+    <Compile Include="SystemManager\WinForms\MerRecipientConfigurable.cs" />
+    <Compile Include="SystemManager\WinForms\MessageBoxDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SystemManager\WinForms\MessageBoxDialog.Designer.cs">
+      <DependentUpon>MessageBoxDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SystemManager\WinForms\MessageClassificationConfigurable.cs" />
+    <Compile Include="SystemManager\WinForms\MockDDIAttribute.cs" />
+    <Compile Include="SystemManager\WinForms\ModifyScopeSettingsControl.cs" />
+    <Compile Include="SystemManager\WinForms\MonadAdapterFiller.cs" />
+    <Compile Include="SystemManager\WinForms\MonadCommandExecutionContext.cs" />
+    <Compile Include="SystemManager\WinForms\MonadCommandExecutionContextFactory.cs" />
+    <Compile Include="SystemManager\WinForms\MonadCommandExecutionContextForPropertyPageFactory.cs" />
+    <Compile Include="SystemManager\WinForms\MonadDataAdapterExecutionContext.cs" />
+    <Compile Include="SystemManager\WinForms\MonadDataAdapterExecutionContextFactory.cs" />
+    <Compile Include="SystemManager\WinForms\MonadDataHandler.cs" />
+    <Compile Include="SystemManager\WinForms\MonadReadTask.cs" />
+    <Compile Include="SystemManager\WinForms\MonadSaveTask.cs" />
+    <Compile Include="SystemManager\WinForms\MultipleSelectionMessageDelegate.cs" />
+    <Compile Include="SystemManager\WinForms\MultiRowRefreshRequest.cs" />
+    <Compile Include="SystemManager\WinForms\NestedDataHandler.cs" />
+    <Compile Include="SystemManager\WinForms\NodeProfile.cs" />
+    <Compile Include="SystemManager\WinForms\NodeProfileList.cs" />
+    <Compile Include="SystemManager\WinForms\NonGroupRecipientsAndUserAndContactConfigurable.cs" />
+    <Compile Include="SystemManager\WinForms\NonGroupRecipientsConfigurable.cs" />
+    <Compile Include="SystemManager\WinForms\NullableDateTimeAsLogTimeCoverter.cs" />
+    <Compile Include="SystemManager\WinForms\NullScopeBuilder.cs" />
+    <Compile Include="SystemManager\WinForms\NullValidator.cs" />
+    <Compile Include="SystemManager\WinForms\NumericUpDownBulkEditorAdapter.cs" />
+    <Compile Include="SystemManager\WinForms\NumericUpDownPage.cs" />
+    <Compile Include="SystemManager\WinForms\OabVirtualDirectoryConfigurable.cs" />
+    <Compile Include="SystemManager\WinForms\ObjectChangeTrackListEditor.cs" />
+    <Compile Include="SystemManager\WinForms\ObjectList.cs" />
+    <Compile Include="SystemManager\WinForms\ObjectListEditor.cs" />
+    <Compile Include="SystemManager\WinForms\ObjectPicker.cs" />
+    <Compile Include="SystemManager\WinForms\ObjectPickerForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SystemManager\WinForms\ObjectPickerForm.Designer.cs">
+      <DependentUpon>ObjectPickerForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SystemManager\WinForms\ObjectPickerProfileLoader.cs" />
+    <Compile Include="SystemManager\WinForms\ObjectResolver.cs" />
+    <Compile Include="SystemManager\WinForms\ObjectSchemaLoader.cs" />
+    <Compile Include="SystemManager\WinForms\OfflineAddressListConfigurable.cs" />
+    <Compile Include="SystemManager\WinForms\OrganizationalUnitConfigurable.cs" />
+    <Compile Include="SystemManager\WinForms\OrganizationalUnitScopeBuilder.cs" />
+    <Compile Include="SystemManager\WinForms\OrganizationTypesConverter.cs" />
+    <Compile Include="SystemManager\WinForms\OtherUPNSuffixFiller.cs" />
+    <Compile Include="SystemManager\WinForms\PageConfigurableProfile.cs" />
+    <Compile Include="SystemManager\WinForms\PageToDataObjectsList.cs" />
+    <Compile Include="SystemManager\WinForms\PageToReaderTaskMapping.cs" />
+    <Compile Include="SystemManager\WinForms\ParameterProfile.cs" />
+    <Compile Include="SystemManager\WinForms\ParameterProfileList.cs" />
+    <Compile Include="SystemManager\WinForms\ParameterType.cs" />
+    <Compile Include="SystemManager\WinForms\PartialRefreshRequest.cs" />
+    <Compile Include="SystemManager\WinForms\PFDBInstalledExchangeServerConfigurable.cs" />
+    <Compile Include="SystemManager\WinForms\PFDBInstalledExchangeServerFilterBuilder.cs" />
+    <Compile Include="SystemManager\WinForms\PhraseDescriptor.cs" />
+    <Compile Include="SystemManager\WinForms\PickerLauncherTextBox.cs" />
+    <Compile Include="SystemManager\WinForms\PickerTextBoxBase.cs" />
+    <Compile Include="SystemManager\WinForms\PostRefreshActionBase.cs" />
+    <Compile Include="SystemManager\WinForms\PreFillADObjectIdFiller.cs" />
+    <Compile Include="SystemManager\WinForms\PreviewRecipientsConfigurable.cs" />
+    <Compile Include="SystemManager\WinForms\ProcedureBuilder.cs" />
+    <Compile Include="SystemManager\WinForms\ProcedureDataFiller.cs" />
+    <Compile Include="SystemManager\WinForms\ProgressDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SystemManager\WinForms\ProgressDialog.Designer.cs">
+      <DependentUpon>ProgressDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SystemManager\WinForms\ProgressTridentsWizardPage.cs" />
+    <Compile Include="SystemManager\WinForms\PromptDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SystemManager\WinForms\PromptDialog.Designer.cs">
+      <DependentUpon>PromptDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SystemManager\WinForms\PromptForChoicesDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SystemManager\WinForms\PromptForChoicesDialog.Designer.cs">
+      <DependentUpon>PromptForChoicesDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SystemManager\WinForms\Properties\Settings.cs" />
+    <Compile Include="SystemManager\WinForms\Properties\Settings.Designer.cs">
+      <DependentUpon>Settings.settings</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="SystemManager\WinForms\PropertyPageCommandExposureControl.cs" />
+    <Compile Include="SystemManager\WinForms\PropertyPageDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SystemManager\WinForms\PropertyPageDialog.Designer.cs">
+      <DependentUpon>PropertyPageDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SystemManager\WinForms\PropertySheetDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SystemManager\WinForms\PropertySheetDialog.Designer.cs">
+      <DependentUpon>PropertySheetDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SystemManager\WinForms\PropertyState.cs" />
+    <Compile Include="SystemManager\WinForms\ProxyAddressBaseDataHandler.cs" />
+    <Compile Include="SystemManager\WinForms\ProxyAddressBaseDataHandlerSchema.cs" />
+    <Compile Include="SystemManager\WinForms\ProxyAddressDataHandler.cs" />
+    <Compile Include="SystemManager\WinForms\ProxyAddressDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SystemManager\WinForms\ProxyAddressDialog.Designer.cs">
+      <DependentUpon>ProxyAddressDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SystemManager\WinForms\ProxyAddressTemplateDataHandler.cs" />
+    <Compile Include="SystemManager\WinForms\PublicFolderClientPermissionHelper.cs" />
+    <Compile Include="SystemManager\WinForms\PublicFolderPermissionAsRoleCoverter.cs" />
+    <Compile Include="SystemManager\WinForms\PublicFolderPermissionControl.cs" />
+    <Compile Include="SystemManager\WinForms\PublicFolderPermissionLevelComboBoxAdapter.cs" />
+    <Compile Include="SystemManager\WinForms\PublicFolderPermissionLevelListSource.cs" />
+    <Compile Include="SystemManager\WinForms\RadioButtonBulkEditorAdapter.cs" />
+    <Compile Include="SystemManager\WinForms\RbacPermissionLockResultPane.cs" />
+    <Compile Include="SystemManager\WinForms\Reader.cs" />
+    <Compile Include="SystemManager\WinForms\ReaderTaskProfile.cs" />
+    <Compile Include="SystemManager\WinForms\ReaderTaskProfileList.cs" />
+    <Compile Include="SystemManager\WinForms\RecipientPreviewFilterBuilder.cs" />
+    <Compile Include="SystemManager\WinForms\RelativeControlAlignRule.cs" />
+    <Compile Include="SystemManager\WinForms\RemoteMonadCommandExecutionContext.cs" />
+    <Compile Include="SystemManager\WinForms\RemoteMonadCommandExecutionContextFactory.cs" />
+    <Compile Include="SystemManager\WinForms\RemoteOnPremiseMonadCommandExecutionContext.cs" />
+    <Compile Include="SystemManager\WinForms\RemoteOnPremiseMonadCommandExecutionContextFactory.cs" />
+    <Compile Include="SystemManager\WinForms\RemoveSingleRowRefreshRequest.cs" />
+    <Compile Include="SystemManager\WinForms\ResetVirtualDirectoryFilterBuilder.cs" />
+    <Compile Include="SystemManager\WinForms\ResultPane.cs" />
+    <Compile Include="SystemManager\WinForms\ResultPaneCaption.cs" />
+    <Compile Include="SystemManager\WinForms\ResultPaneProfile.cs" />
+    <Compile Include="SystemManager\WinForms\ResultPaneProfileLoader.cs" />
+    <Compile Include="SystemManager\WinForms\ResultsCommandAction.cs" />
+    <Compile Include="SystemManager\WinForms\ResultsCommandProfile.cs" />
+    <Compile Include="SystemManager\WinForms\ResultsCommandSetting.cs" />
+    <Compile Include="SystemManager\WinForms\ResultsCommandUpdatingUtil.cs" />
+    <Compile Include="SystemManager\WinForms\ResultsTaskCommandAction.cs" />
+    <Compile Include="SystemManager\WinForms\RunnerBase.cs" />
+    <Compile Include="SystemManager\WinForms\SavedResultMapping.cs" />
+    <Compile Include="SystemManager\WinForms\Saver.cs" />
+    <Compile Include="SystemManager\WinForms\SaverTaskProfile.cs" />
+    <Compile Include="SystemManager\WinForms\SaverTaskProfileList.cs" />
+    <Compile Include="SystemManager\WinForms\ScheduleControl.cs" />
+    <Compile Include="SystemManager\WinForms\ScheduleDataHandler.cs" />
+    <Compile Include="SystemManager\WinForms\ScheduleDataHandlerSchema.cs" />
+    <Compile Include="SystemManager\WinForms\ScheduleEditor.cs" />
+    <Compile Include="SystemManager\WinForms\ScheduleEditorDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SystemManager\WinForms\ScheduleEditorDialog.Designer.cs">
+      <DependentUpon>ScheduleEditorDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SystemManager\WinForms\ScheduleLocalizer.cs" />
+    <Compile Include="SystemManager\WinForms\ScopeSupportingLevel.cs" />
+    <Compile Include="SystemManager\WinForms\SearchDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SystemManager\WinForms\SearchDialog.Designer.cs">
+      <DependentUpon>SearchDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SystemManager\WinForms\SecurityIdentifierResolveFiller.cs" />
+    <Compile Include="SystemManager\WinForms\SecurityIdListEditor.cs" />
+    <Compile Include="SystemManager\WinForms\SecurityPrincipalFilterBuilder.cs" />
+    <Compile Include="SystemManager\WinForms\SelectionCommandUpdatingUtil.cs" />
+    <Compile Include="SystemManager\WinForms\SelectionCommandVisibilityBindingUtil.cs" />
+    <Compile Include="SystemManager\WinForms\ServersInSameDagFilterBuilder.cs" />
+    <Compile Include="SystemManager\WinForms\ShowDialogCommandAction.cs" />
+    <Compile Include="SystemManager\WinForms\ShowSelectionPropertiesCommandAction.cs" />
+    <Compile Include="SystemManager\WinForms\ShowWizardCommandAction.cs" />
+    <Compile Include="SystemManager\WinForms\SimpleListEditor.cs" />
+    <Compile Include="SystemManager\WinForms\SingleRowRefreshRequest.cs" />
+    <Compile Include="SystemManager\WinForms\SingleSelectionMessageDelegate.cs" />
+    <Compile Include="SystemManager\WinForms\SingleTaskDataHandler.cs" />
+    <Compile Include="SystemManager\WinForms\SmartHostEditor.cs" />
+    <Compile Include="SystemManager\WinForms\SmartHostEditorDataHandler.cs" />
+    <Compile Include="SystemManager\WinForms\SmtpDomainWithSubdomainsListAsStringCoverter.cs" />
+    <Compile Include="SystemManager\WinForms\SmtpDomainWithSubdomainsToDomainNameConverter.cs" />
+    <Compile Include="SystemManager\WinForms\SmtpProxyAddressTemplateDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SystemManager\WinForms\SmtpProxyAddressTemplateDialog.Designer.cs">
+      <DependentUpon>SmtpProxyAddressTemplateDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SystemManager\WinForms\StartDateTimeCoverter.cs" />
+    <Compile Include="SystemManager\WinForms\StringIDToLocalizedStringConverter.cs" />
+    <Compile Include="SystemManager\WinForms\StrongTypeEditor.cs" />
+    <Compile Include="SystemManager\WinForms\StrongTypeEditorDataHandler.cs" />
+    <Compile Include="SystemManager\WinForms\StrongTypeException.cs" />
+    <Compile Include="SystemManager\WinForms\StrongTypeListControl.cs" />
+    <Compile Include="SystemManager\WinForms\StrongTypeSchemaLoader.cs" />
+    <Compile Include="SystemManager\WinForms\StrongTypeValidationError.cs" />
+    <Compile Include="SystemManager\WinForms\SummaryControlStyle.cs" />
+    <Compile Include="SystemManager\WinForms\SupervisionListFiller.cs" />
+    <Compile Include="SystemManager\WinForms\TabbedResultPane.cs" />
+    <Compile Include="SystemManager\WinForms\TabbedResultPaneProfile.cs" />
+    <Compile Include="SystemManager\WinForms\TableDataHandler.cs" />
+    <Compile Include="SystemManager\WinForms\TargetDeliveryDomainFilterBuilder.cs" />
+    <Compile Include="SystemManager\WinForms\TaskCommandAction.cs" />
+    <Compile Include="SystemManager\WinForms\TaskProfileBase.cs" />
+    <Compile Include="SystemManager\WinForms\TextBoxConstraintProvider.cs" />
+    <Compile Include="SystemManager\WinForms\TextConverter.cs" />
+    <Compile Include="SystemManager\WinForms\Theme.cs" />
+    <Compile Include="SystemManager\WinForms\TitleWizardPage.cs" />
+    <Compile Include="SystemManager\WinForms\TreeViewObjectPickerForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SystemManager\WinForms\TreeViewObjectPickerForm.Designer.cs">
+      <DependentUpon>TreeViewObjectPickerForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SystemManager\WinForms\TridentErrorDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SystemManager\WinForms\TridentErrorDialog.Designer.cs">
+      <DependentUpon>TridentErrorDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SystemManager\WinForms\TridentsWizardPage.cs" />
+    <Compile Include="SystemManager\WinForms\UIService.cs" />
+    <Compile Include="SystemManager\WinForms\UIValidationError.cs" />
+    <Compile Include="SystemManager\WinForms\UIValidationEventArgs.cs" />
+    <Compile Include="SystemManager\WinForms\UMDialPlanFilterBuilder.cs" />
+    <Compile Include="SystemManager\WinForms\UMEnabledMailboxOrMailUserOrMailFilterBuilder.cs" />
+    <Compile Include="SystemManager\WinForms\UniversalGroupConfigurable.cs" />
+    <Compile Include="SystemManager\WinForms\UPNSuffixesConfigurable.cs" />
+    <Compile Include="SystemManager\WinForms\UPNSuffixesFilterBuilder.cs" />
+    <Compile Include="SystemManager\WinForms\UserCommandBuilder.cs" />
+    <Compile Include="SystemManager\WinForms\UserConfigurable.cs" />
+    <Compile Include="SystemManager\WinForms\UserControlBulkEditorAdapter.cs" />
+    <Compile Include="SystemManager\WinForms\UserLogonNameControl.cs" />
+    <Compile Include="SystemManager\WinForms\UserRange.cs" />
+    <Compile Include="SystemManager\WinForms\WinFormsCommandInteractionHandler.cs" />
+    <Compile Include="SystemManager\WinForms\WinformsHelper.cs" />
+    <Compile Include="SystemManager\WinForms\WithPrimarySmtpAddressRecipientFilterBuilder.cs" />
+    <Compile Include="SystemManager\WinForms\Wizard.cs" />
+    <Compile Include="SystemManager\WinForms\WizardForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SystemManager\WinForms\WizardForm.Designer.cs">
+      <DependentUpon>WizardForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SystemManager\WinForms\WizardOrientationPanel.cs" />
+    <Compile Include="SystemManager\WinForms\WizardPage.cs" />
+    <Compile Include="SystemManager\WinForms\WizardPageCollection.cs" />
+    <Compile Include="SystemManager\WinForms\WorkCenter.cs" />
+    <Compile Include="SystemManager\WinForms\WorkCenterProfile.cs" />
+    <Compile Include="SystemManager\WinForms\WorkPanePage.cs" />
+    <Compile Include="SystemManager\WinForms\WorkPaneTabs.cs" />
+    <Compile Include="SystemManager\WinForms\WorkUnitCollectionEventArgs.cs" />
+    <Compile Include="SystemManager\WinForms\WorkUnitPanel.cs" />
+    <Compile Include="SystemManager\WinForms\WorkUnitPanelItem.cs" />
+    <Compile Include="SystemManager\WinForms\WorkUnitsPanel.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.Exchange.Common\Microsoft.Exchange.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140F0}</Project>
+      <Name>Microsoft.Exchange.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Compliance\Microsoft.Exchange.Compliance.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140F2}</Project>
+      <Name>Microsoft.Exchange.Compliance</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Configuration.ObjectModel\Microsoft.Exchange.Configuration.ObjectModel.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140FC}</Project>
+      <Name>Microsoft.Exchange.Configuration.ObjectModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Common\Microsoft.Exchange.Data.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140D3}</Project>
+      <Name>Microsoft.Exchange.Data.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Directory\Microsoft.Exchange.Data.Directory.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14105}</Project>
+      <Name>Microsoft.Exchange.Data.Directory</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Mapi\Microsoft.Exchange.Data.Mapi.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1410A}</Project>
+      <Name>Microsoft.Exchange.Data.Mapi</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data\Microsoft.Exchange.Data.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14106}</Project>
+      <Name>Microsoft.Exchange.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Diagnostics\Microsoft.Exchange.Diagnostics.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14113}</Project>
+      <Name>Microsoft.Exchange.Diagnostics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.HelpProvider\Microsoft.Exchange.HelpProvider.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1412B}</Project>
+      <Name>Microsoft.Exchange.HelpProvider</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.ManagementGUI\Microsoft.Exchange.ManagementGUI.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14167}</Project>
+      <Name>Microsoft.Exchange.ManagementGUI</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Management\Microsoft.Exchange.Management.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1415C}</Project>
+      <Name>Microsoft.Exchange.Management</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Net\Microsoft.Exchange.Net.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14178}</Project>
+      <Name>Microsoft.Exchange.Net</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Sqm\Microsoft.Exchange.Sqm.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141B7}</Project>
+      <Name>Microsoft.Exchange.Sqm</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\mscorlib\mscorlib.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141F1}</Project>
+      <Name>mscorlib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\mscorlib\mscorlib.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141F1}</Project>
+      <Name>mscorlib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="SystemManager\WinForms\ExchangeSettings.settings">
+      <Generator>PublicSettingsSingleFileGenerator</Generator>
+      <LastGenOutput>ExchangeSettings.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="SystemManager\WinForms\Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

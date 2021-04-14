@@ -1,0 +1,103 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{09CD9476-CD82-489E-B9E2-84B47CA14102}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Microsoft.Exchange.Connections</RootNamespace>
+    <AssemblyName>Microsoft.Exchange.Connections.Pop</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Exchange.Common.IL" />
+    <Reference Include="System" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Common\PopHelperMethods.cs" />
+    <Compile Include="Pop\AutoProvisionOverride.cs" />
+    <Compile Include="Pop\AutoProvisionOverrideProvider.cs" />
+    <Compile Include="Pop\AutoProvisionProgress.cs" />
+    <Compile Include="Pop\BufferParser.cs" />
+    <Compile Include="Pop\DisconnectReason.cs" />
+    <Compile Include="Pop\IAutoProvision.cs" />
+    <Compile Include="Pop\IAutoProvisionOverrideProvider.cs" />
+    <Compile Include="Pop\IPop3Connection.cs" />
+    <Compile Include="Pop\MessageIdTracker.cs" />
+    <Compile Include="Pop\ParserState.cs" />
+    <Compile Include="Pop\Pop3AuthenticationMechanism.cs" />
+    <Compile Include="Pop\Pop3AuthenticationParameters.cs" />
+    <Compile Include="Pop\Pop3AuthType.cs" />
+    <Compile Include="Pop\Pop3AutoProvision.cs" />
+    <Compile Include="Pop\Pop3Client.cs" />
+    <Compile Include="Pop\Pop3ClientState.cs" />
+    <Compile Include="Pop\Pop3Command.cs" />
+    <Compile Include="Pop\Pop3CommandType.cs" />
+    <Compile Include="Pop\Pop3Connection.cs" />
+    <Compile Include="Pop\Pop3ConnectionContext.cs" />
+    <Compile Include="Pop\Pop3ConnectionCore.cs" />
+    <Compile Include="Pop\Pop3Constants.cs" />
+    <Compile Include="Pop\Pop3Email.cs" />
+    <Compile Include="Pop\Pop3InvalidCommandException.cs" />
+    <Compile Include="Pop\Pop3Response.cs" />
+    <Compile Include="Pop\Pop3ResponseType.cs" />
+    <Compile Include="Pop\Pop3ResultData.cs" />
+    <Compile Include="Pop\Pop3SecurityMechanism.cs" />
+    <Compile Include="Pop\Pop3ServerParameters.cs" />
+    <Compile Include="Pop\PopBookmark.cs" />
+    <Compile Include="Pop\SmtpAddress.cs" />
+    <Compile Include="Pop\SmtpInDataParser.cs" />
+    <Compile Include="Pop\SmtpInParser.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.Exchange.Connections.Common\Microsoft.Exchange.Connections.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140FF}</Project>
+      <Name>Microsoft.Exchange.Connections.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Common\Microsoft.Exchange.Data.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140D3}</Project>
+      <Name>Microsoft.Exchange.Data.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Diagnostics\Microsoft.Exchange.Diagnostics.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14113}</Project>
+      <Name>Microsoft.Exchange.Diagnostics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Net\Microsoft.Exchange.Net.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14178}</Project>
+      <Name>Microsoft.Exchange.Net</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\mscorlib\mscorlib.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141F1}</Project>
+      <Name>mscorlib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

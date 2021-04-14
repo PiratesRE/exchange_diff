@@ -1,0 +1,651 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{09CD9476-CD82-489E-B9E2-84B47CA141DC}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Microsoft.Exchange.UM</RootNamespace>
+    <AssemblyName>Microsoft.Exchange.UM.UMCore</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Exchange.UM.LAD" />
+    <Reference Include="Microsoft.Exchange.UM.Prompts" />
+    <Reference Include="Microsoft.Exchange.UM.TroubleshootingTool.Shared" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.DirectoryServices" />
+    <Reference Include="System.ServiceProcess" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ExSmtpClient\SmtpClientDebugOutput.cs" />
+    <Compile Include="Fsm\AsrContactsManager.cs" />
+    <Compile Include="Fsm\AsrSearchManager.cs" />
+    <Compile Include="Fsm\AutoAttendantManager.cs" />
+    <Compile Include="Fsm\CalendarManager.cs" />
+    <Compile Include="Fsm\DiagnosticCallListenerManager.cs" />
+    <Compile Include="Fsm\DirectorySearchManager.cs" />
+    <Compile Include="Fsm\EmailManager.cs" />
+    <Compile Include="Fsm\FaxManager.cs" />
+    <Compile Include="Fsm\FindMeSubscriberManager.cs" />
+    <Compile Include="Fsm\GlobalActivityManager.cs" />
+    <Compile Include="Fsm\MessagePartManager.cs" />
+    <Compile Include="Fsm\PersonalAutoAttendantManager.cs" />
+    <Compile Include="Fsm\PersonalOptionsManager.cs" />
+    <Compile Include="Fsm\PlayOnPhoneAAManager.cs" />
+    <Compile Include="Fsm\PlayOnPhoneManager.cs" />
+    <Compile Include="Fsm\PlayOnPhonePAAManager.cs" />
+    <Compile Include="Fsm\PromptProvisioningManager.cs" />
+    <Compile Include="Fsm\RecordVoicemailManager.cs" />
+    <Compile Include="Fsm\RetrieveVoicemailManager.cs" />
+    <Compile Include="Fsm\SpeechAutoAttendantManager.cs" />
+    <Compile Include="Fsm\SubmitMessageManager.cs" />
+    <Compile Include="Fsm\UmDiagnosticManager.cs" />
+    <Compile Include="Fsm\UmTroubleshootingToolManager.cs" />
+    <Compile Include="Fsm\VirtualNumberManager.cs" />
+    <Compile Include="NativeMethods\Win32NativeMethods.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UMCore\AABusinessLocationPrompt.cs" />
+    <Compile Include="UMCore\AACounters.cs" />
+    <Compile Include="UMCore\AACountersInstance.cs" />
+    <Compile Include="UMCore\AACustomMenuPrompt.cs" />
+    <Compile Include="UMCore\AAWelcomeGreetingPrompt.cs" />
+    <Compile Include="UMCore\AccessProxyCallHandler.cs" />
+    <Compile Include="UMCore\ActivityBase.cs" />
+    <Compile Include="UMCore\ActivityConfig.cs" />
+    <Compile Include="UMCore\ActivityManager.cs" />
+    <Compile Include="UMCore\ActivityManagerConfig.cs" />
+    <Compile Include="UMCore\ActivityTransition.cs" />
+    <Compile Include="UMCore\AddRecoRequestStep.cs" />
+    <Compile Include="UMCore\AddressPrompt.cs" />
+    <Compile Include="UMCore\ADGreeting.cs" />
+    <Compile Include="UMCore\ADNotificationEvent.cs" />
+    <Compile Include="UMCore\ADNotificationHandler.cs" />
+    <Compile Include="UMCore\ADNotificationsManager.cs" />
+    <Compile Include="UMCore\AnonCallerUtils.cs" />
+    <Compile Include="UMCore\AsrContactsManager.cs" />
+    <Compile Include="UMCore\AsrContactsSearchContext.cs" />
+    <Compile Include="UMCore\AsrDepartmentSearchResult.cs" />
+    <Compile Include="UMCore\AsrDirectorySearchResult.cs" />
+    <Compile Include="UMCore\AsrExtensionSearchResult.cs" />
+    <Compile Include="UMCore\AsrPersonalContactsSearchResult.cs" />
+    <Compile Include="UMCore\AsrSearchContext.cs" />
+    <Compile Include="UMCore\AsrSearchManager.cs" />
+    <Compile Include="UMCore\AsrSearchResult.cs" />
+    <Compile Include="UMCore\AsynchronousPipelineStageBase.cs" />
+    <Compile Include="UMCore\AudioCompressionStage.cs" />
+    <Compile Include="UMCore\AudioPipeline.cs" />
+    <Compile Include="UMCore\AutoAttendantCallHandler.cs" />
+    <Compile Include="UMCore\AutoAttendantContext.cs" />
+    <Compile Include="UMCore\AutoAttendantCore.cs" />
+    <Compile Include="UMCore\AutoAttendantCountersUtil.cs" />
+    <Compile Include="UMCore\AutoAttendantCustomOptionType.cs" />
+    <Compile Include="UMCore\AutoAttendantLocationContext.cs" />
+    <Compile Include="UMCore\AutoAttendantManager.cs" />
+    <Compile Include="UMCore\AutoAttendantUtils.cs" />
+    <Compile Include="UMCore\AvailabilityCounters.cs" />
+    <Compile Include="UMCore\Average.cs" />
+    <Compile Include="UMCore\BaseCallRouterPlatform.cs" />
+    <Compile Include="UMCore\BaseUMAsyncTimer.cs" />
+    <Compile Include="UMCore\BaseUMCallSession.cs" />
+    <Compile Include="UMCore\BaseUMOfflineTranscriber.cs" />
+    <Compile Include="UMCore\BaseUMVoipPlatform.cs" />
+    <Compile Include="UMCore\BlindTransferBase.cs" />
+    <Compile Include="UMCore\BlindTransferToHost.cs" />
+    <Compile Include="UMCore\BlindTransferToPhone.cs" />
+    <Compile Include="UMCore\BricksRoutingBasedServerChooser.cs" />
+    <Compile Include="UMCore\BridgeheadPicker.cs" />
+    <Compile Include="UMCore\BusinessHoursPrompt.cs" />
+    <Compile Include="UMCore\CacheCleaner.cs" />
+    <Compile Include="UMCore\CafeCallStatisticsLogger.cs" />
+    <Compile Include="UMCore\CafeLoggingHelper.cs" />
+    <Compile Include="UMCore\CafeRoutingContext.cs" />
+    <Compile Include="UMCore\CalendarManager.cs" />
+    <Compile Include="UMCore\CalendarNavigator.cs" />
+    <Compile Include="UMCore\CallAnswerCounters.cs" />
+    <Compile Include="UMCore\CallAnsweringCallHandler.cs" />
+    <Compile Include="UMCore\CallContext.cs" />
+    <Compile Include="UMCore\CallerNameOrNumberPrompt.cs" />
+    <Compile Include="UMCore\CallInfoCache.cs" />
+    <Compile Include="UMCore\CallLoggingHelper.cs" />
+    <Compile Include="UMCore\CallLogPipelineContextBase.cs" />
+    <Compile Include="UMCore\CallPerformanceLogger.cs" />
+    <Compile Include="UMCore\CallRejectedException.cs" />
+    <Compile Include="UMCore\CallRejectionCounterHelper.cs" />
+    <Compile Include="UMCore\CallRejectionLogger.cs" />
+    <Compile Include="UMCore\CallRouterAvailabilityCounters.cs" />
+    <Compile Include="UMCore\CallRouterSettingsNotificationHandler.cs" />
+    <Compile Include="UMCore\CallStatisticsLogger.cs" />
+    <Compile Include="UMCore\CallTransfer.cs" />
+    <Compile Include="UMCore\CallTransferConfig.cs" />
+    <Compile Include="UMCore\CallTransferType.cs" />
+    <Compile Include="UMCore\CAMessageSubmissionManager.cs" />
+    <Compile Include="UMCore\CardinalPrompt.cs" />
+    <Compile Include="UMCore\CDRPipeline.cs" />
+    <Compile Include="UMCore\CDRPipelineContext.cs" />
+    <Compile Include="UMCore\CDRPipelineStage.cs" />
+    <Compile Include="UMCore\CertificateDiagnostics.cs" />
+    <Compile Include="UMCore\ChunkType.cs" />
+    <Compile Include="UMCore\CombinedGrammarScenariosRequestBehavior.cs" />
+    <Compile Include="UMCore\CombinedStaticGrammarScenariosRequestBehavior.cs" />
+    <Compile Include="UMCore\CommonActivity.cs" />
+    <Compile Include="UMCore\ConditionParser.cs" />
+    <Compile Include="UMCore\Constants.cs" />
+    <Compile Include="UMCore\ConstantValidator.cs" />
+    <Compile Include="UMCore\ConstFilePromptConfig.cs" />
+    <Compile Include="UMCore\ConstPromptBookmarkConfig.cs" />
+    <Compile Include="UMCore\ConstTextPromptConfig.cs" />
+    <Compile Include="UMCore\ContactSearchItem.cs" />
+    <Compile Include="UMCore\CreateProtectedMessageStage.cs" />
+    <Compile Include="UMCore\CreateUnProtectedMessageStage.cs" />
+    <Compile Include="UMCore\CurrentCallsCounterHelper.cs" />
+    <Compile Include="UMCore\CustomGrammarBase.cs" />
+    <Compile Include="UMCore\CustomGrammarFile.cs" />
+    <Compile Include="UMCore\DataCenterActiveManagerRedirectionTarget.cs" />
+    <Compile Include="UMCore\DataCenterForestChooser.cs" />
+    <Compile Include="UMCore\DataCenterLegacySupportRedirectionTarget.cs" />
+    <Compile Include="UMCore\DataCenterRedirectionTarget.cs" />
+    <Compile Include="UMCore\DataCenterServerChooser.cs" />
+    <Compile Include="UMCore\DatacenterSipPeerManager.cs" />
+    <Compile Include="UMCore\DatacenterSiteBasedServerPicker.cs" />
+    <Compile Include="UMCore\DatePrompt.cs" />
+    <Compile Include="UMCore\DateTimeAndDurationRecognitionBehavior.cs" />
+    <Compile Include="UMCore\DayOfWeekListPrompt.cs" />
+    <Compile Include="UMCore\DayOfWeekTimeContext.cs" />
+    <Compile Include="UMCore\DayOfWeekTimePrompt.cs" />
+    <Compile Include="UMCore\DaySearchBehavior.cs" />
+    <Compile Include="UMCore\DependentSessionDetails.cs" />
+    <Compile Include="UMCore\DiagnosticCallListenerManager.cs" />
+    <Compile Include="UMCore\DialingPermissionsCheckFactory.cs" />
+    <Compile Include="UMCore\DialPermissionWrapperFactory.cs" />
+    <Compile Include="UMCore\DialplanResolver.cs" />
+    <Compile Include="UMCore\DigitPrompt.cs" />
+    <Compile Include="UMCore\DirectoryAccessCountersUtil.cs" />
+    <Compile Include="UMCore\DirectoryGrammarHandler.cs" />
+    <Compile Include="UMCore\DirectorySearchCountersUtil.cs" />
+    <Compile Include="UMCore\DirectorySearchManager.cs" />
+    <Compile Include="UMCore\DirectorySearchPurpose.cs" />
+    <Compile Include="UMCore\DisambiguatedName.cs" />
+    <Compile Include="UMCore\DisambiguatedNamePrompt.cs" />
+    <Compile Include="UMCore\DisconnectRequestHandler.cs" />
+    <Compile Include="UMCore\DistributionListGrammarFile.cs" />
+    <Compile Include="UMCore\DiversionResolver.cs" />
+    <Compile Include="UMCore\DiversionSource.cs" />
+    <Compile Include="UMCore\DiversionUtils.cs" />
+    <Compile Include="UMCore\DropCallReason.cs" />
+    <Compile Include="UMCore\DtmfAutoAttendant.cs" />
+    <Compile Include="UMCore\DuplicateResultCheck.cs" />
+    <Compile Include="UMCore\DynamicDirectoryGrammarHandler.cs" />
+    <Compile Include="UMCore\DynamicUmGrammarConfig.cs" />
+    <Compile Include="UMCore\EmailAddressPrompt.cs" />
+    <Compile Include="UMCore\EmailManager.cs" />
+    <Compile Include="UMCore\EmailNormalizedText.cs" />
+    <Compile Include="UMCore\EmailPrompt.cs" />
+    <Compile Include="UMCore\EnterpriseRedirectionTarget.cs" />
+    <Compile Include="UMCore\EnterpriseSipPeerManager.cs" />
+    <Compile Include="UMCore\ExpressionParser.cs" />
+    <Compile Include="UMCore\FaxCounters.cs" />
+    <Compile Include="UMCore\FaxManager.cs" />
+    <Compile Include="UMCore\FaxPipelineContext.cs" />
+    <Compile Include="UMCore\FaxRequest.cs" />
+    <Compile Include="UMCore\FaxRequestConfig.cs" />
+    <Compile Include="UMCore\FaxTransferReferredByHeaderHandler.cs" />
+    <Compile Include="UMCore\FilePrompt.cs" />
+    <Compile Include="UMCore\Filters.cs" />
+    <Compile Include="UMCore\FindInGALRequestBehavior.cs" />
+    <Compile Include="UMCore\FindInPersonalContactsRequestBehavior.cs" />
+    <Compile Include="UMCore\FindMeState.cs" />
+    <Compile Include="UMCore\FindMeSubscriberManager.cs" />
+    <Compile Include="UMCore\ForestResolver.cs" />
+    <Compile Include="UMCore\FsmAction.cs" />
+    <Compile Include="UMCore\FsmVariable.cs" />
+    <Compile Include="UMCore\FsmVariableCache.cs" />
+    <Compile Include="UMCore\GalGrammarFile.cs" />
+    <Compile Include="UMCore\GatewayResolver.cs" />
+    <Compile Include="UMCore\GenAppCustomGrammar.cs" />
+    <Compile Include="UMCore\GeneralCounters.cs" />
+    <Compile Include="UMCore\GenericADNotificationHandler.cs" />
+    <Compile Include="UMCore\GetCallInfoRequestHandler.cs" />
+    <Compile Include="UMCore\GlobalActivityManager.cs" />
+    <Compile Include="UMCore\GlobCfg.cs" />
+    <Compile Include="UMCore\GrammarIdentifier.cs" />
+    <Compile Include="UMCore\GrammarItem.cs" />
+    <Compile Include="UMCore\GrammarItemBase.cs" />
+    <Compile Include="UMCore\GrammarRuleRef.cs" />
+    <Compile Include="UMCore\GrammarUtils.cs" />
+    <Compile Include="UMCore\HealthCheckPipeline.cs" />
+    <Compile Include="UMCore\HealthCheckPipelineContext.cs" />
+    <Compile Include="UMCore\HealthCheckStage.cs" />
+    <Compile Include="UMCore\HeavyBlockingOperation.cs" />
+    <Compile Include="UMCore\HeavyBlockingOperationCompletionType.cs" />
+    <Compile Include="UMCore\HeavyBlockingOperationEventArgs.cs" />
+    <Compile Include="UMCore\HuntGroupUtils.cs" />
+    <Compile Include="UMCore\IAutoAttendantUI.cs" />
+    <Compile Include="UMCore\ICallHandler.cs" />
+    <Compile Include="UMCore\IMobileRecognitionResult.cs" />
+    <Compile Include="UMCore\IMobileRecognizer.cs" />
+    <Compile Include="UMCore\IMobileSpeechRecoRequestBehavior.cs" />
+    <Compile Include="UMCore\IMobileSpeechRecoRequestStep.cs" />
+    <Compile Include="UMCore\IncomingCallLogPipelineContext.cs" />
+    <Compile Include="UMCore\InfoMessage.cs" />
+    <Compile Include="UMCore\InstrumentationBaseStrategy.cs" />
+    <Compile Include="UMCore\InstrumentationCollector.cs" />
+    <Compile Include="UMCore\IntroType.cs" />
+    <Compile Include="UMCore\IPAAChild.cs" />
+    <Compile Include="UMCore\IPAACommonInterface.cs" />
+    <Compile Include="UMCore\IPAAEvents.cs" />
+    <Compile Include="UMCore\IPAAParent.cs" />
+    <Compile Include="UMCore\IPAAUI.cs" />
+    <Compile Include="UMCore\IPipelineStageFactory.cs" />
+    <Compile Include="UMCore\IPlatformBuilder.cs" />
+    <Compile Include="UMCore\IPlatformUtilities.cs" />
+    <Compile Include="UMCore\IPlaybackEventArgs.cs" />
+    <Compile Include="UMCore\IRecordedMessage.cs" />
+    <Compile Include="UMCore\IRedirectTargetChooser.cs" />
+    <Compile Include="UMCore\IRoutingContext.cs" />
+    <Compile Include="UMCore\IUMCAMessage.cs" />
+    <Compile Include="UMCore\IUMCompressAudio.cs" />
+    <Compile Include="UMCore\IUMCreateMessage.cs" />
+    <Compile Include="UMCore\IUMHeavyBlockingOperation.cs" />
+    <Compile Include="UMCore\IUMNetworkResource.cs" />
+    <Compile Include="UMCore\IUMRecognitionPhrase.cs" />
+    <Compile Include="UMCore\IUMRecognitionResult.cs" />
+    <Compile Include="UMCore\IUMResolveCaller.cs" />
+    <Compile Include="UMCore\IUMSpeechRecognizer.cs" />
+    <Compile Include="UMCore\IUMTranscribeAudio.cs" />
+    <Compile Include="UMCore\IUMTranscriptionResult.cs" />
+    <Compile Include="UMCore\LanguageListPrompt.cs" />
+    <Compile Include="UMCore\LanguagePrompt.cs" />
+    <Compile Include="UMCore\LargeGrammarFetcher.cs" />
+    <Compile Include="UMCore\LegacyUMServerChooser.cs" />
+    <Compile Include="UMCore\LegacyUMServerPicker.cs" />
+    <Compile Include="UMCore\LocConfig.cs" />
+    <Compile Include="UMCore\LogPipelineStatisticsStage.cs" />
+    <Compile Include="UMCore\LyncServiceRequestHandler.cs" />
+    <Compile Include="UMCore\MailboxAwayGreetingPrompt.cs" />
+    <Compile Include="UMCore\MailboxGreetingPrompt.cs" />
+    <Compile Include="UMCore\MailboxVoicemailGreetingPrompt.cs" />
+    <Compile Include="UMCore\MediaMethods.cs" />
+    <Compile Include="UMCore\Menu.cs" />
+    <Compile Include="UMCore\MenuConfig.cs" />
+    <Compile Include="UMCore\MessageItemList.cs" />
+    <Compile Include="UMCore\MessageItemListSortType.cs" />
+    <Compile Include="UMCore\MessagePartManager.cs" />
+    <Compile Include="UMCore\MessagePlayerContext.cs" />
+    <Compile Include="UMCore\MissedCallPipelineContext.cs" />
+    <Compile Include="UMCore\MobileRecoAsyncCompletedArgs.cs" />
+    <Compile Include="UMCore\MobileRecoAsyncCompletedDelegate.cs" />
+    <Compile Include="UMCore\MobileRecoRequestStepAsyncCompletedDelegate.cs" />
+    <Compile Include="UMCore\MobileSpeechRecoDispatcher.cs" />
+    <Compile Include="UMCore\MobileSpeechRecoRequest.cs" />
+    <Compile Include="UMCore\MobileSpeechRecoRequestBehavior.cs" />
+    <Compile Include="UMCore\MobileSpeechRecoRequestStep.cs" />
+    <Compile Include="UMCore\MobileSpeechRecoRpcServerComponent.cs" />
+    <Compile Include="UMCore\MobileSpeechRecoTracer.cs" />
+    <Compile Include="UMCore\MowaPersonalContactsGrammarFile.cs" />
+    <Compile Include="UMCore\MowaStaticGrammarRecognitionBehaviorBase.cs" />
+    <Compile Include="UMCore\MultiStatementPromptConfig.cs" />
+    <Compile Include="UMCore\NameOrNumberOfCaller.cs" />
+    <Compile Include="UMCore\NamePrompt.cs" />
+    <Compile Include="UMCore\NBestPhase.cs" />
+    <Compile Include="UMCore\NonBlockingCallAnsweringData.cs" />
+    <Compile Include="UMCore\OCFeature.cs" />
+    <Compile Include="UMCore\OCFeatureType.cs" />
+    <Compile Include="UMCore\OCSPipelineContext.cs" />
+    <Compile Include="UMCore\OCS\CallForwardedUserNotificationEvent.cs" />
+    <Compile Include="UMCore\OCS\CallNotForwardedUserNotificationEvent.cs" />
+    <Compile Include="UMCore\OCS\MissedUserNotificationEvent.cs" />
+    <Compile Include="UMCore\OCS\TeamPickUpUserNotificationEvent.cs" />
+    <Compile Include="UMCore\OCS\TryParseTargetUserDelegate.cs" />
+    <Compile Include="UMCore\OCS\UserNotificationEvent.cs" />
+    <Compile Include="UMCore\OCS\UserNotificationEventWithTarget.cs" />
+    <Compile Include="UMCore\OffensiveWordsFilter.cs" />
+    <Compile Include="UMCore\OfferResult.cs" />
+    <Compile Include="UMCore\OnWorkerProcessRetiredEventHandler.cs" />
+    <Compile Include="UMCore\OutboundCallDetailsEventArgs.cs" />
+    <Compile Include="UMCore\OutCallingHandler.cs" />
+    <Compile Include="UMCore\OutCallingHandlerForAA.cs" />
+    <Compile Include="UMCore\OutCallingHandlerForUser.cs" />
+    <Compile Include="UMCore\OutgoingCallLogPipelineContext.cs" />
+    <Compile Include="UMCore\OutTransition.cs" />
+    <Compile Include="UMCore\OVAPersonalContactsGrammarFile.cs" />
+    <Compile Include="UMCore\PAAEvaluationStatus.cs" />
+    <Compile Include="UMCore\PAAManagerBase.cs" />
+    <Compile Include="UMCore\PAAMenuItem.cs" />
+    <Compile Include="UMCore\PartnerTranscriptionData.cs" />
+    <Compile Include="UMCore\PartnerTranscriptionRequestPipeline.cs" />
+    <Compile Include="UMCore\PartnerTranscriptionRequestPipelineContext.cs" />
+    <Compile Include="UMCore\PeopleSearchRequestBehavior.cs" />
+    <Compile Include="UMCore\PerformanceCounters.cs" />
+    <Compile Include="UMCore\PersonalAutoAttendantManager.cs" />
+    <Compile Include="UMCore\PersonalContactsGrammarFile.cs" />
+    <Compile Include="UMCore\PersonalOptionsManager.cs" />
+    <Compile Include="UMCore\PersonCustomGrammar.cs" />
+    <Compile Include="UMCore\PersonInfoCustomGrammar.cs" />
+    <Compile Include="UMCore\PersonNameCustomGrammar.cs" />
+    <Compile Include="UMCore\PhoneUtil.cs" />
+    <Compile Include="UMCore\PingCompletedDelegate.cs" />
+    <Compile Include="UMCore\PingInfo.cs" />
+    <Compile Include="UMCore\Pipeline.cs" />
+    <Compile Include="UMCore\PipelineContext.cs" />
+    <Compile Include="UMCore\PipelineDispatcher.cs" />
+    <Compile Include="UMCore\PipelineResource.cs" />
+    <Compile Include="UMCore\PipelineResourceNetworkBound.cs" />
+    <Compile Include="UMCore\PipelineStageBase.cs" />
+    <Compile Include="UMCore\PipelineStageFactory.cs" />
+    <Compile Include="UMCore\PipelineStatisticsLogger.cs" />
+    <Compile Include="UMCore\PipelineSubmitStatus.cs" />
+    <Compile Include="UMCore\PipelineWorkItem.cs" />
+    <Compile Include="UMCore\Platform.cs" />
+    <Compile Include="UMCore\PlatformCallInfo.cs" />
+    <Compile Include="UMCore\PlatformDiversionInfo.cs" />
+    <Compile Include="UMCore\PlatformSignalingHeader.cs" />
+    <Compile Include="UMCore\PlatformSipUri.cs" />
+    <Compile Include="UMCore\PlatformSipUriParameter.cs" />
+    <Compile Include="UMCore\PlatformTelephonyAddress.cs" />
+    <Compile Include="UMCore\PlaybackContent.cs" />
+    <Compile Include="UMCore\PlayBackContext.cs" />
+    <Compile Include="UMCore\PlaybackMode.cs" />
+    <Compile Include="UMCore\PlayOnPhoneAAGreetingRequestHandler.cs" />
+    <Compile Include="UMCore\PlayOnPhoneAAManager.cs" />
+    <Compile Include="UMCore\PlayOnPhoneGreetingRequestHandler.cs" />
+    <Compile Include="UMCore\PlayOnPhoneHandler.cs" />
+    <Compile Include="UMCore\PlayOnPhoneManager.cs" />
+    <Compile Include="UMCore\PlayOnPhoneMessageRequestHandler.cs" />
+    <Compile Include="UMCore\PlayOnPhonePAAGreetingRequestHandler.cs" />
+    <Compile Include="UMCore\PlayOnPhonePAAManager.cs" />
+    <Compile Include="UMCore\Prompt.cs" />
+    <Compile Include="UMCore\PromptBookmark.cs" />
+    <Compile Include="UMCore\PromptConfig.cs" />
+    <Compile Include="UMCore\PromptConfigBase.cs" />
+    <Compile Include="UMCore\PromptForAliasGrammarFile.cs" />
+    <Compile Include="UMCore\PromptProvisioningManager.cs" />
+    <Compile Include="UMCore\PromptSetting.cs" />
+    <Compile Include="UMCore\PromptUtils.cs" />
+    <Compile Include="UMCore\ProtectedAudioPipeline.cs" />
+    <Compile Include="UMCore\ProtectedXsoAudioPipeline.cs" />
+    <Compile Include="UMCore\QualifiedName.cs" />
+    <Compile Include="UMCore\ReasonForCall.cs" />
+    <Compile Include="UMCore\RecipientLookup.cs" />
+    <Compile Include="UMCore\RecognitionPhraseComparer.cs" />
+    <Compile Include="UMCore\RecognitionPhraseListComparer.cs" />
+    <Compile Include="UMCore\RecognizeCompletedDelegate.cs" />
+    <Compile Include="UMCore\RecognizeStep.cs" />
+    <Compile Include="UMCore\Record.cs" />
+    <Compile Include="UMCore\RecordConfig.cs" />
+    <Compile Include="UMCore\RecordContext.cs" />
+    <Compile Include="UMCore\RecordVoicemailManager.cs" />
+    <Compile Include="UMCore\RedirectionTarget.cs" />
+    <Compile Include="UMCore\RedirectReason.cs" />
+    <Compile Include="UMCore\RedirectTargetChooserFactory.cs" />
+    <Compile Include="UMCore\ReferredByCallHandler.cs" />
+    <Compile Include="UMCore\ReferredByHeaderHandler.cs" />
+    <Compile Include="UMCore\ReplyForwardBaseClass.cs" />
+    <Compile Include="UMCore\ReplyForwardType.cs" />
+    <Compile Include="UMCore\RequestCompletedEventHandler.cs" />
+    <Compile Include="UMCore\RequestHandler.cs" />
+    <Compile Include="UMCore\ResolveCallerStage.cs" />
+    <Compile Include="UMCore\ResultType.cs" />
+    <Compile Include="UMCore\ResultWrapper.cs" />
+    <Compile Include="UMCore\RetrieveVoicemailManager.cs" />
+    <Compile Include="UMCore\RouterCallHandler.cs" />
+    <Compile Include="UMCore\RouterUtils.cs" />
+    <Compile Include="UMCore\ScheduleGroup.cs" />
+    <Compile Include="UMCore\ScheduleGroupListPrompt.cs" />
+    <Compile Include="UMCore\ScheduleGroupPrompt.cs" />
+    <Compile Include="UMCore\ScheduleIntervalListPrompt.cs" />
+    <Compile Include="UMCore\ScheduleIntervalPrompt.cs" />
+    <Compile Include="UMCore\SearchFolderVerificationStage.cs" />
+    <Compile Include="UMCore\SearchGrammarFile.cs" />
+    <Compile Include="UMCore\SearchItemDetailPrompt.cs" />
+    <Compile Include="UMCore\SearchMethod.cs" />
+    <Compile Include="UMCore\SearchTarget.cs" />
+    <Compile Include="UMCore\SendMessageManager.cs" />
+    <Compile Include="UMCore\SendNotifyMessageCompletedEventArgs.cs" />
+    <Compile Include="UMCore\ServerNotificationHandler.cs" />
+    <Compile Include="UMCore\SetDiversionInfoResult.cs" />
+    <Compile Include="UMCore\Shortcut.cs" />
+    <Compile Include="UMCore\SilencePrompt.cs" />
+    <Compile Include="UMCore\SimpleTimePrompt.cs" />
+    <Compile Include="UMCore\SingleStatementPrompt.cs" />
+    <Compile Include="UMCore\SingleStatementPromptConfig.cs" />
+    <Compile Include="UMCore\SipNotifyMwiTarget.cs" />
+    <Compile Include="UMCore\SipPeerManager.cs" />
+    <Compile Include="UMCore\SipRoutingHelper.cs" />
+    <Compile Include="UMCore\SipUriScheme.cs" />
+    <Compile Include="UMCore\SmtpSubmissionHelper.cs" />
+    <Compile Include="UMCore\SmtpSubmitStage.cs" />
+    <Compile Include="UMCore\SpeechAutoAttendant.cs" />
+    <Compile Include="UMCore\SpeechAutoAttendantManager.cs" />
+    <Compile Include="UMCore\SpeechMenu.cs" />
+    <Compile Include="UMCore\SpeechMenuConfig.cs" />
+    <Compile Include="UMCore\SpeechMenuState.cs" />
+    <Compile Include="UMCore\SpeechRecognitionEngineType.cs" />
+    <Compile Include="UMCore\SpokenDateTimeFormatter.cs" />
+    <Compile Include="UMCore\SpokenNamePrompt.cs" />
+    <Compile Include="UMCore\StageCompletionCallback.cs" />
+    <Compile Include="UMCore\StageRetryDetails.cs" />
+    <Compile Include="UMCore\StatementChunk.cs" />
+    <Compile Include="UMCore\StatementParser.cs" />
+    <Compile Include="UMCore\StatementPromptConfig.cs" />
+    <Compile Include="UMCore\StaticDirectoryGrammarHandler.cs" />
+    <Compile Include="UMCore\StaticUmGrammarConfig.cs" />
+    <Compile Include="UMCore\StopPatterns.cs" />
+    <Compile Include="UMCore\StopTransition.cs" />
+    <Compile Include="UMCore\SubmissionHelper.cs" />
+    <Compile Include="UMCore\SubmitMessageManager.cs" />
+    <Compile Include="UMCore\SubmitStage.cs" />
+    <Compile Include="UMCore\SubscriberAccessCallHandler.cs" />
+    <Compile Include="UMCore\SubscriberAccessCounters.cs" />
+    <Compile Include="UMCore\SubscriberAccessUtils.cs" />
+    <Compile Include="UMCore\SupervisedTransfer.cs" />
+    <Compile Include="UMCore\SynchronousPipelineStageBase.cs" />
+    <Compile Include="UMCore\SystemInstrumentationStrategy.cs" />
+    <Compile Include="UMCore\TelephoneNumberPrompt.cs" />
+    <Compile Include="UMCore\TempFilePrompt.cs" />
+    <Compile Include="UMCore\TextListPrompt.cs" />
+    <Compile Include="UMCore\TextPipeline.cs" />
+    <Compile Include="UMCore\TextPrompt.cs" />
+    <Compile Include="UMCore\TimePrompt.cs" />
+    <Compile Include="UMCore\TimeRange.cs" />
+    <Compile Include="UMCore\TimeRangePrompt.cs" />
+    <Compile Include="UMCore\TimeZonePrompt.cs" />
+    <Compile Include="UMCore\TopNData.cs" />
+    <Compile Include="UMCore\TopNWordsCustomGrammar.cs" />
+    <Compile Include="UMCore\TranscriptionConfigurationStage.cs" />
+    <Compile Include="UMCore\TranscriptionContext.cs" />
+    <Compile Include="UMCore\TranscriptionCounters.cs" />
+    <Compile Include="UMCore\TranscriptionCountersInstance.cs" />
+    <Compile Include="UMCore\TranscriptionData.cs" />
+    <Compile Include="UMCore\TranscriptionStage.cs" />
+    <Compile Include="UMCore\TransferBase.cs" />
+    <Compile Include="UMCore\TransferExtension.cs" />
+    <Compile Include="UMCore\TransitionBase.cs" />
+    <Compile Include="UMCore\TransportParameter.cs" />
+    <Compile Include="UMCore\TTSPrompt.cs" />
+    <Compile Include="UMCore\TTSVolumeMap.cs" />
+    <Compile Include="UMCore\TypeOfOutboundCall.cs" />
+    <Compile Include="UMCore\UMAABusinessHoursPromptRpcRequestHandler.cs" />
+    <Compile Include="UMCore\UMAABusinessLocationPromptRpcRequestHandler.cs" />
+    <Compile Include="UMCore\UMAACustomPromptRpcRequestHandler.cs" />
+    <Compile Include="UMCore\UMAAWelcomePromptRpcRequestHandler.cs" />
+    <Compile Include="UMCore\UMADSettings.cs" />
+    <Compile Include="UMCore\UMAutoAttendantNotificationHandler.cs" />
+    <Compile Include="UMCore\UMCallRouterADSettings.cs" />
+    <Compile Include="UMCore\UMCallSessionEventArgs.cs" />
+    <Compile Include="UMCore\UMCallSessionHandler.cs" />
+    <Compile Include="UMCore\UMConfigCache.cs" />
+    <Compile Include="UMCore\UMCoreADUtil.cs" />
+    <Compile Include="UMCore\UmDiagnosticManager.cs" />
+    <Compile Include="UMCore\UMDialPlanNotificationHandler.cs" />
+    <Compile Include="UMCore\UMDPCustomPromptRpcRequestHandler.cs" />
+    <Compile Include="UMCore\UMGrammar.cs" />
+    <Compile Include="UMCore\UMGrammarBase.cs" />
+    <Compile Include="UMCore\UMGrammarConfig.cs" />
+    <Compile Include="UMCore\UMHuntGroupNotificationHandler.cs" />
+    <Compile Include="UMCore\UMIPGatewayMwiTargetPicker.cs" />
+    <Compile Include="UMCore\UMIPGatewayNotificationHandler.cs" />
+    <Compile Include="UMCore\UMIPGatewayOutboundTargetPicker.cs" />
+    <Compile Include="UMCore\UMIPGatewayTargetPickerBase.cs" />
+    <Compile Include="UMCore\UMLoggingManager.cs" />
+    <Compile Include="UMCore\UMMailboxPromptRpcRequestHandler.cs" />
+    <Compile Include="UMCore\UMMessageSubmission.cs" />
+    <Compile Include="UMCore\UMMwiDeliveryRpcServer.cs" />
+    <Compile Include="UMCore\UMNavigationState.cs" />
+    <Compile Include="UMCore\UMPartnerMessageRpcServerComponent.cs" />
+    <Compile Include="UMCore\UMPlayOnPhoneRpcServerComponent.cs" />
+    <Compile Include="UMCore\UMPromptPreviewRpcServerComponent.cs" />
+    <Compile Include="UMCore\UMPromptRpcRequestHandler.cs" />
+    <Compile Include="UMCore\UMRecipientTasksServerComponent.cs" />
+    <Compile Include="UMCore\UMRecyclerConfig.cs" />
+    <Compile Include="UMCore\UMServerPingRpcClient.cs" />
+    <Compile Include="UMCore\UMServerPingRpcServerComponent.cs" />
+    <Compile Include="UMCore\UMServerRpcComponent.cs" />
+    <Compile Include="UMCore\UMServiceADSettings.cs" />
+    <Compile Include="UMCore\UMServiceBase.cs" />
+    <Compile Include="UMCore\UmServiceGlobals.cs" />
+    <Compile Include="UMCore\UMSpeechEventArgs.cs" />
+    <Compile Include="UMCore\UmTroubleshootingToolManager.cs" />
+    <Compile Include="UMCore\UMVersionedRpcServer.cs" />
+    <Compile Include="UMCore\UserNotificationEventContext.cs" />
+    <Compile Include="UMCore\UserParameter.cs" />
+    <Compile Include="UMCore\UserToCallsMap.cs" />
+    <Compile Include="UMCore\UserTransferWithContext.cs" />
+    <Compile Include="UMCore\Util.cs" />
+    <Compile Include="UMCore\UtilityMethods.cs" />
+    <Compile Include="UMCore\VarFilePrompt.cs" />
+    <Compile Include="UMCore\VariablePrompt.cs" />
+    <Compile Include="UMCore\VariablePromptConfig.cs" />
+    <Compile Include="UMCore\VirtualNumberManager.cs" />
+    <Compile Include="UMCore\VoicemailForward.cs" />
+    <Compile Include="UMCore\VoicemailReply.cs" />
+    <Compile Include="UMCore\VoicemailReplyAll.cs" />
+    <Compile Include="UMCore\VoiceMessageCollectionStage.cs" />
+    <Compile Include="UMCore\VoiceMessageList.cs" />
+    <Compile Include="UMCore\VoiceMessagePipelineContext.cs" />
+    <Compile Include="UMCore\VoiceMessagePipelineContextBase.cs" />
+    <Compile Include="UMCore\VoipPlatformEventHandler.cs" />
+    <Compile Include="UMCore\XSOAudioPipeline.cs" />
+    <Compile Include="UMCore\XsoGreeting.cs" />
+    <Compile Include="UMCore\XsoRecordedMessage.cs" />
+    <Compile Include="UMCore\XSOSubmitStage.cs" />
+    <Compile Include="UMCore\XSOVoiceMessagePipelineContext.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="umconfig.xsd" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.Exchange.Common\Microsoft.Exchange.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140F0}</Project>
+      <Name>Microsoft.Exchange.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Compliance\Microsoft.Exchange.Compliance.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140F2}</Project>
+      <Name>Microsoft.Exchange.Compliance</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Configuration.ObjectModel\Microsoft.Exchange.Configuration.ObjectModel.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140FC}</Project>
+      <Name>Microsoft.Exchange.Configuration.ObjectModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.ApplicationLogic\Microsoft.Exchange.Data.ApplicationLogic.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14104}</Project>
+      <Name>Microsoft.Exchange.Data.ApplicationLogic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Common\Microsoft.Exchange.Data.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140D3}</Project>
+      <Name>Microsoft.Exchange.Data.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Directory\Microsoft.Exchange.Data.Directory.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14105}</Project>
+      <Name>Microsoft.Exchange.Data.Directory</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Storage.ClientStrings\Microsoft.Exchange.Data.Storage.ClientStrings.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1410E}</Project>
+      <Name>Microsoft.Exchange.Data.Storage.ClientStrings</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Storage\Microsoft.Exchange.Data.Storage.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1410F}</Project>
+      <Name>Microsoft.Exchange.Data.Storage</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data\Microsoft.Exchange.Data.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14106}</Project>
+      <Name>Microsoft.Exchange.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Diagnostics\Microsoft.Exchange.Diagnostics.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14113}</Project>
+      <Name>Microsoft.Exchange.Diagnostics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.InfoWorker.Common\Microsoft.Exchange.InfoWorker.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1413C}</Project>
+      <Name>Microsoft.Exchange.InfoWorker.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Net\Microsoft.Exchange.Net.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14178}</Project>
+      <Name>Microsoft.Exchange.Net</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Rpc\Microsoft.Exchange.Rpc.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14188}</Project>
+      <Name>Microsoft.Exchange.Rpc</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.StoreProvider\Microsoft.Exchange.StoreProvider.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141B9}</Project>
+      <Name>Microsoft.Exchange.StoreProvider</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.TextProcessing\Microsoft.Exchange.TextProcessing.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141BB}</Project>
+      <Name>Microsoft.Exchange.TextProcessing</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.UM.ClientStrings\Microsoft.Exchange.UM.ClientStrings.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141D9}</Project>
+      <Name>Microsoft.Exchange.UM.ClientStrings</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.UM.UMCommon\Microsoft.Exchange.UM.UMCommon.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141DB}</Project>
+      <Name>Microsoft.Exchange.UM.UMCommon</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.VariantConfiguration\Microsoft.Exchange.VariantConfiguration.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141E0}</Project>
+      <Name>Microsoft.Exchange.VariantConfiguration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Office.Datacenter.ActiveMonitoringLocal\Microsoft.Office.Datacenter.ActiveMonitoringLocal.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141ED}</Project>
+      <Name>Microsoft.Office.Datacenter.ActiveMonitoringLocal</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\mscorlib\mscorlib.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141F1}</Project>
+      <Name>mscorlib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

@@ -1,0 +1,552 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo IsDatacenterOnly="true" IsDatacenterDedicatedOnly="true" Name="Datacenter Bridgehead Configuration">
+
+  <ServerTasks>
+
+    <!-- Install/remove Malware Agent V2 perf counters -->
+    <!-- Fix: Move this to BridgeheadPerfCountersComponent.xml when AM v1 is removed -->
+    <ServerTaskInfo Id="_BBC94C8B-618D-4508-97A4-955BA0153D95" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>new-PerfCounters -DefinitionFileName MalwareAgentV2PerfCounters.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-PerfCounters -DefinitionFileName MalwareAgentV2PerfCounters.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+    
+    <!-- Configure SSL certificates -->
+    <ServerTaskInfo Id="_1ccea725dcb94499bd9c8ccba68c141f" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>Install-ExchangeCertificate -Thumbprint $RoleDatacenterIisSHA1Thumbprint -Services IIS</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <ServerTaskInfo Id="_9e02c159969a48329a7988fe39522461" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>Install-ExchangeCertificate -Thumbprint $RoleDatacenterSmtpSHA1Thumbprint -Services SMTP</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Changing Log Paths -->
+    <!-- Note: For IRM logs, we are currently assuming boxes rolled out in the datacenter are single role only. If -->
+    <!-- that's not true, the IRM log path may be overwritten with the enterprise default location when the other -->
+    <!-- role gets installed. (See PS 282948) -->
+    <ServerTaskInfo Id="_ab18aa34a1414608a8f31f86a4de23ea" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          if ($RoleIsDatacenterDedicated)
+          {
+          Write-ExchangeSetupLog -Info "Changing Logs Path.";
+          Set-TransportService `
+          -Identity $RoleNetBiosName `
+          -ReceiveProtocolLogPath "$RoleDatacenterTransportRoleLogRoot\Hub\ProtocolLog\SmtpReceive" `
+          -IntraOrgConnectorProtocolLoggingLevel:verbose -ReceiveProtocolLogMaxDirectorySize:15000MB -ReceiveProtocolLogMaxAge:7.00:00:00 `
+          -SendProtocolLogPath "$RoleDatacenterTransportRoleLogRoot\Hub\ProtocolLog\SmtpSend" `
+          -SendProtocolLogMaxDirectorySize:15000MB -SendProtocolLogMaxAge:7.00:00:00 `
+          -ConnectivityLogPath "$RoleDatacenterTransportRoleLogRoot\Hub\Connectivity" `
+          -ConnectivityLogEnabled:$TRUE -ConnectivityLogMaxDirectorySize:1500MB -ConnectivityLogMaxAge:7.00:00:00 `
+          -MessageTrackingLogPath "$RoleDatacenterTransportRoleLogRoot\MessageTracking" `
+          -MessageTrackingLogEnabled:$TRUE -MessageTrackingLogMaxDirectorySize:30GB -MessageTrackingLogMaxAge:30.00:00:00 `
+          -AgentLogPath "$RoleDatacenterTransportRoleLogRoot\Hub\AgentLog" `
+          -AgentLogMaxAge:7.00:00:00 `
+          -PipelineTracingPath "$RoleDatacenterTransportRoleLogRoot\Hub\PipelineTracing" `
+          -RoutingTableLogPath "$RoleDatacenterTransportRoleLogRoot\Hub\Routing" `
+          -IrmLogPath "$RoleDatacenterTransportRoleLogRoot\IRMLogs" `
+          -QueueLogPath "$RoleDatacenterTransportRoleLogRoot\Hub\QueueViewer" `
+          -FlowControlLogPath "$RoleDatacenterTransportRoleLogRoot\Throttling\FlowControl" `
+          -ResourceLogPath "$RoleDatacenterTransportRoleLogRoot\Throttling\ResourceLog" `
+          -ProcessingSchedulerLogPath "$RoleDatacenterTransportRoleLogRoot\Throttling\ProcessingSchedulerLog" `
+          -JournalLogEnabled $true `
+          -JournalLogPath "$RoleDatacenterTransportRoleLogRoot\JournalLog" `
+          -TransportMaintenanceLogPath "$RoleDatacenterTransportRoleLogRoot\Hub\TransportMaintenance" `
+          -DnsLogEnabled $true `
+          -DnsLogPath "$RoleDatacenterTransportRoleLogRoot\Hub\Dns" `
+          -DnsLogMaxAge:7.00:00:00 `
+          -DnsLogMaxDirectorySize "100MB" `
+          -DnsLogMaxFileSize "10MB" `
+          -WlmLogPath "$RoleDatacenterTransportRoleLogRoot\Hub\Wlm" `
+          -WlmLogMaxAge:7.00:00:00 `
+          -PickupDirectoryPath $null `
+          -IrmLogEnabled $true `
+          -MaxPerDomainOutboundConnections 50 `
+          -MaxOutboundConnections 1000 `
+          -ActiveUserStatisticsLogMaxAge:10.00:00:00 `
+          -IrmLogMaxAge:10.00:00:00 `
+          -ServerStatisticsLogMaxAge:10.00:00:00 `
+          -TransportSyncHubHealthLogMaxAge:10.00:00:00 `
+          -TransportSyncLogMaxAge:10.00:00:00 `
+          -PickupDirectoryMaxRecipientsPerMessage 10000
+          }
+          else
+          {
+          Write-ExchangeSetupLog -Info "Changing Logs Path.";
+          Set-TransportService `
+          -Identity $RoleNetBiosName `
+          -ReceiveProtocolLogPath "$RoleDatacenterTransportRoleLogRoot\Hub\ProtocolLog\SmtpReceive" `
+          -IntraOrgConnectorProtocolLoggingLevel:verbose -ReceiveProtocolLogMaxDirectorySize:15000MB -ReceiveProtocolLogMaxAge:7.00:00:00 `
+          -SendProtocolLogPath "$RoleDatacenterTransportRoleLogRoot\Hub\ProtocolLog\SmtpSend" `
+          -SendProtocolLogMaxDirectorySize:15000MB -SendProtocolLogMaxAge:7.00:00:00 `
+          -ConnectivityLogPath "$RoleDatacenterTransportRoleLogRoot\Hub\Connectivity" `
+          -ConnectivityLogEnabled:$TRUE -ConnectivityLogMaxDirectorySize:1500MB -ConnectivityLogMaxAge:7.00:00:00 `
+          -MessageTrackingLogPath "$RoleDatacenterTransportRoleLogRoot\MessageTracking" `
+          -MessageTrackingLogEnabled:$TRUE -MessageTrackingLogMaxDirectorySize:30GB -MessageTrackingLogMaxAge:10.00:00:00 `
+          -AgentLogPath "$RoleDatacenterTransportRoleLogRoot\Hub\AgentLog" `
+          -AgentLogMaxAge:7.00:00:00 `
+          -PipelineTracingPath "$RoleDatacenterTransportRoleLogRoot\Hub\PipelineTracing" `
+          -RoutingTableLogPath "$RoleDatacenterTransportRoleLogRoot\Hub\Routing" `
+          -IrmLogPath "$RoleDatacenterTransportRoleLogRoot\IRMLogs" `
+          -QueueLogPath "$RoleDatacenterTransportRoleLogRoot\Hub\QueueViewer" `
+          -FlowControlLogPath "$RoleDatacenterTransportRoleLogRoot\Throttling\FlowControl" `
+          -ResourceLogPath "$RoleDatacenterTransportRoleLogRoot\Throttling\ResourceLog" `
+          -ProcessingSchedulerLogPath "$RoleDatacenterTransportRoleLogRoot\Throttling\ProcessingSchedulerLog" `
+          -JournalLogEnabled $true `
+          -JournalLogPath "$RoleDatacenterTransportRoleLogRoot\JournalLog" `
+          -TransportMaintenanceLogPath "$RoleDatacenterTransportRoleLogRoot\Hub\TransportMaintenance" `
+          -DnsLogEnabled $true `
+          -DnsLogPath "$RoleDatacenterTransportRoleLogRoot\Hub\Dns" `
+          -DnsLogMaxAge:7.00:00:00 `
+          -DnsLogMaxDirectorySize "100MB" `
+          -DnsLogMaxFileSize "10MB" `
+          -WlmLogPath "$RoleDatacenterTransportRoleLogRoot\Hub\Wlm" `
+          -WlmLogMaxAge:7.00:00:00 `
+          -PickupDirectoryPath $null `
+          -ActiveUserStatisticsLogMaxAge:10.00:00:00 `
+          -IrmLogMaxAge:10.00:00:00 `
+          -ServerStatisticsLogMaxAge:10.00:00:00 `
+          -TransportSyncHubHealthLogMaxAge:10.00:00:00 `
+          -TransportSyncLogMaxAge:10.00:00:00 `
+          -IrmLogEnabled $true
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Setting Paths for FIPS -->
+    <ServerTaskInfo Id="_54b7b9e7f300434c9d7e96462e50ef8a" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          Write-ExchangeSetupLog -Info "Changing Filtering Engine Update Log Path.";
+          Set-ItemProperty `
+          -Path HKLM:SOFTWARE\Microsoft\ExchangeLabs `
+          -Name EngineUpdateLogPath `
+          -Value "$RoleDatacenterTransportRoleLogRoot\EngineUpdate"
+
+          Write-ExchangeSetupLog -Info "Set the Text Extraction Log Path.";
+          Set-ItemProperty `
+          -Path HKLM:SOFTWARE\Microsoft\ExchangeLabs `
+          -Name TextExtractionLogPath `
+          -Value "$RoleDatacenterTransportRoleLogRoot\TextExtraction"
+
+          Write-ExchangeSetupLog -Info "Set the CollectFIPSLogsResponder Log Path.";
+          Set-ItemProperty `
+          -Path HKLM:SOFTWARE\Microsoft\ExchangeLabs `
+          -Name FipsDiagnosticsLogPath `
+          -Value "$RoleDatacenterTransportRoleLogRoot\FIPS"
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall />
+    </ServerTaskInfo>
+
+      <!-- Update MSExchangeTransport service config file. -->
+      <ServerTaskInfo Id="_a251028110024c06b8400e2c23260d75" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+          <Install>
+              <Standalone>
+                  $transportServicePath = "$RoleBinPath\MSExchangeTransport.exe.config";
+                  set-appconfigvalue -ConfigFileFullPath:$transportServicePath -Element:configuration/appSettings -AppSettingKey:'SendEventLogsWithWatsonReport' -NewValue:$true;
+                  set-appconfigvalue -ConfigFileFullPath:$transportServicePath -Element:configuration/appSettings -AppSettingKey:'MaxProcessManagerRestartAttempts' -NewValue:100;
+                  set-appconfigvalue -ConfigFileFullPath:$transportServicePath -Element:configuration/appSettings -AppSettingKey:'MaxProcessRestartAttemptsWhileInStartingState' -NewValue:10;
+                  set-appconfigvalue -ConfigFileFullPath:$transportServicePath -Element:configuration/appSettings -AppSettingKey:'ThrashCrashMaximum' -NewValue:100;
+              </Standalone>
+          </Install>
+          <BuildToBuildUpgrade UseInstallTasks="true"/>
+          <DisasterRecovery UseInstallTasks="true"/>
+          <Uninstall />
+      </ServerTaskInfo>
+
+      <!-- Update transport config file. 
+           BUGBUG: This task should be split into two. Since it has common aspects and ExO specific aspects -->
+      <ServerTaskInfo Id="_dc9e7e9a366147eaae2def6445b735e6" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+          <Install>
+              <Standalone>
+                $fullPath = "$RoleBinPath\EdgeTransport.exe.config";
+                Copy-Item $fullPath "$fullPath.backup";
+                $config = [xml](Get-Content $fullPath);
+                if ($config.configuration.appSettings.SelectSingleNode("add[@key='MinComponentLatencyToLog']") -ne $null)
+                {
+                    $config.configuration.appSettings.SelectSingleNode("add[@key='MinComponentLatencyToLog']").value = $RoleDatacenterTransportMinComponentLatencyToLog;
+                }
+
+                $config.Save($fullPath);
+
+                set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'TrustExternalPickupReceivedHeaders' -NewValue:$true;
+                set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'DeliverMoveMailboxRetryInterval' -NewValue:2;
+
+                if ($RoleIsDatacenterDedicated)
+                {
+                    set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'PodRedirectTemplate' -NewValue:'';
+                }
+                else
+                {
+                    set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'LiveIdBasicAuthModule.SyncAD' -NewValue:$true;
+                    set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'AcceptedDomainReloadInterval' -NewValue:'00:15:00';
+                    set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'AcceptedDomainReloadLoggingThreshold' -NewValue:8;
+                    set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'LargeDGLimitEnforcementEnabled' -NewValue:$true;
+                    set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'LargeDGMaxMessageSize' -NewValue:'2MB';
+                    set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'LargeDGGroupCount' -NewValue:5000;
+                    set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'LargeDGGroupCountForUnRestrictedDG' -NewValue:5000;
+                    set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'PodRedirectTemplate' -NewValue:'pod{0}.outlook.com';
+                }
+
+                set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'AgentLogMaxDirectorySize' -NewValue:15728640000;
+                set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'AgentLogMaxAge' -NewValue:'7.00:00:00';
+                set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'QueueDatabasePath' -NewValue:$RoleDatacenterTransportQueuePath;
+                set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'QueueDatabaseLoggingPath' -NewValue:$RoleDatacenterTransportQueueLogPath;
+                set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'TemporaryStoragePath' -NewValue:$RoleDatacenterTransportTemporaryStoragePath;
+                set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'ShadowRedundancyPromotionEnabled' -NewValue:$true;
+                set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'DelayedAckSkippingEnabled' -NewValue:$false;
+                set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'InboundTrustStampOriginatorOrgForMsitConnector' -NewValue:$RoleDatacenterReceiveMSITCrossPremisesTMCMail;
+                set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'TarpitMuaSubmission' -NewValue:$true;
+                set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'RequireXProxyExtension' -NewValue:$false;
+                set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'ProxyPort' -NewValue:587;
+                set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'OpportunisticTlsConnectorRoutingDomain' -NewValue:'DefaultTlsOpportunistic';
+                set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'ForcedTlsEncryptionOnlyConnectorRoutingDomain' -NewValue:'ForcedTlsEncryptionOnly';
+                set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'ForcedTlsCAValidationConnectorRoutingDomain' -NewValue:'ForcedTlsCertificateAuth';
+                set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'ForcedTlsDomainValidationConnectorRoutingDomain' -NewValue:'ForcedTlsDomainValidation';
+                set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'WaitForSmtpSessionsAtShutdown' -NewValue:$true;
+
+                set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'SMTPAcceptAnyRecipientOverride' -NewValue:$true;
+
+                set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'FfoQuarantineEnabled' -NewValue:$RoleDatacenterFfoQuarantineEnabled;
+                set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'FfoQuarantineStoreType' -NewValue:$RoleDatacenterFfoQuarantineStoreType;
+                set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'FfoQuarantineRetentionDays' -NewValue:$RoleDatacenterFfoQuarantineRetentionDays;
+                set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'FfoQuarantineNumberOfMimePartitions' -NewValue:$RoleDatacenterFfoQuarantineNumberOfMimePartitions;
+                set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'FfoQuarantineSymmetricCryptoAlgorithm' -NewValue:$RoleDatacenterFfoQuarantineSymmetricCryptoAlgorithm;
+
+                if ([String]::IsNullorEmpty($RoleDatacenterFfoQuarantineAzureStorageAccount))
+                {
+                    set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'FfoQuarantineAzureStorageAccount' -Remove;
+                }
+                else
+                {
+                    set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'FfoQuarantineAzureStorageAccount' -NewValue:$RoleDatacenterFfoQuarantineAzureStorageAccount;
+                }
+
+                if ([String]::IsNullorEmpty($RoleDatacenterFfoQuarantineAzureStorageCredentials))
+                {
+                    set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'FfoQuarantineAzureStorageCredentials' -Remove;
+                }
+                else
+                {
+                    set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'FfoQuarantineAzureStorageCredentials' -NewValue:$RoleDatacenterFfoQuarantineAzureStorageCredentials;
+                }
+
+                if ([String]::IsNullorEmpty($RoleDatacenterFfoQuarantineFileShare))
+                {
+                    set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'FfoQuarantineFileShare' -Remove;
+                }
+                else
+                {
+                    set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'FfoQuarantineFileShare' -NewValue:$RoleDatacenterFfoQuarantineFileShare;
+                }
+
+                if (-not [String]::IsNullorEmpty($RoleDatacenterSpamDataLoadOptions))
+                {
+                    set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'SpamDataLoadOptions' -NewValue:$RoleDatacenterSpamDataLoadOptions;
+                }
+
+                if (-not [String]::IsNullorEmpty($RoleDatacenterUseSpamBlobForFullLoad))
+                {
+                    set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'UseSpamBlobForFullLoad' -NewValue:$RoleDatacenterUseSpamBlobForFullLoad;
+                }
+
+                if (-not [String]::IsNullorEmpty($RoleDatacenterAntiSpamDnsServers))
+                {
+                    set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'SpamEngineDnsServerList' -NewValue:$RoleDatacenterAntiSpamDnsServers;
+                }
+
+                if (-not $RoleIsDatacenterDedicated)
+                {
+                    if (-not [String]::IsNullorEmpty($RoleDatacenterOutboundFfoFrontendServers))
+                    {
+                        set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'OutboundFrontendServers' -NewValue:$RoleDatacenterOutboundFfoFrontendServers;
+                        set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'ExternalOutboundFrontendProxyEnabled' -NewValue:$true;
+                    }                
+                    else
+                    {
+                        Write-ExchangeSetupLog -Info "RoleDatacenterOutboundFfoFrontendServers is empty";
+                    }
+                }
+
+                set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'SmtpConnectorQueueMessageCountThresholdForConcurrentConnections' -NewValue:'5';
+                set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'QueueQuotaEnabled' -NewValue:$true;
+
+                # 1460372: change routing config reload interval to 15 minutes to reduce CPU usage.
+                set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'RoutingConfigReloadInterval' -NewValue:'00:15:00';
+                set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:"MinQueueRetryOrSuspendDeferEventInterval" -NewValue:"00:05:00"
+
+                set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:"TransportSettingsCacheExpiryInterval" -NewValue:"01:00:00"
+                set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:"PerimeterSettingsCacheExpiryInterval" -NewValue:"01:00:00"
+                set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:"OrganizationMailboxDatabaseCacheExpiryInterval" -NewValue:"01:00:00"
+                set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:"JournalingRulesCacheExpiryInterval" -NewValue:"01:00:00"
+                set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:"MicrosoftExchangeRecipientCacheExpiryInterval" -NewValue:"01:00:00"
+                set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:"RemoteDomainsCacheExpiryInterval" -NewValue:"01:00:00"
+                set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:"AcceptedDomainsCacheExpiryInterval" -NewValue:"01:00:00"
+                set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:"TransportRulesCacheExpiryInterval" -NewValue:"01:00:00"
+                set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:"AntiSpamLogEnabled" -NewValue:"SpamEngineLog"
+                set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:"AntiSpamLogPath" -NewValue:"$RoleDatacenterTransportRoleLogRoot\Hub\SpamEngine"
+                set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'AsynchronousRetryQueue' -NewValue:$true;
+
+                set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'DisabledAntimalwareEnginesForConsumers' -NewValue:"Kaspersky,Command";
+                
+                # set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'EnableResourceMonitoring' -NewValue:$false;
+                # set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'ResourceTrackingEnabled' -NewValue:$true;
+                # set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'ResourceThrottlingEnabled' -NewValue:$true;
+              </Standalone>
+            </Install>
+          <BuildToBuildUpgrade UseInstallTasks="true"/>
+          <DisasterRecovery UseInstallTasks="true"/>
+          <Uninstall />
+      </ServerTaskInfo> 
+      <!-- Creating Log directory structure for data center so that SetExchangeShares.ps1 script can set the ACLs on them. -->
+      <ServerTaskInfo Id="_8c716ee605da4491b5b5159d77d2f786" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+          <Install IsFatal="false">
+              <Standalone>
+                  $TransportLogs = $RoleInstallPath + "\TransportRoles\Logs";
+                  $ServerStatisticsLogPath = $TransportLogs + "\Hub\ServerStats";
+                  $ActiveUserStatisticsLogPath = $TransportLogs + "\Hub\ActiveUsersStats";
+                  $HealthMonitoringLogPath = $TransportLogs + "\HealthMonitoring";
+                  $AgentLogPath = $TransportLogs + "\Hub\AgentLog";
+                  $EdgeSyncLogPath = $TransportLogs + "\EdgeSync";
+                  $InterceptorArchivePath = $RoleDatacenterInterceptorArchiveRoot + "\Interceptor";
+                  if (!(Test-Path -Path $TransportLogs)) {New-Item $TransportLogs -type directory};
+                  if (!(Test-Path -Path $ServerStatisticsLogPath)) {New-Item $ServerStatisticsLogPath -type directory};
+                  if (!(Test-Path -Path $ActiveUserStatisticsLogPath)) {New-Item $ActiveUserStatisticsLogPath -type directory};
+                  if (!(Test-Path -Path $HealthMonitoringLogPath)) {New-Item $HealthMonitoringLogPath -type directory};
+                  if (!(Test-Path -Path $AgentLogPath)) {New-Item $AgentLogPath -type directory};
+                  if (!(Test-Path -Path $EdgeSyncLogPath)) {New-Item $EdgeSyncLogPath -type directory};
+                  if (!(Test-Path -Path $InterceptorArchivePath)) {New-Item $InterceptorArchivePath -type directory};
+                  Start-SetupProcess -Name "icacls.exe" -args "`"$TransportLogs`" /grant `"$env:USERDOMAIN\View-Only Organization Management:(OI)(CI)(R)`" /T /C /inheritance:e";
+              </Standalone>
+          </Install>
+          <BuildToBuildUpgrade UseInstallTasks="true" />
+          <DisasterRecovery UseInstallTasks="true" />
+          <Uninstall />
+      </ServerTaskInfo>
+            
+      <ServerTaskInfo Id="_DF6CBDB740724f988363DE064FBBD9CB" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+        <Install>
+          <Standalone>
+            $file = 'MSExchangeTransportLogSearch.exe.config';
+            $fullPath = [System.IO.Path]::Combine([System.IO.Path]::Combine($RoleInstallPath, "bin"), $file);
+            if (!([System.IO.File]::Exists($fullPath))) { copy-item ($fullPath + ".template") $fullPath; }
+            set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings  -AppSettingKey:'AggregateUserStatisticsInMemory' -NewValue:$false;
+          </Standalone>
+        </Install>
+        <BuildToBuildUpgrade UseInstallTasks="true"/>
+        <DisasterRecovery UseInstallTasks="true"/>
+        <Uninstall />
+      </ServerTaskInfo>
+     
+      <!-- Copy Antispam test spam rule data in test topologies --> 
+      <ServerTaskInfo Id="_3843068138674A7990CB7137B0E3D57F" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+        <Install>
+          <Standalone>
+             if (-not [String]::IsNullorEmpty($RoleDatacenterTestSpamDataFilePath))
+                {
+                   $transportService = Get-Service 'MSExchangeTransport' -ErrorAction SilentlyContinue
+                   $serviceState = 'NotInstalled'
+                   if ($transportService -ne $null)
+                   {
+                      $serviceState = $transportService.Status
+                   }
+				   
+                   $testSpamDataFilePath = $RoleDatacenterTestSpamDataFilePath
+                   $exchangeServerInstallPath = (Get-ItemProperty HKLM:\SOFTWARE\Microsoft\ExchangeServer\v15\Setup).MsiInstallPath
+
+                   $currentDataFile = Join-Path $exchangeServerInstallPath "TransportRoles\agents\Hygiene\SpamData\Current"
+                   New-Item -Path $currentDataFile -type "directory" -ErrorAction SilentlyContinue
+                   Remove-Item $currentDataFile\* -recurse
+
+                   $targetDirectory = Join-Path $exchangeServerInstallPath "TransportRoles\agents\Hygiene\SpamData\Default"
+                   New-Item -Path $targetDirectory -type "directory" -ErrorAction SilentlyContinue
+                   Copy-Item $testSpamDataFilePath\* $targetDirectory -Force
+
+                   if ($serviceState -eq 'Running')
+                   {
+                      restart-service 'MSExchangeTransport'
+                   }
+                }
+          </Standalone>
+        </Install>
+        <BuildToBuildUpgrade UseInstallTasks="true"/>
+        <DisasterRecovery UseInstallTasks="true"/>
+        <Uninstall />
+     </ServerTaskInfo>
+        
+    <!-- Change the AD Driver event log levels to low for the datacenter -->
+    <ServerTaskInfo Id="_459F4B70C0CF4102967C34C6C58608C3" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\AD Core">
+      <Install>
+        <Standalone>
+          Set-EventLogLevel -Identity "MSExchange ADAccess\LDAP" -Level Low
+          Set-EventLogLevel -Identity "MSExchange ADAccess\Topology" -Level Low
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Install/uninstall "MSMessageTracing Client, stop the service and start after log folder permission is set" -->
+    <ServerTaskInfo Id="_1EBC7D3F584447CCAD59D391E940728B" Component="Office15:\Current\Forefront for Office Datacenter\Deployment and Configuration Management\Deployment" ExcludeInDatacenterDedicated="true">
+      <Install>
+        <Standalone>
+          if (!(get-service MSMessageTracingClient* | where {$_.name -eq "MSMessageTracingClient"}))
+          {
+            Install-MessageTracingClientService
+            New-Perfcounters -DefinitionFileName MessageTracingPerfCounters.xml
+            New-Perfcounters -DefinitionFileName StreamingOpticsPerfCounters.xml
+            New-Perfcounters -DefinitionFileName TblAggregatorPerfCounters.xml
+			New-Perfcounters -DefinitionFileName OutboundSingleSenderPerfCounters.xml
+			New-Perfcounters -DefinitionFileName OpticsDataProviderPerfCounters.xml
+            New-Perfcounters -DefinitionFileName RegionTagPerfCounters.xml
+            Stop-SetupService -ServiceName MSMessageTracingClient
+          }
+          [bool]$IsMSMessageTracingClientEnabled = [System.Convert]::ToBoolean($RoleDatacenterFfoMessageTraceServiceEnabled)
+          if (!$IsMSMessageTracingClientEnabled)
+          {
+            set-service 'MSMessageTracingClient' -StartupType Disabled
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>
+            Uninstall-MessageTracingClientService
+            Remove-Perfcounters -DefinitionFileName MessageTracingPerfCounters.xml
+            Remove-Perfcounters -DefinitionFileName StreamingOpticsPerfCounters.xml
+            Remove-Perfcounters -DefinitionFileName TblAggregatorPerfCounters.xml
+			      Remove-Perfcounters -DefinitionFileName OutboundSingleSenderPerfCounters.xml
+			      Remove-Perfcounters -DefinitionFileName OpticsDataProviderPerfCounters.xml
+            Remove-Perfcounters -DefinitionFileName RegionTagPerfCounters.xml
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <ServerTaskInfo Id="_3E631D69E17547B3A3C313EFF755F054" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          $GenericRusClientConfigPath = "$RoleBinPath\Microsoft.Forefront.Hygiene.Rus.Client.dll.config";
+          if (-not [String]::IsNullorEmpty($RoleDatacenterUpdateServiceClientCertSubject))
+          {
+              set-appconfigvalue -ConfigFileFullPath:$GenericRusClientConfigPath -Element:configuration/RusClientConfiguration -Attribute:clientCertSubject -NewValue:$RoleDatacenterUpdateServiceClientCertSubject;
+              Write-ExchangeSetupLog -Info "Setting UpdateServiceClientCertSubject to $RoleDatacenterUpdateServiceClientCertSubject";
+          }
+
+          if (-not [String]::IsNullorEmpty($RoleDatacenterUpdateServiceEndPoint))
+          {
+              set-appconfigvalue -ConfigFileFullPath:$GenericRusClientConfigPath -Element:configuration/RusClientConfiguration -Attribute:serviceEndPoint -NewValue:$RoleDatacenterUpdateServiceEndPoint;
+              Write-ExchangeSetupLog -Info "Setting UpdateServiceEndPoint to $RoleDatacenterUpdateServiceEndPoint";
+          }
+
+          if (-not [String]::IsNullorEmpty($RoleDatacenterUpdateServiceClientTempUpdateStoragePath))
+          {
+              set-appconfigvalue -ConfigFileFullPath:$GenericRusClientConfigPath -Element:configuration/RusClientConfiguration -Attribute:downloadedFileStoragePath -NewValue:$RoleDatacenterUpdateServiceClientTempUpdateStoragePath;
+              Write-ExchangeSetupLog -Info "Setting UpdateServiceClientTempUpdateStoragePath to $RoleDatacenterUpdateServiceClientTempUpdateStoragePath";
+              if(!(Test-Path -Path $RoleDatacenterUpdateServiceClientTempUpdateStoragePath))
+              {
+                  mkdir $RoleDatacenterUpdateServiceClientTempUpdateStoragePath
+                  Write-ExchangeSetupLog -Info "Created GenericRus temp file storage path: $RoleDatacenterUpdateServiceClientTempUpdateStoragePath";
+              }
+
+              # ACL the directory
+              $acl = (Get-Item $RoleDatacenterUpdateServiceClientTempUpdateStoragePath).GetAccessControl('Access')
+              $reqAccess = $acl.Access | ?{$_.IdentityReference -eq "NETWORK SERVICE"}
+              if ($null -eq $reqAccess)
+              {
+                  Write-ExchangeSetupLog -Info "ACL the folder $RoleDatacenterUpdateServiceClientTempUpdateStoragePath for NETWORK SERVICE"
+                  $rule = new-object System.Security.AccessControl.FileSystemAccessRule("NETWORK SERVICE", "FullControl", "ContainerInherit, ObjectInherit", "None", "Allow")
+                  $acl.AddAccessRule($rule)
+                  Set-Acl -Path $RoleDatacenterUpdateServiceClientTempUpdateStoragePath -AclObject $acl
+              }
+          }
+
+          if (-not [String]::IsNullorEmpty($RoleDatacenterUpdateServiceServerChunkSizeInBytes))
+          {
+              set-appconfigvalue -ConfigFileFullPath:$GenericRusClientConfigPath -Element:configuration/RusClientConfiguration -Attribute:serverChunkSizeInBytes -NewValue:$RoleDatacenterUpdateServiceServerChunkSizeInBytes;
+              Write-ExchangeSetupLog -Info "Setting UpdateServiceServerChunkSizeInBytes to $RoleDatacenterUpdateServiceServerChunkSizeInBytes";
+          }
+
+          if (-not [String]::IsNullorEmpty($RoleDatacenterUpdateServiceClientChunkSizeInBytes))
+          {
+              set-appconfigvalue -ConfigFileFullPath:$GenericRusClientConfigPath -Element:configuration/RusClientConfiguration -Attribute:clientChunkSizeInBytes -NewValue:$RoleDatacenterUpdateServiceClientChunkSizeInBytes;
+              Write-ExchangeSetupLog -Info "Setting UpdateServiceClientChunkSizeInBytes to $RoleDatacenterUpdateServiceClientChunkSizeInBytes";
+          }
+          
+          if (-not [String]::IsNullorEmpty($RoleDatacenterTransportRoleLogRoot))
+              {
+                  $GenericRusCosmosLogPath = Join-Path $RoleDatacenterTransportRoleLogRoot "GenericRusLogs"
+                  set-appconfigvalue -ConfigFileFullPath:$GenericRusClientConfigPath -Element:configuration/RusClientConfiguration -Attribute:cosmosLogPath -NewValue:$GenericRusCosmosLogPath;
+                  Write-ExchangeSetupLog -Info "Setting CosmosLogPath to $GenericRusCosmosLogPath";
+                  
+                  if(!(Test-Path -Path $GenericRusCosmosLogPath))
+                  {
+                      mkdir $GenericRusCosmosLogPath
+                      Write-ExchangeSetupLog -Info "Created GenericRus cosmos log directory: $GenericRusCosmosLogPath";
+                  }
+              }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall />
+    </ServerTaskInfo>
+      
+    <!-- ACL the client Certificate used for communicating with EOP services like DAL and Locator. We also need this task to run in ANSI-D. -->
+    <ServerTaskInfo Id="_dfa91617f61811e2b06fb8ac6f879216" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>Install-ExchangeCertificate -Thumbprint $RoleDatacenterEOPClientCertThumbprint -Services NONE -NetworkServiceAllowed</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!--  Add the following assembly binding in EdgeTransport.exe.Config on Hub
+        <runtime>
+            <assemblyBinding xmlns="urn:schemas-microsoft-com:asm.v1">
+                <dependentAssembly>
+                    <assemblyIdentity name="Newtonsoft.Json" publicKeyToken="30ad4fe6b2a6aeed" culture="neutral" />
+                    <bindingRedirect oldVersion="0.0.0.0-6.0.0.0" newVersion="6.0.0.0" />                
+                </dependentAssembly>
+            </assemblyBinding>
+        </runtime>
+    -->
+    <ServerTaskInfo Id="_A3584D2B7D744C0BB4C1AA9E9B8C6EF0" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          $edgeConfigPath = "$RoleBinPath\EdgeTransport.exe.config"
+          . "$RoleInstallPath\Scripts\Set-AssemblyVersionRedirect.ps1" -AppConfigPath $edgeConfigPath -AssemblyName "Newtonsoft.Json" -PublicKeyToken "30ad4fe6b2a6aeed" -CodeBaseCulture "neutral" -OldVersion "0.0.0.0-6.0.0.0" -NewVersion "6.0.0.0"
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall />
+    </ServerTaskInfo>
+    
+  </ServerTasks>
+
+</SetupComponentInfo>

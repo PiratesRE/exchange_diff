@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo IsDatacenterOnly="true" IsDatacenterDedicatedOnly="true" Name="Datacenter Monitoring Role Component" DescriptionId="SetupComponentConfiguringDatacenterMonitoring">
+
+  <ServerTasks>
+  	
+	<ServerTaskInfo Id="_b8c6027774144a9ebba4177fec4755d9" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+		<!-- Install the Correlation engine service. -->
+		<Install>
+			<Standalone>
+				if (!(Get-Service MSExchangeMonitoring* | where {$_.Name -eq "MSExchangeMonitoringCorrelation"}))
+				{
+					Install-MonitoringCorrelationService
+				}
+			</Standalone>
+		</Install>
+		<BuildToBuildUpgrade UseInstallTasks="true" />
+		<DisasterRecovery UseInstallTasks="true" />
+		<Uninstall>
+			<Standalone>Uninstall-MonitoringCorrelationService</Standalone>
+		</Uninstall>
+	</ServerTaskInfo>
+
+  </ServerTasks>
+</SetupComponentInfo>

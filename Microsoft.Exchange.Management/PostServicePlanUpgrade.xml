@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!-- 
+    The tasks in this file are conditionally executed during Service Plan upgrade 
+    after Service plan features are applied.
+    $ServicePlanSettings variable contains delta ServicePlan and is always initialized.
+-->
+<SetupComponentInfo Name="Service Plan Post-Update" DescriptionId="SetupComponentPostUpdatingServicePlan">
+  <ServicePlanOrgTasks>
+
+    <!-- 
+        For each MailboxPlan in $ServicePlanSettings.MailboxPlans move mailboxes from old to new mailbox plan.
+        Old mailbox plan is stored in $ServicePlanSettings.MailboxPlans[i].Instance
+    -->
+    <ServicePlanTaskInfo FeatureName="UpdateMailboxes">
+      <Install DescriptionId="SetupProgressUpdateMailboxes">
+        <Tenant>
+            $erroractionpreference="Stop";
+            $mailboxPlans = get-mailboxPlan -Organization $RoleOrganizationHierarchicalPath -DomainController $RoleDomainController -AllMailboxPlanReleases;
+
+            if($RoleIsCrossSKUMigration)
+            {
+              # Cross SKU Migration, e.g. BPOS_S to BPOS_L
+              $ProvisionAsDefaultPlanName = $null;
+              foreach ($mp in $NewServicePlanSettings.MailboxPlans)
+              {
+                if($mp.ProvisionAsDefault)
+                {
+                  $ProvisionAsDefaultPlanName = $mp.Name;
+                }
+              }
+
+              if($ProvisionAsDefaultPlanName -eq $null)
+              {
+                Write-ExchangeSetupLog -Error "Cannot find the default target mailbox plan";
+              }
+
+              $newMailboxPlan = $mailboxPlans | ? {$_.Name -like ($ProvisionAsDefaultPlanName + "-*")};
+              if($newMailboxPlan -eq $null)
+              {
+                Write-ExchangeSetupLog -Error "Cannot find the default target mailbox plan";
+              }
+
+              foreach ($mp in $OldServicePlanSettings.MailboxPlans)
+              {
+                  Write-ExchangeSetupLog -info ("Migrating mailboxes from old mailbox plan " + $mp.Name + " to " + $newMailboxPlan.Name);
+
+                  $oldMailboxPlan = $mailboxPlans | where {$_.Name -like ($mp.Name   + "-*")};
+
+                  if($oldMailboxPlan -ne $null)
+                  {
+                       # Use -DoNotCheckAcceptedDomains to avoid triggering some per user valdiations. This allows the updates to continue and not block
+                       # service level changes (upgrades/migrations) for individual user issues that are not related.
+                       get-mailbox -MailboxPlan $oldMailboxPlan.Identity -DomainController $RoleDomainController -ResultSize Unlimited |
+                           set-syncmailbox -DoNotCheckAcceptedDomains -MailboxPlan $newMailboxPlan.Identity -DomainController $RoleDomainController;
+                  }
+              }
+            }
+            else
+            {
+              # Regular Migration, e.g. EDU_N to EDU_N+1
+              foreach ($mp in $ServicePlanSettings.MailboxPlans)
+              {
+                  Write-ExchangeSetupLog -info ("Migrating mailboxes for mailbox plan " + $mp.Name);
+
+                  $mpOldName = ".OldVersion." + $mp.Name;
+                  $mailboxPlans = get-mailboxPlan -Organization $RoleOrganizationHierarchicalPath -DomainController $RoleDomainController -AllMailboxPlanReleases;
+                  $newMailboxPlan = $mailboxPlans | where {$_.Name -like ($mp.Name   + "-*")};
+                  $mp.Instance    = $mailboxPlans | where {$_.Name -like ($mpOldName + "-*")};
+
+                  if($newMailboxPlan -ne $null -and $mp.Instance -ne $null)
+                  {
+                       # Use --DoNotCheckAcceptedDomains to avoid triggering some per user valdiations. This allows the updates to continue and not block
+                       # service level changes (upgrades/migrations) for individual user issues that are not related.
+                       get-mailbox -MailboxPlan $mp.Instance.Identity -DomainController $RoleDomainController -ResultSize Unlimited |
+                           set-syncmailbox -DoNotCheckAcceptedDomains -MailboxPlan $newMailboxPlan.Identity -DomainController $RoleDomainController;
+                  }
+              }
+            }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade/>
+      <Uninstall />
+    </ServicePlanTaskInfo>
+
+    <!-- 
+        Remove each MailboxPlan in $ServicePlanSettings.MailboxPlans[i].Instance (this is old version of plan).
+        Old mailbox plan is read from $ServicePlanSettings.MailboxPlans[i].Instance, so this task depends on the previous one.
+    -->
+    <ServicePlanTaskInfo FeatureName="CleanupOldMailboxPlan">
+      <Install DescriptionId="SetupProgressCleanupOldMailboxPlan">
+        <Tenant>
+            $erroractionpreference="Stop";
+            if($RoleIsCrossSKUMigration)
+            {
+                # Cross-SKU Migration, e.g. BPOS_L to BPOS_S
+
+                #remove old role trees with respective role assignments - regular remove-managementrole* tasks won't be able to remove canned roles and last assignments
+                Clear-ObsoleteRBACRoles -ServicePlanSettings $OldServicePlanSettings -Organization $RoleOrganizationHierarchicalPath -DomainController $RoleDomainController;
+                
+                $mailboxPlans = get-mailboxPlan -Organization $RoleOrganizationHierarchicalPath -DomainController $RoleDomainController -AllMailboxPlanReleases;
+                foreach ($mp in $OldServicePlanSettings.MailboxPlans)
+                {
+                    #remove old mailbox plans
+                    #remove old policies, including RAP
+
+                    $instances = @($mailboxPlans | ? {$_.Name -like ($mp.Name   + "-*")}|?{$_});
+                    foreach($instance in $instances)
+                    {
+                        Write-ExchangeSetupLog -info ("Found old mailbox plan " + $instance.Name);
+
+                        $roleAssignmentPolicyId = $instance.RoleAssignmentPolicy;
+                        $remoteAccountPolicyId = $instance.RemoteAccountPolicy;
+
+                        Write-ExchangeSetupLog -info ("Removing old mailbox plan " + $instance.Name);
+                        Remove-MailboxPlan -identity $instance.Identity -DomainController $RoleDomainController;
+                        
+                        # We dont support transition from PerMBXPlanRAPEnabled false to PerMBXPlanRAPEnabled true (Check on Update-ServicePlan cmdlet). 
+                        if($roleAssignmentPolicyId -and ($OldServicePlanSettings.Organization.PerMBXPlanRoleAssignmentPolicyEnabled -or $NewServicePlanSettings.Organization.PerMBXPlanRoleAssignmentPolicyEnabled))
+                        {
+                            #Loading the object to see if it is default
+                            $rap = get-RoleAssignmentPolicy -identity $roleAssignmentPolicyId -DomainController $RoleDomainController;
+                            if($rap.IsDefault)
+                            {
+                                #The policy to remove is default one, need to find new default
+                                $otherPolicies = @(get-RoleAssignmentPolicy -Organization $RoleOrganizationHierarchicalPath -DomainController $RoleDomainController | ?{$_.Name -ne $rap.Name} | ?{$_})
+                                if($otherPolicies.Count -eq 0)
+                                {
+                                    Write-ExchangeSetupLog -Error "Cannot find new RoleAssignmentPolicy";
+                                }
+
+                                #Found new default, stamping (we don't care much which one - IsDefault does not affect anything in Datacenter context)
+                                Set-RoleAssignmentPolicy -IsDefault -identity $otherPolicies[0].Identity -DomainController $RoleDomainController;
+                            }
+
+                            #ready to remove policy
+                            Write-ExchangeSetupLog -info ("Removing old role assignment policy " + $roleAssignmentPolicyId.Name);
+                            Remove-RoleAssignmentPolicy -identity $roleAssignmentPolicyId -DomainController $RoleDomainController;
+                        }
+
+                        if($remoteAccountPolicyId)
+                        {
+                            Write-ExchangeSetupLog -info ("Removing old remote account policy " + $remoteAccountPolicyId.Name);
+                            Remove-RemoteAccountPolicy -identity $remoteAccountPolicyId -DomainController $RoleDomainController;
+                        }
+                    }
+                }
+            }
+            else
+            {
+                # Regular Migration, e.g. EDU to EDU_N+1
+                foreach ($mp in $ServicePlanSettings.MailboxPlans)
+                {
+                    if($mp.Instance -ne $null)
+                    {
+                        Write-ExchangeSetupLog -info ("Removing role assignments of the mailbox plan " + $mp.Instance.Name);
+                        Get-ManagementRoleAssignment -RoleAssignee $mp.Instance.Identity -AssignmentMethod:Direct -DomainController $RoleDomainController |
+                            remove-managementroleassignment -DomainController $RoleDomainController -Force;
+
+                        Write-ExchangeSetupLog -info ("Removing old mailbox plan " + $mp.Instance.Name);
+                        Remove-MailboxPlan -identity $mp.Instance.Identity -DomainController $RoleDomainController;
+                    }
+                }
+            }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade/>
+      <Uninstall />
+    </ServicePlanTaskInfo>
+
+    <!-- 
+        For every mbxPlan, clear is version. That is set it to AllReleases, this task depends on the previous task to be executed. 
+        At this moment all oldMbxPlans should be gone.
+    -->
+    <ServicePlanTaskInfo FeatureName="CleanupOldMailboxPlan">
+      <Install DescriptionId="SetupProgressCleanupOldMailboxPlan">
+        <Tenant>
+          Get-MailboxPlan -Organization $RoleOrganizationHierarchicalPath -DomainController $RoleDomainController |
+              Set-MailboxPlan -MailboxPlanRelease AllReleases
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade/>
+      <Uninstall />
+    </ServicePlanTaskInfo>
+    
+    <!-- Finalizing service plan update. This task should be the last task. -->
+    <ServicePlanTaskInfo FeatureName="ServicePlanUpgradeEnd">
+      <Install>
+        <Tenant>
+          if ($TargetSharedConfiguration -ne $null)
+          {
+            Set-Organization $RoleOrganizationHierarchicalPath `
+              -IsUpdatingServicePlan $false `
+              -OrganizationStatus Active `
+              -ServicePlan $TargetServicePlan `
+              -TargetServicePlan $null `
+              -ProgramId $TargetProgramId `
+              -OfferId $TargetOfferId `
+              -IsDehydrated $CommonHydrateableObjectsSharedEnabled `
+              -IsStaticConfigurationShared $AdvancedHydrateableObjectsSharedEnabled `
+              -SharedConfiguration $TargetSharedConfiguration `
+              -ClearPreviousSharedConfigurations `
+              -DomainController $RoleDomainController;
+          }
+          else
+          {
+            Set-Organization $RoleOrganizationHierarchicalPath `
+              -IsUpdatingServicePlan $false `
+              -OrganizationStatus Active `
+              -ServicePlan $TargetServicePlan `
+              -TargetServicePlan $null `
+              -ProgramId $TargetProgramId `
+              -OfferId $TargetOfferId `
+              -IsDehydrated $CommonHydrateableObjectsSharedEnabled `
+              -IsStaticConfigurationShared $AdvancedHydrateableObjectsSharedEnabled `
+              -RemoveSharedConfigurations `
+              -DomainController $RoleDomainController;
+          }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade />
+      <Uninstall />
+    </ServicePlanTaskInfo>
+
+  </ServicePlanOrgTasks>
+</SetupComponentInfo>

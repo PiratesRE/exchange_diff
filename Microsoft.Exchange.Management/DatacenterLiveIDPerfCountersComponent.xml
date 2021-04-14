@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo IsDatacenterOnly="true" Name="Datacenter Live ID perf Counters" DescriptionId="DatacenterLiveIdPerfCountersComponentDescription">
+  <ServerTasks>
+    <!-- Install/remove LiveId basic auth Counters -->
+    <ServerTaskInfo Id="_65bbcae0b6414717a2383535b82af8ef" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>new-PerfCounters -DefinitionFileName LiveIdCounters.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-PerfCounters -DefinitionFileName LiveIdCounters.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+  </ServerTasks>
+</SetupComponentInfo>
+

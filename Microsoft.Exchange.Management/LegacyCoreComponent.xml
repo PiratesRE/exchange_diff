@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo Name="Exchange 2003 Core Configuration" DescriptionId="SetupComponentConfiguringCore">
+
+  <ServerTasks>
+
+    <!-- Create/delete the System Attendant service (MAD) -->
+    <ServerTaskInfo Id="_bff10cd874104b84ade74b02b9036b25" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>install-ExsetdataAtom -AtomName SystemAttendant -DomainController $RoleDomainController</Standalone>
+      </Install>
+        <BuildToBuildUpgrade>
+        <Standalone>buildToBuildUpgrade-ExsetdataAtom -AtomName SystemAttendant -DomainController $RoleDomainController</Standalone>
+      </BuildToBuildUpgrade>
+        <DisasterRecovery>
+        <Standalone>disasterRecovery-ExsetdataAtom -AtomName SystemAttendant -DomainController $RoleDomainController</Standalone>
+      </DisasterRecovery>
+        <Uninstall>
+        <Standalone>uninstall-ExsetdataAtom -AtomName SystemAttendant -DomainController $RoleDomainController</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Set permissions related to the System Attendant configuration -->
+    <!-- AD Object (CN=Microsoft System Attendant,CN=<server name>,CN=Servers,...)-->
+    <ServerTaskInfo Id="_02eda25e94044ec7ba8d36f45bca11b5" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>initialize-SystemAttendantPermissions -DomainController $RoleDomainController</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Install the OABGEN perfcounters in datacenter/DatacenterDedicated only -->
+    <ServerTaskInfo Id="_e0eba38bee7e40e5b5974a6ea9bd21bb" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>
+          if ($RoleIsDatacenter -or $RoleIsDatacenterDedicated)
+          {
+            $proc = [System.Environment]::GetEnvironmentVariable("PROCESSOR_ARCHITECTURE");
+            $binpath = [System.IO.Path]::Combine("$RoleInstallPath", "bin");
+            $perfctrpath = [System.IO.Path]::Combine("$binpath", "perf");
+            $perfctrpath = [System.IO.Path]::Combine("$perfctrpath", "$proc");
+            $perfctrpath = [System.IO.Path]::Combine("$perfctrpath", "oabgenperfctrs.xml");
+            Start-SetupProcess -Name:"unlodctr" -Args:"/m:`"$perfctrpath`"" -Timeout:600000;
+            Start-SetupProcess -Name:"lodctr" -Args:"/m:`"$perfctrpath`" `"$binpath`"" -Timeout:600000;
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>
+          if ($RoleIsDatacenter -or $RoleIsDatacenterDedicated)
+          {
+            $proc = [System.Environment]::GetEnvironmentVariable("PROCESSOR_ARCHITECTURE");
+            $binpath = [System.IO.Path]::Combine("$RoleInstallPath", "bin");
+            $perfctrpath = [System.IO.Path]::Combine("$binpath", "perf");
+            $perfctrpath = [System.IO.Path]::Combine("$perfctrpath", "$proc");
+            $perfctrpath = [System.IO.Path]::Combine("$perfctrpath", "oabgenperfctrs.xml");
+            Start-SetupProcess -Name:"unlodctr" -Args:"/m:`"$perfctrpath`"" -Timeout:600000;
+          }
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+  </ServerTasks>
+
+</SetupComponentInfo>
+

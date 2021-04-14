@@ -1,0 +1,550 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo IsDatacenterOnly="true" IsDatacenterDedicatedOnly="false" Name="Datacenter Secondary Domain Configuration">
+
+       <!--
+       This component is shared by three tasks in three different modes:
+       Add-secondaryDomain - Install Mode
+       Set-SecondaryDomain - BuildToBuildUpgrade mode
+       Remove-SecondaryDomain - Uninstall Mode
+      -->
+
+  <OrgTasks>
+  
+  <!-- Load the setup snapin -->
+  <OrgTaskInfo Id="_48f128829fcc4497bf005ed9e475d2a4" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+    <Install>
+      <Global />
+       <!-- $TODO: E14:11806 Figure out precise condition or better solution.
+      The goal is to ingore the following error:
+       Add-PSSnapin : Windows PowerShell snap-in "Microsoft.Exchange.Management.PowerShell.Setup" is loaded with the following warnings:	There were errors in loading the format data file:
+      Microsoft.Exchange.Management.PowerShell.Setup, D:\Program Files\Microsoft\Exchange Server\bin\Exchange.format.ps1xml : File skipped because it was already present from "Microsoft.Exchange.Management.PowerShell.E2010".
+      -->
+      <Tenant>
+        add-PSSnapin -Name Microsoft.Exchange.Management.PowerShell.Setup -ErrorAction SilentlyContinue;
+      </Tenant>
+    </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+    <Uninstall />
+  </OrgTaskInfo>
+
+  <!-- AcceptedDomain object to represent the secondary domain -->
+  <OrgTaskInfo Id="_98f4a899a51145b98b7d4cd12e41642b" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+    <Install>
+      <Global />
+      <Tenant>
+        if (![string]::IsNullorEmpty($RolePreferredServer))
+        {
+            Write-ExchangeSetupLog -Info ("Setting Domain Controller to use for add-secondarydomain: " + $RolePreferredServer);
+            Set-ADServerSettings -PreferredServer $RolePreferredServer;
+        }
+
+        $domain = $null;
+        if($RoleDomainType -eq $null)
+        {
+            $domain = new-accepteddomain -organization $RolePrimaryOrganization -name $RoleSecondaryDomainName -domainname $RoleSecondarySmtpDomainName -AuthenticationType $RoleAuthenticationType -LiveIdInstanceType $RoleLiveIdInstanceType -OutBoundOnly $RoleOutBoundOnly;
+        }
+        else
+        {
+            $domain = new-accepteddomain -organization $RolePrimaryOrganization -name $RoleSecondaryDomainName -domainname $RoleSecondarySmtpDomainName -AuthenticationType $RoleAuthenticationType -LiveIdInstanceType $RoleLiveIdInstanceType -DomainType $RoleDomainType -OutBoundOnly $RoleOutBoundOnly;
+        }
+
+        if($RoleMakeDefault -ne $null -and $RoleMakeDefault -eq $true)
+        {
+            set-accepteddomain $domain.Identity -MakeDefault $true;
+        }
+      </Tenant>
+    </Install>
+
+    <BuildToBuildUpgrade>
+      <Tenant>
+      if($RoleOutBoundOnly -ne $null)
+      {
+        set-accepteddomain $RoleSecondaryDomainIdentity -AuthenticationType $RoleAuthenticationType -OutBoundOnly $RoleOutBoundOnly;
+      }
+      else
+      {
+        set-accepteddomain $RoleSecondaryDomainIdentity -AuthenticationType $RoleAuthenticationType;
+      }
+
+      if($RoleMakeDefault -ne $null -and $RoleMakeDefault -eq $true)
+      {
+        set-accepteddomain $RoleSecondaryDomainIdentity -MakeDefault $true;
+      }
+      </Tenant>
+    </BuildToBuildUpgrade>
+
+    <Uninstall>
+      <Global />
+       <Tenant>
+            remove-accepteddomain $RoleSecondaryDomainIdentity;
+        </Tenant>
+    </Uninstall>
+  </OrgTaskInfo>
+
+  <!-- Link AcceptedDomain to FederatedOrganizationIdentifier so that delegation tokens for this secondary domain is allowed -->
+  <OrgTaskInfo Id="_963d40b647bd41aebf4a4695d0af54a7" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+    <Install>
+      <Global />
+      <Tenant>
+        Add-FederatedDomain -Identity $RolePrimaryOrganization -DomainName $RoleSecondarySmtpDomainName;
+      </Tenant>
+    </Install>
+    <BuildToBuildUpgrade />
+    <Uninstall>
+      <Global />
+      <Tenant>
+        Remove-FederatedDomain -Identity $RolePrimaryOrganization -DomainName $RoleSecondarySmtpDomainName -Force;
+      </Tenant>
+    </Uninstall>
+  </OrgTaskInfo>
+
+  <!-- Remove all the proxy email addresses for the secondary domain from dynamic distribution groups -->
+  <OrgTaskInfo Id="_36a2d73e263044a6a8c0b834841d5a16" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+    <Install />
+    <BuildToBuildUpgrade />
+    <Uninstall>
+      <Global />
+      <Tenant RecipientOperation="true">
+        $searchString = '@' + $RoleSecondarySmtpDomainName;
+        get-recipient -recipienttype dynamicdistributiongroup -organization $RolePrimaryOrganization -resultsize unlimited | %{
+          $setEmailAddresses = $false;
+          $emailAddressesToSet = @();
+          foreach($emailAddress in $_.EmailAddresses)
+          {
+            if(!$emailAddress.ProxyAddressString.ToString().EndsWith($searchString, [StringComparison]::OrdinalIgnoreCase))
+            {
+              $emailAddressesToSet += $emailAddress.ProxyAddressString;
+            }
+            else
+            {
+              $setEmailAddresses = $true;
+            }
+          }
+          if($setEmailAddresses)
+          {
+            set-dynamicdistributiongroup $_.Identity -EmailAddresses:$emailAddressesToSet;
+          }
+        }
+      </Tenant>
+    </Uninstall>
+  </OrgTaskInfo>
+
+  <!-- Remove all the proxy email addresses for the secondary domain from mail users -->
+  <OrgTaskInfo Id="_61840084b151449aac55a43afa1d45c4" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+    <Install />
+    <BuildToBuildUpgrade />
+    <Uninstall>
+      <Global />
+      <Tenant RecipientOperation="true">
+        $searchString = '@' + $RoleSecondarySmtpDomainName;
+        get-recipient -recipienttype mailuser -organization $RolePrimaryOrganization -resultsize unlimited | %{
+          $setEmailAddresses = $false;
+          $emailAddressesToSet = @();
+          foreach($emailAddress in $_.EmailAddresses)
+          {
+            if(!$emailAddress.ProxyAddressString.ToString().EndsWith($searchString, [StringComparison]::OrdinalIgnoreCase))
+            {
+              $emailAddressesToSet += $emailAddress.ProxyAddressString;
+            }
+            else
+            {
+              $setEmailAddresses = $true;
+            }
+          }
+          if($setEmailAddresses)
+          {
+            set-mailuser $_.Identity -EmailAddresses:$emailAddressesToSet;
+          }
+        }
+      </Tenant>
+    </Uninstall>
+  </OrgTaskInfo>
+
+  <!-- Remove all the proxy email addresses for the secondary domain from distribution groups -->
+  <OrgTaskInfo Id="_fc9c89886d744abd9e88bb992e3a4810" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+    <Install />
+    <BuildToBuildUpgrade />
+    <Uninstall>
+      <Global />
+      <Tenant RecipientOperation="true">
+        $searchString = '@' + $RoleSecondarySmtpDomainName;
+        get-recipient -recipienttype MailUniversalDistributionGroup -organization $RolePrimaryOrganization -resultsize unlimited | %{
+          $setEmailAddresses = $false;
+          $emailAddressesToSet = @();
+          foreach($emailAddress in $_.EmailAddresses)
+          {
+            if(!$emailAddress.ProxyAddressString.ToString().EndsWith($searchString, [StringComparison]::OrdinalIgnoreCase))
+            {
+              $emailAddressesToSet += $emailAddress.ProxyAddressString;
+            }
+            else
+            {
+              $setEmailAddresses = $true;
+            }
+          }
+          if($setEmailAddresses)
+          {
+            set-distributiongroup $_.Identity -EmailAddresses:$emailAddressesToSet;
+          }
+        }
+      </Tenant>
+    </Uninstall>
+  </OrgTaskInfo>
+  
+  <!-- Remove all the proxy email addresses for the secondary domain from mailcontacts -->
+  <OrgTaskInfo Id="_c076b335753640fd80dc59dfc2a1f5ac" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+    <Install />
+    <BuildToBuildUpgrade />
+    <Uninstall>
+      <Global />
+      <Tenant RecipientOperation="true">
+        $searchString = '@' + $RoleSecondarySmtpDomainName;
+        get-recipient -recipienttype mailcontact -organization $RolePrimaryOrganization -resultsize unlimited | %{
+          $setEmailAddresses = $false;
+          $emailAddressesToSet = @();
+          foreach($emailAddress in $_.EmailAddresses)
+          {
+            if(!$emailAddress.ProxyAddressString.ToString().EndsWith($searchString, [StringComparison]::OrdinalIgnoreCase))
+            {
+              $emailAddressesToSet += $emailAddress.ProxyAddressString;
+            }
+            else
+            {
+              $setEmailAddresses = $true;
+            }
+          }
+          if($setEmailAddresses)
+          {
+            set-mailcontact $_.Identity -EmailAddresses:$emailAddressesToSet;
+          }
+        }
+      </Tenant>
+    </Uninstall>
+  </OrgTaskInfo>
+
+  <!-- Remove all the proxy email addresses for the secondary domain from mailboxes -->
+  <OrgTaskInfo Id="_be6096bfe5944813a37898f22d570f59" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+    <Install />
+    <BuildToBuildUpgrade />
+    <Uninstall>
+      <Global />
+      <Tenant RecipientOperation="true">
+        $searchString = '@' + $RoleSecondarySmtpDomainName;
+        $eumSearchString = '@' + $RoleSecondarySmtpDomainName + ';';
+
+        get-recipient -recipienttype usermailbox -organization $RolePrimaryOrganization -resultsize unlimited | %{
+          $disableUm = $false;
+          $setEmailAddresses = $false;
+          $emailAddressesToSet = @();
+          foreach($emailAddress in $_.EmailAddresses)
+          {
+            $pa = $emailAddress.ProxyAddressString.ToString();
+            $pfix = $emailaddress.Prefix.PrimaryPrefix;
+
+            # For user mailboxes disable UM users enabled on the sip domain being removed
+            # EUM proxy addresses are of the form EUM:user@domain;phone-context=guid
+            if(($pfix -ieq "EUM") -and ($pa.IndexOf($eumSearchString, [StringComparison]"OrdinalIgnoreCase") -ge 0))
+            {
+              $disableUm = $true;
+              $setEmailAddresses = $true;
+            }
+            elseif($pa.EndsWith($searchString, [StringComparison]::OrdinalIgnoreCase))
+            {
+              $setEmailAddresses = $true;
+            }
+            else
+            {
+              $emailAddressesToSet += $emailAddress.ProxyAddressString;
+            }
+          }
+          
+          if($setEmailAddresses)
+          {
+            set-mailbox $_.Identity -EmailAddresses:$emailAddressesToSet;
+          }
+          
+          # If necessary try to disable the user for UM (best effort). If this operation fails 
+          # set-mailbox called earlier would have removed the offending EUM proxy address.
+          if($disableUm)
+          {
+            disable-ummailbox $_.Identity -Confirm:$false -ErrorAction:SilentlyContinue;
+          }
+        }
+      </Tenant>
+    </Uninstall>
+  </OrgTaskInfo>
+
+  <!-- Disable all the UM IP Gateways which fall under the secondary domain -->
+  <OrgTaskInfo Id="_6F32F612543A403cA3F9586ABBCB3BCB" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+    <Install />
+    <BuildToBuildUpgrade />
+    <Uninstall>
+      <Global />
+      <Tenant>
+        get-umipgateway -organization $RolePrimaryOrganization | %{
+          if ($_.Status -eq [Microsoft.Exchange.Data.Directory.SystemConfiguration.GatewayStatus]"Enabled")
+          {
+            $address = $_.Address.ToString();
+            $domainStrToCompare = ".$RoleSecondarySmtpDomainName" ;
+            if ($address.EndsWith($domainStrToCompare, [StringComparison]"OrdinalIgnoreCase"))
+            {
+              $prefixStr = $address.Substring(0, $address.Length - $domainStrToCompare.Length);
+
+              # prefixStr should not have any dots - we only allow for gateways to be created in
+              # machinename.domainname format. Also, deleting contoso.com secondary domain should
+              # not delete gateways for e.g. test1.test2.contoso.com or testcontoso.com
+              $dotIndex = $prefixStr.IndexOf('.');
+              if ($dotIndex -eq -1)
+              {
+                disable-umipgateway $_.Identity;
+              }
+            }
+          }
+        }
+      </Tenant>
+    </Uninstall>
+  </OrgTaskInfo>
+
+  <!-- Remove the dynamic distribution groups with WindowsLiveId in the secondary domain - use PrimarySmtpAddress if WindowsLiveId is not set -->
+  <OrgTaskInfo Id="_2a7ced5fbaac4e6fb4a324a4d46bcb43" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+    <Install />
+    <BuildToBuildUpgrade />
+    <Uninstall>
+      <Global />
+      <Tenant RecipientOperation="true">
+        if ($RoleForce)
+        {
+          $searchString = '@' + $RoleSecondarySmtpDomainName;
+          get-recipient -recipienttype dynamicdistributiongroup -organization $RolePrimaryOrganization -filter "WindowsLiveId -like '*$searchString' -or (-not WindowsLiveId -like '*' -and EmailAddresses -like '*$searchString')" -resultsize unlimited | %{
+            $IdAddress = [string]::Empty;
+            if($_.WindowsLiveId -eq $null -Or [string]::IsNullOrEmpty($_.WindowsLiveId.ToString()))
+            {
+              $IdAddress = $_.PrimarySmtpAddress.ToString();
+            }
+            else
+            {
+              $IdAddress = $_.WindowsLiveId.ToString();
+            }
+            if($IdAddress.EndsWith($searchString, [StringComparison]::OrdinalIgnoreCase))
+            {
+              remove-dynamicdistributiongroup $_.Identity
+            }
+          }
+        }
+      </Tenant>
+    </Uninstall>
+  </OrgTaskInfo>
+
+  <!-- Remove the mail users with WindowsLiveId in the secondary domain - use PrimarySmtpAddress if WindowsLiveId is not set -->
+  <OrgTaskInfo Id="_0ad46bc6399747e095fb0ab088f58ba0" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+    <Install />
+    <BuildToBuildUpgrade />
+    <Uninstall>
+      <Global />
+      <Tenant RecipientOperation="true">
+        if ($RoleForce)
+        {
+          $searchString = '@' + $RoleSecondarySmtpDomainName;
+          get-recipient -recipienttype mailuser -organization $RolePrimaryOrganization -filter "WindowsLiveId -like '*$searchString' -or (-not WindowsLiveId -like '*' -and EmailAddresses -like '*$searchString')" -resultsize unlimited | %{
+            $IdAddress = [string]::Empty;
+            if($_.WindowsLiveId -eq $null -Or [string]::IsNullOrEmpty($_.WindowsLiveId.ToString()))
+            {
+              $IdAddress = $_.PrimarySmtpAddress.ToString();
+            }
+            else
+            {
+              $IdAddress = $_.WindowsLiveId.ToString();
+            }
+            if($IdAddress.EndsWith($searchString, [StringComparison]::OrdinalIgnoreCase))
+            {
+              remove-mailuser $_.Identity
+            }
+          }
+        }
+      </Tenant>
+    </Uninstall>
+  </OrgTaskInfo>
+
+  <!-- Remove the distribution groups with WindowsLiveId in the secondary domain - use PrimarySmtpAddress if WindowsLiveId is not set -->
+  <OrgTaskInfo Id="_39816ea5c1f043129cee1f042dae9b42" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+    <Install />
+    <BuildToBuildUpgrade />
+    <Uninstall>
+      <Global />
+      <Tenant RecipientOperation="true">
+        if ($RoleForce)
+        {
+          $searchString = '@' + $RoleSecondarySmtpDomainName;
+          get-recipient -recipienttype MailUniversalDistributionGroup -organization $RolePrimaryOrganization -filter "WindowsLiveId -like '*$searchString' -or (-not WindowsLiveId -like '*' -and EmailAddresses -like '*$searchString')" -resultsize unlimited | %{
+            $IdAddress = [string]::Empty;
+            if($_.WindowsLiveId -eq $null -Or [string]::IsNullOrEmpty($_.WindowsLiveId.ToString()))
+            {
+              $IdAddress = $_.PrimarySmtpAddress.ToString();
+            }
+            else
+            {
+              $IdAddress = $_.WindowsLiveId.ToString();
+            }
+            if($IdAddress.EndsWith($searchString, [StringComparison]::OrdinalIgnoreCase))
+            {
+              remove-distributiongroup $_.Identity
+            }
+          }
+        }
+      </Tenant>
+    </Uninstall>
+  </OrgTaskInfo>
+  
+  <!-- Remove the mailboxes with WindowsLiveId in the secondary domain - use PrimarySmtpAddress if WindowsLiveId is not set -->
+  <OrgTaskInfo Id="_6f4e7a3c64cc4508b88c44f59f11d8d9" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+    <Install />
+    <BuildToBuildUpgrade />
+    <Uninstall>
+      <Global />
+      <Tenant RecipientOperation="true">
+        if ($RoleForce)
+        {
+          $searchString = '@' + $RoleSecondarySmtpDomainName;
+          get-recipient -recipienttype usermailbox -organization $RolePrimaryOrganization -filter "WindowsLiveId -like '*$searchString' -or (-not WindowsLiveId -like '*' -and EmailAddresses -like '*$searchString')" -resultsize unlimited | %{
+            $IdAddress = [string]::Empty;
+            if($_.WindowsLiveId -eq $null -Or [string]::IsNullOrEmpty($_.WindowsLiveId.ToString()))
+            {
+              $IdAddress = $_.PrimarySmtpAddress.ToString();
+            }
+            else
+            {
+              $IdAddress = $_.WindowsLiveId.ToString();
+            }
+            if($IdAddress.EndsWith($searchString, [StringComparison]::OrdinalIgnoreCase))
+            {
+              remove-mailbox $_.Identity -KeepWindowsLiveID -IgnoreLegalHold -Disconnect
+            }
+          }          
+        }
+      </Tenant>
+    </Uninstall>
+  </OrgTaskInfo>
+
+  <!-- ManagementEndpoint hook to denote completion  -->
+  <OrgTaskInfo Id="_410dc427791c42da855074e03eb2ac8c" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+    <Install>
+      <Global />
+      <Tenant>
+        if(!$CreateSharedConfiguration)
+        {
+          Add-ManagementEndPointHook -DomainName:$RoleSecondarySmtpDomainName -ExternalDirectoryOrganizationId:$RoleTenantExternalDirectoryOrganizationId
+        }
+      </Tenant>
+    </Install>
+    <BuildToBuildUpgrade />
+    <Uninstall>
+      <Global />
+      <Tenant>
+        if(!$CreateSharedConfiguration)
+        {
+          Remove-ManagementEndPointHook -DomainName:$RoleSecondarySmtpDomainName -ExternalDirectoryOrganizationId:$RoleTenantExternalDirectoryOrganizationId
+        }
+      </Tenant>
+    </Uninstall>
+  </OrgTaskInfo>
+
+  <!-- mark domain as pending removal but only after basic checks which would stop removal. Remember that in the remove case these scripts are executed -->
+  <!-- bottom to top so basic checks for removal need to be below this script and all removal actions should be above this script. -->
+  <OrgTaskInfo Id="_afc938505e254f5ba6cfd67eaa491287" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+    <Install>
+        <Global />
+        <Tenant>
+          <!-- If we reached this point we assume the secondary domain creation is successful -->
+          Set-AcceptedDomain $RolePrimaryOrganization\$RoleSecondaryDomainName -PendingCompletion:$false
+        </Tenant>
+    </Install>
+    <BuildToBuildUpgrade />
+    <Uninstall>
+      <Global />
+      <Tenant>
+        $acceptedDomainObject = get-acceptedDomain $RoleSecondaryDomainIdentity;
+
+        if(-not $acceptedDomainObject.PendingRemoval)
+        {
+          Set-AcceptedDomain $RoleSecondaryDomainIdentity -PendingRemoval:$true
+        }
+      </Tenant>
+    </Uninstall>
+  </OrgTaskInfo>
+
+  <!-- Recipient namespace check: Fail Remove-SecondaryDomain task early if there are recipients in the namespace
+       being removed, and -Force was not specified.  (If -Force was specified, those recipients will be removed before
+       the domain is removed.)  -->
+  <OrgTaskInfo Id="_b0371b8ec26bd04d93456d3416c82544" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+    <Install />
+    <BuildToBuildUpgrade />
+    <Uninstall>
+      <Global />
+      <Tenant RecipientOperation="true">
+        if (-not $RoleForce)
+        {
+          $searchString = '@' + $RoleSecondarySmtpDomainName;
+          get-recipient -organization $RolePrimaryOrganization -filter "WindowsLiveId -like '*$searchString' -or (-not WindowsLiveId -like '*' -and EmailAddresses -like '*$searchString')" -resultsize unlimited | %{
+            $IdAddress = [string]::Empty;
+            if($_.WindowsLiveId -eq $null -Or [string]::IsNullOrEmpty($_.WindowsLiveId.ToString()))
+            {
+              $IdAddress = $_.PrimarySmtpAddress.ToString();
+            }
+            else
+            {
+              $IdAddress = $_.WindowsLiveId.ToString();
+            }
+            if($IdAddress.EndsWith($searchString, [StringComparison]::OrdinalIgnoreCase))
+            {
+              Write-ExchangeSetupLog -Error "You may not remove a secondary domain so long as there are recipients whose WindowsLiveId or PrimarySMTPAddress are in that namespace";
+              break;
+            }
+          }
+        }
+      </Tenant>
+    </Uninstall>
+  </OrgTaskInfo>
+
+  <!-- FederatedIdentity mailbox check: Fail Remove-SecondaryDomain task early if current appdomain contains it.
+       This prevents removal of the initial namespace. Please refer to section _adf4fef968a747679852e21ded996dd5
+       in MailboxGlobalConfig.xml for complete scenario description/requirements before making any changes to
+       the scriptlet below. -->
+  <OrgTaskInfo Id="_5d85badbad924d70a7aea91edfc3eac7" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+    <Install />
+    <BuildToBuildUpgrade />
+    <Uninstall>
+      <Global />
+      <Tenant>
+            $mailboxName = [Microsoft.Exchange.Management.Deployment.UpdateRmsSharedIdentity]::SharedIdentityCommonName;
+            $windowsLiveId = $mailboxName + "@" + $RoleSecondarySmtpDomainName;
+            $FederatedMbx = @(Get-Mailbox -Arbitration -Filter {Name -eq $mailboxName} -Organization $RolePrimaryOrganization -ResultSize 1);
+            if($FederatedMbx.Length -gt 0 -and $FederatedMbx[0].WindowsLiveId -eq $windowsLiveId)
+            {
+               # Need to preserve the secondary domain if the federated email mailbox points to it
+               Write-ExchangeSetupLog -Error "Removal of a secondary domain so long as it is referenced by the federated email arbitration mailbox is not allowed";
+            }
+        </Tenant>
+    </Uninstall>
+  </OrgTaskInfo>
+
+  <!-- Load the setup snapin. This is specifically for Unistall section as the sequence of tasks is reversed. -->
+  <OrgTaskInfo Id="_5d853adbad924d70a7aea91edfc3eac7" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+    <Install />
+    <BuildToBuildUpgrade />
+    <Uninstall>
+      <Global />
+       <!-- $TODO: E14:11806 Figure out precise condition or better solution.
+      The goal is to ingore the following error:
+       Add-PSSnapin : Windows PowerShell snap-in "Microsoft.Exchange.Management.PowerShell.Setup" is loaded with the following warnings:	There were errors in loading the format data file:
+      Microsoft.Exchange.Management.PowerShell.Setup, D:\Program Files\Microsoft\Exchange Server\bin\Exchange.format.ps1xml : File skipped because it was already present from "Microsoft.Exchange.Management.PowerShell.E2010".
+      -->
+      <Tenant>
+        add-PSSnapin -Name Microsoft.Exchange.Management.PowerShell.Setup -ErrorAction SilentlyContinue;
+      </Tenant>
+    </Uninstall>
+  </OrgTaskInfo>
+
+  </OrgTasks>
+
+</SetupComponentInfo>
+

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo IsDatacenterOnly="true" DatacenterMode="Ffo" Name="Ffo Datacenter Common Configuration Last" AlwaysExecute="true">
+
+  <ServerTasks>
+
+    <!-- Delete the registry key that marks deployment is in progress. The presence of this registry key makes DAL layer to not use SQL.
+         Before we start any services, we need to remove this reg key. Services shall be started in PostSetup stage by the tasks present in
+         AllRolesPostSetupComponent.xml.
+    -->
+    <ServerTaskInfo Id="_28ef870fae5d11e0b203b8ac6f879216" Component="Office15:\Current\Forefront for Office Datacenter\Deployment and Configuration Management\Deployment">
+      <Install>
+        <Standalone>
+            $ExchangeLabsRegKey = 'HKLM:\SOFTWARE\Microsoft\ExchangeLabs'
+            $FFODeploymentModeRegValueName = 'FfoDeploymentMode'
+            $deploymentModeRegValue = get-itemproperty -path $ExchangeLabsRegKey -name 'FfoDeploymentMode' -ErrorAction SilentlyContinue
+    
+            if ( $deploymentModeRegValue )
+            {
+                Remove-ItemProperty -path "$ExchangeLabsRegKey" -Name "$FFODeploymentModeRegValueName" -Confirm:$false
+                Write-ExchangeSetupLog -Info "Removed registry key: $ExchangeLabsRegKey\$FFODeploymentModeRegValueName."
+            }
+            else
+            {
+                Write-ExchangeSetupLog -Info "Registry key $ExchangeLabsRegKey does not have $FFODeploymentModeRegValueName. This is unexpected."
+            }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Make EDS use the FFO list of perf counters to be collected. -->
+    <ServerTaskInfo Id="_D1ADC1FC8AD24cc0BBD9E7ADA0FDF309" Component="Office15:\Current\Forefront for Office Datacenter\Deployment and Configuration Management\Deployment">
+      <Install IsFatal="false">
+          <Standalone>
+            $serviceName = "MSExchangeDiagnostics"
+            $service = get-service $serviceName* | where {$_.name -eq $serviceName}
+            if ($service -ne $null)
+            {
+                $originalStatus = $service.Status
+                if ($originalStatus -eq "Running")
+                {
+                    Stop-Service $serviceName
+                }
+            }
+
+            $ffoCounterListPath = [System.IO.Path]::Combine($RoleInstallPath, 'bin\FFOPerformanceCounterConfiguration.xml');
+            $edsCounterListPath = [System.IO.Path]::Combine($RoleInstallPath, 'bin\PerformanceCounterConfiguration.xml');
+
+            if (Test-Path $ffoCounterListPath)
+            {
+                Copy-Item -force $ffoCounterListPath $edsCounterListPath
+            }
+
+            $ffoCounterDailyListPath = [System.IO.Path]::Combine($RoleInstallPath, 'bin\FFOPerformanceCounterConfigurationDaily.xml');
+            $edsCounterDailyListPath = [System.IO.Path]::Combine($RoleInstallPath, 'bin\PerformanceCounterConfigurationDaily.xml');
+
+            if (Test-Path $ffoCounterDailyListPath)
+            {
+                Copy-Item -force $ffoCounterDailyListPath $edsCounterDailyListPath
+            }
+
+            if ($originalStatus -eq "Running")
+            {
+                Start-Service $serviceName
+            }
+          </Standalone>
+        </Install>
+        <BuildToBuildUpgrade UseInstallTasks="true" />
+        <DisasterRecovery/>
+        <Uninstall />
+    </ServerTaskInfo>
+
+  </ServerTasks>
+
+</SetupComponentInfo>

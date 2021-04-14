@@ -1,0 +1,1741 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- Last updated by OwaMessageHeaderGen version 15.00.0752.000 on Wednesday, July 17, 2013 at 4:46:11 PM.
+     If you need to modify this file directly, run OwaMessageHeaderGen to update headers from resources afterwards. -->
+<MessageHeaders>
+  <!--
+    Microsoft headers are used to detect Microsoft Outlook or OWA reply headers.
+    These strings could be convreted using localized strings from Storage.dll
+    -->
+  <!-- Word tags encapsulate list of consicutive words that form a header. In the case below
+      there is only one word, there are examples where there are multiple words e.g. Posted At
+      Note we currently only support up to 2 words 
+       
+      Element Name	Description
+      MsHeader		rm		This element contains the full set of header words of a specific language.  It has a language property that must be set.  There should be one MsHeader element for each language supported by Microsoft clients.
+      From			r		This element contains all words that represent “From” in the language specified in its parent element.
+      MsAdditionalHeadings	This element contains all additional header words besides “From” which could be used to find a header in a given language.  For most languages, it should at least contain “Sent”, “Subject”, “To”, and “CC” elements
+      Word			rm		This element represents an instance of a specific word in a specific language.  Each element has a wordId which is used to differentiate words when there are multiple localized words which could represent a single English word.  For example in Traditional Chinese, “From” could be either “보낸” or “사람”.   We will need to check for both.
+      Sent					This element contains all words that represent “Sent” in the language specified in its root element.
+      Subject				This element contains all words that represent “Subject” in the language specified in its root element.
+      To					This element contains all words that represent “To” in the language specified in its root element.
+      CC					This element contains all words that represent “CC” in the language specified in its root element.
+      Others		 m		This element contains any word not previously defined which may aid in detecting headers in the language specified in its root element r or m denotes required or multiple -->
+  <MsHeader language="en">
+    <From>
+      <Word wordId="1">From</Word>
+    </From>
+    <MsAdditionalHeadings>
+      <Sent>
+        <Word wordId="1">Sent</Word>
+      </Sent>
+      <Subject>
+        <Word wordId="1">Subject</Word>
+      </Subject>
+      <To>
+        <Word wordId="1">To</Word>
+      </To>
+      <Cc>
+        <Word wordId="1">Cc</Word>
+      </Cc>
+      <Others>
+        <Word wordId="1">Date</Word>
+      </Others>
+      <Others>
+        <Word wordId="1">Reply-To</Word>
+      </Others>
+      <Others>
+        <Word wordId="1">Importance</Word>
+      </Others>
+    </MsAdditionalHeadings>
+    <MsAdditionalHeadings>
+      <Sent>
+        <Word wordId="1">Posted</Word>
+        <Word wordId="2">At</Word>
+      </Sent>
+      <To>
+        <Word wordId="1">Posted</Word>
+        <Word wordId="2">To</Word>
+      </To>
+    </MsAdditionalHeadings>
+    <MsAdditionalHeadings>
+      <Sent>
+        <Word wordId="1">Date</Word>
+      </Sent>
+    </MsAdditionalHeadings>
+  </MsHeader>
+  <MsHeader language="en-pseudo">
+    <From>
+      <Word wordId="1">[From</Word>
+      <Word wordId="2">xxx]</Word>
+    </From>
+    <MsAdditionalHeadings>
+      <Sent>
+        <Word wordId="1">[Sent</Word>
+        <Word wordId="2">xxx]</Word>
+      </Sent>
+      <Subject>
+        <Word wordId="1">[Subject</Word>
+        <Word wordId="2">xxx</Word>
+        <Word wordId="3">]</Word>
+      </Subject>
+      <To>
+        <Word wordId="1">[To</Word>
+        <Word wordId="2">xx]</Word>
+      </To>
+      <Cc>
+        <Word wordId="1">[Cc</Word>
+        <Word wordId="2">xx]</Word>
+      </Cc>
+    </MsAdditionalHeadings>
+  </MsHeader>
+  <MsHeader language="am">
+    <From>
+      <Word wordId="1">ከ፦</Word>
+    </From>
+    <MsAdditionalHeadings>
+      <Sent>
+        <Word wordId="1">ተልኳል፦</Word>
+      </Sent>
+      <Subject>
+        <Word wordId="1">ርዕስ፦</Word>
+      </Subject>
+      <To>
+        <Word wordId="1">ለ፡</Word>
+      </To>
+      <Cc>
+        <Word wordId="1">ካቅ፡</Word>
+      </Cc>
+    </MsAdditionalHeadings>
+  </MsHeader>
+  <MsHeader language="ar">
+    <From>
+      <Word wordId="1">‏‏من</Word>
+    </From>
+    <MsAdditionalHeadings>
+      <Sent>
+        <Word wordId="1">‏‏تاريخ</Word>
+        <Word wordId="2">الإرسال</Word>
+      </Sent>
+      <Subject>
+        <Word wordId="1">‏‏الموضوع</Word>
+      </Subject>
+      <To>
+        <Word wordId="1">‏‏إلى</Word>
+      </To>
+      <Cc>
+        <Word wordId="1">‏‏نسخة</Word>
+      </Cc>
+    </MsAdditionalHeadings>
+  </MsHeader>
+  <MsHeader language="ar(OWA)">
+    <From>
+      <Word wordId="1">من</Word>
+    </From>
+    <MsAdditionalHeadings>
+      <Sent>
+        <Word wordId="1">‏‏تم</Word>
+        <Word wordId="2">الإرسال</Word>
+      </Sent>
+      <Subject>
+        <Word wordId="1">‏‏الموضوع</Word>
+      </Subject>
+      <To>
+        <Word wordId="1">إلى</Word>
+      </To>
+      <Cc>
+        <Word wordId="1">نسخة</Word>
+      </Cc>
+    </MsAdditionalHeadings>
+  </MsHeader>
+  <MsHeader language="bg">
+    <From>
+      <Word wordId="1">От</Word>
+    </From>
+    <MsAdditionalHeadings>
+      <Sent>
+        <Word wordId="1">Изпратено</Word>
+      </Sent>
+      <Subject>
+        <Word wordId="1">Тема</Word>
+      </Subject>
+      <To>
+        <Word wordId="1">До</Word>
+      </To>
+      <Cc>
+        <Word wordId="1">Як</Word>
+      </Cc>
+    </MsAdditionalHeadings>
+  </MsHeader>
+  <MsHeader language="bn-in">
+    <From>
+      <Word wordId="1">থেকে</Word>
+    </From>
+    <MsAdditionalHeadings>
+      <Sent>
+        <Word wordId="1">পাঠান</Word>
+      </Sent>
+      <Subject>
+        <Word wordId="1">বিষয়</Word>
+      </Subject>
+      <To>
+        <Word wordId="1">পর্যন্ত</Word>
+      </To>
+      <Cc>
+        <Word wordId="1">Cc</Word>
+      </Cc>
+    </MsAdditionalHeadings>
+  </MsHeader>
+  <MsHeader language="bn-in(Normalized)">
+    <From>
+      <Word wordId="1">থেকে</Word>
+    </From>
+    <MsAdditionalHeadings>
+      <Sent>
+        <Word wordId="1">পাঠান</Word>
+      </Sent>
+      <Subject>
+        <Word wordId="1">বিষয়</Word>
+      </Subject>
+      <To>
+        <Word wordId="1">পর্যন্ত</Word>
+      </To>
+      <Cc>
+        <Word wordId="1">Cc</Word>
+      </Cc>
+    </MsAdditionalHeadings>
+  </MsHeader>
+  <MsHeader language="ca">
+    <From>
+      <Word wordId="1">De</Word>
+    </From>
+    <MsAdditionalHeadings>
+      <Sent>
+        <Word wordId="1">Enviat</Word>
+        <Word wordId="2">el</Word>
+      </Sent>
+      <Subject>
+        <Word wordId="1">Tema</Word>
+      </Subject>
+      <To>
+        <Word wordId="1">Per</Word>
+        <Word wordId="2">a</Word>
+      </To>
+      <Cc>
+        <Word wordId="1">A/c</Word>
+      </Cc>
+    </MsAdditionalHeadings>
+  </MsHeader>
+  <MsHeader language="cs">
+    <From>
+      <Word wordId="1">Odesílatel</Word>
+    </From>
+    <MsAdditionalHeadings>
+      <Sent>
+        <Word wordId="1">Odesláno</Word>
+      </Sent>
+      <Subject>
+        <Word wordId="1">Předmět</Word>
+      </Subject>
+      <To>
+        <Word wordId="1">Komu</Word>
+      </To>
+      <Cc>
+        <Word wordId="1">Kopie</Word>
+      </Cc>
+    </MsAdditionalHeadings>
+  </MsHeader>
+  <MsHeader language="cs(OWA)">
+    <From>
+      <Word wordId="1">Od</Word>
+    </From>
+    <MsAdditionalHeadings>
+      <Sent>
+        <Word wordId="1">Odesláno</Word>
+      </Sent>
+      <Subject>
+        <Word wordId="1">Předmět</Word>
+      </Subject>
+      <To>
+        <Word wordId="1">Komu</Word>
+      </To>
+      <Cc>
+        <Word wordId="1">Kopie</Word>
+      </Cc>
+    </MsAdditionalHeadings>
+  </MsHeader>
+  <MsHeader language="cy">
+    <From>
+      <Word wordId="1">Oddi</Word>
+      <Word wordId="2">wrth</Word>
+    </From>
+    <MsAdditionalHeadings>
+      <Sent>
+        <Word wordId="1">Anfonwyd</Word>
+      </Sent>
+      <Subject>
+        <Word wordId="1">Pwnc</Word>
+      </Subject>
+      <To>
+        <Word wordId="1">At</Word>
+      </To>
+      <Cc>
+        <Word wordId="1">Copi</Word>
+      </Cc>
+    </MsAdditionalHeadings>
+  </MsHeader>
+  <MsHeader language="da">
+    <From>
+      <Word wordId="1">Fra</Word>
+    </From>
+    <MsAdditionalHeadings>
+      <Sent>
+        <Word wordId="1">Sendt</Word>
+      </Sent>
+      <Subject>
+        <Word wordId="1">Emne</Word>
+      </Subject>
+      <To>
+        <Word wordId="1">Til</Word>
+      </To>
+      <Cc>
+        <Word wordId="1">Cc</Word>
+      </Cc>
+    </MsAdditionalHeadings>
+  </MsHeader>
+  <MsHeader language="de">
+    <From>
+      <Word wordId="1">Von</Word>
+    </From>
+    <MsAdditionalHeadings>
+      <Sent>
+        <Word wordId="1">Gesendet</Word>
+      </Sent>
+      <Subject>
+        <Word wordId="1">Betreff</Word>
+      </Subject>
+      <To>
+        <Word wordId="1">An</Word>
+      </To>
+      <Cc>
+        <Word wordId="1">Cc</Word>
+      </Cc>
+    </MsAdditionalHeadings>
+  </MsHeader>
+  <MsHeader language="el">
+    <From>
+      <Word wordId="1">Από</Word>
+    </From>
+    <MsAdditionalHeadings>
+      <Sent>
+        <Word wordId="1">Αποστολή</Word>
+      </Sent>
+      <Subject>
+        <Word wordId="1">Θέμα</Word>
+      </Subject>
+      <To>
+        <Word wordId="1">Προς</Word>
+      </To>
+      <Cc>
+        <Word wordId="1">Κοιν.</Word>
+      </Cc>
+    </MsAdditionalHeadings>
+  </MsHeader>
+  <MsHeader language="el(OWA)">
+    <From>
+      <Word wordId="1">Από</Word>
+    </From>
+    <MsAdditionalHeadings>
+      <Sent>
+        <Word wordId="1">Στάλθηκε</Word>
+      </Sent>
+      <Subject>
+        <Word wordId="1">Θέμα</Word>
+      </Subject>
+      <To>
+        <Word wordId="1">Προς</Word>
+      </To>
+      <Cc>
+        <Word wordId="1">Κοιν.</Word>
+      </Cc>
+    </MsAdditionalHeadings>
+  </MsHeader>
+  <MsHeader language="es">
+    <From>
+      <Word wordId="1">De</Word>
+    </From>
+    <MsAdditionalHeadings>
+      <Sent>
+        <Word wordId="1">Enviado</Word>
+        <Word wordId="2">el</Word>
+      </Sent>
+      <Subject>
+        <Word wordId="1">Asunto</Word>
+      </Subject>
+      <To>
+        <Word wordId="1">Para</Word>
+      </To>
+      <Cc>
+        <Word wordId="1">Cc</Word>
+      </Cc>
+    </MsAdditionalHeadings>
+  </MsHeader>
+  <MsHeader language="es(OWA)">
+    <From>
+      <Word wordId="1">De</Word>
+    </From>
+    <MsAdditionalHeadings>
+      <Sent>
+        <Word wordId="1">Enviado</Word>
+      </Sent>
+      <Subject>
+        <Word wordId="1">Asunto</Word>
+      </Subject>
+      <To>
+        <Word wordId="1">Para</Word>
+      </To>
+      <Cc>
+        <Word wordId="1">Cc</Word>
+      </Cc>
+    </MsAdditionalHeadings>
+  </MsHeader>
+  <MsHeader language="et">
+    <From>
+      <Word wordId="1">Saatja</Word>
+    </From>
+    <MsAdditionalHeadings>
+      <Sent>
+        <Word wordId="1">Saadetud</Word>
+      </Sent>
+      <Subject>
+        <Word wordId="1">Teema</Word>
+      </Subject>
+      <To>
+        <Word wordId="1">Adressaat</Word>
+      </To>
+      <Cc>
+        <Word wordId="1">Koopia</Word>
+      </Cc>
+    </MsAdditionalHeadings>
+  </MsHeader>
+  <MsHeader language="eu">
+    <From>
+      <Word wordId="1">Nork</Word>
+    </From>
+    <MsAdditionalHeadings>
+      <Sent>
+        <Word wordId="1">Bidaltze-data</Word>
+      </Sent>
+      <Subject>
+        <Word wordId="1">Gaia</Word>
+      </Subject>
+      <To>
+        <Word wordId="1">Nori</Word>
+      </To>
+      <Cc>
+        <Word wordId="1">Cc</Word>
+      </Cc>
+    </MsAdditionalHeadings>
+  </MsHeader>
+  <MsHeader language="fa">
+    <From>
+      <Word wordId="1">فرستنده</Word>
+    </From>
+    <MsAdditionalHeadings>
+      <Sent>
+        <Word wordId="1">‏‏ارسال</Word>
+        <Word wordId="2">شده</Word>
+      </Sent>
+      <Subject>
+        <Word wordId="1">‏‏موضوع</Word>
+      </Subject>
+      <To>
+        <Word wordId="1">گیرنده</Word>
+      </To>
+      <Cc>
+        <Word wordId="1">گیرنده</Word>
+        <Word wordId="2">کپی</Word>
+      </Cc>
+    </MsAdditionalHeadings>
+  </MsHeader>
+  <MsHeader language="fi">
+    <From>
+      <Word wordId="1">Lähettäjä</Word>
+    </From>
+    <MsAdditionalHeadings>
+      <Sent>
+        <Word wordId="1">Lähetetty</Word>
+      </Sent>
+      <Subject>
+        <Word wordId="1">Aihe</Word>
+      </Subject>
+      <To>
+        <Word wordId="1">Vastaanottaja</Word>
+      </To>
+      <Cc>
+        <Word wordId="1">Kopio</Word>
+      </Cc>
+    </MsAdditionalHeadings>
+  </MsHeader>
+  <MsHeader language="fil">
+    <From>
+      <Word wordId="1">Mula</Word>
+      <Word wordId="2">kay</Word>
+    </From>
+    <MsAdditionalHeadings>
+      <Sent>
+        <Word wordId="1">Ipinadala</Word>
+      </Sent>
+      <Subject>
+        <Word wordId="1">Paksa</Word>
+      </Subject>
+      <To>
+        <Word wordId="1">Para</Word>
+        <Word wordId="2">kay</Word>
+      </To>
+      <Cc>
+        <Word wordId="1">Cc</Word>
+      </Cc>
+    </MsAdditionalHeadings>
+  </MsHeader>
+  <MsHeader language="fil-ph">
+    <From>
+      <Word wordId="1">Mula</Word>
+      <Word wordId="2">sa</Word>
+    </From>
+    <MsAdditionalHeadings>
+      <Sent>
+        <Word wordId="1">Ipinadala</Word>
+      </Sent>
+      <Subject>
+        <Word wordId="1">Paksa</Word>
+      </Subject>
+      <To>
+        <Word wordId="1">Para</Word>
+        <Word wordId="2">kay</Word>
+      </To>
+      <Cc>
+        <Word wordId="1">Cc</Word>
+      </Cc>
+    </MsAdditionalHeadings>
+  </MsHeader>
+  <MsHeader language="fr">
+    <From>
+      <Word wordId="1">De</Word>
+    </From>
+    <MsAdditionalHeadings>
+      <Sent>
+        <Word wordId="1">Date</Word>
+        <Word wordId="2">d'envoi</Word>
+      </Sent>
+      <Subject>
+        <Word wordId="1">Objet</Word>
+      </Subject>
+      <To>
+        <Word wordId="1">À</Word>
+      </To>
+      <Cc>
+        <Word wordId="1">Cc</Word>
+      </Cc>
+    </MsAdditionalHeadings>
+  </MsHeader>
+  <MsHeader language="fr(OWA)">
+    <From>
+      <Word wordId="1">De</Word>
+    </From>
+    <MsAdditionalHeadings>
+      <Sent>
+        <Word wordId="1">Envoyé</Word>
+      </Sent>
+      <Subject>
+        <Word wordId="1">Objet</Word>
+      </Subject>
+      <To>
+        <Word wordId="1">À</Word>
+      </To>
+      <Cc>
+        <Word wordId="1">Cc</Word>
+      </Cc>
+    </MsAdditionalHeadings>
+  </MsHeader>
+  <MsHeader language="gl">
+    <From>
+      <Word wordId="1">De</Word>
+    </From>
+    <MsAdditionalHeadings>
+      <Sent>
+        <Word wordId="1">Enviado</Word>
+      </Sent>
+      <Subject>
+        <Word wordId="1">Asunto</Word>
+      </Subject>
+      <To>
+        <Word wordId="1">Para</Word>
+      </To>
+      <Cc>
+        <Word wordId="1">CC</Word>
+      </Cc>
+    </MsAdditionalHeadings>
+  </MsHeader>
+  <MsHeader language="gu">
+    <From>
+      <Word wordId="1">દ્વારા</Word>
+    </From>
+    <MsAdditionalHeadings>
+      <Sent>
+        <Word wordId="1">મોકલ્યું</Word>
+      </Sent>
+      <Subject>
+        <Word wordId="1">વિષય</Word>
+      </Subject>
+      <To>
+        <Word wordId="1">આ</Word>
+        <Word wordId="2">પર</Word>
+      </To>
+      <Cc>
+        <Word wordId="1">Cc</Word>
+      </Cc>
+    </MsAdditionalHeadings>
+  </MsHeader>
+  <MsHeader language="he">
+    <From>
+      <Word wordId="1">‏‏מאת</Word>
+    </From>
+    <MsAdditionalHeadings>
+      <Sent>
+        <Word wordId="1">‏‏נשלח</Word>
+      </Sent>
+      <Subject>
+        <Word wordId="1">‏‏נושא</Word>
+      </Subject>
+      <To>
+        <Word wordId="1">‏‏אל</Word>
+      </To>
+      <Cc>
+        <Word wordId="1">לידיעה</Word>
+        <Word wordId="2">‏‏עותק</Word>
+      </Cc>
+    </MsAdditionalHeadings>
+  </MsHeader>
+  <MsHeader language="he(OWA)">
+    <From>
+      <Word wordId="1">מ</Word>
+    </From>
+    <MsAdditionalHeadings>
+      <Sent>
+        <Word wordId="1">‏‏נשלח</Word>
+      </Sent>
+      <Subject>
+        <Word wordId="1">‏‏נושא</Word>
+      </Subject>
+      <To>
+        <Word wordId="1">עד</Word>
+      </To>
+      <Cc>
+        <Word wordId="1">לידיעה</Word>
+        <Word wordId="2">‏‏עותק</Word>
+      </Cc>
+    </MsAdditionalHeadings>
+  </MsHeader>
+  <MsHeader language="hi">
+    <From>
+      <Word wordId="1">प्रेषक</Word>
+    </From>
+    <MsAdditionalHeadings>
+      <Sent>
+        <Word wordId="1">प्रेषित</Word>
+      </Sent>
+      <Subject>
+        <Word wordId="1">विषय</Word>
+      </Subject>
+      <To>
+        <Word wordId="1">प्रति</Word>
+      </To>
+      <Cc>
+        <Word wordId="1">प्रतिलिपि</Word>
+      </Cc>
+    </MsAdditionalHeadings>
+  </MsHeader>
+  <MsHeader language="hi(OWA)">
+    <From>
+      <Word wordId="1">प्रेषक</Word>
+    </From>
+    <MsAdditionalHeadings>
+      <Sent>
+        <Word wordId="1">भेजे</Word>
+        <Word wordId="2">गए</Word>
+      </Sent>
+      <Subject>
+        <Word wordId="1">विषय</Word>
+      </Subject>
+      <To>
+        <Word wordId="1">प्रति</Word>
+      </To>
+      <Cc>
+        <Word wordId="1">प्रतिलिपि</Word>
+      </Cc>
+    </MsAdditionalHeadings>
+  </MsHeader>
+  <MsHeader language="hr">
+    <From>
+      <Word wordId="1">Šalje</Word>
+    </From>
+    <MsAdditionalHeadings>
+      <Sent>
+        <Word wordId="1">Poslano</Word>
+      </Sent>
+      <Subject>
+        <Word wordId="1">Predmet</Word>
+      </Subject>
+      <To>
+        <Word wordId="1">Prima</Word>
+      </To>
+      <Cc>
+        <Word wordId="1">Kopija</Word>
+      </Cc>
+    </MsAdditionalHeadings>
+  </MsHeader>
+  <MsHeader language="hu">
+    <From>
+      <Word wordId="1">Feladó</Word>
+    </From>
+    <MsAdditionalHeadings>
+      <Sent>
+        <Word wordId="1">Küldve</Word>
+      </Sent>
+      <Subject>
+        <Word wordId="1">Tárgy</Word>
+      </Subject>
+      <To>
+        <Word wordId="1">Címzett</Word>
+      </To>
+      <Cc>
+        <Word wordId="1">Másolatot</Word>
+        <Word wordId="2">kap</Word>
+      </Cc>
+    </MsAdditionalHeadings>
+  </MsHeader>
+  <MsHeader language="hu(OWA)">
+    <From>
+      <Word wordId="1">Feladó</Word>
+    </From>
+    <MsAdditionalHeadings>
+      <Sent>
+        <Word wordId="1">Elküldve</Word>
+      </Sent>
+      <Subject>
+        <Word wordId="1">Tárgy</Word>
+      </Subject>
+      <To>
+        <Word wordId="1">Címzett</Word>
+      </To>
+      <Cc>
+        <Word wordId="1">Másolatot</Word>
+        <Word wordId="2">kap</Word>
+      </Cc>
+    </MsAdditionalHeadings>
+  </MsHeader>
+  <MsHeader language="id">
+    <From>
+      <Word wordId="1">Dari</Word>
+    </From>
+    <MsAdditionalHeadings>
+      <Sent>
+        <Word wordId="1">Terkirim</Word>
+      </Sent>
+      <Subject>
+        <Word wordId="1">Subjek</Word>
+      </Subject>
+      <To>
+        <Word wordId="1">Ke</Word>
+      </To>
+      <Cc>
+        <Word wordId="1">Cc</Word>
+      </Cc>
+    </MsAdditionalHeadings>
+  </MsHeader>
+  <MsHeader language="id(OWA)">
+    <From>
+      <Word wordId="1">Dari</Word>
+    </From>
+    <MsAdditionalHeadings>
+      <Sent>
+        <Word wordId="1">Dikirim</Word>
+      </Sent>
+      <Subject>
+        <Word wordId="1">Subjek</Word>
+      </Subject>
+      <To>
+        <Word wordId="1">Kepada</Word>
+      </To>
+      <Cc>
+        <Word wordId="1">Cc</Word>
+      </Cc>
+    </MsAdditionalHeadings>
+  </MsHeader>
+  <MsHeader language="is">
+    <From>
+      <Word wordId="1">Frá</Word>
+    </From>
+    <MsAdditionalHeadings>
+      <Sent>
+        <Word wordId="1">Sent</Word>
+      </Sent>
+      <Subject>
+        <Word wordId="1">Efni</Word>
+      </Subject>
+      <To>
+        <Word wordId="1">Til</Word>
+      </To>
+      <Cc>
+        <Word wordId="1">Afrit</Word>
+      </Cc>
+    </MsAdditionalHeadings>
+  </MsHeader>
+  <MsHeader language="it">
+    <From>
+      <Word wordId="1">Da</Word>
+    </From>
+    <MsAdditionalHeadings>
+      <Sent>
+        <Word wordId="1">Inviato</Word>
+      </Sent>
+      <Subject>
+        <Word wordId="1">Oggetto</Word>
+      </Subject>
+      <To>
+        <Word wordId="1">A</Word>
+      </To>
+      <Cc>
+        <Word wordId="1">Cc</Word>
+      </Cc>
+    </MsAdditionalHeadings>
+  </MsHeader>
+  <MsHeader language="it(OWA)">
+    <From>
+      <Word wordId="1">Inizio</Word>
+    </From>
+    <MsAdditionalHeadings>
+      <Sent>
+        <Word wordId="1">Inviato</Word>
+      </Sent>
+      <Subject>
+        <Word wordId="1">Oggetto</Word>
+      </Subject>
+      <To>
+        <Word wordId="1">Fine</Word>
+      </To>
+      <Cc>
+        <Word wordId="1">Cc</Word>
+      </Cc>
+    </MsAdditionalHeadings>
+  </MsHeader>
+  <MsHeader language="ja">
+    <From>
+      <Word wordId="1">差出人</Word>
+    </From>
+    <MsAdditionalHeadings>
+      <Sent>
+        <Word wordId="1">送信日時</Word>
+      </Sent>
+      <Subject>
+        <Word wordId="1">件名</Word>
+      </Subject>
+      <To>
+        <Word wordId="1">宛先</Word>
+      </To>
+      <Cc>
+        <Word wordId="1">Cc</Word>
+      </Cc>
+    </MsAdditionalHeadings>
+  </MsHeader>
+  <MsHeader language="ja(OWA)">
+    <From>
+      <Word wordId="1">差出人</Word>
+    </From>
+    <MsAdditionalHeadings>
+      <Sent>
+        <Word wordId="1">送信日時</Word>
+      </Sent>
+      <Subject>
+        <Word wordId="1">件名</Word>
+      </Subject>
+      <To>
+        <Word wordId="1">宛先</Word>
+      </To>
+      <Cc>
+        <Word wordId="1">CC</Word>
+      </Cc>
+    </MsAdditionalHeadings>
+  </MsHeader>
+  <MsHeader language="kk">
+    <From>
+      <Word wordId="1">Кімнен</Word>
+    </From>
+    <MsAdditionalHeadings>
+      <Sent>
+        <Word wordId="1">Жіберілді</Word>
+      </Sent>
+      <Subject>
+        <Word wordId="1">Тақырып</Word>
+      </Subject>
+      <To>
+        <Word wordId="1">Кімге</Word>
+      </To>
+      <Cc>
+        <Word wordId="1">Көшірме</Word>
+      </Cc>
+    </MsAdditionalHeadings>
+  </MsHeader>
+  <MsHeader language="kn">
+    <From>
+      <Word wordId="1">ಇಂದ</Word>
+    </From>
+    <MsAdditionalHeadings>
+      <Sent>
+        <Word wordId="1">ಕಳುಹಿಸಿದ</Word>
+      </Sent>
+      <Subject>
+        <Word wordId="1">ವಿಷಯ</Word>
+      </Subject>
+      <To>
+        <Word wordId="1">ಇವರಿಗೆ</Word>
+      </To>
+      <Cc>
+        <Word wordId="1">Cc</Word>
+      </Cc>
+    </MsAdditionalHeadings>
+  </MsHeader>
+  <MsHeader language="ko">
+    <From>
+      <Word wordId="1">보낸</Word>
+      <Word wordId="2">사람</Word>
+    </From>
+    <MsAdditionalHeadings>
+      <Sent>
+        <Word wordId="1">보낸</Word>
+        <Word wordId="2">날짜</Word>
+      </Sent>
+      <Subject>
+        <Word wordId="1">제목</Word>
+      </Subject>
+      <To>
+        <Word wordId="1">받는</Word>
+        <Word wordId="2">사람</Word>
+      </To>
+      <Cc>
+        <Word wordId="1">참조</Word>
+      </Cc>
+    </MsAdditionalHeadings>
+  </MsHeader>
+  <MsHeader language="lt">
+    <From>
+      <Word wordId="1">Nuo</Word>
+    </From>
+    <MsAdditionalHeadings>
+      <Sent>
+        <Word wordId="1">Išsiųsta</Word>
+      </Sent>
+      <Subject>
+        <Word wordId="1">Tema</Word>
+      </Subject>
+      <To>
+        <Word wordId="1">Iki</Word>
+      </To>
+      <Cc>
+        <Word wordId="1">Kopija</Word>
+      </Cc>
+    </MsAdditionalHeadings>
+  </MsHeader>
+  <MsHeader language="lv">
+    <From>
+      <Word wordId="1">No</Word>
+    </From>
+    <MsAdditionalHeadings>
+      <Sent>
+        <Word wordId="1">Nosūtīts</Word>
+      </Sent>
+      <Subject>
+        <Word wordId="1">Tēma</Word>
+      </Subject>
+      <To>
+        <Word wordId="1">Kam</Word>
+      </To>
+      <Cc>
+        <Word wordId="1">Kopija</Word>
+      </Cc>
+    </MsAdditionalHeadings>
+  </MsHeader>
+  <MsHeader language="ml">
+    <From>
+      <Word wordId="1">ഫ്രം</Word>
+    </From>
+    <MsAdditionalHeadings>
+      <Sent>
+        <Word wordId="1">അയച്ചു</Word>
+      </Sent>
+      <Subject>
+        <Word wordId="1">വിഷയം</Word>
+      </Subject>
+      <To>
+        <Word wordId="1">ടു</Word>
+      </To>
+      <Cc>
+        <Word wordId="1">Cc</Word>
+      </Cc>
+    </MsAdditionalHeadings>
+  </MsHeader>
+  <MsHeader language="mr">
+    <From>
+      <Word wordId="1">प्रेषक</Word>
+    </From>
+    <MsAdditionalHeadings>
+      <Sent>
+        <Word wordId="1">पाठविले</Word>
+      </Sent>
+      <Subject>
+        <Word wordId="1">विषय</Word>
+      </Subject>
+      <To>
+        <Word wordId="1">प्रति</Word>
+      </To>
+      <Cc>
+        <Word wordId="1">कार्बनकॉपी</Word>
+      </Cc>
+    </MsAdditionalHeadings>
+  </MsHeader>
+  <MsHeader language="ms">
+    <From>
+      <Word wordId="1">Daripada</Word>
+    </From>
+    <MsAdditionalHeadings>
+      <Sent>
+        <Word wordId="1">Dihantar</Word>
+      </Sent>
+      <Subject>
+        <Word wordId="1">Perkara</Word>
+      </Subject>
+      <To>
+        <Word wordId="1">Kepada</Word>
+      </To>
+      <Cc>
+        <Word wordId="1">Sk</Word>
+      </Cc>
+    </MsAdditionalHeadings>
+  </MsHeader>
+  <MsHeader language="ms(OWA)">
+    <From>
+      <Word wordId="1">Daripada</Word>
+    </From>
+    <MsAdditionalHeadings>
+      <Sent>
+        <Word wordId="1">Dihantar</Word>
+      </Sent>
+      <Subject>
+        <Word wordId="1">Subjek</Word>
+      </Subject>
+      <To>
+        <Word wordId="1">Kepada</Word>
+      </To>
+      <Cc>
+        <Word wordId="1">Sk</Word>
+      </Cc>
+    </MsAdditionalHeadings>
+  </MsHeader>
+  <MsHeader language="nl">
+    <From>
+      <Word wordId="1">Van</Word>
+    </From>
+    <MsAdditionalHeadings>
+      <Sent>
+        <Word wordId="1">Verzonden</Word>
+      </Sent>
+      <Subject>
+        <Word wordId="1">Onderwerp</Word>
+      </Subject>
+      <To>
+        <Word wordId="1">Aan</Word>
+      </To>
+      <Cc>
+        <Word wordId="1">Cc</Word>
+      </Cc>
+    </MsAdditionalHeadings>
+  </MsHeader>
+  <MsHeader language="nl(OWA)">
+    <From>
+      <Word wordId="1">Van</Word>
+    </From>
+    <MsAdditionalHeadings>
+      <Sent>
+        <Word wordId="1">Verzonden</Word>
+      </Sent>
+      <Subject>
+        <Word wordId="1">Onderwerp</Word>
+      </Subject>
+      <To>
+        <Word wordId="1">Aan</Word>
+      </To>
+      <Cc>
+        <Word wordId="1">CC</Word>
+      </Cc>
+    </MsAdditionalHeadings>
+  </MsHeader>
+  <MsHeader language="nn-no">
+    <From>
+      <Word wordId="1">Frå</Word>
+    </From>
+    <MsAdditionalHeadings>
+      <Sent>
+        <Word wordId="1">Sendt</Word>
+      </Sent>
+      <Subject>
+        <Word wordId="1">Emne</Word>
+      </Subject>
+      <To>
+        <Word wordId="1">Til</Word>
+      </To>
+      <Cc>
+        <Word wordId="1">Kopi</Word>
+      </Cc>
+    </MsAdditionalHeadings>
+  </MsHeader>
+  <MsHeader language="no">
+    <From>
+      <Word wordId="1">Fra</Word>
+    </From>
+    <MsAdditionalHeadings>
+      <Sent>
+        <Word wordId="1">Sendt</Word>
+      </Sent>
+      <Subject>
+        <Word wordId="1">Emne</Word>
+      </Subject>
+      <To>
+        <Word wordId="1">Til</Word>
+      </To>
+      <Cc>
+        <Word wordId="1">Kopi</Word>
+      </Cc>
+    </MsAdditionalHeadings>
+  </MsHeader>
+  <MsHeader language="or">
+    <From>
+      <Word wordId="1">ଠାରୁ</Word>
+    </From>
+    <MsAdditionalHeadings>
+      <Sent>
+        <Word wordId="1">ପ୍ରେରଣ</Word>
+        <Word wordId="2">ହୋଇଛି</Word>
+      </Sent>
+      <Subject>
+        <Word wordId="1">ବିଷୟ</Word>
+      </Subject>
+      <To>
+        <Word wordId="1">ପ୍ରାପ୍ତେଷୁ</Word>
+      </To>
+      <Cc>
+        <Word wordId="1">ପ୍ରତିଲିପି</Word>
+      </Cc>
+    </MsAdditionalHeadings>
+  </MsHeader>
+  <MsHeader language="pl">
+    <From>
+      <Word wordId="1">Od</Word>
+    </From>
+    <MsAdditionalHeadings>
+      <Sent>
+        <Word wordId="1">Wysłano</Word>
+      </Sent>
+      <Subject>
+        <Word wordId="1">Temat</Word>
+      </Subject>
+      <To>
+        <Word wordId="1">Do</Word>
+      </To>
+      <Cc>
+        <Word wordId="1">DW</Word>
+      </Cc>
+    </MsAdditionalHeadings>
+  </MsHeader>
+  <MsHeader language="pl(OWA)">
+    <From>
+      <Word wordId="1">Od</Word>
+    </From>
+    <MsAdditionalHeadings>
+      <Sent>
+        <Word wordId="1">Wysłane</Word>
+      </Sent>
+      <Subject>
+        <Word wordId="1">Temat</Word>
+      </Subject>
+      <To>
+        <Word wordId="1">Do</Word>
+      </To>
+      <Cc>
+        <Word wordId="1">DW</Word>
+      </Cc>
+    </MsAdditionalHeadings>
+  </MsHeader>
+  <MsHeader language="pt">
+    <From>
+      <Word wordId="1">De</Word>
+    </From>
+    <MsAdditionalHeadings>
+      <Sent>
+        <Word wordId="1">Enviado</Word>
+      </Sent>
+      <Subject>
+        <Word wordId="1">Assunto</Word>
+      </Subject>
+      <To>
+        <Word wordId="1">Para</Word>
+      </To>
+      <Cc>
+        <Word wordId="1">Cc</Word>
+      </Cc>
+    </MsAdditionalHeadings>
+  </MsHeader>
+  <MsHeader language="pt-pt">
+    <From>
+      <Word wordId="1">De</Word>
+    </From>
+    <MsAdditionalHeadings>
+      <Sent>
+        <Word wordId="1">Enviado</Word>
+      </Sent>
+      <Subject>
+        <Word wordId="1">Assunto</Word>
+      </Subject>
+      <To>
+        <Word wordId="1">Para</Word>
+      </To>
+      <Cc>
+        <Word wordId="1">Cc</Word>
+      </Cc>
+    </MsAdditionalHeadings>
+  </MsHeader>
+  <MsHeader language="ro">
+    <From>
+      <Word wordId="1">De</Word>
+      <Word wordId="2">la</Word>
+    </From>
+    <MsAdditionalHeadings>
+      <Sent>
+        <Word wordId="1">Trimis</Word>
+      </Sent>
+      <Subject>
+        <Word wordId="1">Subiect</Word>
+      </Subject>
+      <To>
+        <Word wordId="1">Către</Word>
+      </To>
+      <Cc>
+        <Word wordId="1">Cc</Word>
+      </Cc>
+    </MsAdditionalHeadings>
+  </MsHeader>
+  <MsHeader language="ru">
+    <From>
+      <Word wordId="1">От</Word>
+    </From>
+    <MsAdditionalHeadings>
+      <Sent>
+        <Word wordId="1">Отправлено</Word>
+      </Sent>
+      <Subject>
+        <Word wordId="1">Тема</Word>
+      </Subject>
+      <To>
+        <Word wordId="1">Кому</Word>
+      </To>
+      <Cc>
+        <Word wordId="1">Копия</Word>
+      </Cc>
+    </MsAdditionalHeadings>
+  </MsHeader>
+  <MsHeader language="sk">
+    <From>
+      <Word wordId="1">Od</Word>
+    </From>
+    <MsAdditionalHeadings>
+      <Sent>
+        <Word wordId="1">Odoslané</Word>
+      </Sent>
+      <Subject>
+        <Word wordId="1">Predmet</Word>
+      </Subject>
+      <To>
+        <Word wordId="1">Komu</Word>
+      </To>
+      <Cc>
+        <Word wordId="1">Kópia</Word>
+      </Cc>
+    </MsAdditionalHeadings>
+  </MsHeader>
+  <MsHeader language="sl">
+    <From>
+      <Word wordId="1">Od</Word>
+    </From>
+    <MsAdditionalHeadings>
+      <Sent>
+        <Word wordId="1">Poslano</Word>
+      </Sent>
+      <Subject>
+        <Word wordId="1">Zadeva</Word>
+      </Subject>
+      <To>
+        <Word wordId="1">Za</Word>
+      </To>
+      <Cc>
+        <Word wordId="1">Kp</Word>
+      </Cc>
+    </MsAdditionalHeadings>
+  </MsHeader>
+  <MsHeader language="sr">
+    <From>
+      <Word wordId="1">Od</Word>
+    </From>
+    <MsAdditionalHeadings>
+      <Sent>
+        <Word wordId="1">Poslato</Word>
+      </Sent>
+      <Subject>
+        <Word wordId="1">Tema</Word>
+      </Subject>
+      <To>
+        <Word wordId="1">Za</Word>
+      </To>
+      <Cc>
+        <Word wordId="1">Cc</Word>
+      </Cc>
+    </MsAdditionalHeadings>
+  </MsHeader>
+  <MsHeader language="sr-cyrl">
+    <From>
+      <Word wordId="1">Од</Word>
+    </From>
+    <MsAdditionalHeadings>
+      <Sent>
+        <Word wordId="1">Послато</Word>
+      </Sent>
+      <Subject>
+        <Word wordId="1">Тема</Word>
+      </Subject>
+      <To>
+        <Word wordId="1">За</Word>
+      </To>
+      <Cc>
+        <Word wordId="1">Cc</Word>
+      </Cc>
+    </MsAdditionalHeadings>
+  </MsHeader>
+  <MsHeader language="sv">
+    <From>
+      <Word wordId="1">Från</Word>
+    </From>
+    <MsAdditionalHeadings>
+      <Sent>
+        <Word wordId="1">Skickat</Word>
+      </Sent>
+      <Subject>
+        <Word wordId="1">Ämne</Word>
+      </Subject>
+      <To>
+        <Word wordId="1">Till</Word>
+      </To>
+      <Cc>
+        <Word wordId="1">Kopia</Word>
+      </Cc>
+    </MsAdditionalHeadings>
+  </MsHeader>
+  <MsHeader language="sw">
+    <From>
+      <Word wordId="1">Kutoka</Word>
+    </From>
+    <MsAdditionalHeadings>
+      <Sent>
+        <Word wordId="1">Imetumwa</Word>
+      </Sent>
+      <Subject>
+        <Word wordId="1">Kichwa</Word>
+      </Subject>
+      <To>
+        <Word wordId="1">Kwa</Word>
+      </To>
+      <Cc>
+        <Word wordId="1">Cc</Word>
+      </Cc>
+    </MsAdditionalHeadings>
+  </MsHeader>
+  <MsHeader language="ta">
+    <From>
+      <Word wordId="1">அனுப்புநர்</Word>
+    </From>
+    <MsAdditionalHeadings>
+      <Sent>
+        <Word wordId="1">அனுப்பப்பட்டது</Word>
+      </Sent>
+      <Subject>
+        <Word wordId="1">பொருள்</Word>
+      </Subject>
+      <To>
+        <Word wordId="1">பெறுநர்</Word>
+      </To>
+      <Cc>
+        <Word wordId="1">நகல்</Word>
+      </Cc>
+    </MsAdditionalHeadings>
+  </MsHeader>
+  <MsHeader language="te">
+    <From>
+      <Word wordId="1">పంపినవారు</Word>
+    </From>
+    <MsAdditionalHeadings>
+      <Sent>
+        <Word wordId="1">పంపినవి</Word>
+      </Sent>
+      <Subject>
+        <Word wordId="1">విషయం</Word>
+      </Subject>
+      <To>
+        <Word wordId="1">గ్రహీత</Word>
+      </To>
+      <Cc>
+        <Word wordId="1">Cc</Word>
+      </Cc>
+    </MsAdditionalHeadings>
+  </MsHeader>
+  <MsHeader language="th">
+    <From>
+      <Word wordId="1">จาก</Word>
+    </From>
+    <MsAdditionalHeadings>
+      <Sent>
+        <Word wordId="1">ส่ง</Word>
+      </Sent>
+      <Subject>
+        <Word wordId="1">เรื่อง</Word>
+      </Subject>
+      <To>
+        <Word wordId="1">ถึง</Word>
+      </To>
+      <Cc>
+        <Word wordId="1">สำเนาถึง</Word>
+      </Cc>
+    </MsAdditionalHeadings>
+  </MsHeader>
+  <MsHeader language="th(OWA)">
+    <From>
+      <Word wordId="1">จาก</Word>
+    </From>
+    <MsAdditionalHeadings>
+      <Sent>
+        <Word wordId="1">ส่ง</Word>
+      </Sent>
+      <Subject>
+        <Word wordId="1">ชื่อเรื่อง</Word>
+      </Subject>
+      <To>
+        <Word wordId="1">ถึง</Word>
+      </To>
+      <Cc>
+        <Word wordId="1">สำเนาถึง</Word>
+      </Cc>
+    </MsAdditionalHeadings>
+  </MsHeader>
+  <MsHeader language="tr">
+    <From>
+      <Word wordId="1">Kimden</Word>
+    </From>
+    <MsAdditionalHeadings>
+      <Sent>
+        <Word wordId="1">Tarih</Word>
+      </Sent>
+      <Subject>
+        <Word wordId="1">Konu</Word>
+      </Subject>
+      <To>
+        <Word wordId="1">Kime</Word>
+      </To>
+      <Cc>
+        <Word wordId="1">Bilgi</Word>
+      </Cc>
+    </MsAdditionalHeadings>
+  </MsHeader>
+  <MsHeader language="tr(OWA)">
+    <From>
+      <Word wordId="1">Gönderen</Word>
+    </From>
+    <MsAdditionalHeadings>
+      <Sent>
+        <Word wordId="1">Gönderildi</Word>
+      </Sent>
+      <Subject>
+        <Word wordId="1">Konu</Word>
+      </Subject>
+      <To>
+        <Word wordId="1">Kime</Word>
+      </To>
+      <Cc>
+        <Word wordId="1">Bilgi</Word>
+      </Cc>
+    </MsAdditionalHeadings>
+  </MsHeader>
+  <MsHeader language="uk">
+    <From>
+      <Word wordId="1">Від</Word>
+    </From>
+    <MsAdditionalHeadings>
+      <Sent>
+        <Word wordId="1">Надіслано</Word>
+      </Sent>
+      <Subject>
+        <Word wordId="1">Тема</Word>
+      </Subject>
+      <To>
+        <Word wordId="1">Кому</Word>
+      </To>
+      <Cc>
+        <Word wordId="1">Копія</Word>
+      </Cc>
+    </MsAdditionalHeadings>
+  </MsHeader>
+  <MsHeader language="ur">
+    <From>
+      <Word wordId="1">منجانب</Word>
+    </From>
+    <MsAdditionalHeadings>
+      <Sent>
+        <Word wordId="1">‏‏بھیجا</Word>
+        <Word wordId="2">گیا</Word>
+      </Sent>
+      <Subject>
+        <Word wordId="1">‏‏موضوع</Word>
+      </Subject>
+      <To>
+        <Word wordId="1">بطرف</Word>
+      </To>
+      <Cc>
+        <Word wordId="1">Cc</Word>
+      </Cc>
+    </MsAdditionalHeadings>
+  </MsHeader>
+  <MsHeader language="vi">
+    <From>
+      <Word wordId="1">Từ</Word>
+    </From>
+    <MsAdditionalHeadings>
+      <Sent>
+        <Word wordId="1">Đã</Word>
+        <Word wordId="2">gửi</Word>
+      </Sent>
+      <Subject>
+        <Word wordId="1">Chủ</Word>
+        <Word wordId="2">đề</Word>
+      </Subject>
+      <To>
+        <Word wordId="1">Gửi</Word>
+        <Word wordId="2">tới</Word>
+      </To>
+      <Cc>
+        <Word wordId="1">Cc</Word>
+      </Cc>
+    </MsAdditionalHeadings>
+  </MsHeader>
+  <MsHeader language="vi(Normalized)">
+    <From>
+      <Word wordId="1">Từ</Word>
+    </From>
+    <MsAdditionalHeadings>
+      <Sent>
+        <Word wordId="1">Đã</Word>
+        <Word wordId="2">gửi</Word>
+      </Sent>
+      <Subject>
+        <Word wordId="1">Chủ</Word>
+        <Word wordId="2">đề</Word>
+      </Subject>
+      <To>
+        <Word wordId="1">Gửi</Word>
+        <Word wordId="2">tới</Word>
+      </To>
+      <Cc>
+        <Word wordId="1">Cc</Word>
+      </Cc>
+    </MsAdditionalHeadings>
+  </MsHeader>
+  <MsHeader language="vi(OWA)">
+    <From>
+      <Word wordId="1">Từ</Word>
+    </From>
+    <MsAdditionalHeadings>
+      <Sent>
+        <Word wordId="1">Đã</Word>
+        <Word wordId="2">gửi</Word>
+      </Sent>
+      <Subject>
+        <Word wordId="1">Chủ</Word>
+        <Word wordId="2">đề</Word>
+      </Subject>
+      <To>
+        <Word wordId="1">Đến</Word>
+      </To>
+      <Cc>
+        <Word wordId="1">Cc</Word>
+      </Cc>
+    </MsAdditionalHeadings>
+  </MsHeader>
+  <MsHeader language="vi(OWA)(Normalized)">
+    <From>
+      <Word wordId="1">Từ</Word>
+    </From>
+    <MsAdditionalHeadings>
+      <Sent>
+        <Word wordId="1">Đã</Word>
+        <Word wordId="2">gửi</Word>
+      </Sent>
+      <Subject>
+        <Word wordId="1">Chủ</Word>
+        <Word wordId="2">đề</Word>
+      </Subject>
+      <To>
+        <Word wordId="1">Đến</Word>
+      </To>
+      <Cc>
+        <Word wordId="1">Cc</Word>
+      </Cc>
+    </MsAdditionalHeadings>
+  </MsHeader>
+  <MsHeader language="zh-hans">
+    <From>
+      <Word wordId="1">发件人</Word>
+    </From>
+    <MsAdditionalHeadings>
+      <Sent>
+        <Word wordId="1">发送时间</Word>
+      </Sent>
+      <Subject>
+        <Word wordId="1">主题</Word>
+      </Subject>
+      <To>
+        <Word wordId="1">收件人</Word>
+      </To>
+      <Cc>
+        <Word wordId="1">抄送</Word>
+      </Cc>
+    </MsAdditionalHeadings>
+  </MsHeader>
+  <MsHeader language="zh-hant">
+    <From>
+      <Word wordId="1">寄件者</Word>
+    </From>
+    <MsAdditionalHeadings>
+      <Sent>
+        <Word wordId="1">寄件日期</Word>
+      </Sent>
+      <Subject>
+        <Word wordId="1">主旨</Word>
+      </Subject>
+      <To>
+        <Word wordId="1">收件者</Word>
+      </To>
+      <Cc>
+        <Word wordId="1">副本</Word>
+      </Cc>
+    </MsAdditionalHeadings>
+  </MsHeader>
+  <MsHeader language="zh-hant(OWA)">
+    <From>
+      <Word wordId="1">從</Word>
+    </From>
+    <MsAdditionalHeadings>
+      <Sent>
+        <Word wordId="1">寄件日期</Word>
+      </Sent>
+      <Subject>
+        <Word wordId="1">主旨</Word>
+      </Subject>
+      <To>
+        <Word wordId="1">至</Word>
+      </To>
+      <Cc>
+        <Word wordId="1">副本</Word>
+      </Cc>
+    </MsAdditionalHeadings>
+  </MsHeader>
+  <!-- NonMSHeaders-->
+  <!-- NonMsHeaders are used for detecting non microsoft client reply headers, such as Thunderbird or GMail-->
+  <NonMsHeader language="en">
+    <!-- There could be multiple starts with elements which in the case below means a line could start with "On" or "At" and ends with "Wrote"
+        There can only be single end for a given NonMsHeader, The strings below need not be localized because the localization depend on the clients
+        generating the headers and are not standard localized versions.
+        StartsWith can also contain Word elements (e.g. "Begin forwarded message")
+        
+        NonMSHeader - This element contains the set of header words of a specific language/client.
+        StartsWith - This element contains a single word which starts a reply header in a single language (for one or more clients)
+        EndsWith - This element contains a single word which ends a reply header in a single language (for one or more clients)-->
+    <StartsWith>On</StartsWith>
+    <StartsWith>At</StartsWith>
+    <EndsWith>wrote</EndsWith>
+  </NonMsHeader>
+  <NonMsHeader language="en">
+    <EndsWith>
+      <Word wordId="1">Begin</Word>
+      <Word wordId="2">forwarded</Word>
+      <Word wordId="3">message</Word>
+    </EndsWith>
+  </NonMsHeader>
+  <NonMsHeader language="en">
+    <StartsWith>On</StartsWith>
+    <StartsWith>At</StartsWith>
+    <EndsWith>writes</EndsWith>
+  </NonMsHeader>
+  <NonMsHeader language="en">
+    <StartsWith>On</StartsWith>
+    <StartsWith>At</StartsWith>
+    <EndsWith>said</EndsWith>
+  </NonMsHeader>
+  <NonMsHeader language="en">
+    <StartsWith>On</StartsWith>
+    <StartsWith>At</StartsWith>
+    <EndsWith>says</EndsWith>
+  </NonMsHeader>
+  <NonMsHeader language="?">
+    <StartsWith>Am</StartsWith>
+    <EndsWith>schrieb</EndsWith>
+  </NonMsHeader>
+  <NonMsHeader language="?">
+    <StartsWith>Am</StartsWith>
+    <EndsWith>schreibt</EndsWith>
+  </NonMsHeader>
+  <NonMsHeader language="?">
+    <StartsWith>Op</StartsWith>
+    <EndsWith>schreef</EndsWith>
+  </NonMsHeader>
+  <NonMsHeader language="?">
+    <EndsWith>skrev</EndsWith>
+  </NonMsHeader>
+  <NonMsHeader language="?">
+    <StartsWith>Il</StartsWith>
+    <EndsWith>scritto</EndsWith>
+  </NonMsHeader>
+  <NonMsHeader language="?">
+    <StartsWith>El</StartsWith>
+    <EndsWith>escribió</EndsWith>
+  </NonMsHeader>
+  <NonMsHeader language="?">
+    <StartsWith>Em</StartsWith>
+    <EndsWith>escreveu</EndsWith>
+  </NonMsHeader>
+  <NonMsHeader language="?">
+    <StartsWith>Le</StartsWith>
+    <EndsWith>ecrit</EndsWith>
+  </NonMsHeader>
+  <NonMsHeader language="?">
+    <StartsWith>Le</StartsWith>
+    <EndsWith>écrit</EndsWith>
+  </NonMsHeader>
+  <NonMsHeader language="ru">
+    <StartsWith>В</StartsWith>
+    <EndsWith>пишет</EndsWith>
+  </NonMsHeader>
+</MessageHeaders>

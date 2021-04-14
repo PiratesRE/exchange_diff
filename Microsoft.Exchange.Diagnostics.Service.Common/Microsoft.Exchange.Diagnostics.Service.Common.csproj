@@ -1,0 +1,96 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{09CD9476-CD82-489E-B9E2-84B47CA14115}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Microsoft.Exchange.Diagnostics.Service.Common</RootNamespace>
+    <AssemblyName>Microsoft.Exchange.Diagnostics.Service.Common</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Exchange.LogAnalyzer.Core" />
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.DirectoryServices" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AnalyzerConfigurationCollection.cs" />
+    <Compile Include="AnalyzerConfigurationElement.cs" />
+    <Compile Include="CommonUtils.cs" />
+    <Compile Include="ConfigurationElementCollection.cs" />
+    <Compile Include="ConfigurationOverrides.cs" />
+    <Compile Include="DiagnosticsConfiguration.cs" />
+    <Compile Include="DiagnosticsPasswordEncryption.cs" />
+    <Compile Include="EdsPerformanceCounters.cs" />
+    <Compile Include="EventLogger.cs" />
+    <Compile Include="ExFileLog.cs" />
+    <Compile Include="JobConfigurationCollection.cs" />
+    <Compile Include="JobConfigurationElement.cs" />
+    <Compile Include="JobSection.cs" />
+    <Compile Include="LoadEdsPerformanceCounters.cs" />
+    <Compile Include="Logger.cs" />
+    <Compile Include="ManageEdsConnectionStrings.cs" />
+    <Compile Include="MSExchangeDiagnosticsEventLogConstants.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SampleAverage.cs" />
+    <Compile Include="ServerRole.cs" />
+    <Compile Include="ServiceConfiguration.cs" />
+    <Compile Include="Watermark.cs" />
+    <Compile Include="Watermarks.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="EventLog.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.DKM.Proxy\Microsoft.DKM.Proxy.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140D7}</Project>
+      <Name>Microsoft.DKM.Proxy</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Compliance\Microsoft.Exchange.Compliance.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140F2}</Project>
+      <Name>Microsoft.Exchange.Compliance</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Diagnostics\Microsoft.Exchange.Diagnostics.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14113}</Project>
+      <Name>Microsoft.Exchange.Diagnostics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\mscorlib\mscorlib.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141F1}</Project>
+      <Name>mscorlib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

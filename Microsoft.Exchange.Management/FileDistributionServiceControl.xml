@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo Name="File distribution Service Control" DescriptionId="FileDistributionServiceControlComponentDescription">
+
+  <ServerTasks>
+
+	<!-- Stop FDS -->
+	<ServerTaskInfo Id="_474b4dc5deb44f7ca748da725a0ecac3" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+		<Install/>
+	  <BuildToBuildUpgrade>
+		<Standalone>stop-SetupService -ServiceName MSExchangeFDS</Standalone>
+	  </BuildToBuildUpgrade>
+	  <DisasterRecovery/>
+	  <Uninstall DescriptionId="StoppinggMSExchangeFDS">
+		<Standalone>stop-SetupService -ServiceName MSExchangeFDS</Standalone>
+	  </Uninstall>
+	</ServerTaskInfo>
+
+  </ServerTasks>
+
+</SetupComponentInfo>

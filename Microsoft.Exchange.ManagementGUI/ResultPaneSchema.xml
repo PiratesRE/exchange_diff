@@ -1,0 +1,2869 @@
+<!-- Copyright (C) 2008 Microsoft Corporation.  All Rights Reserved. -->
+<ResultsLoaderSchema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="ObjectPickerSchema.xsd">
+  <!-- Schema for ExchangeCertificate ResultPane-->
+  <ResultsLoader Name="ExchangeCertificate">
+    <DataColumns PrimaryKey="Server,Thumbprint" NameProperty="FriendlyName" DataColumnsCalculator="Microsoft.Exchange.Management.SnapIn.Esm.ExchangeCertificateDataColumnsCalculator, Microsoft.Exchange.Management.SnapIn.Esm">
+      <Column Name="FriendlyName" />
+      <Column Name="Server" Type="System.Object" LambdaExpression="Server=>@1[Server]"/>
+      <Column Name="Thumbprint" />
+      <Column Name="HasPrivateKey" Type="System.Boolean" />
+      <Column Name="IsSelfSigned" Type="System.Boolean" />
+      <Column Name="Issuer" />
+      <Column Name="NotAfter" Type="System.DateTime" />
+      <Column Name="NotBefore" Type="System.DateTime" />
+      <Column Name="PrivateKeyExportable" Type="System.Boolean" />
+      <Column Name="Services" Type="Microsoft.Exchange.Configuration.MonadDataProvider.EnumObject, Microsoft.Exchange.Configuration.ObjectModel" />
+      <Column Name="Subject" />
+      <Column Name="Status" Type="Microsoft.Exchange.Configuration.MonadDataProvider.EnumObject, Microsoft.Exchange.Configuration.ObjectModel" />
+      <Column Name="CertificateRequest" />
+      <Column Name="IconKey" Type="Microsoft.Exchange.Configuration.MonadDataProvider.EnumObject, Microsoft.Exchange.Configuration.ObjectModel" />
+      <Column Name="IsCertificateRequest" Type="System.Boolean"
+              LambdaExpression="CertificateRequest=>
+                !String.IsNullOrEmpty(String(@0[CertificateRequest]))
+              "/>
+      <Column Name="IsValidCertificateWithPriviateKey" Type="System.Boolean"
+              LambdaExpression="CertificateRequest, Status, HasPrivateKey=>
+                String.IsNullOrEmpty(String(@0[CertificateRequest])) and
+                CertificateStatus(EnumObject(@0[Status]).Value) == CertificateStatus.Valid and
+                Boolean(@0[HasPrivateKey])
+              "/>
+      <Column Name="CanExportCertificate" Type="System.Boolean"
+              LambdaExpression="CertificateRequest, Status, HasPrivateKey, PrivateKeyExportable=>
+                String.IsNullOrEmpty(String(@0[CertificateRequest])) and
+                CertificateStatus(EnumObject(@0[Status]).Value) == CertificateStatus.Valid and
+                Boolean(@0[HasPrivateKey]) and
+                Boolean(@0[PrivateKeyExportable])
+              "/>
+      <Column Name="CanRenewCertificate" Type="System.Boolean"
+        LambdaExpression="CertificateRequest, Status=>
+                String.IsNullOrEmpty(String(@0[CertificateRequest])) and
+                CertificateStatus(EnumObject(@0[Status]).Value) != CertificateStatus.Invalid
+              "/>
+    </DataColumns>
+
+    <InputColumns PartialOrderComparer="Microsoft.Exchange.Management.SnapIn.Esm.ExchangeCertificateInputTablePartialOrderComparer, Microsoft.Exchange.Management.SnapIn.Esm">
+      <Column Name="Server" Type="System.Object" />
+      <Column Name="Thumbprint" />
+    </InputColumns>
+
+    <DataTableFillers LoadableFromProfilePredicate="Microsoft.Exchange.Management.SnapIn.Esm.ExchangeCertificateLoadableFromProfile, Microsoft.Exchange.Management.SnapIn.Esm">
+      <MonadAdapterFiller Command="Get-ExchangeCertificate" ResolveCommand ="" FilterBuilder="Microsoft.Exchange.Management.SnapIn.Esm.ExchangeCertificateFilterBuilder, Microsoft.Exchange.Management.SnapIn.Esm">
+        <Parameters>
+          <AdditionalParameter Name="Server"/>
+          <AdditionalParameter Name="Thumbprint"/>
+        </Parameters>
+      </MonadAdapterFiller>
+    </DataTableFillers>
+
+    <Configuration>
+      <Caption>ExchangeCertificateResultPaneTitle</Caption>
+      <DisplayedColumns>
+        <Column Name="FriendlyName" Text="NameColumnName" Mandatory="true" />
+        <Column Name="IsSelfSigned" Text="ExchangeCertificateIsSelfSignedColumnName" Mandatory="true" />
+        <Column Name="Status" Text="ExchangeCertificateStatusColumnName" Mandatory="true" />
+        <Column Name="Services" Text="ExchangeCertificateServicesColumnName" Mandatory="true" />
+        <Column Name="Subject" Text="ExchangeCertificateSubjectColumnName" Mandatory="true" />
+        <Column Name="Issuer" Text="ExchangeCertificateIssuerColumnName" Mandatory="true" />
+        <Column Name="NotAfter" Text="ExchangeCertificateNotAfterColumnName" Mandatory="true" FormatString="d" ColorFormatter="Microsoft.Exchange.Management.SystemManager.WinForms.DateToColorFormatter, Microsoft.Exchange.Management.SystemManager"/>
+      </DisplayedColumns>
+      <SortProperty>FriendlyName</SortProperty>
+      <SerializationLevel>Full</SerializationLevel>
+      <ImageColumn>IconKey</ImageColumn>
+      <MultiSelect>true</MultiSelect>
+    </Configuration>
+  </ResultsLoader>
+
+  <!-- Schema for AddressList ResultPane-->
+  <ResultsLoader Name="AddressList">
+    <DataColumns PrimaryKey="Guid" NameProperty="Name">
+      <RefColumns Name="ADObjectCommonProperties" />
+      <Column Name="WhenChanged" Type="System.DateTime" />
+      <Column Name="DisplayName" />
+      <Column Name="RecipientFilterType" Type="Microsoft.Exchange.Data.Directory.Recipient.WellKnownRecipientFilterType, Microsoft.Exchange.Data.Directory" />
+      <Column Name="Container" />
+      <Column Name="Path" LambdaExpression="Container=>iif(DBNull.Value.Equals(@0[Container]), &quot;\&quot;, @0[Container].ToString())" />
+      <Column Name="AddressListType" Type="Microsoft.Exchange.Management.SystemManager.AddressListType, Microsoft.Exchange.Management.SystemManager" LambdaExpression="Container=>iif(DBNull.Value.Equals(@0[Container]), AddressListType.GlobalAddressList, AddressListType.AddressList)" />
+    </DataColumns>
+
+    <InputColumns>
+      <RefColumns Name="ADObjectIdentity" />
+    </InputColumns>
+
+    <DataTableFillers>
+      <MonadAdapterFiller Command="Get-AddressList" ResolveCommand ="" FilterBuilder="Microsoft.Exchange.Management.SnapIn.Esm.ADObjectFilterBuilder, Microsoft.Exchange.Management.SnapIn.Esm">
+        <Parameters>
+          <AdditionalParameter Name="Identity"/>
+        </Parameters>
+      </MonadAdapterFiller>
+      <MonadAdapterFiller Command="Get-GlobalAddressList" ResolveCommand ="" FilterBuilder="Microsoft.Exchange.Management.SnapIn.Esm.ADObjectFilterBuilder, Microsoft.Exchange.Management.SnapIn.Esm">
+        <Parameters>
+          <AdditionalParameter Name="Identity"/>
+        </Parameters>
+      </MonadAdapterFiller>
+    </DataTableFillers>
+
+    <Configuration>
+      <Caption>AddressListResultPane</Caption>
+      <DisplayedColumns>
+        <Column Name="Name" Text="NameColumnName" Mandatory="true" />
+        <Column Name="DisplayName" Text="DisplayNameColumnName" Mandatory="true" />
+        <Column Name="Path" Text="PathColumnName" Mandatory="true" />
+        <Column Name="AddressListType" Text="AddressListTypeColumnName" Mandatory="true" />
+        <Column Name="WhenChanged" Text="LastModifiedColumnName" Mandatory="false" />
+      </DisplayedColumns>
+      <FilterColumns ObjectSchema="Microsoft.Exchange.Data.Directory.Management.AddressListSchema, Microsoft.Exchange.Data.Directory">
+        <Column Name="Name" />
+        <Column Name="DisplayName" />
+        <Column Name="Path" Operators="Equal,NotEqual" PickerProfile="AddressListConfigurable" ValueMember="Path" DisplayMember="Path" ColumnType="System.String"/>
+        <Column Name="AddressListType" ColumnType="Microsoft.Exchange.Management.SystemManager.AddressListType, Microsoft.Exchange.Management.SystemManager"/>
+      </FilterColumns>
+      <SortProperty>Name</SortProperty>
+      <MultiSelect>true</MultiSelect>
+    </Configuration>
+  </ResultsLoader>
+
+  <!-- Schema for PopImap ResultPane-->
+  <ResultsLoader Name="PopImap">
+    <DataColumns PrimaryKey="ProtocolType" NameProperty="ProtocolName">
+      <Column Name="ProtocolType" Type="Microsoft.Exchange.Management.SnapIn.Esm.Servers.ClientAccess.PopImapProtocol, Microsoft.Exchange.Management.SnapIn.Esm" />
+      <Column Name="ProtocolName" />
+    </DataColumns>
+
+    <DataTableFillers>
+      <FixedDataFiller>
+        <Row>
+          <Column Name="ProtocolType" Value="IMAP4" />
+          <Column Name="ProtocolName" Value="IMAP4" />
+        </Row>
+        <Row>
+          <Column Name="ProtocolType" Value="POP3" />
+          <Column Name="ProtocolName" Value="POP3" />
+        </Row>
+      </FixedDataFiller>
+    </DataTableFillers>
+
+    <Configuration>
+      <Caption>PopImap</Caption>
+      <DisplayedColumns>
+        <Column Name="ProtocolName" Text="ProtocolName" Mandatory="true" />
+      </DisplayedColumns>
+      <ImageColumn>ProtocolType</ImageColumn>
+      <SortProperty>ProtocolName</SortProperty>
+      <MultiSelect>false</MultiSelect>
+    </Configuration>
+  </ResultsLoader>
+
+  <!-- Schema for DisconnectedMailbox ResultPane-->
+  <ResultsLoader Name="DisconnectedMailbox">
+    <DataColumns PrimaryKey="DatabaseName,MailboxGuid" NameProperty="DisplayName" DistinguishIdentity="DistinguishIdentity">
+      <Column Name="DisplayName" />
+      <Column Name="DatabaseName" />
+      <Column Name="LegacyDN" />
+      <Column Name="DisconnectDate" Type="System.DateTime" LambdaExpression="DisconnectDate=>DateTime(DateTime(@0[DisconnectDate]).Year, DateTime(@0[DisconnectDate]).Month, DateTime(@0[DisconnectDate]).Day, DateTime(@0[DisconnectDate]).Hour, DateTime(@0[DisconnectDate]).Minute, DateTime(@0[DisconnectDate]).Second)"/>
+      <Column Name="LastLoggedOnUserAccount" />
+      <Column Name="Identity" Type="System.Object" ExpectedType="Microsoft.Exchange.Data.Mapi.MailboxId, Microsoft.Exchange.Data.Mapi"/>
+      <Column Name="LastLogonTime" Type="System.Object" />
+      <Column Name="MailboxGuid" />
+      <Column Name="DistinguishIdentity" LambdaExpression="DatabaseName,MailboxGuid=>@0[DatabaseName].ToString() + &quot;\&quot; + @0[MailboxGuid].ToString()" />
+      <Column Name="IsArchiveMailbox" Type="System.Object" />
+      <Column Name="IsArchive" Type="System.Boolean" LambdaExpression="IsArchiveMailbox=>ObjectExtension.IsTrue(@0[IsArchiveMailbox])"/>
+      <Column Name="ImageProperty" Type="System.String"
+               LambdaExpression="IsArchiveMailbox=>
+                iif(ObjectExtension.IsTrue(@0[IsArchiveMailbox]),
+                &quot;ArchiveDisconnected&quot;,
+                &quot;MailboxDisconnected&quot;)"/>
+    </DataColumns>
+
+    <InputColumns>
+      <Column Name="Server" />
+    </InputColumns>
+
+    <DataTableFillers>
+      <MonadAdapterFiller Command="Get-MailboxStatistics" ResolveCommand ="" FilterBuilder="Microsoft.Exchange.Management.SnapIn.Esm.DisconnMailboxesFilterBuilder, Microsoft.Exchange.Management.SnapIn.Esm">
+        <Parameters>
+          <AdditionalParameter Name="Server"/>
+        </Parameters>
+      </MonadAdapterFiller>
+    </DataTableFillers>
+
+    <Configuration>
+      <Caption>DisconnMailboxesResultPaneCaptionDefault</Caption>
+      <SortProperty>DisplayName</SortProperty>
+			<ImageColumn>ImageProperty</ImageColumn>
+      <DisplayedColumns>
+        <Column Name="DisplayName" Text="DisconnMailboxDisplayName" Mandatory="true" />
+        <Column Name="DatabaseName" Text="DisconnMailboxDatabaseName" Mandatory="true" />
+        <Column Name="LegacyDN" Text="DisconnMailboxLegacyDN" Mandatory="true" />
+        <Column Name="DisconnectDate" Text="DisconnMailboxDisconnectDate" Mandatory="false" />
+        <Column Name="LastLoggedOnUserAccount" Text="DisconnMailboxLastLoggedOnUserAccount" Mandatory="false" />
+        <Column Name="IsArchive" Text="DisconnMailboxIsArchive" Mandatory="true" />
+      </DisplayedColumns>
+      <MultiSelect>true</MultiSelect>
+    </Configuration>
+  </ResultsLoader>
+
+  <!-- Schema for EmailAddressPolicy ResultPane-->
+  <ResultsLoader Name="EmailAddressPolicy">
+    <DataColumns PrimaryKey="Guid" DataColumnsCalculator="Microsoft.Exchange.Management.SnapIn.Esm.EmailAddressPolicyDataColumnsCalculator, Microsoft.Exchange.Management.SnapIn.Esm">
+      <RefColumns Name="ADObjectCommonProperties" />
+      <Column Name="Priority" Type="System.Object" ExpectedType="Microsoft.Exchange.Data.Directory.SystemConfiguration.EmailAddressPolicyPriority, Microsoft.Exchange.Data.Directory" />
+      <Column Name="PriorityForFilter" Type="System.Int32" LambdaExpression="Priority=>EmailAddressPolicyPriority(@0[Priority]).ToInt32()" />
+      <Column Name="WhenChanged" Type="System.DateTime" />
+      <Column Name="EnabledEmailAddressTemplates" />
+      <Column Name="RecipientFilter" />
+      <Column Name="IncludedRecipients" Type="Microsoft.Exchange.Data.Directory.Recipient.WellKnownRecipientType, Microsoft.Exchange.Data.Directory" />
+      <Column Name="RecipientFilterType" Type="Microsoft.Exchange.Data.Directory.Recipient.WellKnownRecipientFilterType, Microsoft.Exchange.Data.Directory" />
+      <Column Name="ConditionalCompany" Type="System.Object" />
+      <Column Name="ConditionalDepartment" Type="System.Object" />
+      <Column Name="ConditionalStateOrProvince" Type="System.Object" />
+      <Column Name="ConditionalCustomAttribute1" />
+      <Column Name="ConditionalCustomAttribute2" />
+      <Column Name="ConditionalCustomAttribute3" />
+      <Column Name="ConditionalCustomAttribute4" />
+      <Column Name="ConditionalCustomAttribute5" />
+      <Column Name="ConditionalCustomAttribute6" />
+      <Column Name="ConditionalCustomAttribute7" />
+      <Column Name="ConditionalCustomAttribute8" />
+      <Column Name="ConditionalCustomAttribute9" />
+      <Column Name="ConditionalCustomAttribute10" />
+      <Column Name="ConditionalCustomAttribute11" />
+      <Column Name="ConditionalCustomAttribute12" />
+      <Column Name="ConditionalCustomAttribute13" />
+      <Column Name="ConditionalCustomAttribute14" />
+      <Column Name="ConditionalCustomAttribute15" />
+      <Column Name="LdapRecipientFilter" />
+      <Column Name="RecipientFilterApplied" Type="System.Boolean" />
+      <Column Name="IsDefaultPolicy" Type="System.Boolean" LambdaExpression="Priority=>EmailAddressPolicyPriority(@0[Priority]).Equals(EmailAddressPolicyPriority(EmailAddressPolicyPriority.LowestPriorityValue))" />
+      <Column Name="CanChangePriority" Type="System.Boolean" />
+    </DataColumns>
+
+    <InputColumns>
+      <RefColumns Name="ADObjectIdentity" />
+    </InputColumns>
+
+    <DataTableFillers>
+      <MonadAdapterFiller Command="Get-EmailAddressPolicy" ResolveCommand ="" FilterBuilder="Microsoft.Exchange.Management.SnapIn.Esm.ADObjectFilterBuilder, Microsoft.Exchange.Management.SnapIn.Esm">
+        <Parameters>
+          <AdditionalParameter Name="Identity"/>
+        </Parameters>
+      </MonadAdapterFiller>
+    </DataTableFillers>
+
+    <Configuration>
+      <Caption>EmailAddressPolicyResultPane</Caption>
+      <DisplayedColumns>
+        <Column Name="Name" Text="NameColumnName" Mandatory="true" />
+        <Column Name="Priority" Text="PriorityColumnName" Mandatory="true" />
+        <Column Name="WhenChanged" Text="LastModifiedColumnName" Mandatory="true" />
+        <Column Name="RecipientFilterApplied" Text="AppliedColumnName" Mandatory="true" />
+      </DisplayedColumns>
+      <SortProperty>Priority</SortProperty>
+      <FilterColumns ObjectSchema="Microsoft.Exchange.Data.Directory.SystemConfiguration.EmailAddressPolicySchema, Microsoft.Exchange.Data.Directory">
+        <Column Name="Name" />
+        <Column Name="PriorityForFilter" RefDisplayedColumn="Priority" ColumnType="System.Int32" Operators="Equal,NotEqual,GreaterThan,GreaterThanOrEqual,LessThan,LessThanOrEqual"/>
+        <Column Name="RecipientFilterApplied" />
+      </FilterColumns>
+      <MultiSelect>false</MultiSelect>
+    </Configuration>
+  </ResultsLoader>
+
+  <!-- Schema for UMIPGateway ResultPane-->
+  <ResultsLoader Name="UMIPGateway">
+    <DataColumns PrimaryKey="Guid">
+      <RefColumns Name="ADObjectCommonProperties" />
+      <Column Name="Address" />
+      <Column Name="Status" Type="Microsoft.Exchange.Data.Directory.SystemConfiguration.GatewayStatus, Microsoft.Exchange.Data.Directory" />
+      <Column Name="OutcallsAllowed" Type="System.Boolean" />
+      <Column Name="WhenChanged" Type="System.DateTime" />
+      <Column Name="CanEnable" Type="System.Boolean"
+              LambdaExpression="Status=>GatewayStatus(@0[Status]) != GatewayStatus.Enabled"/>
+    </DataColumns>
+
+    <InputColumns>
+      <RefColumns Name="ADObjectIdentity" />
+    </InputColumns>
+
+    <DataTableFillers>
+      <MonadAdapterFiller Command="Get-UMIPGateway" ResolveCommand ="" FilterBuilder="Microsoft.Exchange.Management.SnapIn.Esm.ADObjectFilterBuilder, Microsoft.Exchange.Management.SnapIn.Esm">
+        <Parameters>
+          <AdditionalParameter Name="Identity"/>
+        </Parameters>
+      </MonadAdapterFiller>
+    </DataTableFillers>
+
+    <Configuration>
+      <Caption>UmIpGatewayResultPaneTitle</Caption>
+      <DisplayedColumns>
+        <Column Name="Name" Text="UmIpGatewayNameColumnTitle" Mandatory="true" />
+        <Column Name="Address" Text="UmIpGatewayIpAddressColumnTitle" Mandatory="true" />
+        <Column Name="Status" Text="UmIpGatewayStatusColumnTitle" Mandatory="true" />
+        <Column Name="OutcallsAllowed" Text="UmIpGatewayOutgoingCallsColumnTitle" Mandatory="true" />
+        <Column Name="WhenChanged" Text="LastModifiedColumnName" Mandatory="false" />
+      </DisplayedColumns>
+      <FilterColumns ObjectSchema="Microsoft.Exchange.Data.Directory.SystemConfiguration.UMIPGatewaySchema, Microsoft.Exchange.Data.Directory">
+        <Column Name="Name" />
+        <Column Name="Address" Operators="Equal,NotEqual,Contains,NotContains,StartsWith,EndsWith"/>
+        <Column Name="Status" />
+        <Column Name="OutcallsAllowed" />
+      </FilterColumns>
+      <SortProperty>Name</SortProperty>
+      <ImageColumn>Status</ImageColumn>
+      <MultiSelect>false</MultiSelect>
+    </Configuration>
+  </ResultsLoader>
+
+  <!--Schema for UMHuntGroup ResultPane-->
+  <ResultsLoader Name="UMHuntGroup">
+    <DataColumns PrimaryKey="Guid">
+      <RefColumns Name="ADObjectCommonProperties" />
+      <Column Name="UMDialPlan" />
+      <Column Name="PilotIdentifier" />
+      <Column Name="UMIPGateway" Type="System.Object" />
+    </DataColumns>
+
+    <InputColumns>
+      <RefColumns Name="ADObjectIdentity" />
+    </InputColumns>
+
+    <DataTableFillers>
+      <MonadAdapterFiller Command="Get-UMHuntGroup" ResolveCommand ="" FilterBuilder="Microsoft.Exchange.Management.SnapIn.Esm.ADObjectFilterBuilder, Microsoft.Exchange.Management.SnapIn.Esm">
+        <Parameters>
+          <AdditionalParameter Name="Identity"/>
+        </Parameters>
+      </MonadAdapterFiller>
+    </DataTableFillers>
+
+    <Configuration>
+      <Caption>UmHuntGroupResultPaneTitle</Caption>
+      <DisplayedColumns>
+        <Column Name="Name" Text="NameColumnName" Mandatory="true" />
+        <Column Name="UMDialPlan" Text="UmHuntGroupDialPlanColumnTitle" Mandatory="true" />
+        <Column Name="PilotIdentifier" Text="UmHuntGroupPilotIdentifierColumnTitle" Mandatory="true" />
+      </DisplayedColumns>
+      <SortProperty>Name</SortProperty>
+      <SerializationLevel>Full</SerializationLevel>
+      <MultiSelect>true</MultiSelect>
+    </Configuration>
+  </ResultsLoader>
+
+  <!-- Schema for FederationTrustCertificateStatus-->
+  <!-- The Data from this ResultsLoader will be displayed in Managed Federation wizard.-->
+  <ResultsLoader Name="FederationTrustCertificateStatus">
+    <DataColumns PrimaryKey="Thumbprint,Server">
+      <Column Name="Thumbprint" Type="System.String" />
+      <Column Name="Server" Type="System.String" />
+      <Column Name="Site" Type="System.String" />
+      <Column Name="State" Type="Microsoft.Exchange.Management.SystemConfigurationTasks.FederationTrustCertificateState, Microsoft.Exchange.Management" />
+    </DataColumns>
+
+    <DataTableFillers>
+      <MonadAdapterFiller Command="Test-FederationTrustCertificate" ResolveCommand ="" FilterBuilder=""/>
+    </DataTableFillers>
+  </ResultsLoader>
+
+  <!-- Schema for ExchangeServer-->
+  <!--The Data from this ResultsLoader will not be displayed in result pane, so the configuration section is not needed.-->
+  <ResultsLoader Name="ExchangeServer">
+    <DataColumns PrimaryKey="Guid">
+      <Column Name="Name" />
+      <Column Name="Identity" Type="System.Object"/>
+      <Column Name="Guid" Type="System.Guid"/>
+      <Column Name="Domain" />
+      <Column Name="WhenChanged" Type="System.DateTime" />
+      <Column Name="IsExchangeTrialEdition" Type="System.Boolean" />
+      <Column Name="IsExpiredExchangeTrialEdition" Type="System.Boolean" />
+      <Column Name="IsEdgeServer" Type="System.Boolean" />
+      <Column Name="RemainingTrialPeriod" Type="System.Object" />
+    </DataColumns>
+
+    <DataTableFillers>
+      <MonadAdapterFiller Command="Get-ExchangeServer" ResolveCommand ="" FilterBuilder="Microsoft.Exchange.Management.SnapIn.Esm.CurrentExchangeServerFilterBuilder, Microsoft.Exchange.Management.SnapIn.Esm">
+        <Parameters>
+          <AdditionalParameter Name="Identity"/>
+        </Parameters>
+      </MonadAdapterFiller>
+    </DataTableFillers>
+
+    <Configuration>
+      <Caption>Servers</Caption>
+      <SerializationLevel>Full</SerializationLevel>
+    </Configuration>
+  </ResultsLoader>
+
+  <!-- Schema for ADServer-->
+  <ResultsLoader Name="ADServer">
+    <DataColumns PrimaryKey="Guid" DataColumnsCalculator="Microsoft.Exchange.Management.SnapIn.Esm.ServerDataColumnsCalculator, Microsoft.Exchange.Management.SnapIn.Esm">
+      <RefColumns Name="ExchangeServerProperties" />
+    </DataColumns>
+
+    <InputColumns>
+      <RefColumns Name="ExchangeServerInputProperites" />
+    </InputColumns>
+
+    <DataTableFillers FillType="PartialFill">
+      <MonadAdapterFiller Command="Get-ExchangeServer" ResolveCommand ="" FilterBuilder="Microsoft.Exchange.Management.SnapIn.Esm.ADObjectFilterBuilder, Microsoft.Exchange.Management.SnapIn.Esm">
+        <Parameters>
+          <AdditionalParameter Name="Identity"/>
+        </Parameters>
+      </MonadAdapterFiller>
+      <MonadAdapterFiller Command="Get-TransportService" ResolveCommand ="" FilterBuilder="Microsoft.Exchange.Management.SnapIn.Esm.ADObjectFilterBuilder, Microsoft.Exchange.Management.SnapIn.Esm">
+        <Parameters>
+          <AdditionalParameter Name="Identity"/>
+        </Parameters>
+      </MonadAdapterFiller>
+      <MonadAdapterFiller Command="Get-ClientAccessServer" ResolveCommand ="" FilterBuilder="Microsoft.Exchange.Management.SnapIn.Esm.ADObjectFilterBuilder, Microsoft.Exchange.Management.SnapIn.Esm">
+        <Parameters>
+          <AdditionalParameter Name="Identity"/>
+        </Parameters>
+      </MonadAdapterFiller>
+      <MonadAdapterFiller Command="Get-MailboxServer" ResolveCommand ="" FilterBuilder="Microsoft.Exchange.Management.SnapIn.Esm.ADObjectFilterBuilder, Microsoft.Exchange.Management.SnapIn.Esm">
+        <Parameters>
+          <AdditionalParameter Name="Identity"/>
+        </Parameters>
+      </MonadAdapterFiller>
+      <MonadAdapterFiller Command="Get-UMService" ResolveCommand ="" FilterBuilder="Microsoft.Exchange.Management.SnapIn.Esm.ADObjectFilterBuilder, Microsoft.Exchange.Management.SnapIn.Esm">
+        <Parameters>
+          <AdditionalParameter Name="Identity"/>
+        </Parameters>
+      </MonadAdapterFiller>
+    </DataTableFillers>
+
+    <Configuration>
+      <Caption>Servers</Caption>
+      <DisplayedColumns>
+        <RefColumns Name="ExchangeServerDisplayedProperties" />
+        <Column Name="SiteName" Text="Site" Mandatory="false" />
+      </DisplayedColumns>
+      <SortProperty>Name</SortProperty>
+      <SerializationLevel>Full</SerializationLevel>
+      <MultiSelect>false</MultiSelect>
+    </Configuration>
+  </ResultsLoader>
+
+  <!--Schema for Edge Server-->
+  <ResultsLoader Name="EdgeServer">
+    <DataColumns PrimaryKey="Guid" DataColumnsCalculator="Microsoft.Exchange.Management.SnapIn.Esm.ServerDataColumnsCalculator, Microsoft.Exchange.Management.SnapIn.Esm">
+      <RefColumns Name="ExchangeServerProperties" />
+    </DataColumns>
+
+    <InputColumns>
+      <RefColumns Name="ExchangeServerInputProperites" />
+    </InputColumns>
+
+    <DataTableFillers FillType="PartialFill">
+      <MonadAdapterFiller Command="Get-ExchangeServer" ResolveCommand ="" FilterBuilder="Microsoft.Exchange.Management.SnapIn.Esm.ADObjectFilterBuilder, Microsoft.Exchange.Management.SnapIn.Esm">
+        <Parameters>
+          <AdditionalParameter Name="Identity"/>
+        </Parameters>
+      </MonadAdapterFiller>
+      <MonadAdapterFiller Command="Get-TransportService" ResolveCommand ="" FilterBuilder="Microsoft.Exchange.Management.SnapIn.Esm.ADObjectFilterBuilder, Microsoft.Exchange.Management.SnapIn.Esm">
+        <Parameters>
+          <AdditionalParameter Name="Identity"/>
+        </Parameters>
+      </MonadAdapterFiller>
+    </DataTableFillers>
+
+    <Configuration>
+      <Caption>ServerConfigurationNodeText</Caption>
+      <DisplayedColumns>
+        <RefColumns Name="ExchangeServerDisplayedProperties" />
+      </DisplayedColumns>
+      <SortProperty>Name</SortProperty>
+      <MultiSelect>false</MultiSelect>
+    </Configuration>
+  </ResultsLoader>
+
+  <!--Schema for Mailbox Server-->
+  <ResultsLoader Name="MailboxServer">
+    <DataColumns PrimaryKey="Guid" DataColumnsCalculator="Microsoft.Exchange.Management.SnapIn.Esm.ServerDataColumnsCalculator, Microsoft.Exchange.Management.SnapIn.Esm">
+      <RefColumns Name="ExchangeServerProperties" />
+    </DataColumns>
+
+    <InputColumns>
+      <RefColumns Name="ExchangeServerInputProperites" />
+    </InputColumns>
+
+    <DataTableFillers FillType="PartialFill" >
+      <MonadAdapterFiller Command="Get-ExchangeServer" ResolveCommand ="" FilterBuilder="Microsoft.Exchange.Management.SnapIn.Esm.ADObjectFilterBuilder, Microsoft.Exchange.Management.SnapIn.Esm">
+        <Parameters>
+          <AdditionalParameter Name="Identity"/>
+        </Parameters>
+      </MonadAdapterFiller>
+      <MonadAdapterFiller Command="Get-TransportService" ResolveCommand ="" FilterBuilder="Microsoft.Exchange.Management.SnapIn.Esm.ADObjectFilterBuilder, Microsoft.Exchange.Management.SnapIn.Esm">
+        <Parameters>
+          <AdditionalParameter Name="Identity"/>
+        </Parameters>
+      </MonadAdapterFiller>
+      <MonadAdapterFiller Command="Get-ClientAccessServer" ResolveCommand ="" FilterBuilder="Microsoft.Exchange.Management.SnapIn.Esm.ADObjectFilterBuilder, Microsoft.Exchange.Management.SnapIn.Esm">
+        <Parameters>
+          <AdditionalParameter Name="Identity"/>
+        </Parameters>
+      </MonadAdapterFiller>
+      <MonadAdapterFiller Command="Get-MailboxServer" ResolveCommand ="" FilterBuilder="Microsoft.Exchange.Management.SnapIn.Esm.ADObjectFilterBuilder, Microsoft.Exchange.Management.SnapIn.Esm">
+        <Parameters>
+          <AdditionalParameter Name="Identity"/>
+        </Parameters>
+      </MonadAdapterFiller>
+      <MonadAdapterFiller Command="Get-UMService" ResolveCommand ="" FilterBuilder="Microsoft.Exchange.Management.SnapIn.Esm.ADObjectFilterBuilder, Microsoft.Exchange.Management.SnapIn.Esm">
+        <Parameters>
+          <AdditionalParameter Name="Identity"/>
+        </Parameters>
+      </MonadAdapterFiller>
+    </DataTableFillers>
+
+    <Configuration>
+      <Caption>MailboxCaption</Caption>
+      <DisplayedColumns>
+        <RefColumns Name="ExchangeServerDisplayedProperties" />
+        <Column Name="SiteName" Text="Site" Mandatory="false" />
+        <Column Name="DatabaseAvailabilityGroup" Text="DatabaseAvailabilityGroupColumnName" Mandatory="false" />
+        <Column Name="CalendarRepairMissingItemFixEnabled" Text="CalendarRepairMissingItemFixEnabledColumn"/>
+        <Column Name="CalendarRepairLogEnabled" Text="CalendarRepairLogEnabledColumn"/>
+        <Column Name="CalendarRepairLogSubjectLoggingEnabled" Text="CalendarRepairLogSubjectLoggingEnabledColumn"/>
+        <Column Name="CalendarRepairLogPath" Text="CalendarRepairLogPathColumn"/>
+        <Column Name="CalendarRepairIntervalEndWindow" Text="CalendarRepairIntervalEndWindowColumn"/>
+        <Column Name="CalendarRepairLogFileAgeLimit" Text="CalendarRepairLogFileAgeLimitColumn" CustomFormatter="Microsoft.Exchange.Management.SystemManager.WinForms.EnhancedTimeSpanAsDaysCoverter, Microsoft.Exchange.Management.SystemManager"/>
+        <Column Name="CalendarRepairLogDirectorySizeLimit" Text="CalendarRepairLogDirectorySizeLimitColumn" CustomFormatter="Microsoft.Exchange.Management.SystemManager.WinForms.ByteQuantifiedSizeAsMbCoverter, Microsoft.Exchange.Management.SystemManager"/>
+        <Column Name="AutoDatabaseMountDial" Text="AutoDatabaseMountDialColumn"/>
+        <Column Name="MaximumActiveDatabases" Text="MaximumActiveDatabasesColumn"/>
+        <Column Name="SubmissionServerOverrideList" Text="SubmissionServerOverrideListColumn"/>
+        <Column Name="ManagedFolderAssistantSchedule" Text="ManagedFolderAssistantScheduleColumn"/>
+      </DisplayedColumns>
+      <SortProperty>Name</SortProperty>
+      <SerializationLevel>Full</SerializationLevel>
+      <MultiSelect>false</MultiSelect>
+    </Configuration>
+  </ResultsLoader>
+
+  <!--Schema for Hub Transport Server-->
+  <ResultsLoader Name="HubTransportServer">
+    <DataColumns PrimaryKey="Guid" DataColumnsCalculator="Microsoft.Exchange.Management.SnapIn.Esm.ServerDataColumnsCalculator, Microsoft.Exchange.Management.SnapIn.Esm">
+      <RefColumns Name="ExchangeServerProperties" />
+    </DataColumns>
+
+    <InputColumns>
+      <RefColumns Name="ExchangeServerInputProperites" />
+    </InputColumns>
+
+    <DataTableFillers FillType="PartialFill" >
+      <MonadAdapterFiller Command="Get-ExchangeServer" ResolveCommand ="" FilterBuilder="Microsoft.Exchange.Management.SnapIn.Esm.ADObjectFilterBuilder, Microsoft.Exchange.Management.SnapIn.Esm">
+        <Parameters>
+          <AdditionalParameter Name="Identity"/>
+        </Parameters>
+      </MonadAdapterFiller>
+      <MonadAdapterFiller Command="Get-TransportService" ResolveCommand ="" FilterBuilder="Microsoft.Exchange.Management.SnapIn.Esm.ADObjectFilterBuilder, Microsoft.Exchange.Management.SnapIn.Esm">
+        <Parameters>
+          <AdditionalParameter Name="Identity"/>
+        </Parameters>
+      </MonadAdapterFiller>
+      <MonadAdapterFiller Command="Get-ClientAccessServer" ResolveCommand ="" FilterBuilder="Microsoft.Exchange.Management.SnapIn.Esm.ADObjectFilterBuilder, Microsoft.Exchange.Management.SnapIn.Esm">
+        <Parameters>
+          <AdditionalParameter Name="Identity"/>
+        </Parameters>
+      </MonadAdapterFiller>
+      <MonadAdapterFiller Command="Get-MailboxServer" ResolveCommand ="" FilterBuilder="Microsoft.Exchange.Management.SnapIn.Esm.ADObjectFilterBuilder, Microsoft.Exchange.Management.SnapIn.Esm">
+        <Parameters>
+          <AdditionalParameter Name="Identity"/>
+        </Parameters>
+      </MonadAdapterFiller>
+      <MonadAdapterFiller Command="Get-UMService" ResolveCommand ="" FilterBuilder="Microsoft.Exchange.Management.SnapIn.Esm.ADObjectFilterBuilder, Microsoft.Exchange.Management.SnapIn.Esm">
+        <Parameters>
+          <AdditionalParameter Name="Identity"/>
+        </Parameters>
+      </MonadAdapterFiller>
+    </DataTableFillers>
+
+    <Configuration>
+      <Caption>BridgeheadCaption</Caption>
+      <DisplayedColumns>
+        <RefColumns Name="ExchangeServerDisplayedProperties" />
+        <Column Name="SiteName" Text="Site" Mandatory="false" />
+        <Column Name="MessageTrackingLogEnabled" Text="MessageTrackingLogEnabled" Mandatory="true" />
+      </DisplayedColumns>
+      <SortProperty>Name</SortProperty>
+      <MultiSelect>false</MultiSelect>
+    </Configuration>
+  </ResultsLoader>
+
+  <!--Schema for Client Access Server-->
+  <ResultsLoader Name="ClientAccessServer">
+    <DataColumns PrimaryKey="Guid" DataColumnsCalculator="Microsoft.Exchange.Management.SnapIn.Esm.ServerDataColumnsCalculator, Microsoft.Exchange.Management.SnapIn.Esm">
+      <RefColumns Name="ExchangeServerProperties" />
+    </DataColumns>
+
+    <InputColumns>
+      <RefColumns Name="ExchangeServerInputProperites" />
+    </InputColumns>
+
+    <DataTableFillers FillType="PartialFill" >
+      <MonadAdapterFiller Command="Get-ExchangeServer" ResolveCommand ="" FilterBuilder="Microsoft.Exchange.Management.SnapIn.Esm.ADObjectFilterBuilder, Microsoft.Exchange.Management.SnapIn.Esm">
+        <Parameters>
+          <AdditionalParameter Name="Identity"/>
+        </Parameters>
+      </MonadAdapterFiller>
+      <MonadAdapterFiller Command="Get-TransportService" ResolveCommand ="" FilterBuilder="Microsoft.Exchange.Management.SnapIn.Esm.ADObjectFilterBuilder, Microsoft.Exchange.Management.SnapIn.Esm">
+        <Parameters>
+          <AdditionalParameter Name="Identity"/>
+        </Parameters>
+      </MonadAdapterFiller>
+      <MonadAdapterFiller Command="Get-ClientAccessServer" ResolveCommand ="" FilterBuilder="Microsoft.Exchange.Management.SnapIn.Esm.ADObjectFilterBuilder, Microsoft.Exchange.Management.SnapIn.Esm">
+        <Parameters>
+          <AdditionalParameter Name="Identity"/>
+        </Parameters>
+      </MonadAdapterFiller>
+      <MonadAdapterFiller Command="Get-MailboxServer" ResolveCommand ="" FilterBuilder="Microsoft.Exchange.Management.SnapIn.Esm.ADObjectFilterBuilder, Microsoft.Exchange.Management.SnapIn.Esm">
+        <Parameters>
+          <AdditionalParameter Name="Identity"/>
+        </Parameters>
+      </MonadAdapterFiller>
+      <MonadAdapterFiller Command="Get-UMService" ResolveCommand ="" FilterBuilder="Microsoft.Exchange.Management.SnapIn.Esm.ADObjectFilterBuilder, Microsoft.Exchange.Management.SnapIn.Esm">
+        <Parameters>
+          <AdditionalParameter Name="Identity"/>
+        </Parameters>
+      </MonadAdapterFiller>
+    </DataTableFillers>
+
+    <Configuration>
+      <Caption>ClientAccess</Caption>
+      <DisplayedColumns>
+        <RefColumns Name="ExchangeServerDisplayedProperties" />
+        <Column Name="SiteName" Text="Site" Mandatory="false" />
+        <Column Name="OutlookAnywhereEnabled" Text="RpcHttpEnabledColumn" Mandatory="true" />
+      </DisplayedColumns>
+      <SortProperty>Name</SortProperty>
+      <MultiSelect>false</MultiSelect>
+    </Configuration>
+  </ResultsLoader>
+
+  <!--Schema for Unified Messaging Server-->
+  <ResultsLoader Name="UnifiedMessagingServer">
+    <DataColumns PrimaryKey="Guid" DataColumnsCalculator="Microsoft.Exchange.Management.SnapIn.Esm.ServerDataColumnsCalculator, Microsoft.Exchange.Management.SnapIn.Esm">
+      <RefColumns Name="ExchangeServerProperties" />
+    </DataColumns>
+
+    <InputColumns>
+      <RefColumns Name="ExchangeServerInputProperites" />
+    </InputColumns>
+
+    <DataTableFillers FillType="PartialFill">
+      <MonadAdapterFiller Command="Get-ExchangeServer" ResolveCommand ="" FilterBuilder="Microsoft.Exchange.Management.SnapIn.Esm.ADObjectFilterBuilder, Microsoft.Exchange.Management.SnapIn.Esm">
+        <Parameters>
+          <AdditionalParameter Name="Identity"/>
+        </Parameters>
+      </MonadAdapterFiller>
+      <MonadAdapterFiller Command="Get-TransportService" ResolveCommand ="" FilterBuilder="Microsoft.Exchange.Management.SnapIn.Esm.ADObjectFilterBuilder, Microsoft.Exchange.Management.SnapIn.Esm">
+        <Parameters>
+          <AdditionalParameter Name="Identity"/>
+        </Parameters>
+      </MonadAdapterFiller>
+      <MonadAdapterFiller Command="Get-ClientAccessServer" ResolveCommand ="" FilterBuilder="Microsoft.Exchange.Management.SnapIn.Esm.ADObjectFilterBuilder, Microsoft.Exchange.Management.SnapIn.Esm">
+        <Parameters>
+          <AdditionalParameter Name="Identity"/>
+        </Parameters>
+      </MonadAdapterFiller>
+      <MonadAdapterFiller Command="Get-MailboxServer" ResolveCommand ="" FilterBuilder="Microsoft.Exchange.Management.SnapIn.Esm.ADObjectFilterBuilder, Microsoft.Exchange.Management.SnapIn.Esm">
+        <Parameters>
+          <AdditionalParameter Name="Identity"/>
+        </Parameters>
+      </MonadAdapterFiller>
+      <MonadAdapterFiller Command="Get-UMService" ResolveCommand ="" FilterBuilder="Microsoft.Exchange.Management.SnapIn.Esm.ADObjectFilterBuilder, Microsoft.Exchange.Management.SnapIn.Esm">
+        <Parameters>
+          <AdditionalParameter Name="Identity"/>
+        </Parameters>
+      </MonadAdapterFiller>
+    </DataTableFillers>
+
+    <Configuration>
+      <Caption>UnifiedMessaging</Caption>
+      <DisplayedColumns>
+        <RefColumns Name="ExchangeServerDisplayedProperties" />
+        <Column Name="SiteName" Text="Site" Mandatory="false" />
+        <!--NOTE(zhenyang): temp workaround for shared DataTable with different view.
+         After we finish full-DDIed EMC, we can do global optimization for Available Columns.
+        Will file one bug to track this issue before check in, and place it in the comments.-->
+        <!--NOTE(fewang): For bug 163113 add one sortable status calculated from enum column Status to avoid adding
+        additional column in OnSetActive during other server result pane is refreshing. After zhenyang finish
+        the global optimization this can be changed back to use Status column-->
+        <Column Name="SortableStatus" Text="UmServerStatusColumnName" Mandatory="true"/>
+        <Column Name="DialPlans" Text="UmServerDialPlansColumnName" Mandatory="true" SortMode="NotSupported" />
+        <Column Name="MaxCallsAllowed" Text="MaxCallsAllowedColumn" Mandatory="false" />
+        <Column Name="Languages" Text="LanguagesColumn" Mandatory="false" />
+      </DisplayedColumns>
+      <SortProperty>Name</SortProperty>
+      <MultiSelect>false</MultiSelect>
+    </Configuration>
+  </ResultsLoader>
+
+  <!--Scheme for OrganizationConfig-->
+  <ResultsLoader Name="OrganizationConfig">
+    <DataColumns PrimaryKey="Guid">
+      <RefColumns Name="ADObjectCommonProperties" />
+      <Column Name="CustomerFeedbackEnabled" Type="System.Object"/>
+    </DataColumns>
+
+    <DataTableFillers>
+      <MonadAdapterFiller Command="Get-OrganizationConfig" ResolveCommand ="" FilterBuilder=""/>
+    </DataTableFillers>
+  </ResultsLoader>
+
+  <!--Schema for Dial Plan-->
+  <ResultsLoader Name="UMDialPlan">
+    <DataColumns PrimaryKey="Guid" NameProperty="Name">
+      <RefColumns Name="ADObjectCommonProperties" />
+      <Column Name="NumberOfDigitsInExtension" Type="System.Int32" />
+      <Column Name="UMServers" Type="System.String" />
+      <Column Name="UMIPGateway" Type="System.String" />
+      <Column Name="UMMailboxPolicies" Type="System.String" />
+      <Column Name="PhoneContext" Type="System.String" />
+      <Column Name="AutomaticSpeechRecognitionEnabled" Type="System.Boolean" />
+      <Column Name="OutsideLineAccessCode" Type="System.String" />
+      <Column Name="InternationalAccessCode" Type="System.String" />
+      <Column Name="NationalNumberPrefix" Type="System.String" />
+      <Column Name="CountryOrRegionCode" Type="System.String" />
+      <Column Name="InCountryOrRegionNumberFormat" Type="System.String" />
+      <Column Name="InternationalNumberFormat" Type="System.String" />
+      <Column Name="FaxEnabled" Type="System.Boolean" />
+      <Column Name="WelcomeGreetingFilename" Type="System.String" />
+      <Column Name="WelcomeGreetingEnabled" Type="System.Boolean" />
+      <Column Name="InfoAnnouncementFilename" Type="System.String" />
+      <Column Name="InfoAnnouncementEnabled" Type="Microsoft.Exchange.Data.Directory.SystemConfiguration.InfoAnnouncementEnabledEnum, Microsoft.Exchange.Data.Directory" />
+      <Column Name="LogonFailuresBeforeDisconnect" Type="System.Int32" />
+      <Column Name="CallSomeoneEnabled" Type="System.Boolean" />
+      <Column Name="ContactScope" Type="Microsoft.Exchange.Data.Directory.SystemConfiguration.CallSomeoneScopeEnum, Microsoft.Exchange.Data.Directory" />
+      <Column Name="SendVoiceMsgEnabled" Type="System.Boolean" />
+      <Column Name="OperatorExtension" Type="System.String" />
+      <Column Name="Extension" Type="System.String" />
+      <Column Name="UMAutoAttendant" Type="System.String" />
+      <Column Name="InputFailuresBeforeDisconnect" Type="System.Int32" />
+      <Column Name="DefaultLanguage" Type="System.String" />
+      <Column Name="MaxCallDuration" Type="System.Int32" />
+      <Column Name="MaxRecordingDuration" Type="System.Int32" />
+      <Column Name="RecordingIdleTimeout" Type="System.Int32" />
+      <Column Name="DialByNamePrimary" Type="Microsoft.Exchange.Data.Directory.SystemConfiguration.DialByNamePrimaryEnum, Microsoft.Exchange.Data.Directory" />
+      <Column Name="DialByNameSecondary" Type="Microsoft.Exchange.Data.Directory.SystemConfiguration.DialByNameSecondaryEnum, Microsoft.Exchange.Data.Directory" />
+      <Column Name="MatchedNameSelectionMethod" Type="Microsoft.Exchange.Data.Directory.SystemConfiguration.DisambiguationFieldEnum, Microsoft.Exchange.Data.Directory" />
+      <Column Name="AudioCodec" Type="Microsoft.Exchange.Data.Directory.SystemConfiguration.AudioCodecEnum, Microsoft.Exchange.Data.Directory" />
+      <Column Name="URIType" Type="Microsoft.Exchange.Data.Directory.SystemConfiguration.UMUriType, Microsoft.Exchange.Data.Directory" />
+      <Column Name="VoIPSecurity" Type="Microsoft.Exchange.Data.Directory.SystemConfiguration.UMVoIPSecurityType, Microsoft.Exchange.Data.Directory" />
+      <Column Name="WhenChanged" Type="System.DateTime" />
+    </DataColumns>
+
+    <InputColumns>
+      <RefColumns Name="ADObjectIdentity" />
+    </InputColumns>
+
+    <DataTableFillers>
+      <MonadAdapterFiller Command="Get-UMDialPlan" ResolveCommand ="" FilterBuilder="Microsoft.Exchange.Management.SnapIn.Esm.ADObjectFilterBuilder, Microsoft.Exchange.Management.SnapIn.Esm">
+        <Parameters>
+          <AdditionalParameter Name="Identity"/>
+        </Parameters>
+      </MonadAdapterFiller>
+    </DataTableFillers>
+
+    <Configuration>
+      <Caption>DialPlanResultPaneTitle</Caption>
+      <DisplayedColumns>
+        <Column Name="Name" Text="DialPlanColumnName" Mandatory="true" />
+        <Column Name="NumberOfDigitsInExtension" Text="NumberOfDigitsColumnName" Mandatory="true" />
+        <Column Name="UMServers" Text="ServersColumnName" Mandatory="true" DefaultEmptyText="NoServersAssociated"/>
+        <Column Name="UMIPGateway" Text="IPGatewayColumnName" Mandatory="true" DefaultEmptyText="NoGatewaysAssociated" />
+        <Column Name="UMMailboxPolicies" Text="UMMailboxPoliciesColumnName" Mandatory="true" />
+        <Column Name="PhoneContext" Text="PhoneContextColumnName" Mandatory="false" />
+        <Column Name="AutomaticSpeechRecognitionEnabled" Text="ASREnabledColumnName" Mandatory="false" />
+        <Column Name="OutsideLineAccessCode" Text="OutsideLineAccessCodeColumnName" Mandatory="false" />
+        <Column Name="InternationalAccessCode" Text="InternationalAccessCodeColumnName" Mandatory="false" />
+        <Column Name="NationalNumberPrefix" Text="NationalNumberPrefixColumnName" Mandatory="false" />
+        <Column Name="CountryOrRegionCode" Text="CountryCodeColumnName" Mandatory="false" />
+        <Column Name="InCountryOrRegionNumberFormat" Text="InCountryNumberFormatColumnName" Mandatory="false" />
+        <Column Name="InternationalNumberFormat" Text="InternationalNumberFormatColumnName" Mandatory="false" />
+        <Column Name="FaxEnabled" Text="FaxEnabledColumnName" Mandatory="false" />
+        <Column Name="WelcomeGreetingFilename" Text="WelcomeGreetingColumnName" Mandatory="false" />
+        <Column Name="WelcomeGreetingEnabled" Text="WelcomeGreetingEnabledeColumnName" Mandatory="false" />
+        <Column Name="InfoAnnouncementFilename" Text="InfoAnnouncementColumnName" Mandatory="false" />
+        <Column Name="InfoAnnouncementEnabled" Text="InfoAnnouncementEnabledColumnName" Mandatory="false" />
+        <Column Name="LogonFailuresBeforeDisconnect" Text="LoginFailuresBeforeDisconnectColumnName" Mandatory="false" />
+        <Column Name="CallSomeoneEnabled" Text="CallSomeoneColumnName" Mandatory="false" />
+        <Column Name="ContactScope" Text="CallSomeoneScopeColumnName" Mandatory="false" />
+        <Column Name="SendVoiceMsgEnabled" Text="SendVoiceMsgColumnName" Mandatory="false" />
+        <Column Name="OperatorExtension" Text="OperatorExtensionColumnName" Mandatory="false" />
+        <Column Name="Extension" Text="ExtensionColumnName" Mandatory="false" />
+        <Column Name="UMAutoAttendant" Text="AALinkColumnName" Mandatory="false" />
+        <Column Name="InputFailuresBeforeDisconnect" Text="InputFailuresBeforeDisconnectColumnName" Mandatory="false" />
+        <Column Name="DefaultLanguage" Text="DefaultLanguageColumnName" Mandatory="false" />
+        <Column Name="MaxCallDuration" Text="MaxCallDurationColumnName" Mandatory="false" />
+        <Column Name="MaxRecordingDuration" Text="MaxRecordingDurationColumnName" Mandatory="false" />
+        <Column Name="RecordingIdleTimeout" Text="RecordingIdleTimeoutColumnName" Mandatory="false" />
+        <Column Name="DialByNamePrimary" Text="DialByNamePrimaryColumnName" Mandatory="false" />
+        <Column Name="DialByNameSecondary" Text="DialByNameSecondaryColumnName" Mandatory="false" />
+        <Column Name="MatchedNameSelectionMethod" Text="DisambiguationFieldColumnName" Mandatory="false" />
+        <Column Name="AudioCodec" Text="AudioCodeColumnName" Mandatory="false" />
+        <Column Name="URIType" Text="UriTypeColumnName" Mandatory="false" />
+        <Column Name="VoIPSecurity" Text="VoIPSecurityColumnName" Mandatory="false" />
+        <Column Name="WhenChanged" Text="LastModifiedColumnName" Mandatory="false" />
+      </DisplayedColumns>
+      <FilterColumns ObjectSchema="Microsoft.Exchange.Data.Directory.SystemConfiguration.UMDialPlanSchema, Microsoft.Exchange.Data.Directory">
+        <Column Name="Name" />
+        <Column Name="NumberOfDigitsInExtension" />
+        <Column Name="UMServers" ColumnType="Microsoft.Exchange.Data.MultiValuedProperty`1[System.String], Microsoft.Exchange.Data" Operators="Equal,NotEqual,Contains,NotContains,Present,NotPresent" PickerProfile="UnifiedMessagingServerConfigurable"/>
+        <Column Name="UMIPGateway" ColumnType="Microsoft.Exchange.Data.MultiValuedProperty`1[System.String], Microsoft.Exchange.Data" Operators="Equal,NotEqual,Contains,NotContains,Present,NotPresent" PickerProfile="IPGatewayConfigurable"/>
+        <Column Name="UMMailboxPolicies" ColumnType="Microsoft.Exchange.Data.MultiValuedProperty`1[System.String], Microsoft.Exchange.Data" Operators="Equal,NotEqual,Contains,NotContains" PickerProfile="UMMailboxPolicyConfigurable"/>
+        <Column Name="URIType" />
+        <Column Name="VoIPSecurity" />
+        <Column Name="CountryOrRegionCode" ColumnType="System.String" Operators="Equal,NotEqual,Contains,NotContains"/>
+        <Column Name="FaxEnabled" />
+        <Column Name="InfoAnnouncementEnabled" />
+        <Column Name="AutomaticSpeechRecognitionEnabled"/>
+        <Column Name="CallSomeoneEnabled" />
+        <Column Name="ContactScope" />
+        <Column Name="AudioCodec" />
+        <Column Name="DialByNamePrimary" />
+        <Column Name="DialByNameSecondary" />
+        <Column Name="InputFailuresBeforeDisconnect" />
+        <Column Name="LogonFailuresBeforeDisconnect" />
+        <Column Name="MaxCallDuration" />
+        <Column Name="MaxRecordingDuration"/>
+        <Column Name="RecordingIdleTimeout"/>
+        <Column Name="UMAutoAttendant" ColumnType="System.String" PickerProfile="AutoAttendantConfigurable" Operators="Equal,NotEqual"/>
+      </FilterColumns>
+      <SortProperty>Name</SortProperty>
+      <MultiSelect>true</MultiSelect>
+    </Configuration>
+  </ResultsLoader>
+
+  <!--Schema for UM Mailbox Policy-->
+  <ResultsLoader Name="UMMailboxPolicy">
+    <DataColumns PrimaryKey="Guid" NameProperty="Name">
+      <RefColumns Name="ADObjectCommonProperties" />
+      <Column Name="UMDialPlan" Type="System.String" />
+      <Column Name="MinPINLength" Type="System.Int32"/>
+      <Column Name="LogonFailuresBeforePINReset" Type="System.Object" ExpectedType="Microsoft.Exchange.Data.Unlimited`1[System.Int32], Microsoft.Exchange.Data" />
+      <Column Name="LogonFailuresBeforePINResetForFilter" Type="System.Int32" LambdaExpression="LogonFailuresBeforePINReset=>FilterControlHelper.GetIntFromUnlimitedInt(@0[LogonFailuresBeforePINReset])"/>
+      <Column Name="MaxLogonAttempts" Type="System.Object" ExpectedType="Microsoft.Exchange.Data.Unlimited`1[System.Int32], Microsoft.Exchange.Data"/>
+      <Column Name="MaxLogonAttemptsForFilter" Type="System.Int32" LambdaExpression="MaxLogonAttempts=>FilterControlHelper.GetIntFromUnlimitedInt(@0[MaxLogonAttempts])"/>
+      <Column Name="PINLifetime" Type="System.Object" ExpectedType="Microsoft.Exchange.Data.Unlimited`1[[Microsoft.Exchange.Data.EnhancedTimeSpan, Microsoft.Exchange.Data]], Microsoft.Exchange.Data"/>
+      <Column Name="PINLifetimeForFilter" Type="System.Int64" LambdaExpression="PINLifetime=>FilterControlHelper.GetDaysFromEnhancedTimeSpan(@0[PINLifetime])"/>
+      <Column Name="MaxGreetingDuration" Type="System.Int32" />
+      <Column Name="AllowMissedCallNotifications" Type="System.Boolean" />
+      <Column Name="AllowCommonPatterns" Type="System.Boolean" />
+      <Column Name="PINHistoryCount" Type="System.Int32" />
+      <Column Name="AllowDialPlanSubscribers" Type="System.Boolean" />
+      <Column Name="AllowExtensions" Type="System.Boolean" />
+      <Column Name="WhenChanged" Type="System.DateTime" />
+    </DataColumns>
+
+    <InputColumns>
+      <RefColumns Name="ADObjectIdentity" />
+    </InputColumns>
+
+    <DataTableFillers>
+      <MonadAdapterFiller Command="Get-UMMailboxPolicy" ResolveCommand ="" FilterBuilder="Microsoft.Exchange.Management.SnapIn.Esm.ADObjectFilterBuilder, Microsoft.Exchange.Management.SnapIn.Esm">
+        <Parameters>
+          <AdditionalParameter Name="Identity"/>
+        </Parameters>
+      </MonadAdapterFiller>
+    </DataTableFillers>
+
+    <Configuration>
+      <Caption>UMMailboxResultPaneTitle</Caption>
+      <DisplayedColumns>
+        <Column Name="Name" Text="UMMailboxPoliciesNameColumnName" Mandatory="true" />
+        <Column Name="UMDialPlan" Text="UMMailboxPoliciesDialPlanColumnName" Mandatory="true" />
+        <Column Name="MinPINLength" Text="UMMailboxPoliciesMinPINLengthColumnName" Mandatory="true" />
+        <Column Name="LogonFailuresBeforePINReset" Text="UMMailboxPoliciesLogonFailuresColumnName" Mandatory="true" />
+        <Column Name="MaxLogonAttempts" Text="UMMailboxPoliciesMaxLogonAttemptsColumnName" Mandatory="true" />
+        <Column Name="PINLifetime" Text="UMMailboxPoliciesPINLifetimeColumnName" Mandatory="true" CustomFormatter="Microsoft.Exchange.Management.SystemManager.WinForms.EnhancedTimeSpanAsDaysCoverter, Microsoft.Exchange.Management.SystemManager" />
+        <Column Name="MaxGreetingDuration" Text="UMMailboxPolicyMaxGreetingDurationColumnName" Mandatory="false" />
+        <Column Name="AllowMissedCallNotifications" Text="UMMailboxPolicyAllowMissedCallNotificationColumnName" Mandatory="false" />
+        <Column Name="AllowCommonPatterns" Text="UMMailboxPolicyAllowCommonPatternsColumnName" Mandatory="false" />
+        <Column Name="PINHistoryCount" Text="UMMailboxPolicyPINHistoryCountColumnName" Mandatory="false" />
+        <Column Name="AllowDialPlanSubscribers" Text="UMMailboxPolicyAllowDialPlanSubscribersColumnName" Mandatory="false" />
+        <Column Name="AllowExtensions" Text="UMMailboxPolicyAllowExtensionsColumnName" Mandatory="false" />
+        <Column Name="WhenChanged" Text="LastModifiedColumnName" Mandatory="false" />
+      </DisplayedColumns>
+      <FilterColumns ObjectSchema="Microsoft.Exchange.Data.Directory.SystemConfiguration.UMMailboxPolicySchema, Microsoft.Exchange.Data.Directory">
+        <Column Name="Name" />
+        <Column Name="UMDialPlan" PickerProfile="DialPlanConfigurable" ColumnType="System.String" Operators="Equal,NotEqual"/>
+        <Column Name="MinPINLength" />
+        <Column Name="LogonFailuresBeforePINResetForFilter" RefDisplayedColumn="LogonFailuresBeforePINReset" ObjectSchemaField="LogonFailuresBeforePINReset" Operators="Equal,NotEqual,GreaterThan,GreaterThanOrEqual,LessThan,LessThanOrEqual"/>
+        <Column Name="MaxLogonAttemptsForFilter" RefDisplayedColumn="MaxLogonAttempts" ObjectSchemaField="MaxLogonAttempts" Operators="Equal,NotEqual,GreaterThan,GreaterThanOrEqual,LessThan,LessThanOrEqual"/>
+        <Column Name="PINLifetimeForFilter" RefDisplayedColumn="PINLifetime" ColumnType="System.Int64"/>
+        <Column Name="MaxGreetingDuration" />
+        <Column Name="AllowMissedCallNotifications" />
+        <Column Name="AllowCommonPatterns"/>
+        <Column Name="PINHistoryCount"/>
+        <Column Name="AllowDialPlanSubscribers" />
+        <Column Name="AllowExtensions" />
+      </FilterColumns>
+      <SortProperty>Name</SortProperty>
+      <MultiSelect>true</MultiSelect>
+    </Configuration>
+  </ResultsLoader>
+
+  <!--Schema for UM Auto Attendant-->
+  <ResultsLoader Name="UMAutoAttendant">
+    <DataColumns PrimaryKey="Guid" NameProperty="Name">
+      <RefColumns Name="ADObjectCommonProperties" />
+      <Column Name="UMDialPlan" Type="System.String" />
+      <Column Name="PilotIdentifierList" Type="System.String" />
+      <Column Name="SpeechEnabled" Type="System.Boolean" />
+      <Column Name="Status" Type="Microsoft.Exchange.Data.Directory.SystemConfiguration.StatusEnum, Microsoft.Exchange.Data.Directory" />
+      <Column Name="DTMFFallbackAutoAttendant" Type="System.String" />
+      <Column Name="TimeZoneName" Type="System.String" />
+      <Column Name="Language" Type="System.Object" ExpectedType="Microsoft.Exchange.Data.UMLanguage, Microsoft.Exchange.Data"/>
+      <Column Name="BusinessHoursWelcomeGreetingFilename" Type="System.String" />
+      <Column Name="BusinessHoursWelcomeGreetingEnabled" Type="System.Boolean" />
+      <Column Name="AfterHoursWelcomeGreetingFilename" Type="System.String" />
+      <Column Name="AfterHoursWelcomeGreetingEnabled" Type="System.Boolean" />
+      <Column Name="InfoAnnouncementFilename" Type="System.String" />
+      <Column Name="InfoAnnouncementEnabled" Type="Microsoft.Exchange.Data.Directory.SystemConfiguration.InfoAnnouncementEnabledEnum, Microsoft.Exchange.Data.Directory" />
+      <Column Name="BusinessHoursMainMenuCustomPromptFilename" Type="System.String" />
+      <Column Name="BusinessHoursMainMenuCustomPromptEnabled" Type="System.Boolean" />
+      <Column Name="AfterHoursMainMenuCustomPromptFilename" Type="System.String" />
+      <Column Name="AfterHoursMainMenuCustomPromptEnabled" Type="System.Boolean" />
+      <Column Name="OperatorExtension" Type="System.String" />
+      <Column Name="BusinessHoursTransferToOperatorEnabled" Type="System.Boolean" />
+      <Column Name="AfterHoursTransferToOperatorEnabled" Type="System.Boolean" />
+      <Column Name="WhenChanged" Type="System.DateTime" />
+    </DataColumns>
+
+    <InputColumns>
+      <RefColumns Name="ADObjectIdentity" />
+    </InputColumns>
+
+    <DataTableFillers>
+      <MonadAdapterFiller Command="Get-UMAutoAttendant" ResolveCommand ="" FilterBuilder="Microsoft.Exchange.Management.SnapIn.Esm.ADObjectFilterBuilder, Microsoft.Exchange.Management.SnapIn.Esm">
+        <Parameters>
+          <AdditionalParameter Name="Identity"/>
+        </Parameters>
+      </MonadAdapterFiller>
+    </DataTableFillers>
+
+    <Configuration>
+      <Caption>AutoAttendantResultPaneTitle</Caption>
+      <DisplayedColumns>
+        <Column Name="Name" Text="AutoAttendantColumnName" Mandatory="true" />
+        <Column Name="UMDialPlan" Text="AutoAttendantDialPlanColumn" Mandatory="true" />
+        <Column Name="PilotIdentifierList" Text="AutoAttendantPilotIdentifierListColumn" Mandatory="true" />
+        <Column Name="SpeechEnabled" Text="AutoAttendantSpeechEnabledColumn" Mandatory="true" />
+        <Column Name="Status" Text="AutoAttendantEnabledColumn" Mandatory="true" />
+        <Column Name="DTMFFallbackAutoAttendant" Text="AutoAttendantDTMFFallbackAutoAttendantColumn" Mandatory="false" />
+        <Column Name="TimeZoneName" Text="AutoAttendantTimeZoneColumn" Mandatory="false" />
+        <Column Name="Language" Text="AutoAttendantLanguageColumn" Mandatory="false" />
+        <Column Name="BusinessHoursWelcomeGreetingFilename" Text="AutoAttendantBusinessHoursWelcomeGreetingFilenameColumn" Mandatory="false" />
+        <Column Name="BusinessHoursWelcomeGreetingEnabled" Text="AutoAttendantBusinessHoursWelcomeGreetingEnabledColumn" Mandatory="false" />
+        <Column Name="AfterHoursWelcomeGreetingFilename" Text="AutoAttendantAfterHoursWelcomeGreetingFilenameColumn" Mandatory="false" />
+        <Column Name="AfterHoursWelcomeGreetingEnabled" Text="AutoAttendantAfterHoursWelcomeGreetingEnabledColumn" Mandatory="false" />
+        <Column Name="InfoAnnouncementFilename" Text="AutoAttendantInfoAnnouncementGreetingFilenameColumn" Mandatory="false" />
+        <Column Name="InfoAnnouncementEnabled" Text="AutoAttendantInfoAnnouncementGreetingEnableColumn" Mandatory="false" />
+        <Column Name="BusinessHoursMainMenuCustomPromptFilename" Text="AutoAttendantBusinessHoursMainMenuCustomPromptFilenameColumn" Mandatory="false" />
+        <Column Name="BusinessHoursMainMenuCustomPromptEnabled" Text="AutoAttendantBusinessHoursMainMenuCustomPromptEnabledColumn" Mandatory="false" />
+        <Column Name="AfterHoursMainMenuCustomPromptFilename" Text="AutoAttendantAfterHoursMainMenuCustomPromptFilenameColumn" Mandatory="false" />
+        <Column Name="AfterHoursMainMenuCustomPromptEnabled" Text="AutoAttendantAfterHoursMainMenuCustomPromptEnabledColumn" Mandatory="false" />
+        <Column Name="OperatorExtension" Text="OperatorExtensionColumnName" Mandatory="false" />
+        <Column Name="BusinessHoursTransferToOperatorEnabled" Text="AutoAttendantBusinessHoursTransferToOperatorEnabledColumn" Mandatory="false" />
+        <Column Name="AfterHoursTransferToOperatorEnabled" Text="AutoAttendantAfterHoursTransferToOperatorEnabledColumn" Mandatory="false" />
+        <Column Name="WhenChanged" Text="LastModifiedColumnName" Mandatory="false" />
+      </DisplayedColumns>
+      <FilterColumns ObjectSchema="Microsoft.Exchange.Data.Directory.SystemConfiguration.UMAutoAttendantSchema, Microsoft.Exchange.Data.Directory">
+        <Column Name="Name"/>
+        <Column Name="UMDialPlan" PickerProfile="DialPlanConfigurable" ColumnType="System.String" Operators="Equal,NotEqual"/>
+        <Column Name="PilotIdentifierList" ColumnType="System.String" Operators="Equal,NotEqual,Contains,NotContains,Present,NotPresent"/>
+        <Column Name="SpeechEnabled" ObjectSchemaField="AutomaticSpeechRecognitionEnabled"/>
+        <Column Name="Status" ColumnType="Microsoft.Exchange.Data.Directory.SystemConfiguration.StatusEnum, Microsoft.Exchange.Data.Directory"/>
+        <Column Name="DTMFFallbackAutoAttendant" ColumnType="System.String" PickerProfile="AutoAttendantConfigurable" Operators="Equal,NotEqual"/>
+        <Column Name="InfoAnnouncementEnabled" />
+      </FilterColumns>
+      <SortProperty>Name</SortProperty>
+      <ImageColumn>Status</ImageColumn>
+      <MultiSelect>true</MultiSelect>
+    </Configuration>
+  </ResultsLoader>
+
+  <!--Schema for Moblie Mailbox Policy-->
+  <ResultsLoader Name="MobileMailboxPolicy">
+    <DataColumns PrimaryKey="Guid" NameProperty="Name">
+      <RefColumns Name="ADObjectCommonProperties" />
+      <Column Name="AllowNonProvisionableDevices" Type="System.Boolean" />
+      <Column Name="DevicePasswordEnabled" Type="System.Boolean" />
+      <Column Name="RequireDeviceEncryption" Type="System.Boolean" />
+      <Column Name="AttachmentsEnabled" Type="System.Boolean" />
+      <Column Name="IsDefault" Type="System.Boolean" />
+      <Column Name="WhenChanged" Type="System.DateTime" />
+    </DataColumns>
+
+    <InputColumns>
+      <RefColumns Name="ADObjectIdentity" />
+    </InputColumns>
+
+    <DataTableFillers>
+      <MonadAdapterFiller Command="Get-ActiveSyncMailboxPolicy" ResolveCommand ="" FilterBuilder="Microsoft.Exchange.Management.SnapIn.Esm.ADObjectFilterBuilder, Microsoft.Exchange.Management.SnapIn.Esm">
+        <Parameters>
+          <AdditionalParameter Name="Identity"/>
+        </Parameters>
+      </MonadAdapterFiller>
+    </DataTableFillers>
+
+    <Configuration>
+      <Caption>ActiveSyncMailboxPolicyResultPaneTitle</Caption>
+      <DisplayedColumns>
+        <Column Name="Name" Text="ActiveSyncMailboxPolicyColumnName" Mandatory="true" />
+        <Column Name="AllowNonProvisionableDevices" Text="ActiveSyncMailboxPolicyColumnNonprovionableDeviceAllowed" Mandatory="true" />
+        <Column Name="DevicePasswordEnabled" Text="ActiveSyncMailboxPolicyColumnDevicePasswordRequired" Mandatory="true" />
+        <Column Name="IsDefault" Text="DefaultColumn" Mandatory="true" />
+        <Column Name="RequireDeviceEncryption" Text="ActiveSyncMailboxPolicyColumnRequireDeviceEncryption" Mandatory="false" />
+        <Column Name="AttachmentsEnabled" Text="ActiveSyncMailboxPolicyColumnAttachmentsEnabled" Mandatory="false" />
+        <Column Name="WhenChanged" Text="LastModifiedColumnName" Mandatory="false" />
+      </DisplayedColumns>
+      <FilterColumns ObjectSchema="Microsoft.Exchange.Data.Directory.SystemConfiguration.ActiveSyncMailboxPolicySchema, Microsoft.Exchange.Data.Directory">
+        <Column Name="Name" />
+        <Column Name="AllowNonProvisionableDevices" />
+        <Column Name="DevicePasswordEnabled" />
+        <Column Name="IsDefault" />
+        <Column Name="RequireDeviceEncryption" />
+        <Column Name="AttachmentsEnabled" />
+      </FilterColumns>
+      <SortProperty>Name</SortProperty>
+      <MultiSelect>true</MultiSelect>
+    </Configuration>
+  </ResultsLoader>
+
+  <!--Schema for Database Availability Group Network-->
+  <ResultsLoader Name="DatabaseAvailabilityGroupNetwork">
+    <DataColumns PrimaryKey="primaryKey" NameProperty="NetworkIdentity" DistinguishIdentity="OriginalIdentity">
+      <Column Name="primaryKey" Type="System.Int32" AutoIncrement="true"/>
+      <Column Name="Identity" Type="System.String"/>
+      <Column Name="Name"/>
+      <Column Name="ParentColumn" Type="System.String"/>
+      <Column Name="Subnets" Type="System.Object"/>
+      <Column Name="State" Type ="System.Enum" />
+      <Column Name="Interfaces" Type="System.Object"/>
+      <Column Name="ReplicationEnabled" Type="System.Boolean"/>
+      <Column Name="StateIcon" Type="System.String"/>
+      <Column Name="Image" Type="System.String"/>
+      <Column Name="NetworkIdentity" Type="System.Object"/>
+      <Column Name="DatabaseAvailabilityGroup" Type="System.String"/>
+      <Column Name="OriginalIdentity" Type="System.String"/>
+    </DataColumns>
+
+    <InputColumns>
+      <Column Name="Identity" Type="System.Object"/>
+    </InputColumns>
+
+    <DataTableFillers>
+      <DAGNetworkDataFiller Command="Get-DatabaseAvailabilityGroupNetwork" ResolveCommand ="" FilterBuilder="Microsoft.Exchange.Management.SnapIn.Esm.DAGNetworkFilterBuilder, Microsoft.Exchange.Management.SnapIn.Esm">
+        <Parameters>
+          <AdditionalParameter Name="Identity"/>
+        </Parameters>
+      </DAGNetworkDataFiller>
+    </DataTableFillers>
+
+    <Configuration>
+      <Caption>DAGNetworkTabText</Caption>
+      <DisplayedColumns>
+        <Column Name="Name" Text="NameColumnName" Mandatory="true" />
+        <Column Name="State" Text="StatusColumn" Mandatory="true" />
+      </DisplayedColumns>
+      <ImageColumn>Image</ImageColumn>
+      <SerializationLevel>Full</SerializationLevel>
+      <MultiSelect>false</MultiSelect>
+    </Configuration>
+  </ResultsLoader>
+
+  <!--Schema for Database Availability Group-->
+  <ResultsLoader Name="DatabaseAvailabilityGroup">
+    <DataColumns PrimaryKey="Guid" NameProperty="Name">
+      <RefColumns Name="ADObjectCommonProperties" />
+      <Column Name="Servers" Type="System.String"/>
+      <Column Name="WitnessServer" />
+      <Column Name="WitnessDirectory" />
+      <Column Name="AlternateWitnessServer" />
+      <Column Name="AlternateWitnessDirectory" />
+      <Column Name="DataCenterActivationMode" Type="Microsoft.Exchange.Data.Directory.SystemConfiguration.DatacenterActivationModeOption, Microsoft.Exchange.Data.Directory" />
+      <Column Name="WhenChanged" Type="System.DateTime" />
+    </DataColumns>
+
+    <InputColumns>
+      <RefColumns Name="ADObjectIdentity" />
+    </InputColumns>
+
+    <DataTableFillers>
+      <MonadAdapterFiller Command="Get-DatabaseAvailabilityGroup" ResolveCommand ="" FilterBuilder="Microsoft.Exchange.Management.SnapIn.Esm.ADObjectFilterBuilder, Microsoft.Exchange.Management.SnapIn.Esm">
+        <Parameters>
+          <AdditionalParameter Name="Identity"/>
+        </Parameters>
+      </MonadAdapterFiller>
+    </DataTableFillers>
+
+    <Configuration>
+      <Caption>DatabaseAvailabilityGroupResultPaneTitle</Caption>
+      <DisplayedColumns>
+        <Column Name="Name" Text="NameColumnName" Mandatory="true" />
+        <Column Name="Servers" Text="DagMemberServersColumnName" Mandatory="true" />
+        <Column Name="WitnessServer" Text="DagWitnessServerColumnName" Mandatory="true" />
+        <Column Name="WitnessDirectory" Text="DagWitnessDirectoryColumnName" Mandatory="true" />
+        <Column Name="AlternateWitnessServer" Text="AlternateWitnessServerColumnName" Mandatory="false" />
+        <Column Name="AlternateWitnessDirectory" Text="AlternateWitnessDirectoryColumnName" Mandatory="false" />
+        <Column Name="DataCenterActivationMode" Text="DatacenterActivationModeColumnName" Mandatory="false" />
+        <Column Name="WhenChanged" Text="LastModifiedColumnName" Mandatory="false" />
+      </DisplayedColumns>
+      <FilterColumns ObjectSchema="Microsoft.Exchange.Data.Directory.SystemConfiguration.DatabaseAvailabilityGroupSchema, Microsoft.Exchange.Data.Directory">
+        <Column Name="Name" />
+        <Column Name="Servers" ColumnType="Microsoft.Exchange.Data.MultiValuedProperty`1[System.String], Microsoft.Exchange.Data" Operators="Equal,NotEqual,Contains,NotContains,Present,NotPresent" PickerProfile="E14MailboxServerConfigurable"/>
+        <Column Name="DataCenterActivationMode" />
+      </FilterColumns>
+      <SortProperty>Name</SortProperty>
+      <MultiSelect>false</MultiSelect>
+    </Configuration>
+  </ResultsLoader>
+
+  <!--Schema for Offline Address Book-->
+  <ResultsLoader Name="OfflineAddressBook">
+    <DataColumns PrimaryKey="Guid" NameProperty="Name">
+      <RefColumns Name="ADObjectCommonProperties" />
+      <Column Name="Server" Type="System.String" />
+      <Column Name="IsDefault" Type="System.Boolean" />
+      <Column Name="WebDistributionEnabled" Type="System.Boolean" />
+      <Column Name="PublicFolderDistributionEnabled" Type="System.Boolean" />
+      <Column Name="DistributionMechanism" Type="System.String"
+              LambdaExpression="
+                PublicFolderDistributionEnabled, WebDistributionEnabled, PublicFoldersDistributionMechanism, WebBasedDistributionMechanism, WebBasedAndPublicFolderDistributionMechanism=>
+                iif(Boolean(@0[PublicFolderDistributionEnabled]),
+                    iif(Boolean(@0[WebDistributionEnabled]), Strings.WebBasedAndPublicFolderDistributionMechanism.ToString(), Strings.PublicFoldersDistributionMechanism.ToString()),
+                    iif(Boolean(@0[WebDistributionEnabled]), Strings.WebBasedDistributionMechanism.ToString(), String.Empty))
+                "/>
+      <Column Name="WhenChanged" Type="System.DateTime" />
+    </DataColumns>
+
+    <InputColumns>
+      <RefColumns Name="ADObjectIdentity" />
+    </InputColumns>
+
+    <DataTableFillers>
+      <MonadAdapterFiller Command="Get-OfflineAddressBook" ResolveCommand ="" FilterBuilder="Microsoft.Exchange.Management.SnapIn.Esm.ADObjectFilterBuilder, Microsoft.Exchange.Management.SnapIn.Esm">
+        <Parameters>
+          <AdditionalParameter Name="Identity"/>
+        </Parameters>
+      </MonadAdapterFiller>
+    </DataTableFillers>
+
+    <Configuration>
+      <Caption>OfflineAddressBookResultPaneTitle</Caption>
+      <DisplayedColumns>
+        <Column Name="Name" Text="OabNameColumnName" Mandatory="true" />
+        <Column Name="Server" Text="OabServerColumnName" Mandatory="true" />
+        <Column Name="IsDefault" Text="OabIsDefaultColumnName" Mandatory="true" />
+        <Column Name="DistributionMechanism" Text="OabDistributionMechanismColumnName" Mandatory="true" />
+        <Column Name="WhenChanged" Text="LastModifiedColumnName" Mandatory="false" />
+      </DisplayedColumns>
+      <FilterColumns ObjectSchema="Microsoft.Exchange.Data.Directory.SystemConfiguration.OfflineAddressBookSchema, Microsoft.Exchange.Data.Directory">
+        <Column Name="Name" />
+        <Column Name="Server" ColumnType="System.String" Operators="Equal,NotEqual" PickerProfile="MailboxServerAndBackendServerConfigurable"/>
+        <Column Name="IsDefault" />
+        <Column Name="DistributionMechanism" ColumnType="System.String" Operators="Equal,NotEqual,Present,NotPresent" FilterableListSource="WebBasedDistributionMechanism,PublicFoldersDistributionMechanism,WebBasedAndPublicFolderDistributionMechanism"/>
+      </FilterColumns>
+      <SortProperty>Name</SortProperty>
+      <MultiSelect>true</MultiSelect>
+    </Configuration>
+  </ResultsLoader>
+
+  <!--Schema for Remote Domain-->
+  <ResultsLoader Name="RemoteDomain">
+    <DataColumns PrimaryKey="Guid" NameProperty="Name">
+      <RefColumns Name="ADObjectCommonProperties" />
+      <Column Name="DomainName" Type="System.String" />
+      <Column Name="WhenChanged" Type="System.DateTime" />
+    </DataColumns>
+
+    <InputColumns>
+      <RefColumns Name="ADObjectIdentity" />
+    </InputColumns>
+
+    <DataTableFillers>
+      <MonadAdapterFiller Command="Get-RemoteDomain" ResolveCommand ="" FilterBuilder="Microsoft.Exchange.Management.SnapIn.Esm.ADObjectFilterBuilder, Microsoft.Exchange.Management.SnapIn.Esm">
+        <Parameters>
+          <AdditionalParameter Name="Identity"/>
+        </Parameters>
+      </MonadAdapterFiller>
+    </DataTableFillers>
+
+    <Configuration>
+      <Caption>RemoteDomainTabTitle</Caption>
+      <DisplayedColumns>
+        <Column Name="Name" Text="RemoteDomainNameColumnText" Mandatory="true" />
+        <Column Name="DomainName" Text="RemoteDomainDomainNameColumnText" Mandatory="true" />
+        <Column Name="WhenChanged" Text="LastModifiedColumnName" Mandatory="false" />
+      </DisplayedColumns>
+      <FilterColumns ObjectSchema="Microsoft.Exchange.Data.Directory.SystemConfiguration.DomainContentConfigSchema, Microsoft.Exchange.Data.Directory">
+        <Column Name="Name"/>
+        <Column Name="DomainName" Operators="Equal,NotEqual,Contains,NotContains,StartsWith,EndsWith"/>
+      </FilterColumns>
+      <SortProperty>Name</SortProperty>
+      <MultiSelect>true</MultiSelect>
+    </Configuration>
+  </ResultsLoader>
+
+  <!--Schema for Accepted Domain-->
+  <ResultsLoader Name="AcceptedDomain">
+    <DataColumns PrimaryKey="Guid" NameProperty="Name">
+      <RefColumns Name="ADObjectCommonProperties" />
+      <Column Name="DomainName" Type="System.String" />
+      <Column Name="DomainType" Type="Microsoft.Exchange.Data.Directory.SystemConfiguration.AcceptedDomainType, Microsoft.Exchange.Data.Directory" />
+      <Column Name="Default" Type="System.Boolean" />
+      <Column Name="WhenChanged" Type="System.DateTime" />
+    </DataColumns>
+
+    <InputColumns>
+      <RefColumns Name="ADObjectIdentity" />
+    </InputColumns>
+
+    <DataTableFillers>
+      <MonadAdapterFiller Command="Get-AcceptedDomain" ResolveCommand ="" FilterBuilder="Microsoft.Exchange.Management.SnapIn.Esm.ADObjectFilterBuilder, Microsoft.Exchange.Management.SnapIn.Esm">
+        <Parameters>
+          <AdditionalParameter Name="Identity"/>
+        </Parameters>
+      </MonadAdapterFiller>
+    </DataTableFillers>
+
+    <Configuration>
+      <Caption>AcceptedDomainsTabTitle</Caption>
+      <DisplayedColumns>
+        <Column Name="Name" Text="NameColumnName" Mandatory="true" />
+        <Column Name="DomainName" Text="AcceptedDomainColumnTitle" Mandatory="true" />
+        <Column Name="DomainType" Text="TypeColumn" Mandatory="true" />
+        <Column Name="Default" Text="DefaultColumn" Mandatory="true" />
+        <Column Name="WhenChanged" Text="LastModifiedColumnName" Mandatory="false" />
+      </DisplayedColumns>
+      <FilterColumns ObjectSchema="Microsoft.Exchange.Data.Directory.SystemConfiguration.AcceptedDomainSchema, Microsoft.Exchange.Data.Directory">
+        <Column Name="Name"/>
+        <Column Name="DomainName" Operators="Equal,NotEqual,Contains,NotContains,StartsWith,EndsWith"/>
+        <Column Name="DomainType" ColumnType="Microsoft.Exchange.Data.Directory.SystemConfiguration.AcceptedDomainType, Microsoft.Exchange.Data.Directory"/>
+        <Column Name="Default" />
+      </FilterColumns>
+      <SortProperty>Name</SortProperty>
+      <MultiSelect>true</MultiSelect>
+    </Configuration>
+  </ResultsLoader>
+
+  <!--Schema for Transport Rule-->
+  <ResultsLoader Name="TransportRule">
+    <DataColumns PrimaryKey="Guid" NameProperty="Name" DataColumnsCalculator="Microsoft.Exchange.Management.SnapIn.Esm.TransportRuleDataColumnsCalculator, Microsoft.Exchange.Management.SnapIn.Esm">
+      <RefColumns Name="ADObjectCommonProperties" />
+      <Column Name="Priority" Type="System.Int32" />
+      <Column Name="Comments" Type="System.String" />
+      <Column Name="State" Type="Microsoft.Exchange.MessagingPolicies.Rules.RuleState, Microsoft.Exchange.Rules.Common" />
+      <Column Name="ManuallyModified" Type="System.Boolean" />
+      <Column Name="WhenChanged" Type="System.DateTime" />
+      <Column Name="CanChangePriority" Type="System.Boolean" />
+    </DataColumns>
+
+    <InputColumns>
+      <RefColumns Name="ADObjectIdentity" />
+    </InputColumns>
+
+    <DataTableFillers>
+      <MonadAdapterFiller Command="Get-TransportRule" ResolveCommand ="" FilterBuilder="Microsoft.Exchange.Management.SnapIn.Esm.ADObjectFilterBuilder, Microsoft.Exchange.Management.SnapIn.Esm">
+        <Parameters>
+          <AdditionalParameter Name="Identity"/>
+        </Parameters>
+      </MonadAdapterFiller>
+    </DataTableFillers>
+
+    <Configuration>
+      <Caption>TransportRules</Caption>
+      <DisplayedColumns>
+        <Column Name="Name" Text="ActiveSyncColumnName" Mandatory="true" />
+        <Column Name="Priority" Text="Priority" Mandatory="true" />
+        <Column Name="State" Text="StateColumnText" Mandatory="true" />
+        <Column Name="WhenChanged" Text="LastModifiedColumnName" Mandatory="false" />
+        <Column Name="ManuallyModified" Text="ManuallyModifiedColumnText" Mandatory="false" />
+        <Column Name="Comments" Text="DpRestrictionCommentColumn" Mandatory="true" />
+      </DisplayedColumns>
+      <FilterColumns ObjectSchema="Microsoft.Exchange.MessagingPolicies.Rules.Tasks.RuleSchema, Microsoft.Exchange.Management">
+        <Column Name="Name"/>
+        <Column Name="Priority" />
+        <Column Name="State" />
+        <Column Name="ManuallyModified" />
+        <Column Name="Comments" Operators="Equal,NotEqual,Contains,NotContains,StartsWith,EndsWith,Present,NotPresent"/>
+      </FilterColumns>
+      <SortProperty>Priority</SortProperty>
+      <ImageColumn>State</ImageColumn>
+      <MultiSelect>true</MultiSelect>
+    </Configuration>
+  </ResultsLoader>
+
+  <!--Schema for Journal Rule-->
+  <ResultsLoader Name="JournalRule">
+    <DataColumns PrimaryKey="Guid" NameProperty="Name">
+      <RefColumns Name="ADObjectCommonProperties" />
+      <Column Name="JournalEmailAddress" Type="System.String" />
+      <Column Name="Scope" Type="Microsoft.Exchange.MessagingPolicies.Journaling.JournalRuleScope, Microsoft.Exchange.Management" />
+      <Column Name="Status" Type="Microsoft.Exchange.Data.Directory.SystemConfiguration.StatusEnum, Microsoft.Exchange.Data.Directory"
+              LambdaExpression="Enabled=>IIF(Boolean(@0[Enabled]), StatusEnum.Enabled, StatusEnum.Disabled)"/>
+      <Column Name="Enabled" Type="System.Boolean" />
+      <Column Name="WhenChanged" Type="System.DateTime" />
+    </DataColumns>
+
+    <InputColumns>
+      <RefColumns Name="ADObjectIdentity" />
+    </InputColumns>
+
+    <DataTableFillers>
+      <MonadAdapterFiller Command="Get-JournalRule" ResolveCommand ="" FilterBuilder="Microsoft.Exchange.Management.SnapIn.Esm.ADObjectFilterBuilder, Microsoft.Exchange.Management.SnapIn.Esm">
+        <Parameters>
+          <AdditionalParameter Name="Identity"/>
+        </Parameters>
+      </MonadAdapterFiller>
+    </DataTableFillers>
+
+    <Configuration>
+      <Caption>JournalingResultPaneTitle</Caption>
+      <DisplayedColumns>
+        <Column Name="Name" Text="JournalRuleNameColumn" Mandatory="true" />
+        <Column Name="JournalEmailAddress" Text="JournalRuleEmailAddressColumn" Mandatory="true" />
+        <Column Name="Scope" Text="JournalRuleScopeColumn" Mandatory="true" />
+        <Column Name="Status" Text="JournalRuleStatusColumn" Mandatory="true" />
+        <Column Name="WhenChanged" Text="LastModifiedColumnName" Mandatory="false" />
+      </DisplayedColumns>
+      <FilterColumns ObjectSchema="Microsoft.Exchange.MessagingPolicies.Journaling.JournalRuleObjectSchema, Microsoft.Exchange.Management">
+        <Column Name="Name" />
+        <Column Name="Scope" />
+        <Column Name="Status" ColumnType="Microsoft.Exchange.Data.Directory.SystemConfiguration.StatusEnum, Microsoft.Exchange.Data.Directory"/>
+        <Column Name="JournalEmailAddress" ColumnType="System.String" Operators="Equal,NotEqual" PickerProfile="RecipientConfigurable" DisplayMember="PrimarySmtpAddressToString" ValueMember="PrimarySmtpAddressToString"/>
+      </FilterColumns>
+      <ImageColumn>Enabled</ImageColumn>
+      <SortProperty>Name</SortProperty>
+      <MultiSelect>true</MultiSelect>
+    </Configuration>
+  </ResultsLoader>
+
+  <!--Schema for Hub Transport Send Connector-->
+  <ResultsLoader Name="HubTransportSendConnector">
+    <DataColumns PrimaryKey="Guid" NameProperty="Name">
+      <RefColumns Name="ADObjectCommonProperties" />
+      <Column Name="Enabled" Type="System.Boolean" />
+      <Column Name="Status" Type="Microsoft.Exchange.Data.Directory.SystemConfiguration.StatusEnum, Microsoft.Exchange.Data.Directory"
+              LambdaExpression="Enabled=>IIF(Boolean(@0[Enabled]), StatusEnum.Enabled, StatusEnum.Disabled)"/>
+      <Column Name="ProtocolLoggingLevel" Type="Microsoft.Exchange.Data.ProtocolLoggingLevel, Microsoft.Exchange.Data" />
+      <Column Name="DNSRoutingEnabled" Type="System.Boolean" />
+      <Column Name="Fqdn" Type="System.String" />
+      <Column Name="SmartHostAuthMechanism" Type="Microsoft.Exchange.Data.Directory.SystemConfiguration.SmtpSendConnectorConfig+AuthMechanisms, Microsoft.Exchange.Data.Directory" />
+      <Column Name="RequireTLS" Type="System.Boolean" />
+      <Column Name="SourceTransportServers" Type="System.String" />
+      <Column Name="WhenChanged" Type="System.DateTime" />
+    </DataColumns>
+
+    <InputColumns>
+      <RefColumns Name="ADObjectIdentity" />
+    </InputColumns>
+
+    <DataTableFillers>
+      <MonadAdapterFiller Command="Get-SendConnector" ResolveCommand ="" FilterBuilder="Microsoft.Exchange.Management.SnapIn.Esm.ADObjectFilterBuilder, Microsoft.Exchange.Management.SnapIn.Esm">
+        <Parameters>
+          <AdditionalParameter Name="Identity"/>
+        </Parameters>
+      </MonadAdapterFiller>
+    </DataTableFillers>
+
+    <Configuration>
+      <Caption>SendConnectorTabText</Caption>
+      <DisplayedColumns>
+        <Column Name="Name" Text="ConnectorColumnHeader" Mandatory="true" />
+        <Column Name="Status" Text="StatusColumn" Mandatory="true" />
+        <Column Name="ProtocolLoggingLevel" Text="ProtocolLoggingLevelColumn" Mandatory="false" />
+        <Column Name="Fqdn" Text="FqdnColumnName" Mandatory="false" />
+        <Column Name="RequireTLS" Text="RequireTLSColumn" Mandatory="false" />
+        <Column Name="WhenChanged" Text="LastModifiedColumnName" Mandatory="false" />
+        <Column Name="DNSRoutingEnabled" Text="DNSRoutingEnabledColumn" Mandatory="false" />
+        <Column Name="SmartHostAuthMechanism" Text="AuthMechanismColumn" Mandatory="false" />
+        <Column Name="SourceTransportServers" Text="SourceTransportServersColumn" Mandatory="false" />
+      </DisplayedColumns>
+      <FilterColumns ObjectSchema="Microsoft.Exchange.Data.Directory.SystemConfiguration.SmtpSendConnectorConfigSchema, Microsoft.Exchange.Data.Directory">
+        <Column Name="Name"/>
+        <Column Name="Status" ColumnType="Microsoft.Exchange.Data.Directory.SystemConfiguration.StatusEnum, Microsoft.Exchange.Data.Directory"/>
+        <Column Name="ProtocolLoggingLevel" />
+        <Column Name="RequireTLS" />
+        <Column Name="SourceTransportServers" Operators="Equal,NotEqual,Contains,NotContains" ColumnType="Microsoft.Exchange.Data.MultiValuedProperty`1[System.String], Microsoft.Exchange.Data" PickerProfile="E14BridgeheadEdgeSubServerConfigurable"/>
+        <Column Name="Fqdn" Operators="Equal,NotEqual,Contains,NotContains,StartsWith,EndsWith,Present,NotPresent"/>
+        <Column Name="DNSRoutingEnabled" ColumnType="System.Boolean" />
+        <Column Name="SmartHostAuthMechanism" />
+      </FilterColumns>
+      <SortProperty>Name</SortProperty>
+      <MultiSelect>true</MultiSelect>
+    </Configuration>
+  </ResultsLoader>
+
+  <!--Schema for Edge Transport Send Connector-->
+  <ResultsLoader Name="EdgeTransportSendConnector">
+    <DataColumns PrimaryKey="Guid" NameProperty="Name">
+      <RefColumns Name="ADObjectCommonProperties" />
+      <Column Name="Enabled" Type="System.Boolean" />
+      <Column Name="Status" Type="Microsoft.Exchange.Data.Directory.SystemConfiguration.StatusEnum, Microsoft.Exchange.Data.Directory"
+              LambdaExpression="Enabled=>IIF(Boolean(@0[Enabled]), StatusEnum.Enabled, StatusEnum.Disabled)" />
+      <Column Name="ProtocolLoggingLevel" Type="Microsoft.Exchange.Data.ProtocolLoggingLevel, Microsoft.Exchange.Data" />
+      <Column Name="DNSRoutingEnabled" Type="System.Boolean" />
+      <Column Name="Fqdn" Type="System.String" />
+      <Column Name="SmartHostAuthMechanism" Type="Microsoft.Exchange.Data.Directory.SystemConfiguration.SmtpSendConnectorConfig+AuthMechanisms, Microsoft.Exchange.Data.Directory" />
+      <Column Name="RequireTLS" Type="System.Boolean" />
+      <Column Name="SourceTransportServers" Type="System.String" />
+      <Column Name="WhenChanged" Type="System.DateTime" />
+    </DataColumns>
+
+    <InputColumns>
+      <RefColumns Name="ADObjectIdentity" />
+    </InputColumns>
+
+    <DataTableFillers>
+      <MonadAdapterFiller Command="Get-SendConnector" ResolveCommand ="" FilterBuilder="Microsoft.Exchange.Management.SnapIn.Esm.ADObjectFilterBuilder, Microsoft.Exchange.Management.SnapIn.Esm">
+        <Parameters>
+          <AdditionalParameter Name="Identity"/>
+        </Parameters>
+      </MonadAdapterFiller>
+    </DataTableFillers>
+
+    <Configuration>
+      <Caption>SendConnectorTabText</Caption>
+      <DisplayedColumns>
+        <Column Name="Name" Text="ConnectorColumnHeader" Mandatory="true" />
+        <Column Name="Status" Text="StatusColumn" Mandatory="true" />
+        <Column Name="ProtocolLoggingLevel" Text="ProtocolLoggingLevelColumn" Mandatory="false" />
+        <Column Name="Fqdn" Text="FqdnColumnName" Mandatory="false" />
+        <Column Name="RequireTLS" Text="RequireTLSColumn" Mandatory="false" />
+        <Column Name="WhenChanged" Text="LastModifiedColumnName" Mandatory="false" />
+        <Column Name="DNSRoutingEnabled" Text="DNSRoutingEnabledColumn" Mandatory="false" />
+        <Column Name="SmartHostAuthMechanism" Text="AuthMechanismColumn" Mandatory="false" />
+      </DisplayedColumns>
+      <FilterColumns ObjectSchema="Microsoft.Exchange.Data.Directory.SystemConfiguration.SmtpSendConnectorConfigSchema, Microsoft.Exchange.Data.Directory">
+        <Column Name="Name"/>
+        <Column Name="Status" ColumnType="Microsoft.Exchange.Data.Directory.SystemConfiguration.StatusEnum, Microsoft.Exchange.Data.Directory"/>
+        <Column Name="ProtocolLoggingLevel" />
+        <Column Name="RequireTLS" />
+        <Column Name="Fqdn" Operators="Equal,NotEqual,Contains,NotContains,StartsWith,EndsWith,Present,NotPresent"/>
+        <Column Name="DNSRoutingEnabled" ColumnType="System.Boolean"/>
+        <Column Name="SmartHostAuthMechanism" />
+      </FilterColumns>
+      <SortProperty>Name</SortProperty>
+      <MultiSelect>true</MultiSelect>
+    </Configuration>
+  </ResultsLoader>
+
+  <!--Schema for Edge Subscription-->
+  <ResultsLoader Name="EdgeSubscription">
+    <DataColumns PrimaryKey="Guid" NameProperty="Name">
+      <RefColumns Name="ADObjectCommonProperties" />
+      <Column Name="Site" Type="System.String" />
+      <Column Name="IsValid" Type="System.Boolean" />
+      <Column Name="WhenChanged" Type="System.DateTime" />
+    </DataColumns>
+
+    <InputColumns>
+      <RefColumns Name="ADObjectIdentity" />
+    </InputColumns>
+
+    <DataTableFillers>
+      <MonadAdapterFiller Command="Get-EdgeSubscription" ResolveCommand ="" FilterBuilder="Microsoft.Exchange.Management.SnapIn.Esm.ADObjectFilterBuilder, Microsoft.Exchange.Management.SnapIn.Esm">
+        <Parameters>
+          <AdditionalParameter Name="Identity"/>
+        </Parameters>
+      </MonadAdapterFiller>
+    </DataTableFillers>
+
+    <Configuration>
+      <Caption>EdgeSubscriptionsTabTitle</Caption>
+      <DisplayedColumns>
+        <Column Name="Name" Text="NameColumnName" Mandatory="true" />
+        <Column Name="IsValid" Text="IsValidColumnName" Mandatory="true"/>
+        <Column Name="Site" Text="EdgeSubscriptionsADSiteColumnText" Mandatory="true" />
+        <Column Name="WhenChanged" Text="LastModifiedColumnName" Mandatory="false" />
+      </DisplayedColumns>
+      <SortProperty>Name</SortProperty>
+      <FilterColumns ObjectSchema="Microsoft.Exchange.Data.Directory.Management.EdgeSubscriptionSchema, Microsoft.Exchange.Data.Directory">
+        <Column Name="Name" />
+        <Column Name="IsValid" ColumnType="System.Boolean"/>
+        <Column Name="Site" ColumnType="System.String" Operators="Equal,NotEqual" PickerProfile="ADSiteConfigurable" ValueMember="IdentityString"/>
+      </FilterColumns>
+      <MultiSelect>true</MultiSelect>
+    </Configuration>
+  </ResultsLoader>
+
+  <!-- Schema for RecipientsResultPane-->
+  <ResultsLoader Name="Recipient">
+    <DataColumns PrimaryKey="Guid" NameProperty="DisplayName">
+      <RefColumns Name="RecipientProperties"/>
+      <Column Name="ImageProperty" Type="System.String"
+              LambdaExpression="RecipientTypeDetails,MailboxMoveStatus,MailboxMoveFlags,MailboxMoveRemoteHostName,ArchiveState=>
+								IIF(null == WinformsHelper.CalculateMoveRequestTypeForMailbox(@0[&quot;MailboxMoveStatus&quot;], @0[MailboxMoveFlags], @0[MailboxMoveRemoteHostName]),
+									IIF (ArchiveState(@0[&quot;ArchiveState&quot;]) != ArchiveState.None,
+										&quot;ArchivedMailbox&quot;,
+										WinformsHelper.GetTargetTypeToStringValue(@0[&quot;RecipientTypeDetails&quot;], @0.Table.Columns[&quot;RecipientTypeDetails&quot;].DataType)),
+									WinformsHelper.CalculateMoveRequestTypeForMailbox(@0[&quot;MailboxMoveStatus&quot;], @0[MailboxMoveFlags], @0[MailboxMoveRemoteHostName]))"/>
+      <Column Name="MoveRequestType" Type="System.String"
+              LambdaExpression="MailboxMoveStatus,MailboxMoveFlags,MailboxMoveRemoteHostName=>WinformsHelper.CalculateMoveRequestTypeForMailbox(@0[&quot;MailboxMoveStatus&quot;], @0[MailboxMoveFlags], @0[MailboxMoveRemoteHostName])" />
+    </DataColumns>
+
+    <InputColumns>
+      <RefColumns Name="RecipientInputProperties"/>
+    </InputColumns>
+
+    <DataTableFillers>
+      <MonadAdapterFiller Command="Get-Recipient" ResolveCommand ="" FilterBuilder="Microsoft.Exchange.Management.SnapIn.Esm.AbstractRecipientsFilterBuilder, Microsoft.Exchange.Management.SnapIn.Esm">
+        <Parameters>
+          <Parameter Name="PropertySet" Value="ConsoleLargeSet" />
+          <AdditionalParameter Name="ResultSize"/>
+          <AdditionalParameter Name="SortBy"/>
+          <AdditionalParameter Name="RecipientType"/>
+          <AdditionalParameter Name="Filter"/>
+        </Parameters>
+      </MonadAdapterFiller>
+    </DataTableFillers>
+
+    <Configuration>
+      <Caption>RecipientConfiguration</Caption>
+      <SortProperty>DisplayName</SortProperty>
+      <ImageColumn>ImageProperty</ImageColumn>
+      <DisplayedColumns>
+        <RefColumns Name="RecipientDisplayedProperties"/>
+        <Column Name="PrimarySmtpAddress" Text="PrimarySmtpAddressColumn" Mandatory="true" />
+        <Column Name="City" Text="CityColumn" Mandatory="false" />
+        <Column Name="Company" Text="CompanyColumn" Mandatory="false" />
+        <Column Name="CountryOrRegion" Text="CountryOrRegionColumn" Mandatory="false" />
+        <Column Name="DatabaseName" Text="DatabaseColumn" Mandatory="false" />
+        <Column Name="ArchiveDatabase" Text="ArchiveDatabaseColumn" Mandatory="false" />
+        <Column Name="Department" Text="DepartmentColumn" Mandatory="false" />
+        <Column Name="ExternalEmailAddress" Text="ExternalEmailAddressColumn" Mandatory="false" />
+        <Column Name="FirstName" Text="FirstNameColumn" Mandatory="false" />
+        <Column Name="LastName" Text="LastNameColumn" Mandatory="false" />
+        <Column Name="Office" Text="OfficeColumn" Mandatory="false" />
+        <Column Name="Phone" Text="PhoneColumn" Mandatory="false" />
+        <Column Name="PostalCode" Text="PostalCodeColumn" Mandatory="false" />
+        <Column Name="StateOrProvince" Text="StateOrProvinceColumn" Mandatory="false" />
+        <Column Name="Title" Text="TitleColumn" Mandatory="false" />
+        <Column Name="UMEnabled" Text="UMEnabled" Mandatory="false" />
+        <Column Name="UMMailboxPolicy" Text="UMMailboxPolicyColumn" Mandatory="false" />
+        <Column Name="ManagedFolderMailboxPolicy" Text="ManagedFolderMailboxPolicyColumn" Mandatory="false" />
+        <Column Name="ActiveSyncMailboxPolicy" Text="ActiveSyncMailboxPolicyColumn" Mandatory="false" />
+        <Column Name="OwaMailboxPolicy" Text="OwaMailboxPolicyColumn" Mandatory="false" />
+        <Column Name="SharingPolicy" Text="SharingPolicyColumnText" Mandatory="false" />
+        <Column Name="ArchiveState" Text="ArchiveStateColumn" Mandatory="false" />
+      </DisplayedColumns>
+      <MultiSelect>true</MultiSelect>
+    </Configuration>
+  </ResultsLoader>
+
+  <!-- Schema for MailboxesResultPane-->
+  <ResultsLoader Name="Mailbox">
+    <DataColumns PrimaryKey="Guid" NameProperty="DisplayName">
+      <RefColumns Name="RecipientProperties"/>
+      <Column Name="ImageProperty" Type="System.String"
+              LambdaExpression="RecipientTypeDetails,MailboxMoveStatus,MailboxMoveFlags,MailboxMoveRemoteHostName,ArchiveState=>
+								IIF(null == WinformsHelper.CalculateMoveRequestTypeForMailbox(@0[&quot;MailboxMoveStatus&quot;], @0[MailboxMoveFlags], @0[MailboxMoveRemoteHostName]),
+									IIF (ArchiveState(@0[&quot;ArchiveState&quot;]) != ArchiveState.None,
+										&quot;ArchivedMailbox&quot;,
+										WinformsHelper.GetTargetTypeToStringValue(@0[&quot;RecipientTypeDetails&quot;], @0.Table.Columns[&quot;RecipientTypeDetails&quot;].DataType)),
+									WinformsHelper.CalculateMoveRequestTypeForMailbox(@0[&quot;MailboxMoveStatus&quot;], @0[MailboxMoveFlags], @0[MailboxMoveRemoteHostName]))"/>
+      <Column Name="MoveRequestType" Type="System.String"
+              LambdaExpression="MailboxMoveStatus,MailboxMoveFlags,MailboxMoveRemoteHostName=>WinformsHelper.CalculateMoveRequestTypeForMailbox(@0[&quot;MailboxMoveStatus&quot;], @0[MailboxMoveFlags], @0[MailboxMoveRemoteHostName])" />
+    </DataColumns>
+
+    <InputColumns>
+      <RefColumns Name="RecipientInputProperties"/>
+    </InputColumns>
+
+    <DataTableFillers>
+      <MonadAdapterFiller Command="Get-Recipient" ResolveCommand ="" FilterBuilder="Microsoft.Exchange.Management.SnapIn.Esm.AbstractRecipientsFilterBuilder, Microsoft.Exchange.Management.SnapIn.Esm">
+        <Parameters>
+          <Parameter Name="PropertySet" Value="ConsoleLargeSet" />
+          <AdditionalParameter Name="ResultSize"/>
+          <AdditionalParameter Name="SortBy"/>
+          <AdditionalParameter Name="RecipientType"/>
+          <AdditionalParameter Name="Filter"/>
+        </Parameters>
+      </MonadAdapterFiller>
+    </DataTableFillers>
+
+    <Configuration>
+      <Caption>Mailboxes</Caption>
+      <SortProperty>DisplayName</SortProperty>
+      <ImageColumn>ImageProperty</ImageColumn>
+      <DisplayedColumns>
+        <RefColumns Name="RecipientDisplayedProperties"/>
+        <Column Name="PrimarySmtpAddress" Text="PrimarySmtpAddressColumn" Mandatory="true" />
+        <Column Name="City" Text="CityColumn" Mandatory="false" />
+        <Column Name="Company" Text="CompanyColumn" Mandatory="false" />
+        <Column Name="CountryOrRegion" Text="CountryOrRegionColumn" Mandatory="false" />
+        <Column Name="DatabaseName" Text="DatabaseColumn" Mandatory="false" />
+        <Column Name="ArchiveDatabase" Text="ArchiveDatabaseColumn" Mandatory="false" />
+        <Column Name="Department" Text="DepartmentColumn" Mandatory="false" />
+        <Column Name="FirstName" Text="FirstNameColumn" Mandatory="false" />
+        <Column Name="LastName" Text="LastNameColumn" Mandatory="false" />
+        <Column Name="Office" Text="OfficeColumn" Mandatory="false" />
+        <Column Name="Phone" Text="PhoneColumn" Mandatory="false" />
+        <Column Name="PostalCode" Text="PostalCodeColumn" Mandatory="false" />
+        <Column Name="StateOrProvince" Text="StateOrProvinceColumn" Mandatory="false" />
+        <Column Name="Title" Text="TitleColumn" Mandatory="false" />
+        <Column Name="UMEnabled" Text="UMEnabled" Mandatory="false" />
+        <Column Name="UMMailboxPolicy" Text="UMMailboxPolicyColumn" Mandatory="false" />
+        <Column Name="ManagedFolderMailboxPolicy" Text="ManagedFolderMailboxPolicyColumn" Mandatory="false" />
+        <Column Name="ActiveSyncMailboxPolicy" Text="ActiveSyncMailboxPolicyColumn" Mandatory="false" />
+        <Column Name="OwaMailboxPolicy" Text="OwaMailboxPolicyColumn" Mandatory="false" />
+        <Column Name="SharingPolicy" Text="SharingPolicyColumnText" Mandatory="false" />
+        <Column Name="MailboxMoveRemoteHostName" Text="MailboxMoveRemoteHostNameColumn" Mandatory="false" />
+        <Column Name="MoveRequestType" Text="MoveRequestTypeColumn" Mandatory="false" />
+        <Column Name="ArchiveState" Text="ArchiveStateColumn" Mandatory="false" />
+        <Column Name="RetentionPolicy" Text="RetentionPolicyColumn" Mandatory="false"/>
+        <Column Name="LitigationHoldEnabled" Text="LitigationHoldEnabledColumn" Mandatory="false"/>
+      </DisplayedColumns>
+      <MultiSelect>true</MultiSelect>
+    </Configuration>
+  </ResultsLoader>
+
+  <!-- Schema for MailContactsResultPane-->
+  <ResultsLoader Name="MailContact">
+    <DataColumns PrimaryKey="Guid" NameProperty="DisplayName">
+      <RefColumns Name="RecipientProperties"/>
+      <Column Name="ImageProperty" Type="System.String"
+        LambdaExpression="RecipientTypeDetails,MailboxMoveStatus,MailboxMoveFlags,MailboxMoveRemoteHostName,ArchiveState=>
+                IIF(null == WinformsHelper.CalculateMoveRequestTypeForMailbox(@0[&quot;MailboxMoveStatus&quot;], @0[MailboxMoveFlags], @0[MailboxMoveRemoteHostName]),
+                  IIF (ArchiveState(@0[&quot;ArchiveState&quot;]) != ArchiveState.None,
+                    &quot;ArchivedMailbox&quot;,
+                    WinformsHelper.GetTargetTypeToStringValue(@0[&quot;RecipientTypeDetails&quot;], @0.Table.Columns[&quot;RecipientTypeDetails&quot;].DataType)),
+                  WinformsHelper.CalculateMoveRequestTypeForMailbox(@0[&quot;MailboxMoveStatus&quot;], @0[MailboxMoveFlags], @0[MailboxMoveRemoteHostName]))"/>
+    </DataColumns>
+
+    <InputColumns>
+      <RefColumns Name="RecipientInputProperties"/>
+    </InputColumns>
+
+    <DataTableFillers>
+      <MonadAdapterFiller Command="Get-Recipient" ResolveCommand ="" FilterBuilder="Microsoft.Exchange.Management.SnapIn.Esm.AbstractRecipientsFilterBuilder, Microsoft.Exchange.Management.SnapIn.Esm">
+        <Parameters>
+          <Parameter Name="PropertySet" Value="ConsoleLargeSet" />
+          <AdditionalParameter Name="ResultSize"/>
+          <AdditionalParameter Name="SortBy"/>
+          <AdditionalParameter Name="RecipientType"/>
+          <AdditionalParameter Name="Filter"/>
+        </Parameters>
+      </MonadAdapterFiller>
+    </DataTableFillers>
+
+    <Configuration>
+      <Caption>MailContacts</Caption>
+      <SortProperty>DisplayName</SortProperty>
+      <ImageColumn>ImageProperty</ImageColumn>
+      <DisplayedColumns>
+        <RefColumns Name="RecipientDisplayedProperties"/>
+        <Column Name="PrimarySmtpAddress" Text="PrimarySmtpAddressColumn" Mandatory="false" />
+        <Column Name="City" Text="CityColumn" Mandatory="false" />
+        <Column Name="Company" Text="CompanyColumn" Mandatory="false" />
+        <Column Name="CountryOrRegion" Text="CountryOrRegionColumn" Mandatory="false" />
+        <Column Name="Department" Text="DepartmentColumn" Mandatory="false" />
+        <Column Name="ExternalEmailAddress" Text="ExternalEmailAddressColumn" Mandatory="true" />
+        <Column Name="FirstName" Text="FirstNameColumn" Mandatory="false" />
+        <Column Name="LastName" Text="LastNameColumn" Mandatory="false" />
+        <Column Name="Office" Text="OfficeColumn" Mandatory="false" />
+        <Column Name="Phone" Text="PhoneColumn" Mandatory="false" />
+        <Column Name="PostalCode" Text="PostalCodeColumn" Mandatory="false" />
+        <Column Name="StateOrProvince" Text="StateOrProvinceColumn" Mandatory="false" />
+        <Column Name="Title" Text="TitleColumn" Mandatory="false" />
+        <Column Name="ArchiveState" Text="ArchiveStateColumn" Mandatory="false" />
+      </DisplayedColumns>
+      <MultiSelect>true</MultiSelect>
+    </Configuration>
+  </ResultsLoader>
+
+  <!-- Schema for DistributionGroupsResultPane-->
+  <ResultsLoader Name="DistributionGroup">
+    <DataColumns PrimaryKey="Guid" NameProperty="DisplayName">
+      <RefColumns Name="RecipientProperties"/>
+    </DataColumns>
+
+    <InputColumns>
+      <RefColumns Name="RecipientInputProperties"/>
+    </InputColumns>
+
+    <DataTableFillers>
+      <MonadAdapterFiller Command="Get-Recipient" ResolveCommand ="" FilterBuilder="Microsoft.Exchange.Management.SnapIn.Esm.AbstractRecipientsFilterBuilder, Microsoft.Exchange.Management.SnapIn.Esm">
+        <Parameters>
+          <Parameter Name="PropertySet" Value="ConsoleLargeSet" />
+          <AdditionalParameter Name="ResultSize"/>
+          <AdditionalParameter Name="SortBy"/>
+          <AdditionalParameter Name="RecipientType"/>
+          <AdditionalParameter Name="Filter"/>
+        </Parameters>
+      </MonadAdapterFiller>
+    </DataTableFillers>
+
+    <Configuration>
+      <Caption>DistributionLists</Caption>
+      <SortProperty>DisplayName</SortProperty>
+      <ImageColumn>RecipientTypeDetails</ImageColumn>
+      <DisplayedColumns>
+        <RefColumns Name="RecipientDisplayedProperties"/>
+        <Column Name="PrimarySmtpAddress" Text="PrimarySmtpAddressColumn" Mandatory="true" />
+      </DisplayedColumns>
+      <MultiSelect>true</MultiSelect>
+    </Configuration>
+  </ResultsLoader>
+
+  <!--Schema for Transport Global Settings-->
+  <ResultsLoader Name="TransportGlobalSettings">
+    <DataColumns PrimaryKey="ImageProperty">
+      <Column Name="Name" Type="System.String" LambdaExpression="=>Strings.TransportConfig.ToString()"/>
+      <Column Name="ImageProperty" Type="System.String" />
+    </DataColumns>
+
+    <DataTableFillers FillType="PartialFill">
+      <FixedDataFiller>
+        <Row>
+          <Column Name="ImageProperty" Value="TransportConfig" />
+        </Row>
+      </FixedDataFiller>
+    </DataTableFillers>
+
+    <Configuration>
+      <Caption>TransportGlobalSettingsResultPane</Caption>
+      <ImageColumn>ImageProperty</ImageColumn>
+      <DisplayedColumns>
+        <Column Name="Name" Text="NameColumnName" Mandatory="true" />
+      </DisplayedColumns>
+      <SortProperty>Name</SortProperty>
+      <MultiSelect>false</MultiSelect>
+    </Configuration>
+  </ResultsLoader>
+
+  <!-- Schema for Federation Trust Result Pane-->
+  <ResultsLoader Name="FederationTrust">
+    <DataColumns PrimaryKey="Guid">
+      <RefColumns Name="ADObjectCommonProperties"/>
+      <Column Name="OrgPrivCertificate"/>
+      <Column Name="OrgNextPrivCertificate"/>
+      <Column Name="OrgPrevPrivCertificate"/>
+      <Column Name="ApplicationIdentifier"/>
+      <Column Name="ApplicationUri" />
+      <Column Name="WhenChanged" Type="System.DateTime" />
+    </DataColumns>
+
+    <InputColumns>
+      <RefColumns Name="ADObjectIdentity" />
+    </InputColumns>
+
+    <DataTableFillers>
+      <MonadAdapterFiller Command="Get-FederationTrust" ResolveCommand ="" FilterBuilder="Microsoft.Exchange.Management.SnapIn.Esm.ADObjectFilterBuilder, Microsoft.Exchange.Management.SnapIn.Esm" />
+    </DataTableFillers>
+
+    <Configuration>
+      <Caption>FederationTrustResultPane</Caption>
+      <SortProperty>Name</SortProperty>
+      <SerializationLevel>Full</SerializationLevel>
+      <DisplayedColumns>
+        <Column Name="Name" Text="NameColumnName" Mandatory="true"/>
+        <Column Name="ApplicationIdentifier" Text="FederationTrustApplicationIdentifierColumnText" Mandatory="true"/>
+        <Column Name="ApplicationUri" Text="FederationTrustApplicationUriColumnText" Mandatory="true"/>
+        <Column Name="OrgPrivCertificate" Text="FederationTrustCurrentCertificateColumnText" Mandatory="true"/>
+        <Column Name="OrgNextPrivCertificate" Text="FederationTrustNextCertificateColumnText" Mandatory="true"/>
+        <Column Name="OrgPrevPrivCertificate" Text="FederationTrustPreviousCertificateColumnText" Mandatory="true"/>
+        <Column Name="WhenChanged" Text="LastModifiedColumnName"/>
+      </DisplayedColumns>
+      <MultiSelect>false</MultiSelect>
+    </Configuration>
+  </ResultsLoader>
+
+  <!-- Schema for OWA Mailbox policies ResultPane-->
+  <ResultsLoader Name="OwaMailboxPolicies">
+    <DataColumns PrimaryKey="Guid">
+      <RefColumns Name="ADObjectCommonProperties" />
+      <Column Name="CalendarEnabled" Type="System.Boolean" />
+      <Column Name="ContactsEnabled" Type="System.Boolean" />
+      <Column Name="TasksEnabled" Type="System.Boolean" />
+      <Column Name="JournalEnabled" Type="System.Boolean" />
+      <Column Name="NotesEnabled" Type="System.Boolean" />
+      <Column Name="RemindersAndNotificationsEnabled" Type="System.Boolean" />
+      <Column Name="PremiumClientEnabled" Type="System.Boolean" />
+      <Column Name="SpellCheckerEnabled" Type="System.Boolean" />
+      <Column Name="SearchFoldersEnabled" Type="System.Boolean" />
+      <Column Name="SignaturesEnabled" Type="System.Boolean" />
+      <Column Name="ThemeSelectionEnabled" Type="System.Boolean" />
+      <Column Name="JunkEmailEnabled" Type="System.Boolean" />
+      <Column Name="WhenChanged" Type="System.DateTime" />
+    </DataColumns>
+
+    <InputColumns>
+      <RefColumns Name="ADObjectIdentity" />
+    </InputColumns>
+
+    <DataTableFillers>
+      <MonadAdapterFiller Command="Get-OwaMailboxPolicy" ResolveCommand ="" FilterBuilder="Microsoft.Exchange.Management.SnapIn.Esm.ADObjectFilterBuilder, Microsoft.Exchange.Management.SnapIn.Esm">
+        <Parameters>
+          <AdditionalParameter Name="Identity"/>
+        </Parameters>
+      </MonadAdapterFiller>
+    </DataTableFillers>
+
+    <Configuration>
+      <Caption>OwaMailboxPolicyResultPane</Caption>
+      <SortProperty>Name</SortProperty>
+      <DisplayedColumns>
+        <Column Name="Name" Text="NameColumnName" Mandatory="true" />
+        <Column Name="CalendarEnabled" Text="OWACalendarEnabled" Mandatory="true" />
+        <Column Name="ContactsEnabled" Text="OWAContactsEnabled" Mandatory="true" />
+        <Column Name="TasksEnabled" Text="OWATasksEnabled" />
+        <Column Name="JournalEnabled" Text="OWAJournalEnabled" Mandatory="true" />
+        <Column Name="NotesEnabled" Text="OWANotesEnabled" />
+        <Column Name="RemindersAndNotificationsEnabled" Text="OWARemindersAndNotificationsEnabled" />
+        <Column Name="SpellCheckerEnabled" Text="OWASpellCheckerEnabled" />
+        <Column Name="PremiumClientEnabled" Text="OWAPremiumClientEnabled" />
+        <Column Name="SearchFoldersEnabled" Text="OWASearchFoldersEnabled" />
+        <Column Name="SignaturesEnabled" Text="OWASignaturesEnabled" />
+        <Column Name="ThemeSelectionEnabled" Text="OWAThemeSelectionEnabled" />
+        <Column Name="JunkEmailEnabled" Text="OWAJunkEmailEnabled" Mandatory="true" />
+        <Column Name="WhenChanged" Text="LastModifiedColumnName"/>
+      </DisplayedColumns>
+      <FilterColumns ObjectSchema="Microsoft.Exchange.Data.Directory.SystemConfiguration.OwaMailboxPolicySchema, Microsoft.Exchange.Data.Directory">
+        <Column Name="Name" />
+        <Column Name="CalendarEnabled" />
+        <Column Name="ContactsEnabled" />
+        <Column Name="TasksEnabled" />
+        <Column Name="JournalEnabled" />
+        <Column Name="NotesEnabled"/>
+        <Column Name="RemindersAndNotificationsEnabled"/>
+        <Column Name="SpellCheckerEnabled" />
+        <Column Name="PremiumClientEnabled"/>
+        <Column Name="SearchFoldersEnabled" />
+        <Column Name="SignaturesEnabled"/>
+        <Column Name="ThemeSelectionEnabled" />
+        <Column Name="JunkEmailEnabled" />
+      </FilterColumns>
+      <MultiSelect>true</MultiSelect>
+    </Configuration>
+  </ResultsLoader>
+
+  <!-- Schema for Organizational Relationships result pane -->
+  <ResultsLoader Name="OrganizationRelationships">
+    <DataColumns PrimaryKey="Guid">
+      <RefColumns Name="ADObjectCommonProperties" />
+      <Column Name="DomainNames" Type="System.String"/>
+      <Column Name="Enabled" Type="System.Boolean" />
+      <Column Name="FreeBusyAccessEnabled" Type="System.Boolean" />
+      <Column Name="WhenChanged" Type="System.DateTime" />
+    </DataColumns>
+
+    <InputColumns>
+      <RefColumns Name="ADObjectIdentity" />
+    </InputColumns>
+
+    <DataTableFillers>
+      <MonadAdapterFiller Command="Get-OrganizationRelationship" ResolveCommand ="" FilterBuilder="Microsoft.Exchange.Management.SnapIn.Esm.ADObjectFilterBuilder, Microsoft.Exchange.Management.SnapIn.Esm">
+        <Parameters>
+          <AdditionalParameter Name="Identity"/>
+        </Parameters>
+      </MonadAdapterFiller>
+    </DataTableFillers>
+
+    <Configuration>
+      <Caption>OrganizationRelationshipsResultPaneTitle</Caption>
+      <SortProperty>Name</SortProperty>
+      <DisplayedColumns>
+        <Column Name="Name" Text="NameColumnName" Mandatory="true" />
+        <Column Name="DomainNames" Text="DomainsColumnName" Mandatory="true"/>
+        <Column Name="Enabled" Text="SharingEnabledColumnName" Mandatory="true"/>
+        <Column Name="FreeBusyAccessEnabled" Text="FreeBusyAccessEnabledColumnName" Mandatory="true"/>
+        <Column Name="WhenChanged" Text="LastModifiedColumnName"/>
+      </DisplayedColumns>
+      <FilterColumns ObjectSchema="Microsoft.Exchange.Data.Directory.SystemConfiguration.OrganizationRelationshipSchema, Microsoft.Exchange.Data.Directory">
+        <Column Name="Name" />
+        <Column Name="DomainNames" Operators="Equal,NotEqual,Contains,NotContains"/>
+        <Column Name="Enabled" />
+        <Column Name="FreeBusyAccessEnabled" />
+      </FilterColumns>
+      <MultiSelect>true</MultiSelect>
+    </Configuration>
+  </ResultsLoader>
+
+  <!-- Schema for Retention Policy result pane-->
+  <ResultsLoader Name="RetentionPolicy">
+    <DataColumns PrimaryKey="Guid">
+      <RefColumns Name="ADObjectCommonProperties"/>
+      <Column Name="RetentionPolicyTagLinks"/>
+    </DataColumns>
+
+    <InputColumns>
+      <RefColumns Name="ADObjectIdentity"/>
+    </InputColumns>
+
+    <DataTableFillers>
+      <MonadAdapterFiller Command="Get-RetentionPolicy" FilterBuilder="Microsoft.Exchange.Management.SnapIn.Esm.ADObjectFilterBuilder, Microsoft.Exchange.Management.SnapIn.Esm">
+        <Parameters>
+          <AdditionalParameter Name="Identity"/>
+        </Parameters>
+      </MonadAdapterFiller>
+    </DataTableFillers>
+
+    <Configuration>
+      <Caption>RetentionPolicyResultPaneTitle</Caption>
+      <SortProperty>Name</SortProperty>
+      <DisplayedColumns>
+        <Column Name="Name" Text="NameColumnName" Mandatory="true"/>
+        <Column Name="RetentionPolicyTagLinks" Text="RetentionPolicyTagLinksColumnName" Mandatory="true"/>
+      </DisplayedColumns>
+      <FilterColumns ObjectSchema="Microsoft.Exchange.Data.Directory.SystemConfiguration.RetentionPolicySchema, Microsoft.Exchange.Data.Directory">
+        <Column Name="Name"/>
+        <Column Name="RetentionPolicyTagLinks" Operators="Contains,NotContains" ColumnType="Microsoft.Exchange.Data.MultiValuedProperty`1[System.String], Microsoft.Exchange.Data" PickerProfile="RetentionPolicyTagConfigurable"/>
+      </FilterColumns>
+      <MultiSelect>true</MultiSelect>
+    </Configuration>
+  </ResultsLoader>
+
+  <!-- Schema for RetentionPolicyTagResultPane-->
+  <ResultsLoader Name="RetentionPolicyTag">
+    <DataColumns PrimaryKey="Guid">
+      <RefColumns Name="ADObjectCommonProperties"/>
+      <Column Name="RetentionAction" Type="Microsoft.Exchange.Data.Directory.SystemConfiguration.RetentionActionType, Microsoft.Exchange.Data.Directory"/>
+      <Column Name="AgeLimitForRetention" Type="System.Object"/>
+      <Column Name="AgeLimitForRetentionForFilter" Type="System.Int32" LambdaExpression="AgeLimitForRetention=>IIF(DBNull.Value.Equals(@0[AgeLimitForRetention]), Int32.MinValue, EnhancedTimeSpan(@0[AgeLimitForRetention]).Days)"/>
+      <Column Name="Type" Type="Microsoft.Exchange.Data.Directory.SystemConfiguration.ElcFolderType, Microsoft.Exchange.Data.Directory"/>
+      <Column Name="RetentionEnabled" Type="System.Boolean"/>
+    </DataColumns>
+
+    <InputColumns>
+      <RefColumns Name="ADObjectIdentity"/>
+    </InputColumns>
+
+    <DataTableFillers>
+      <MonadAdapterFiller Command="Get-RetentionPolicyTag" FilterBuilder="Microsoft.Exchange.Management.SnapIn.Esm.ADObjectFilterBuilder, Microsoft.Exchange.Management.SnapIn.Esm">
+        <Parameters>
+          <AdditionalParameter Name="Identity"/>
+        </Parameters>
+      </MonadAdapterFiller>
+    </DataTableFillers>
+
+    <Configuration>
+      <Caption>RetentionPolicyTagResultPaneTitle</Caption>
+      <SortProperty>Name</SortProperty>
+      <DisplayedColumns>
+        <Column Name="Name" Text="NameColumnName" Mandatory="true"/>
+        <Column Name="Type" Text="Type" Mandatory="true"/>
+        <Column Name="RetentionAction" Text="RetentionAction" Mandatory="true"/>
+        <Column Name="AgeLimitForRetention" Text="AgeLimitForRetention" Mandatory="true" CustomFormatter="Microsoft.Exchange.Management.SystemManager.WinForms.EnhancedTimeSpanAsDaysCoverter, Microsoft.Exchange.Management.SystemManager"/>
+        <Column Name="RetentionEnabled" Text="RetentionEnabled" Mandatory="true"/>
+      </DisplayedColumns>
+      <FilterColumns ObjectSchema="Microsoft.Exchange.Management.SnapIn.Esm.OrganizationConfiguration.Mailbox.PresentationRetentionPolicyTagSchema, Microsoft.Exchange.Management.SnapIn.Esm">
+        <Column Name="Name"/>
+        <Column Name="RetentionAction"/>
+        <Column Name="AgeLimitForRetentionForFilter" RefDisplayedColumn="AgeLimitForRetention" ColumnType="System.Int32" Operators="Equal,NotEqual,GreaterThan,GreaterThanOrEqual,LessThan,LessThanOrEqual"/>
+        <Column Name="Type"/>
+        <Column Name="RetentionEnabled"/>
+      </FilterColumns>
+      <MultiSelect>true</MultiSelect>
+      <SerializationLevel>Full</SerializationLevel>
+    </Configuration>
+  </ResultsLoader>
+
+  <!-- Schema for Sharing Policy result pane -->
+  <ResultsLoader Name="SharingPolicies">
+    <DataColumns PrimaryKey="Guid">
+      <RefColumns Name="ADObjectCommonProperties" />
+      <Column Name="Domains" Type="System.String"/>
+      <Column Name="Enabled" Type="System.Boolean" />
+      <Column Name="Default" Type="System.Boolean" />
+      <Column Name="WhenChanged" Type="System.DateTime" />
+    </DataColumns>
+
+    <InputColumns>
+      <RefColumns Name="ADObjectIdentity" />
+    </InputColumns>
+
+    <DataTableFillers>
+      <MonadAdapterFiller Command="Get-SharingPolicy" FilterBuilder="Microsoft.Exchange.Management.SnapIn.Esm.ADObjectFilterBuilder, Microsoft.Exchange.Management.SnapIn.Esm">
+        <Parameters>
+          <AdditionalParameter Name="Identity"/>
+        </Parameters>
+      </MonadAdapterFiller>
+    </DataTableFillers>
+
+    <Configuration>
+      <Caption>SharingPoliciesResultPaneTitle</Caption>
+      <SortProperty>Name</SortProperty>
+      <DisplayedColumns>
+        <Column Name="Name" Text="NameColumnName" Mandatory="true" />
+        <Column Name="Domains" Text="DomainsColumnName" Mandatory="true"/>
+        <Column Name="Enabled" Text="Enabled" Mandatory="true"/>
+        <Column Name="Default" Text="DefaultPolicy" Mandatory="true"/>
+        <Column Name="WhenChanged" Text="LastModifiedColumnName"/>
+      </DisplayedColumns>
+      <FilterColumns ObjectSchema="Microsoft.Exchange.Data.Directory.SystemConfiguration.SharingPolicySchema, Microsoft.Exchange.Data.Directory">
+        <Column Name="Name" />
+        <Column Name="Domains" Operators="Equal,NotEqual,Contains,NotContains" ColumnType="System.String"/>
+        <Column Name="Enabled" />
+        <Column Name="Default" ColumnType="System.Boolean" />
+      </FilterColumns>
+      <MultiSelect>true</MultiSelect>
+    </Configuration>
+  </ResultsLoader>
+
+  <!-- Schema for MailboxMigrationResultPane-->
+  <ResultsLoader Name="MailboxMigration">
+    <DataColumns PrimaryKey="ExchangeGuid" NameProperty="DisplayName" >
+      <Column Name="Identity" Type="System.Object" LambdaExpression="DistinguishedName,ExchangeGuid=>WinformsHelper.GenerateADObjectId(Guid(@0[ExchangeGuid]), @0[DistinguishedName].ToString())" />
+      <Column Name="ExchangeGuid" Type="System.Guid"/>
+      <Column Name="DistinguishedName" Type="System.String"/>
+      <Column Name="Name" Type="System.String" LambdaExpression="DistinguishedName,ExchangeGuid=>ADObjectId(WinformsHelper.GenerateADObjectId(Guid(@0[ExchangeGuid]), @0[DistinguishedName].ToString())).Name"/>
+      <Column Name="Alias" />
+      <Column Name="DisplayName" />
+      <Column Name="StatusRealType" Type="Microsoft.Exchange.Data.Directory.Recipient.RequestStatus, Microsoft.Exchange.Data.Directory" LambdaExpression="Status => WinformsHelper.ParseRequestStatus(@0[Status].ToString())"/>
+      <Column Name="Status"  />
+      <Column Name="TargetDatabase" Type="System.String" />
+      <Column Name="SourceDatabase" Type="System.String" />
+      <Column Name="RemoteHostName" Type="System.String" />
+      <Column Name="SuspendWhenReadyToComplete" Type="System.Boolean"/>
+      <Column Name="FlagsRealType" Type="Microsoft.Exchange.Data.Directory.Recipient.RequestFlags, Microsoft.Exchange.Data.Directory" LambdaExpression="Flags => WinformsHelper.ParseRequestFlags(@0[Flags].ToString())" />
+      <Column Name="Flags" />
+      <Column Name="PercentComplete" Type="System.Int32"/>
+      <Column Name="MoveRequestType" Type="System.String"
+              LambdaExpression="Flags=>WinformsHelper.CalculateMoveRequestTypeForMigration(@0[Flags])"/>
+      <Column Name="CanSuspend" Type="System.Boolean"
+              LambdaExpression="Status => RequestStatus(WinformsHelper.ParseRequestStatus(@0[Status].ToString())) != RequestStatus.AutoSuspended
+                                      and RequestStatus(WinformsHelper.ParseRequestStatus(@0[Status].ToString())) != RequestStatus.CompletionInProgress
+                                      and RequestStatus(WinformsHelper.ParseRequestStatus(@0[Status].ToString())) != RequestStatus.Completed
+                                      and RequestStatus(WinformsHelper.ParseRequestStatus(@0[Status].ToString())) != RequestStatus.CompletedWithWarning
+                                      and RequestStatus(WinformsHelper.ParseRequestStatus(@0[Status].ToString())) != RequestStatus.Suspended
+                                      and RequestStatus(WinformsHelper.ParseRequestStatus(@0[Status].ToString())) != RequestStatus.Failed" />
+      <Column Name="CanResume" Type="System.Boolean"
+              LambdaExpression="Status => RequestStatus(WinformsHelper.ParseRequestStatus(@0[Status].ToString())) == RequestStatus.Suspended
+                                       or RequestStatus(WinformsHelper.ParseRequestStatus(@0[Status].ToString())) == RequestStatus.Failed" />
+      <Column Name="CanComplete" Type="System.Boolean"
+              LambdaExpression="Status => RequestStatus(WinformsHelper.ParseRequestStatus(@0[Status].ToString())) == RequestStatus.AutoSuspended" />
+      <Column Name="CanRemove" Type="System.Boolean"
+              LambdaExpression="Status => RequestStatus(WinformsHelper.ParseRequestStatus(@0[Status].ToString())) != RequestStatus.Completed
+                                      and RequestStatus(WinformsHelper.ParseRequestStatus(@0[Status].ToString())) != RequestStatus.CompletedWithWarning" />
+      <Column Name="CanClear" Type="System.Boolean"
+              LambdaExpression="Status => RequestStatus(WinformsHelper.ParseRequestStatus(@0[Status].ToString())) == RequestStatus.Completed
+                                       or RequestStatus(WinformsHelper.ParseRequestStatus(@0[Status].ToString())) == RequestStatus.CompletedWithWarning" />
+    </DataColumns>
+
+    <InputColumns>
+      <RefColumns Name="ADObjectIdentity" />
+      <Column Name="IsFullRefresh" Type="System.Boolean" DefaultValue="true"/>
+      <Column Name="AllowPostRefreshAction" Type="System.Boolean" DefaultValue="false"/>
+    </InputColumns>
+
+    <DataTableFillers PostRefreshAction="Microsoft.Exchange.Management.SnapIn.Esm.PostRefreshMoveRequestProgressAction, Microsoft.Exchange.Management.SnapIn.Esm">
+      <MonadAdapterFiller Command="Get-MoveRequest"
+          FilterBuilder="Microsoft.Exchange.Management.SnapIn.Esm.ADObjectFilterBuilder, Microsoft.Exchange.Management.SnapIn.Esm"
+          RunnableLambdaExpression="IsFullRefresh,AllowPostRefreshAction=>Boolean(@1[IsFullRefresh]) or !Boolean(@1[AllowPostRefreshAction])">
+        <Parameters>
+          <AdditionalParameter Name="Identity"/>
+          <Parameter Name="ResultSize" Value="unlimited"/>
+        </Parameters>
+      </MonadAdapterFiller>
+      <MonadAdapterFiller Command="Get-MoveRequestStatistics"
+          FilterBuilder="Microsoft.Exchange.Management.SnapIn.Esm.ADObjectFilterBuilder, Microsoft.Exchange.Management.SnapIn.Esm"
+          RunnableLambdaExpression="IsFullRefresh,AllowPostRefreshAction=>!Boolean(@1[IsFullRefresh]) and Boolean(@1[AllowPostRefreshAction])">
+        <Parameters>
+          <AdditionalParameter Name="Identity"/>
+        </Parameters>
+      </MonadAdapterFiller>
+    </DataTableFillers>
+
+    <Configuration>
+      <Caption>MailboxMigration</Caption>
+      <SortProperty>DisplayName</SortProperty>
+      <ImageColumn>MoveRequestType</ImageColumn>
+      <DisplayedColumns>
+        <Column Name="DisplayName" Text="DisplayNameColumn" Mandatory="true" />
+        <Column Name="Alias" Text="AliasColumn" Mandatory="true" />
+        <Column Name="StatusRealType" Text="MigrationStatusColumn" Mandatory="true" />
+        <Column Name="MoveRequestType" Text="MoveRequestTypeColumn" Mandatory="true" />
+        <Column Name="Name" Text="NameColumn" Mandatory="false" />
+        <Column Name="SourceDatabase" Text="SourceDatabaseColumn" Mandatory="false" />
+        <Column Name="TargetDatabase" Text="TargetDatabaseColumn" Mandatory="false" />
+        <Column Name="RemoteHostName" Text="RemoteHostNameColumn" Mandatory="false" />
+        <Column Name="SuspendWhenReadyToComplete" Text="SuspendWhenReadyToCompleteColumn" Mandatory="false" />
+        <Column Name="PercentComplete" Text="PercentCompleteColumn" Mandatory="false"  CustomFormatter="Microsoft.Exchange.Management.SystemManager.WinForms.IntegerAsPercentageConverter, Microsoft.Exchange.Management.SystemManager"/>
+      </DisplayedColumns>
+      <FilterColumns ObjectSchema="Microsoft.Exchange.Management.RecipientTasks.MoveRequestUserSchema, Microsoft.Exchange.Management">
+        <Column Name="DisplayName"/>
+        <Column Name="Name"/>
+        <Column Name="Alias"/>
+        <Column Name="StatusRealType" ObjectSchemaField="Status" FilterableListSource="Queued,InProgress,AutoSuspended,CompletionInProgress,Completed,CompletedWithWarning,Suspended,Failed"/>
+        <Column Name="SourceDatabase" ColumnType="System.String" Operators="Equal,NotEqual" PickerProfile="MailboxDataBaseConfigurable" ValueMember="IdentityString"/>
+        <Column Name="TargetDatabase" ColumnType="System.String" Operators="Equal,NotEqual" PickerProfile="MailboxDataBaseConfigurable" ValueMember="IdentityString"/>
+        <Column Name="RemoteHostName"/>
+        <Column Name="MoveRequestType" ColumnType="System.String" Operators="Equal,NotEqual" FilterableListSource="MoveRequestTypeIntraOrg,MoveRequestTypeCrossOrg"/>
+        <Column Name="SuspendWhenReadyToComplete" ColumnType="System.Boolean"/>
+      </FilterColumns>
+      <MultiSelect>true</MultiSelect>
+    </Configuration>
+  </ResultsLoader>
+
+  <!-- Schema for OWA Virtual Directory ResultPane-->
+  <ResultsLoader Name="VirtualDirectory">
+    <DataColumns PrimaryKey="Guid" NameProperty="Name">
+      <RefColumns Name="ADObjectCommonProperties" />
+      <Column Name="WhenChanged" Type="System.DateTime" />
+      <Column Name="Server" Type="System.Object"/>
+      <Column Name="OwaVersion" Type="Microsoft.Exchange.Data.Directory.SystemConfiguration.OwaVersions,Microsoft.Exchange.Data.Directory"/>
+    </DataColumns>
+
+    <InputColumns>
+      <RefColumns Name="ADObjectIdentity" />
+    </InputColumns>
+
+    <DataTableFillers>
+      <MonadAdapterFiller Command="Get-OwaVirtualDirectory">
+        <Parameters>
+          <Parameter Name="ADPropertiesOnly" Value=""/>
+        </Parameters>
+      </MonadAdapterFiller>
+    </DataTableFillers>
+
+    <Configuration>
+      <Caption>OWA</Caption>
+      <DisplayedColumns>
+        <Column Name="Name" Text="OWAColumnName" Mandatory="true" />
+        <Column Name="OwaVersion" Text="OwaColumnVersion" Mandatory="true" />
+        <Column Name="WhenChanged" Text="LastModifiedColumnName" Mandatory="false" />
+      </DisplayedColumns>
+      <SortProperty>Name</SortProperty>
+      <SerializationLevel>Full</SerializationLevel>
+      <MultiSelect>false</MultiSelect>
+    </Configuration>
+  </ResultsLoader>
+
+  <!-- Schema for ECP Virtual Directory ResultPane-->
+  <ResultsLoader Name="EcpVirtualDirectory">
+    <DataColumns PrimaryKey="Guid" NameProperty="Name">
+      <RefColumns Name="ADObjectCommonProperties" />
+      <Column Name="WhenChanged" Type="System.DateTime" />
+      <Column Name="Server" Type="System.Object"/>
+    </DataColumns>
+
+    <InputColumns>
+      <RefColumns Name="ADObjectIdentity" />
+    </InputColumns>
+
+    <DataTableFillers>
+      <MonadAdapterFiller Command="Get-EcpVirtualDirectory" >
+        <Parameters>
+          <Parameter Name="ADPropertiesOnly" Value=""/>
+        </Parameters>
+      </MonadAdapterFiller>
+    </DataTableFillers>
+
+    <Configuration>
+      <Caption>ECP</Caption>
+      <DisplayedColumns>
+        <Column Name="Name" Text="NameColumnName" Mandatory="true" />
+        <Column Name="WhenChanged" Text="LastModifiedColumnName" Mandatory="false" />
+      </DisplayedColumns>
+      <SortProperty>Name</SortProperty>
+      <SerializationLevel>Full</SerializationLevel>
+      <MultiSelect>false</MultiSelect>
+    </Configuration>
+  </ResultsLoader>
+
+  <!-- Schema for ActiveSync Virtual Directory ResultPane-->
+  <ResultsLoader Name="ActiveSyncVirtualDirectory">
+    <DataColumns PrimaryKey="Guid" NameProperty="Name">
+      <Column Name="Name"/>
+      <Column Name="Server" Type="System.Object"/>
+      <Column Name="Identity" Type="System.Object"/>
+      <Column Name="Guid" Type="System.Guid"/>
+      <Column Name="WhenChanged" Type="System.DateTime" />
+    </DataColumns>
+
+    <InputColumns>
+      <RefColumns Name="ADObjectIdentity" />
+    </InputColumns>
+
+    <DataTableFillers>
+      <MonadAdapterFiller Command="Get-ActiveSyncVirtualDirectory" FilterBuilder="Microsoft.Exchange.Management.SnapIn.Esm.ADObjectFilterBuilder, Microsoft.Exchange.Management.SnapIn.Esm">
+        <Parameters>
+          <AdditionalParameter Name="Identity"/>
+          <Parameter Name="ADPropertiesOnly" Value=""/>
+        </Parameters>
+      </MonadAdapterFiller>
+    </DataTableFillers>
+
+    <Configuration>
+      <Caption>ActiveSync</Caption>
+      <DisplayedColumns>
+        <Column Name="Name" Text="ActiveSyncColumnName" Mandatory="true" />
+        <Column Name="WhenChanged" Text="LastModifiedColumnName" Mandatory="false" />
+      </DisplayedColumns>
+      <SortProperty>Name</SortProperty>
+      <MultiSelect>false</MultiSelect>
+      <SerializationLevel>Full</SerializationLevel>
+    </Configuration>
+  </ResultsLoader>
+
+  <!-- Schema for OAB Virtual Directory ResultPane-->
+  <ResultsLoader Name="OABVirtualDirectory">
+    <DataColumns PrimaryKey="Guid" NameProperty="Name">
+      <RefColumns Name="ADObjectCommonProperties" />
+      <Column Name="Server" Type="System.Object"/>
+      <Column Name="InternalUrl" Type="System.Object"/>
+      <Column Name="ExternalUrl" Type="System.Object"/>
+      <Column Name="WhenChanged" Type="System.DateTime" />
+    </DataColumns>
+
+    <InputColumns>
+      <RefColumns Name="ADObjectIdentity" />
+    </InputColumns>
+
+    <DataTableFillers>
+      <MonadAdapterFiller Command="Get-OabVirtualDirectory" FilterBuilder="Microsoft.Exchange.Management.SnapIn.Esm.ADObjectFilterBuilder, Microsoft.Exchange.Management.SnapIn.Esm" >
+        <Parameters>
+          <AdditionalParameter Name="Identity"/>
+          <Parameter Name="ADPropertiesOnly" Value=""/>
+        </Parameters>
+      </MonadAdapterFiller>
+    </DataTableFillers>
+
+    <Configuration>
+      <Caption>OabDistributionResultPaneTitle</Caption>
+      <DisplayedColumns>
+        <Column Name="Name" Text="OabVirtualDirectoryNameColumnName" Mandatory="true" />
+        <Column Name="InternalUrl" Text="OabVirtualDirectoryInternalUrlColumnName" Mandatory="true" />
+        <Column Name="ExternalUrl" Text="OabVirtualDirectoryExternalUrlColumnName" Mandatory="false" />
+        <Column Name="WhenChanged" Text="LastModifiedColumnName" Mandatory="false" />
+      </DisplayedColumns>
+      <SortProperty>Name</SortProperty>
+      <MultiSelect>false</MultiSelect>
+      <SerializationLevel>Full</SerializationLevel>
+    </Configuration>
+  </ResultsLoader>
+
+  <!-- Schema for ReceiveConnector-->
+  <ResultsLoader Name="ReceiveConnector">
+    <DataColumns PrimaryKey="Guid" NameProperty="Name">
+      <RefColumns Name="ADObjectCommonProperties" />
+      <Column Name="Enabled" Type="System.Boolean"/>
+      <Column Name="Status"  Type="Microsoft.Exchange.Data.Directory.SystemConfiguration.StatusEnum, Microsoft.Exchange.Data.Directory"
+              LambdaExpression="Enabled=>IIF(Boolean(@0[Enabled]), StatusEnum.Enabled, StatusEnum.Disabled)" />
+      <Column Name="Server" Type="System.Object"/>
+      <Column Name="ProtocolLoggingLevel"/>
+      <Column Name="Fqdn" DefaultValue=""/>
+      <Column Name="RequireTLS" Type="System.Boolean"/>
+      <Column Name="WhenChanged" Type="System.DateTime"/>
+    </DataColumns>
+
+    <InputColumns>
+      <RefColumns Name="ADObjectIdentity" />
+    </InputColumns>
+
+    <DataTableFillers>
+      <MonadAdapterFiller Command="Get-ReceiveConnector" FilterBuilder="Microsoft.Exchange.Management.SnapIn.Esm.ADObjectFilterBuilder, Microsoft.Exchange.Management.SnapIn.Esm">
+        <Parameters>
+          <AdditionalParameter Name="Identity"/>
+        </Parameters>
+      </MonadAdapterFiller>
+    </DataTableFillers>
+
+    <Configuration>
+      <Caption>ReceiveConnectorTabText</Caption>
+      <DisplayedColumns>
+        <Column Name="Name" Text="ConnectorColumnHeader" Mandatory="true" />
+        <Column Name="Status" Text="StatusColumn" Mandatory="true" />
+        <Column Name="ProtocolLoggingLevel" Text="ProtocolLoggingLevelColumn" Mandatory="false" />
+        <Column Name="Fqdn" Text="FqdnColumnName" Mandatory="false" />
+        <Column Name="RequireTLS" Text="RequireTLSColumn" Mandatory="false" />
+        <Column Name="WhenChanged" Text="LastModifiedColumnName" Mandatory="false" />
+      </DisplayedColumns>
+      <SortProperty>Name</SortProperty>
+      <MultiSelect>true</MultiSelect>
+      <SerializationLevel>Full</SerializationLevel>
+    </Configuration>
+  </ResultsLoader>
+
+  <!-- Schema for Database-->
+  <ResultsLoader Name="Database">
+    <DataColumns PrimaryKey="Guid" NameProperty="Name">
+      <RefColumns Name="ADObjectCommonProperties" />
+      <Column Name="MountStatus" Type="Microsoft.Exchange.Management.SystemManager.DatabaseStatus, Microsoft.Exchange.Management.SystemManager"
+              LambdaExpression="
+                Mounted=>
+                  iif(ObjectExtension.IsNullValue(@0[Mounted]),
+                    DatabaseStatus.Unknown,
+                    iif(ObjectExtension.IsTrue(@0[Mounted]), DatabaseStatus.Mounted, DatabaseStatus.Dismounted))
+              "/>
+      <Column Name="HasLocalCopy" Type="System.Boolean"/>
+      <Column Name="Servers" Type="System.Object"/>
+      <Column Name="MountedOnServerShortName" LambdaExpression="MountedOnServer=>WinformsHelper.GetFQDNShortName(@0[MountedOnServer])"/>
+      <Column Name="MountedOnServer" />
+      <Column Name="MasterServerOrAvailabilityGroup"/>
+      <Column Name="IsPublicFolderDatabase" Type="System.Boolean"/>
+      <Column Name="DatabaseCopies" Type="System.Object"/>
+      <Column Name="Mounted" Type="System.Object"/>
+      <Column Name="ReplicationType" Type="Microsoft.Exchange.Data.Directory.SystemConfiguration.ReplicationType, Microsoft.Exchange.Data.Directory"/>
+      <Column Name="MasterType" Type="Microsoft.Exchange.Data.Directory.SystemConfiguration.MasterType, Microsoft.Exchange.Data.Directory"/>
+      <Column Name="CanMoveMaster" Type="System.Boolean"
+              LambdaExpression="IsPublicFolderDatabase,ReplicationType=>!Boolean(@0[IsPublicFolderDatabase]) and WinformsHelper.GetTargetTypeToStringValue(@0[ReplicationType], @0.Table.Columns[ReplicationType].DataType)==&quot;Remote&quot;" />
+      <Column Name="CanAddCopy" Type="System.Boolean"
+              LambdaExpression="IsPublicFolderDatabase,MasterType=>!Boolean(@0[IsPublicFolderDatabase]) and WinformsHelper.GetTargetTypeToStringValue(@0[MasterType], @0.Table.Columns[MasterType].DataType)==&quot;DatabaseAvailabilityGroup&quot;" />
+      <Column Name="WhenChanged" Type="System.DateTime"/>
+      <Column Name="CanDeletePublicFolderDatabase" Type="System.Boolean"
+              LambdaExpression="IsPublicFolderDatabase, Mounted=>
+                Boolean(@0[IsPublicFolderDatabase]) and !ObjectExtension.IsNullValue(@0[Mounted])"/>
+      <Column Name="CanDeleteMailboxDatabase" Type="System.Boolean"
+              LambdaExpression="IsPublicFolderDatabase, Mounted=>
+                !Boolean(@0[IsPublicFolderDatabase]) and !ObjectExtension.IsNullValue(@0[Mounted])"/>
+      <Column Name="CanMoveDatabase" Type="System.Boolean"
+              LambdaExpression="ReplicationType=>WinformsHelper.GetTargetTypeToStringValue(@0[ReplicationType], @0.Table.Columns[ReplicationType].DataType)==&quot;None&quot;" />
+      <!-- Show as days -->
+      <Column Name="MailboxRetention" Type="System.Object"/>
+      <Column Name="MailboxRetentionDays" Type="System.Int64" LambdaExpression="MailboxRetention=>FilterControlHelper.GetDaysFromEnhancedTimeSpan(@0[MailboxRetention])"/>
+      <!-- Show as MB -->
+      <Column Name="ProhibitSendReceiveQuota" Type="System.Object"/>
+      <Column Name="ProhibitSendReceiveQuotaMB" Type="System.UInt64" LambdaExpression="ProhibitSendReceiveQuota=>FilterControlHelper.GetMBFromByteQuantifiedSize(@0[ProhibitSendReceiveQuota])"/>
+      <!-- Show as MB -->
+      <Column Name="ProhibitSendQuota" Type="System.Object"/>
+      <Column Name="ProhibitSendQuotaMB" Type="System.UInt64" LambdaExpression="ProhibitSendQuota=>FilterControlHelper.GetMBFromByteQuantifiedSize(@0[ProhibitSendQuota])"/>
+      <!-- Show as MB -->
+      <Column Name="RecoverableItemsQuota" Type="System.Object"/>
+      <Column Name="RecoverableItemsQuotaMB" Type="System.UInt64" LambdaExpression="RecoverableItemsQuota=>FilterControlHelper.GetMBFromByteQuantifiedSize(@0[RecoverableItemsQuota])"/>
+      <!-- Show as MB -->
+      <Column Name="RecoverableItemsWarningQuota" Type="System.Object"/>
+      <Column Name="RecoverableItemsWarningQuotaMB" Type="System.UInt64" LambdaExpression="RecoverableItemsWarningQuota=>FilterControlHelper.GetMBFromByteQuantifiedSize(@0[RecoverableItemsWarningQuota])"/>
+
+      <Column Name="ActivationPreference"/>
+      <Column Name="ReplayLagTimes"/>
+      <Column Name="TruncationLagTimes"/>
+      <!-- Show as days -->
+      <Column Name="DeletedItemRetention" Type="System.Object"/>
+      <Column Name="DeletedItemRetentionDays" Type="System.Int64" LambdaExpression="DeletedItemRetention=>FilterControlHelper.GetDaysFromEnhancedTimeSpan(@0[DeletedItemRetention])"/>
+
+      <Column Name="CircularLoggingEnabled" Type="System.Boolean"/>
+    </DataColumns>
+
+    <InputColumns>
+      <RefColumns Name="ADObjectIdentity" />
+      <Column Name="IsPublicFolderDatabase" Type="System.Object"/>
+      <Column Name="IsLoadingStatus" Type="System.Boolean" DefaultValue="false"/>
+      <Column Name="IsFullRefresh" Type="System.Boolean" DefaultValue="true"/>
+      <Column Name="AllowPostRefreshAction" Type="System.Boolean" DefaultValue="true"/>
+      <!-- A Database Table which needs to refresh status -->
+      <Column Name="Databases" Type="System.Object"/>
+    </InputColumns>
+
+    <DataTableFillers PostRefreshAction="Microsoft.Exchange.Management.SnapIn.Esm.PostRefreshDatabaseStatusAction, Microsoft.Exchange.Management.SnapIn.Esm">
+
+      <!-- For database, use this for full or partial refresh. -->
+      <MonadAdapterFiller Command="Get-MailboxDatabase"
+                          FilterBuilder="Microsoft.Exchange.Management.SnapIn.Esm.ADObjectFilterBuilder, Microsoft.Exchange.Management.SnapIn.Esm"
+                          RunnableLambdaExpression="IsPublicFolderDatabase,IsLoadingStatus=>
+                                      (ObjectExtension.IsNullValue(@1[IsPublicFolderDatabase]) or
+                                      ObjectExtension.IsFalse(@1[IsPublicFolderDatabase])) and
+                                      ObjectExtension.IsFalse(@1[IsLoadingStatus])
+                                     ">
+        <Column Name="IsPublicFolderDatabase" Value="false"/>
+        <Parameters>
+          <AdditionalParameter Name="Identity"/>
+        </Parameters>
+      </MonadAdapterFiller>
+
+      <!-- For public folder database, use this for full refresh only. -->
+      <MonadAdapterFiller Command="Get-PublicFolderDatabase"
+                    FilterBuilder="Microsoft.Exchange.Management.SnapIn.Esm.ADObjectFilterBuilder, Microsoft.Exchange.Management.SnapIn.Esm"
+                    RunnableLambdaExpression="IsPublicFolderDatabase,IsFullRefresh,IsLoadingStatus=>
+                                      (ObjectExtension.IsNullValue(@1[IsPublicFolderDatabase]) or
+                                      ObjectExtension.IsTrue(@1[IsPublicFolderDatabase])) and
+                                      ObjectExtension.IsTrue(@1[IsFullRefresh]) and
+                                      ObjectExtension.IsFalse(@1[IsLoadingStatus])
+                                     ">
+        <Column Name="IsPublicFolderDatabase" Value="true"/>
+        <Parameters>
+          <AdditionalParameter Name="Identity"/>
+        </Parameters>
+      </MonadAdapterFiller>
+
+      <!-- For database, use this to load status. -->
+      <DatabaseStatusFiller Command="Get-MailboxDatabaseCopyStatus"
+                    FilterBuilder="Microsoft.Exchange.Management.SnapIn.Esm.ADObjectFilterBuilder, Microsoft.Exchange.Management.SnapIn.Esm"
+                    RunnableLambdaExpression="IsPublicFolderDatabase,IsLoadingStatus=>
+                                      (ObjectExtension.IsNullValue(@1[IsPublicFolderDatabase]) or
+                                      ObjectExtension.IsFalse(@1[IsPublicFolderDatabase])) and
+                                      ObjectExtension.IsTrue(@1[IsLoadingStatus])
+                                     ">
+        <Parameters>
+          <AdditionalParameter Name="Server"/>
+        </Parameters>
+      </DatabaseStatusFiller>
+
+      <!-- For public folder database, use this for load status or partial refresh. -->
+      <MonadAdapterFiller Command="Get-PublicFolderDatabase"
+                          FilterBuilder="Microsoft.Exchange.Management.SnapIn.Esm.ADObjectFilterBuilder, Microsoft.Exchange.Management.SnapIn.Esm"
+                          RunnableLambdaExpression="IsPublicFolderDatabase,IsFullRefresh,IsLoadingStatus=>
+                                      (ObjectExtension.IsNullValue(@1[IsPublicFolderDatabase]) or
+                                      ObjectExtension.IsTrue(@1[IsPublicFolderDatabase])) and
+                                      (ObjectExtension.IsFalse(@1[IsFullRefresh]) or
+                                      ObjectExtension.IsTrue(@1[IsLoadingStatus]))
+                                     ">
+        <Column Name="IsPublicFolderDatabase" Value="true"/>
+        <Parameters>
+          <Parameter Name="Status" Value="" />
+          <AdditionalParameter Name="Identity"/>
+        </Parameters>
+      </MonadAdapterFiller>
+    </DataTableFillers>
+
+    <Configuration>
+      <Caption>DatabasesTabText</Caption>
+      <DisplayedColumns>
+        <Column Name="Name" Text="CommonNameColumn" Mandatory="true" />
+        <Column Name="MountStatus" Text="DatabaseStatusMounted" Mandatory="true" />
+        <Column Name="Servers" Text="ServersColumn" Mandatory="true" />
+        <Column Name="MountedOnServerShortName" Text="MountedOnServerColumn" Mandatory="true" />
+        <Column Name="MasterServerOrAvailabilityGroup" Text="MasterColumn" Mandatory="true" />
+        <Column Name="MasterType" Text="MasterTypeColumn" Mandatory="true" />
+        <Column Name="MailboxRetention" Text="MailboxRetentionColumn" Mandatory="false" CustomFormatter="Microsoft.Exchange.Management.SystemManager.WinForms.EnhancedTimeSpanAsDaysCoverter, Microsoft.Exchange.Management.SystemManager"/>
+        <Column Name="ProhibitSendReceiveQuota" Text="ProhibitSendReceiveQuotaColumn" Mandatory="false" CustomFormatter="Microsoft.Exchange.Management.SystemManager.WinForms.ByteQuantifiedSizeAsMbCoverter, Microsoft.Exchange.Management.SystemManager"/>
+        <Column Name="ProhibitSendQuota" Text="ProhibitSendQuotaColumn" Mandatory="false" CustomFormatter="Microsoft.Exchange.Management.SystemManager.WinForms.ByteQuantifiedSizeAsMbCoverter, Microsoft.Exchange.Management.SystemManager"/>
+        <Column Name="RecoverableItemsQuota" Text="RecoverableItemsQuotaColumn" Mandatory="false" CustomFormatter="Microsoft.Exchange.Management.SystemManager.WinForms.ByteQuantifiedSizeAsMbCoverter, Microsoft.Exchange.Management.SystemManager"/>
+        <Column Name="RecoverableItemsWarningQuota" Text="RecoverableItemsWarningQuotaColumn" Mandatory="false" CustomFormatter="Microsoft.Exchange.Management.SystemManager.WinForms.ByteQuantifiedSizeAsMbCoverter, Microsoft.Exchange.Management.SystemManager"/>
+        <Column Name="ActivationPreference" Text="ActivationPreferenceColumn" Mandatory="false"/>
+        <Column Name="ReplayLagTimes" Text="ReplayLagTimesColumn" Mandatory="false"/>
+        <Column Name="TruncationLagTimes" Text="TruncationLagTimesColumn" Mandatory="false"/>
+        <Column Name="DeletedItemRetention" Text="DeletedItemRetentionColumn" Mandatory="false" CustomFormatter="Microsoft.Exchange.Management.SystemManager.WinForms.EnhancedTimeSpanAsDaysCoverter, Microsoft.Exchange.Management.SystemManager"/>
+        <Column Name="CircularLoggingEnabled" Text="CircularLoggingEnabledColumn" Mandatory="false"/>
+        <Column Name="WhenChanged" Text="LastModifiedColumnName" Mandatory="false" />
+      </DisplayedColumns>
+      <FilterColumns ObjectSchema="Microsoft.Exchange.Data.Directory.SystemConfiguration.DatabaseSchema, Microsoft.Exchange.Data.Directory">
+        <Column Name="Name" />
+        <Column Name="MountStatus" ColumnType="Microsoft.Exchange.Management.SystemManager.DatabaseStatus, Microsoft.Exchange.Management.SystemManager"/>
+        <Column Name="MountedOnServerShortName" ColumnType="System.String" Operators="Equal,NotEqual" PickerProfile="E14MailboxServerConfigurable"/>
+        <Column Name="MasterServerOrAvailabilityGroup" ColumnType="System.String" Operators="Equal,NotEqual" PickerProfile="MasterConfigurable"/>
+        <Column Name="MailboxRetentionDays" ColumnType="System.Int64" RefDisplayedColumn="MailboxRetention"/>
+        <Column Name="ProhibitSendReceiveQuotaMB" ColumnType="System.UInt64" RefDisplayedColumn="ProhibitSendReceiveQuota"/>
+        <Column Name="ProhibitSendQuotaMB" ColumnType="System.UInt64" RefDisplayedColumn="ProhibitSendQuota"/>
+        <Column Name="RecoverableItemsQuotaMB" ColumnType="System.UInt64" RefDisplayedColumn="RecoverableItemsQuota"/>
+        <Column Name="RecoverableItemsWarningQuotaMB" ColumnType="System.UInt64" RefDisplayedColumn="RecoverableItemsWarningQuota"/>
+        <Column Name="DeletedItemRetentionDays" ColumnType="System.Int64" RefDisplayedColumn="DeletedItemRetention"/>
+        <Column Name="CircularLoggingEnabled" ColumnType="System.Boolean" />
+      </FilterColumns>
+      <SortProperty>Name</SortProperty>
+      <MultiSelect>false</MultiSelect>
+      <!-- DatabaseStatusFill requires full serialization. -->
+      <SerializationLevel>Full</SerializationLevel>
+    </Configuration>
+  </ResultsLoader>
+
+  <!-- Schema for EdgeJunkEmailFeature-->
+  <ResultsLoader Name="EdgeJunkEmailFeature">
+    <DataColumns PrimaryKey="Type" NameProperty="Name" DistinguishIdentity="Type">
+      <Column Name="Name"
+              LambdaExpression="Type=>ObjectExtension.ToUserFriendText(Object(HygieneAgent(@0[Type])))" />
+      <Column Name="Enabled" Type="System.Boolean" />
+      <Column Name="Status"
+              Type="Microsoft.Exchange.Data.Directory.SystemConfiguration.StatusEnum, Microsoft.Exchange.Data.Directory"
+              LambdaExpression="Enabled=>IIF(Boolean(@0[Enabled]), StatusEnum.Enabled, StatusEnum.Disabled)" />
+      <Column Name="Type" Type="Microsoft.Exchange.Management.SystemManager.HygieneAgent, Microsoft.Exchange.Management.SystemManager"/>
+      <Column Name="WhenChanged" Type="System.DateTime"/>
+    </DataColumns>
+
+    <DataTableFillers>
+      <MonadAdapterFiller Command="Get-ContentFilterConfig">
+        <Column Name="Type" Value="ContentFilter"/>
+      </MonadAdapterFiller>
+      <MonadAdapterFiller Command="Get-IPAllowListConfig">
+        <Column Name="Type" Value="IPAllowList"/>
+      </MonadAdapterFiller>
+      <MonadAdapterFiller Command="Get-IPAllowListProvidersConfig">
+        <Column Name="Type" Value="IPAllowListProviders"/>
+      </MonadAdapterFiller>
+      <MonadAdapterFiller Command="Get-IPBlockListConfig">
+        <Column Name="Type" Value="IPBlockList"/>
+      </MonadAdapterFiller>
+      <MonadAdapterFiller Command="Get-IPBlockListProvidersConfig">
+        <Column Name="Type" Value="IPBlockListProviders"/>
+      </MonadAdapterFiller>
+      <MonadAdapterFiller Command="Get-RecipientFilterConfig">
+        <Column Name="Type" Value="RecipientFilter"/>
+      </MonadAdapterFiller>
+      <MonadAdapterFiller Command="Get-SenderFilterConfig">
+        <Column Name="Type" Value="SenderFilter"/>
+      </MonadAdapterFiller>
+      <MonadAdapterFiller Command="Get-SenderIdConfig">
+        <Column Name="Type" Value="SenderId"/>
+      </MonadAdapterFiller>
+      <MonadAdapterFiller Command="Get-SenderReputationConfig">
+        <Column Name="Type" Value="SenderReputation"/>
+      </MonadAdapterFiller>
+    </DataTableFillers>
+
+    <Configuration>
+      <Caption>JunkEmailTabText</Caption>
+      <DisplayedColumns>
+        <Column Name="Name" Text="FeaturesFeatureColumnName" Mandatory="true" />
+        <Column Name="Status" Text="FeaturesStatusColumnName" Mandatory="true" />
+        <Column Name="WhenChanged" Text="LastModifiedColumnName" Mandatory="false" />
+      </DisplayedColumns>
+      <SortProperty>Name</SortProperty>
+      <MultiSelect>false</MultiSelect>
+      <ImageColumn>Enabled</ImageColumn>
+    </Configuration>
+  </ResultsLoader>
+
+  <!-- Schema for ServerJunkEmailFeature-->
+  <ResultsLoader Name="ServerJunkEmailFeature">
+    <DataColumns PrimaryKey="Type" NameProperty="Name" DistinguishIdentity="Type">
+      <Column Name="Name"
+              LambdaExpression="Type=>ObjectExtension.ToUserFriendText(Object(HygieneAgent(@0[Type])))" />
+      <Column Name="Enabled" Type="System.Boolean" />
+      <Column Name="Status"
+              Type="Microsoft.Exchange.Data.Directory.SystemConfiguration.StatusEnum, Microsoft.Exchange.Data.Directory"
+              LambdaExpression="Enabled=>IIF(Boolean(@0[Enabled]), StatusEnum.Enabled, StatusEnum.Disabled)" />
+      <Column Name="Type" Type="Microsoft.Exchange.Management.SystemManager.HygieneAgent, Microsoft.Exchange.Management.SystemManager"/>
+      <Column Name="WhenChanged" Type="System.DateTime"/>
+    </DataColumns>
+
+    <DataTableFillers>
+      <MonadAdapterFiller Command="Get-IPAllowListConfig">
+        <Column Name="Type" Value="IPAllowList"/>
+      </MonadAdapterFiller>
+      <MonadAdapterFiller Command="Get-IPBlockListConfig">
+        <Column Name="Type" Value="IPBlockList"/>
+      </MonadAdapterFiller>
+    </DataTableFillers>
+
+    <Configuration>
+      <Caption>JunkEmailTabText</Caption>
+      <DisplayedColumns>
+        <Column Name="Name" Text="FeaturesFeatureColumnName" Mandatory="true" />
+        <Column Name="Status" Text="FeaturesStatusColumnName" Mandatory="true" />
+        <Column Name="WhenChanged" Text="LastModifiedColumnName" Mandatory="false" />
+      </DisplayedColumns>
+      <SortProperty>Name</SortProperty>
+      <MultiSelect>false</MultiSelect>
+      <ImageColumn>Enabled</ImageColumn>
+    </Configuration>
+  </ResultsLoader>
+
+  <!-- Schema for OrganizationJunkEmailFeature-->
+  <ResultsLoader Name="OrganizationJunkEmailFeature">
+    <DataColumns PrimaryKey="Type" NameProperty="Name" DistinguishIdentity="Type">
+      <Column Name="Name"
+              LambdaExpression="Type=>ObjectExtension.ToUserFriendText(Object(HygieneAgent(@0[Type])))" />
+      <Column Name="Enabled" Type="System.Boolean" />
+      <Column Name="Status"
+              Type="Microsoft.Exchange.Data.Directory.SystemConfiguration.StatusEnum, Microsoft.Exchange.Data.Directory"
+              LambdaExpression="Enabled=>IIF(Boolean(@0[Enabled]), StatusEnum.Enabled, StatusEnum.Disabled)" />
+      <Column Name="Type" Type="Microsoft.Exchange.Management.SystemManager.HygieneAgent, Microsoft.Exchange.Management.SystemManager"/>
+      <Column Name="WhenChanged" Type="System.DateTime"/>
+    </DataColumns>
+
+    <DataTableFillers>
+      <MonadAdapterFiller Command="Get-ContentFilterConfig">
+        <Column Name="Type" Value="ContentFilter"/>
+      </MonadAdapterFiller>
+      <MonadAdapterFiller Command="Get-IPAllowListConfig">
+        <Column Name="Type" Value="IPAllowList"/>
+      </MonadAdapterFiller>
+      <MonadAdapterFiller Command="Get-IPAllowListProvidersConfig">
+        <Column Name="Type" Value="IPAllowListProviders"/>
+      </MonadAdapterFiller>
+      <MonadAdapterFiller Command="Get-IPBlockListConfig">
+        <Column Name="Type" Value="IPBlockList"/>
+      </MonadAdapterFiller>
+      <MonadAdapterFiller Command="Get-IPBlockListProvidersConfig">
+        <Column Name="Type" Value="IPBlockListProviders"/>
+      </MonadAdapterFiller>
+      <MonadAdapterFiller Command="Get-RecipientFilterConfig">
+        <Column Name="Type" Value="RecipientFilter"/>
+      </MonadAdapterFiller>
+      <MonadAdapterFiller Command="Get-SenderFilterConfig">
+        <Column Name="Type" Value="SenderFilter"/>
+      </MonadAdapterFiller>
+      <MonadAdapterFiller Command="Get-SenderIdConfig">
+        <Column Name="Type" Value="SenderId"/>
+      </MonadAdapterFiller>
+      <MonadAdapterFiller Command="Get-SenderReputationConfig">
+        <Column Name="Type" Value="SenderReputation"/>
+      </MonadAdapterFiller>
+    </DataTableFillers>
+
+    <Configuration>
+      <Caption>JunkEmailTabText</Caption>
+      <DisplayedColumns>
+        <Column Name="Name" Text="FeaturesFeatureColumnName" Mandatory="true" />
+        <Column Name="Status" Text="FeaturesStatusColumnName" Mandatory="true" />
+        <Column Name="WhenChanged" Text="LastModifiedColumnName" Mandatory="false" />
+      </DisplayedColumns>
+      <SortProperty>Name</SortProperty>
+      <MultiSelect>false</MultiSelect>
+      <ImageColumn>Enabled</ImageColumn>
+    </Configuration>
+  </ResultsLoader>
+
+  <!-- Schema for DetailsTemplate-->
+  <ResultsLoader Name="DetailsTemplate">
+    <DataColumns PrimaryKey="Guid" NameProperty="Identity" DistinguishIdentity="Identity">
+      <RefColumns Name="ADObjectCommonProperties" />
+      <Column Name="TemplateType" />
+      <Column Name="Language" />
+      <Column Name="WhenChanged" Type="System.DateTime"/>
+      <Column Name="WhenCreated" Type="System.DateTime"/>
+    </DataColumns>
+
+    <InputColumns>
+      <RefColumns Name="ADObjectIdentity" />
+    </InputColumns>
+
+    <DataTableFillers>
+      <MonadAdapterFiller Command="Get-DetailsTemplate" FilterBuilder="Microsoft.Exchange.Management.DetailsTemplates.DetailsTemplateFilterBuilder, Microsoft.Exchange.Management.DetailsTemplates" />
+    </DataTableFillers>
+
+    <Configuration>
+      <Caption>DetailsTemplate</Caption>
+      <DisplayedColumns>
+        <Column Name="Language" Text="LanguageColumnName" Mandatory="true" />
+        <Column Name="TemplateType" Text="TypeColumnName" Mandatory="true" />
+        <Column Name="Identity" Text="IdentityColumnName" Mandatory="true" />
+        <Column Name="WhenCreated" Text="CreatedColumnName" Mandatory="true" />
+        <Column Name="WhenChanged" Text="ChangedColumnName" Mandatory="true" />
+      </DisplayedColumns>
+      <SortProperty>Language</SortProperty>
+      <MultiSelect>true</MultiSelect>
+    </Configuration>
+  </ResultsLoader>
+
+  <RefColumnsSection>
+    <RefColumns Name="ADObjectCommonProperties">
+      <Column Name="Name" Type="System.String"/>
+      <Column Name="Identity" Type="System.Object" LambdaExpression="DistinguishedName,Guid=>WinformsHelper.GenerateADObjectId(Guid(@0[&quot;Guid&quot;]), @0[DistinguishedName].ToString())" />
+      <Column Name="Guid" Type="System.Guid"/>
+      <Column Name="DistinguishedName" Type="System.String"/>
+    </RefColumns>
+
+    <RefColumns Name="ADObjectIdentity">
+      <Column Name="Identity" Type="Microsoft.Exchange.Data.Directory.ADObjectId, Microsoft.Exchange.Data.Directory"/>
+    </RefColumns>
+
+    <RefColumns Name="ExchangeServerProperties">
+      <Column Name="Name" />
+      <Column Name="Identity" Type="System.Object" />
+      <Column Name="Guid" Type="System.Guid"/>
+      <Column Name="Domain" />
+      <Column Name="IsMailboxServer" Type="System.Boolean" />
+      <Column Name="IsClientAccessServer" Type="System.Boolean" />
+      <Column Name="IsUnifiedMessagingServer" Type="System.Boolean" />
+      <Column Name="IsHubTransportServer" Type="System.Boolean" />
+      <Column Name="IsEdgeServer" Type="System.Boolean" />
+      <Column Name="IsProvisionedServer" Type="System.Boolean" />
+      <Column Name="AdminDisplayVersion" Type="System.Object" />
+      <Column Name="AdminDisplayVersionString" LambdaExpression="AdminDisplayVersion=>(iif(DBNull.Value.Equals(@0[AdminDisplayVersion]), &quot;&quot;, @0[AdminDisplayVersion].ToString()))" />
+      <Column Name="MajorVersion" Type="System.Int32" LambdaExpression="AdminDisplayVersion=>(iif(DBNull.Value.Equals(@0[AdminDisplayVersion]), 0, ServerVersion(@0[AdminDisplayVersion]).Major))" />
+      <Column Name="DisplayServerRole" />
+      <Column Name="Fqdn"/>
+      <Column Name="CurrentServerRole" />
+      <Column Name="Edition" Type="Microsoft.Exchange.Data.ServerEditionType, Microsoft.Exchange.Data" />
+      <Column Name="WhenChanged" Type="System.DateTime" />
+      <Column Name="Status" Type="Microsoft.Exchange.Data.Directory.SystemConfiguration.ServerStatus, Microsoft.Exchange.Data.Directory" />
+      <Column Name="SortableStatus" Type="System.String" LambdaExpression="Status=>WinformsHelper.ConvertValueToString(@0.Table.Columns[&quot;Status&quot;], @0[Status])"/>
+      <Column Name="DialPlans" Type="System.String" />
+      <Column Name="OrganizationalUnit" />
+      <Column Name="MessageTrackingLogEnabled" Type="System.Boolean" />
+      <Column Name="MaxCallsAllowed" Type="System.Int32" />
+      <Column Name="ExchangeLegacyDN" />
+      <Column Name="IsExchange2007OrLater" Type="System.Boolean" />
+      <Column Name="OutlookAnywhereEnabled" Type="System.Boolean" DefaultValue="false" />
+      <Column Name="Site" Type="Microsoft.Exchange.Data.Directory.ADObjectId, Microsoft.Exchange.Data.Directory" />
+      <Column Name="SiteName" LambdaExpression="Site=>(iif(DBNull.Value.Equals(@0[Site]), &quot;&quot;, ADObjectId(@0[Site]).Name))" />
+      <Column Name="AntiSpamAgentsEnabled" Type="System.Boolean" DefaultValue="false" />
+      <Column Name="ProductID" DefaultValue="" />
+      <Column Name="ProductIDDisplayText" LambdaExpression="ProductID=>iif(DBNull.Value.Equals(@0[ProductID]) or String(@0[ProductID]) == String.Empty, Strings.Unlicensed.ToString(), String(@0[ProductID]))" />
+      <Column Name="IsExchangeTrialEdition" Type="System.Boolean" />
+      <Column Name="IsExpiredExchangeTrialEdition" Type="System.Boolean" />
+      <Column Name="RemainingTrialPeriod" Type="System.Object" />
+      <Column Name="DatabaseAvailabilityGroup" />
+      <Column Name="IsE14OrLater" Type="System.Boolean" />
+      <Column Name="IsLocalHost" Type="System.Boolean" LambdaExpression="Name,LocalServerName=>String.Equals(String(@0[Name]), WinformsHelper.GetServerShortName(String(@1[LocalServerName])), StringComparison.OrdinalIgnoreCase)" />
+      <Column Name="CanEnableUMServer"
+              Type="System.Boolean"
+              LambdaExpression="Status=>
+                !DBNull.Value.Equals(@0[Status]) and
+                ServerStatus(@0[Status]) != ServerStatus.Enabled" />
+      <Column Name="CanDisableUMServer"
+              Type="System.Boolean"
+              LambdaExpression="Status=>
+                !DBNull.Value.Equals(@0[Status]) and
+                ServerStatus(@0[Status]) == ServerStatus.Enabled" />
+      <Column Name="CalendarRepairMissingItemFixEnabled" Type="System.Boolean" LambdaExpression="CalendarRepairMissingItemFixDisabled=>iif(ObjectExtension.IsNullValue(@0[CalendarRepairMissingItemFixDisabled]), false, !Boolean(@0[CalendarRepairMissingItemFixDisabled]))"/>
+      <Column Name="CalendarRepairMissingItemFixDisabled" Type="System.Boolean" />
+      <Column Name="CalendarRepairLogEnabled" Type="System.Boolean" />
+      <Column Name="CalendarRepairLogSubjectLoggingEnabled" Type="System.Boolean" />
+      <Column Name="CalendarRepairLogPath"/>
+      <Column Name="CalendarRepairIntervalEndWindow" Type="System.Int32"/>
+      <!-- Show as days -->
+      <Column Name="CalendarRepairLogFileAgeLimit" Type="System.Object"/>
+      <Column Name="CalendarRepairLogFileAgeLimitDays" Type="System.Int64" LambdaExpression="CalendarRepairLogFileAgeLimit=>FilterControlHelper.GetDaysFromEnhancedTimeSpan(@0[CalendarRepairLogFileAgeLimit])"/>
+      <!-- Show as MB -->
+      <Column Name="CalendarRepairLogDirectorySizeLimit" Type="System.Object"/>
+      <Column Name="CalendarRepairLogDirectorySizeLimitMB" Type="System.UInt64" LambdaExpression="CalendarRepairLogDirectorySizeLimit=>FilterControlHelper.GetMBFromByteQuantifiedSize(@0[CalendarRepairLogDirectorySizeLimit])"/>
+      <!-- Show as days -->
+      <Column Name="MessageTrackingLogMaxAge" Type="System.Object"/>
+      <Column Name="MessageTrackingLogMaxAgeDays" Type="System.Int64" LambdaExpression="MessageTrackingLogMaxAge=>FilterControlHelper.GetDaysFromEnhancedTimeSpan(@0[MessageTrackingLogMaxAge])"/>
+      <!-- Show as MB -->
+      <Column Name="MessageTrackingLogMaxDirectorySize" Type="System.Object"/>
+      <Column Name="MessageTrackingLogMaxDirectorySizeMB" Type="System.UInt64" LambdaExpression="MessageTrackingLogMaxDirectorySize=>FilterControlHelper.GetMBFromByteQuantifiedSize(@0[MessageTrackingLogMaxDirectorySize])"/>
+      <!-- Show as MB -->
+      <Column Name="MessageTrackingLogMaxFileSize" Type="System.Object"/>
+      <Column Name="MessageTrackingLogMaxFileSizeMB" Type="System.UInt64" LambdaExpression="MessageTrackingLogMaxFileSize=>FilterControlHelper.GetMBFromByteQuantifiedSize(@0[MessageTrackingLogMaxFileSize])"/>
+      <Column Name="MessageTrackingLogPath"/>
+      <Column Name="MessageTrackingLogSubjectLoggingEnabled" Type="System.Boolean" />
+      <Column Name="AutoDatabaseMountDial" Type="Microsoft.Exchange.Data.Directory.SystemConfiguration.AutoDatabaseMountDial, Microsoft.Exchange.Data.Directory" />
+      <Column Name="MaximumActiveDatabases" Type="System.Int32"/>
+      <Column Name="SubmissionServerOverrideList"/>
+      <Column Name="ManagedFolderAssistantSchedule"/>
+      <Column Name="Languages"/>
+    </RefColumns>
+
+    <RefColumns Name="ExchangeServerDisplayedProperties">
+      <Column Name="Name" Text="NameColumnName" Mandatory="true" />
+      <Column Name="DisplayServerRole" Text="RoleColumn" Mandatory="true" SortMode="NotSupported" />
+      <Column Name="AdminDisplayVersionString" Text="AdminDisplayVersionColumn" Mandatory="true" />
+      <Column Name="Edition" Text="EditionColumn" Mandatory="false" />
+      <Column Name="ProductIDDisplayText" Text="ProductID" Mandatory="false" />
+      <Column Name="WhenChanged" Text="LastModifiedColumnName" Mandatory="false" />
+      <Column Name="Domain" Text="DomainColumn" Mandatory="false" />
+    </RefColumns>
+
+    <RefColumns Name="ExchangeServerInputProperites">
+      <Column Name="Identity" Type="Microsoft.Exchange.Data.Directory.ADObjectId, Microsoft.Exchange.Data.Directory"/>
+      <Column Name="LocalServerName" />
+    </RefColumns>
+
+    <RefColumns Name="RecipientProperties">
+      <Column Name="Alias" />
+      <Column Name="City" />
+      <Column Name="HasActiveSyncDevicePartnership" Type="System.Boolean"/>
+      <Column Name="Company" />
+      <Column Name="CountryOrRegion" />
+      <Column Name="PostalCode" />
+      <Column Name="CustomAttribute1" />
+      <Column Name="CustomAttribute2" />
+      <Column Name="CustomAttribute3" />
+      <Column Name="CustomAttribute4" />
+      <Column Name="CustomAttribute5" />
+      <Column Name="CustomAttribute6" />
+      <Column Name="CustomAttribute7" />
+      <Column Name="CustomAttribute8" />
+      <Column Name="CustomAttribute9" />
+      <Column Name="CustomAttribute10" />
+      <Column Name="CustomAttribute11" />
+      <Column Name="CustomAttribute12" />
+      <Column Name="CustomAttribute13" />
+      <Column Name="CustomAttribute14" />
+      <Column Name="CustomAttribute15" />
+      <Column Name="DatabaseName" />
+      <Column Name="ArchiveDatabase"/>
+      <Column Name="Department" />
+      <Column Name="DisplayName" />
+      <Column Name="DistinguishedName" Type="System.String"/>
+      <Column Name="EmailAddresses" />
+      <Column Name="ExternalEmailAddress" Type="System.Object" ExpectedType="Microsoft.Exchange.Data.ProxyAddress, Microsoft.Exchange.Data" />
+      <Column Name="FirstName" />
+      <Column Name="HiddenFromAddressListsEnabled" Type="System.Boolean"/>
+      <Column Name="Name" />
+      <Column Name="Identity" Type="System.Object" LambdaExpression="DistinguishedName,Guid=>WinformsHelper.GenerateADObjectId(Guid(@0[&quot;Guid&quot;]),@0[DistinguishedName].ToString())"/>
+      <Column Name="Guid" Type="System.Guid"/>
+      <Column Name="LastName" />
+      <Column Name="Office" />
+      <Column Name="OrganizationalUnit" />
+      <Column Name="Phone" />
+      <Column Name="PrimarySmtpAddress" />
+      <Column Name="RecipientType" Type ="Microsoft.Exchange.Data.Directory.Recipient.RecipientType, Microsoft.Exchange.Data.Directory" />
+      <Column Name="RecipientTypeDetails" Type ="Microsoft.Exchange.Data.Directory.Recipient.RecipientTypeDetails, Microsoft.Exchange.Data.Directory" />
+      <Column Name="ArchiveState" Type ="Microsoft.Exchange.Data.Directory.Recipient.ArchiveState, Microsoft.Exchange.Data.Directory" />
+      <Column Name="StateOrProvince" />
+      <Column Name="Title" />
+      <Column Name="UMEnabled" Type="System.Boolean"/>
+      <Column Name="WhenChanged" Type="System.DateTime" />
+      <Column Name="UMMailboxPolicy" />
+      <Column Name="ManagedFolderMailboxPolicy" />
+      <Column Name="ActiveSyncMailboxPolicy" />
+      <Column Name="OwaMailboxPolicy" />
+      <Column Name="SharingPolicy" />
+      <Column Name="RetentionPolicy"/>
+      <Column Name="LitigationHoldEnabled" Type="System.Boolean"/>
+      <Column Name="ExchangeVersion" Type="System.Object" ExpectedType="Microsoft.Exchange.Data.ExchangeObjectVersion, Microsoft.Exchange.Data"/>
+      <Column Name="MailboxMoveFlags" Type="Microsoft.Exchange.Data.Directory.Recipient.RequestFlags, Microsoft.Exchange.Data.Directory"/>
+      <Column Name="MailboxMoveRemoteHostName" />
+      <Column Name="MailboxMoveStatus" Type="Microsoft.Exchange.Data.Directory.Recipient.RequestStatus, Microsoft.Exchange.Data.Directory"/>
+      <Column Name="CanEnableUM" Type="System.Boolean"
+              LambdaExpression="RecipientType,RecipientTypeDetails,UMEnabled,ExchangeVersion=>
+                (RecipientType(@0[&quot;RecipientType&quot;]) == RecipientType.UserMailbox) and
+                (RecipientTypeDetails(@0[&quot;RecipientTypeDetails&quot;]) != RecipientTypeDetails.LegacyMailbox) and
+                (!Boolean(@0[&quot;UMEnabled&quot;])) and
+                (ExchangeObjectVersion(@0[&quot;ExchangeVersion&quot;]).CompareTo(ExchangeObjectVersion.Exchange2010) >= 0)
+              " />
+      <Column Name="CanOperateUMEnabledMailbox" Type="System.Boolean"
+              LambdaExpression="RecipientType,RecipientTypeDetails,UMEnabled,ExchangeVersion=>
+                (RecipientType(@0[&quot;RecipientType&quot;]) == RecipientType.UserMailbox) and
+                (RecipientTypeDetails(@0[&quot;RecipientTypeDetails&quot;]) != RecipientTypeDetails.LegacyMailbox) and
+                (Boolean(@0[&quot;UMEnabled&quot;])) and
+                (ExchangeObjectVersion(@0[&quot;ExchangeVersion&quot;]).CompareTo(ExchangeObjectVersion.Exchange2010) >= 0)
+              " />
+      <Column Name="CanNewMoveRequest" Type="System.Object"
+              LambdaExpression="RecipientType,MailboxMoveStatus,MailboxMoveFlags,MailboxMoveRemoteHostName,ArchiveState=>
+                WinformsHelper.CalculateCanNewMoveRequest(@0[&quot;RecipientType&quot;],@0[&quot;MailboxMoveStatus&quot;],@0[&quot;MailboxMoveFlags&quot;],@0[MailboxMoveRemoteHostName],@0[&quot;ArchiveState&quot;])
+              " />
+      <Column Name="SupportedMailboxMoveType" Type="Microsoft.Exchange.Management.SystemManager.MailboxMoveType, Microsoft.Exchange.Management.SystemManager"
+              LambdaExpression="RecipientType,ArchiveState=>WinformsHelper.CalcuateSupportedMailboxMoveType(@0[&quot;RecipientType&quot;],@0[&quot;ArchiveState&quot;])"/>
+
+      <Column Name="CanEnableArchive" Type="System.Boolean"
+              LambdaExpression="RecipientType, RecipientTypeDetails, ArchiveState, ExchangeVersion=>
+                ExchangeObjectVersion(@0[&quot;ExchangeVersion&quot;]).CompareTo(ExchangeObjectVersion.Exchange2010) >= 0 and
+                ArchiveState(@0[&quot;ArchiveState&quot;]) == ArchiveState.None and
+                ((RecipientType(@0[&quot;RecipientType&quot;]) == RecipientType.UserMailbox and
+                RecipientTypeDetails(@0[&quot;RecipientTypeDetails&quot;]) != RecipientTypeDetails.LegacyMailbox) or
+
+                (RecipientTypeDetails(@0[&quot;RecipientTypeDetails&quot;]) == RecipientTypeDetails.RemoteUserMailbox or
+                RecipientTypeDetails(@0[&quot;RecipientTypeDetails&quot;]) == RecipientTypeDetails.RemoteRoomMailbox or
+                RecipientTypeDetails(@0[&quot;RecipientTypeDetails&quot;]) == RecipientTypeDetails.RemoteEquipmentMailbox or
+                RecipientTypeDetails(@0[&quot;RecipientTypeDetails&quot;]) == RecipientTypeDetails.RemoteSharedMailbox))
+              "/>
+
+      <Column Name="CanDisableArchive" Type="System.Boolean"
+              LambdaExpression="ArchiveState, ExchangeVersion=>
+                ExchangeObjectVersion(@0[&quot;ExchangeVersion&quot;]).CompareTo(ExchangeObjectVersion.Exchange2010) >= 0 and
+                ArchiveState(@0[&quot;ArchiveState&quot;]) != ArchiveState.None
+              "/>
+    </RefColumns>
+
+    <RefColumns Name="RecipientDisplayedProperties">
+      <Column Name="DisplayName" Text="DisplayNameColumn" Mandatory="true" />
+      <Column Name="Alias" Text="AliasColumn" Mandatory="true" />
+      <Column Name="CustomAttribute1" Text="CustomAttributeColumn1" Mandatory="false" />
+      <Column Name="CustomAttribute2" Text="CustomAttributeColumn2" Mandatory="false" />
+      <Column Name="CustomAttribute3" Text="CustomAttributeColumn3" Mandatory="false" />
+      <Column Name="CustomAttribute4" Text="CustomAttributeColumn4" Mandatory="false" />
+      <Column Name="CustomAttribute5" Text="CustomAttributeColumn5" Mandatory="false" />
+      <Column Name="CustomAttribute6" Text="CustomAttributeColumn6" Mandatory="false" />
+      <Column Name="CustomAttribute7" Text="CustomAttributeColumn7" Mandatory="false" />
+      <Column Name="CustomAttribute8" Text="CustomAttributeColumn8" Mandatory="false" />
+      <Column Name="CustomAttribute9" Text="CustomAttributeColumn9" Mandatory="false" />
+      <Column Name="CustomAttribute10" Text="CustomAttributeColumn10" Mandatory="false" />
+      <Column Name="CustomAttribute11" Text="CustomAttributeColumn11" Mandatory="false" />
+      <Column Name="CustomAttribute12" Text="CustomAttributeColumn12" Mandatory="false" />
+      <Column Name="CustomAttribute13" Text="CustomAttributeColumn13" Mandatory="false" />
+      <Column Name="CustomAttribute14" Text="CustomAttributeColumn14" Mandatory="false" />
+      <Column Name="CustomAttribute15" Text="CustomAttributeColumn15" Mandatory="false" />
+      <Column Name="EmailAddresses" Text="EmailAddressesColumn" Mandatory="false" />
+      <Column Name="HiddenFromAddressListsEnabled" Text="HiddenFromAddressListsColumn" Mandatory="false" />
+      <Column Name="Name" Text="NameColumn" Mandatory="false" />
+      <Column Name="OrganizationalUnit" Text="OuColumn" Mandatory="true" />
+      <Column Name="WhenChanged" Text="LastModifiedColumnName" Mandatory="false" />
+      <Column Name="RecipientTypeDetails" Text="RecipientTypeDetailsColumn" Mandatory="true" />
+    </RefColumns>
+
+    <RefColumns Name="RecipientInputProperties">
+      <Column Name="RecipientTypes" Type="System.Object" />
+      <Column Name="IgnoreDefaultScope" Type="System.Boolean" />
+      <Column Name="OrganizationalUnit" Type="System.Object" />
+      <Column Name="ANR" />
+      <Column Name="ResultSize" />
+      <Column Name="Filter" />
+      <Column Name="Identity" Type="System.Object"/>
+      <Column Name="IdentityList" Type="System.Object"/>
+    </RefColumns>
+  </RefColumnsSection>
+</ResultsLoaderSchema>

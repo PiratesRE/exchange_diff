@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo IsDatacenterOnly="true" IsDatacenterDedicatedOnly="true" Name="MSA RPS Service Configuration" DescriptionId="SetupComponentConfiguringMSARPSService">
+
+  <ServerTasks>
+    <ServerTaskInfo Id="_8e9f21cbcd3c400da09c778976bbd087" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install Weight="5" DescriptionId="SetupProgressPrecompilingBinaries" IsFatal="false">
+        <Standalone>
+          $fullPath = [System.IO.Path]::Combine($RoleInstallPath, "bin\microsoft.exchange.security.msarpsservice.exe");
+          precompile-ManagedBinary -BinaryName  $fullPath;
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall Weight="5" DescriptionId="SetupProgressPrecompilingBinaries" IsFatal="false">
+        <Standalone>
+          $fullPath = [System.IO.Path]::Combine($RoleInstallPath, "bin\microsoft.exchange.security.msarpsservice.exe");
+          precompile-ManagedBinary -BinaryName  $fullPath -Action uninstall;
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/remove MSA RPS service -->
+    <ServerTaskInfo Id="_49150b8ebe654790a1b0338c192c22ea" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          if (!(get-service MSExchangeMSARPS* | where {$_.name -eq "MSExchangeMSARPS"}))
+          {
+            install-MSExchangeMSARPSService
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>uninstall-MSExchangeMSARPSService</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+  </ServerTasks>
+
+</SetupComponentInfo>
+

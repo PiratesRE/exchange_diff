@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo IsDatacenterOnly="true" IsDatacenterDedicatedOnly="true" Name="Datacenter Bridgehead PreSetup">
+
+  <ServerTasks>
+
+    <ServerTaskInfo Id="_84c8e95db9444da1b8cdc69450f11863" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install />
+      <BuildToBuildUpgrade />
+      <DisasterRecovery />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <ServerTaskInfo Id="_708D71F9-FC02-4004-B681-ADCB0024DA36" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install />
+      <BuildToBuildUpgrade>
+        <Standalone>
+          # Delete the task that logs engine update events so that during upgrade,
+          # the task does not launch the application to log engine update information
+          # This should fix PS 2709624
+          Write-ExchangeSetupLog -Info "Deleting the task - EngineUpdateLoggerTask";
+          schtasks /Delete /TN EngineUpdateLoggerTask /F
+
+          # Kill the process if it is running
+          Stop-Process -Name "EngineUpdateLogger" -Force -ErrorAction SilentlyContinue
+        </Standalone>
+      </BuildToBuildUpgrade>
+      <DisasterRecovery />
+      <Uninstall>
+        <Standalone>
+          # Delete the task that logs engine update events
+          Write-ExchangeSetupLog -Info "Deleting the task - EngineUpdateLoggerTask";
+          schtasks /Delete /TN EngineUpdateLoggerTask /F
+
+          # Kill the process if it is running
+          Stop-Process -Name "EngineUpdateLogger" -Force -ErrorAction SilentlyContinue
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+  </ServerTasks>
+
+</SetupComponentInfo>
+

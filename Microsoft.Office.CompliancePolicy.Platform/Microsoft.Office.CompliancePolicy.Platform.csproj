@@ -1,0 +1,362 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{09CD9476-CD82-489E-B9E2-84B47CA141EA}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Microsoft.Office.CompliancePolicy</RootNamespace>
+    <AssemblyName>Microsoft.Office.CompliancePolicy.Platform</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.ServiceModel.Web" />
+    <Reference Include="System.ServiceProcess" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ArgumentValidator.cs" />
+    <Compile Include="Auditor.cs" />
+    <Compile Include="BadRedirectedUriException.cs" />
+    <Compile Include="Breadcrumbs.cs" />
+    <Compile Include="CancelableHttpAsyncResult.cs" />
+    <Compile Include="CaseInsensitiveStringComparer.cs" />
+    <Compile Include="ClassificationRuleStoreExceptionBase.cs" />
+    <Compile Include="ClassificationRuleStorePermanentException.cs" />
+    <Compile Include="ClassificationRuleStoreTransientException.cs" />
+    <Compile Include="Classification\ClassificationConfiguration.cs" />
+    <Compile Include="Classification\ClassificationEngineResults.cs" />
+    <Compile Include="Classification\ClassificationService.cs" />
+    <Compile Include="Classification\ClassificationUtils.cs" />
+    <Compile Include="Classification\CLASSIFICATION_DEFINITION_DETAILS.cs" />
+    <Compile Include="Classification\ICAAttributeDefinition.cs" />
+    <Compile Include="Classification\ICAAttributeDefinitionCollection.cs" />
+    <Compile Include="Classification\ICAClassificationDefinition.cs" />
+    <Compile Include="Classification\ICAClassificationDefinitionCollection.cs" />
+    <Compile Include="Classification\ICAClassificationEngine.cs" />
+    <Compile Include="Classification\ICAClassificationResult.cs" />
+    <Compile Include="Classification\ICAClassificationResultCollection.cs" />
+    <Compile Include="Classification\ICAClassificationSession.cs" />
+    <Compile Include="Classification\ICAClassificationStreamSession.cs" />
+    <Compile Include="Classification\IClassificationItem.cs" />
+    <Compile Include="Classification\IClassificationRuleStore.cs" />
+    <Compile Include="Classification\IEnumCAAttributeDefinitions.cs" />
+    <Compile Include="Classification\IEnumCAClassificationDefinitions.cs" />
+    <Compile Include="Classification\IEnumCAClassificationResults.cs" />
+    <Compile Include="Classification\IErrorLog.cs" />
+    <Compile Include="Classification\IFingerprintCreator.cs" />
+    <Compile Include="Classification\IMicrosoftClassificationEngine.cs" />
+    <Compile Include="Classification\IMicrosoftFingerprintCreator.cs" />
+    <Compile Include="Classification\InMemoryClassificationRuleStore.cs" />
+    <Compile Include="Classification\IPropertyBag.cs" />
+    <Compile Include="Classification\IRulePackageLoader.cs" />
+    <Compile Include="Classification\MicrosoftClassificationEngine.cs" />
+    <Compile Include="Classification\MicrosoftFingerprintCreator.cs" />
+    <Compile Include="Classification\PerformanceDiagnosticsType.cs" />
+    <Compile Include="Classification\PropertyNames.cs" />
+    <Compile Include="Classification\RuleDefinitionDetails.cs" />
+    <Compile Include="Classification\RULE_PACKAGE_DETAILS.cs" />
+    <Compile Include="Classification\RULE_PACKAGE_REQUEST_DETAILS.cs" />
+    <Compile Include="Classification\RULE_PACKAGE_TIMESTAMP_DETAILS.cs" />
+    <Compile Include="Classification\STGTY.cs" />
+    <Compile Include="Classification\VERSION_INFORMATION_DETAILS.cs" />
+    <Compile Include="CommonUtility.cs" />
+    <Compile Include="ComplianceData\AuditState.cs" />
+    <Compile Include="ComplianceData\ClassificationResult.cs" />
+    <Compile Include="ComplianceData\ComplianceItem.cs" />
+    <Compile Include="ComplianceData\ComplianceItemContainer.cs" />
+    <Compile Include="ComplianceData\ComplianceItemPagedReader.cs" />
+    <Compile Include="ComplianceData\ComplianceItemStatusFlag.cs" />
+    <Compile Include="CompliancePolicyException.cs" />
+    <Compile Include="ComplianceTaskPermanentException.cs" />
+    <Compile Include="ComplianceTaskTransientException.cs" />
+    <Compile Include="ComplianceTask\BindingTask.cs" />
+    <Compile Include="ComplianceTask\ComplianceService.cs" />
+    <Compile Include="ComplianceTask\ComplianceServiceProvider.cs" />
+    <Compile Include="ComplianceTask\ComplianceTask.cs" />
+    <Compile Include="ComplianceTask\DLPTask.cs" />
+    <Compile Include="ComplianceTask\PeriodicPolicyTask.cs" />
+    <Compile Include="ComplianceTask\PolicyConfigChangeEventHandler.cs" />
+    <Compile Include="ComplianceTask\RetentionTask.cs" />
+    <Compile Include="ComplianceTask\TaskGenerator.cs" />
+    <Compile Include="Constants.cs" />
+    <Compile Include="Dar\CommonDarTaskTypes.cs" />
+    <Compile Include="Dar\ComplianceTaskStatistics.cs" />
+    <Compile Include="Dar\DarExecutionLogClientIDs.cs" />
+    <Compile Include="Dar\DarIterationTask.cs" />
+    <Compile Include="Dar\DarIterator.cs" />
+    <Compile Include="Dar\DarServiceProvider.cs" />
+    <Compile Include="Dar\DarTask.cs" />
+    <Compile Include="Dar\DarTaskAggregate.cs" />
+    <Compile Include="Dar\DarTaskAggregateProvider.cs" />
+    <Compile Include="Dar\DarTaskCategory.cs" />
+    <Compile Include="Dar\DarTaskExecutionCommand.cs" />
+    <Compile Include="Dar\DarTaskExecutionResult.cs" />
+    <Compile Include="Dar\DarTaskFactory.cs" />
+    <Compile Include="Dar\DarTaskManager.cs" />
+    <Compile Include="Dar\DarTaskQueue.cs" />
+    <Compile Include="Dar\DarTaskState.cs" />
+    <Compile Include="Dar\DarWorkloadHost.cs" />
+    <Compile Include="Dar\NoOpTask.cs" />
+    <Compile Include="Dar\NoOpTaskData.cs" />
+    <Compile Include="Dar\RecurrenceFrequency.cs" />
+    <Compile Include="Dar\RecurrenceType.cs" />
+    <Compile Include="Dar\SerializableTaskDataAttribute.cs" />
+    <Compile Include="DownloadCanceledException.cs" />
+    <Compile Include="DownloadCompleteEventArgs.cs" />
+    <Compile Include="DownloadLimitExceededException.cs" />
+    <Compile Include="DownloadResult.cs" />
+    <Compile Include="DownloadTimeoutException.cs" />
+    <Compile Include="ExecutionLog.cs" />
+    <Compile Include="ExecutionWrapper.cs" />
+    <Compile Include="GrayException.cs" />
+    <Compile Include="HttpClient.cs" />
+    <Compile Include="HttpSessionConfig.cs" />
+    <Compile Include="HttpWebRequestEventArgs.cs" />
+    <Compile Include="HttpWebRequestException.cs" />
+    <Compile Include="HttpWebResponseEventArgs.cs" />
+    <Compile Include="ICancelableAsyncResult.cs" />
+    <Compile Include="IStringComparer.cs" />
+    <Compile Include="ITracer.cs" />
+    <Compile Include="Monitor\IMonitoringNotification.cs" />
+    <Compile Include="Monitor\LatencyType.cs" />
+    <Compile Include="Monitor\MonitoringNotificationContextTemplate.cs" />
+    <Compile Include="Monitor\PerfCounterProvider.cs" />
+    <Compile Include="Monitor\PerfCounters.cs" />
+    <Compile Include="Monitor\PolicySyncFailureInformation.cs" />
+    <Compile Include="Monitor\PolicySyncLatencyInformation.cs" />
+    <Compile Include="PolicyConfiguration\AssociationType.cs" />
+    <Compile Include="PolicyConfiguration\AuditableOperations.cs" />
+    <Compile Include="PolicyConfiguration\BindingMetadata.cs" />
+    <Compile Include="PolicyConfiguration\ChangeType.cs" />
+    <Compile Include="PolicyConfiguration\ConfigurationObjectType.cs" />
+    <Compile Include="PolicyConfiguration\IPolicyConfigProviderManager.cs" />
+    <Compile Include="PolicyConfiguration\Mode.cs" />
+    <Compile Include="PolicyConfiguration\PolicyApplyStatus.cs" />
+    <Compile Include="PolicyConfiguration\PolicyAssociationConfig.cs" />
+    <Compile Include="PolicyConfiguration\PolicyAssociationConfigSchema.cs" />
+    <Compile Include="PolicyConfiguration\PolicyBindingConfig.cs" />
+    <Compile Include="PolicyConfiguration\PolicyBindingConfigSchema.cs" />
+    <Compile Include="PolicyConfiguration\PolicyBindingSetConfig.cs" />
+    <Compile Include="PolicyConfiguration\PolicyBindingSetConfigSchema.cs" />
+    <Compile Include="PolicyConfiguration\PolicyBindingTypes.cs" />
+    <Compile Include="PolicyConfiguration\PolicyConfigBase.cs" />
+    <Compile Include="PolicyConfiguration\PolicyConfigBaseSchema.cs" />
+    <Compile Include="PolicyConfiguration\PolicyConfigChangeEventArgs.cs" />
+    <Compile Include="PolicyConfiguration\PolicyConfigChangeEventHandler.cs" />
+    <Compile Include="PolicyConfiguration\PolicyConfigProvider.cs" />
+    <Compile Include="PolicyConfiguration\PolicyConfigProviderManager.cs" />
+    <Compile Include="PolicyConfiguration\PolicyConfigProviderPermanentException.cs" />
+    <Compile Include="PolicyConfiguration\PolicyConfigProviderTransientException.cs" />
+    <Compile Include="PolicyConfiguration\PolicyDefinitionConfig.cs" />
+    <Compile Include="PolicyConfiguration\PolicyDefinitionConfigSchema.cs" />
+    <Compile Include="PolicyConfiguration\PolicyRuleConfig.cs" />
+    <Compile Include="PolicyConfiguration\PolicyRuleConfigSchema.cs" />
+    <Compile Include="PolicyConfiguration\PolicyScenario.cs" />
+    <Compile Include="PolicyConfiguration\PolicyVersion.cs" />
+    <Compile Include="PolicyConfiguration\TaskSynchronizationOption.cs" />
+    <Compile Include="PolicyConfiguration\UnifiedPolicyErrorCode.cs" />
+    <Compile Include="PolicyConfiguration\WellKnownSharePointBindings.cs" />
+    <Compile Include="PolicyConfiguration\WellKnownUnifiedBindings.cs" />
+    <Compile Include="PolicyConfiguration\Workload.cs" />
+    <Compile Include="PolicyEvaluationExceptionBase.cs" />
+    <Compile Include="PolicyEvaluationPermanentException.cs" />
+    <Compile Include="PolicyEvaluationTransientException.cs" />
+    <Compile Include="PolicyEvaluation\AccessScope.cs" />
+    <Compile Include="PolicyEvaluation\Action.cs" />
+    <Compile Include="PolicyEvaluation\AndCondition.cs" />
+    <Compile Include="PolicyEvaluation\Argument.cs" />
+    <Compile Include="PolicyEvaluation\AuditOperationsPredicate.cs" />
+    <Compile Include="PolicyEvaluation\BlockAccessAction.cs" />
+    <Compile Include="PolicyEvaluation\CompliancePolicyParserException.cs" />
+    <Compile Include="PolicyEvaluation\CompliancePolicyValidationException.cs" />
+    <Compile Include="PolicyEvaluation\Condition.cs" />
+    <Compile Include="PolicyEvaluation\ConditionEvaluationMode.cs" />
+    <Compile Include="PolicyEvaluation\ConditionType.cs" />
+    <Compile Include="PolicyEvaluation\ContentContainsSensitiveInformationPredicate.cs" />
+    <Compile Include="PolicyEvaluation\ContentMetadataContainsPredicate.cs" />
+    <Compile Include="PolicyEvaluation\DataClassificationConfig.cs" />
+    <Compile Include="PolicyEvaluation\EqualPredicate.cs" />
+    <Compile Include="PolicyEvaluation\ExecutionControl.cs" />
+    <Compile Include="PolicyEvaluation\ExistsPredicate.cs" />
+    <Compile Include="PolicyEvaluation\FalseCondition.cs" />
+    <Compile Include="PolicyEvaluation\GenerateIncidentReportAction.cs" />
+    <Compile Include="PolicyEvaluation\GreaterThanOrEqualPredicate.cs" />
+    <Compile Include="PolicyEvaluation\GreaterThanPredicate.cs" />
+    <Compile Include="PolicyEvaluation\HoldAction.cs" />
+    <Compile Include="PolicyEvaluation\HoldDurationHint.cs" />
+    <Compile Include="PolicyEvaluation\IPolicyParserFactory.cs" />
+    <Compile Include="PolicyEvaluation\IsPredicate.cs" />
+    <Compile Include="PolicyEvaluation\KqlHelpers.cs" />
+    <Compile Include="PolicyEvaluation\LessThanOrEqualPredicate.cs" />
+    <Compile Include="PolicyEvaluation\LessThanPredicate.cs" />
+    <Compile Include="PolicyEvaluation\NameValuesPairConfigurationPredicate.cs" />
+    <Compile Include="PolicyEvaluation\NotCondition.cs" />
+    <Compile Include="PolicyEvaluation\NotEqualPredicate.cs" />
+    <Compile Include="PolicyEvaluation\NotExistsPredicate.cs" />
+    <Compile Include="PolicyEvaluation\NotifyActionBase.cs" />
+    <Compile Include="PolicyEvaluation\NotifyAuthorsAction.cs" />
+    <Compile Include="PolicyEvaluation\OrCondition.cs" />
+    <Compile Include="PolicyEvaluation\PolicyEngine.cs" />
+    <Compile Include="PolicyEvaluation\PolicyEvaluationContext.cs" />
+    <Compile Include="PolicyEvaluation\PolicyHistoryResult.cs" />
+    <Compile Include="PolicyEvaluation\PolicyRule.cs" />
+    <Compile Include="PolicyEvaluation\PolicyUtils.cs" />
+    <Compile Include="PolicyEvaluation\PredicateCondition.cs" />
+    <Compile Include="PolicyEvaluation\PredicateEvaluationResult.cs" />
+    <Compile Include="PolicyEvaluation\Property.cs" />
+    <Compile Include="PolicyEvaluation\QueryPredicate.cs" />
+    <Compile Include="PolicyEvaluation\RetentionExpireAction.cs" />
+    <Compile Include="PolicyEvaluation\RetentionRecycleAction.cs" />
+    <Compile Include="PolicyEvaluation\RuleConstants.cs" />
+    <Compile Include="PolicyEvaluation\RuleEvaluationResult.cs" />
+    <Compile Include="PolicyEvaluation\RuleMode.cs" />
+    <Compile Include="PolicyEvaluation\RuleOverrideOptions.cs" />
+    <Compile Include="PolicyEvaluation\RuleParser.cs" />
+    <Compile Include="PolicyEvaluation\RuleSerializer.cs" />
+    <Compile Include="PolicyEvaluation\RulesEvaluationHistory.cs" />
+    <Compile Include="PolicyEvaluation\RuleState.cs" />
+    <Compile Include="PolicyEvaluation\RuleTag.cs" />
+    <Compile Include="PolicyEvaluation\SimplePolicyParserFactory.cs" />
+    <Compile Include="PolicyEvaluation\SupplementalData.cs" />
+    <Compile Include="PolicyEvaluation\TextQueryPredicate.cs" />
+    <Compile Include="PolicyEvaluation\TrueCondition.cs" />
+    <Compile Include="PolicyEvaluation\Value.cs" />
+    <Compile Include="PolicyEvaluation\WorkloadBits.cs" />
+    <Compile Include="PolicySync\AdditionalDiagnostics.cs" />
+    <Compile Include="PolicySync\AssociationConfiguration.cs" />
+    <Compile Include="PolicySync\AsyncCallStateObject.cs" />
+    <Compile Include="PolicySync\BasicSyncProxy.cs" />
+    <Compile Include="PolicySync\BindingConfiguration.cs" />
+    <Compile Include="PolicySync\CredentialsFactory.cs" />
+    <Compile Include="PolicySync\ExceptionRecord.cs" />
+    <Compile Include="PolicySync\GetChangesRequest.cs" />
+    <Compile Include="PolicySync\GetObjectRequest.cs" />
+    <Compile Include="PolicySync\GetObjectResultForAssociation.cs" />
+    <Compile Include="PolicySync\GetObjectResultForBinding.cs" />
+    <Compile Include="PolicySync\GetObjectResultForPolicy.cs" />
+    <Compile Include="PolicySync\GetObjectResultForRule.cs" />
+    <Compile Include="PolicySync\HostStateProvider.cs" />
+    <Compile Include="PolicySync\ICredentialsFactory.cs" />
+    <Compile Include="PolicySync\IJobFactory.cs" />
+    <Compile Include="PolicySync\IncrementalAttribute.cs" />
+    <Compile Include="PolicySync\IncrementalAttributeBase.cs" />
+    <Compile Include="PolicySync\IncrementalCollection.cs" />
+    <Compile Include="PolicySync\IndexedQueue.cs" />
+    <Compile Include="PolicySync\InitializationSubWorkItem.cs" />
+    <Compile Include="PolicySync\IPolicySyncWebservice.cs" />
+    <Compile Include="PolicySync\IPolicySyncWebserviceClient.cs" />
+    <Compile Include="PolicySync\IPolicySyncWebserviceClientFactory.cs" />
+    <Compile Include="PolicySync\IPooledServiceProxy.cs" />
+    <Compile Include="PolicySync\IServiceProxyPool.cs" />
+    <Compile Include="PolicySync\ITenantInfoProvider.cs" />
+    <Compile Include="PolicySync\ITenantInfoProviderFactory.cs" />
+    <Compile Include="PolicySync\IWorkItemQueueProvider.cs" />
+    <Compile Include="PolicySync\JobBase.cs" />
+    <Compile Include="PolicySync\JobDispatcherBase.cs" />
+    <Compile Include="PolicySync\JobFactory.cs" />
+    <Compile Include="PolicySync\MemoryWorkItemQueueProvider.cs" />
+    <Compile Include="PolicySync\ObjectSyncSubWorkItem.cs" />
+    <Compile Include="PolicySync\ParallelJobDispatcher.cs" />
+    <Compile Include="PolicySync\PolicyChange.cs" />
+    <Compile Include="PolicySync\PolicyChangeBatch.cs" />
+    <Compile Include="PolicySync\PolicyConfigProviderHelper.cs" />
+    <Compile Include="PolicySync\PolicyConfiguration.cs" />
+    <Compile Include="PolicySync\PolicyConfigurationBase.cs" />
+    <Compile Include="PolicySync\PolicySyncAssert.cs" />
+    <Compile Include="PolicySync\PolicySyncClientProxy.cs" />
+    <Compile Include="PolicySync\PolicySyncFaultBase.cs" />
+    <Compile Include="PolicySync\PolicySyncMaxMessageSize.cs" />
+    <Compile Include="PolicySync\PolicySyncPermanentFault.cs" />
+    <Compile Include="PolicySync\PolicySyncPermanentFaultResult.cs" />
+    <Compile Include="PolicySync\PolicySyncProxy.cs" />
+    <Compile Include="PolicySync\PolicySyncTransientFault.cs" />
+    <Compile Include="PolicySync\PolicySyncTransientFaultResult.cs" />
+    <Compile Include="PolicySync\PolicySyncUtils.cs" />
+    <Compile Include="PolicySync\PolicySyncWebserviceClientFactory.cs" />
+    <Compile Include="PolicySync\PolicySyncWebserviceClientHelper.cs" />
+    <Compile Include="PolicySync\PublishStatusRequest.cs" />
+    <Compile Include="PolicySync\RetryStrategy.cs" />
+    <Compile Include="PolicySync\RuleConfiguration.cs" />
+    <Compile Include="PolicySync\ScopeConfiguration.cs" />
+    <Compile Include="PolicySync\SerializedJobDispatcher.cs" />
+    <Compile Include="PolicySync\ServiceProxyIdentity.cs" />
+    <Compile Include="PolicySync\ServiceProxyPool.cs" />
+    <Compile Include="PolicySync\ServiceProxyPoolsManager.cs" />
+    <Compile Include="PolicySync\SkipReflectionMappingAttribute.cs" />
+    <Compile Include="PolicySync\StatusUpdatePublishJob.cs" />
+    <Compile Include="PolicySync\SubWorkItemBase.cs" />
+    <Compile Include="PolicySync\SyncAgentConfiguration.cs" />
+    <Compile Include="PolicySync\SyncAgentContext.cs" />
+    <Compile Include="PolicySync\SyncCallerContext.cs" />
+    <Compile Include="PolicySync\SyncChangeInfo.cs" />
+    <Compile Include="PolicySync\SyncInfo.cs" />
+    <Compile Include="PolicySync\SyncJob.cs" />
+    <Compile Include="PolicySync\SyncMonitorEventTracker.cs" />
+    <Compile Include="PolicySync\SyncStatusUpdateWorkitem.cs" />
+    <Compile Include="PolicySync\SyncWorkItem.cs" />
+    <Compile Include="PolicySync\TenantContext.cs" />
+    <Compile Include="PolicySync\TenantCookie.cs" />
+    <Compile Include="PolicySync\TenantCookieCollection.cs" />
+    <Compile Include="PolicySync\TenantInfo.cs" />
+    <Compile Include="PolicySync\TypeSyncSubWorkItem.cs" />
+    <Compile Include="PolicySync\UnifiedPolicyStatus.cs" />
+    <Compile Include="PolicySync\Utility.cs" />
+    <Compile Include="PolicySync\WCFConnectionStateTuple.cs" />
+    <Compile Include="PolicySync\WorkItemBase.cs" />
+    <Compile Include="PolicySync\WorkItemStatus.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SerializableException.cs" />
+    <Compile Include="ServerProtocolViolationException.cs" />
+    <Compile Include="SyncAgentErrorCode.cs" />
+    <Compile Include="SyncAgentExceptionBase.cs" />
+    <Compile Include="SyncAgentPermanentException.cs" />
+    <Compile Include="SyncAgentTransientException.cs" />
+    <Compile Include="UnsupportedUriFormatException.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="DefaultClassificationDefinitions.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.Exchange.Diagnostics\Microsoft.Exchange.Diagnostics.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14113}</Project>
+      <Name>Microsoft.Exchange.Diagnostics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\mscorlib\mscorlib.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141F1}</Project>
+      <Name>mscorlib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

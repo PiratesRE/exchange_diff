@@ -1,0 +1,116 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{09CD9476-CD82-489E-B9E2-84B47CA14137}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Microsoft.Exchange.Inference</RootNamespace>
+    <AssemblyName>Microsoft.Exchange.Inference.MdbCommon</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Common\ICrawlerFolderIterator.cs" />
+    <Compile Include="MdbCommon\AbortOnProcessingRequestedException.cs" />
+    <Compile Include="MdbCommon\ADRecipientNotFoundException.cs" />
+    <Compile Include="MdbCommon\FailedToOpenActivityLogException.cs" />
+    <Compile Include="MdbCommon\InvalidADRecipientTypeException.cs" />
+    <Compile Include="MdbCommon\InvalidDocumentInTrainingSetException.cs" />
+    <Compile Include="MdbCommon\LocDescriptionAttribute.cs" />
+    <Compile Include="MdbCommon\MissingMailboxOwnerPropertyException.cs" />
+    <Compile Include="MdbCommon\NestedDocumentCountZeroException.cs" />
+    <Compile Include="MdbCommon\NullDocumentProcessingContextException.cs" />
+    <Compile Include="MdbCommon\Strings.cs" />
+    <Compile Include="Mdb\CrawlerItemIterator.cs" />
+    <Compile Include="Mdb\DeleteItemsException.cs" />
+    <Compile Include="Mdb\DocumentProcessingContext.cs" />
+    <Compile Include="Mdb\IMdbPropertyMappingContext.cs" />
+    <Compile Include="Mdb\ItemResponseType.cs" />
+    <Compile Include="Mdb\MdbCompositeItemIdentity.cs" />
+    <Compile Include="Mdb\MdbDocument.cs" />
+    <Compile Include="Mdb\MdbDocumentAdapter.cs" />
+    <Compile Include="Mdb\MdbInferenceFactory.cs" />
+    <Compile Include="Mdb\MdbOneToManyPropertyMapping.cs" />
+    <Compile Include="Mdb\MdbOneToOnePropertyMapping.cs" />
+    <Compile Include="Mdb\MdbOneToOneSimplePropertyMapping.cs" />
+    <Compile Include="Mdb\MdbOneToOneTransformPropertyMapping.cs" />
+    <Compile Include="Mdb\MdbPropertyMap.cs" />
+    <Compile Include="Mdb\MdbPropertyMapping.cs" />
+    <Compile Include="Mdb\XsoStreamWrapper.cs" />
+    <Compile Include="Mdb\XsoUtil.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="MdbCommon\Strings.resources" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Common\Microsoft.Exchange.Data.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140D3}</Project>
+      <Name>Microsoft.Exchange.Data.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Storage.ClientStrings\Microsoft.Exchange.Data.Storage.ClientStrings.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1410E}</Project>
+      <Name>Microsoft.Exchange.Data.Storage.ClientStrings</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Storage\Microsoft.Exchange.Data.Storage.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1410F}</Project>
+      <Name>Microsoft.Exchange.Data.Storage</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data\Microsoft.Exchange.Data.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14106}</Project>
+      <Name>Microsoft.Exchange.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Diagnostics\Microsoft.Exchange.Diagnostics.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14113}</Project>
+      <Name>Microsoft.Exchange.Diagnostics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Inference.Common\Microsoft.Exchange.Inference.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14136}</Project>
+      <Name>Microsoft.Exchange.Inference.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Search.Core\Microsoft.Exchange.Search.Core.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14193}</Project>
+      <Name>Microsoft.Exchange.Search.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.StoreProvider\Microsoft.Exchange.StoreProvider.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141B9}</Project>
+      <Name>Microsoft.Exchange.StoreProvider</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\mscorlib\mscorlib.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141F1}</Project>
+      <Name>mscorlib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

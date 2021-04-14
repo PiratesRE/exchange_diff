@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo Name="FFO Web Service Permissions Configuration" DescriptionId="FfoWebServicePermissionsComponentDescription">
+
+  <ServerTasks>
+
+    <ServerTaskInfo Id="_7AE026A9D9B842DBA5227A547BD0FF3F" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          Set-LocalPermissions -Feature:"FfoWebService"
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Install/uninstall topology perf counters -->
+    <!-- This requires local administrator permission -->
+    <ServerTaskInfo Id="_e25b9c5660464b208eded1e722df9dfe" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>new-perfcounters -DefinitionFileName ExchangeTopologyPerformanceCounters.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-perfcounters -DefinitionFileName ExchangeTopologyPerformanceCounters.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+  </ServerTasks>
+
+</SetupComponentInfo>

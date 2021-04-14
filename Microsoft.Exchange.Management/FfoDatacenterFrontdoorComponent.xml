@@ -1,0 +1,1080 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo IsDatacenterOnly="true" Name="Frontdoor Ffo only component" DatacenterMode="Ffo">
+    <ServerTasks>
+
+        <!-- Task for installing the webstore performance counters 
+             Note: This task is first since other components may make calls to webstore shortly after being installed
+             and we do not want to pollute the event log with error messages indicating that a perf counter is missing. -->
+        <ServerTaskInfo Id="_76A9538E41C74D8EB46AD1C008FFF68F" Component="Office15:\Current\Forefront for Office Datacenter\Deployment and Configuration Management\Deployment">
+            <Install IsFatal="false">
+                <Standalone>
+                  new-perfcounters -DefinitionFileName DirectoryWebstoreCounters.xml
+                  new-perfcounters -DefinitionFileName MessageTracingWebstoreCounters.xml
+                  new-perfcounters -DefinitionFileName SpamWebstoreCounters.xml
+                  new-perfcounters -DefinitionFileName StoredProcedureCounters.xml
+                  new-perfcounters -DefinitionFileName WstThrottlerCounters.xml
+                  new-perfcounters -DefinitionFileName CacheDataProvider.xml
+                  new-perfcounters -DefinitionFileName CompositeDataProvider.xml
+                  new-perfcounters -DefinitionFileName BloomFilterDataProvider.xml
+                  new-perfcounters -DefinitionFileName PrimingService.xml
+                  new-perfcounters -DefinitionFileName TenantConfigurationCache.xml
+                  new-perfcounters -DefinitionFileName GenericRusClientPerfCounters.xml
+                  new-perfcounters -DefinitionFileName GenericRusOverallClientPerfCounters.xml
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true" />
+            <DisasterRecovery UseInstallTasks="true" />
+            <Uninstall IsFatal="false">
+                <Standalone>
+                  remove-perfcounters -DefinitionFileName DirectoryWebstoreCounters.xml
+                  remove-perfcounters -DefinitionFileName MessageTracingWebstoreCounters.xml
+                  remove-perfcounters -DefinitionFileName SpamWebstoreCounters.xml
+                  remove-perfcounters -DefinitionFileName StoredProcedureCounters.xml
+                  remove-perfcounters -DefinitionFileName WstThrottlerCounters.xml
+                  remove-perfcounters -DefinitionFileName CacheDataProvider.xml
+                  remove-perfcounters -DefinitionFileName CompositeDataProvider.xml
+                  remove-perfcounters -DefinitionFileName BloomFilterDataProvider.xml
+                  remove-perfcounters -DefinitionFileName PrimingService.xml
+                  remove-perfcounters -DefinitionFileName TenantConfigurationCache.xml
+                  remove-perfcounters -DefinitionFileName GenericRusClientPerfCounters.xml
+                  remove-perfcounters -DefinitionFileName GenericRusOverallClientPerfCounters.xml
+                </Standalone>
+            </Uninstall>
+        </ServerTaskInfo>
+
+        <!-- Task for installing the caching priming services -->
+        <ServerTaskInfo Id="_15D23BB364834A78B687B4EC529E65EF" Component="Office15:\Current\Forefront for Office Datacenter\Deployment and Configuration Management\Deployment">
+            <Install>
+                <Standalone>
+                    if (!(get-service FfoPrimingService* | where {$_.name -eq "FfoPrimingService"}))
+                    {
+                    Install-FfoPrimingService
+                    }
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true" />
+            <DisasterRecovery UseInstallTasks="true"/>
+            <Uninstall>
+                <Standalone>Uninstall-FfoPrimingService</Standalone>
+            </Uninstall>
+        </ServerTaskInfo>
+
+        <!-- Disable all transport agents, this server task should be run first before running other agents server tasks -->
+        <ServerTaskInfo Id="_4664D7D1AC704F5E9CC277CBBFF8A420" Component="Office15:\Current\Forefront for Office Datacenter\Deployment and Configuration Management\Deployment">
+            <Install DescriptionId="SetupProgressDisableTransportAgent">
+                <Standalone>
+                    Get-TransportAgent -TransportService:FrontEnd | Disable-TransportAgent -Confirm:$false -ErrorAction SilentlyContinue -TransportService:FrontEnd
+                </Standalone>
+            </Install>
+            <!-- During upgrades, agents retain their state. So, agents that were disabled during install, will continue to remain disabled. We MUST not change the state during upgrade. -->
+            <BuildToBuildUpgrade />
+            <DisasterRecovery UseInstallTasks="true" />
+            <Uninstall/>
+        </ServerTaskInfo>
+
+        <!-- Install/uninstall "System Probe Detect Agent" preserve state on upgrade -->
+        <ServerTaskInfo Id="_72445812-5233-4939-803c-7d6d3c5c9e43" Component="Office15:\Current\Forefront for Office Datacenter\Deployment and Configuration Management\Deployment">
+            <Install DescriptionId="SetupProgressInstallingSystemProbeDetectAgent">
+                <Standalone>
+                    $agentName = "System Probe Detect Agent";
+                    $agentFactory = "Microsoft.Forefront.AntiSpam.SystemProbeDetectAgent.SystemProbeDetectAgentFactory";
+                    $agentAssembly = ($RoleInstallPath + "TransportRoles\agents\Hygiene\Microsoft.Forefront.Hygiene.SystemProbeDetectAgent.dll");
+                    $agent = get-transportagent -Identity:$agentName -TransportService:FrontEnd;
+                    if ($agent) {
+                    uninstall-transportagent -Identity:$agentName -TransportService:FrontEnd;
+                    };
+                    install-TransportAgent -Name:$agentName -TransportAgentFactory:$agentFactory -AssemblyPath:$agentAssembly -TransportService:FrontEnd;
+                    if ($agent.enabled -or ! $agent) { enable-transportagent -Identity:$agentName  -TransportService:FrontEnd};
+                    set-TransportAgent -priority:1 -Identity:$agentName -TransportService:FrontEnd;
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true" />
+            <DisasterRecovery UseInstallTasks="true" />
+            <Uninstall DescriptionId="SetupProgressRemovingSystemProbeDetectAgent">
+                <Standalone>
+                    $agentName = "System Probe Detect Agent";
+                    $agent = get-transportagent -Identity:$agentName -TransportService:FrontEnd;
+                    if ($agent) {
+                    uninstall-transportagent -Identity:$agentName -TransportService:FrontEnd;
+                    };
+                </Standalone>
+            </Uninstall>
+        </ServerTaskInfo>
+
+        <!-- Allow Network Service to access System Probe certificate private key -->
+        <ServerTaskInfo Id="_af39da1b2ef14880989ad83e7183267d" Component="Office15:\Current\Forefront for Office Datacenter\Deployment and Configuration Management\Deployment">
+            <Install DescriptionId="SetupProgressSystemProbeCertificateAccess">
+                <Standalone>
+                    $cert = (Get-ChildItem cert:\LocalMachine\my | ? {$_.subject -eq "CN=FfoSystemProbe"})
+                    if (-not $cert)
+                    {
+                    Write-ExchangeSetupLog -Error "FfoSystemProbe certificate not found in LocalMachine\my.";
+                    }
+                    if (-not $cert.PrivateKey)
+                    {
+                    Write-ExchangeSetupLog -Error "FfoSystemProbe certificate found but does not contain the private key.";
+                    }
+                    $keyname = $cert.PrivateKey.CspKeyContainerInfo.UniqueKeyContainerName
+                    $keypath = $env:ProgramData + "\Microsoft\Crypto\RSA\MachineKeys\" + $keyname
+                    icacls $keypath /grant *S-1-5-20:RX
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true" />
+            <DisasterRecovery UseInstallTasks="true" />
+            <Uninstall />
+        </ServerTaskInfo>
+
+        <!-- Install/uninstall "Tenant Attribution Inbound Connector Agent" preserve state on upgrade -->
+        <ServerTaskInfo Id="_41D95BF49BC34F46AA9DF368A8E91710" Component="Office15:\Current\Forefront for Office Datacenter\Deployment and Configuration Management\Deployment">
+            <Install DescriptionId="SetupProgressInstallingTenantAttributionAgent">
+                <Standalone>
+                    $agentName = "TenantAttributionAndInboundConnectorAgent";
+                    $agentFactory = "Microsoft.Exchange.Hygiene.TenantAttribution.TenantInboundConnectorAgentFactory";
+                    $agentAssembly = ($RoleInstallPath + "TransportRoles\agents\Hygiene\Microsoft.Exchange.Hygiene.TenantAttribution.TenantInboundConnectorAgent.dll");
+                    $agent = get-transportagent -Identity:$agentName -TransportService:FrontEnd;
+                    if ($agent) {
+                        uninstall-transportagent -Identity:$agentName -TransportService:FrontEnd;
+                    };
+                    install-TransportAgent -Name:$agentName -TransportAgentFactory:$agentFactory -AssemblyPath:$agentAssembly -TransportService:FrontEnd;
+                    if ($agent.enabled -or ! $agent) { enable-transportagent -Identity:$agentName  -TransportService:FrontEnd};
+                    set-TransportAgent -priority:2 -Identity:$agentName -TransportService:FrontEnd;
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true" />
+            <DisasterRecovery UseInstallTasks="true" />
+            <Uninstall DescriptionId="SetupProgressRemovingTenantAttributionAgent">
+                <Standalone>
+                    $agentName = "TenantAttributionAndInboundConnectorAgent";
+                    $agent = get-transportagent -Identity:$agentName -TransportService:FrontEnd;
+                    if ($agent) {
+                    uninstall-transportagent -Identity:$agentName -TransportService:FrontEnd;
+                    };
+                </Standalone>
+            </Uninstall>
+        </ServerTaskInfo>
+
+        <!-- Install/uninstall "System Probe Drop Smtp Agent" preserve state on upgrade -->
+        <ServerTaskInfo Id="_5a079c3f084a42fb991eae9b781d0c79" Component="Office15:\Current\Forefront for Office Datacenter\Deployment and Configuration Management\Deployment">
+            <Install DescriptionId="SetupProgressInstallingSystemProbeDropSmtpAgents">
+                <Standalone>
+                    $agentName = "System Probe Drop Smtp Agent";
+                    $agentFactory = "Microsoft.Exchange.Transport.Agent.SystemProbeDrop.SystemProbeDropSmtpAgentFactory";
+                    $agentAssembly = ($RoleInstallPath + "TransportRoles\agents\SystemProbeDrop\Microsoft.Exchange.Transport.Agent.SystemProbeDrop.dll");
+                    $agent = get-transportagent -Identity:$agentName;
+                    if ($agent) 
+                    {
+                        uninstall-transportagent -Identity:$agentName;
+                    };
+                    install-TransportAgent -Name:$agentName -TransportAgentFactory:$agentFactory -AssemblyPath:$agentAssembly;
+                    if ($agent.enabled -or ! $agent) 
+                    { 
+                        enable-transportagent -Identity:$agentName 
+                    };
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true" />
+            <DisasterRecovery UseInstallTasks="true" />
+            <Uninstall DescriptionId="SetupProgressInstallingSystemProbeDropSmtpAgents">
+                <Standalone>
+                    $agentName = "System Probe Drop Smtp Agent";
+                    $agent = get-transportagent -Identity:$agentName;
+                    if ($agent) 
+                    {
+                        uninstall-transportagent -Identity:$agentName;
+                    };
+                </Standalone>
+            </Uninstall>
+        </ServerTaskInfo>
+        
+      <!-- Install/uninstall "Consumer Mail Migration Agent" -->
+      <ServerTaskInfo Id="_53D75CF79DC47F46BB9EF478C8F91920" Component="Office15:\Current\Forefront for Office Datacenter\Deployment and Configuration Management\Deployment">
+        <Install DescriptionId="SetupProgressInstallingConsumerMailMigrationAgent">
+          <Standalone>
+            $agentRootPath = $RoleInstallPath + "TransportRoles\agents\ConsumerMailMigrationAgent\";
+
+            $agentName = "ConsumerMailMigrationAgent";
+            $agentFactory = "Microsoft.Exchange.Transport.Agent.ConsumerMailMigration.ConsumerMailMigrationAgentFactory";
+            $agentAssembly = $agentRootPath + "Microsoft.Exchange.Transport.Agent.ConsumerMailMigration.dll";
+
+            # Install Agent
+            $agent = get-transportagent -Identity:$agentName -TransportService:FrontEnd;
+            if ($agent) {
+            uninstall-transportagent -Identity:$agentName -TransportService:FrontEnd;
+            };
+            install-TransportAgent -Name:$agentName -TransportAgentFactory:$agentFactory -AssemblyPath:$agentAssembly -TransportService:FrontEnd;
+            set-TransportAgent -priority:3 -Identity:$agentName -TransportService:FrontEnd;
+            disable-transportagent -Identity:$agentName  -TransportService:FrontEnd;
+
+            # Update EWS hostname in config file, from CA parameter
+            $agentAssemblyConfig = $agentAssembly + ".config";
+            set-appconfigvalue -ConfigFileFullPath:$agentAssemblyConfig -Element:configuration/appSettings -AppSettingKey:'ExchangeEWSHostName' -NewValue:$RoleDatacenterHostedExchangeSiteName;
+
+            # Install perf counters
+            new-perfcounters -DefinitionFileName ($agentRootPath + "ConsumerMailMigrationAgentEWSPerfCounters.xml")
+          </Standalone>
+        </Install>
+        <BuildToBuildUpgrade UseInstallTasks="true" />
+        <DisasterRecovery UseInstallTasks="true" />
+        <Uninstall DescriptionId="SetupProgressRemovingConsumerMailMigrationAgent">
+          <Standalone>
+            $agentRootPath = $RoleInstallPath + "TransportRoles\agents\ConsumerMailMigrationAgent\";
+
+            # Uninstall Agent
+            $agentName = "ConsumerMailMigrationAgent";
+            $agent = get-transportagent -Identity:$agentName -TransportService:FrontEnd;
+            if ($agent) {
+            uninstall-transportagent -Identity:$agentName -TransportService:FrontEnd;
+            };
+
+            # Unnstall perf counters
+            remove-perfcounters -DefinitionFileName ($agentRootPath + "ConsumerMailMigrationAgentEWSPerfCounters.xml")
+          </Standalone>
+        </Uninstall>
+      </ServerTaskInfo>
+      
+        <!-- Install/uninstall "Protocol Filter Agent" preserve state on upgrade -->
+        <ServerTaskInfo Id="_91A37A941D92407C8E6AEC8CED1ED567" Component="Office15:\Current\Forefront for Office Datacenter\Deployment and Configuration Management\Deployment">
+            <Install DescriptionId="SetupProgressInstallingDefaultProtocolFilterAgent">
+                <Standalone>
+                  $agentName = "Protocol Filter Agent";
+                  $agentFactory = "Microsoft.Exchange.Hygiene.ProtocolFilterAgent.ProtocolFilterAgentFactory";
+                  $agentAssembly = ($RoleInstallPath + "TransportRoles\agents\Hygiene\Microsoft.Exchange.Hygiene.ProtocolFilterAgent.dll");
+                  $agent = get-transportagent -Identity:$agentName -TransportService:FrontEnd;
+                  if ($agent) {
+                      uninstall-transportagent -Identity:$agentName -TransportService:FrontEnd;
+                  };
+                  install-TransportAgent -Name:$agentName -TransportAgentFactory:$agentFactory -AssemblyPath:$agentAssembly -TransportService:FrontEnd;
+                  if ($agent.enabled -or !$agent) { enable-transportagent -Identity:$agentName -TransportService:FrontEnd };
+                  set-TransportAgent -priority:4 -Identity:$agentName -TransportService:FrontEnd;
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true" />
+            <DisasterRecovery UseInstallTasks="true" />
+            <Uninstall DescriptionId="SetupProgressRemovingDefaultProtocolFilterAgent">
+                <Standalone>
+                  $agentName = "Protocol Filter Agent";
+                  $agent = get-transportagent -Identity:$agentName -TransportService:FrontEnd;
+                  if ($agent) {
+                      uninstall-transportagent -Identity:$agentName -TransportService:FrontEnd;
+                  };
+                </Standalone>
+            </Uninstall>
+        </ServerTaskInfo>
+
+        <!-- Install/uninstall "IP Filter Agent" preserve state on upgrade -->
+        <ServerTaskInfo Id="_48A1F7331CC6462A8B4A9A5F6133948E" Component="Office15:\Current\Forefront for Office Datacenter\Deployment and Configuration Management\Deployment">
+            <Install DescriptionId="SetupProgressInstallingDefaultIPFilterAgent">
+                <Standalone>
+                    $agentName = "IP Filter Agent";
+                    $agentFactory = "Microsoft.Forefront.AntiSpam.IPFilter.IPFilterAgentFactory";
+                    $agentAssembly = ($RoleInstallPath + "TransportRoles\agents\Hygiene\Microsoft.Forefront.AntiSpam.IPFilter.dll");
+                    $agent = get-transportagent -Identity:$agentName -TransportService:FrontEnd;
+                    if ($agent) {
+                        uninstall-transportagent -Identity:$agentName -TransportService:FrontEnd;
+                    };
+                    install-TransportAgent -Name:$agentName -TransportAgentFactory:$agentFactory -AssemblyPath:$agentAssembly -TransportService:FrontEnd;
+                    if ($agent.enabled -or ! $agent) { enable-transportagent -Identity:$agentName  -TransportService:FrontEnd};
+                    set-TransportAgent -priority:5 -Identity:$agentName -TransportService:FrontEnd;
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true" />
+            <DisasterRecovery UseInstallTasks="true" />
+            <Uninstall DescriptionId="SetupProgressRemovingDefaultIPFilterAgent">
+                <Standalone>
+                    $agentName = "IP Filter Agent";
+                    $agent = get-transportagent -Identity:$agentName -TransportService:FrontEnd;
+                    if ($agent) {
+                        uninstall-transportagent -Identity:$agentName -TransportService:FrontEnd;
+                    };
+                </Standalone>
+            </Uninstall>
+        </ServerTaskInfo>
+
+        <!-- Install/uninstall IP Filter perf counters -->
+        <!-- This requires local administrator permission -->
+        <ServerTaskInfo Id="_75AB179DD6034AF1AEFDC1FEDEDE4C8F" Component="Office15:\Current\Forefront for Office Datacenter\Deployment and Configuration Management\Deployment">
+            <Install IsFatal="false">
+                <Standalone>new-perfcounters -DefinitionFileName IPFilterAgentPerfCounters.xml</Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true" />
+            <DisasterRecovery UseInstallTasks="true" />
+            <Uninstall IsFatal="false">
+                <Standalone>remove-perfcounters -DefinitionFileName IPFilterAgentPerfCounters.xml</Standalone>
+            </Uninstall>
+        </ServerTaskInfo>
+
+        <!-- Install/uninstall "Envelope Filter Agent" preserve state on upgrade -->
+        <ServerTaskInfo Id="_922F2116A9864695A417F036F3A214E9" Component="Office15:\Current\Forefront for Office Datacenter\Deployment and Configuration Management\Deployment">
+            <Install DescriptionId="SetupProgressInstallingDefaultEnvelopeFilterAgent">
+                <Standalone>
+                    $agentName = "Envelope Filter Agent";
+                    $agentFactory = "Microsoft.Forefront.AntiSpam.EnvelopeFilter.EnvelopeFilterAgentFactory";
+                    $agentAssembly = ($RoleInstallPath + "TransportRoles\agents\Hygiene\Microsoft.Forefront.AntiSpam.EnvelopeFilter.dll");
+                    $agent = get-transportagent -Identity:$agentName -TransportService:FrontEnd;
+                    if ($agent) {
+                    uninstall-transportagent -Identity:$agentName -TransportService:FrontEnd;
+                    };
+                    install-TransportAgent -Name:$agentName -TransportAgentFactory:$agentFactory -AssemblyPath:$agentAssembly -TransportService:FrontEnd;
+                    if ($agent.enabled -or ! $agent) { enable-transportagent -Identity:$agentName  -TransportService:FrontEnd};
+                    set-TransportAgent -priority:6 -Identity:$agentName -TransportService:FrontEnd;
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true" />
+            <DisasterRecovery UseInstallTasks="true" />
+            <Uninstall DescriptionId="SetupProgressRemovingDefaultEnvelopeFilterAgent">
+                <Standalone>
+                    $agentName = "Envelope Filter Agent";
+                    $agent = get-transportagent -Identity:$agentName -TransportService:FrontEnd;
+                    if ($agent) {
+                    uninstall-transportagent -Identity:$agentName -TransportService:FrontEnd;
+                    };
+                </Standalone>
+            </Uninstall>
+        </ServerTaskInfo>
+
+        <!-- Install/uninstall "Sip validation agent" preserve state on upgrade -->
+        <ServerTaskInfo Id="_08C368EA627C4CF7ACD70F41E05BB48C" Component="Office15:\Current\Forefront for Office Datacenter\Deployment and Configuration Management\Deployment">
+            <Install DescriptionId="SetupProgressInstallingSipValidationAgent">
+                <Standalone>
+                    if ($RoleDatacenterSipValidationAgentInstall -eq $true) {
+                        $agentName = "Sip validation agent";
+                        $agentFactory = "Microsoft.Exchange.Hygiene.SipValidation.SipValidationSmtpAgentFactory";
+                        $agentAssembly = ($RoleInstallPath + "TransportRoles\agents\Hygiene\Microsoft.Exchange.Hygiene.SipValidationAgent.dll");
+                        $agent = get-transportagent -Identity:$agentName -TransportService:FrontEnd;
+                        if ($agent) {
+                        uninstall-transportagent -Identity:$agentName -TransportService:FrontEnd;
+                        };
+                        install-TransportAgent -Name:$agentName -TransportAgentFactory:$agentFactory -AssemblyPath:$agentAssembly -TransportService:FrontEnd;
+                        if (! $agent -or $agent.enabled) { enable-transportagent -Identity:$agentName  -TransportService:FrontEnd};
+                        set-TransportAgent -priority:1 -Identity:$agentName -TransportService:FrontEnd;
+                    }
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true" />
+            <DisasterRecovery UseInstallTasks="true" />
+            <Uninstall DescriptionId="SetupProgressRemovingDefaultEnvelopeFilterAgent">
+                <Standalone>
+                    $agentName = "Sip validation agent";
+                    $agent = get-transportagent -Identity:$agentName -TransportService:FrontEnd;
+                    if ($agent) {
+                    uninstall-transportagent -Identity:$agentName -TransportService:FrontEnd;
+                    };
+                </Standalone>
+            </Uninstall>
+        </ServerTaskInfo>
+
+        <!-- Install/uninstall Envelope Filter perf counters -->
+        <!-- This requires local administrator permission -->
+        <ServerTaskInfo Id="_72CC6652D9F2432F9C8263619D29DBC0" Component="Office15:\Current\Forefront for Office Datacenter\Deployment and Configuration Management\Deployment">
+            <Install IsFatal="false">
+                <Standalone>new-perfcounters -DefinitionFileName EnvelopeFilterAgentPerfCounters.xml</Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true" />
+            <DisasterRecovery UseInstallTasks="true" />
+            <Uninstall IsFatal="false">
+                <Standalone>remove-perfcounters -DefinitionFileName EnvelopeFilterAgentPerfCounters.xml</Standalone>
+            </Uninstall>
+        </ServerTaskInfo>
+
+        <!-- Install/uninstall Keservice perf counters -->
+        <!-- This requires local administrator permission -->
+        <ServerTaskInfo Id="_023D395EC0704996B45F3AC4DEEFBF5B" Component="Office15:\Current\Forefront for Office Datacenter\Deployment and Configuration Management\Deployment">
+            <Install IsFatal="false">
+                <Standalone>new-perfcounters -DefinitionFileName KesServicePerfCounters.xml</Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true" />
+            <DisasterRecovery UseInstallTasks="true" />
+            <Uninstall IsFatal="false">
+                <Standalone>remove-perfcounters -DefinitionFileName KesServicePerfCounters.xml</Standalone>
+            </Uninstall>
+        </ServerTaskInfo>
+
+        <!-- Install/uninstall "MSMessageTracing Client, stop the service and start after log folder permission is set" -->
+        <ServerTaskInfo Id="_7e2c0b9f-a3a8-489f-adec-eb41564fb13a" Component="Office15:\Current\Forefront for Office Datacenter\Deployment and Configuration Management\Deployment">
+            <Install>
+                <Standalone>
+                  $registryPath = "HKLM:\System\CurrentControlSet\Services\MSMessageTracingClient"
+                  if (!(get-service MSMessageTracingClient* | where {$_.name -eq "MSMessageTracingClient"}))
+                  {
+                    Install-MessageTracingClientService
+                    New-Perfcounters -DefinitionFileName MessageTracingPerfCounters.xml
+                    New-Perfcounters -DefinitionFileName StreamingOpticsPerfCounters.xml
+                    New-Perfcounters -DefinitionFileName TblAggregatorPerfCounters.xml
+                    New-Perfcounters -DefinitionFileName OutboundSingleSenderPerfCounters.xml
+                    New-Perfcounters -DefinitionFileName OpticsDataProviderPerfCounters.xml
+                    Stop-SetupService -ServiceName MSMessageTracingClient
+                  }
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true" />
+            <DisasterRecovery UseInstallTasks="true" />
+            <Uninstall>
+                <Standalone>
+                    Uninstall-MessageTracingClientService
+                    Remove-Perfcounters -DefinitionFileName MessageTracingPerfCounters.xml
+                    Remove-Perfcounters -DefinitionFileName StreamingOpticsPerfCounters.xml
+                    Remove-Perfcounters -DefinitionFileName TblAggregatorPerfCounters.xml
+                    Remove-Perfcounters -DefinitionFileName OutboundSingleSenderPerfCounters.xml
+                    Remove-Perfcounters -DefinitionFileName OpticsDataProviderPerfCounters.xml
+                </Standalone>
+            </Uninstall>
+        </ServerTaskInfo>
+
+        <ServerTaskInfo Id="_C172C6B8B7074B5BA398D9D7AF0C7E93" Component="Office15:\Current\Forefront for Office Datacenter\Deployment and Configuration Management\Deployment">
+            <Install>
+                <Standalone>
+                    Add-PSSnapIn Microsoft.Exchange.Management.PowerShell.Setup -ErrorAction SilentlyContinue
+                    Install-ExchangeCertificate -Thumbprint $RoleDatacenterSmtpSHA1Thumbprint -Services SMTP
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true" />
+            <DisasterRecovery UseInstallTasks="true"/>
+            <Uninstall />
+        </ServerTaskInfo>
+
+        <!-- Install/uninstall Spam Engine perf counters -->
+        <!-- This requires local administrator permission -->
+        <ServerTaskInfo Id="_720DEF0CFDF947ECB2431141B0F0F9EA" Component="Office15:\Current\Forefront for Office Datacenter\Deployment and Configuration Management\Deployment">
+            <Install IsFatal="false">
+                <Standalone>new-perfcounters -DefinitionFileName SpamFilterAgentPerfCounters.xml</Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true" />
+            <DisasterRecovery UseInstallTasks="true" />
+            <Uninstall IsFatal="false">
+                <Standalone>remove-perfcounters -DefinitionFileName SpamFilterAgentPerfCounters.xml</Standalone>
+            </Uninstall>
+        </ServerTaskInfo>
+
+        <!-- Install/uninstall DnsChecks perf counters -->
+        <!-- This requires local administrator permission -->
+        <ServerTaskInfo Id="_676CB19F87CA4EFC91CC9EA1AEA9D5F8" Component="Office15:\Current\Forefront for Office Datacenter\Deployment and Configuration Management\Deployment">
+          <Install IsFatal="false">
+            <Standalone>new-perfcounters -DefinitionFileName DnsChecksPerfCounters.xml</Standalone>
+          </Install>
+          <BuildToBuildUpgrade UseInstallTasks="true" />
+          <DisasterRecovery UseInstallTasks="true" />
+          <Uninstall IsFatal="false">
+            <Standalone>remove-perfcounters -DefinitionFileName DnsChecksPerfCounters.xml</Standalone>
+          </Uninstall>
+        </ServerTaskInfo>
+
+        <!-- Install/uninstall DnsTasks perf counters -->
+        <!-- This requires local administrator permission -->
+        <ServerTaskInfo Id="_E2514F3A074A4DB9A441F6C3FAD44993" Component="Office15:\Current\Forefront for Office Datacenter\Deployment and Configuration Management\Deployment">
+          <Install IsFatal="false">
+            <Standalone>new-perfcounters -DefinitionFileName DnsTasksPerfCounters.xml</Standalone>
+          </Install>
+          <BuildToBuildUpgrade UseInstallTasks="true" />
+          <DisasterRecovery UseInstallTasks="true" />
+          <Uninstall IsFatal="false">
+            <Standalone>remove-perfcounters -DefinitionFileName DnsTasksPerfCounters.xml</Standalone>
+          </Uninstall>
+        </ServerTaskInfo>
+
+        <!-- Install/uninstall Sender Authentication perf counters -->
+        <!-- This requires local administrator permission -->
+        <ServerTaskInfo Id="_E8440365EA1B45D2B31B616F414F7436" Component="Office15:\Current\Forefront for Office Datacenter\Deployment and Configuration Management\Deployment">
+            <Install IsFatal="false">
+                <Standalone>new-perfcounters -DefinitionFileName SenderAuthenticationPerfCounters.xml</Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true" />
+            <DisasterRecovery UseInstallTasks="true" />
+            <Uninstall IsFatal="false">
+                <Standalone>remove-perfcounters -DefinitionFileName SenderAuthenticationPerfCounters.xml</Standalone>
+            </Uninstall>
+        </ServerTaskInfo>
+
+        <!-- Install/uninstall Backscatter protection perf counters -->
+        <!-- This requires local administrator permission -->
+        <ServerTaskInfo Id="_573982549BB5487494233E56449B131A" Component="Office15:\Current\Forefront for Office Datacenter\Deployment and Configuration Management\Deployment">
+            <Install IsFatal="false">
+                <Standalone>new-perfcounters -DefinitionFileName BackscatterProtectionPerfCounters.xml</Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true" />
+            <DisasterRecovery UseInstallTasks="true" />
+            <Uninstall IsFatal="false">
+                <Standalone>remove-perfcounters -DefinitionFileName BackscatterProtectionPerfCounters.xml</Standalone>
+            </Uninstall>
+        </ServerTaskInfo>
+
+        <!-- Install/uninstall UriScan perf counters -->
+        <!-- This requires local administrator permission -->
+        <ServerTaskInfo Id="_84488060712A41F1834D3A6222C27B83" Component="Office15:\Current\Forefront for Office Datacenter\Deployment and Configuration Management\Deployment">
+            <Install IsFatal="false">
+                <Standalone>new-perfcounters -DefinitionFileName UriScanPerfCounters.xml</Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true" />
+            <DisasterRecovery UseInstallTasks="true" />
+            <Uninstall IsFatal="false">
+                <Standalone>remove-perfcounters -DefinitionFileName UriScanPerfCounters.xml</Standalone>
+            </Uninstall>
+        </ServerTaskInfo>
+
+        <!-- Install/uninstall SpamClassifier perf counters -->
+        <!-- This requires local administrator permission -->
+        <ServerTaskInfo Id="_398BC5D597714BD0AD777564EA8568DA" Component="Office15:\Current\Forefront for Office Datacenter\Deployment and Configuration Management\Deployment">
+            <Install IsFatal="false">
+                <Standalone>new-perfcounters -DefinitionFileName SpamClassifierPerfCounters.xml</Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true" />
+            <DisasterRecovery UseInstallTasks="true" />
+            <Uninstall IsFatal="false">
+                <Standalone>remove-perfcounters -DefinitionFileName SpamClassifierPerfCounters.xml</Standalone>
+            </Uninstall>
+        </ServerTaskInfo>
+
+        <!-- Install/uninstall IPList perf counters -->
+        <!-- This requires local administrator permission -->
+        <ServerTaskInfo Id="_2764532A24B545A89F78F2F2A87133AD" Component="Office15:\Current\Forefront for Office Datacenter\Deployment and Configuration Management\Deployment">
+            <Install IsFatal="false">
+                <Standalone>new-perfcounters -DefinitionFileName IPListPerfCounters.xml</Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true" />
+            <DisasterRecovery UseInstallTasks="true" />
+            <Uninstall IsFatal="false">
+                <Standalone>remove-perfcounters -DefinitionFileName IPListPerfCounters.xml</Standalone>
+            </Uninstall>
+        </ServerTaskInfo>
+
+        <!-- Install/uninstall Dkim perf counters -->
+        <!-- This requires local administrator permission -->
+        <ServerTaskInfo Id="_94D7A73BA6144A3C86A6F5E222FB480F" Component="Office15:\Current\Forefront for Office Datacenter\Deployment and Configuration Management\Deployment">
+            <Install IsFatal="false">
+                <Standalone>new-perfcounters -DefinitionFileName DkimPerfCounters.xml</Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true" />
+            <DisasterRecovery UseInstallTasks="true" />
+            <Uninstall IsFatal="false">
+                <Standalone>remove-perfcounters -DefinitionFileName DkimPerfCounters.xml</Standalone>
+            </Uninstall>
+        </ServerTaskInfo>
+      
+         <!-- Install/uninstall OnPremDNSBL perf counters -->
+        <!-- This requires local administrator permission -->
+        <ServerTaskInfo Id="_E3A76163CA1442CA99316A6EB90A9BD6" Component="Office15:\Current\Forefront for Office Datacenter\Deployment and Configuration Management\Deployment">
+            <Install IsFatal="false">
+                <Standalone>new-perfcounters -DefinitionFileName OnPremDNSBLPerfCounters.xml</Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true" />
+            <DisasterRecovery UseInstallTasks="true" />
+            <Uninstall IsFatal="false">
+                <Standalone>remove-perfcounters -DefinitionFileName OnPremDNSBLPerfCounters.xml</Standalone>
+            </Uninstall>
+        </ServerTaskInfo>
+
+        <!-- Install/uninstall Dmarc perf counters -->
+        <!-- This requires local administrator permission -->
+        <ServerTaskInfo Id="_CED8FFECD658499F92DF7D1A4E293756" Component="Office15:\Current\Forefront for Office Datacenter\Deployment and Configuration Management\Deployment">
+            <Install IsFatal="false">
+                <Standalone>new-perfcounters -DefinitionFileName DmarcPerfCounters.xml</Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true" />
+            <DisasterRecovery UseInstallTasks="true" />
+            <Uninstall IsFatal="false">
+                <Standalone>remove-perfcounters -DefinitionFileName DmarcPerfCounters.xml</Standalone>
+            </Uninstall>
+        </ServerTaskInfo>
+
+        <!-- Install/uninstall Protocol Filter Agent perf counters -->
+        <!-- This requires local administrator permission -->
+        <ServerTaskInfo Id="_3A79D7C123954ADC9445D32EF4B61DAA" Component="Office15:\Current\Forefront for Office Datacenter\Deployment and Configuration Management\Deployment">
+            <Install IsFatal="false">
+                <Standalone>new-perfcounters -DefinitionFileName ProtocolFilterAgentPerfCounters.xml</Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true" />
+            <DisasterRecovery UseInstallTasks="true" />
+            <Uninstall IsFatal="false">
+              <Standalone>remove-perfcounters -DefinitionFileName ProtocolFilterAgentPerfCounters.xml</Standalone>
+            </Uninstall>
+        </ServerTaskInfo>
+
+        <!-- Install/uninstall AgentFramework Agent Update Event perf counters -->
+        <!-- This requires local administrator permission -->
+        <ServerTaskInfo Id="_F111324E047544E3A9703836C952BDFE" Component="Office15:\Current\Forefront for Office Datacenter\Deployment and Configuration Management\Deployment">
+            <Install IsFatal="false">
+                <Standalone>new-perfcounters -DefinitionFileName AgentUpdateEventPerfCounters.xml</Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true" />
+            <DisasterRecovery UseInstallTasks="true" />
+            <Uninstall IsFatal="false">
+              <Standalone>remove-perfcounters -DefinitionFileName AgentUpdateEventPerfCounters.xml</Standalone>
+            </Uninstall>
+        </ServerTaskInfo>
+
+        <!-- Install/uninstall AgentFramework Scan Agent Event perf counters -->
+        <!-- This requires local administrator permission -->
+        <ServerTaskInfo Id="_BF08DA3C3600463988A6C59C1BCCBCB2" Component="Office15:\Current\Forefront for Office Datacenter\Deployment and Configuration Management\Deployment">
+            <Install IsFatal="false">
+                <Standalone>new-perfcounters -DefinitionFileName ScanAgentEventPerfCounters.xml</Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true" />
+            <DisasterRecovery UseInstallTasks="true" />
+            <Uninstall IsFatal="false">
+              <Standalone>remove-perfcounters -DefinitionFileName ScanAgentEventPerfCounters.xml</Standalone>
+            </Uninstall>
+        </ServerTaskInfo>
+
+        <!-- Update frontendtransport config file. -->
+        <ServerTaskInfo Id="_9f81afc1acba446684f4c0fbe5e6d531" Component="Office15:\Current\Forefront for Office Datacenter\Deployment and Configuration Management\Deployment">
+          <Install>
+            <Standalone>
+              $fullPath = "$RoleBinPath\MSExchangeFrontEndTransport.exe.config";
+              set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'FFOHubFqdn' -NewValue:$RoleDatacenterFFOHubFqdn;
+              if (-not [System.String]::IsNullOrEmpty($RoleDatacenterFFOHubFqdnNa))
+              {
+                set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'FFOHubFqdnNa' -NewValue:$RoleDatacenterFFOHubFqdnNa;           
+              }
+              if (-not [System.String]::IsNullOrEmpty($RoleDatacenterFFOHubFqdnEmea))
+              {
+                set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'FFOHubFqdnEmea' -NewValue:$RoleDatacenterFFOHubFqdnEmea;
+              }
+              if (-not [System.String]::IsNullOrEmpty($RoleDatacenterFFOHubFqdnApac))
+              {
+                set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'FFOHubFqdnApac' -NewValue:$RoleDatacenterFFOHubFqdnApac;
+              }
+              if (-not [System.String]::IsNullOrEmpty($RoleDatacenterFopeFrontendConnectorFqdn))
+              {
+                #We want the wildcard cert for mail to be picked and so prepend a 'inboundproxy.' to the configured connector fqdn
+                $certificateFqdn = "inboundproxy." + $RoleDatacenterFopeFrontendConnectorFqdn;
+
+                set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'InboundProxyExternalCertificateSubject' -NewValue:$certificateFqdn;
+              }
+              set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'InboundProxyPreserveTargetResponse' -NewValue:$RoleDatacenterInboundProxyPreserveTargetResponse;
+              set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'InboundProxyPerHostConnectionAttempts' -NewValue:3;
+              set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'InboundProxyDestinationTrackerEnabled' -NewValue:true;
+              set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'InboundProxyAccountForestTrackerEnabled' -NewValue:true;
+              set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'TrackInboundProxyDestinationsInRcpt' -NewValue:false;
+              set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'RejectBasedOnInboundProxyDestinationTrackerEnabled' -NewValue:true;
+              set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'RejectBasedOnInboundProxyAccountForestTrackingEnabled' -NewValue:false;
+              set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'InboundProxyUseExternalDnsServers' -NewValue:true;
+              set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'TransferAdditionalTenantDataThroughXATTR' -NewValue:false;
+              set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'BlockedSessionLoggingEnabled' -NewValue:true;
+              set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'SmtpSendOneLevelWildcardMatchForCertSelection' -NewValue:$true;
+              set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'SmtpReceiveOneLevelWildcardMatchForCertSelection' -NewValue:$true;
+              set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'VoltageCertificateName' -NewValue:$RoleDatacenterVoltageCertificateName;
+              set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'OutboundProxySendConnectorFqdn' -NewValue:$RoleDatacenterEhloDomain;
+              set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/system.net/connectionManagement/add -Attribute:'maxconnection' -NewValue:'80';
+              set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'FfoToExoInboundProxyProbeCertificateFqdn' -NewValue:$RoleDatacenterFopeFrontendConnectorFqdn;
+              set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'SmtpSendCacheOnlyUrlRetrievalForRemoteCertChain' -NewValue:false;
+              
+              # Do not modify this without good reason - see OM:1585629
+              set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/runtime/gcServer -Attribute:enabled -NewValue:true;
+
+              # Set network connection smtp receive buffer size (if available. Currently only for EMEA FDs to combat apac on-prem to apac exo latency)
+              if (-not [System.String]::IsNullOrEmpty($RoleDatacenterNetworkConnectionReceiveBufferSize))
+              {
+                set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'NetworkConnectionReceiveBufferSize' -NewValue:$RoleDatacenterNetworkConnectionReceiveBufferSize;
+              }
+              
+              # Set IPV6 Receive Connection Throttling Enabled flag if available and record its value for creating/updating the appropriate receive connectors
+              $isIpv6ReceiveThrottlingEnabled = $false;
+              if (-not [System.String]::IsNullOrEmpty($RoleDatacenterIpv6ReceiveConnectionThrottlingEnabled))
+              {
+                set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'Ipv6ReceiveConnectionThrottlingEnabled' -NewValue:$RoleDatacenterIpv6ReceiveConnectionThrottlingEnabled;
+                $isIpv6ReceiveThrottlingEnabled = $RoleDatacenterIpv6ReceiveConnectionThrottlingEnabled;
+              }
+              else
+              {
+                $isIpv6ReceiveThrottlingEnabled = $false
+              }
+
+              # Set Receive TLS Throttling Enabled flag if available
+              if (-not [System.String]::IsNullOrEmpty($RoleDatacenterReceiveTlsThrottlingEnabled))
+              {
+                set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'ReceiveTlsThrottlingEnabled' -NewValue:$RoleDatacenterReceiveTlsThrottlingEnabled;
+              }              
+
+              # set the LocalLoopDetectionSubDomainLeftToRightOffsetForPerfCounter to 1
+              # LocalLoopDetectionSubDomainLeftToRightOffsetForPerfCounter = 1 will skip the left most subdomain during the match,
+              # e.g. for FQDN's : BL2FFO11FD008.mail.protection.outlook.com and BY1FFO11FD008.mail.protection.outlook.com.
+              # only mail.protection.outlook.com part of the domains will be matched i.e. the server names BL2FFO11FD008 and
+              # BY1FFO11FD008 will be skipped during the match.
+              set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'LocalLoopDetectionSubDomainLeftToRightOffsetForPerfCounter' -NewValue:1;
+              set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'LoopDetectionNumberOfTransits' -NewValue:6;
+              
+              # set the LocalLoopSubdomainDepth to 3
+              # LocalLoopSubdomainDepth = 3 will count only 3 subdomains of the FQDN from right to left, not counting the top domain
+              # For BL2FFO11FD008.mail.protection.outlook.com we will try to match only mail.protection.outlook.com
+              if (-not [String]::IsNullorEmpty($RoleDatacenterFopeFrontendConnectorFqdn))
+              {
+                $FrontendConnectorFqdnSubdomainDepth = $RoleDatacenterFopeFrontendConnectorFqdn.Split('.').Count - 1;
+                set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'LocalLoopSubdomainDepth' -NewValue:$FrontendConnectorFqdnSubdomainDepth;
+              }
+              if (-not [String]::IsNullorEmpty($RoleDatacenterSpamEffectivenessSamplingEnabled))
+              {
+                set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'SpamEffectivenessSamplingEnabled' -NewValue:$RoleDatacenterSpamEffectivenessSamplingEnabled;
+              }
+
+              # Add the configSections and CacheConfiguration nodes to control Cache/CompositeDataProvider behavior
+              [xml]$templateXml = Get-Content "$RoleBinPath\FfoMSExchangeFrontEndTransportCacheConfiguration.xml";
+              $templateSection = $templateXml.configuration.configSections.SelectSingleNode("section[@name='CacheConfiguration']");
+              $templateCacheConfig = $templateXml.configuration.CacheConfiguration
+
+              set-appconfigvalue -ConfigFileFullPath $fullPath -Element:"configuration/configSections/section[@name='CacheConfiguration']" -XmlNode $templateSection -InsertAsFirst
+              set-appconfigvalue -ConfigFileFullPath $fullPath -Element:"configuration/CacheConfiguration" -XmlNode $templateCacheConfig
+            </Standalone>
+          </Install>
+          <BuildToBuildUpgrade UseInstallTasks="true"/>
+          <DisasterRecovery UseInstallTasks="true"/>
+          <Uninstall />
+        </ServerTaskInfo>
+
+        <!-- Configure receive connectors -->
+        <ServerTaskInfo Id="_33e6a1e9a3eb43fdbb318a5ed0c30470" Component="Office15:\Current\Forefront for Office Datacenter\Deployment and Configuration Management\Deployment">
+          <Install>
+            <Standalone>
+               $computerName = [String][System.Environment]::MachineName;
+
+               #We prepend the machine name to the connector fqdn. This assumes that the cert is always a wild card cert
+               $connectorFqdn = [String][System.Environment]::MachineName + "." + $RoleDatacenterFopeFrontendConnectorFqdn;
+
+               $frontendDefaultConnector = get-receiveconnector -Server $RoleFqdnOrName -DomainController $RoleDomainController | where {$_.Identity -eq "$computerName\Default Frontend $computerName" -and $_.TransportRole -eq "FrontendTransport"};
+               if ($frontendDefaultConnector -eq $null)
+               {
+                    Write-ExchangeSetupLog -Error "Default frontend receive connector is not found";
+               }
+               else
+               {
+                   # Define TlsDomainCapabilities:
+                   #     1) EXO Hubs need to send XPROXYTO (AcceptProxyToProtocol)
+                   #     2) FFO Hubs need to send XPROXYTO (AcceptProxyToProtocol)
+                   #     3) EXO, FFO and local probes need to be able to send XSYSPROBE (AcceptXSysProbeProtocol)
+                   #     4) FFO FEs need to transmit org headers for quarantine mail that goes between datacenters;
+                   #        this does not affect the regular inter-tenant mail because org header stripping is done
+                   #        by the outbound Hubs based on send connector permissions
+                   #
+                   # Because in some topologies FEs and Hubs may use the same certificates
+                   # and/or because the $RoleDatacenterXXXX parameters below may overlap due to wildcards,
+                   # we do not know here what best match will be calculated at runtime and we have to give
+                   # both capabilities to all of the provided parameters.
+                   #
+                   # Another note is that exactly the same certificate FQDN cannot be mentioned twice in TlsDomainCapabilities.
+                   # Thus the IF statement below that checks whether FFO Hub and FFO FE certificate parameters are the same.
+                   
+                   if ($RoleDatacenterFfoHubToFESmtpCertificateFqdn -eq $RoleDatacenterFopeFrontendConnectorFqdn)
+                   {
+                       $tlsDomainCapabilities =
+                           ($RoleDatacenterExoToFfoSmtpCertificateFqdn + ":AcceptProxyToProtocol,AcceptOrgHeaders,AcceptXSysProbeProtocol"),
+                           ($RoleDatacenterFfoHubToFESmtpCertificateFqdn + ":AcceptProxyToProtocol,AcceptOrgHeaders,AcceptXSysProbeProtocol"),
+                           ($RoleDatacenterFfoQuarantineCertificateFqdn + ":AcceptOrgHeaders,AcceptXSysProbeProtocol,AcceptXAttrProtocol"),
+                           ($RoleDatacenterVoltageCertificateName + ":AcceptOrgHeaders"),
+                           ($RoleDatacenterOutsideInProbeCertificateSubject + ":AcceptXSysProbeProtocol");
+                   }
+                   else
+                   {
+                       $tlsDomainCapabilities =
+                           ($RoleDatacenterExoToFfoSmtpCertificateFqdn + ":AcceptProxyToProtocol,AcceptOrgHeaders,AcceptXSysProbeProtocol"),
+                           ($RoleDatacenterFfoHubToFESmtpCertificateFqdn + ":AcceptProxyToProtocol,AcceptOrgHeaders,AcceptXSysProbeProtocol"),
+                           ($RoleDatacenterFfoQuarantineCertificateFqdn + ":AcceptOrgHeaders,AcceptXSysProbeProtocol,AcceptXAttrProtocol"),
+                           ($RoleDatacenterFopeFrontendConnectorFqdn + ":AcceptProxyToProtocol,AcceptOrgHeaders,AcceptXSysProbeProtocol"),
+                           ($RoleDatacenterVoltageCertificateName + ":AcceptOrgHeaders"),
+                           ($RoleDatacenterOutsideInProbeCertificateSubject + ":AcceptXSysProbeProtocol");
+                   }
+                   
+                   set-ReceiveConnector $frontendDefaultConnector `
+                       -Fqdn $connectorFqdn `
+                       -AuthMechanism Tls, Integrated, BasicAuth, BasicAuthRequireTLS `
+                       -TlsDomainCapabilities $tlsDomainCapabilities `
+                       -MaxInboundConnectionPerSource 5000 `
+                       -MaxInboundConnectionPercentagePerSource 100 `
+                       -MaxMessageSize $RoleDatacenterConnectorMaxMessageSize `
+                       -DomainController $RoleDomainController
+                       
+                  $ipv6frontendConnector = get-receiveconnector -Server $RoleFqdnOrName -DomainController $RoleDomainController | where {$_.Identity -eq "$computerName\Default IPV6 Frontend $computerName" -and $_.TransportRole -eq "FrontendTransport"};
+        
+                   if($isIpv6ReceiveThrottlingEnabled -eq $true)
+                   {
+                      # Update the current receive connector to just accept IPV4 connections
+                      set-ReceiveConnector $frontendDefaultConnector `
+                         -Bindings 0.0.0.0:25 `
+                         -RemoteIPRanges 0.0.0.0-255.255.255.255 `
+                      
+                      # Build a new receive connector or update existing connector that accepts IPV6 Connections
+                      if($ipv6frontendConnector -eq $null)
+                      {
+                        new-receiveconnector `
+                          -Name ("Default IPV6 Frontend " + $computerName ) `
+                          -TransportRole FrontendTransport `
+                          -Bindings [::]:25 `
+                          -RemoteIPRanges [::]-FFFF:FFFF:FFFF:FFFF:FFFF:FFFF:FFFF:FFFF `
+                          -DomainSecureEnabled $true `
+                          -PermissionGroups AnonymousUsers, ExchangeServers, ExchangeLegacyServers `
+                          -MaxHeaderSize 128KB `
+                          -MaxRecipientsPerMessage 200 `
+                          -ProtocolLoggingLevel verbose `
+                          -Fqdn $connectorFqdn `
+                          -AuthMechanism Tls, Integrated, BasicAuth, BasicAuthRequireTLS `
+                          -TlsDomainCapabilities $tlsDomainCapabilities `
+                          -MaxInboundConnection 500 `
+                          -MaxInboundConnectionPerSource 500 `
+                          -MaxInboundConnectionPercentagePerSource 100 `
+                          -MaxMessageSize $RoleDatacenterConnectorMaxMessageSize `
+                          -DomainController $RoleDomainController
+                     }
+                     else
+                     {
+                        set-receiveconnector `
+                          -Identity $ipv6frontendConnector.Identity `
+                          -TransportRole FrontendTransport `
+                          -Bindings [::]:25 `
+                          -RemoteIPRanges [::]-FFFF:FFFF:FFFF:FFFF:FFFF:FFFF:FFFF:FFFF `
+                          -DomainSecureEnabled $true `
+                          -PermissionGroups AnonymousUsers, ExchangeServers, ExchangeLegacyServers `
+                          -MaxHeaderSize 128KB `
+                          -MaxRecipientsPerMessage 200 `
+                          -ProtocolLoggingLevel verbose `
+                          -Fqdn $connectorFqdn `
+                          -AuthMechanism Tls, Integrated, BasicAuth, BasicAuthRequireTLS `
+                          -TlsDomainCapabilities $tlsDomainCapabilities `
+                          -MaxInboundConnection 500 `
+                          -MaxInboundConnectionPerSource 500 `
+                          -MaxInboundConnectionPercentagePerSource 100 `
+                          -MaxMessageSize $RoleDatacenterConnectorMaxMessageSize `
+                          -DomainController $RoleDomainController                        
+                     }
+                        
+                     # Update the Tenant Inbound Connector Settings to not reject anonymous IPV6 Connections
+                     set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'UnAuthorizedIPv6RejectEnabled' -NewValue:false;
+                   }
+                   else
+                   {                  
+                      if($ipv6frontendConnector -ne $null)
+                      {
+                          remove-receiveconnector -Identity:$ipv6frontendConnector.Identity -DomainController $RoleDomainController -Confirm:$false
+                      }
+                   
+                      set-ReceiveConnector `
+                         -Identity $frontendDefaultConnector.Identity `
+                         -Bindings 0.0.0.0:25,[::]:25 `
+                         -RemoteIPRanges 0.0.0.0-255.255.255.255,[::]-FFFF:FFFF:FFFF:FFFF:FFFF:FFFF:FFFF:FFFF `
+                         
+                      # Update the Tenant Inbound Connector Settings to reject anonymous IPV6 Connections
+                      set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'UnAuthorizedIPv6RejectEnabled' -NewValue:true;
+                   }
+               }
+               
+               $frontendOutboundProxyConnector = get-receiveconnector -Server $RoleFqdnOrName -DomainController $RoleDomainController | where {$_.Identity -eq "$computerName\Outbound Proxy Frontend $computerName" -and $_.TransportRole -eq "FrontendTransport"};
+               if ($frontendOutboundProxyConnector -eq $null)
+               {
+                    Write-ExchangeSetupLog -Error "Outbound proxy frontend receive connector is not found";
+               }
+               else
+               {
+                   # Define TlsDomainCapabilities:
+                   #     1) EXO Hubs need to send XPROXYTO (AcceptProxyToProtocol)
+                   #     2) FFO Hubs need to send XPROXYTO (AcceptProxyToProtocol)
+                   # Because in some topologies FEs and Hubs may use the same certificates
+                   # and/or because the $RoleDatacenterXXXX parameters below may overlap due to wildcards,
+                   # we do not know here what best match will be calculated at runtime and we have to give
+                   # both capabilities to all of the provided parameters.
+                   #
+                   # Another note is that exactly the same certificate FQDN cannot be mentioned twice in TlsDomainCapabilities.
+                   
+                   $outboundProxyTlsDomainCapabilities =
+                       ($RoleDatacenterExoToFfoSmtpCertificateFqdn + ":AcceptProxyToProtocol"),
+                       ($RoleDatacenterFfoHubToFESmtpCertificateFqdn + ":AcceptProxyToProtocol");
+                   
+                   set-ReceiveConnector $frontendOutboundProxyConnector `
+                       -Fqdn $connectorFqdn `
+                       -AuthMechanism Tls `
+                       -TlsDomainCapabilities $outboundProxyTlsDomainCapabilities `
+                       -MaxInboundConnection 2000 `
+                       -MaxInboundConnectionPerSource 2000 `
+                       -MaxInboundConnectionPercentagePerSource 100 `
+                       -MaxMessageSize $RoleDatacenterConnectorMaxMessageSize `
+                       -DomainController $RoleDomainController;
+               }
+
+               # Following connectors are not needed on FFO front door roles and should be removed to reduce vulnerability
+               
+               $unnecessaryInFfoConnectors = get-receiveconnector -Server $RoleFqdnOrName -DomainController $RoleDomainController | `
+                                                where {$_.TransportRole -eq "FrontendTransport" -and `
+                                                       $_.Identity -eq "$computerName\Client Frontend $computerName" `
+                                                      };
+               
+               foreach ($connector in $unnecessaryInFfoConnectors)
+               {
+                    Write-ExchangeSetupLog -Info "Removing unnecessary connector: $connector.Identity";
+               }
+               
+               $unnecessaryInFfoConnectors | Remove-ReceiveConnector -Confirm:$False
+               
+            </Standalone>
+          </Install>
+          <BuildToBuildUpgrade UseInstallTasks="true" />
+          <DisasterRecovery UseInstallTasks="true"/>
+          <Uninstall />
+        </ServerTaskInfo>
+    
+        <!-- Configure ExternalDNSServers  -->
+        <ServerTaskInfo Id="_574FCEF3ADE4433FA718129E446CFCC0" Component="Office15:\Current\Forefront for Office Datacenter\Deployment and Configuration Management\Deployment">                          
+            <Install>
+                <Standalone>
+                	if (-not [string]::IsNullOrWhiteSpace($RoleDatacenterExternalDnsServers))
+                	{
+                		$externalDnsServers = $RoleDatacenterExternalDnsServers -split ';' | sort -unique
+
+                		Set-FrontendTransportService -identity $RoleFqdnOrName -ExternalDNSServers $externalDnsServers -ExternalDNSAdapterEnabled $false
+                	}
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true" />
+            <DisasterRecovery UseInstallTasks="true"/>
+            <Uninstall />
+        </ServerTaskInfo>
+        
+        <!-- Install/uninstall Inbound Proxy Destination counters -->
+        <ServerTaskInfo Id="_8DA5D3824850497FA147B151A8373781" Component="Office15:\Current\Forefront for Office Datacenter\Deployment and Configuration Management\Deployment">
+            <Install IsFatal="false">
+                <Standalone>new-perfcounters -DefinitionFileName InboundProxyDestinationPerfCounters.xml</Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true" />
+            <DisasterRecovery UseInstallTasks="true" />
+            <Uninstall IsFatal="false">
+                <Standalone>remove-perfcounters -DefinitionFileName InboundProxyDestinationPerfCounters.xml</Standalone>
+            </Uninstall>
+        </ServerTaskInfo>
+        
+        <!-- Install/uninstall Inbound Proxy EXO Account Forest counters -->
+        <ServerTaskInfo Id="_7C5D57E61D774DBFAFC695B94B0B1B79" Component="Office15:\Current\Forefront for Office Datacenter\Deployment and Configuration Management\Deployment">
+            <Install IsFatal="false">
+                <Standalone>new-perfcounters -DefinitionFileName InboundProxyAccountForestPerfCounters.xml</Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true" />
+            <DisasterRecovery UseInstallTasks="true" />
+            <Uninstall IsFatal="false">
+                <Standalone>remove-perfcounters -DefinitionFileName InboundProxyAccountForestPerfCounters.xml</Standalone>
+            </Uninstall>
+        </ServerTaskInfo>
+
+        <!-- Install/uninstall Outbound Proxy By Source counters -->
+        <ServerTaskInfo Id="_0F5FE4C76B5C49A4885140C9517B19C1" Component="Office15:\Current\Forefront for Office Datacenter\Deployment and Configuration Management\Deployment">
+            <Install IsFatal="false">
+              <Standalone>new-perfcounters -DefinitionFileName OutboundProxyBySourcePerfCounters.xml</Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true" />
+            <DisasterRecovery UseInstallTasks="true" />
+            <Uninstall IsFatal="false">
+              <Standalone>remove-perfcounters -DefinitionFileName OutboundProxyBySourcePerfCounters.xml</Standalone>
+            </Uninstall>
+        </ServerTaskInfo>
+
+
+        <!-- Setup Frontend Transport Server -->
+        <ServerTaskInfo Id="_4094EBC773FD4A25867069EEBBD2A16C" Component="Office15:\Current\Forefront for Office Datacenter\Deployment and Configuration Management\Deployment">
+          <Install>
+            <Standalone>
+              Set-FrontendTransportService `
+                -Identity $RoleFqdnOrName `
+                -AttributionLogPath "$RoleDatacenterTransportRoleLogRoot\FrontEnd\AttributionLog" `
+                -AttributionLogMaxDirectorySize:15000MB -AttributionLogMaxAge:7.00:00:00 `
+                -AttributionLogEnabled $true
+            </Standalone>
+          </Install>
+          <BuildToBuildUpgrade UseInstallTasks="true" />
+          <DisasterRecovery UseInstallTasks="true"/>
+          <Uninstall />
+        </ServerTaskInfo>
+      
+        <ServerTaskInfo Id="_830B6DCD673E40ACBC8D3D81B67250C6" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+          <Install>
+            <Standalone>
+              $GenericRusClientConfigPath = "$RoleBinPath\Microsoft.Forefront.Hygiene.Rus.Client.dll.config";
+              if (-not [String]::IsNullorEmpty($RoleDatacenterUpdateServiceClientCertSubject))
+              {
+                  set-appconfigvalue -ConfigFileFullPath:$GenericRusClientConfigPath -Element:configuration/RusClientConfiguration -Attribute:clientCertSubject -NewValue:$RoleDatacenterUpdateServiceClientCertSubject;
+                  Write-ExchangeSetupLog -Info "Setting UpdateServiceClientCertSubject to $RoleDatacenterUpdateServiceClientCertSubject";
+              }
+
+              if (-not [String]::IsNullorEmpty($RoleDatacenterUpdateServiceEndPoint))
+              {
+                  set-appconfigvalue -ConfigFileFullPath:$GenericRusClientConfigPath -Element:configuration/RusClientConfiguration -Attribute:serviceEndPoint -NewValue:$RoleDatacenterUpdateServiceEndPoint;
+                  Write-ExchangeSetupLog -Info "Setting UpdateServiceEndPoint to $RoleDatacenterUpdateServiceEndPoint";
+              }
+
+              if (-not [String]::IsNullorEmpty($RoleDatacenterUpdateServiceClientTempUpdateStoragePath))
+              {
+                  set-appconfigvalue -ConfigFileFullPath:$GenericRusClientConfigPath -Element:configuration/RusClientConfiguration -Attribute:downloadedFileStoragePath -NewValue:$RoleDatacenterUpdateServiceClientTempUpdateStoragePath;
+                  Write-ExchangeSetupLog -Info "Setting UpdateServiceClientTempUpdateStoragePath to $RoleDatacenterUpdateServiceClientTempUpdateStoragePath";
+                  if(!(Test-Path -Path $RoleDatacenterUpdateServiceClientTempUpdateStoragePath))
+                  {
+                      mkdir $RoleDatacenterUpdateServiceClientTempUpdateStoragePath
+                      Write-ExchangeSetupLog -Info "Created GenericRus temp file storage path: $RoleDatacenterUpdateServiceClientTempUpdateStoragePath";
+                  }
+
+                  # ACL the directory
+                  $acl = (Get-Item $RoleDatacenterUpdateServiceClientTempUpdateStoragePath).GetAccessControl('Access')
+                  $reqAccess = $acl.Access | ?{$_.IdentityReference -eq "NETWORK SERVICE"}
+                  if ($null -eq $reqAccess)
+                  {
+                      Write-ExchangeSetupLog -Info "ACL the folder $RoleDatacenterUpdateServiceClientTempUpdateStoragePath for NETWORK SERVICE"
+                      $rule = new-object System.Security.AccessControl.FileSystemAccessRule("NETWORK SERVICE", "FullControl", "ContainerInherit, ObjectInherit", "None", "Allow")
+                      $acl.AddAccessRule($rule)
+                      Set-Acl -Path $RoleDatacenterUpdateServiceClientTempUpdateStoragePath -AclObject $acl
+                  }
+              }
+
+              if (-not [String]::IsNullorEmpty($RoleDatacenterUpdateServiceServerChunkSizeInBytes))
+              {
+                  set-appconfigvalue -ConfigFileFullPath:$GenericRusClientConfigPath -Element:configuration/RusClientConfiguration -Attribute:serverChunkSizeInBytes -NewValue:$RoleDatacenterUpdateServiceServerChunkSizeInBytes;
+                  Write-ExchangeSetupLog -Info "Setting UpdateServiceServerChunkSizeInBytes to $RoleDatacenterUpdateServiceServerChunkSizeInBytes";
+              }
+
+              if (-not [String]::IsNullorEmpty($RoleDatacenterUpdateServiceClientChunkSizeInBytes))
+              {
+                  set-appconfigvalue -ConfigFileFullPath:$GenericRusClientConfigPath -Element:configuration/RusClientConfiguration -Attribute:clientChunkSizeInBytes -NewValue:$RoleDatacenterUpdateServiceClientChunkSizeInBytes;
+                  Write-ExchangeSetupLog -Info "Setting UpdateServiceClientChunkSizeInBytes to $RoleDatacenterUpdateServiceClientChunkSizeInBytes";
+              }
+              
+              if (-not [String]::IsNullorEmpty($RoleDatacenterTransportRoleLogRoot))
+              {
+                  $GenericRusCosmosLogPath = Join-Path $RoleDatacenterTransportRoleLogRoot "GenericRusLogs"
+                  set-appconfigvalue -ConfigFileFullPath:$GenericRusClientConfigPath -Element:configuration/RusClientConfiguration -Attribute:cosmosLogPath -NewValue:$GenericRusCosmosLogPath;
+                  Write-ExchangeSetupLog -Info "Setting CosmosLogPath to $GenericRusCosmosLogPath";
+                  
+                  if(!(Test-Path -Path $GenericRusCosmosLogPath))
+                  {
+                      mkdir $GenericRusCosmosLogPath
+                      Write-ExchangeSetupLog -Info "Created GenericRus cosmos log directory: $GenericRusCosmosLogPath";
+                  }
+              }
+            </Standalone>
+          </Install>
+          <BuildToBuildUpgrade UseInstallTasks="true"/>
+          <DisasterRecovery UseInstallTasks="true"/>
+          <Uninstall />
+        </ServerTaskInfo>
+      
+        <!-- ACL the client Certificate used for communicating with EOP services like DAL, Locator, Generic Update Service.  -->
+        <ServerTaskInfo Id="_41420D915D924B6EBD59A4B7DAB49E45" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+          <Install>
+            <Standalone>Install-ExchangeCertificate -Thumbprint $RoleDatacenterEOPClientCertThumbprint -Services NONE -NetworkServiceAllowed</Standalone>
+          </Install>
+          <BuildToBuildUpgrade UseInstallTasks="true" />
+          <DisasterRecovery UseInstallTasks="true"/>
+          <Uninstall />
+        </ServerTaskInfo>
+      
+       <!--  Add the following assembly binding in EdgeTransport.exe.Config on Hub
+        <runtime>
+            <assemblyBinding xmlns="urn:schemas-microsoft-com:asm.v1">
+                <dependentAssembly>
+                    <assemblyIdentity name="Newtonsoft.Json" publicKeyToken="30ad4fe6b2a6aeed" culture="neutral" />
+                    <bindingRedirect oldVersion="0.0.0.0-6.0.0.0" newVersion="6.0.0.0" />                
+                </dependentAssembly>
+            </assemblyBinding>
+        </runtime>
+      -->
+      <ServerTaskInfo Id="_9332176FEA6B4DF3AE6708C3ACD9615C" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+        <Install>
+          <Standalone>
+            $edgeConfigPath = "$RoleBinPath\EdgeTransport.exe.config"
+            . "$RoleInstallPath\Scripts\Set-AssemblyVersionRedirect.ps1" -AppConfigPath $edgeConfigPath -AssemblyName "Newtonsoft.Json" -PublicKeyToken "30ad4fe6b2a6aeed" -CodeBaseCulture "neutral" -OldVersion "0.0.0.0-6.0.0.0" -NewVersion "6.0.0.0"
+          </Standalone>
+        </Install>
+        <BuildToBuildUpgrade UseInstallTasks="true"/>
+        <DisasterRecovery UseInstallTasks="true"/>
+        <Uninstall />
+      </ServerTaskInfo>
+   </ServerTasks>
+</SetupComponentInfo>

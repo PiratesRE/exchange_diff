@@ -1,0 +1,321 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{09CD9476-CD82-489E-B9E2-84B47CA14129}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Microsoft.Exchange</RootNamespace>
+    <AssemblyName>Microsoft.Exchange.FrontEndHttpProxy</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Exchange.Clients.Strings" />
+    <Reference Include="Microsoft.Web.Administration" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.DirectoryServices" />
+    <Reference Include="System.IdentityModel" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Clients\Owa\Core\BrowserType.cs" />
+    <Compile Include="Clients\Owa\Core\Culture.cs" />
+    <Compile Include="Clients\Owa\Core\EcpVdirConfiguration.cs" />
+    <Compile Include="Clients\Owa\Core\ErrorInformation.cs" />
+    <Compile Include="Clients\Owa\Core\LocalizedStrings.cs" />
+    <Compile Include="Clients\Owa\Core\OwaHttpHeader.cs" />
+    <Compile Include="Clients\Owa\Core\OwaPage.cs" />
+    <Compile Include="Clients\Owa\Core\OwaServerVersion.cs" />
+    <Compile Include="Clients\Owa\Core\OwaUrl.cs" />
+    <Compile Include="Clients\Owa\Core\OwaVdirConfiguration.cs" />
+    <Compile Include="Clients\Owa\Core\SecureHtmlFormReader.cs" />
+    <Compile Include="Clients\Owa\Core\SecureHttpBuffer.cs" />
+    <Compile Include="Clients\Owa\Core\SecureNameValueCollection.cs" />
+    <Compile Include="Clients\Owa\Core\ThemeFileId.cs" />
+    <Compile Include="Clients\Owa\Core\ThemeFileInfoAttribute.cs" />
+    <Compile Include="Clients\Owa\Core\ThemeFileInfoFlags.cs" />
+    <Compile Include="Clients\Owa\Core\ThemeFileList.cs" />
+    <Compile Include="Clients\Owa\Core\ThemeManager.cs" />
+    <Compile Include="Clients\Owa\Core\UserAgentParser.cs" />
+    <Compile Include="Clients\Owa\Core\VdirConfiguration.cs" />
+    <Compile Include="HttpProxy\AnchoredRoutingTarget.cs" />
+    <Compile Include="HttpProxy\AnchorMailbox.cs" />
+    <Compile Include="HttpProxy\AnchorMailboxCache.cs" />
+    <Compile Include="HttpProxy\AnchorMailboxFactory.cs" />
+    <Compile Include="HttpProxy\AnchorSource.cs" />
+    <Compile Include="HttpProxy\AnonymousAnchorMailbox.cs" />
+    <Compile Include="HttpProxy\AnonymousCalendarProxyRequestHandler.cs" />
+    <Compile Include="HttpProxy\ArchiveSupportedAnchorMailbox.cs" />
+    <Compile Include="HttpProxy\AspNetHelper.cs" />
+    <Compile Include="HttpProxy\AsyncStateHolder.cs" />
+    <Compile Include="HttpProxy\AuthMetadataBuilder.cs" />
+    <Compile Include="HttpProxy\AuthMetadataBuilderException.cs" />
+    <Compile Include="HttpProxy\AuthMetadataHttpHandler.cs" />
+    <Compile Include="HttpProxy\AuthMetadataInternalException.cs" />
+    <Compile Include="HttpProxy\AuthState.cs" />
+    <Compile Include="HttpProxy\AutodiscoverProxyRequestHandler.cs" />
+    <Compile Include="HttpProxy\BackEndCookieEntryBase.cs" />
+    <Compile Include="HttpProxy\BackEndCookieEntryParser.cs" />
+    <Compile Include="HttpProxy\BackEndCookieEntryType.cs" />
+    <Compile Include="HttpProxy\BackEndDatabaseCookieEntry.cs" />
+    <Compile Include="HttpProxy\BackEndDatabaseResourceForestCookieEntry.cs" />
+    <Compile Include="HttpProxy\BackEndServerCookieEntry.cs" />
+    <Compile Include="HttpProxy\BEResourceRequestHandler.cs" />
+    <Compile Include="HttpProxy\BEServerCookieProxyRequestHandler.cs" />
+    <Compile Include="HttpProxy\ConcurrencyGuardHelper.cs" />
+    <Compile Include="HttpProxy\Constants.cs" />
+    <Compile Include="HttpProxy\ConsumerEasAuthBehavior.cs" />
+    <Compile Include="HttpProxy\DatabaseBasedAnchorMailbox.cs" />
+    <Compile Include="HttpProxy\DatabaseGuidAnchorMailbox.cs" />
+    <Compile Include="HttpProxy\DatabaseNameAnchorMailbox.cs" />
+    <Compile Include="HttpProxy\DatabaseWithForest.cs" />
+    <Compile Include="HttpProxy\DatacenterRedirectStrategy.cs" />
+    <Compile Include="HttpProxy\DefaultAuthBehavior.cs" />
+    <Compile Include="HttpProxy\DefaultPingStrategy.cs" />
+    <Compile Include="HttpProxy\DefaultRedirectStrategy.cs" />
+    <Compile Include="HttpProxy\Directory.cs" />
+    <Compile Include="HttpProxy\DirectoryHelper.cs" />
+    <Compile Include="HttpProxy\DomainAnchorMailbox.cs" />
+    <Compile Include="HttpProxy\DownLevelServerManager.cs" />
+    <Compile Include="HttpProxy\DownLevelServerPingManager.cs" />
+    <Compile Include="HttpProxy\DownLevelServerStatusEntry.cs" />
+    <Compile Include="HttpProxy\E4eBackoffListCache.cs" />
+    <Compile Include="HttpProxy\E4eProxyRequestHandler.cs" />
+    <Compile Include="HttpProxy\EasProxyRequestHandler.cs" />
+    <Compile Include="HttpProxy\EcpProxyRequestHandler.cs" />
+    <Compile Include="HttpProxy\EDiscoveryExportToolProxyRequestHandler.cs" />
+    <Compile Include="HttpProxy\EncodingUtilities.cs" />
+    <Compile Include="HttpProxy\ErrorFE.cs" />
+    <Compile Include="HttpProxy\EwsAutodiscoverProxyRequestHandler.cs" />
+    <Compile Include="HttpProxy\EwsJsonProxyRequestHandler.cs" />
+    <Compile Include="HttpProxy\EwsODataProxyRequestHandler.cs" />
+    <Compile Include="HttpProxy\EwsProxyRequestHandler.cs" />
+    <Compile Include="HttpProxy\EwsRequestStreamProxy.cs" />
+    <Compile Include="HttpProxy\EwsUserPhotoProxyRequestHandler.cs" />
+    <Compile Include="HttpProxy\ExpiredPassword.cs" />
+    <Compile Include="HttpProxy\Extensions.cs" />
+    <Compile Include="HttpProxy\ExternalDirectoryObjectIdAnchorMailbox.cs" />
+    <Compile Include="HttpProxy\FaultInjection.cs" />
+    <Compile Include="HttpProxy\FbaFormPostProxyRequestHandler.cs" />
+    <Compile Include="HttpProxy\FbaModule.cs" />
+    <Compile Include="HttpProxy\HealthCheckResponder.cs" />
+    <Compile Include="HttpProxy\HttpMethod.cs" />
+    <Compile Include="HttpProxy\HttpProxyException.cs" />
+    <Compile Include="HttpProxy\HttpProxyGlobals.cs" />
+    <Compile Include="HttpProxy\HttpProxyRegistry.cs" />
+    <Compile Include="HttpProxy\HttpProxySettings.cs" />
+    <Compile Include="HttpProxy\HttpProxyStrings.cs" />
+    <Compile Include="HttpProxy\HttpRange.cs" />
+    <Compile Include="HttpProxy\HttpRangeSpecifier.cs" />
+    <Compile Include="HttpProxy\HttpWebHelper.cs" />
+    <Compile Include="HttpProxy\IAuthBehavior.cs" />
+    <Compile Include="HttpProxy\IDirectory.cs" />
+    <Compile Include="HttpProxy\InvalidBackEndCookieException.cs" />
+    <Compile Include="HttpProxy\IRequestContext.cs" />
+    <Compile Include="HttpProxy\KerberosUtilities.cs" />
+    <Compile Include="HttpProxy\LatencyTracker.cs" />
+    <Compile Include="HttpProxy\LatencyTrackerKey.cs" />
+    <Compile Include="HttpProxy\LiveIdBasicAuthBehavior.cs" />
+    <Compile Include="HttpProxy\LiveIdBasicHelper.cs" />
+    <Compile Include="HttpProxy\LiveIdCookieAuthBehavior.cs" />
+    <Compile Include="HttpProxy\LiveIdMemberNameAnchorMailbox.cs" />
+    <Compile Include="HttpProxy\LocalSiteAnchorMailbox.cs" />
+    <Compile Include="HttpProxy\LocalSiteMailboxServerCache.cs" />
+    <Compile Include="HttpProxy\LoggerExtensions.cs" />
+    <Compile Include="HttpProxy\Logoff.cs" />
+    <Compile Include="HttpProxy\Logon.cs" />
+    <Compile Include="HttpProxy\MailboxGuidAnchorMailbox.cs" />
+    <Compile Include="HttpProxy\MailboxServerCache.cs" />
+    <Compile Include="HttpProxy\MailboxServerLocatorAsyncState.cs" />
+    <Compile Include="HttpProxy\MapiProxyRequestHandler.cs" />
+    <Compile Include="HttpProxy\MessageTrackingRequestHandler.cs" />
+    <Compile Include="HttpProxy\MissingSslCertificateException.cs" />
+    <Compile Include="HttpProxy\MrsProxyRequestHandler.cs" />
+    <Compile Include="HttpProxy\NegativeAnchorMailboxCache.cs" />
+    <Compile Include="HttpProxy\NoAvailableDownLevelBackEndException.cs" />
+    <Compile Include="HttpProxy\NullWebProxy.cs" />
+    <Compile Include="HttpProxy\O365SuiteServiceProxyRequestHandler.cs" />
+    <Compile Include="HttpProxy\OABCache.cs" />
+    <Compile Include="HttpProxy\OabProxyRequestHandler.cs" />
+    <Compile Include="HttpProxy\OAuthActAsUserAnchorMailbox.cs" />
+    <Compile Include="HttpProxy\OAuthAuthBehavior.cs" />
+    <Compile Include="HttpProxy\OrganizationAnchorMailbox.cs" />
+    <Compile Include="HttpProxy\OutlookCN.cs" />
+    <Compile Include="HttpProxy\OutlookServiceProxyRequestHandler.cs" />
+    <Compile Include="HttpProxy\OutstandingRequests.cs" />
+    <Compile Include="HttpProxy\OwaCobrandingRedirProxyRequestHandler.cs" />
+    <Compile Include="HttpProxy\OwaEcpProxyRequestHandler.cs" />
+    <Compile Include="HttpProxy\OwaEcpRedirectStrategy.cs" />
+    <Compile Include="HttpProxy\OwaExtensibilityProxyRequestHandler.cs" />
+    <Compile Include="HttpProxy\OwaLanguagePostProxyRequestHandler.cs" />
+    <Compile Include="HttpProxy\OwaOeh2ProxyRequestHandler.cs" />
+    <Compile Include="HttpProxy\OwaPingStrategy.cs" />
+    <Compile Include="HttpProxy\OwaPLTStreamProxy.cs" />
+    <Compile Include="HttpProxy\OwaProxyRequestHandler.cs" />
+    <Compile Include="HttpProxy\OwaResourceProxyRequestHandler.cs" />
+    <Compile Include="HttpProxy\OWAUserPhotoProxyRequestHandler.cs" />
+    <Compile Include="HttpProxy\PfdTracer.cs" />
+    <Compile Include="HttpProxy\ProtocolPingStrategyBase.cs" />
+    <Compile Include="HttpProxy\ProxyApplication.cs" />
+    <Compile Include="HttpProxy\ProxyDestination.cs" />
+    <Compile Include="HttpProxy\ProxyModule.cs" />
+    <Compile Include="HttpProxy\ProxyRequestHandler.cs" />
+    <Compile Include="HttpProxy\PsgwProxyRequestHandler.cs" />
+    <Compile Include="HttpProxy\PstProviderAnchorMailbox.cs" />
+    <Compile Include="HttpProxy\PswsProxyRequestHandler.cs" />
+    <Compile Include="HttpProxy\PuidAnchorMailbox.cs" />
+    <Compile Include="HttpProxy\PushNotificationsProxyRequestHandler.cs" />
+    <Compile Include="HttpProxy\RedirSuiteServiceProxy.cs" />
+    <Compile Include="HttpProxy\RegexUtilities.cs" />
+    <Compile Include="HttpProxy\RemotePowerShellProxyRequestHandler.cs" />
+    <Compile Include="HttpProxy\ReportingWebServiceProxyRequestHandler.cs" />
+    <Compile Include="HttpProxy\Return401RequestHandler.cs" />
+    <Compile Include="HttpProxy\RpcHttpOutDataResponseStreamProxy.cs" />
+    <Compile Include="HttpProxy\RpcHttpPackets.cs" />
+    <Compile Include="HttpProxy\RpcHttpPingStrategy.cs" />
+    <Compile Include="HttpProxy\RpcHttpProxyRequestHandler.cs" />
+    <Compile Include="HttpProxy\RpcHttpProxyRules.cs" />
+    <Compile Include="HttpProxy\RpcHttpRequestHandler.cs" />
+    <Compile Include="HttpProxy\RpcHttpRtsFlags.cs" />
+    <Compile Include="HttpProxy\RpsFriendlyErrorModule.cs" />
+    <Compile Include="HttpProxy\RpsHttpProxyModule.cs" />
+    <Compile Include="HttpProxy\RpsOutDataResponseStreamProxy.cs" />
+    <Compile Include="HttpProxy\RwsPswsProxyRequestHandlerBase.cs" />
+    <Compile Include="HttpProxy\SerializedClientSecurityContext.cs" />
+    <Compile Include="HttpProxy\SerializedSecurityAccessToken.cs" />
+    <Compile Include="HttpProxy\ServerInfoAnchorMailbox.cs" />
+    <Compile Include="HttpProxy\ServerSideTransferException.cs" />
+    <Compile Include="HttpProxy\ServerVersionAnchorMailbox.cs" />
+    <Compile Include="HttpProxy\SidAnchorMailbox.cs" />
+    <Compile Include="HttpProxy\SiteMailboxCreatingProxyRequestHandler.cs" />
+    <Compile Include="HttpProxy\SmtpAnchorMailbox.cs" />
+    <Compile Include="HttpProxy\SmtpWithDomainFallbackAnchorMailbox.cs" />
+    <Compile Include="HttpProxy\SnackyServiceProxyRequestHandler.cs" />
+    <Compile Include="HttpProxy\SpeechRecoProxyRequestHandler.cs" />
+    <Compile Include="HttpProxy\StreamProxy.cs" />
+    <Compile Include="HttpProxy\StreamProxyException.cs" />
+    <Compile Include="HttpProxy\SvmFeedback.cs" />
+    <Compile Include="HttpProxy\TargetCalculationCallbackBeacon.cs" />
+    <Compile Include="HttpProxy\TargetCalculationCallbackState.cs" />
+    <Compile Include="HttpProxy\TargetForestAnchorMailbox.cs" />
+    <Compile Include="HttpProxy\UrlAnchorMailbox.cs" />
+    <Compile Include="HttpProxy\UrlUtilities.cs" />
+    <Compile Include="HttpProxy\UserADRawEntryAnchorMailbox.cs" />
+    <Compile Include="HttpProxy\UserBasedAnchorMailbox.cs" />
+    <Compile Include="HttpProxy\UserContextCookie.cs" />
+    <Compile Include="HttpProxy\Utilities.cs" />
+    <Compile Include="HttpProxy\VersionedDomainAnchorMailbox.cs" />
+    <Compile Include="HttpProxy\WinRMHelper.cs" />
+    <Compile Include="HttpProxy\WinRMParser.cs" />
+    <Compile Include="HttpProxy\WopiProxyRequestHandler.cs" />
+    <Compile Include="HttpProxy\WsSecurityHeaderType.cs" />
+    <Compile Include="HttpProxy\WsSecurityParser.cs" />
+    <Compile Include="HttpProxy\XRopProxyRequestHandler.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.Exchange.Clients.Common\Microsoft.Exchange.Clients.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140E6}</Project>
+      <Name>Microsoft.Exchange.Clients.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Clients.Security\Microsoft.Exchange.Clients.Security.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140E9}</Project>
+      <Name>Microsoft.Exchange.Clients.Security</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Common\Microsoft.Exchange.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140F0}</Project>
+      <Name>Microsoft.Exchange.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Configuration.Core\Microsoft.Exchange.Configuration.Core.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140F8}</Project>
+      <Name>Microsoft.Exchange.Configuration.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.ApplicationLogic\Microsoft.Exchange.Data.ApplicationLogic.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14104}</Project>
+      <Name>Microsoft.Exchange.Data.ApplicationLogic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Common\Microsoft.Exchange.Data.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140D3}</Project>
+      <Name>Microsoft.Exchange.Data.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Directory\Microsoft.Exchange.Data.Directory.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14105}</Project>
+      <Name>Microsoft.Exchange.Data.Directory</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Storage\Microsoft.Exchange.Data.Storage.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1410F}</Project>
+      <Name>Microsoft.Exchange.Data.Storage</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data\Microsoft.Exchange.Data.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14106}</Project>
+      <Name>Microsoft.Exchange.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Diagnostics\Microsoft.Exchange.Diagnostics.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14113}</Project>
+      <Name>Microsoft.Exchange.Diagnostics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.HttpProxy.Common\Microsoft.Exchange.HttpProxy.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1412D}</Project>
+      <Name>Microsoft.Exchange.HttpProxy.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.HttpProxy.Routing\Microsoft.Exchange.HttpProxy.Routing.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14132}</Project>
+      <Name>Microsoft.Exchange.HttpProxy.Routing</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Net\Microsoft.Exchange.Net.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14178}</Project>
+      <Name>Microsoft.Exchange.Net</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Security\Microsoft.Exchange.Security.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14198}</Project>
+      <Name>Microsoft.Exchange.Security</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.SharedCache.Client\Microsoft.Exchange.SharedCache.Client.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141B5}</Project>
+      <Name>Microsoft.Exchange.SharedCache.Client</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.VariantConfiguration\Microsoft.Exchange.VariantConfiguration.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141E0}</Project>
+      <Name>Microsoft.Exchange.VariantConfiguration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\mscorlib\mscorlib.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141F1}</Project>
+      <Name>mscorlib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\mscorlib\mscorlib.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141F1}</Project>
+      <Name>mscorlib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

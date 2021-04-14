@@ -1,0 +1,1602 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Rules>
+
+    <Function id="Func_credit_card">CCN</Function>
+    <Function id="Func_expiration_date">CCExpDate</Function>
+    <Function id="Func_eu_debit_card">EU_Debit_Card_Number</Function>
+    <Function id="Func_eu_date">EU_Date</Function>
+    <Function id="Func_ssn">SSN_Formatted</Function>
+    <Function id="Func_unformatted_ssn">SSN_Unformatted</Function>
+    <Function id="Func_randomized_formatted_ssn">Randomized_SSN_Formatted</Function>
+    <Function id="Func_randomized_unformatted_ssn">Randomized_SSN_Unformatted</Function>
+    <Function id="Func_us_date">US_Date</Function>
+    <Function id="Func_us_address">US_Address</Function>
+    <Function id="Func_canadian_sin">Canadian_SIN_Formatted</Function>
+    <Function id="Func_unformatted_canadian_sin">Canadian_SIN_Unformatted</Function>
+    <Function id="Func_german_drivers_license">German_Drivers_License_Number</Function>
+    <Function id="Func_german_passport">German_Passport_Number</Function>
+    <Function id="Func_german_passport_data">German_Passport_Data</Function>
+    <Function id="Func_uk_nhs_number">UK_NHS_Number</Function>
+    <Function id="Func_french_insee">French_National_ID_Number</Function>
+    <Function id="Func_french_drivers_license">French_Drivers_License_Number</Function>
+    <Function id="Func_iban">IBAN</Function>
+    <Function id="Func_dea_number">DEA_Number</Function>
+    <Function id="Func_uk_nino">UK_NINO</Function>
+    <Function id="Func_uk_drivers_license">UK_Drivers_License</Function>
+    <Function id="Func_aba_routing">ABA_Routing</Function>
+    <Function id="Func_formatted_itin">Formatted_ITIN</Function>
+    <Function id="Func_unformatted_itin">Unformatted_ITIN</Function>
+    <Function id="Func_fr_iban">French_IBAN</Function>
+    <Function id="Func_eu_date1">EU_Date1</Function>
+    <Function id="Func_eu_date2">EU_Date2</Function>
+    <Function id="Func_fr_insee">French_INSEE</Function>
+    <Function id="Func_usa_uk_passport">USA_UK_Passport</Function>
+    <Function id="Func_fr_passport">French_Passport</Function>
+    <Function id="Func_alberta_drivers_license_number">Alberta_Drivers_License_Number</Function>
+    <Function id="Func_british_columbia_drivers_license_number">British_Columbia_Drivers_License_Number</Function>
+    <Function id="Func_manitoba_drivers_license_number">Manitoba_Drivers_License_Number</Function>
+    <Function id="Func_new_brunswick_drivers_license_number">New_Brunswick_Drivers_License_Number</Function>
+    <Function id="Func_newfoundland_labrador_drivers_license_number">Newfoundland_Labrador_Drivers_License_Number</Function>
+    <Function id="Func_nova_scotia_drivers_license_number">Nova_Scotia_Drivers_License_Number</Function>
+    <Function id="Func_ontario_drivers_license_number">Ontario_Drivers_License_Number</Function>
+    <Function id="Func_prince_edward_island_drivers_license_number">Prince_Edward_Island_Drivers_License_Number</Function>
+    <Function id="Func_quebec_drivers_license_number">Quebec_Drivers_License_Number</Function>
+    <Function id="Func_saskatchewan_drivers_license_number">Saskatchewan_Drivers_License_Number</Function>
+    <Function id="Func_alabama_drivers_license_number">Alabama_Drivers_License_Number</Function>
+    <Function id="Func_alaska_delaware_oregon_drivers_license_number">Alaska_Delaware_Oregon_Drivers_License_Number</Function>
+    <Function id="Func_arizona_drivers_license_number">Arizona_Drivers_License_Number</Function>
+    <Function id="Func_arkansas_drivers_license_number">Arkansas_Drivers_License_Number</Function>
+    <Function id="Func_california_drivers_license_number">California_Drivers_License_Number</Function>
+    <Function id="Func_colorado_drivers_license_number">Colorado_Drivers_License_Number</Function>
+    <Function id="Func_connecticut_drivers_license_number">Connecticut_Drivers_License_Number</Function>
+    <Function id="Func_district_of_columbia_drivers_license_number">District_Of_Columbia_Drivers_License_Number</Function>
+    <Function id="Func_florida_maryland_michigan_minnesota_drivers_license_number">Florida_Maryland_Michigan_Minnesota_Drivers_License_Number</Function>
+    <Function id="Func_georgia_drivers_license_number">Georgia_Drivers_License_Number</Function>
+    <Function id="Func_hawaii_drivers_license_number">Hawaii_Drivers_License_Number</Function>
+    <Function id="Func_idaho_drivers_license_number">Idaho_Drivers_License_Number</Function>
+    <Function id="Func_illinois_drivers_license_number">Illinois_Drivers_License_Number</Function>
+    <Function id="Func_indiana_drivers_license_number">Indiana_Drivers_License_Number</Function>
+    <Function id="Func_iowa_drivers_license_number">Iowa_Drivers_License_Number</Function>
+    <Function id="Func_kansas_drivers_license_number">Kansas_Drivers_License_Number</Function>
+    <Function id="Func_kentucky_massachusetts_virginia_drivers_license_number">Kentucky_Massachusetts_Virginia_Drivers_License_Number</Function>
+    <Function id="Func_louisiana_drivers_license_number">Louisiana_Drivers_License_Number</Function>
+    <Function id="Func_maine_drivers_license_number">Maine_Drivers_License_Number</Function>
+    <Function id="Func_mississippi_oklahoma_drivers_license_number">Mississippi_Oklahoma_Drivers_License_Number</Function>
+    <Function id="Func_missouri_drivers_license_number">Missouri_Drivers_License_Number</Function>
+    <Function id="Func_montana_drivers_license_number">Montana_Drivers_License_Number</Function>
+    <Function id="Func_nebraska_drivers_license_number">Nebraska_Drivers_License_Number</Function>
+    <Function id="Func_nevada_drivers_license_number">Nevada_Drivers_License_Number</Function>
+    <Function id="Func_new_hampshire_drivers_license_number">New_Hampshire_Drivers_License_Number</Function>
+    <Function id="Func_new_jersey_drivers_license_number">New_Jersey_Drivers_License_Number</Function>
+    <Function id="Func_new_mexico_drivers_license_number">New_Mexico_Drivers_License_Number</Function>
+    <Function id="Func_new_york_drivers_license_number">New_York_Drivers_License_Number</Function>
+    <Function id="Func_north_carolina_drivers_license_number">North_Carolina_Drivers_License_Number</Function>
+    <Function id="Func_north_dakota_drivers_license_number">North_Dakota_Drivers_License_Number</Function>
+    <Function id="Func_ohio_drivers_license_number">Ohio_Drivers_License_Number</Function>
+    <Function id="Func_pennsylvania_drivers_license_number">Pennsylvania_Drivers_License_Number</Function>
+    <Function id="Func_rhode_island_drivers_license_number">Rhode_Island_Drivers_License_Number</Function>
+    <Function id="Func_south_carolina_drivers_license_number">South_Carolina_Drivers_License_Number</Function>
+    <Function id="Func_south_dakota_drivers_license_number">South_Dakota_Drivers_License_Number</Function>
+    <Function id="Func_tennessee_drivers_license_number">Tennessee_Drivers_License_Number</Function>
+    <Function id="Func_texas_drivers_license_number">Texas_Drivers_License_Number</Function>
+    <Function id="Func_utah_drivers_license_number">Utah_Drivers_License_Number</Function>
+    <Function id="Func_vermont_drivers_license_number">Vermont_Drivers_License_Number</Function>
+    <Function id="Func_washington_drivers_license_number">Washington_Drivers_License_Number</Function>
+    <Function id="Func_west_virginia_drivers_license_number">West_Virginia_Drivers_License_Number</Function>
+    <Function id="Func_wisconsin_drivers_license_number">Wisconsin_Drivers_License_Number</Function>
+    <Function id="Func_wyoming_drivers_license_number">Wyoming_Drivers_License_Number</Function>
+    <Function id="Func_jp_drivers_license_number">Japan_Drivers_License_Number</Function>
+    <Function id="Func_jp_resident_registration_number">Japan_Resident_Registration_Number</Function>
+    <Function id="Func_jp_sin">Japan_SIN</Function>
+    <Function id="Func_jp_sin_pre_1997">Japan_SIN_Pre_1997</Function>
+    <Function id="Func_jp_passport">Japan_Passport</Function>
+    <Function id="Func_jp_bank_account">Japan_Bank_Account</Function>
+    <Function id="Func_australian_medical_account_number">Australian_Medical_Account_Number</Function>
+    <Function id="Func_australian_tax_file_number">Australian_Tax_File_Number</Function>
+    <Function id="Func_israeli_national_id_number">Israeli_National_ID_Number</Function>
+    <Function id="Func_new_zealand_ministry_of_health_number">New_Zealand_Ministry_Of_Health_Number</Function>
+    <Function id="Func_spanish_social_security_number">Spanish_Social_Security_Number</Function>
+    <Function id="Func_swedish_national_identifier">Swedish_National_Identifier</Function>
+    <Function id="Func_taiwanese_national_id">Taiwanese_National_ID</Function>
+    <Function id="Func_pesel_identification_number">Pesel_Identification_Number</Function>
+    <Function id="Func_polish_national_id">Polish_National_ID</Function>
+    <Function id="Func_polish_passport_number">Polish_Passport_Number</Function>
+    <Function id="Func_finnish_national_id">Finnish_National_ID</Function>
+
+    <Regex id="Regex_usa_Bank_Account">(^|\s)(\d{1,17})($|\s|\.\s)</Regex>
+    <Regex id="Regex_swift">(^|\s)([A-Z]{4}(AF|AX|AL|DZ|AS|AD|AO|AI|AQ|AG|AR|AM|AW|AU|AT|AZ|BS|BH|BD|BB|BY|BE|BZ|BJ|BM|BT|BO|BQ|BA|BW|BV|BR|IO|BN|BG|BF|BI|KH|CM|CA|CV|KY|CF|TD|CL|CN|CX|CC|CO|KM|CG|CD|CK|CR|CI|HR|CU|CW|CY|CZ|DK|DJ|DM|DO|EC|EG|SV|GQ|ER|EE|ET|FK|FO|FJ|FI|FR|GF|PF|TF|GA|GM|GE|DE|GH|GI|GR|GL|GD|GP|GU|GT|GG|GN|GW|GY|HT|HM|VA|HN|HK|HU|IS|IN|ID|IR|IQ|IE|IM|IL|IT|JM|JP|JE|JO|KZ|KE|KI|KP|KR|KW|KG|LA|LV|LB|LS|LR|LY|LI|LT|LU|MO|MK|MG|MW|MY|MV|ML|MT|MH|MQ|MR|MU|YT|MX|FM|MD|MC|MN|ME|MS|MA|MZ|MM|NA|NR|NP|NL|NC|NZ|NI|NE|NG|NU|NF|MP|NO|OM|PK|PW|PS|PA|PG|PY|PE|PH|PN|PL|PT|PR|QA|RE|RO|RU|RW|BL|SH|KN|LC|MF|PM|VC|WS|SM|ST|SA|SN|RS|SC|SL|SG|SX|SK|SI|SB|SO|ZA|GS|SS|ES|LK|SD|SR|SJ|SZ|SE|CH|SY|TW|TJ|TZ|TH|TL|TG|TK|TO|TT|TN|TR|TM|TC|TV|UG|UA|AE|GB|US|UM|UY|UZ|VU|VE|VN|VG|VI|WF|EH|YE|ZM|ZW)(\w{2}|\w{5}))($|\s|\.\s)</Regex>
+
+  <Keyword id="Keyword_cc_verification">
+        <Group matchStyle="word">
+            <Term>card verification</Term>
+            <Term>card identification number</Term>
+            <Term>cvn</Term>
+            <Term>cid</Term>
+            <Term>cvc2</Term>
+            <Term>cvv2</Term>
+            <Term>pin block</Term>
+            <Term>security code</Term>
+            <Term>security number</Term>
+            <Term>security no</Term>
+            <Term>issue number</Term>
+            <Term>issue no</Term>
+            <Term>cryptogramme</Term>
+            <Term>numéro de sécurité</Term>
+            <Term>numero de securite</Term>
+            <Term>kreditkartenprüfnummer</Term>
+            <Term>kreditkartenprufnummer</Term>
+            <Term>prüfziffer</Term>
+            <Term>prufziffer</Term>
+            <Term>sicherheits Kode</Term>
+            <Term>sicherheitscode</Term>
+            <Term>sicherheitsnummer</Term>
+            <Term>verfalldatum</Term>
+            <Term>codice di verifica</Term>
+            <Term>cod. sicurezza</Term>
+            <Term>cod sicurezza</Term>
+            <Term>n autorizzazione</Term>
+            <Term>código</Term>
+            <Term>codigo</Term>
+            <Term>cod. seg</Term>
+            <Term>cod seg</Term>
+            <Term>código de segurança</Term>
+            <Term>codigo de seguranca</Term>
+            <Term>codigo de segurança</Term>
+            <Term>código de seguranca</Term>
+            <Term>cód. segurança</Term>
+            <Term>cod. seguranca</Term>
+            <Term>cod. segurança</Term>
+            <Term>cód. seguranca</Term>
+            <Term>cód segurança</Term>
+            <Term>cod seguranca</Term>
+            <Term>cod segurança</Term>
+            <Term>cód seguranca</Term>
+            <Term>número de verificação</Term>
+            <Term>numero de verificacao</Term>
+            <Term>ablauf</Term>
+            <Term>gültig bis</Term>
+            <Term>gültigkeitsdatum</Term>
+            <Term>gultig bis</Term>
+            <Term>gultigkeitsdatum</Term>
+            <Term>scadenza</Term>
+            <Term>data scad</Term>
+            <Term>fecha de expiracion</Term>
+            <Term>fecha de venc</Term>
+            <Term>vencimiento</Term>
+            <Term>válido hasta</Term>
+            <Term>valido hasta</Term>
+            <Term>vto</Term>
+            <Term>data de expiração</Term>
+            <Term>data de expiracao</Term>
+            <Term>data em que expira</Term>
+            <Term>validade</Term>
+            <Term>valor</Term>
+            <Term>vencimento</Term>
+            <Term>venc</Term>
+        </Group>
+    </Keyword>
+
+    <Keyword id="Keyword_cc_name">
+        <Group matchStyle="word">
+            <Term>amex</Term>
+            <Term>american express</Term>
+            <Term>americanexpress</Term>
+            <Term>Visa</Term>
+            <Term>mastercard</Term>
+            <Term>master card</Term>
+            <Term>mc</Term>
+            <Term>mastercards</Term>
+            <Term>master cards</Term>
+            <Term>diner's Club</Term>
+            <Term>diners club</Term>
+            <Term>dinersclub</Term>
+            <Term>discover card</Term>
+            <Term>discovercard</Term>
+            <Term>discover cards</Term>
+            <Term>JCB</Term>
+            <Term>japanese card bureau</Term>
+            <Term>carte blanche</Term>
+            <Term>carteblanche</Term>
+            <Term>credit card</Term>
+            <Term>cc#</Term>
+            <Term>cc#:</Term>
+            <Term>expiration date</Term>
+            <Term>exp date</Term>
+            <Term>expiry date</Term>
+            <Term>date d’expiration</Term>
+            <Term>date d'exp</Term>
+            <Term>date expiration</Term>
+            <Term>bank card</Term>
+            <Term>bankcard</Term>
+            <Term>card number</Term>
+            <Term>card num</Term>
+            <Term>cardnumber</Term>
+            <Term>cardnumbers</Term>
+            <Term>card numbers</Term>
+            <Term>creditcard</Term>
+            <Term>credit cards</Term>
+            <Term>creditcards</Term>
+            <Term>ccn</Term>
+            <Term>card holder</Term>
+            <Term>cardholder</Term>
+            <Term>card holders</Term>
+            <Term>cardholders</Term>
+            <Term>check card</Term>
+            <Term>checkcard</Term>
+            <Term>check cards</Term>
+            <Term>checkcards</Term>
+            <Term>debit card</Term>
+            <Term>debitcard</Term>
+            <Term>debit cards</Term>
+            <Term>debitcards</Term>
+            <Term>atm card</Term>
+            <Term>atmcard</Term>
+            <Term>atm cards</Term>
+            <Term>atmcards</Term>
+            <Term>enroute</Term>
+            <Term>en route</Term>
+            <Term>card type</Term>
+            <Term>carte bancaire</Term>
+            <Term>carte de crédit</Term>
+            <Term>carte de credit</Term>
+            <Term>numéro de carte</Term>
+            <Term>numero de carte</Term>
+            <Term>nº de la carte</Term>
+            <Term>nº de carte</Term>
+            <Term>kreditkarte</Term>
+            <Term>karte</Term>
+            <Term>karteninhaber</Term>
+            <Term>karteninhabers</Term>
+            <Term>kreditkarteninhaber</Term>
+            <Term>kreditkarteninstitut</Term>
+            <Term>kreditkartentyp</Term>
+            <Term>eigentümername</Term>
+            <Term>kartennr</Term>
+            <Term>kartennummer</Term>
+            <Term>kreditkartennummer</Term>
+            <Term>kreditkarten-nummer</Term>
+            <Term>carta di credito</Term>
+            <Term>carta credito</Term>
+            <Term>n. carta</Term>
+            <Term>n carta</Term>
+            <Term>nr. carta</Term>
+            <Term>nr carta</Term>
+            <Term>numero carta</Term>
+            <Term>numero della carta</Term>
+            <Term>numero di carta</Term>
+            <Term>tarjeta credito</Term>
+            <Term>tarjeta de credito</Term>
+            <Term>tarjeta crédito</Term>
+            <Term>tarjeta de crédito</Term>
+            <Term>tarjeta de atm</Term>
+            <Term>tarjeta atm</Term>
+            <Term>tarjeta debito</Term>
+            <Term>tarjeta de debito</Term>
+            <Term>tarjeta débito</Term>
+            <Term>tarjeta de débito</Term>
+            <Term>nº de tarjeta</Term>
+            <Term>no. de tarjeta</Term>
+            <Term>no de tarjeta</Term>
+            <Term>numero de tarjeta</Term>
+            <Term>número de tarjeta</Term>
+            <Term>tarjeta no</Term>
+            <Term>tarjetahabiente</Term>
+            <Term>cartão de crédito</Term>
+            <Term>cartão de credito</Term>
+            <Term>cartao de crédito</Term>
+            <Term>cartao de credito</Term>
+            <Term>cartão de débito</Term>
+            <Term>cartao de débito</Term>
+            <Term>cartão de debito</Term>
+            <Term>cartao de debito</Term>
+            <Term>débito automático</Term>
+            <Term>debito automatico</Term>
+            <Term>número do cartão</Term>
+            <Term>numero do cartão</Term>
+            <Term>número do cartao</Term>
+            <Term>numero do cartao</Term>
+            <Term>número de cartão</Term>
+            <Term>numero de cartão</Term>
+            <Term>número de cartao</Term>
+            <Term>numero de cartao</Term>
+            <Term>nº do cartão</Term>
+            <Term>nº do cartao</Term>
+            <Term>nº. do cartão</Term>
+            <Term>no do cartão</Term>
+            <Term>no do cartao</Term>
+            <Term>no. do cartão</Term>
+            <Term>no. do cartao</Term>
+        </Group>
+    </Keyword>
+
+    <Keyword id="Keyword_eu_debit_card">
+        <Group matchStyle="word">
+            <Term>account number</Term>
+            <Term>card number</Term>
+            <Term>card no.</Term>
+            <Term>security number</Term>
+            <Term>cc#</Term>
+        </Group>
+    </Keyword>
+
+    <Keyword id="Keyword_card_terms_dict">
+        <Group matchStyle="string">
+            <Dictionary>card_terms_dict.txt</Dictionary>
+        </Group>
+    </Keyword>
+
+    <Keyword id="Keyword_card_security_terms_dict">
+        <Group matchStyle="string">
+            <Dictionary>card_security_terms_dict.txt</Dictionary>
+        </Group>
+    </Keyword>
+
+    <Keyword id="Keyword_card_expiration_terms_dict">
+        <Group matchStyle="string">
+            <Dictionary>card_expiration_terms_dict.txt</Dictionary>
+        </Group>
+    </Keyword>
+
+    <Keyword id="Keyword_ssn">
+        <Group matchStyle="word">
+            <Term>Social Security</Term>
+            <Term>Social Security#</Term>
+            <Term>Soc Sec</Term>
+            <Term>SSN</Term>
+            <Term>SSNS</Term>
+            <Term>SSN#</Term>
+            <Term>SS#</Term>
+            <Term>SSID</Term>
+        </Group>
+    </Keyword>
+
+    <Keyword id="Keyword_itin">
+        <Group matchStyle="word">
+            <Term>taxpayer</Term>
+            <Term>tax id</Term>
+            <Term>tax identification</Term>
+            <Term>itin</Term>
+            <Term>ssn</Term>
+            <Term>tin</Term>
+            <Term>social security</Term>
+            <Term>tax payer</Term>
+            <Term>itins</Term>
+            <Term>taxid</Term>
+            <Term>individual taxpayer</Term>
+        </Group>
+    </Keyword>
+
+    <Keyword id="Keyword_itin_collaborative">
+        <Group matchStyle="word">
+            <Term>License</Term>
+            <Term>DL</Term>
+            <Term>DOB</Term>
+            <Term>Birthdate</Term>
+            <Term>Birthday</Term>
+            <Term>Date of Birth</Term>
+        </Group>
+    </Keyword>
+
+    <Keyword id="Keyword_sin">
+        <Group matchStyle="word">
+            <Term>sin</Term>
+            <Term>social insurance</Term>
+            <Term>numero d'assurance sociale</Term>
+            <Term>sins</Term>
+            <Term>ssn</Term>
+            <Term>ssns</Term>
+            <Term>social security</Term>
+            <Term>numero d'assurance social</Term>
+            <Term>national identification number</Term>
+            <Term>national id</Term>
+            <Term>sin#</Term>
+            <Term>soc ins</Term>
+            <Term>social ins</Term>
+        </Group>
+    </Keyword>
+
+    <Keyword id="Keyword_sin_collaborative">
+        <Group matchStyle="word">
+            <Term>driver's license</Term>
+            <Term>drivers license</Term>
+            <Term>driver's licence</Term>
+            <Term>drivers licence</Term>
+            <Term>DOB</Term>
+            <Term>Birthdate</Term>
+            <Term>Birthday</Term>
+            <Term>Date of Birth</Term>
+        </Group>
+    </Keyword>
+
+    <Keyword id="Keyword_german_drivers_license">
+        <Group matchStyle="word">
+            <Term>ausstellungsdatum</Term>
+            <Term>ausstellungsort</Term>
+            <Term>ausstellende behöde</Term>
+            <Term>ausstellende behorde</Term>
+            <Term>ausstellende behoerde</Term>
+        </Group>
+    </Keyword>
+
+    <Keyword id="Keyword_german_passport">
+        <Group matchStyle="word">
+            <Term>reisepass</Term>
+            <Term>reisepasse</Term>
+            <Term>reisepassnummer</Term>
+            <Term>passport</Term>
+            <Term>passports</Term>
+        </Group>
+    </Keyword>
+
+    <Keyword id="Keyword_german_passport_collaborative">
+        <Group matchStyle="word">
+            <Term>geburtsdatum</Term>
+            <Term>ausstellungsdatum</Term>
+            <Term>ausstellungsort</Term>
+        </Group>
+    </Keyword>
+
+    <Keyword id="Keyword_uk_nhs_number">
+        <Group matchStyle="word">
+            <Term>national health service</Term>
+            <Term>nhs</Term>
+            <Term>health services authority</Term>
+            <Term>health authority</Term>
+        </Group>
+    </Keyword>
+
+    <Keyword id="Keyword_uk_nhs_number_dob">
+        <Group matchStyle="word">
+            <Term>GP</Term>
+            <Term>DOB</Term>
+            <Term>D.O.B</Term>
+            <Term>Date of Birth</Term>
+            <Term>Birth Date</Term>
+        </Group>
+    </Keyword>
+
+    <Keyword id="Keyword_french_drivers_license">
+        <Group matchStyle="word">
+            <Term>drivers licence</Term>
+            <Term>drivers license</Term>
+            <Term>driving licence</Term>
+            <Term>driving license</Term>
+            <Term>permis de conduire</Term>
+            <Term>licence number</Term>
+            <Term>license number</Term>
+            <Term>licence numbers</Term>
+            <Term>license numbers</Term>
+        </Group>
+    </Keyword>
+
+    <Keyword id="Keyword_idaho_drivers_license">
+        <Group matchStyle="word">
+            <Term>idaho</Term>
+        </Group>
+    </Keyword>
+
+    <Keyword id="Keyword_indiana_drivers_license">
+        <Group matchStyle="word">
+            <Term>indiana</Term>
+        </Group>
+    </Keyword>
+
+    <Keyword id="Keyword_usa_Bank_Account">
+        <Group matchStyle="word">
+            <Term>Checking Account Number</Term>
+            <Term>Checking Account</Term>
+            <Term>Checking Account #</Term>
+            <Term>Checking Acct Number</Term>
+            <Term>Checking Acct #</Term>
+            <Term>Checking Acct No.</Term>
+            <Term>Checking Account No.</Term>
+            <Term>Bank Account Number</Term>
+            <Term>Bank Account #</Term>
+            <Term>Bank Acct Number</Term>
+            <Term>Bank Acct #</Term>
+            <Term>Bank Acct No.</Term>
+            <Term>Bank Account No.</Term>
+            <Term>Savings Account Number</Term>
+            <Term>Savings Account.</Term>
+            <Term>Savings Account #</Term>
+            <Term>Savings Acct Number</Term>
+            <Term>Savings Acct #</Term>
+            <Term>Savings Acct No.</Term>
+            <Term>Savings Account No.</Term>
+            <Term>Debit Account Number</Term>
+            <Term>Debit Account</Term>
+            <Term>Debit Account #</Term>
+            <Term>Debit Acct Number</Term>
+            <Term>Debit Acct #</Term>
+            <Term>Debit Acct No.</Term>
+            <Term>Debit Account No.</Term>
+        </Group>
+    </Keyword>
+
+    <Keyword id="Keyword_fr_insee">
+        <Group matchStyle="word">
+            <Term>insee</Term>
+            <Term>securité sociale</Term>
+            <Term>securite sociale</Term>
+            <Term>national id</Term>
+            <Term>national identification</Term>
+            <Term>numéro d'identité</Term>
+            <Term>no d'identité</Term>
+            <Term>no. d'identité</Term>
+            <Term>numero d'identite</Term>
+            <Term>no d'identite</Term>
+            <Term>no. d'identite</Term>
+            <Term>social security number</Term>
+            <Term>social security code</Term>
+            <Term>social insurance number</Term>
+            <Term>le numéro d'identification nationale</Term>
+            <Term>d'identité nationale</Term>
+            <Term>numéro de sécurité sociale</Term>
+            <Term>le code de la sécurité sociale</Term>
+            <Term>numéro d'assurance sociale</Term>
+            <Term>numéro de sécu</Term>
+            <Term>code sécu</Term>
+        </Group>
+    </Keyword>
+
+    <Keyword id="Keyword_passport">
+        <Group matchStyle="word">
+            <Term>Passport Number</Term>
+            <Term>Passport No</Term>
+            <Term>Passport #</Term>
+            <Term>Passport#</Term>
+            <Term>PassportID</Term>
+            <Term>Passportno</Term>
+            <Term>passportnumber</Term>
+            <Term>パスポート </Term>
+            <Term>パスポート番号</Term>
+            <Term>パスポートのNum </Term>
+            <Term>パスポート＃</Term>
+            <Term>Numéro de passeport</Term>
+            <Term>Passeport n °</Term>
+            <Term>Passeport Non</Term>
+            <Term>Passeport #</Term>
+            <Term>Passeport#</Term>
+            <Term>PasseportNon</Term>
+            <Term>Passeportn °</Term>
+        </Group>
+    </Keyword>
+
+    <Keyword id="Keyword_swift">
+        <Group matchStyle="word">
+            <Term>international organization for standardization 9362</Term>
+            <Term>iso 9362</Term>
+            <Term>iso9362</Term>
+            <Term>swift#</Term>
+            <Term>swiftcode</Term>
+            <Term>swiftnumber</Term>
+            <Term>swiftroutingnumber</Term>
+            <Term>swift code</Term>
+            <Term>swift number #</Term>
+            <Term>swift routing number</Term>
+            <Term>bic number</Term>
+            <Term>bic code</Term>
+            <Term>bic #</Term>
+            <Term>bic#</Term>
+            <Term>bank identifier code</Term>
+            <Term>標準化9362</Term>
+            <Term>迅速＃</Term>
+            <Term>SWIFTコード</Term>
+            <Term>SWIFT番号</Term>
+            <Term>迅速なルーティング番号</Term>
+            <Term>BIC番号</Term>
+            <Term>BICコード</Term>
+            <Term>銀行識別コードのための国際組織</Term>
+            <Term>Organisation internationale de normalisation 9362</Term>
+            <Term>rapide #</Term>
+            <Term>code SWIFT</Term>
+            <Term>le numéro de swift</Term>
+            <Term>swift numéro d'acheminement</Term>
+            <Term>le numéro BIC</Term>
+            <Term># BIC</Term>
+            <Term>code identificateur de banque</Term>
+        </Group>
+    </Keyword>
+
+    <Keyword id="Keyword_jp_drivers_license_number">
+        <Group matchStyle="word">
+            <Term>driver license</Term>
+            <Term>drivers license</Term>
+            <Term>driver's license</Term>
+            <Term>drivers licenses</Term>
+            <Term>driver's licenses</Term>
+            <Term>driver licenses</Term>
+            <Term>dl#</Term>
+            <Term>dls#</Term>
+            <Term>lic#</Term>
+            <Term>lics#</Term>
+            <Term>state id</Term>
+            <Term>state identification number</Term>
+            <Term>state identification</Term>
+            <Term>driving licence</Term>
+            <Term>運転免許証番号</Term>
+            <Term>免許証</Term>
+            <Term>運転免許証</Term>
+            <Term>運転免許証</Term>
+            <Term>運転免許証</Term>
+            <Term>運転免許証</Term>
+            <Term>運転免許証</Term>
+            <Term>DL＃</Term>
+            <Term>DLS＃</Term>
+            <Term>LIC＃</Term>
+            <Term>低所得国＃</Term>
+            <Term>状態ID</Term>
+            <Term>状態の識別番号</Term>
+            <Term>状態の識別</Term>
+            <Term>運転免許</Term>
+        </Group>
+    </Keyword>
+
+    <Keyword id="Keyword_jp_resident_registration_number">
+        <Group matchStyle="word">
+            <Term>Resident Registration Number, Resident Register Number</Term>
+            <Term>Residents Basic Registry Number</Term>
+            <Term>Resident Registration No.</Term>
+            <Term>Resident Register No.</Term>
+            <Term>Residents Basic Registry No. </Term>
+            <Term>Basic Resident Register No. </Term>
+            <Term>住民登録番号、登録番号をレジデント</Term>
+            <Term>住民基本登録番号、登録番号</Term>
+            <Term>住民基本レジストリ番号を常駐</Term>
+            <Term>登録番号を常駐住民基本台帳登録番号</Term>
+        </Group>
+    </Keyword>
+
+    <Keyword id="Keyword_jp_sin">
+        <Group matchStyle="word">
+            <Term>Social Insurance Number</Term>
+            <Term>Social Insurance No.</Term>
+            <Term>Social Insurance Num</Term>
+            <Term>社会保険番号</Term>
+            <Term>社会保険番号</Term>
+            <Term>社会保険のテンキー</Term>
+        </Group>
+    </Keyword>
+
+    <Keyword id="Keyword_jp_passport">
+        <Group matchStyle="word">
+            <Term>パスポート</Term>
+            <Term>パスポート番号</Term>
+            <Term>パスポート番号</Term>
+            <Term>パスポート番号</Term>
+            <Term>パスポートのNum</Term>
+            <Term>パスポート＃</Term>
+        </Group>
+    </Keyword>
+
+    <Keyword id="Keyword_jp_bank_account">
+        <Group matchStyle="word">
+            <Term>Checking Account Number</Term>
+            <Term>Checking Account</Term>
+            <Term>Checking Account #</Term>
+            <Term>Checking Acct Number</Term>
+            <Term>Checking Acct #</Term>
+            <Term>Checking Acct No.</Term>
+            <Term>Checking Account No.</Term>
+            <Term>Bank Account Number</Term>
+            <Term>Bank Account</Term>
+            <Term>Bank Account #</Term>
+            <Term>Bank Acct Number</Term>
+            <Term>Bank Acct #</Term>
+            <Term>Bank Acct No.</Term>
+            <Term>Bank Account No.</Term>
+            <Term>Savings Account Number</Term>
+            <Term>Savings Account</Term>
+            <Term>Savings Account #</Term>
+            <Term>Savings Acct Number</Term>
+            <Term>Savings Acct #</Term>
+            <Term>Savings Acct No.</Term>
+            <Term>Savings Account No.</Term>
+            <Term>Debit Account Number</Term>
+            <Term>Debit Account</Term>
+            <Term>Debit Account #</Term>
+            <Term>Debit Acct Number</Term>
+            <Term>Debit Acct #</Term>
+            <Term>Debit Acct No.</Term>
+            <Term>Debit Account No.</Term>
+            <Term>口座番号を当座預金口座の確認</Term>
+            <Term>＃アカウントの確認、勘定番号の確認</Term>
+            <Term>＃勘定の確認</Term>
+            <Term>勘定番号の確認</Term>
+            <Term>口座番号の確認</Term>
+            <Term>銀行口座番号</Term>
+            <Term>銀行口座</Term>
+            <Term>銀行口座＃</Term>
+            <Term>銀行の勘定番号</Term>
+            <Term>銀行のacct＃</Term>
+            <Term>銀行の勘定いいえ</Term>
+            <Term>銀行口座番号</Term>
+            <Term>普通預金口座番号</Term>
+            <Term>預金口座</Term>
+            <Term>貯蓄口座＃</Term>
+            <Term>貯蓄勘定の数</Term>
+            <Term>貯蓄勘定＃</Term>
+            <Term>貯蓄勘定番号</Term>
+            <Term>普通預金口座番号</Term>
+            <Term>引き落とし口座番号</Term>
+            <Term>口座番号</Term>
+            <Term>口座番号＃</Term>
+            <Term>デビットのacct番号</Term>
+            <Term>デビット勘定＃</Term>
+            <Term>デビットACCTの番号</Term>
+            <Term>デビット口座番号 </Term>
+        </Group>
+    </Keyword>
+
+    <Keyword id="Keyword_fr_IBAN">
+        <Group matchStyle="word">
+            <Term>Acct # Débit</Term>
+            <Term>BBAN</Term>
+            <Term>Bank Account</Term>
+            <Term>Bank Account #</Term>
+            <Term>Bank Account No.</Term>
+            <Term>Bank Account Number</Term>
+            <Term>Bank Acct #</Term>
+            <Term>Bank Acct No.</Term>
+            <Term>Bank Acct Number</Term>
+            <Term>Checking Account</Term>
+            <Term>Checking Account #</Term>
+            <Term>Checking Account No.</Term>
+            <Term>Checking Account Number</Term>
+            <Term>Checking Acct #</Term>
+            <Term>Checking Acct No.</Term>
+            <Term>Checking Acct Number</Term>
+            <Term>Code IBAN</Term>
+            <Term>Contrôle Non ACCT</Term>
+            <Term>Debit Account</Term>
+            <Term>Debit Account #</Term>
+            <Term>Debit Account No.</Term>
+            <Term>Debit Account Number</Term>
+            <Term>Debit Acct #</Term>
+            <Term>Debit Acct No.</Term>
+            <Term>Debit Acct Number</Term>
+            <Term>IBAN</Term>
+            <Term>IBANCode</Term>
+            <Term>IBANnumber</Term>
+            <Term>International Bank Account Number</Term>
+            <Term>Nombre</Term>
+            <Term>Non</Term>
+            <Term>Savings Account</Term>
+            <Term>Savings Account #</Term>
+            <Term>Savings Account No.</Term>
+            <Term>Savings Account Number</Term>
+            <Term>Savings Acct #</Term>
+            <Term>Savings Acct No.</Term>
+            <Term>Savings Acct Number</Term>
+            <Term>Vérification Acct #</Term>
+            <Term>Vérification du numéro de compte</Term>
+            <Term>Vérification n ° de compte</Term>
+            <Term>basic bank account number</Term>
+            <Term>code IBAN</Term>
+            <Term>compte # Vérification</Term>
+            <Term>compte bancaire</Term>
+            <Term>compte courant</Term>
+            <Term>compte d'épargne</Term>
+            <Term>compte d'épargne #</Term>
+            <Term>compte d'épargne #</Term>
+            <Term>compte de débit</Term>
+            <Term>de débit du compte # Acct débit</Term>
+            <Term>la Banque Acct # Acct Banque</Term>
+            <Term>n ° Acct débit</Term>
+            <Term>n ° compte d'épargne</Term>
+            <Term>n ° de compte bancaire</Term>
+            <Term>n ° de compte de débit</Term>
+            <Term>n ° du compte d'épargne</Term>
+            <Term>numéro Acct Bank</Term>
+            <Term>numéro IBAN</Term>
+            <Term>numéro compte d'épargne</Term>
+            <Term>numéro de compte bancaire</Term>
+            <Term>numéro de compte bancaire de base</Term>
+            <Term>numéro de compte d'épargne</Term>
+            <Term>numéro de compte de débit</Term>
+            <Term>vérifiant le numéro de l'ACCT</Term>
+        </Group>
+    </Keyword>
+
+    <Keyword id="Keyword_ABA_Routing">
+        <Group matchStyle="word">
+            <Term>aba</Term>
+            <Term>aba #</Term>
+            <Term>aba routing #</Term>
+            <Term>aba routing number</Term>
+            <Term>aba#</Term>
+            <Term>abarouting#</Term>
+            <Term>aba number</Term>
+            <Term>abaroutingnumber</Term>
+            <Term>american bank association routing #</Term>
+            <Term>american bank association routing number</Term>
+            <Term>americanbankassociationrouting#</Term>
+            <Term>americanbankassociationroutingnumber</Term>
+            <Term>bank routing number</Term>
+            <Term>bankrouting#</Term>
+            <Term>bankroutingnumber</Term>
+            <Term>routing transit number</Term>
+            <Term>RTN</Term>
+        </Group>
+    </Keyword>
+
+    <Keyword id="Keyword_alberta_drivers_license_name">
+        <Group matchStyle="word">
+            <Term caseSensitive="true">AB</Term>
+            <Term>Alberta</Term>
+        </Group>
+    </Keyword>
+
+    <Keyword id="Keyword_british_columbia_drivers_license_name">
+        <Group matchStyle="word">
+          <Term caseSensitive="true">BC</Term>
+            <Term>British Columbia</Term>
+        </Group>
+    </Keyword>
+
+    <Keyword id="Keyword_manitoba_drivers_license_name">
+        <Group matchStyle="word">
+            <Term caseSensitive="true">MB</Term>
+            <Term>Manitoba</Term>
+        </Group>
+    </Keyword>
+
+    <Keyword id="Keyword_new_brunswick_drivers_license_name">
+        <Group matchStyle="word">
+            <Term caseSensitive="true">NB</Term>
+            <Term>New Brunswick</Term>
+        </Group>
+    </Keyword>
+
+    <Keyword id="Keyword_newfoundland_labrador_drivers_license_name">
+        <Group matchStyle="word">
+            <Term caseSensitive="true">NL</Term>
+            <Term>Newfoundland</Term>
+            <Term>Labrador</Term>
+        </Group>
+    </Keyword>
+
+    <Keyword id="Keyword_nova_scotia_drivers_license_name">
+        <Group matchStyle="word">
+            <Term caseSensitive="true">NS</Term>
+            <Term>Nova Scotia</Term>
+        </Group>
+    </Keyword>
+
+    <Keyword id="Keyword_ontario_drivers_license_name">
+        <Group matchStyle="word">
+            <Term caseSensitive="true">ON</Term>
+            <Term>Ontario</Term>
+        </Group>
+    </Keyword>
+
+    <Keyword id="Keyword_prince_edward_island_drivers_license_name">
+        <Group matchStyle="word">
+            <Term caseSensitive="true">PE</Term>
+            <Term>Prince Edward Island</Term>
+            <Term>Prince Edward</Term>
+        </Group>
+    </Keyword>
+
+    <Keyword id="Keyword_quebec_drivers_license_name">
+        <Group matchStyle="word">
+            <Term caseSensitive="true">QC</Term>
+            <Term>Quebec</Term>
+        </Group>
+    </Keyword>
+
+    <Keyword id="Keyword_saskatchewan_drivers_license_name">
+        <Group matchStyle="word">
+            <Term caseSensitive="true">SK</Term>
+            <Term>Saskatchewan</Term>
+        </Group>
+    </Keyword>
+
+    <Keyword id="Keyword_alabama_drivers_license_name">
+        <Group matchStyle="word">
+            <Term caseSensitive="true">AL</Term>
+            <Term>Alabama</Term>
+        </Group>
+    </Keyword>
+
+    <Keyword id="Keyword_alaska_drivers_license_name">
+        <Group matchStyle="word">
+            <Term caseSensitive="true">AK</Term>
+            <Term>Alaska</Term>
+        </Group>
+    </Keyword>
+
+    <Keyword id="Keyword_arizona_drivers_license_name">
+        <Group matchStyle="word">
+            <Term caseSensitive="true">AZ</Term>
+            <Term>Arizona</Term>
+        </Group>
+    </Keyword>
+
+    <Keyword id="Keyword_arkansas_drivers_license_name">
+        <Group matchStyle="word">
+            <Term caseSensitive="true">AR</Term>
+            <Term>Arkansas</Term>
+        </Group>
+    </Keyword>
+
+    <Keyword id="Keyword_california_drivers_license_name">
+        <Group matchStyle="word">
+            <Term caseSensitive="true">CA</Term>
+            <Term>California</Term>
+            <Term>Calif</Term>
+        </Group>
+    </Keyword>
+
+    <Keyword id="Keyword_colorado_drivers_license_name">
+        <Group matchStyle="word">
+            <Term caseSensitive="true">CO</Term>
+            <Term>Colorado</Term>
+        </Group>
+    </Keyword>
+
+    <Keyword id="Keyword_connecticut_drivers_license_name">
+        <Group matchStyle="word">
+            <Term caseSensitive="true">CT</Term>
+            <Term>Connecticut</Term>
+        </Group>
+    </Keyword>
+
+    <Keyword id="Keyword_delaware_drivers_license_name">
+        <Group matchStyle="word">
+            <Term caseSensitive="true">DE</Term>
+            <Term>Delaware</Term>
+        </Group>
+    </Keyword>
+
+    <Keyword id="Keyword_district_of_columbia_drivers_license_name">
+        <Group matchStyle="word">
+            <Term caseSensitive="true">DC</Term>
+            <Term>D.C</Term>
+            <Term>DC.</Term>
+            <Term>D.C.</Term>
+            <Term>District of Columbia</Term>
+            <Term>Washington dc</Term>
+            <Term>Washington d.c</Term>
+            <Term>Washington dc.</Term>
+            <Term>Washington d.c.</Term>
+            <Term>washington dc</Term>
+            <Term>washington d.c</Term>
+            <Term>washington dc.</Term>
+            <Term>washington d.c.</Term>
+        </Group>
+    </Keyword>
+
+    <Keyword id="Keyword_florida_drivers_license_name">
+        <Group matchStyle="word">
+            <Term caseSensitive="true">FL</Term>
+            <Term>Florida</Term>
+        </Group>
+    </Keyword>
+
+    <Keyword id="Keyword_georgia_drivers_license_name">
+        <Group matchStyle="word">
+            <Term caseSensitive="true">GA</Term>
+            <Term>Georgia</Term>
+        </Group>
+    </Keyword>
+
+    <Keyword id="Keyword_hawaii_drivers_license_name">
+        <Group matchStyle="word">
+            <Term caseSensitive="true">HI</Term>
+            <Term>Hawaii</Term>
+        </Group>
+    </Keyword>
+
+    <Keyword id="Keyword_illinois_drivers_license_name">
+        <Group matchStyle="word">
+            <Term caseSensitive="true">IL</Term>
+            <Term>Illinois</Term>
+        </Group>
+    </Keyword>
+
+    <Keyword id="Keyword_iowa_drivers_license_name">
+        <Group matchStyle="word">
+            <Term caseSensitive="true">IA</Term>
+            <Term>Iowa</Term>
+        </Group>
+    </Keyword>
+
+    <Keyword id="Keyword_kansas_drivers_license_name">
+        <Group matchStyle="word">
+            <Term caseSensitive="true">KS</Term>
+            <Term>Kansas</Term>
+        </Group>
+    </Keyword>
+
+    <Keyword id="Keyword_kentucky_drivers_license_name">
+        <Group matchStyle="word">
+            <Term caseSensitive="true">KY</Term>
+            <Term>Kentucky</Term>
+        </Group>
+    </Keyword>
+
+    <Keyword id="Keyword_louisiana_drivers_license_name">
+        <Group matchStyle="word">
+            <Term caseSensitive="true">LA</Term>
+            <Term>Louisiana</Term>
+        </Group>
+    </Keyword>
+
+    <Keyword id="Keyword_maine_drivers_license_name">
+        <Group matchStyle="word">
+            <Term caseSensitive="true">ME</Term>
+            <Term>Maine</Term>
+        </Group>
+    </Keyword>
+
+    <Keyword id="Keyword_maryland_drivers_license_name">
+        <Group matchStyle="word">
+            <Term caseSensitive="true">MD</Term>
+            <Term>Maryland</Term>
+        </Group>
+    </Keyword>
+
+    <Keyword id="Keyword_massachusetts_drivers_license_name">
+        <Group matchStyle="word">
+            <Term caseSensitive="true">MA</Term>
+            <Term>Massachusetts</Term>
+        </Group>
+    </Keyword>
+
+    <Keyword id="Keyword_michigan_drivers_license_name">
+        <Group matchStyle="word">
+            <Term caseSensitive="true">MI</Term>
+            <Term>Michigan</Term>
+        </Group>
+    </Keyword>
+
+    <Keyword id="Keyword_minnesota_drivers_license_name">
+        <Group matchStyle="word">
+            <Term caseSensitive="true">MN</Term>
+            <Term>Minnesota</Term>
+        </Group>
+    </Keyword>
+
+    <Keyword id="Keyword_mississippi_drivers_license_name">
+        <Group matchStyle="word">
+            <Term caseSensitive="true">MS</Term>
+            <Term>Mississippi</Term>
+        </Group>
+    </Keyword>
+
+    <Keyword id="Keyword_missouri_drivers_license_name">
+        <Group matchStyle="word">
+            <Term caseSensitive="true">MO</Term>
+            <Term>Missouri</Term>
+        </Group>
+    </Keyword>
+
+    <Keyword id="Keyword_montana_drivers_license_name">
+        <Group matchStyle="word">
+            <Term caseSensitive="true">MT</Term>
+            <Term>Montana</Term>
+        </Group>
+    </Keyword>
+
+    <Keyword id="Keyword_nebraska_drivers_license_name">
+        <Group matchStyle="word">
+            <Term caseSensitive="true">NE</Term>
+            <Term>Nebraska</Term>
+        </Group>
+    </Keyword>
+
+    <Keyword id="Keyword_nevada_drivers_license_name">
+        <Group matchStyle="word">
+            <Term caseSensitive="true">NV</Term>
+            <Term>Nevada</Term>
+        </Group>
+    </Keyword>
+
+    <Keyword id="Keyword_new_hampshire_drivers_license_name">
+        <Group matchStyle="word">
+            <Term caseSensitive="true">NH</Term>
+            <Term>New Hampshire</Term>
+        </Group>
+    </Keyword>
+
+    <Keyword id="Keyword_new_jersey_drivers_license_name">
+        <Group matchStyle="word">
+            <Term caseSensitive="true">NJ</Term>
+            <Term>New Jersey</Term>
+        </Group>
+    </Keyword>
+
+    <Keyword id="Keyword_new_mexico_drivers_license_name">
+        <Group matchStyle="word">
+            <Term caseSensitive="true">NM</Term>
+            <Term>New Mexico</Term>
+        </Group>
+    </Keyword>
+
+    <Keyword id="Keyword_new_york_drivers_license_name">
+        <Group matchStyle="word">
+            <Term caseSensitive="true">NY</Term>
+            <Term>New York</Term>
+        </Group>
+    </Keyword>
+
+    <Keyword id="Keyword_north_carolina_drivers_license_name">
+        <Group matchStyle="word">
+            <Term caseSensitive="true">NC</Term>
+            <Term>North Carolina</Term>
+        </Group>
+    </Keyword>
+
+    <Keyword id="Keyword_north_dakota_drivers_license_name">
+        <Group matchStyle="word">
+            <Term caseSensitive="true">ND</Term>
+            <Term>North Dakota</Term>
+        </Group>
+    </Keyword>
+
+    <Keyword id="Keyword_ohio_drivers_license_name">
+        <Group matchStyle="word">
+            <Term caseSensitive="true">OH</Term>
+            <Term>Ohio</Term>
+        </Group>
+    </Keyword>
+
+    <Keyword id="Keyword_oklahoma_drivers_license_name">
+        <Group matchStyle="word">
+            <Term caseSensitive="true">OK</Term>
+            <Term>Oklahoma</Term>
+        </Group>
+    </Keyword>
+
+    <Keyword id="Keyword_oregon_drivers_license_name">
+        <Group matchStyle="word">
+            <Term caseSensitive="true">OR</Term>
+            <Term>Oregon</Term>
+        </Group>
+    </Keyword>
+
+    <Keyword id="Keyword_pennsylvania_drivers_license_name">
+        <Group matchStyle="word">
+            <Term caseSensitive="true">PA</Term>
+            <Term>Pennsylvania</Term>
+        </Group>
+    </Keyword>
+
+    <Keyword id="Keyword_rhode_island_drivers_license_name">
+        <Group matchStyle="word">
+            <Term caseSensitive="true">RI</Term>
+            <Term>Rhode Island</Term>
+        </Group>
+    </Keyword>
+
+    <Keyword id="Keyword_south_carolina_drivers_license_name">
+        <Group matchStyle="word">
+            <Term caseSensitive="true">SC</Term>
+            <Term>South Carolina</Term>
+        </Group>
+    </Keyword>
+
+    <Keyword id="Keyword_south_dakota_drivers_license_name">
+        <Group matchStyle="word">
+            <Term caseSensitive="true">SD</Term>
+            <Term>South Dakota</Term>
+        </Group>
+    </Keyword>
+
+    <Keyword id="Keyword_tennessee_drivers_license_name">
+        <Group matchStyle="word">
+            <Term caseSensitive="true">TN</Term>
+            <Term>Tennessee</Term>
+        </Group>
+    </Keyword>
+
+    <Keyword id="Keyword_texas_drivers_license_name">
+        <Group matchStyle="word">
+            <Term caseSensitive="true">TX</Term>
+            <Term>Texas</Term>
+        </Group>
+    </Keyword>
+
+    <Keyword id="Keyword_utah_drivers_license_name">
+        <Group matchStyle="word">
+            <Term caseSensitive="true">UT</Term>
+            <Term>Utah</Term>
+        </Group>
+    </Keyword>
+
+    <Keyword id="Keyword_vermont_drivers_license_name">
+        <Group matchStyle="word">
+            <Term caseSensitive="true">VT</Term>
+            <Term>Vermont</Term>
+        </Group>
+    </Keyword>
+
+    <Keyword id="Keyword_virginia_drivers_license_name">
+        <Group matchStyle="word">
+            <Term caseSensitive="true">VA</Term>
+            <Term>Virginia</Term>
+        </Group>
+    </Keyword>
+
+    <Keyword id="Keyword_washington_drivers_license_name">
+        <Group matchStyle="word">
+            <Term caseSensitive="true">WA</Term>
+            <Term>Washington</Term>
+        </Group>
+    </Keyword>
+
+    <Keyword id="Keyword_west_virginia_drivers_license_name">
+        <Group matchStyle="word">
+            <Term caseSensitive="true">WV</Term>
+            <Term>West Virginia</Term>
+        </Group>
+    </Keyword>
+
+    <Keyword id="Keyword_wisconsin_drivers_license_name">
+        <Group matchStyle="word">
+            <Term>WI</Term>
+            <Term>Wisconsin</Term>
+        </Group>
+    </Keyword>
+
+    <Keyword id="Keyword_wyoming_drivers_license_name">
+        <Group matchStyle="word">
+            <Term caseSensitive="true">WY</Term>
+            <Term>Wyoming</Term>
+        </Group>
+    </Keyword>
+
+    <Keyword id="Keyword_canada_drivers_license">
+        <Group matchStyle="word">
+            <Term>DL</Term>
+            <Term>DLS</Term>
+            <Term>CDL</Term>
+            <Term>CDLS</Term>
+            <Term>DriverLic</Term>
+            <Term>DriverLics</Term>
+            <Term>DriverLicense</Term>
+            <Term>DriverLicenses</Term>
+            <Term>DriverLicence</Term>
+            <Term>DriverLicences</Term>
+            <Term>Driver Lic</Term>
+            <Term>Driver Lics</Term>
+            <Term>Driver License</Term>
+            <Term>Driver Licenses</Term>
+            <Term>Driver Licence</Term>
+            <Term>Driver Licences</Term>
+            <Term>DriversLic</Term>
+            <Term>DriversLics</Term>
+            <Term>DriversLicence</Term>
+            <Term>DriversLicences</Term>
+            <Term>DriversLicense</Term>
+            <Term>DriversLicenses</Term>
+            <Term>Drivers Lic</Term>
+            <Term>Drivers Lics</Term>
+            <Term>Drivers License</Term>
+            <Term>Drivers Licenses</Term>
+            <Term>Drivers Licence</Term>
+            <Term>Drivers Licences</Term>
+            <Term>Driver'Lic</Term>
+            <Term>Driver'Lics</Term>
+            <Term>Driver'License</Term>
+            <Term>Driver'Licenses</Term>
+            <Term>Driver'Licence</Term>
+            <Term>Driver'Licences</Term>
+            <Term>Driver' Lic</Term>
+            <Term>Driver' Lics</Term>
+            <Term>Driver' License</Term>
+            <Term>Driver' Licenses</Term>
+            <Term>Driver' Licence</Term>
+            <Term>Driver' Licences</Term>
+            <Term>Driver'sLic</Term>
+            <Term>Driver'sLics</Term>
+            <Term>Driver'sLicense</Term>
+            <Term>Driver'sLicenses</Term>
+            <Term>Driver'sLicence</Term>
+            <Term>Driver'sLicences</Term>
+            <Term>Driver's Lic</Term>
+            <Term>Driver's Lics</Term>
+            <Term>Driver's License</Term>
+            <Term>Driver's Licenses</Term>
+            <Term>Driver's Licence</Term>
+            <Term>Driver's Licences</Term>
+            <Term>Permis de Conduire</Term>
+            <Term>id</Term>
+            <Term>ids</Term>
+            <Term>idcard number</Term>
+            <Term>idcard numbers</Term>
+            <Term>idcard #</Term>
+            <Term>idcard #s</Term>
+            <Term>idcard card</Term>
+            <Term>idcard cards</Term>
+            <Term>idcard</Term>
+            <Term>identification number</Term>
+            <Term>identification numbers</Term>
+            <Term>identification #</Term>
+            <Term>identification #s</Term>
+            <Term>identification card</Term>
+            <Term>identification cards</Term>
+            <Term>identification</Term>
+            <Term>DL#</Term>
+            <Term>DLS#</Term>
+            <Term>CDL#</Term>
+            <Term>CDLS#</Term>
+            <Term>DriverLic#</Term>
+            <Term>DriverLics#</Term>
+            <Term>DriverLicense#</Term>
+            <Term>DriverLicenses#</Term>
+            <Term>DriverLicence#</Term>
+            <Term>DriverLicences#</Term>
+            <Term>Driver Lic#</Term>
+            <Term>Driver Lics#</Term>
+            <Term>Driver License#</Term>
+            <Term>Driver Licenses#</Term>
+            <Term>Driver License#</Term>
+            <Term>Driver Licences#</Term>
+            <Term>DriversLic#</Term>
+            <Term>DriversLics#</Term>
+            <Term>DriversLicense#</Term>
+            <Term>DriversLicenses#</Term>
+            <Term>DriversLicence#</Term>
+            <Term>DriversLicences#</Term>
+            <Term>Drivers Lic#</Term>
+            <Term>Drivers Lics#</Term>
+            <Term>Drivers License#</Term>
+            <Term>Drivers Licenses#</Term>
+            <Term>Drivers Licence#</Term>
+            <Term>Drivers Licences#</Term>
+            <Term>Driver'Lic#</Term>
+            <Term>Driver'Lics#</Term>
+            <Term>Driver'License#</Term>
+            <Term>Driver'Licenses#</Term>
+            <Term>Driver'Licence#</Term>
+            <Term>Driver'Licences#</Term>
+            <Term>Driver' Lic#</Term>
+            <Term>Driver' Lics#</Term>
+            <Term>Driver' License#</Term>
+            <Term>Driver' Licenses#</Term>
+            <Term>Driver' Licence#</Term>
+            <Term>Driver' Licences#</Term>
+            <Term>Driver'sLic#</Term>
+            <Term>Driver'sLics#</Term>
+            <Term>Driver'sLicense#</Term>
+            <Term>Driver'sLicenses#</Term>
+            <Term>Driver'sLicence#</Term>
+            <Term>Driver'sLicences#</Term>
+            <Term>Driver's Lic#</Term>
+            <Term>Driver's Lics#</Term>
+            <Term>Driver's License#</Term>
+            <Term>Driver's Licenses#</Term>
+            <Term>Driver's Licence#</Term>
+            <Term>Driver's Licences#</Term>
+            <Term>Permis de Conduire#</Term>
+            <Term>id#</Term>
+            <Term>ids#</Term>
+            <Term>idcard card#</Term>
+            <Term>idcard cards#</Term>
+            <Term>idcard#</Term>
+            <Term>identification card#</Term>
+            <Term>identification cards#</Term>
+            <Term>identification#</Term>
+        </Group>
+    </Keyword>
+
+    <Keyword id="Keyword_us_drivers_license">
+        <Group matchStyle="word">
+            <Term>DL</Term>
+            <Term>DLS</Term>
+            <Term>CDL</Term>
+            <Term>CDLS</Term>
+            <Term>DriverLic</Term>
+            <Term>DriverLics</Term>
+            <Term>DriverLicense</Term>
+            <Term>DriverLicenses</Term>
+            <Term>Driver Lic</Term>
+            <Term>Driver Lics</Term>
+            <Term>Driver License</Term>
+            <Term>Driver Licenses</Term>
+            <Term>DriversLic</Term>
+            <Term>DriversLics</Term>
+            <Term>DriversLicense</Term>
+            <Term>DriversLicenses</Term>
+            <Term>Drivers Lic</Term>
+            <Term>Drivers Lics</Term>
+            <Term>Drivers License</Term>
+            <Term>Drivers Licenses</Term>
+            <Term>Driver'Lic</Term>
+            <Term>Driver'Lics</Term>
+            <Term>Driver'License</Term>
+            <Term>Driver'Licenses</Term>
+            <Term>Driver' Lic</Term>
+            <Term>Driver' Lics</Term>
+            <Term>Driver' License</Term>
+            <Term>Driver' Licenses</Term>
+            <Term>Driver'sLic</Term>
+            <Term>Driver'sLics</Term>
+            <Term>Driver'sLicense</Term>
+            <Term>Driver'sLicenses</Term>
+            <Term>Driver's Lic</Term>
+            <Term>Driver's Lics</Term>
+            <Term>Driver's License</Term>
+            <Term>Driver's Licenses</Term>
+            <Term>ID number</Term>
+            <Term>ID numbers</Term>
+            <Term>ID</Term>
+            <Term>IDs</Term>
+            <Term>identification number</Term>
+            <Term>identification numbers</Term>
+            <Term>identification #</Term>
+            <Term>id card</Term>
+            <Term>id cards</Term>
+            <Term>identification card</Term>
+            <Term>identification cards</Term>
+            <Term>DL#</Term>
+            <Term>DLS#</Term>
+            <Term>CDL#</Term>
+            <Term>CDLS#</Term>
+            <Term>DriverLic#</Term>
+            <Term>DriverLics#</Term>
+            <Term>DriverLicense#</Term>
+            <Term>DriverLicenses#</Term>
+            <Term>Driver Lic#</Term>
+            <Term>Driver Lics#</Term>
+            <Term>Driver License#</Term>
+            <Term>Driver Licenses#</Term>
+            <Term>DriversLic#</Term>
+            <Term>DriversLics#</Term>
+            <Term>DriversLicense#</Term>
+            <Term>DriversLicenses#</Term>
+            <Term>Drivers Lic#</Term>
+            <Term>Drivers Lics#</Term>
+            <Term>Drivers License#</Term>
+            <Term>Drivers Licenses#</Term>
+            <Term>Driver'Lic#</Term>
+            <Term>Driver'Lics#</Term>
+            <Term>Driver'License#</Term>
+            <Term>Driver'Licenses#</Term>
+            <Term>Driver' Lic#</Term>
+            <Term>Driver' Lics#</Term>
+            <Term>Driver' License#</Term>
+            <Term>Driver' Licenses#</Term>
+            <Term>Driver'sLic#</Term>
+            <Term>Driver'sLics#</Term>
+            <Term>Driver'sLicense#</Term>
+            <Term>Driver'sLicenses#</Term>
+            <Term>Driver's Lic#</Term>
+            <Term>Driver's Lics#</Term>
+            <Term>Driver's License#</Term>
+            <Term>Driver's Licenses#</Term>
+            <Term>ID#</Term>
+            <Term>IDs#</Term>
+            <Term>id card#</Term>
+            <Term>id cards#</Term>
+            <Term>identification card#</Term>
+            <Term>identification cards#</Term>
+        </Group>
+    </Keyword>
+
+    <Keyword id="Keyword_german_passport_number">
+        <Group matchStyle="word">
+            <Term>No-Reisepass</Term>
+            <Term>Nr-Reisepass</Term>
+        </Group>
+    </Keyword>
+
+    <Keyword id="Keyword_german_passport1">
+        <Group matchStyle="word">
+            <Term>Reisepass-Nr</Term>
+        </Group>
+    </Keyword>
+
+    <Keyword id="Keyword_german_passport2">
+        <Group matchStyle="word">
+            <Term caseSensitive="true">bnationalit.t</Term>
+        </Group>
+    </Keyword>
+
+    <Keyword id="Keyword_german_drivers_license_number">
+        <Group matchStyle="word">
+            <Term>Führerschein</Term>
+            <Term>Fuhrerschein</Term>
+            <Term>Fuehrerschein</Term>
+            <Term>Führerscheinnummer</Term>
+            <Term>Fuhrerscheinnummer</Term>
+            <Term>Fuehrerscheinnummer</Term>
+            <Term>Führerschein- </Term>
+            <Term>Fuhrerschein- </Term>
+            <Term>Fuehrerschein- </Term>
+            <Term>FührerscheinnummerNr</Term>
+            <Term>FuhrerscheinnummerNr</Term>
+            <Term>FuehrerscheinnummerNr</Term>
+            <Term>FührerscheinnummerKlasse</Term>
+            <Term>FuhrerscheinnummerKlasse</Term>
+            <Term>FuehrerscheinnummerKlasse</Term>
+            <Term>Führerschein- Nr</Term>
+            <Term>Fuhrerschein- Nr</Term>
+            <Term>Fuehrerschein- Nr</Term>
+            <Term>Führerschein- Klasse</Term>
+            <Term>Fuhrerschein- Klasse</Term>
+            <Term>Fuehrerschein- Klasse</Term>
+            <Term>FührerscheinnummerNr</Term>
+            <Term>FuhrerscheinnummerNr</Term>
+            <Term>FuehrerscheinnummerNr</Term>
+            <Term>FührerscheinnummerKlasse</Term>
+            <Term>FuhrerscheinnummerKlasse</Term>
+            <Term>FuehrerscheinnummerKlasse</Term>
+            <Term>Führerschein- Nr</Term>
+            <Term>Fuhrerschein- Nr</Term>
+            <Term>Fuehrerschein- Nr</Term>
+            <Term>Führerschein- Klasse</Term>
+            <Term>Fuhrerschein- Klasse</Term>
+            <Term>Fuehrerschein- Klasse</Term>
+            <Term>DL</Term>
+            <Term>DLS</Term>
+            <Term>Driv Lic</Term>
+            <Term>Driv Licen</Term>
+            <Term>Driv License</Term>
+            <Term>Driv Licenses</Term>
+            <Term>Driv Licence</Term>
+            <Term>Driv Licences</Term>
+            <Term>Driv Lic</Term>
+            <Term>Driver Licen</Term>
+            <Term>Driver License</Term>
+            <Term>Driver Licenses</Term>
+            <Term>Driver Licence</Term>
+            <Term>Driver Licences</Term>
+            <Term>Drivers Lic</Term>
+            <Term>Drivers Licen</Term>
+            <Term>Drivers License</Term>
+            <Term>Drivers Licenses</Term>
+            <Term>Drivers Licence</Term>
+            <Term>Drivers Licences</Term>
+            <Term>Driver's Lic</Term>
+            <Term>Driver's Licen</Term>
+            <Term>Driver's License</Term>
+            <Term>Driver's Licenses</Term>
+            <Term>Driver's Licence</Term>
+            <Term>Driver's Licences</Term>
+            <Term>Driving Lic</Term>
+            <Term>Driving Licen</Term>
+            <Term>Driving License</Term>
+            <Term>Driving Licenses</Term>
+            <Term>Driving Licence</Term>
+            <Term>Driving Licences</Term>
+        </Group>
+    </Keyword>
+
+    <Keyword id="Keyword_german_drivers_license_collaborative">
+        <Group matchStyle="word">
+            <Term>Nr-Führerschein</Term>
+            <Term>Nr-Fuhrerschein</Term>
+            <Term>Nr-Fuehrerschein</Term>
+            <Term>No-Führerschein</Term>
+            <Term>No-Fuhrerschein</Term>
+            <Term>No-Fuehrerschein</Term>
+            <Term>N-Führerschein</Term>
+            <Term>N-Fuhrerschein</Term>
+            <Term>N-Fuehrerschein</Term>
+            <Term>Nr-Führerschein</Term>
+            <Term>Nr-Fuhrerschein</Term>
+            <Term>Nr-Fuehrerschein</Term>
+            <Term>No-Führerschein</Term>
+            <Term>No-Fuhrerschein</Term>
+            <Term>No-Fuehrerschein</Term>
+            <Term>N-Führerschein</Term>
+            <Term>N-Fuhrerschein</Term>
+            <Term>N-Fuehrerschein</Term>
+        </Group>
+    </Keyword>
+
+    <Keyword id="Keyword_uk_nhs_number1">
+        <Group matchStyle="word">
+            <Term>patient id</Term>
+            <Term>patient identification</Term>
+            <Term>patient no</Term>
+            <Term>patient number</Term>
+        </Group>
+    </Keyword>
+
+    <LocalizedStrings />
+
+</Rules>

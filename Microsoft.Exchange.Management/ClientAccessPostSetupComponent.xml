@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo Name="Client Access PostSetup" DescriptionId="SetupComponentPostSetupClientAccess">
+
+  <ServerTasks>
+
+    <!-- Generates a common include file for web.config files to reference. -->
+    <ServerTaskInfo Id="_GenerateDependentAssemblies" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          $dependentAssemblyGeneratorExePath = [System.IO.Path]::Combine($RoleInstallPath, "bin", "DependentAssemblyGenerator.exe");
+          $exchangeBinPath  = [System.IO.Path]::Combine($RoleInstallPath, "bin");
+          $clientAccessPath = [System.IO.Path]::Combine($RoleInstallPath, "ClientAccess");
+          $sharedWebConfig  = [System.IO.Path]::Combine($RoleInstallPath, "ClientAccess", "SharedWebConfig.config");
+
+          $a = &amp;"$dependentAssemblyGeneratorExePath" -exchangePath "$exchangeBinPath" -exchangePath "$clientAccessPath" -configFile "$sharedWebConfig";
+          $a | % { if ($_.Length > 0) { Write-ExchangeSetupLog -Info "$_.ToString()" } }
+          Start-SetupProcess -Name "iisreset" -Args "/timeout:120"
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Change a list of application pools from the default GC to run as clientGC, aka gcServer=false-->
+    <ServerTaskInfo Id="_SelectedAppPoolsToGCServerFalse" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          $configFilePath = [System.IO.Path]::Combine($RoleInstallPath, "bin", "GenericAppPoolConfigWithGCServerEnabledFalse.config");
+          $appCmd = [System.IO.Path]::Combine("$env:windir", "system32\inetsrv\appcmd.exe");
+
+          # List of app pools excluded from this processing - some app pools already have a config file or they should remain as server gc
+          [string[]] $excluded = @("msexchangerpcproxyapppool", "msexchangemapifrontendapppool", "msexchangemapimailboxapppool", "msexchangemapiaddressbookapppool")
+
+          # OM:2309569Set OWA/ECP apppools periodic recycle to prevent "Something went wrong" error in Outlook Web App and ECP in Exchange Server 2013" error[CU10]
+          # Recycling keeps memory copies of AD keys in sync on all machines, preventing them from possible corruption by long standing non-active machines.
+          [string[]] $periodicRestart = @("msexchangeowaapppool", "msexchangeecpapppool")
+
+          $appPools = &amp;"$appCmd" "list" "apppool";
+          foreach($appPool in $appPools)
+          {
+              $startIndex = $appPool.IndexOf('"') + 1;
+              $endIndex = $appPool.SubString($startIndex).IndexOf('"');
+              $appPoolName = $appPool.SubString($startIndex, $endIndex);
+
+              if ($appPoolName.ToLower() -notIn $excluded)
+              {
+                  # We'll set this whether or not the app pool exists.  Failures are ignored.
+                  $a= &amp;"$appCmd" "set" "apppool" "$appPoolName" /managedRuntimeLoader:"";
+                  $b= &amp;"$appCmd" "set" "apppool" "$appPoolName" /CLRConfigFile:"$configFilePath";
+                  Write-ExchangeSetupLog -Info ($a + " " + $b)
+
+                  # Setting periodic recycle to 14 days, half of 28 days canary key use period.
+                  if ($appPoolName.ToLower() -in $periodicRestart) 
+                  {
+                      $c= &amp;"$appCmd" "set" "apppool" "$appPoolName" /recycling.periodicRestart.time:14.00:00:00:00;
+                      Write-ExchangeSetupLog -Info ($c + ": Setting periodic restart")
+                  }
+              }
+              else
+              {
+                  Write-ExchangeSetupLog -Info "Skipping $appPoolName since it is in the exclusion list"
+              }
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- W3SVC service control-->
+    <ServerTaskInfo Id="_a78b2a2c7e2f48e8939f5df69db7e591" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="StartingW3SVC" IsFatal="false">
+        <Standalone>start-SetupService -ServiceName W3SVC</Standalone>
+      </Install>
+      <BuildToBuildUpgrade />
+      <DisasterRecovery  UseInstallTasks="true"/>
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Start MSExchangeRPC service -->
+    <ServerTaskInfo Id="_41fd8f2f38474c62aaee2657642727e8" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install Weight="4" DescriptionId="SetupProgressStartingRpcClientAccessService" IsFatal="false">
+        <Standalone>start-SetupService -ServiceName MSExchangeRPC</Standalone>
+      </Install>
+      <BuildToBuildUpgrade />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall/>
+    </ServerTaskInfo>
+
+    <!-- Start/stop Mailbox Replication service -->
+    <ServerTaskInfo Id="_51df5fd6cd404ff3a06a6bfdbd0689c0" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressStartingMailboxReplicationService" IsFatal="false">
+        <Standalone>start-SetupService -ServiceName MSExchangeMailboxReplication</Standalone>
+      </Install>
+      <BuildToBuildUpgrade />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall/>
+    </ServerTaskInfo>
+
+	<!-- Start/stop Migration Workflow service -->
+    <ServerTaskInfo Id="_a7f60d897304427281011b3b9a3472b8" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressStartingMailboxReplicationService" IsFatal="false">
+        <Standalone>start-SetupService -ServiceName MSExchangeMigrationWorkflow</Standalone>
+      </Install>
+      <BuildToBuildUpgrade />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall/>
+    </ServerTaskInfo>
+
+    <!-- 
+      Disable shutting down of ALL application pools when the process crashes(Maximum Failures)
+      within a specified time period (Failure Interval).
+      Refer BUG:257747, Release:E14, Milestone:R5
+    -->
+    <ServerTaskInfo Id="_af4b4bef642a4ec388921cf2fdcead07" Component="EXCHANGE14:\Current\Release\PIM Storage\RPC Client Access">
+      <Install IsFatal="false">
+        <Standalone>
+          . "$RoleInstallPath\Scripts\ConfigureNetworkProtocolParameters.ps1";
+          Set-RapidFailProtection $false
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall />
+    </ServerTaskInfo>
+
+  </ServerTasks>
+</SetupComponentInfo>

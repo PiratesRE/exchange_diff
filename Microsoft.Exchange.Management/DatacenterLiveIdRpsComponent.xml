@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo IsDatacenterOnly="true" Name="Datacenter All Roles LiveID RPS Configuration">
+
+  <ServerTasks>
+
+    <ServerTaskInfo Id="_8f2c7a5b88e14cfe8abbd0dc99528bda" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <!-- Ensure that the Passport Relying Party Service is started before enabling liveID -->
+        <Standalone>
+          Start-SetupService -ServiceName RPSSVC
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade />
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <ServerTaskInfo Id="_d9e87e5a250242699d1bbe703fa75741" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          if ($RoleDatacenterWindowsLiveIdInstance -ine 'Gallatin')
+          {
+              Enable-liveid `
+              -TargetInstance $RoleDatacenterWindowsLiveIdInstance `
+              -TargetEnvironment $RoleDatacenterWindowsLiveIdEnvironment `
+              -SiteId $RoleDatacenterSiteId `
+              -Sitename $RoleDatacenterSiteName `
+              -AccrualSiteId $RoleDatacenterAccrualSiteId `
+              -AccrualSiteName $RoleDatacenterAccrualSiteName `
+              -InternalSiteName $RoleDatacenterLegacySiteName `
+              -O365SiteName $RoleDatacenterO365SiteName `
+              -SHA1Thumbprint $RoleDatacenterSHA1Thumbprint `
+              -MsoSiteId $RoleDatacenterSiteIdBusiness `
+              -MsoSitename $RoleDatacenterSiteName `
+              -MsoSHA1Thumbprint $RoleDatacenterSHA1ThumbprintBusiness `
+              -MsoRpsNetworkProd $RoleDatacenterMsoRpsNetworkProd `
+              -MsoRpsNetworkInt $RoleDatacenterMsoRpsNetworkInt `
+              -Proxy $RoleDatacenterProxy
+          }
+          else
+          {
+              Enable-liveid `
+              -TargetInstance Business `
+              -TargetEnvironment $RoleDatacenterWindowsLiveIdEnvironment `
+              -MsoSiteId $RoleDatacenterSiteIdBusiness `
+              -MsoSitename $RoleDatacenterSiteName `
+              -MsoSHA1Thumbprint $RoleDatacenterSHA1ThumbprintBusiness `
+              -MsoRpsNetworkProd $RoleDatacenterMsoRpsNetworkProd `
+              -MsoRpsNetworkInt $RoleDatacenterMsoRpsNetworkInt `
+              -InternalSiteName $RoleDatacenterLegacySiteName `
+              -O365SiteName $RoleDatacenterO365SiteName `
+              -Proxy $RoleDatacenterProxy
+          }
+          
+          if (!([String]::IsNullOrEmpty($RoleDatacenterPremiumVanityDomainSiteName)) -and !([String]::IsNullOrEmpty($RoleDatacenterPremiumVanityDomainSiteId)))
+          {
+              $returnURL = "https://" + $RoleDatacenterE15FlatNamespace + "/owa";
+              $addSiteToRpsPath = ([System.IO.Path]::Combine($RoleInstallPath, 'Scripts', 'Add-SiteToRps.ps1'));
+              . $addSiteToRpsPath;
+
+              Add-SiteToRps `
+                -MsoSiteName $RoleDatacenterPremiumVanityDomainSiteName `
+                -MsoSiteId $RoleDatacenterPremiumVanityDomainSiteId `
+                -ReturnURL $returnURL;
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade />
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <ServerTaskInfo Id="_23EEAC62874B4f24B2392D67589513DA" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <!-- setup MSOIDCRL to use INT environment if required -->
+        <Standalone>
+          if ($RoleDatacenterWindowsLiveIdEnvironment -ieq 'Integration')
+          {
+              $regkeyIDCRL = "HKLM:\SOFTWARE\Microsoft\MSOIdentityCRL";
+              if (!(Get-Item $regkeyIDCRL -ErrorAction SilentlyContinue)) { New-Item -path $regkeyIDCRL -Force } 
+
+              Set-ItemProperty -Path $regkeyIDCRL -Name "ServiceEnvironment" -Value "INT-MSO" -Force ;
+
+              $regkeyIDCRL = "HKLM:\SOFTWARE\Microsoft\MSOIdentityCRL\Environment";
+              if (!(Get-Item $regkeyIDCRL -ErrorAction SilentlyContinue)) { New-Item -path $regkeyIDCRL -Force } 
+
+              $regkeyIDCRL = "HKLM:\SOFTWARE\Microsoft\MSOIdentityCRL\Environment\INT-MSO";
+              if (!(Get-Item $regkeyIDCRL -ErrorAction SilentlyContinue)) { New-Item -path $regkeyIDCRL -Force } 
+
+              Set-ItemProperty -Path $regkeyIDCRL -Name "RemoteFile" -Value $RoleDatacenterMSOIDCRLClientConfig -Force;
+
+              stop-setupservice -ServiceName msoidsvc;
+              start-setupservice -ServiceName msoidsvc
+           }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <ServerTaskInfo Id="_2DD00C1CEF8A48678C5F4B9AB2F66269" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <!-- setup IIS AuthModuleFilter to filter the correct NegoEX SSP -->
+        <Standalone>
+          $keyPath = "HKLM:\SOFTWARE\Microsoft\ExchangeServer\V15\ExchangeLiveServices";
+          if (!(Get-Item $keyPath -ErrorAction SilentlyContinue)) { New-Item -path $keyPath -Force } 
+          # use .Split to force the value to be a REG_MULTI_SZ value
+          if ($RoleDatacenterWindowsLiveIdInstance -ieq 'Consumer')
+          {
+              new-itemproperty -path $keyPath -name "NegoExSSPNames" -value ("LiveSSP").Split(',') -force;
+          }
+          else
+          {
+              new-itemproperty -path $keyPath -name "NegoExSSPNames" -value ("MsoIdSSP").Split(',') -force;
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall />
+    </ServerTaskInfo>
+  </ServerTasks>
+</SetupComponentInfo>

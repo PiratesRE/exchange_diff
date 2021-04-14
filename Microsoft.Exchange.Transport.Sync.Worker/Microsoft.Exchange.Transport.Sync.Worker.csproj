@@ -1,0 +1,685 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{09CD9476-CD82-489E-B9E2-84B47CA141D8}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Microsoft.Exchange</RootNamespace>
+    <AssemblyName>Microsoft.Exchange.Transport.Sync.Worker</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Exchange.Common.IL" />
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="MailboxTransport\ContentAggregation\AggregationComponent.cs" />
+    <Compile Include="MailboxTransport\ContentAggregation\AggregationConfiguration.cs" />
+    <Compile Include="MailboxTransport\ContentAggregation\AggregationScheduler.cs" />
+    <Compile Include="MailboxTransport\ContentAggregation\AggregationWorkItem.cs" />
+    <Compile Include="MailboxTransport\ContentAggregation\AsyncOperationResult.cs" />
+    <Compile Include="MailboxTransport\ContentAggregation\AsyncResult.cs" />
+    <Compile Include="MailboxTransport\ContentAggregation\AutoProvisionOverride.cs" />
+    <Compile Include="MailboxTransport\ContentAggregation\AutoProvisionOverrideProvider.cs" />
+    <Compile Include="MailboxTransport\ContentAggregation\AutoProvisionProgress.cs" />
+    <Compile Include="MailboxTransport\ContentAggregation\BaseWatermark.cs" />
+    <Compile Include="MailboxTransport\ContentAggregation\ChangeListSorter.cs" />
+    <Compile Include="MailboxTransport\ContentAggregation\CloudStatistics.cs" />
+    <Compile Include="MailboxTransport\ContentAggregation\DeleteEngine.cs" />
+    <Compile Include="MailboxTransport\ContentAggregation\DeltaSyncAutoProvision.cs" />
+    <Compile Include="MailboxTransport\ContentAggregation\DeltaSyncDataConversions.cs" />
+    <Compile Include="MailboxTransport\ContentAggregation\DeltaSyncStorageProvider.cs" />
+    <Compile Include="MailboxTransport\ContentAggregation\DeltaSyncStorageProviderState.cs" />
+    <Compile Include="MailboxTransport\ContentAggregation\DeltaSyncSyncWatermarkEncoder.cs" />
+    <Compile Include="MailboxTransport\ContentAggregation\DeltaSyncWatermark.cs" />
+    <Compile Include="MailboxTransport\ContentAggregation\DiagnosticBuilder.cs" />
+    <Compile Include="MailboxTransport\ContentAggregation\DisconnectReason.cs" />
+    <Compile Include="MailboxTransport\ContentAggregation\DiscoverSettingsResult.cs" />
+    <Compile Include="MailboxTransport\ContentAggregation\EnumeratorInCloudFolder.cs" />
+    <Compile Include="MailboxTransport\ContentAggregation\EnumeratorInFolder.cs" />
+    <Compile Include="MailboxTransport\ContentAggregation\EnumeratorInNativeFolder.cs" />
+    <Compile Include="MailboxTransport\ContentAggregation\ExecutionEngine.cs" />
+    <Compile Include="MailboxTransport\ContentAggregation\FailedItemEnumeratorInCloudFolder.cs" />
+    <Compile Include="MailboxTransport\ContentAggregation\FrameworkAggregationConfiguration.cs" />
+    <Compile Include="MailboxTransport\ContentAggregation\FrameworkPerfCounterHandler.cs" />
+    <Compile Include="MailboxTransport\ContentAggregation\IAutoProvision.cs" />
+    <Compile Include="MailboxTransport\ContentAggregation\IAutoProvisionOverrideProvider.cs" />
+    <Compile Include="MailboxTransport\ContentAggregation\ICloudStatisticsProvider.cs" />
+    <Compile Include="MailboxTransport\ContentAggregation\IExecutionEngine.cs" />
+    <Compile Include="MailboxTransport\ContentAggregation\IMAPAutoProvision.cs" />
+    <Compile Include="MailboxTransport\ContentAggregation\INativeStateStorage.cs" />
+    <Compile Include="MailboxTransport\ContentAggregation\IRemoteServerHealthChecker.cs" />
+    <Compile Include="MailboxTransport\ContentAggregation\ISimpleStateStorage.cs" />
+    <Compile Include="MailboxTransport\ContentAggregation\IStateStorage.cs" />
+    <Compile Include="MailboxTransport\ContentAggregation\ISubscriptionInformationLoader.cs" />
+    <Compile Include="MailboxTransport\ContentAggregation\ISyncStorageProvider.cs" />
+    <Compile Include="MailboxTransport\ContentAggregation\ISyncStorageProviderItemRetriever.cs" />
+    <Compile Include="MailboxTransport\ContentAggregation\MailSubmitter.cs" />
+    <Compile Include="MailboxTransport\ContentAggregation\MessageIdTracker.cs" />
+    <Compile Include="MailboxTransport\ContentAggregation\MSExchangeDeltaSyncAggregation.cs" />
+    <Compile Include="MailboxTransport\ContentAggregation\MSExchangeImapAggregation.cs" />
+    <Compile Include="MailboxTransport\ContentAggregation\MSExchangePeopleConnection.cs" />
+    <Compile Include="MailboxTransport\ContentAggregation\MSExchangePeopleConnectionInstance.cs" />
+    <Compile Include="MailboxTransport\ContentAggregation\MSExchangePop3Aggregation.cs" />
+    <Compile Include="MailboxTransport\ContentAggregation\NativeSyncStorageProvider.cs" />
+    <Compile Include="MailboxTransport\ContentAggregation\NativeSyncStorageProviderState.cs" />
+    <Compile Include="MailboxTransport\ContentAggregation\OutageAdjuster.cs" />
+    <Compile Include="MailboxTransport\ContentAggregation\PerfCounterHandler.cs" />
+    <Compile Include="MailboxTransport\ContentAggregation\Pop3AuthType.cs" />
+    <Compile Include="MailboxTransport\ContentAggregation\Pop3AutoProvision.cs" />
+    <Compile Include="MailboxTransport\ContentAggregation\Pop3Client.cs" />
+    <Compile Include="MailboxTransport\ContentAggregation\Pop3ClientState.cs" />
+    <Compile Include="MailboxTransport\ContentAggregation\Pop3Command.cs" />
+    <Compile Include="MailboxTransport\ContentAggregation\Pop3CommandType.cs" />
+    <Compile Include="MailboxTransport\ContentAggregation\Pop3Response.cs" />
+    <Compile Include="MailboxTransport\ContentAggregation\Pop3ResponseType.cs" />
+    <Compile Include="MailboxTransport\ContentAggregation\Pop3ResultData.cs" />
+    <Compile Include="MailboxTransport\ContentAggregation\Pop3StorageProvider.cs" />
+    <Compile Include="MailboxTransport\ContentAggregation\Pop3SyncStorageProviderState.cs" />
+    <Compile Include="MailboxTransport\ContentAggregation\PreferredCultureLocalizer.cs" />
+    <Compile Include="MailboxTransport\ContentAggregation\RemoteServerHealthChecker.cs" />
+    <Compile Include="MailboxTransport\ContentAggregation\RemoteServerRoundtripCompleteEventArgs.cs" />
+    <Compile Include="MailboxTransport\ContentAggregation\RetryableWorkItem.cs" />
+    <Compile Include="MailboxTransport\ContentAggregation\RetryableWorkQueueEventArgs.cs" />
+    <Compile Include="MailboxTransport\ContentAggregation\RoundtripCompleteEventArgs.cs" />
+    <Compile Include="MailboxTransport\ContentAggregation\Schema\ContactProperty.cs" />
+    <Compile Include="MailboxTransport\ContentAggregation\Schema\ContactPropertyManager.cs" />
+    <Compile Include="MailboxTransport\ContentAggregation\Schema\DeltaSyncEmail.cs" />
+    <Compile Include="MailboxTransport\ContentAggregation\Schema\DeltaSyncReportObject.cs" />
+    <Compile Include="MailboxTransport\ContentAggregation\Schema\EmailProperty.cs" />
+    <Compile Include="MailboxTransport\ContentAggregation\Schema\FileAsProperty.cs" />
+    <Compile Include="MailboxTransport\ContentAggregation\Schema\ISyncContact.cs" />
+    <Compile Include="MailboxTransport\ContentAggregation\Schema\ISyncEmail.cs" />
+    <Compile Include="MailboxTransport\ContentAggregation\Schema\ISyncObject.cs" />
+    <Compile Include="MailboxTransport\ContentAggregation\Schema\ISyncReportObject.cs" />
+    <Compile Include="MailboxTransport\ContentAggregation\Schema\ISyncSourceSession.cs" />
+    <Compile Include="MailboxTransport\ContentAggregation\Schema\Pop3Email.cs" />
+    <Compile Include="MailboxTransport\ContentAggregation\Schema\SchemaType.cs" />
+    <Compile Include="MailboxTransport\ContentAggregation\Schema\SyncErrorNotificationEmail.cs" />
+    <Compile Include="MailboxTransport\ContentAggregation\Schema\SyncFolder.cs" />
+    <Compile Include="MailboxTransport\ContentAggregation\Schema\SyncMessageResponseType.cs" />
+    <Compile Include="MailboxTransport\ContentAggregation\Schema\SyncReportObject.cs" />
+    <Compile Include="MailboxTransport\ContentAggregation\Schema\XSOSyncContact.cs" />
+    <Compile Include="MailboxTransport\ContentAggregation\Schema\XSOSyncEmail.cs" />
+    <Compile Include="MailboxTransport\ContentAggregation\StateStorage.cs" />
+    <Compile Include="MailboxTransport\ContentAggregation\StringWatermark.cs" />
+    <Compile Include="MailboxTransport\ContentAggregation\SubscriptionCompletionClient.cs" />
+    <Compile Include="MailboxTransport\ContentAggregation\SubscriptionInformationLoader.cs" />
+    <Compile Include="MailboxTransport\ContentAggregation\SubscriptionNotificationHelper.cs" />
+    <Compile Include="MailboxTransport\ContentAggregation\SubscriptionSubmissionServer.cs" />
+    <Compile Include="MailboxTransport\ContentAggregation\SyncChangeEntry.cs" />
+    <Compile Include="MailboxTransport\ContentAggregation\SyncDiagnostics.cs" />
+    <Compile Include="MailboxTransport\ContentAggregation\SyncEngine.cs" />
+    <Compile Include="MailboxTransport\ContentAggregation\SyncEngineResultData.cs" />
+    <Compile Include="MailboxTransport\ContentAggregation\SyncEngineState.cs" />
+    <Compile Include="MailboxTransport\ContentAggregation\SyncEngineStep.cs" />
+    <Compile Include="MailboxTransport\ContentAggregation\SyncFailedDependencyException.cs" />
+    <Compile Include="MailboxTransport\ContentAggregation\SyncHealthData.cs" />
+    <Compile Include="MailboxTransport\ContentAggregation\SyncMailboxSession.cs" />
+    <Compile Include="MailboxTransport\ContentAggregation\SyncMode.cs" />
+    <Compile Include="MailboxTransport\ContentAggregation\SyncPoisonContext.cs" />
+    <Compile Include="MailboxTransport\ContentAggregation\SyncPoisonEntitySource.cs" />
+    <Compile Include="MailboxTransport\ContentAggregation\SyncPoisonEntityType.cs" />
+    <Compile Include="MailboxTransport\ContentAggregation\SyncPoisonHandler.cs" />
+    <Compile Include="MailboxTransport\ContentAggregation\SyncPoisonItem.cs" />
+    <Compile Include="MailboxTransport\ContentAggregation\SyncPoisonStatus.cs" />
+    <Compile Include="MailboxTransport\ContentAggregation\SyncProgress.cs" />
+    <Compile Include="MailboxTransport\ContentAggregation\SyncProviderResultData.cs" />
+    <Compile Include="MailboxTransport\ContentAggregation\SyncStateSizeLimitChecker.cs" />
+    <Compile Include="MailboxTransport\ContentAggregation\SyncStorageProviderConnectionStatistics.cs" />
+    <Compile Include="MailboxTransport\ContentAggregation\SyncStorageProviderFactory.cs" />
+    <Compile Include="MailboxTransport\ContentAggregation\SyncStorageProviderState.cs" />
+    <Compile Include="MailboxTransport\ContentAggregation\SyncStorageProviderStateBase.cs" />
+    <Compile Include="MailboxTransport\ContentAggregation\SyncStoreUnhealthyException.cs" />
+    <Compile Include="MailboxTransport\ContentAggregation\SyncWatermarkElementEncoder.cs" />
+    <Compile Include="MailboxTransport\ContentAggregation\TransportMailSubmitter.cs" />
+    <Compile Include="MailboxTransport\ContentAggregation\TransportSyncStorageProvider.cs" />
+    <Compile Include="MailboxTransport\ContentAggregation\TransportSyncStorageProviderState.cs" />
+    <Compile Include="MailboxTransport\ContentAggregation\UnifiedCustomSyncState.cs" />
+    <Compile Include="MailboxTransport\ContentAggregation\UnifiedCustomSyncStateInfo.cs" />
+    <Compile Include="MailboxTransport\ContentAggregation\UnifiedCustomSyncStateItem.cs" />
+    <Compile Include="MailboxTransport\ContentAggregation\XSOSyncContentConversion.cs" />
+    <Compile Include="MailboxTransport\ContentAggregation\XSOSyncStorageProvider.cs" />
+    <Compile Include="MailboxTransport\ContentAggregation\XSOSyncStorageProviderState.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\CommonTypes\ApplicationDataTypeRequest.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\CommonTypes\ApplicationDataTypeRequestFlag.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\CommonTypes\ApplicationDataTypeResponse.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\CommonTypes\ApplicationDataTypeResponseFlag.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\CommonTypes\DisplayName.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\CommonTypes\FolderId.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\CommonTypes\Include.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\CommonTypes\ItemsChoiceType.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\CommonTypes\ItemsChoiceType1.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\CommonTypes\ItemsChoiceType2.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\CommonTypes\ItemsChoiceType3.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\CommonTypes\Message.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\CommonTypes\ParentId.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\CommonTypes\stringWithCharSetType.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\CommonTypes\stringWithEncodingType.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\CommonTypes\stringWithEncodingType1.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\ConflictResolution.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\DeltaSyncClient.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\DeltaSyncClientFactory.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\DeltaSyncCommandType.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\DeltaSyncCommon.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\DeltaSyncDecompressor.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\DeltaSyncFolder.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\DeltaSyncMail.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\DeltaSyncObject.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\DeltaSyncOperation.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\DeltaSyncRecipients.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\DeltaSyncRequestGenerator.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\DeltaSyncResponseHandler.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\DeltaSyncResultData.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\DeltaSyncSettings.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\DeltaSyncStatusCode.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\DeltaSyncUserAccount.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\Email\Declarations.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\Email\From.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\Email\stringWithEncodingType2.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\Email\Subject.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\HMFolder\bitType.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\HMFolder\Declarations.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\HMFolder\DisplayName.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\HMFolder\ParentId.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\HMMail\bitType.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\HMMail\Categories.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\HMMail\CompletedCollection.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\HMMail\ConversationIndex.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\HMMail\ConversationTopic.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\HMMail\Declarations.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\HMMail\Flag.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\HMMail\FolderId.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\HMMail\Message.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\HMMail\ReminderDateCollection.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\HMMail\ResponseContentTypeType.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\HMMail\StateCollection.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\HMMail\stringWithCharSetType.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\HMMail\stringWithCharSetTypeCollection.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\HMMail\stringWithEncodingType.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\HMSync\Attachment.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\HMSync\AttachmentCollection.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\HMSync\AttachmentVirusInfoType.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\HMSync\AttachmentVirusInfoTypeCollection.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\HMSync\AuthPolicy.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\HMSync\CleanedAttachments.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\HMSync\Contents.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\HMSync\Declarations.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\HMSync\DeletesAsMoves.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\HMSync\Fault.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\HMSync\InfectedAttachments.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\HMSync\NameCollection.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\HMSync\Options.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\HMSync\ScanInfoType.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\HMSync\SuspiciousAttachments.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\HMSync\VirusesFound.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\HMTypes\BitType.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\HMTypes\Declarations.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\HMTypes\StringWithCharSetType.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\HMTypes\StringWithVersionType.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\IDeltaSyncClient.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\ItemOperationsRequest\BounceMessage.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\ItemOperationsRequest\Declarations.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\ItemOperationsRequest\FetchType.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\ItemOperationsRequest\ItemOperations.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\ItemOperationsRequest\ItemOpsBaseType.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\ItemOperationsRequest\Junk.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\ItemOperationsRequest\MessageType.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\ItemOperationsRequest\Options.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\ItemOperationsRequest\Phishing.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\ItemOperationsRequest\Report.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\ItemOperationsRequest\ReportAsNotSpamType.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\ItemOperationsRequest\ReportAsNotSpamTypeCollection.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\ItemOperationsRequest\ReportAsSpamType.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\ItemOperationsRequest\ReportAsSpamTypeCollection.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\ItemOperationsRequest\ReportAsSpamTypeOptions.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\ItemOperationsRequest\ReportAsSpamTypeOptionsReport.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\ItemOperationsRequest\ScanType.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\ItemOperationsRequest\UnsubscribeFromMailingList.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\ItemOperationsResponse\Declarations.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\ItemOperationsResponse\Fetch.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\ItemOperationsResponse\ItemOperations.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\ItemOperationsResponse\ItemOperationsAuthPolicy.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\ItemOperationsResponse\ItemOperationsFault.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\ItemOperationsResponse\Message.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\ItemOperationsResponse\ReportAsNotSpam.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\ItemOperationsResponse\ReportAsNotSpamCollection.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\ItemOperationsResponse\ReportAsSpam.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\ItemOperationsResponse\ReportAsSpamCollection.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\ItemOperationsResponse\Responses.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\ItemOperationsResponse\Scan.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\ItemOperationsResponse\SubResultType.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SendRequest\Declarations.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SendRequest\Item.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SendRequest\RecipientCollection.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SendRequest\Recipients.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SendRequest\RecipientsType.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SendRequest\SaveItem.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SendRequest\Send.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SendRequest\SendItem.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SendResponse\Declarations.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SendResponse\Responses.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SendResponse\SaveItem.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SendResponse\Send.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SendResponse\SendItem.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsRequest\AccountSettingsType.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsRequest\AccountSettingsTypeGet.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsRequest\AccountSettingsTypeGetLists.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsRequest\AccountSettingsTypeGetOptions.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsRequest\AccountSettingsTypeGetProperties.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsRequest\AccountStatusType.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsRequest\Actions.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsRequest\AddressCollection.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsRequest\Addresses.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsRequest\AddressesAndDomainsType.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsRequest\AddressesType.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsRequest\AlertStateType.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsRequest\Clause.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsRequest\Condition.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsRequest\Declarations.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsRequest\DomainCollection.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsRequest\DomainsType.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsRequest\Filter.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsRequest\FilterCollection.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsRequest\FilterKeyType.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsRequest\FilterOperatorType.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsRequest\Filters.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsRequest\FiltersRequestType.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsRequest\FiltersRequestTypeFilter.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsRequest\FiltersRequestTypeFilterActions.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsRequest\FiltersRequestTypeFilterActionsMoveToFolder.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsRequest\FiltersRequestTypeFilterCollection.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsRequest\FiltersRequestTypeFilterCondition.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsRequest\FiltersRequestTypeFilterConditionClause.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsRequest\FiltersResponseType.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsRequest\ForwardingMode.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsRequest\Get.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsRequest\GetVersion.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsRequest\HeaderDisplayType.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsRequest\IncludeOriginalInReplyType.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsRequest\JunkLevelType.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsRequest\JunkMailDestinationType.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsRequest\List.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsRequest\ListCollection.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsRequest\Lists.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsRequest\ListsGet.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsRequest\ListsGetResponseType.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsRequest\ListsGetResponseTypeList.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsRequest\ListsGetResponseTypeListCollection.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsRequest\ListsRequestType.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsRequest\ListsRequestTypeList.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsRequest\ListsRequestTypeListCollection.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsRequest\ListsSetResponseType.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsRequest\LocalPartCollection.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsRequest\LocalPartsType.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsRequest\MailForwarding.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsRequest\MoveToFolder.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsRequest\OptionsType.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsRequest\ParentalControlStatusType.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsRequest\Properties.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsRequest\PropertiesGet.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsRequest\PropertiesType.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsRequest\ReplyIndicatorType.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsRequest\RunWhenType.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsRequest\SafetyActions.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsRequest\SafetyActionsGet.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsRequest\SafetyActionsGetVersion.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsRequest\SafetyLevelRules.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsRequest\ServiceSettingsPropertiesType.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsRequest\ServiceSettingsType.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsRequest\Set.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsRequest\Settings.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsRequest\StatusType.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsRequest\UserSignature.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsRequest\VacationResponse.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsRequest\VacationResponseMode.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsResponse\AccountSettings.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsResponse\AccountSettingsGet.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsResponse\AccountStatusType.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsResponse\Actions.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsResponse\AddressCollection.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsResponse\Addresses.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsResponse\AddressesAndDomainsType.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsResponse\AddressesType.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsResponse\AlertStateType.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsResponse\Clause.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsResponse\Condition.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsResponse\Declarations.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsResponse\DomainCollection.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsResponse\DomainsType.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsResponse\Filter.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsResponse\FilterCollection.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsResponse\FilterKeyType.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsResponse\FilterOperatorType.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsResponse\FiltersRequestType.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsResponse\FiltersRequestTypeFilter.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsResponse\FiltersRequestTypeFilterActions.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsResponse\FiltersRequestTypeFilterActionsMoveToFolder.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsResponse\FiltersRequestTypeFilterCollection.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsResponse\FiltersRequestTypeFilterCondition.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsResponse\FiltersRequestTypeFilterConditionClause.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsResponse\FiltersResponseType.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsResponse\ForwardingMode.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsResponse\Get.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsResponse\HeaderDisplayType.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsResponse\IncludeOriginalInReplyType.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsResponse\JunkLevelType.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsResponse\JunkMailDestinationType.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsResponse\List.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsResponse\ListCollection.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsResponse\Lists.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsResponse\ListsGet.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsResponse\ListsGetResponseType.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsResponse\ListsGetResponseTypeList.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsResponse\ListsGetResponseTypeListCollection.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsResponse\ListsRequestType.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsResponse\ListsRequestTypeList.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsResponse\ListsRequestTypeListCollection.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsResponse\ListsSetResponseType.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsResponse\LocalPartCollection.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsResponse\LocalPartsType.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsResponse\MailForwarding.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsResponse\MoveToFolder.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsResponse\OptionsType.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsResponse\ParentalControlStatusType.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsResponse\Properties.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsResponse\PropertiesType.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsResponse\ReplyIndicatorType.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsResponse\RulesResponseType.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsResponse\RunWhenType.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsResponse\ServiceSettings.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsResponse\ServiceSettingsPropertiesType.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsResponse\Set.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsResponse\Settings.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsResponse\SettingsAuthPolicy.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsResponse\SettingsCategoryResponseType.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsResponse\SettingsFault.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsResponse\StatusType.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsResponse\VacationResponse.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SettingsResponse\VacationResponseMode.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\StatelessRequest\ActionType.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\StatelessRequest\ApplicationDataTypeRequest.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\StatelessRequest\ApplicationDataTypeRequestFlag.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\StatelessRequest\AuthPolicy.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\StatelessRequest\Clause.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\StatelessRequest\DeletesAsMoves.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\StatelessRequest\DisplayName.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\StatelessRequest\Fault.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\StatelessRequest\Flag.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\StatelessRequest\FolderId.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\StatelessRequest\ItemChoiceType.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\StatelessRequest\ItemsChoiceType.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\StatelessRequest\ItemsChoiceType1.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\StatelessRequest\ItemsChoiceType2.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\StatelessRequest\Options.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\StatelessRequest\ParentId.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\StatelessRequest\ResponseContentTypeType.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\StatelessRequest\SortOrderType.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\StatelessRequest\Stateless.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\StatelessRequest\StatelessCollection.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\StatelessRequest\StatelessCollectionCommands.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\StatelessRequest\StatelessCollectionCommandsAdd.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\StatelessRequest\StatelessCollectionCommandsChange.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\StatelessRequest\StatelessCollectionCommandsDelete.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\StatelessRequest\StatelessCollectionGet.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\StatelessRequest\StatelessCollectionGetFilter.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\StatelessRequest\StatelessCollectionGetFilterAnd.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\StatelessRequest\StatelessCollectionGetFilterNot.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\StatelessRequest\StatelessCollectionGetFilterOR.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\StatelessRequest\StatelessCollectionGetSort.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\StatelessRequest\stringWithCharSetType.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\StatelessRequest\stringWithEncodingType.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\StatelessRequest\stringWithEncodingType1.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\StatelessResponse\ApplicationDataTypeResponse.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\StatelessResponse\ApplicationDataTypeResponseFlag.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\StatelessResponse\AuthPolicy.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\StatelessResponse\DeletesAsMoves.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\StatelessResponse\DisplayName.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\StatelessResponse\Fault.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\StatelessResponse\Flag.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\StatelessResponse\FolderId.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\StatelessResponse\ItemsChoiceType.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\StatelessResponse\ItemsChoiceType1.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\StatelessResponse\ItemsChoiceType2.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\StatelessResponse\Options.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\StatelessResponse\ParentId.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\StatelessResponse\ResponseContentTypeType.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\StatelessResponse\Stateless.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\StatelessResponse\StatelessCollection.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\StatelessResponse\StatelessCollectionCommands.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\StatelessResponse\StatelessCollectionCommandsAdd.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\StatelessResponse\StatelessCollectionCommandsChange.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\StatelessResponse\StatelessCollectionCommandsDelete.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\StatelessResponse\StatelessCollectionResponses.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\StatelessResponse\StatelessCollectionResponsesAdd.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\StatelessResponse\StatelessCollectionResponsesChange.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\StatelessResponse\StatelessCollectionResponsesDelete.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\StatelessResponse\stringWithCharSetType.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\StatelessResponse\stringWithEncodingType.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\StatelessResponse\stringWithEncodingType1.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SyncRequest\Add.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SyncRequest\AddCollection.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SyncRequest\ApplicationDataType.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SyncRequest\Change.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SyncRequest\ChangeCollection.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SyncRequest\Collection.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SyncRequest\CollectionCollection.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SyncRequest\Collections.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SyncRequest\Commands.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SyncRequest\Declarations.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SyncRequest\Delete.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SyncRequest\DeleteCollection.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SyncRequest\GetChanges.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SyncRequest\Sync.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SyncResponse\Add.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SyncResponse\AddCollection.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SyncResponse\ApplicationData.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SyncResponse\Change.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SyncResponse\ChangeCollection.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SyncResponse\Collection.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SyncResponse\CollectionCollection.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SyncResponse\Collections.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SyncResponse\Commands.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SyncResponse\Declarations.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SyncResponse\Delete.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SyncResponse\DeleteCollection.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SyncResponse\MoreAvailable.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SyncResponse\Responses.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SyncResponse\ResponsesAdd.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SyncResponse\ResponsesAddCollection.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SyncResponse\ResponsesChange.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SyncResponse\ResponsesChangeCollection.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SyncResponse\ResponsesDelete.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SyncResponse\ResponsesDeleteCollection.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\SyncResponse\Sync.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\Xop\Declarations.cs" />
+    <Compile Include="Net\Protocols\DeltaSync\Xop\Include.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Transport\Sync\Migration\MigrationStatusOverride.cs" />
+    <Compile Include="Transport\Sync\Migration\SyncMigrationSubscriptionAgent.cs" />
+    <Compile Include="Transport\Sync\Migration\SyncMigrationSubscriptionAgentFactory.cs" />
+    <Compile Include="Transport\Sync\SendAs\SendAsAutoProvision.cs" />
+    <Compile Include="Transport\Sync\Worker\Agents\PeopleConnectSubscriptionAgent.cs" />
+    <Compile Include="Transport\Sync\Worker\Agents\PeopleConnectSubscriptionAgentFactory.cs" />
+    <Compile Include="Transport\Sync\Worker\Agents\SubscriptionAgent.cs" />
+    <Compile Include="Transport\Sync\Worker\Agents\SubscriptionAgentFactory.cs" />
+    <Compile Include="Transport\Sync\Worker\Agents\SubscriptionAgentManager.cs" />
+    <Compile Include="Transport\Sync\Worker\Agents\SubscriptionEventArgs.cs" />
+    <Compile Include="Transport\Sync\Worker\Agents\SubscriptionEventResult.cs" />
+    <Compile Include="Transport\Sync\Worker\Agents\SubscriptionEventSource.cs" />
+    <Compile Include="Transport\Sync\Worker\Agents\SubscriptionWorkItemCompletedEventArgs.cs" />
+    <Compile Include="Transport\Sync\Worker\Agents\SubscriptionWorkItemCompletedEventResult.cs" />
+    <Compile Include="Transport\Sync\Worker\Agents\SubscriptionWorkItemEventArgs.cs" />
+    <Compile Include="Transport\Sync\Worker\Agents\SubscriptionWorkItemEventResult.cs" />
+    <Compile Include="Transport\Sync\Worker\Agents\SubscriptionWorkItemFailedLoadSubscriptionEventArgs.cs" />
+    <Compile Include="Transport\Sync\Worker\Agents\SubscriptionWorkItemFailedLoadSubscriptionEventResult.cs" />
+    <Compile Include="Transport\Sync\Worker\Framework\AlternateWlidEndpointHandler.cs" />
+    <Compile Include="Transport\Sync\Worker\Framework\EndPointHealth.cs" />
+    <Compile Include="Transport\Sync\Worker\Framework\Pop3InvalidCommandException.cs" />
+    <Compile Include="Transport\Sync\Worker\Framework\Provider\Facebook\FacebookContact.cs" />
+    <Compile Include="Transport\Sync\Worker\Framework\Provider\Facebook\FacebookProvider.cs" />
+    <Compile Include="Transport\Sync\Worker\Framework\Provider\Facebook\FacebookProviderState.cs" />
+    <Compile Include="Transport\Sync\Worker\Framework\Provider\IMAP\Client\ICommClient.cs" />
+    <Compile Include="Transport\Sync\Worker\Framework\Provider\IMAP\Client\IMAPClient.cs" />
+    <Compile Include="Transport\Sync\Worker\Framework\Provider\IMAP\Client\IMAPClientState.cs" />
+    <Compile Include="Transport\Sync\Worker\Framework\Provider\IMAP\Client\IMAPCommand.cs" />
+    <Compile Include="Transport\Sync\Worker\Framework\Provider\IMAP\Client\IMAPCommandType.cs" />
+    <Compile Include="Transport\Sync\Worker\Framework\Provider\IMAP\Client\IMAPCommClient.cs" />
+    <Compile Include="Transport\Sync\Worker\Framework\Provider\IMAP\Client\IMAPMailbox.cs" />
+    <Compile Include="Transport\Sync\Worker\Framework\Provider\IMAP\Client\IMAPMailFlags.cs" />
+    <Compile Include="Transport\Sync\Worker\Framework\Provider\IMAP\Client\IMAPResponse.cs" />
+    <Compile Include="Transport\Sync\Worker\Framework\Provider\IMAP\Client\IMAPResultData.cs" />
+    <Compile Include="Transport\Sync\Worker\Framework\Provider\IMAP\Client\IMAPStatus.cs" />
+    <Compile Include="Transport\Sync\Worker\Framework\Provider\IMAP\Client\IMAPUtils.cs" />
+    <Compile Include="Transport\Sync\Worker\Framework\Provider\IMAP\Client\RootPathProcessingFlags.cs" />
+    <Compile Include="Transport\Sync\Worker\Framework\Provider\IMAP\IMAPAutoProvisionClient.cs" />
+    <Compile Include="Transport\Sync\Worker\Framework\Provider\IMAP\IMAPEmail.cs" />
+    <Compile Include="Transport\Sync\Worker\Framework\Provider\IMAP\IMAPFolder.cs" />
+    <Compile Include="Transport\Sync\Worker\Framework\Provider\IMAP\IMAPSyncStorageProvider.cs" />
+    <Compile Include="Transport\Sync\Worker\Framework\Provider\IMAP\IMAPSyncStorageProviderState.cs" />
+    <Compile Include="Transport\Sync\Worker\Framework\Provider\LinkedIn\LinkedInContact.cs" />
+    <Compile Include="Transport\Sync\Worker\Framework\Provider\LinkedIn\LinkedInSyncStorageProvider.cs" />
+    <Compile Include="Transport\Sync\Worker\Framework\Provider\LinkedIn\LinkedInSyncStorageProviderState.cs" />
+    <Compile Include="Transport\Sync\Worker\Framework\Provider\Pop\PopBookmark.cs" />
+    <Compile Include="Transport\Sync\Worker\Framework\TransportSyncWorkerFramework.cs" />
+    <Compile Include="Transport\Sync\Worker\Health\IRemoteServerHealthConfiguration.cs" />
+    <Compile Include="Transport\Sync\Worker\Health\RemoteServerHealthData.cs" />
+    <Compile Include="Transport\Sync\Worker\Health\RemoteServerHealthManager.cs" />
+    <Compile Include="Transport\Sync\Worker\Health\RemoteServerHealthState.cs" />
+    <Compile Include="Transport\Sync\Worker\Health\ThrottlingInfo.cs" />
+    <Compile Include="Transport\Sync\Worker\Health\ThrottlingStatistics.cs" />
+    <Compile Include="Transport\Sync\Worker\IMAPInvalidPathPrefixException.cs" />
+    <Compile Include="Transport\Sync\Worker\Throttling\SyncDB.cs" />
+    <Compile Include="Transport\Sync\Worker\Throttling\SyncMailboxServer.cs" />
+    <Compile Include="Transport\Sync\Worker\Throttling\SyncResource.cs" />
+    <Compile Include="Transport\Sync\Worker\Throttling\SyncResourceMonitor.cs" />
+    <Compile Include="Transport\Sync\Worker\Throttling\SyncResourceMonitorType.cs" />
+    <Compile Include="Transport\Sync\Worker\Throttling\SyncRPCResourceMonitor.cs" />
+    <Compile Include="Transport\Sync\Worker\Throttling\SyncStoreLoadManager.cs" />
+    <Compile Include="Transport\Sync\Worker\Throttling\SyncTransportResourceMonitor.cs" />
+    <Compile Include="Transport\Sync\Worker\Throttling\SyncTransportServer.cs" />
+    <Compile Include="Transport\Sync\Worker\Throttling\SyncTransportUserResourceMonitor.cs" />
+    <Compile Include="Transport\Sync\Worker\TransportSyncWorkerCore.cs" />
+    <Compile Include="Transport\Sync\Worker\TransportSyncWorkerEventLogConstants.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.Exchange.Common\Microsoft.Exchange.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140F0}</Project>
+      <Name>Microsoft.Exchange.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Compliance\Microsoft.Exchange.Compliance.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140F2}</Project>
+      <Name>Microsoft.Exchange.Compliance</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Core.Strings\Microsoft.Exchange.Core.Strings.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14103}</Project>
+      <Name>Microsoft.Exchange.Core.Strings</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.ApplicationLogic\Microsoft.Exchange.Data.ApplicationLogic.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14104}</Project>
+      <Name>Microsoft.Exchange.Data.ApplicationLogic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Common\Microsoft.Exchange.Data.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140D3}</Project>
+      <Name>Microsoft.Exchange.Data.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Directory\Microsoft.Exchange.Data.Directory.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14105}</Project>
+      <Name>Microsoft.Exchange.Data.Directory</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Storage\Microsoft.Exchange.Data.Storage.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1410F}</Project>
+      <Name>Microsoft.Exchange.Data.Storage</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Transport\Microsoft.Exchange.Data.Transport.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140D5}</Project>
+      <Name>Microsoft.Exchange.Data.Transport</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data\Microsoft.Exchange.Data.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14106}</Project>
+      <Name>Microsoft.Exchange.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Diagnostics\Microsoft.Exchange.Diagnostics.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14113}</Project>
+      <Name>Microsoft.Exchange.Diagnostics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Extensibility.Internal\Microsoft.Exchange.Extensibility.Internal.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14126}</Project>
+      <Name>Microsoft.Exchange.Extensibility.Internal</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.MailboxReplicationService.Common\Microsoft.Exchange.MailboxReplicationService.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14147}</Project>
+      <Name>Microsoft.Exchange.MailboxReplicationService.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Net\Microsoft.Exchange.Net.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14178}</Project>
+      <Name>Microsoft.Exchange.Net</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Rpc\Microsoft.Exchange.Rpc.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14188}</Project>
+      <Name>Microsoft.Exchange.Rpc</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.StoreProvider\Microsoft.Exchange.StoreProvider.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141B9}</Project>
+      <Name>Microsoft.Exchange.StoreProvider</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Transport.Sync.Common\Microsoft.Exchange.Transport.Sync.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141D5}</Project>
+      <Name>Microsoft.Exchange.Transport.Sync.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Transport.Sync.MigrationRpc\Microsoft.Exchange.Transport.Sync.MigrationRpc.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141D7}</Project>
+      <Name>Microsoft.Exchange.Transport.Sync.MigrationRpc</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Transport\Microsoft.Exchange.Transport.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141CD}</Project>
+      <Name>Microsoft.Exchange.Transport</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.VariantConfiguration\Microsoft.Exchange.VariantConfiguration.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141E0}</Project>
+      <Name>Microsoft.Exchange.VariantConfiguration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.WorkloadManagement\Microsoft.Exchange.WorkloadManagement.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141E1}</Project>
+      <Name>Microsoft.Exchange.WorkloadManagement</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\mscorlib\mscorlib.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141F1}</Project>
+      <Name>mscorlib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

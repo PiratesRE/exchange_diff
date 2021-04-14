@@ -1,0 +1,1403 @@
+<!-- Copyright (C) 2008 Microsoft Corporation.  All Rights Reserved. -->
+<ResultsLoaderSchema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="ObjectPickerSchema.xsd">
+  <!-- Schema for TargetDeliveryDomainConfigurable -->
+  <ResultsLoader Name="TargetDeliveryDomainConfigurable">
+    <DataColumns PrimaryKey="Guid" NameProperty="Name">
+      <RefColumns Name="CommonProperties" />
+      <Column Name="DomainName" Type="System.String" />
+      <Column Name="TargetDeliveryDomain" Type="System.Boolean" />
+      <Column Name="ImageProperty" DefaultValue="RemoteDomainPicker" />
+    </DataColumns>
+    <InputColumns>
+      <Column Name="TargetDeliveryDomainOnly" Type="System.Boolean" DefaultValue="false"/>
+    </InputColumns>
+
+    <DataTableFillers>
+      <MonadAdapterFiller Command="Get-RemoteDomain" ResolveCommand ="" FilterBuilder="Microsoft.Exchange.Management.SystemManager.WinForms.TargetDeliveryDomainFilterBuilder" />
+    </DataTableFillers>
+
+    <Configuration>
+      <Caption>TargetDeliveryDomainTitle</Caption>
+      <DisplayedColumns>
+        <Column Name="Name" Text="Name" Mandatory="true" />
+        <Column Name="DomainName" Text="DomainsColumnName" Mandatory="true" />
+        <Column Name="TargetDeliveryDomain" Text="TargetDeliveryDomainColumnName" Mandatory="true" />
+      </DisplayedColumns>
+      <ImageColumn>ImageProperty</ImageColumn>
+      <HelpTopic>Microsoft.Exchange.Management.SystemManager.WinForms.TargetDeliveryDomainPicker</HelpTopic>
+    </Configuration>
+  </ResultsLoader>
+
+  <!-- Schema for AddressListConfigurable-->
+	<ResultsLoader Name="AddressListConfigurable">
+		<DataColumns PrimaryKey="Identity">
+			<RefColumns Name="CommonProperties" />
+			<Column Name="ImageProperty" DefaultValue="AddressListPicker" />
+			<Column Name="Path" LambdaExpression="Identity=>@0[Identity].ToString()"/>
+		</DataColumns>
+
+		<DataTableFillers>
+			<MonadAdapterFiller Command="Get-AddressList" ResolveCommand ="" ScopeBuilder="Microsoft.Exchange.Management.SystemManager.WinForms.AddressListScopeBuilder">
+				<Parameters>
+					<AdditionalParameter Name="Container"/>
+				</Parameters>
+			</MonadAdapterFiller>
+		</DataTableFillers>
+
+		<Configuration>
+			<Caption>AddressList</Caption>
+			<DisplayedColumns>
+				<Column Name="Name" Text="Name" Mandatory="true" />
+			</DisplayedColumns>
+			<ImageColumn>ImageProperty</ImageColumn>
+			<UseTreeView>true</UseTreeView>
+			<HelpTopic>Microsoft.Exchange.Management.SystemManager.WinForms.AddressListPicker</HelpTopic>
+		</Configuration>
+	</ResultsLoader>
+
+  <!-- Schema for Database Master Server Picker-->
+  <ResultsLoader Name="DatabaseMasterServerConfigurable">
+    <DataColumns PrimaryKey="Guid">
+      <RefColumns Name="CommonProperties" />
+      <RefColumns Name="ExchangeServerProperties"/>
+      <Column Name="ImageProperty" DefaultValue="ExchangeServerPicker" />
+    </DataColumns>
+    <InputColumns>
+      <Column Name="DatabaseIdentity" Type="Microsoft.Exchange.Data.Directory.ADObjectId, Microsoft.Exchange.Data.Directory"/>
+      <Column Name="ExcludeServer" Type="System.String"/>
+    </InputColumns>
+    <DataTableFillers>
+      <MonadAdapterFiller Command="Get-MailboxDatabase" ResolveCommand="Get-ExchangeServer" FilterBuilder="Microsoft.Exchange.Management.SystemManager.WinForms.DatabaseMasterServerFilterBuilder" >
+        <Parameters>
+          <AdditionalParameter Name="Identity"/>
+        </Parameters>
+      </MonadAdapterFiller>
+    </DataTableFillers>
+    <Configuration>
+      <Caption>MailboxServer</Caption>
+      <DisplayedColumns>
+        <Column Name="Name" Text="Name" Mandatory="true" />
+        <Column Name="AdminDisplayVersion" Text="AdminDisplayVersion" Mandatory="true"/>
+      </DisplayedColumns>
+      <ImageColumn>ImageProperty</ImageColumn>
+      <HelpTopic>Microsoft.Exchange.Management.SystemManager.WinForms.ExchangeServerPicker</HelpTopic>
+    </Configuration>
+  </ResultsLoader>
+
+  <!-- Schema for RetentionPolicy Picker-->
+  <ResultsLoader Name="RetentionPolicyConfigurable">
+    <DataColumns PrimaryKey="Guid">
+      <RefColumns Name="CommonProperties"/>
+      <Column Name="RetentionPolicyTagLinks"/>
+      <Column Name="ImageProperty" DefaultValue="RetentionPolicyPicker"/>
+    </DataColumns>
+    <DataTableFillers>
+      <MonadAdapterFiller Command="Get-RetentionPolicy" />
+    </DataTableFillers>
+    <Configuration>
+      <Caption>RetentionPolicy</Caption>
+      <DisplayedColumns>
+        <Column Name="Name" Text="Name" Mandatory="true"/>
+        <Column Name="RetentionPolicyTagLinks" Text="RetentionPolicyTagLinksColumnName" Mandatory="true"/>
+      </DisplayedColumns>
+      <ImageColumn>ImageProperty</ImageColumn>
+    </Configuration>
+  </ResultsLoader>
+  
+  <!-- Schema for retention policy tag Picker-->
+  <ResultsLoader Name="RetentionPolicyTagConfigurable">
+    <DataColumns PrimaryKey="Guid">
+      <RefColumns Name="CommonProperties"/>
+      <Column Name="RetentionAction" Type="Microsoft.Exchange.Data.Directory.SystemConfiguration.RetentionActionType, Microsoft.Exchange.Data.Directory"/>
+      <Column Name="AgeLimitForRetention" Type="Microsoft.Exchange.Data.EnhancedTimeSpan, Microsoft.Exchange.Data" TextConverter="Microsoft.Exchange.Management.SystemManager.WinForms.EnhancedTimeSpanAsDaysCoverter, Microsoft.Exchange.Management.SystemManager"/>
+      <Column Name="Type" Type="Microsoft.Exchange.Data.Directory.SystemConfiguration.ElcFolderType, Microsoft.Exchange.Data.Directory"/>
+      <Column Name="RetentionEnabled" Type="System.Boolean"/>
+      <Column Name="ImageProperty" DefaultValue="RetentionPolicyTagPicker"/>
+    </DataColumns>
+    <DataTableFillers>
+      <MonadAdapterFiller Command="Get-RetentionPolicyTag" SearchType="NameProperty"/>
+    </DataTableFillers>
+    <Configuration>
+      <Caption>RetentionPolicyTag</Caption>
+      <DisplayedColumns>
+        <Column Name="Name" Text="Name" Mandatory="true"/>
+        <Column Name="Type" Text="Type" Mandatory="true"/>
+        <Column Name="RetentionAction" Text="RetentionAction" Mandatory="true"/>
+        <Column Name="AgeLimitForRetention" Text="AgeLimitForRetention" Mandatory="true"/>
+        <Column Name="RetentionEnabled" Text="RetentionEnabled" Mandatory="true"/>
+      </DisplayedColumns>
+      <SerializationLevel>Full</SerializationLevel>
+      <ImageColumn>ImageProperty</ImageColumn>
+    </Configuration>
+  </ResultsLoader>
+  
+  <!-- Schema for Servers in same DAG Picker-->
+  <ResultsLoader Name="ServersInSameDagConfigurable">
+    <DataColumns PrimaryKey="Guid">
+      <RefColumns Name="CommonProperties" />  
+      <RefColumns Name="ExchangeServerProperties"/>
+      <Column Name="ImageProperty" DefaultValue="ExchangeServerPicker" />
+    </DataColumns>
+    <InputColumns>
+      <Column Name="DagMemberServer" Type="System.String"/>
+    </InputColumns>
+    <DataTableFillers>
+      <MonadAdapterFiller Command="Get-DatabaseAvailabilityGroup" ResolveCommand="Get-ExchangeServer" FilterBuilder="Microsoft.Exchange.Management.SystemManager.WinForms.ServersInSameDagFilterBuilder" />
+    </DataTableFillers>
+    <Configuration>
+      <Caption>MailboxServer</Caption>
+      <DisplayedColumns>
+        <Column Name="Name" Text="Name" Mandatory="true" />
+        <Column Name="AdminDisplayVersion" Text="AdminDisplayVersion" Mandatory="true"/>
+      </DisplayedColumns>
+      <ImageColumn>ImageProperty</ImageColumn>
+      <HelpTopic>Microsoft.Exchange.Management.SystemManager.WinForms.ExchangeServerPicker</HelpTopic>
+    </Configuration>
+  </ResultsLoader>
+
+  <!-- Schema for E14 Mailbox Server Picker-->
+  <ResultsLoader Name="E14MailboxServerConfigurable">
+    <DataColumns PrimaryKey="Guid">
+      <RefColumns Name="CommonProperties" />
+      <Column Name="ServerRole" Type="Microsoft.Exchange.Data.Directory.SystemConfiguration.ServerRole, Microsoft.Exchange.Data.Directory"/>
+      <Column Name="AdminDisplayVersion"/>
+      <Column Name="DatabaseAvailabilityGroup" />
+      <Column Name="ImageProperty" DefaultValue="MailboxServerPicker" />
+    </DataColumns>
+    <InputColumns>
+      <Column Name="MinVersion" Type="System.Int64" DefaultValue="14"/>
+      <Column Name="DesiredServerRoleBitMask" Type="Microsoft.Exchange.Data.Directory.SystemConfiguration.ServerRole, Microsoft.Exchange.Data.Directory" DefaultValue="Mailbox"/>
+      <Column Name="IncludeLegacyServer" Type="System.Boolean"/>
+      <Column Name="OnlyBackendServer" Type="System.Boolean"/>
+      <Column Name="ExcludeServers" Type="Microsoft.Exchange.Data.Directory.ADObjectId[], Microsoft.Exchange.Data.Directory"/>
+      <Column Name="ServersDag" Type="System.Object"/>
+    </InputColumns>
+    <DataTableFillers>
+      <MonadAdapterFiller Command="Get-MailboxServer" FilterBuilder="Microsoft.Exchange.Management.SystemManager.WinForms.ExchangeServerFilterBuilder" />
+    </DataTableFillers>
+    <Configuration>
+      <Caption>MailboxServer</Caption>
+      <DisplayedColumns>
+        <Column Name="Name" Text="Name" Mandatory="true" />
+        <Column Name="AdminDisplayVersion" Text="AdminDisplayVersion" Mandatory="true"/>
+        <Column Name="DatabaseAvailabilityGroup" Text="DatabaseAvailabilityGroupColumnName" Mandatory="true" />
+      </DisplayedColumns>
+      <ImageColumn>ImageProperty</ImageColumn>
+      <HelpTopic>Microsoft.Exchange.Management.SystemManager.WinForms.ExchangeServerPicker</HelpTopic>
+    </Configuration>
+  </ResultsLoader>
+
+  <!--Schema for ResetVirtualDirectoryConfigurable to show the v-dirs-->
+  <ResultsLoader Name="ResetVirtualDirectoryConfigurable">
+    <DataColumns PrimaryKey="Guid" WholeObjectProperty="WholeObjectProperty">
+      <RefColumns Name="CommonProperties"/>
+      <Column Name="WholeObjectProperty" Type="System.Object" />
+      <Column Name="ImageProperty" LambdaExpression="WholeObjectProperty=>@0[WholeObjectProperty].GetType().Name"/>
+    </DataColumns>
+
+    <DataTableFillers>
+      <MonadAdapterFiller Command="Get-OwaVirtualDirectory" FilterBuilder="Microsoft.Exchange.Management.SystemManager.WinForms.ResetVirtualDirectoryFilterBuilder" SearchType="NameProperty">
+        <Parameters>
+          <AdditionalParameter Name="Server"/>
+          <Parameter Name="ADPropertiesOnly" Value=""/>
+        </Parameters>
+      </MonadAdapterFiller>
+      <MonadAdapterFiller Command="Get-EcpVirtualDirectory" FilterBuilder="Microsoft.Exchange.Management.SystemManager.WinForms.ResetVirtualDirectoryFilterBuilder" SearchType="NameProperty">
+        <Parameters>
+          <AdditionalParameter Name="Server"/>
+          <Parameter Name="ADPropertiesOnly" Value=""/>
+        </Parameters>
+      </MonadAdapterFiller>
+      <MonadAdapterFiller Command="Get-WebServicesVirtualDirectory" FilterBuilder="Microsoft.Exchange.Management.SystemManager.WinForms.ResetVirtualDirectoryFilterBuilder" SearchType="NameProperty">
+        <Parameters>
+          <AdditionalParameter Name="Server"/>
+          <Parameter Name="ADPropertiesOnly" Value=""/>
+        </Parameters>
+      </MonadAdapterFiller>
+      <MonadAdapterFiller Command="Get-ActiveSyncVirtualDirectory" FilterBuilder="Microsoft.Exchange.Management.SystemManager.WinForms.ResetVirtualDirectoryFilterBuilder" SearchType="NameProperty">
+        <Parameters>
+          <AdditionalParameter Name="Server"/>
+          <Parameter Name="ADPropertiesOnly" Value=""/>
+        </Parameters>
+      </MonadAdapterFiller>
+      <MonadAdapterFiller Command="Get-AutodiscoverVirtualDirectory" FilterBuilder="Microsoft.Exchange.Management.SystemManager.WinForms.ResetVirtualDirectoryFilterBuilder" SearchType="NameProperty">
+        <Parameters>
+          <AdditionalParameter Name="Server"/>
+          <Parameter Name="ADPropertiesOnly" Value=""/>
+        </Parameters>
+      </MonadAdapterFiller>
+      <MonadAdapterFiller Command="Get-OabVirtualDirectory" FilterBuilder="Microsoft.Exchange.Management.SystemManager.WinForms.ResetVirtualDirectoryFilterBuilder" SearchType="NameProperty">
+        <Parameters>
+          <AdditionalParameter Name="Server"/>
+          <Parameter Name="ADPropertiesOnly" Value=""/>
+        </Parameters>
+      </MonadAdapterFiller>
+    </DataTableFillers>
+
+    <InputColumns>
+      <Column Name="Server" Type="System.String" />
+    </InputColumns>
+    
+    <Configuration>
+      <Caption>MailboxPicker</Caption>
+      <DisplayedColumns>
+        <Column Name="Name" Text="Name" Mandatory="true"/>
+      </DisplayedColumns>
+      <ImageColumn>ImageProperty</ImageColumn>
+      <HelpTopic>Microsoft.Exchange.Management.SystemManager.WinForms.ResetVirtualDirectoryPicker</HelpTopic>
+      <SerializationLevel>Full</SerializationLevel>
+    </Configuration>
+  </ResultsLoader>
+  
+  <!-- Schema for MigrationMailboxConfigurable. This is only used in mailbox migration to resolve the ExchangeGuid for mailbox-->
+  <ResultsLoader Name="MigrationMailboxConfigurable">
+    <DataColumns PrimaryKey="Guid" NameProperty="DisplayName">
+      <RefColumns Name="CommonProperties" />
+      <Column Name="DisplayName"/>
+      <Column Name="NonEmptyDisplayName" LambdaExpression="DisplayName,Name=>iif(DBNull.Value.Equals(@0[DisplayName]) or String(@0[DisplayName]) == String.Empty, @0[Name].ToString(),@0[DisplayName].ToString())" />
+      <Column Name="ExchangeGuid"/>
+      <Column Name="RecipientTypeDetails" Type="Microsoft.Exchange.Data.Directory.Recipient.RecipientTypeDetails, Microsoft.Exchange.Data.Directory"/>
+      <Column Name="Database"/>
+      <Column Name="ArchiveDatabase"/>
+      <Column Name="ArchiveGuid" Type="System.Guid"/>
+      <!-- ArchiveState is not exposed on Mailbox so we have to use ArchiveGuid here. -->
+      <Column Name="ImageProperty" Type="System.String"
+              LambdaExpression="RecipientTypeDetails,ArchiveGuid=>
+                IIF (!WinformsHelper.IsEmptyValue(@0[ArchiveGuid]),
+                  &quot;ArchivedMailbox&quot;, 
+                  WinformsHelper.GetTargetTypeToStringValue(@0[&quot;RecipientTypeDetails&quot;], @0.Table.Columns[&quot;RecipientTypeDetails&quot;].DataType)
+                )"/>
+    </DataColumns>
+    
+    <DataTableFillers>
+      <MonadAdapterFiller Command="Get-Mailbox"/>
+    </DataTableFillers>
+
+    <Configuration>
+      <Caption>MailboxPicker</Caption>
+      <DisplayedColumns>
+        <Column Name="DisplayName" Text="DisplayNameColumnInPicker" Mandatory="true"/>
+      </DisplayedColumns>
+      <ImageColumn>ImageProperty</ImageColumn>
+      <ScopeSupportingLevel>FullScoping</ScopeSupportingLevel>
+      <HelpTopic>Microsoft.Exchange.Management.SystemManager.WinForms.MailboxPicker</HelpTopic>
+    </Configuration>
+  </ResultsLoader>
+
+  <!-- Schema for MigrationArchiveMailuserConfigurable. This is only used in mailbox migration to resolve the ExchangeGuid for mailuser with archive mailbox. -->
+  <ResultsLoader Name="MigrationArchiveMailUserConfigurable">
+    <DataColumns PrimaryKey="Guid" NameProperty="DisplayName">
+      <RefColumns Name="CommonProperties" />
+      <Column Name="DisplayName"/>
+      <Column Name="NonEmptyDisplayName" LambdaExpression="DisplayName,Name=>iif(DBNull.Value.Equals(@0[DisplayName]) or String(@0[DisplayName]) == String.Empty, @0[Name].ToString(),@0[DisplayName].ToString())" />
+      <Column Name="ExchangeGuid"/>
+      <Column Name="RecipientTypeDetails" Type="Microsoft.Exchange.Data.Directory.Recipient.RecipientTypeDetails, Microsoft.Exchange.Data.Directory"/>
+      <Column Name="ArchiveGuid" Type="System.Guid"/>
+      <!-- ArchiveState is not exposed on MailUser so we have to use ArchiveGuid here. -->
+      <Column Name="ImageProperty" Type="System.String"
+              LambdaExpression="RecipientTypeDetails,ArchiveGuid=>
+                IIF (!WinformsHelper.IsEmptyValue(@0[ArchiveGuid]),
+                  &quot;ArchivedMailbox&quot;, 
+                  WinformsHelper.GetTargetTypeToStringValue(@0[&quot;RecipientTypeDetails&quot;], @0.Table.Columns[&quot;RecipientTypeDetails&quot;].DataType)
+                )"/>
+    </DataColumns>
+
+    <DataTableFillers>
+      <MonadAdapterFiller Command="Get-MailUser"/>
+    </DataTableFillers>
+
+    <Configuration>
+      <Caption>MailUserPicker</Caption>
+      <DisplayedColumns>
+        <Column Name="DisplayName" Text="DisplayNameColumnInPicker" Mandatory="true"/>
+      </DisplayedColumns>
+      <ImageColumn>ImageProperty</ImageColumn>
+      <ScopeSupportingLevel>FullScoping</ScopeSupportingLevel>
+      <HelpTopic>Microsoft.Exchange.Management.SystemManager.WinForms.MailUserPicker</HelpTopic>
+    </Configuration>
+  </ResultsLoader>
+
+  <!-- Schema for ExchangeCertificate -->
+    <ResultsLoader Name="ExchangeCertificateConfigurable">
+      <DataColumns PrimaryKey="Thumbprint" NameProperty="FriendlyName" DataColumnsCalculator="Microsoft.Exchange.Management.SnapIn.Esm.ExchangeCertificateDataColumnsCalculator, Microsoft.Exchange.Management.SnapIn.Esm" WholeObjectProperty="WholeObjectProperty" DistinguishIdentity="Thumbprint">
+        <Column Name="FriendlyName" />
+        <Column Name="Thumbprint" />
+        <Column Name="HasPrivateKey" Type="System.Boolean" />
+        <Column Name="IsSelfSigned" Type="System.Boolean" />
+        <Column Name="Issuer" />
+        <Column Name="NotAfter" Type="System.DateTime"/>
+        <Column Name="NotBefore" Type="System.DateTime"/>
+        <Column Name="PrivateKeyExportable" Type="System.Boolean" />
+        <Column Name="Services" Type="Microsoft.Exchange.Configuration.MonadDataProvider.EnumObject, Microsoft.Exchange.Configuration.ObjectModel" />
+        <Column Name="Subject" />
+        <Column Name="Status" Type="Microsoft.Exchange.Configuration.MonadDataProvider.EnumObject, Microsoft.Exchange.Configuration.ObjectModel" />
+        <Column Name="CertificateRequest" />
+        <Column Name="IconKey" Type="Microsoft.Exchange.Configuration.MonadDataProvider.EnumObject, Microsoft.Exchange.Configuration.ObjectModel" />
+        <Column Name="WholeObjectProperty" Type="System.Object" />
+        <Column Name="ExpiredDate" LambdaExpression="NotAfter=>DateTime(@0[NotAfter]).ToString(&quot;d&quot;)"/>
+      </DataColumns>
+
+      <InputColumns>
+        <Column Name="Thumbprint" />
+        <Column Name="Status" Type="System.Object"/>
+        <Column Name="IsSelfSigned" Type="System.Boolean"/>
+        <Column Name="HasKeyIdentifier" Type="System.Boolean"/>
+        <Column Name="PrivateKeyExportable" Type="System.Boolean"/>
+      </InputColumns>
+
+      <DataTableFillers>
+        <MonadAdapterFiller Command="Get-ExchangeCertificate" FilterBuilder="Microsoft.Exchange.Management.SnapIn.Esm.ExchangeCertificateFilterBuilder, Microsoft.Exchange.Management.SnapIn.Esm"  SearchType="NameProperty">
+          <Parameters>
+            <AdditionalParameter Name="Server"/>
+            <AdditionalParameter Name="Thumbprint"/>
+          </Parameters>
+        </MonadAdapterFiller>
+      </DataTableFillers>
+
+      <Configuration>
+        <Caption>ExchangeCertificate</Caption>
+        <DisplayedColumns>
+          <Column Name="FriendlyName" Text="Name" Mandatory="true" />
+          <Column Name="Subject" Text="ExchangeCertificateSubjectColumnName" Mandatory="true" />
+          <Column Name="Issuer" Text="ExchangeCertificateIssuerColumnName" Mandatory="true" />
+          <Column Name="ExpiredDate" Text="ExchangeCertificateNotAfterColumnName" Mandatory="true"/>
+        </DisplayedColumns>
+        <SortProperty>FriendlyName</SortProperty>
+        <ImageColumn>IconKey</ImageColumn>
+        <SerializationLevel>Full</SerializationLevel>
+        <HelpTopic>Microsoft.Exchange.Management.SystemManager.WinForms.ExchangeCertificatePicker</HelpTopic>
+      </Configuration>
+    </ResultsLoader>
+  
+  <!-- Schema for DatabaseAvailabilityGroupConfigurable-->
+  <ResultsLoader Name="DatabaseAvailabilityGroupConfigurable">
+    <DataColumns PrimaryKey="Guid">
+      <RefColumns Name="CommonProperties"/>
+      <Column Name="ImageProperty" DefaultValue="DatabaseAvailabilityGroupPicker"/>
+      <Column Name="Servers"/>
+    </DataColumns>
+
+    <DataTableFillers>
+      <MonadAdapterFiller Command="Get-DatabaseAvailabilityGroup"/>
+    </DataTableFillers>
+
+    <Configuration>
+      <Caption>DatabaseAvailabilityGroup</Caption>
+      <DisplayedColumns>
+        <Column Name="Name" Text="Name" Mandatory="true"/>
+        <Column Name="Servers" Text="DagMemberServersColumnName" Mandatory="true"/>
+      </DisplayedColumns>
+      <ImageColumn>ImageProperty</ImageColumn>
+      <HelpTopic>Microsoft.Exchange.Management.SystemManager.WinForms.DatabaseAvailabilityGroupPicker</HelpTopic>
+    </Configuration>
+  </ResultsLoader>
+  
+  <!-- Schema for DomainConfigurable-->
+  <ResultsLoader Name="DomainConfigurable">
+    <DataColumns PrimaryKey="Identity">
+      <RefColumns Name="CommonProperties"/>
+      <Column Name="Type"/>
+      <Column Name="CanonicalName"/>
+      <Column Name="ImageProperty" DefaultValue="domainDNS" />
+    </DataColumns>
+
+    <DataTableFillers>
+      <MonadAdapterFiller Command="Get-OrganizationalUnit" FilterBuilder="Microsoft.Exchange.Management.SystemManager.WinForms.DomainFilterBuilder" ScopeBuilder="Microsoft.Exchange.Management.SystemManager.WinForms.OrganizationalUnitScopeBuilder">
+        <Parameters>
+          <AdditionalParameter Name="Identity"/>
+          <AdditionalParameter Name="SingleNodeOnly"/>
+        </Parameters>
+      </MonadAdapterFiller>
+    </DataTableFillers>
+
+    <Configuration>
+      <Caption>Domain</Caption>
+      <ImageColumn>ImageProperty</ImageColumn>
+      <DisplayedColumns>
+        <Column Name="CanonicalName" Text="Name" Mandatory="true"/>
+      </DisplayedColumns>
+      <HelpTopic>Microsoft.Exchange.Management.SystemManager.WinForms.DomainPicker</HelpTopic>
+      <UseTreeView>true</UseTreeView>
+    </Configuration>
+  </ResultsLoader>
+  
+  <!-- Schema for MailboxOrMailUserOrMailContactConfigurable-->
+  <ResultsLoader Name="MailboxOrMailUserOrMailContactConfigurable">
+    <DataColumns PrimaryKey="Identity" NameProperty="DisplayName">
+      <RefColumns Name="CommonProperties" />
+      <RefColumns Name="ContactCommonProperties" />
+    </DataColumns>
+
+    <InputColumns>
+      <Column Name="ExcludeObject" Type="Microsoft.Exchange.Data.Directory.ADObjectId, Microsoft.Exchange.Data.Directory"/>
+    </InputColumns>
+
+    <DataTableFillers>
+      <MonadAdapterFiller Command="Get-Recipient" FilterBuilder="Microsoft.Exchange.Management.SystemManager.WinForms.ExcludeObjectFilterBuilder" SearchType="ANR">
+        <Parameters>
+          <Parameter Name="PropertySet" Value="ConsoleSmallSet" />
+          <Parameter Name="ResultSize" Value="Unlimited"/>
+          <Parameter Name="RecipientTypeDetails" Value="RemoteUserMailbox,RemoteRoomMailbox,RemoteEquipmentMailbox,RemoteSharedMailbox,RemoteTeamMailbox,MailUser,UserMailbox,LinkedMailbox,SharedMailbox,TeamMailbox,LegacyMailbox,RoomMailbox,EquipmentMailbox,MailContact,MailForestContact"/>
+        </Parameters>
+      </MonadAdapterFiller>
+    </DataTableFillers>
+     
+    <Configuration>
+      <Caption>MailboxOrMailUserOrMailContact</Caption>
+      <DisplayedColumns>
+        <Column Name="DisplayName" Text="DisplayNameColumnInPicker" Mandatory="true"/>
+        <Column Name="Alias" Text="AliasColumnInPicker" Mandatory="true"/>
+        <Column Name="RecipientTypeDetails" Text="RecipientTypeDetailsColumnInPicker" Mandatory="true"/>
+        <Column Name="PrimarySmtpAddressToString" Text="PrimarySmtpAddressColumnInPicker" Mandatory="true"/>
+      </DisplayedColumns>
+      <ImageColumn>RecipientTypeDetails</ImageColumn>
+      <ScopeSupportingLevel>FullScoping</ScopeSupportingLevel>
+      <HelpTopic>Microsoft.Exchange.Management.SystemManager.WinForms.MailboxOrMailUserOrMailContactPicker</HelpTopic>
+    </Configuration>
+  </ResultsLoader>
+
+  <!-- Schema for UMEnabled MailboxOrMailUserOrMailContactConfigurable-->
+  <ResultsLoader Name="UMEnabledMailboxOrMailUserOrMailContactConfigurable">
+    <DataColumns PrimaryKey="Identity" NameProperty="DisplayName">
+      <RefColumns Name="CommonProperties" />
+      <RefColumns Name="ContactCommonProperties" />
+    </DataColumns>
+
+    <DataTableFillers>
+      <MonadAdapterFiller Command="Get-Recipient" FilterBuilder="Microsoft.Exchange.Management.SystemManager.WinForms.UMEnabledMailboxOrMailUserOrMailFilterBuilder" SearchType="ANR">
+        <Parameters>
+          <Parameter Name="PropertySet" Value="ConsoleSmallSet" />
+          <Parameter Name="ResultSize" Value="Unlimited"/>
+          <Parameter Name="RecipientTypeDetails" Value="RemoteUserMailbox,RemoteRoomMailbox,RemoteEquipmentMailbox,RemoteSharedMailbox,RemoteTeamMailbox,MailUser,UserMailbox,LinkedMailbox,SharedMailbox,TeamMailbox,LegacyMailbox,RoomMailbox,EquipmentMailbox,MailContact,MailForestContact"/>
+        </Parameters>
+      </MonadAdapterFiller>
+    </DataTableFillers>
+
+    <Configuration>
+      <Caption>MailboxOrMailUserOrMailContact</Caption>
+      <DisplayedColumns>
+        <Column Name="DisplayName" Text="DisplayNameColumnInPicker" Mandatory="true"/>
+        <Column Name="Alias" Text="AliasColumnInPicker" Mandatory="true"/>
+        <Column Name="RecipientTypeDetails" Text="RecipientTypeDetailsColumnInPicker" Mandatory="true"/>
+        <Column Name="PrimarySmtpAddressToString" Text="PrimarySmtpAddressColumnInPicker" Mandatory="true"/>
+      </DisplayedColumns>
+      <ImageColumn>RecipientTypeDetails</ImageColumn>
+      <ScopeSupportingLevel>FullScoping</ScopeSupportingLevel>
+      <HelpTopic>Microsoft.Exchange.Management.SystemManager.WinForms.UMEnabledMailboxOrMailUserOrMailContactPicker</HelpTopic>
+    </Configuration>
+  </ResultsLoader>
+
+  <!-- Schema for PublicFolderClientPermissionConfigurable-->
+  <ResultsLoader Name="PublicFolderClientPermissionConfigurable">
+    <DataColumns PrimaryKey="Identity" NameProperty="Name">
+      <RefColumns Name="CommonProperties" />
+      <RefColumns Name="ContactCommonProperties" />
+      <Column Name="AccessRights" Type="Microsoft.Exchange.Data.PublicFolderPermission, Microsoft.Exchange.Data" DefaultValue="None" />
+    </DataColumns>
+
+    <InputColumns>
+      <Column Name="ExcludeObject" Type="Microsoft.Exchange.Data.Directory.ADObjectId, Microsoft.Exchange.Data.Directory"/>
+    </InputColumns>
+
+    <DataTableFillers>
+      <MonadAdapterFiller Command="Get-Recipient" FilterBuilder="Microsoft.Exchange.Management.SystemManager.WinForms.ExcludeObjectFilterBuilder" SearchType="ANR">
+        <Parameters>
+          <Parameter Name="PropertySet" Value="ConsoleSmallSet" />
+          <Parameter Name="ResultSize" Value="Unlimited"/>
+          <Parameter Name="RecipientTypeDetails" Value="UserMailbox,LinkedMailbox,SharedMailbox,TeamMailbox,LegacyMailbox,RoomMailbox,EquipmentMailbox,MailUniversalDistributionGroup,MailUniversalSecurityGroup,MailNonUniversalGroup,MailUser,RemoteUserMailbox,RemoteRoomMailbox,RemoteEquipmentMailbox,RemoteTeamMailbox,RemoteSharedMailbox"/>
+        </Parameters>
+      </MonadAdapterFiller>
+    </DataTableFillers>
+
+    <Configuration>
+      <Caption>PublicFolderClientPermission</Caption>
+      <DisplayedColumns>
+        <Column Name="Name" Text="NameColumnInPicker" Mandatory="true" />
+        <Column Name="RecipientTypeDetails" Text="RecipientTypeDetailsColumnInPicker" Mandatory="true" />
+        <Column Name="OrganizationalUnit" Text="OUColumnInPicker" Mandatory="true" />
+        <Column Name="City" Text="CityColumnInPicker" Mandatory="false" />
+        <Column Name="Company" Text="CompanyColumnInPicker" Mandatory="false" />
+        <Column Name="DisplayName" Text="DisplayNameColumnInPicker" Mandatory="false" />
+        <Column Name="Department" Text="DepartmentColumnInPicker" Mandatory="false" />
+        <Column Name="FirstName" Text="FirstNameColumnInPicker" Mandatory="false" />
+        <Column Name="LastName" Text="LastNameColumnInPicker" Mandatory="false" />
+        <Column Name="Manager" Text="ManagerColumnInPicker" Mandatory="false" />
+        <Column Name="Office" Text="OfficeColumnInPicker" Mandatory="false" />
+        <Column Name="Phone" Text="PhoneColumnInPicker" Mandatory="false" />
+        <Column Name="StateOrProvince" Text="StateOrProvinceColumnInPicker" Mandatory="false" />
+      </DisplayedColumns>
+      <ImageColumn>RecipientTypeDetails</ImageColumn>
+      <ScopeSupportingLevel>FullScoping</ScopeSupportingLevel>
+      <HelpTopic>Microsoft.Exchange.Management.SystemManager.WinForms.PublicFolderClientPermissionPicker</HelpTopic>
+    </Configuration>
+  </ResultsLoader>
+
+  <!-- Schema for MobileMailboxPolicyConfigurable-->
+  <ResultsLoader Name="MobileMailboxPolicyConfigurable">
+    <DataColumns PrimaryKey="Guid">
+      <RefColumns Name="CommonProperties"/>
+      <Column Name="ImageProperty" DefaultValue="MobileMailboxPolicyPicker"/>
+      <Column Name="AllowNonProvisionableDevices" Type="System.Boolean"/>
+      <Column Name="DevicePasswordEnabled" Type="System.Boolean"/>
+      <Column Name="IsDefault" Type="System.Boolean"/>
+      <Column Name="MaxDevicePasswordFailedAttempts"/>
+      <Column Name="MinDevicePasswordLength"/>
+      <Column Name="RequireDeviceEncryption" Type="System.Boolean"/>
+      <Column Name="WhenChanged" Type="System.DateTime"/>
+      <Column Name="WhenCreated" Type="System.DateTime"/>
+    </DataColumns>
+
+    <DataTableFillers>
+      <MonadAdapterFiller Command="Get-ActiveSyncMailboxPolicy"/>
+    </DataTableFillers>
+
+    <Configuration>
+      <Caption>MobileMailboxPolicy</Caption>
+      <DisplayedColumns>
+        <Column Name="Name" Text="Name" Mandatory="true"/>
+        <Column Name="AllowNonProvisionableDevices" Text="NonProvisionableDeviceAllowed" Mandatory="true"/>
+        <Column Name="DevicePasswordEnabled" Text="DevicePasswordRequired" Mandatory="true"/>
+        <Column Name="IsDefault" Text="DefaultPolicy" Mandatory="true"/>
+        <Column Name="MaxDevicePasswordFailedAttempts" Text="MaxDevicePasswordFailedAttempts"/>
+        <Column Name="MinDevicePasswordLength" Text="MinDevicePasswordLength"/>
+        <Column Name="RequireDeviceEncryption" Text="RequireDeviceEncryption"/>
+        <Column Name="WhenChanged" Text="WhenChanged"/>
+        <Column Name="WhenCreated" Text="WhenCreated"/>
+      </DisplayedColumns>
+      <ImageColumn>ImageProperty</ImageColumn>
+      <HelpTopic>Microsoft.Exchange.Management.SystemManager.WinForms.MobileMailboxPolicyPicker</HelpTopic>
+    </Configuration>
+  </ResultsLoader>
+  
+  <!-- Schema for ElcMailboxPolicyConfigurable-->
+  <ResultsLoader Name="ElcMailboxPolicyConfigurable">
+    <DataColumns PrimaryKey="Guid">
+      <RefColumns Name="CommonProperties"/>
+      <Column Name="ImageProperty" DefaultValue="ElcMailboxPolicyPicker"/>
+    </DataColumns>
+
+    <DataTableFillers>
+      <MonadAdapterFiller Command="Get-ManagedFolderMailboxPolicy"/>
+    </DataTableFillers>
+
+    <Configuration>
+      <Caption>ElcMailboxPolicy</Caption>
+      <DisplayedColumns>
+        <Column Name="Name" Text="Name" Mandatory="true"/>
+      </DisplayedColumns>
+      <ImageColumn>ImageProperty</ImageColumn>
+      <HelpTopic>Microsoft.Exchange.Management.SystemManager.WinForms.ElcMailboxPolicyPicker</HelpTopic>
+    </Configuration>
+  </ResultsLoader>
+
+  <!-- Schema for ExchangeServerConfigurable-->
+  <ResultsLoader Name="ExchangeServerConfigurable">
+    <DataColumns PrimaryKey="Guid" DataColumnsCalculator="Microsoft.Exchange.Management.SnapIn.Esm.ServerDataColumnsCalculator, Microsoft.Exchange.Management.SnapIn.Esm">
+      <RefColumns Name="CommonProperties" />
+      <RefColumns Name="ExchangeServerProperties"/>
+      <Column Name="ImageProperty" DefaultValue="ExchangeServerPicker" />
+    </DataColumns>
+    <InputColumns>
+      <Column Name="MinVersion" Type="System.Int64"/>
+      <Column Name="DesiredServerRoleBitMask" Type="Microsoft.Exchange.Data.Directory.SystemConfiguration.ServerRole, Microsoft.Exchange.Data.Directory"/>
+      <Column Name="IncludeLegacyServer" Type="System.Boolean"/>
+      <Column Name="OnlyBackendServer" Type="System.Boolean"/>
+      <Column Name="ExcludeServers" Type="Microsoft.Exchange.Data.Directory.ADObjectId[], Microsoft.Exchange.Data.Directory"/>
+      <Column Name="ExactVersion" Type="System.String"/>
+    </InputColumns>
+    <DataTableFillers>
+      <MonadAdapterFiller Command="Get-ExchangeServer" FilterBuilder="Microsoft.Exchange.Management.SystemManager.WinForms.ExchangeServerFilterBuilder" />
+    </DataTableFillers>
+    <Configuration>
+      <Caption>ExchangeServer</Caption>
+      <DisplayedColumns>
+        <Column Name="Name" Text="Name" Mandatory="true" />
+        <Column Name="DisplayServerRole" Text="RoleColumn" Mandatory="true"/>
+        <Column Name="AdminDisplayVersion" Text="AdminDisplayVersion" Mandatory="true"/>
+      </DisplayedColumns>
+      <ImageColumn>ImageProperty</ImageColumn>
+      <HelpTopic>Microsoft.Exchange.Management.SystemManager.WinForms.ExchangeServerPicker</HelpTopic>
+    </Configuration>
+  </ResultsLoader>
+  
+  <!-- Schema for ExchangeServerConfigurable-->
+  <ResultsLoader Name="LegacyExchangeServerConfigurable">
+    <DataColumns PrimaryKey="Guid">
+      <RefColumns Name="CommonProperties" />
+      <Column Name="AdminDisplayVersion"/>
+      <Column Name="ImageProperty" DefaultValue="ExchangeServerPicker" />
+    </DataColumns>
+    <DataTableFillers>
+      <MonadAdapterFiller Command="Get-ExchangeServer" FilterBuilder="Microsoft.Exchange.Management.SystemManager.WinForms.LegacyExchangeServerFilterBuilder"/>
+    </DataTableFillers>
+    <Configuration>
+      <Caption>LegacyExchangeServer</Caption>
+      <DisplayedColumns>
+        <Column Name="Name" Text="Name" Mandatory="true" />
+        <Column Name="AdminDisplayVersion" Text="AdminDisplayVersion" Mandatory="true"/>
+      </DisplayedColumns>
+      <ImageColumn>ImageProperty</ImageColumn>
+      <HelpTopic>Microsoft.Exchange.Management.SystemManager.WinForms.LegacyExchangeServerPicker</HelpTopic>
+    </Configuration>
+  </ResultsLoader>
+
+  <!-- Schema for MailboxServerAndBackendServerConfigurable-->
+  <ResultsLoader Name="MailboxServerAndBackendServerConfigurable">
+    <DataColumns PrimaryKey="Guid">
+      <RefColumns Name="CommonProperties" />
+      <RefColumns Name="ExchangeServerProperties"/>
+      <Column Name="ImageProperty" DefaultValue="ExchangeServerPicker" />
+    </DataColumns>
+    <InputColumns>
+      <Column Name="MinVersion" Type="System.Int64" DefaultValue="6"/>
+      <Column Name="DesiredServerRoleBitMask" Type="Microsoft.Exchange.Data.Directory.SystemConfiguration.ServerRole, Microsoft.Exchange.Data.Directory" DefaultValue="Mailbox"/>
+      <Column Name="IncludeLegacyServer" Type="System.Boolean" DefaultValue="true"/>
+      <Column Name="OnlyBackendServer" Type="System.Boolean" DefaultValue="true"/>
+      <Column Name="ExcludeServers" Type="Microsoft.Exchange.Data.Directory.ADObjectId[], Microsoft.Exchange.Data.Directory"/>
+    </InputColumns>
+    <DataTableFillers>
+      <MonadAdapterFiller Command="Get-ExchangeServer" FilterBuilder="Microsoft.Exchange.Management.SystemManager.WinForms.ExchangeServerFilterBuilder" />
+    </DataTableFillers>
+    <Configuration>
+      <Caption>MailboxServerAndBackendServer</Caption>
+      <DisplayedColumns>
+        <Column Name="Name" Text="Name" Mandatory="true" />
+        <Column Name="AdminDisplayVersion" Text="AdminDisplayVersion" Mandatory="true"/>
+      </DisplayedColumns>
+      <ImageColumn>ImageProperty</ImageColumn>
+      <HelpTopic>Microsoft.Exchange.Management.SystemManager.WinForms.ExchangeServerPicker</HelpTopic>
+    </Configuration>
+  </ResultsLoader>
+  
+  <!-- Schema for MasterConfigurable-->
+  <ResultsLoader Name="MasterConfigurable">
+    <DataColumns PrimaryKey="Guid">
+      <RefColumns Name="CommonProperties"/>
+      <Column Name="AdminDisplayVersion" />
+      <Column Name="ServerRole" Type="Microsoft.Exchange.Data.Directory.SystemConfiguration.ServerRole, Microsoft.Exchange.Data.Directory"/>
+      <Column Name="ImageProperty" LambdaExpression="ServerRole=>IIF(!DBNull.Value.Equals(@0[&quot;ServerRole&quot;]), &quot;ExchangeServerPicker&quot;, &quot;DatabaseAvailabilityGroupPicker&quot;)"/>
+    </DataColumns>
+    <DataTableFillers>
+      <MonadAdapterFiller Command="Get-ExchangeServer" FilterBuilder="Microsoft.Exchange.Management.SystemManager.WinForms.ExchangeServerFilterBuilder"/>
+      <MonadAdapterFiller Command="Get-DatabaseAvailabilityGroup"/>
+    </DataTableFillers>
+    <InputColumns>
+      <Column Name="MinVersion" Type="System.Int64" DefaultValue="14"/>
+      <Column Name="DesiredServerRoleBitMask" Type="Microsoft.Exchange.Data.Directory.SystemConfiguration.ServerRole, Microsoft.Exchange.Data.Directory" DefaultValue="Mailbox"/>
+      <Column Name="IncludeLegacyServer" Type="System.Boolean"/>
+    </InputColumns>
+    <Configuration>
+      <Caption>Master</Caption>
+      <DisplayedColumns>
+        <Column Name="Name" Text="Name" Mandatory="true"/>
+        <Column Name="AdminDisplayVersion" Text="AdminDisplayVersion" Mandatory="true"/>
+      </DisplayedColumns>
+      <ImageColumn>ImageProperty</ImageColumn>
+      <HelpTopic>Microsoft.Exchange.Management.SystemManager.WinForms.MasterPicker</HelpTopic>
+    </Configuration>
+  </ResultsLoader>
+  
+  <!-- Schema for E14MailboxDataBaseConfigurable-->
+  <ResultsLoader Name="E14MailboxDataBaseConfigurable">
+    <DataColumns PrimaryKey="Guid">
+      <RefColumns Name="CommonProperties" />
+      <Column Name="ServerName"/>
+      <Column Name="Server" Type="System.Object"/>
+      <Column Name="ImageProperty" DefaultValue="MailboxDatabasePicker"/>
+    </DataColumns>
+    
+    <DataTableFillers>
+      <MonadAdapterFiller Command="Get-MailboxDataBase" />
+    </DataTableFillers>
+    
+    <Configuration>
+      <Caption>MailboxDatabase</Caption>
+      <DisplayedColumns>
+        <Column Name="Name" Text="Name" Mandatory="true"/>
+        <Column Name="ServerName" Text="ServerColumn" Mandatory="true"/>
+      </DisplayedColumns>
+      <ImageColumn>ImageProperty</ImageColumn>
+      <HelpTopic>Microsoft.Exchange.Management.SystemManager.WinForms.E14MailboxDatabasePicker</HelpTopic>
+      <SerializationLevel>Full</SerializationLevel>
+    </Configuration>
+  </ResultsLoader>
+
+  <!-- Schema for MailboxDataBaseConfigurable-->
+  <ResultsLoader Name="MailboxDataBaseConfigurable">
+    <DataColumns PrimaryKey="Guid">
+      <RefColumns Name="CommonProperties" />
+      <Column Name="ServerName"/>
+      <Column Name="Server" Type="System.Object"/>
+      <Column Name="ImageProperty" DefaultValue="MailboxDatabasePicker"/>
+    </DataColumns>
+
+    <InputColumns>
+      <Column Name="IsExchange2007OrLaterOnly" Type="System.Boolean" DefaultValue="false"/>
+    </InputColumns>
+
+    <DataTableFillers>
+      <MonadAdapterFiller Command="Get-MailboxDataBase" FilterBuilder="Microsoft.Exchange.Management.SystemManager.WinForms.DatabaseFilterBuilder">
+        <Parameters>
+          <Parameter Name="IncludePreExchange2013" Value=""/>
+        </Parameters>
+      </MonadAdapterFiller>
+    </DataTableFillers>
+
+    <Configuration>
+      <Caption>MailboxDatabase</Caption>
+      <DisplayedColumns>
+        <Column Name="Name" Text="Name" Mandatory="true"/>
+        <Column Name="ServerName" Text="ServerColumn" Mandatory="true"/>
+      </DisplayedColumns>
+      <ImageColumn>ImageProperty</ImageColumn>
+      <HelpTopic>Microsoft.Exchange.Management.SystemManager.WinForms.MailboxDatabasePicker</HelpTopic>
+      <SerializationLevel>Full</SerializationLevel>
+    </Configuration>
+  </ResultsLoader>
+
+  <!-- Schema for Unified Messaging Server Picker-->
+  <ResultsLoader Name="UnifiedMessagingServerConfigurable">
+    <DataColumns PrimaryKey="Guid" DataColumnsCalculator="Microsoft.Exchange.Management.SnapIn.Esm.ServerDataColumnsCalculator, Microsoft.Exchange.Management.SnapIn.Esm">
+      <RefColumns Name="CommonProperties" />
+      <RefColumns Name="ExchangeServerProperties"/>
+      <Column Name="ImageProperty" DefaultValue="ExchangeServerPicker" />
+    </DataColumns>
+    <InputColumns>
+      <Column Name="MinVersion" Type="System.Int64"/>
+      <Column Name="DesiredServerRoleBitMask" Type="Microsoft.Exchange.Data.Directory.SystemConfiguration.ServerRole, Microsoft.Exchange.Data.Directory" DefaultValue="UnifiedMessaging"/>
+      <Column Name="IncludeLegacyServer" Type="System.Boolean"/>
+    </InputColumns>
+    <DataTableFillers>
+      <MonadAdapterFiller Command="Get-ExchangeServer" ResolveCommand =""  SearchType="NameProperty" FilterBuilder="Microsoft.Exchange.Management.SystemManager.WinForms.ExchangeServerFilterBuilder"/>
+    </DataTableFillers>
+    <Configuration>
+      <Caption>ExchangeUMServer</Caption>
+      <DisplayedColumns>
+        <Column Name="Name" Text="Name" Mandatory="true" />
+        <Column Name="DisplayServerRole" Text="RoleColumn" Mandatory="true"/>
+        <Column Name="AdminDisplayVersion" Text="AdminDisplayVersion" Mandatory="true"/>
+      </DisplayedColumns>
+      <ImageColumn>ImageProperty</ImageColumn>
+      <HelpTopic>Microsoft.Exchange.Management.SystemManager.WinForms.ExchangeServerPicker</HelpTopic>
+    </Configuration>
+  </ResultsLoader>
+
+  <!-- Schema for Unified Messaging Server Picker With DialPlans -->
+  <ResultsLoader Name="UnifiedMessagingServerWithDialPlansConfigurable">
+    <DataColumns PrimaryKey="Guid" DataColumnsCalculator="Microsoft.Exchange.Management.SnapIn.Esm.ServerDataColumnsCalculator, Microsoft.Exchange.Management.SnapIn.Esm">
+      <RefColumns Name="CommonProperties" />
+      <RefColumns Name="ExchangeServerProperties"/>
+      <Column Name="ImageProperty" DefaultValue="ExchangeServerPicker" />
+      <Column Name="DialPlans" Type="System.Object" />
+    </DataColumns>
+    <InputColumns>
+      <Column Name="MinVersion" Type="System.Int64"/>
+      <Column Name="DesiredServerRoleBitMask" Type="Microsoft.Exchange.Data.Directory.SystemConfiguration.ServerRole, Microsoft.Exchange.Data.Directory" DefaultValue="UnifiedMessaging"/>
+      <Column Name="IncludeLegacyServer" Type="System.Boolean"/>
+    </InputColumns>
+    <DataTableFillers FillType="PartialFill">
+      <MonadAdapterFiller Command="Get-ExchangeServer" FilterBuilder="Microsoft.Exchange.Management.SystemManager.WinForms.ExchangeServerFilterBuilder" />
+      <MonadAdapterFiller Command="Get-UMService"/>
+    </DataTableFillers>
+    <Configuration>
+      <Caption>ExchangeUMServer</Caption>
+      <DisplayedColumns>
+        <Column Name="Name" Text="Name" Mandatory="true" />
+        <Column Name="DisplayServerRole" Text="RoleColumn" Mandatory="true"/>
+        <Column Name="AdminDisplayVersion" Text="AdminDisplayVersion" Mandatory="true"/>
+      </DisplayedColumns>
+      <ImageColumn>ImageProperty</ImageColumn>
+      <HelpTopic>Microsoft.Exchange.Management.SystemManager.WinForms.ExchangeServerPicker</HelpTopic>
+      <!-- The whole object is necessary for dial plan creation wizard. -->
+      <SerializationLevel>Full</SerializationLevel>
+    </Configuration>
+  </ResultsLoader>
+  
+	<!-- Schema for AutoAttendantConfigurable-->
+	<ResultsLoader Name="AutoAttendantConfigurable">
+		<DataColumns PrimaryKey="Guid">
+			<RefColumns Name="CommonProperties" />
+			<Column Name="ImageProperty" DefaultValue="UMAutoAttendantPicker" />
+		</DataColumns>
+
+		<InputColumns>
+			<Column Name="UMDialPlan" Type="Microsoft.Exchange.Data.Directory.ADObjectId, Microsoft.Exchange.Data.Directory" />
+		</InputColumns>
+
+		<DataTableFillers>
+			<MonadAdapterFiller Command="Get-UMAutoAttendant" FilterBuilder="Microsoft.Exchange.Management.SystemManager.WinForms.AutoAttendantFilterBuilder"/>
+		</DataTableFillers>
+
+		<Configuration>
+			<Caption>AutoAttendant</Caption>
+			<DisplayedColumns>
+				<Column Name="Name" Text="Name" Mandatory="true" />
+			</DisplayedColumns>
+			<ImageColumn>ImageProperty</ImageColumn>
+			<HelpTopic>Microsoft.Exchange.Management.SystemManager.WinForms.AutoAttendantPicker</HelpTopic>
+		</Configuration>
+	</ResultsLoader>
+
+	<!-- Schema for DAGNetworkConfigurable-->
+	<ResultsLoader Name="DAGNetworkConfigurable">
+		<DataColumns PrimaryKey="Guid" NameProperty="Identity">
+			<Column Name="Identity" Type="System.String"/>
+			<Column Name="ImageProperty" DefaultValue="DAGNetworkPicker" />
+		</DataColumns>
+
+		<DataTableFillers>
+      <MonadAdapterFiller Command="Get-DatabaseAvailabilityGroupNetwork" FilterBuilder="Microsoft.Exchange.Management.SystemManager.WinForms.DAGNetworkFilterBuilder">
+        <Parameters>
+          <AdditionalParameter Name="Server"/>
+        </Parameters>
+      </MonadAdapterFiller>
+		</DataTableFillers>
+
+		<InputColumns>
+			<Column Name="Server" Type="Microsoft.Exchange.Data.Directory.ADObjectId, Microsoft.Exchange.Data.Directory" />
+		</InputColumns>
+
+		<Configuration>
+			<Caption>DAGNetwork</Caption>
+			<DisplayedColumns>
+				<Column Name="Identity" Text="IdentityColumnName" Mandatory="true" />
+			</DisplayedColumns>
+			<ImageColumn>ImageProperty</ImageColumn>
+			<HelpTopic>Microsoft.Exchange.Management.SystemManager.WinForms.DAGNetworkConfigurable</HelpTopic>
+		</Configuration>
+	</ResultsLoader>
+	
+	<!-- Schema for GroupConfigurable-->
+	<ResultsLoader Name="GroupConfigurable">
+		<DataColumns PrimaryKey="Guid">
+			<RefColumns Name="CommonProperties" />
+			<RefColumns Name="ContactCommonProperties" />
+		</DataColumns>
+
+		<DataTableFillers>
+			<MonadAdapterFiller Command="Get-Group" SearchType="ANR" UseFilterToResolveNonId="true">
+				<Parameters>
+					<Parameter Name="ResultSize" Value="Unlimited"/>
+				</Parameters>
+			</MonadAdapterFiller>
+		</DataTableFillers>
+
+		<Configuration>
+			<Caption>Group</Caption>
+			<DisplayedColumns>
+				<Column Name="Name" Text="Name" Mandatory="true" />
+				<Column Name="GroupType" Text="GroupTypeColumnInPicker" Mandatory="true" />
+			</DisplayedColumns>
+			<ImageColumn>RecipientTypeDetails</ImageColumn>
+			<HelpTopic>Microsoft.Exchange.Management.SystemManager.WinForms.GroupPicker</HelpTopic>
+		</Configuration>
+	</ResultsLoader>
+
+  <!-- Schema for SecurityGroupConfigurable-->
+  <ResultsLoader Name="SecurityGroupConfigurable">
+    <DataColumns PrimaryKey="Guid">
+      <RefColumns Name="CommonProperties" />
+      <RefColumns Name="ContactCommonProperties" />
+    </DataColumns>
+
+    <DataTableFillers>
+      <MonadAdapterFiller Command="Get-Group" SearchType="ANR" UseFilterToResolveNonId="true">
+        <Parameters>
+          <Parameter Name="ResultSize" Value="Unlimited"/>
+          <Parameter Name="RecipientTypeDetails" Value="UniversalSecurityGroup,MailUniversalSecurityGroup"/>
+        </Parameters>
+      </MonadAdapterFiller>
+    </DataTableFillers>
+
+    <Configuration>
+      <Caption>SecurityGroup</Caption>
+      <DisplayedColumns>
+        <Column Name="Name" Text="Name" Mandatory="true" />
+        <Column Name="GroupType" Text="GroupTypeColumnInPicker" Mandatory="true" />
+      </DisplayedColumns>
+      <ImageColumn>RecipientTypeDetails</ImageColumn>
+      <HelpTopic>Microsoft.Exchange.Management.SystemManager.WinForms.SecurityGroupPicker</HelpTopic>
+    </Configuration>
+  </ResultsLoader>
+  
+  <!-- Schema for DialPlanConfigurable-->
+  <ResultsLoader Name="DialPlanConfigurable">
+    <DataColumns PrimaryKey="Guid">
+      <RefColumns Name="CommonProperties" />
+      <Column Name="NumberOfDigitsInExtension"/>
+      <Column Name="PhoneContext"/>
+      <Column Name="ImageProperty" DefaultValue="UMDialPlanPicker" />
+    </DataColumns>
+
+    <InputColumns>
+      <Column Name="ExcludeSipNameURIType" Type="System.Boolean"/>
+    </InputColumns>
+
+    <DataTableFillers>
+      <MonadAdapterFiller Command="Get-UMDialPlan" FilterBuilder="Microsoft.Exchange.Management.SystemManager.WinForms.UMDialPlanFilterBuilder"/>
+    </DataTableFillers>
+
+    <Configuration>
+      <Caption>DialPlan</Caption>
+      <DisplayedColumns>
+        <Column Name="Name" Text="Name" Mandatory="true" />
+        <Column Name="NumberOfDigitsInExtension" Text="NumberOfDigitsInExtension" Mandatory="true"/>
+        <Column Name="PhoneContext" Text="PhoneContext" Mandatory="true"/>
+      </DisplayedColumns>
+      <ImageColumn>ImageProperty</ImageColumn>
+      <HelpTopic>Microsoft.Exchange.Management.SystemManager.WinForms.DialPlanPicker</HelpTopic>
+    </Configuration>
+  </ResultsLoader>
+
+  <!-- Schema for IPGatewayConfigurable-->
+  <ResultsLoader Name="IPGatewayConfigurable">
+    <DataColumns PrimaryKey="Guid">
+      <RefColumns Name="CommonProperties" />
+      <Column Name="Status" Type="Microsoft.Exchange.Data.Directory.SystemConfiguration.GatewayStatus, Microsoft.Exchange.Data.Directory"/>
+    </DataColumns>
+
+    <DataTableFillers>
+      <MonadAdapterFiller Command="Get-UMIPGateway" />
+    </DataTableFillers>
+
+    <Configuration>
+      <Caption>IPGateway</Caption>
+      <DisplayedColumns>
+        <Column Name="Name" Text="Name" Mandatory="true" />
+      </DisplayedColumns>
+      <ImageColumn>Status</ImageColumn>
+      <HelpTopic>Microsoft.Exchange.Management.SystemManager.WinForms.UMIPGatewayPicker</HelpTopic>
+    </Configuration>
+  </ResultsLoader>
+
+  <!-- Schema for UMMailboxPolicyConfigurable-->
+  <ResultsLoader Name="UMMailboxPolicyConfigurable">
+    <DataColumns PrimaryKey="Guid">
+      <RefColumns Name="CommonProperties" />
+      <Column Name="ImageProperty" DefaultValue="UMMailboxPolicyPicker" />
+    </DataColumns>
+
+    <DataTableFillers>
+      <MonadAdapterFiller Command="Get-UMMailboxPolicy" FilterBuilder="Microsoft.Exchange.Management.SystemManager.WinForms.AutoAttendantFilterBuilder"/>
+    </DataTableFillers>
+
+    <InputColumns>
+      <Column Name="UMDialPlan" Type="Microsoft.Exchange.Data.Directory.ADObjectId, Microsoft.Exchange.Data.Directory" />
+    </InputColumns>
+    
+    <Configuration>
+      <Caption>UMMailboxPolicy</Caption>
+      <DisplayedColumns>
+        <Column Name="Name" Text="Name" Mandatory="true" />
+      </DisplayedColumns>
+      <ImageColumn>ImageProperty</ImageColumn>
+      <HelpTopic>Microsoft.Exchange.Management.SystemManager.WinForms.UMMailboxPolicyPicker</HelpTopic>
+    </Configuration>
+  </ResultsLoader>
+  
+  <!-- Schema for ADSitePickerConfigurable-->
+  <ResultsLoader Name="ADSiteConfigurable">
+    <DataColumns PrimaryKey="Guid">
+      <RefColumns Name="CommonProperties" />
+    </DataColumns>
+    
+    <DataTableFillers>
+      <MonadAdapterFiller Command="Get-ADSite" />
+    </DataTableFillers>
+
+    <Configuration>
+      <HideIcon>true</HideIcon>
+      <Caption>ADSite</Caption>
+      <DisplayedColumns>
+        <Column Name="Name" Text="Name" Mandatory="true" />
+      </DisplayedColumns>
+      <HelpTopic>Microsoft.Exchange.Management.SystemManager.WinForms.ADSitePicker</HelpTopic>
+    </Configuration>
+  </ResultsLoader>
+  
+  <!-- Schema for BridgeheadEdgeSubServerConfigurable -->
+  <ResultsLoader Name="E14BridgeheadEdgeSubServerConfigurable">
+    <DataColumns PrimaryKey="Guid">
+      <RefColumns Name="CommonProperties" />
+      <Column Name="Site"/>
+      <Column Name="ADSiteShortName" LambdaExpression="Site=>IIF(DBNull.Value.Equals(@0[Site]), String.Empty, WinformsHelper.GetADShortName(String(@0[Site])))" />
+      <Column Name="ServerRole" Type="Microsoft.Exchange.Data.Directory.SystemConfiguration.ServerRole, Microsoft.Exchange.Data.Directory"/>
+      <Column Name="ImageProperty" DefaultValue="ExchangeServerPicker" />
+    </DataColumns>
+    <InputColumns>
+      <Column Name="MinVersion" Type="System.Int64"/>
+      <Column Name="DesiredServerRoleBitMask" Type="Microsoft.Exchange.Data.Directory.SystemConfiguration.ServerRole, Microsoft.Exchange.Data.Directory" DefaultValue="HubTransport,Edge"/>
+      <Column Name="IncludeLegacyServer" Type="System.Boolean"/>
+    </InputColumns>
+    <DataTableFillers>
+      <MonadAdapterFiller Command="Get-ExchangeServer" ResolveCommand ="" SearchType="NameProperty" FilterBuilder="Microsoft.Exchange.Management.SystemManager.WinForms.ExchangeServerFilterBuilder"/>
+    </DataTableFillers>
+    <Configuration>
+      <Caption>BridgeheadsAndEdgeSubscriptionsPickerText</Caption>
+      <DisplayedColumns>
+        <Column Name="Name" Text="Name" Mandatory="true"/>
+        <Column Name="ADSiteShortName" Text="ServerSite" Mandatory="true"/>
+        <Column Name="ServerRole" Text="ServerRole" Mandatory="true"/>
+      </DisplayedColumns>
+      <ImageColumn>ImageProperty</ImageColumn>
+      <HelpTopic>Microsoft.Exchange.Management.SystemManager.WinForms.BridgeheadEdgeSubscriptionPicker</HelpTopic>
+    </Configuration>
+  </ResultsLoader>
+
+  <!-- Schema for OwaMailboxPolicyConfigurable-->
+  <ResultsLoader Name="OwaMailboxPolicyConfigurable">
+    <DataColumns>
+      <RefColumns Name="CommonProperties" />
+      <Column Name="ImageProperty" DefaultValue="OwaMailboxPolicyPicker" />
+      <Column Name="CalendarEnabled" Type="System.Boolean"/>
+      <Column Name="ContactsEnabled" Type="System.Boolean"/>
+      <Column Name="TasksEnabled" Type="System.Boolean"/>
+      <Column Name="JournalEnabled" Type="System.Boolean"/>
+      <Column Name="NotesEnabled" Type="System.Boolean"/>
+      <Column Name="RemindersAndNotificationsEnabled" Type="System.Boolean"/>
+      <Column Name="PremiumClientEnabled" Type="System.Boolean"/>
+      <Column Name="SpellCheckerEnabled" Type="System.Boolean"/>
+      <Column Name="SearchFoldersEnabled" Type="System.Boolean"/>
+      <Column Name="SignaturesEnabled" Type="System.Boolean"/>
+      <Column Name="ThemeSelectionEnabled" Type="System.Boolean"/>
+      <Column Name="JunkEmailEnabled" Type="System.Boolean"/>
+    </DataColumns>
+    <DataTableFillers>
+      <MonadAdapterFiller Command="Get-OwaMailboxPolicy"/>
+    </DataTableFillers>
+    <Configuration>
+      <Caption>OwaMailboxPolicyPicker</Caption>
+      <DisplayedColumns>
+        <Column Name="Name" Text="Name" Mandatory="true" />
+        <Column Name="CalendarEnabled" Text="OWACalendarEnabled" />
+        <Column Name="ContactsEnabled" Text="OWAContactsEnabled" />
+        <Column Name="TasksEnabled" Text="OWATasksEnabled" />
+        <Column Name="JournalEnabled" Text="OWAJournalEnabled" />
+        <Column Name="NotesEnabled" Text="OWANotesEnabled" />
+        <Column Name="RemindersAndNotificationsEnabled" Text="OWARemindersAndNotificationsEnabled" />
+        <Column Name="SpellCheckerEnabled" Text="OWASpellCheckerEnabled" />
+        <Column Name="PremiumClientEnabled" Text="OWAPremiumClientEnabled" />
+        <Column Name="SearchFoldersEnabled" Text="OWASearchFoldersEnabled" />
+        <Column Name="SignaturesEnabled" Text="OWASignaturesEnabled" />
+        <Column Name="ThemeSelectionEnabled" Text="OWAThemeSelectionEnabled" />
+        <Column Name="JunkEmailEnabled" Text="OWAJunkEmailEnabled" />
+      </DisplayedColumns>
+      <ImageColumn>ImageProperty</ImageColumn>
+      <HelpTopic>Microsoft.Exchange.Management.SystemManager.WinForms.OwaMailboxPolicyPicker</HelpTopic>
+    </Configuration>
+  </ResultsLoader>
+
+  <!-- Schema for RecipientConfigurable-->
+  <ResultsLoader Name="RecipientConfigurable">
+    <DataColumns PrimaryKey="Guid" NameProperty="DisplayName">
+      <RefColumns Name="CommonProperties" />
+      <RefColumns Name="ContactCommonProperties" />
+    </DataColumns>
+
+    <DataTableFillers>
+      <MonadAdapterFiller Command="Get-Recipient" FilterBuilder="Microsoft.Exchange.Management.SystemManager.WinForms.ExcludeObjectFilterBuilder" SearchType="ANR">
+        <Parameters>
+          <Parameter Name="PropertySet" Value="ConsoleSmallSet"/>
+          <Parameter Name="ResultSize" Value="Unlimited"/>
+          <Parameter Name="RecipientTypeDetails" Value="MailUniversalDistributionGroup,MailUniversalSecurityGroup,PublicFolder,MailUser,RemoteUserMailbox,RemoteRoomMailbox,RemoteEquipmentMailbox,RemoteSharedMailbox,RemoteTeamMailbox,DynamicDistributionGroup,UserMailbox,LinkedMailbox,SharedMailbox,TeamMailbox,LegacyMailbox,RoomMailbox,EquipmentMailbox,MailContact,MailForestContact"/>
+        </Parameters>
+      </MonadAdapterFiller>
+    </DataTableFillers>
+    
+    <InputColumns>
+      <Column Name="ExcludeObject" Type="Microsoft.Exchange.Data.Directory.ADObjectId, Microsoft.Exchange.Data.Directory" />
+    </InputColumns>
+
+    <Configuration>
+      <Caption>Recipient</Caption>
+      <DisplayedColumns>
+        <Column Name="DisplayName" Text="DisplayNameColumnInPicker" Mandatory="true" />
+        <Column Name="Alias" Text="AliasColumnInPicker" Mandatory="true" />
+        <Column Name="RecipientTypeDetails" Text="RecipientTypeDetailsColumnInPicker" Mandatory="true" />
+        <Column Name="PrimarySmtpAddressToString" Text="PrimarySmtpAddressColumnInPicker" Mandatory="true" />
+      </DisplayedColumns>
+      <ImageColumn>RecipientTypeDetails</ImageColumn>
+      <ScopeSupportingLevel>FullScoping</ScopeSupportingLevel>
+      <HelpTopic>Microsoft.Exchange.Management.SystemManager.WinForms.RecipientsPicker</HelpTopic>
+    </Configuration>
+  </ResultsLoader>
+
+  <!-- Schema for WithPrimarySmtpAddressRecipientConfigurable-->
+  <ResultsLoader Name="WithPrimarySmtpAddressRecipientConfigurable">
+    <DataColumns PrimaryKey="Guid" NameProperty="DisplayName">
+      <RefColumns Name="CommonProperties" />
+      <RefColumns Name="ContactCommonProperties" />
+    </DataColumns>
+
+    <DataTableFillers>
+      <MonadAdapterFiller Command="Get-Recipient" FilterBuilder="Microsoft.Exchange.Management.SystemManager.WinForms.WithPrimarySmtpAddressRecipientFilterBuilder" SearchType="ANR">
+        <Parameters>
+          <Parameter Name="PropertySet" Value="ConsoleSmallSet"/>
+          <Parameter Name="ResultSize" Value="Unlimited"/>
+          <Parameter Name="RecipientTypeDetails" Value="MailUniversalDistributionGroup,MailUniversalSecurityGroup,PublicFolder,MailUser,RemoteUserMailbox,RemoteRoomMailbox,RemoteEquipmentMailbox,RemoteSharedMailbox,RemoteTeamMailbox,DynamicDistributionGroup,UserMailbox,LinkedMailbox,SharedMailbox,TeamMailbox,LegacyMailbox,RoomMailbox,EquipmentMailbox,MailContact,MailForestContact"/>
+        </Parameters>
+      </MonadAdapterFiller>
+    </DataTableFillers>
+
+    <Configuration>
+      <Caption>Recipient</Caption>
+      <DisplayedColumns>
+        <Column Name="DisplayName" Text="DisplayNameColumnInPicker" Mandatory="true" />
+        <Column Name="Alias" Text="AliasColumnInPicker" Mandatory="true" />
+        <Column Name="RecipientTypeDetails" Text="RecipientTypeDetailsColumnInPicker" Mandatory="true" />
+        <Column Name="PrimarySmtpAddressToString" Text="PrimarySmtpAddressColumnInPicker" Mandatory="true" />
+      </DisplayedColumns>
+      <ImageColumn>RecipientTypeDetails</ImageColumn>
+      <ScopeSupportingLevel>FullScoping</ScopeSupportingLevel>
+      <HelpTopic>Microsoft.Exchange.Management.SystemManager.WinForms.WithPrimarySmtpAddressRecipientPicker</HelpTopic>
+    </Configuration>
+  </ResultsLoader>
+
+  <!-- Schema for PublicFolderDataBaseConfigurable-->
+  <ResultsLoader Name="PublicFolderDataBaseConfigurable">
+    <DataColumns PrimaryKey="Guid">
+      <RefColumns Name="CommonProperties" />
+      <Column Name="ServerName" />
+      <Column Name="Server" />
+      <Column Name="ImageProperty" DefaultValue="PublicFolderDatabasePicker" />
+    </DataColumns>
+
+    <DataTableFillers>
+      <MonadAdapterFiller Command="Get-PublicFolderDataBase" FilterBuilder="Microsoft.Exchange.Management.SystemManager.WinForms.DatabaseFilterBuilder">
+        <Parameters>
+          <Parameter Name="IncludePreExchange2010" Value=""/>
+        </Parameters>
+      </MonadAdapterFiller>
+    </DataTableFillers>
+
+    <InputColumns>
+      <Column Name="IsExchange2007OrLaterOnly" Type="System.Boolean" DefaultValue="false" />
+    </InputColumns>
+
+    <Configuration>
+      <Caption>PublicFolderDatabase</Caption>
+      <DisplayedColumns>
+        <Column Name="Name" Text="Name" Mandatory="true"/>
+        <Column Name="ServerName" Text="ServerColumn" Mandatory="true"/>
+      </DisplayedColumns>
+      <ImageColumn>ImageProperty</ImageColumn>
+      <HelpTopic>Microsoft.Exchange.Management.SystemManager.WinForms.PublicFolderDatabasePicker</HelpTopic>
+    </Configuration>
+  </ResultsLoader>
+  
+  <!-- Schema for SharingPolicyConfigurable-->
+  <ResultsLoader Name="SharingPolicyConfigurable">
+    <DataColumns>
+      <RefColumns Name="CommonProperties" />
+      <Column Name="ImageProperty" DefaultValue="SharingPolicyPicker" />
+      <Column Name="Domains" />
+      <Column Name="Enabled" Type="System.Boolean"/>
+      <Column Name="Default" Type="System.Boolean"/>
+    </DataColumns>
+    <DataTableFillers>
+      <MonadAdapterFiller Command="Get-SharingPolicy"/>
+    </DataTableFillers>
+    <Configuration>
+      <Caption>SharingPolicyPickerTitle</Caption>
+      <DisplayedColumns>
+        <Column Name="Name" Text="Name" Mandatory="true" />
+        <Column Name="Domains" Text="DomainsColumnName" Mandatory="true" />
+        <Column Name="Enabled" Text="SharingEnabledColumnName" Mandatory="true" />
+        <Column Name="Default" Text="DefaultPolicy" Mandatory="true"/>
+      </DisplayedColumns>
+      <ImageColumn>ImageProperty</ImageColumn>
+      <HelpTopic>Microsoft.Exchange.Management.SystemManager.WinForms.SharingPolicyPickerTitle</HelpTopic>
+    </Configuration>
+  </ResultsLoader>
+
+  <!-- Schema for RoleAssignmentPolicyConfigurable-->
+  <ResultsLoader Name="RoleAssignmentPolicyConfigurable">
+    <DataColumns>
+      <RefColumns Name="CommonProperties" />
+      <Column Name="ImageProperty" DefaultValue="RoleAssignmentPolicyPicker" />
+      <Column Name="Description" />
+    </DataColumns>
+    <DataTableFillers>
+      <MonadAdapterFiller Command="Get-RoleAssignmentPolicy"/>
+    </DataTableFillers>
+    <Configuration>
+      <Caption>RoleAssignmentPolicyPickerTitle</Caption>
+      <DisplayedColumns>
+        <Column Name="Name" Text="Name" Mandatory="true" />
+        <Column Name="Description" Text="RoleAssignmentPolicyDescriptionColumnText" Mandatory="true" />
+      </DisplayedColumns>
+      <ImageColumn>ImageProperty</ImageColumn>
+      <HelpTopic>Microsoft.Exchange.Management.SystemManager.WinForms.RoleAssignmentPolicyPicker</HelpTopic>
+    </Configuration>
+  </ResultsLoader>
+
+  <!-- Schema for MailboxPlanConfigurable-->
+  <ResultsLoader Name="MailboxPlanConfigurable">
+    <DataColumns>
+      <RefColumns Name="CommonProperties" />
+      <Column Name="ImageProperty" DefaultValue="MailboxPlanPicker" />
+      <Column Name="IsDefault" Type="System.Boolean" />
+    </DataColumns>
+    <DataTableFillers>
+      <MonadAdapterFiller Command="Get-MailboxPlan"/>
+    </DataTableFillers>
+    <Configuration>
+      <Caption>MailboxPlanPickerTitle</Caption>
+      <DisplayedColumns>
+        <Column Name="Name" Text="Name" Mandatory="true" />
+        <Column Name="IsDefault" Text="DefaultColumn" Mandatory="true"/>
+      </DisplayedColumns>
+      <ImageColumn>ImageProperty</ImageColumn>
+      <HelpTopic>Microsoft.Exchange.Management.SystemManager.WinForms.MailboxPlanPicker</HelpTopic>
+    </Configuration>
+  </ResultsLoader>
+
+  <!-- Schema for SupervisionListFillerConfigurable-->
+  <ResultsLoader Name="SupervisionListFillerConfigurable">
+    <DataColumns PrimaryKey="Name" DistinguishIdentity="Name">
+      <Column Name="Name" Type="System.String"/>
+      <Column Name="Value" Type="System.Object"/>
+    </DataColumns>
+
+    <DataTableFillers>
+      <SupervisionListFiller Command="Get-TransportConfig"/>
+    </DataTableFillers>
+
+    <Configuration>
+      <HideIcon>true</HideIcon>
+      <Caption>SupervisionListPickerTitle</Caption>
+      <DisplayedColumns>
+        <Column Name="Name" Text="Name" Mandatory="true"/>
+      </DisplayedColumns>
+      <SerializationLevel>Full</SerializationLevel>
+      <HelpTopic>Microsoft.Exchange.Management.SystemManager.WinForms.SupervisionListFillerConfigurable</HelpTopic>
+    </Configuration>
+  </ResultsLoader>
+
+  <!-- Schema for SecurityPrincipalConfigurable-->
+  <ResultsLoader Name="SecurityPrincipalConfigurable">
+    <DataColumns PrimaryKey="Sid" NameProperty="Name">
+      <RefColumns Name="CommonProperties"/>
+      <Column Name="Sid" Type="System.Security.Principal.SecurityIdentifier"/>
+      <Column Name="Type" Type="Microsoft.Exchange.Data.Directory.Management.SecurityPrincipalType, Microsoft.Exchange.Data.Directory" />
+      <Column Name="InFolder" />
+      <Column Name="UserFriendlyName" Type="System.String"/>
+    </DataColumns>
+
+    <DataTableFillers>
+      <MonadAdapterFiller Command="Get-SecurityPrincipal" FilterBuilder="Microsoft.Exchange.Management.SystemManager.WinForms.SecurityPrincipalFilterBuilder" SearchType="NameProperty">
+      </MonadAdapterFiller>
+    </DataTableFillers>
+
+    <InputColumns>
+      <Column Name="IncludeDomainLocalFrom" Type="Microsoft.Exchange.Data.SmtpDomain, Microsoft.Exchange.Data" />
+    </InputColumns>
+
+    <Configuration>
+      <Caption>UserOrGroup</Caption>
+      <DisplayedColumns>
+        <Column Name="Name" Text="NameColumnInPicker" Mandatory="true" />
+        <Column Name="UserFriendlyName" Text="ManagePermissionWizardIdentityColumnText" Mandatory="true" />
+        <Column Name="Type" Text="SecurityPrincipalTypeColumnInPicker" Mandatory="true" />
+        <Column Name="InFolder" Text="InFolderColumnInPicker" Mandatory="true" />
+      </DisplayedColumns>
+      <ImageColumn>Type</ImageColumn>
+      <ScopeSupportingLevel>FullScoping</ScopeSupportingLevel>
+      <SerializationLevel>Full</SerializationLevel>
+      <HelpTopic>Microsoft.Exchange.Management.SystemManager.WinForms.SecurityPrincipalPicker</HelpTopic>
+    </Configuration>
+  </ResultsLoader>
+
+  <!-- Schema for SecurityPrincipalResolveConfigurable-->
+  <ResultsLoader Name="SecurityPrincipalResolveConfigurable">
+    <DataColumns PrimaryKey="Sid" NameProperty="UserFriendlyName">
+      <Column Name="Sid" Type="System.Security.Principal.SecurityIdentifier"/>
+      <Column Name="UserFriendlyName" Type="System.String"/>
+    </DataColumns>
+
+    <DataTableFillers>
+      <SecurityIdentifierResolveFiller SidColumn="Sid" UserColumn="UserFriendlyName" />
+    </DataTableFillers>
+
+    <InputColumns>
+      <Column Name="SidToUserFriendlyNameMap" Type="System.Object" />
+    </InputColumns>
+    
+    <Configuration>
+      <Caption>UserOrGroup</Caption>
+      <DisplayedColumns>
+        <Column Name="UserFriendlyName" Text="ManagePermissionWizardIdentityColumnText" Mandatory="true" />
+      </DisplayedColumns>
+      <ScopeSupportingLevel>FullScoping</ScopeSupportingLevel>
+      <SerializationLevel>Full</SerializationLevel>
+      <HelpTopic>Microsoft.Exchange.Management.SystemManager.WinForms.SecurityPrincipalResolveConfigurable</HelpTopic>
+    </Configuration>
+  </ResultsLoader>
+
+  <RefColumnsSection>
+		<RefColumns Name="CommonProperties">
+			<Column Name="Name" />
+			<Column Name="Identity" Type="System.Object" LambdaExpression="DistinguishedName,Guid=>WinformsHelper.GenerateADObjectId(Guid(@0[&quot;Guid&quot;]), @0[DistinguishedName].ToString())"/>
+			<Column Name="Guid" Type="System.Guid"/>
+			<Column Name="DistinguishedName" />
+			<Column Name="ObjectClass" />
+			<Column Name="OrganizationalUnit" />
+			<Column Name="IdentityString" LambdaExpression="Identity=>@0[Identity].ToString()" />
+		</RefColumns>
+		<RefColumns Name="ContactCommonProperties">
+			<Column Name="City" />
+			<Column Name="Company" />
+			<Column Name="DisplayName" />
+			<Column Name="Department" />
+			<Column Name="FirstName" />
+			<Column Name="LastName" />
+			<Column Name="Manager"/>
+			<Column Name="Office" />
+			<Column Name="Phone" />
+			<Column Name="StateOrProvince" />
+			<Column Name="Title" />
+			<Column Name="RecipientTypeDetails" Type="Microsoft.Exchange.Data.Directory.Recipient.RecipientTypeDetails, Microsoft.Exchange.Data.Directory"/>
+			<Column Name="RecipientType" Type="Microsoft.Exchange.Data.Directory.Recipient.RecipientType, Microsoft.Exchange.Data.Directory" />
+			<Column Name="GroupType" Type="Microsoft.Exchange.Data.Directory.Recipient.GroupTypeFlags, Microsoft.Exchange.Data.Directory"/>
+			<Column Name="ManagedBy" />
+			<Column Name="DatabaseName" />
+			<Column Name="ExpansionServer" />
+			<Column Name="ExternalEmailAddress" Type="System.Object" ExpectedType="Microsoft.Exchange.Data.ProxyAddress, Microsoft.Exchange.Data"/>
+			<Column Name="HiddenFromAddressListsEnabled" Type="System.Boolean"/>
+			<Column Name="UMEnabled" Type="System.Boolean"/>
+			<Column Name="Alias" />
+			<Column Name="PrimarySmtpAddress" Type="System.Object" ExpectedType="Microsoft.Exchange.Data.SmtpAddress, Microsoft.Exchange.Data"/>
+			<Column Name="PrimarySmtpAddressToString" LambdaExpression="PrimarySmtpAddress=>@0[PrimarySmtpAddress].ToString()" />
+			<Column Name="NonEmptyDisplayName" LambdaExpression="DisplayName,Name=>iif(DBNull.Value.Equals(@0[DisplayName]) or String(@0[DisplayName]) == String.Empty, @0[Name].ToString(),@0[DisplayName].ToString())" />
+			<Column Name="DisplayRecipientTypeDetails" LambdaExpression="RecipientTypeDetails=>WinformsHelper.GetTargetTypeToStringValue(@0[&quot;RecipientTypeDetails&quot;], @0.Table.Columns[&quot;RecipientTypeDetails&quot;].DataType)" />
+			<Column Name="WholeObjectProperty" Type="System.Object" />
+		</RefColumns>
+    <RefColumns Name="ExchangeServerProperties">
+      <Column Name="NetworkAddress"/>
+      <Column Name="Fqdn"/>
+      <Column Name="ServerRole" Type="Microsoft.Exchange.Data.Directory.SystemConfiguration.ServerRole, Microsoft.Exchange.Data.Directory"/>
+      <Column Name="Site"/>
+      <Column Name="ADSiteShortName" LambdaExpression="Site=>IIF(DBNull.Value.Equals(@0[Site]), String.Empty, WinformsHelper.GetADShortName(String(@0[Site])))"/>
+      <Column Name="CustomerFeedbackEnabled" Type="System.Boolean" />
+      <Column Name="AdminDisplayVersion"/>
+      <Column Name="ExchangeLegacyDN"/>
+      <Column Name="CeipStatus" LambdaExpression="
+              CustomerFeedbackEnabled=>
+              IIF(DBNull.Value.Equals(@0[CustomerFeedbackEnabled]), 
+                Strings.CeipStatusNotEnrolled.ToString(), 
+                IIF(Boolean(@0[CustomerFeedbackEnabled]), Strings.CeipStatusOptedIn.ToString(), Strings.CeipStatusOptedOut.ToString()))
+              "/>
+
+      <!-- For ServerDataColumnsCalculator -->
+      <Column Name="IsMailboxServer" Type="System.Boolean" />
+      <Column Name="IsClientAccessServer" Type="System.Boolean" />
+      <Column Name="IsUnifiedMessagingServer" Type="System.Boolean" />
+      <Column Name="IsHubTransportServer" Type="System.Boolean" />
+      <Column Name="IsEdgeServer" Type="System.Boolean" />
+      <Column Name="IsProvisionedServer" Type="System.Boolean" />
+      <Column Name="DisplayServerRole" />
+      <Column Name="CurrentServerRole" />
+    </RefColumns>
+	</RefColumnsSection>
+
+</ResultsLoaderSchema>

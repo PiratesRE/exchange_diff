@@ -1,0 +1,128 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml"
+xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:m="http://schemas.microsoft.com/office/2004/12/omml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title></title>
+    <style type="text/css">
+        body
+        {
+            font-family: Tahoma, Arial, Helvetica, sans-serif;
+            font-size: 70%;
+            color: #000;
+        }
+        h1
+        {
+            font-weight: bold;
+            font-size: 135%;
+            margin: 0in;
+            color: #608DC4;
+            font-family: Tahoma, Arial, Helvetica, sans-serif;
+            padding-bottom: 6px;
+            padding-left: 8px;
+        }
+        table
+        {
+            vertical-align: top;
+            color: #000;
+            border-width: 0px;
+        }
+        td
+        {
+            font-family: Tahoma, Arial, Helvetica, sans-serif;
+            padding-bottom: 5px;
+            padding-left: 7px;
+            vertical-align: top;
+        }
+        a:link
+        {
+            color: rgb(51,153,255);
+        }
+        p
+        {
+            margin: 0in;
+        }
+        .header
+        {
+            font-weight: bold;
+            white-space: nowrap !important;
+        }
+        .footer
+        {
+            font-size: 80%;
+            color: #808080;
+            padding-left: 7px;
+        }
+        .line
+        {
+            margin-top: 3px;
+            border-top: 1px #ccc solid;
+            line-height: 23px;
+        }
+    </style>
+</head>
+<body>
+    <br />
+    <br />
+    <h1>{ReportHeader}</h1>
+    <table>
+        <tr>
+            <td class="header">{imghtml}</td>
+            <td class="header">{LabelCouldntMigrate}</td>
+            <td>{ErrorSummaryMessage}</td>
+        </tr>
+    </table>
+    <hr />
+    <br />
+    <table>
+        <tr>
+            <td class="header">{LabelStartedByUser}</td>
+            <td width="70%">{StartedByUser}</td>
+        </tr>
+        <tr>
+            <td class="header">{LabelStartDateTime}</td>
+            <td width="70%">{StartDateTime}</td>
+        </tr>
+        <tr>
+            <td class="header">{LabelRunTime}</td>
+            <td width="70%">{RunTime}</td>
+        </tr>
+        <tr>
+            <td class="header">{LabelSynced}</td>
+            <td width="70%">{CompletedData}</td>
+        </tr>
+        <tr>
+            <td class="header">{LabelTotalRows}</td>
+            <td width="70%">
+                {TotalRows}
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                &nbsp;
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">{ErrorReportLink}</td>
+        </tr>
+        <tr>
+            <td colspan="2">{StatisticsReportLink}</td>
+        </tr>
+    </table>
+    <table>
+        <tr>
+            <td>{MoacWarningSection}</td>
+        </tr>
+        <tr>
+            <td>{ExtraNotes}</td>
+        </tr>
+        <tr>
+            <td colspan="2" class="footer">
+                <br />
+                <br />
+                {LabelLogMailFooter}
+            </td>
+        </tr>
+    </table>
+</body>
+</html>

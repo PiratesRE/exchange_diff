@@ -1,0 +1,590 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo Name="Client Access Configuration" DescriptionId="ClientAccessComponentDescription">
+
+  <ServerTasks>
+
+    <!-- Precompile client access related binaries -->
+    <!-- When a new file is added to precompile-ManagedBinary list, make sure to add it to customactions.wxi to sync install and uninstall the binary -->
+    <ServerTaskInfo Id="_d5119205104847bcb275cb63b65160b6" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install Weight="5" DescriptionId="SetupProgressPrecompilingBinaries" IsFatal="false">
+        <Standalone>
+          $fullPath = [System.IO.Path]::Combine($RoleInstallPath, "ClientAccess\Owa\Bin\Microsoft.Exchange.Clients.Owa.dll");
+          $appBase = [System.IO.Path]::Combine($RoleInstallPath, "bin");
+          precompile-ManagedBinary -BinaryName  $fullPath -AppBase $appBase;
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall Weight="5" DescriptionId="SetupProgressPrecompilingBinaries" IsFatal="false">
+        <Standalone>
+          $fullPath = [System.IO.Path]::Combine($RoleInstallPath, "ClientAccess\Owa\Bin\Microsoft.Exchange.Clients.Owa.dll");
+          $appBase = [System.IO.Path]::Combine($RoleInstallPath, "bin");
+          precompile-ManagedBinary -BinaryName  $fullPath -AppBase $appBase -Action uninstall;
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+    <ServerTaskInfo Id="_954344d74d8849e9ae7123b91761ed9d" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install Weight="5" DescriptionId="SetupProgressPrecompilingBinaries" IsFatal="false">
+        <Standalone>
+          $fullPath = [System.IO.Path]::Combine($RoleInstallPath, "ClientAccess\Sync\Bin\Microsoft.Exchange.AirSyncHandler.dll");
+          $appBase = [System.IO.Path]::Combine($RoleInstallPath, "bin");
+          precompile-ManagedBinary -BinaryName  $fullPath -AppBase $appBase;
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall Weight="5" DescriptionId="SetupProgressPrecompilingBinaries" IsFatal="false">
+        <Standalone>
+          $fullPath = [System.IO.Path]::Combine($RoleInstallPath, "ClientAccess\Sync\Bin\Microsoft.Exchange.AirSyncHandler.dll");
+          $appBase = [System.IO.Path]::Combine($RoleInstallPath, "bin");
+          precompile-ManagedBinary -BinaryName  $fullPath -AppBase $appBase -Action uninstall;
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+    <ServerTaskInfo Id="_6632d6c1d5054563942db4f180976238" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install Weight="5" DescriptionId="SetupProgressPrecompilingBinaries" IsFatal="false">
+        <Standalone>
+          $fullPath = [System.IO.Path]::Combine($RoleInstallPath, "ClientAccess\AutoDiscover\Bin\Microsoft.Exchange.AutoDiscover.dll");
+          $appBase = [System.IO.Path]::Combine($RoleInstallPath, "bin");
+          precompile-ManagedBinary -BinaryName  $fullPath -AppBase $appBase;
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall Weight="5" DescriptionId="SetupProgressPrecompilingBinaries" IsFatal="false">
+        <Standalone>
+          $fullPath = [System.IO.Path]::Combine($RoleInstallPath, "ClientAccess\AutoDiscover\Bin\Microsoft.Exchange.AutoDiscover.dll");
+          $appBase = [System.IO.Path]::Combine($RoleInstallPath, "bin");
+          precompile-ManagedBinary -BinaryName  $fullPath -AppBase $appBase -Action uninstall;
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+    <ServerTaskInfo Id="_390b4ffddd484dcb9edc01dd725e020a" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install Weight="5" DescriptionId="SetupProgressPrecompilingBinaries" IsFatal="false">
+        <Standalone>
+          $fullPath = [System.IO.Path]::Combine($RoleInstallPath, "ClientAccess\exchweb\ews\bin\Microsoft.Exchange.Services.dll");
+          $appBase = [System.IO.Path]::Combine($RoleInstallPath, "bin");
+          precompile-ManagedBinary -BinaryName  $fullPath -AppBase $appBase;
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall Weight="5" DescriptionId="SetupProgressPrecompilingBinaries" IsFatal="false">
+        <Standalone>
+          $fullPath = [System.IO.Path]::Combine($RoleInstallPath, "ClientAccess\exchweb\ews\bin\Microsoft.Exchange.Services.dll");
+          $appBase = [System.IO.Path]::Combine($RoleInstallPath, "bin");
+          precompile-ManagedBinary -BinaryName  $fullPath -AppBase $appBase -Action uninstall;
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- 
+      See http://support.microsoft.com/kb/896861 for details on this setting.
+      Disables NTLM loopback check that prevents NTLM authentication from 
+      succeeding against a local server if an FQDN was used to address it.
+    -->
+    <ServerTaskInfo Id="_178a10624c88445093855c4ede7e9b9c" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          . "$RoleInstallPath\Scripts\ConfigureNetworkProtocolParameters.ps1"; 
+          Set-NtlmLoopbackCheck $false
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall/>
+    </ServerTaskInfo>
+
+    <!-- Install/uninstall CA IIS web service extensions -->
+    <ServerTaskInfo Id="_14a6761e144e428b93c62249acc814fe" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>install-ClientAccessIisWebServiceExtensions</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>uninstall-ClientAccessIisWebServiceExtensions</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Restart Microsoft.Exchange.ServiceHost to flush CLR assemblies-->
+    <ServerTaskInfo Id="_28fdfe8bec984e809cdeef6d4d59bf4e" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+        if (get-service MSExchangeServiceHost* | where {$_.name -eq "MSExchangeServiceHost"})
+        {
+            restart-service MSExchangeServiceHost
+        }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall/>
+    </ServerTaskInfo>
+
+    <!-- Restart Microsoft.Exchange.ProtectedServiceHost to flush CLR assemblies-->
+    <ServerTaskInfo Id="_7816256880dc4be0baf5b005b2af8cd3" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+        if (get-service MSExchangeProtectedServiceHost* | where {$_.name -eq "MSExchangeProtectedServiceHost"})
+        {
+            restart-service MSExchangeProtectedServiceHost
+        }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall/>
+    </ServerTaskInfo>
+
+    <!-- Set Client Access role -->
+    <ServerTaskInfo Id="_e95499b43bd1484dbc03098fb1b4e592" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>set-ExchangeServerRole -Identity $RoleFqdnOrName -IsClientAccessServer:$true -DomainController $RoleDomainController</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery />
+      <Uninstall>
+        <Standalone>set-ExchangeServerRole -Identity $RoleFqdnOrName -IsClientAccessServer:$false -DomainController $RoleDomainController</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install TranscodingService run as password -->
+    <ServerTaskInfo Id="_f4c48e196e374cf3af269b1cea0602c8" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="InstallingTranscodingService">
+        <Standalone>Install-TranscodingServiceEx</Standalone>
+      </Install>
+      <BuildToBuildUpgrade />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall DescriptionId="UninstallingTranscodingService">
+        <Standalone>Uninstall-TranscodingServiceEx</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/uninstall the Forms Based Authentication service -->
+    <!-- This service is no longer required. O15:2965781 to clean up. -->
+    <ServerTaskInfo Id="_f50fd59d231140eb9b2405bbed2b93d4" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>
+          if ($RoleIsDatacenter -eq $false)
+          {
+            uninstall-FBAService
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>
+          if ($RoleIsDatacenter -eq $false)
+          {
+            uninstall-FBAService
+          }
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Start/Stop the Forms Based Authentication service -->
+    <!-- This service is no longer required. O15:2965781 to clean up. -->
+    <ServerTaskInfo Id="_9fad9d51b3ec4ecdad567ab58e470be7" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>
+          if ($RoleIsDatacenter -eq $false)
+          {
+            stop-setupservice -ServiceName MSExchangeFBA
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>
+          if ($RoleIsDatacenter -eq $false)
+          {
+            stop-setupservice -ServiceName MSExchangeFBA
+          }
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+    
+    <!-- Create the "back end" website -->
+    <ServerTaskInfo Id="_1c7a7da2ab9d41bb8db75522ad28b9db" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          $tpath = "$env:SystemRoot\system32\inetsrv\microsoft.web.administration.dll";
+          add-type -Path $tpath;
+          $sm = new-object Microsoft.Web.Administration.ServerManager;
+          if ($sm.Sites["Exchange Back End"] -eq $null)
+          {
+            $backEndWebSitePath = [System.IO.Path]::Combine($RoleInstallPath, "ClientAccess");
+            $s = $sm.Sites.Add("Exchange Back End","http", "*:81:", $backEndWebSitePath);
+            $s.ServerAutoStart = $true;
+            $sb =$s.Bindings;
+            $b = $sb.Add("*:444:","https");
+            $sm.CommitChanges();
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>
+          $tpath = "$env:SystemRoot\system32\inetsrv\microsoft.web.administration.dll";
+          add-type -Path $tpath;
+          $sm = new-object Microsoft.Web.Administration.ServerManager;
+          $sr = $sm.Sites["Exchange Back End"];
+          if ($sr -ne $null)
+          {
+            $s = $sm.Sites.Remove($sr);
+            $sm.CommitChanges();
+          }
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Add the right to serialize token to the NETWORK SERVICE to each one of them.
+         This enables OWA clients to do synchronization.
+    -->
+    <ServerTaskInfo Id="_a5f211d837784aea931b9ba55c39996d" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          Get-ExchangeServer $RoleFqdnOrName | Add-AdPermission -User "S-1-5-20" -ExtendedRights "Exchange Web Services Token Serialization";
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall IsFatal="false">
+        <Standalone>
+          Get-ExchangeServer $RoleFqdnOrName | Remove-AdPermission -User "S-1-5-20" -ExtendedRights "Exchange Web Services Token Serialization";
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Set installation path in MRS app config file. -->
+    <ServerTaskInfo Id="SetInstallPathInMrsAppConfig" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          Set-InstallPathInAppConfig -ConfigFileRelativePath "Bin" -ConfigFileName "MsExchangeMailboxReplication.exe.config"
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Install/remove Mailbox Replication service -->
+    <ServerTaskInfo Id="_765cc444ba07411aa81d58397b0401fd" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          if (!(get-service MSExchangeMailboxReplication* | where {$_.name -eq "MSExchangeMailboxReplication"}))
+          {
+            install-MailboxReplicationService
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>uninstall-MailboxReplicationService</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Add Mailbox Replication Service firewall rule for upgrade purposes (E14:188583)-->
+    <ServerTaskInfo Id="_151b722e327b42a69411df32afdbbcbb" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+           Add-FirewallException -FirewallRule (New-Object Microsoft.Exchange.Security.WindowsFirewall.MSExchangeMailboxReplicationFirewallRule)
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>remove-firewallexception -FirewallRule (New-Object Microsoft.Exchange.Security.WindowsFirewall.MSExchangeMailboxReplicationFirewallRule)</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/remove Migration Workflow service -->
+    <ServerTaskInfo Id="_7d69bb94f08245589e49eb569c6d5f4f" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          if ((get-service MSExchangeMigrationWorkflow* | where {$_.name -eq "MSExchangeMigrationWorkflow"}))
+          {
+            uninstall-MigrationWorkflowService
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>          
+          if ((get-service MSExchangeMigrationWorkflow* | where {$_.name -eq "MSExchangeMigrationWorkflow"}))
+          {
+            uninstall-MigrationWorkflowService
+          }
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Add RPC rule for AddressBook service (E14:184185)-->
+    <ServerTaskInfo Id="_95f051d9dc5941c4b6014181b6e5ce93" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+           Add-FirewallException -FirewallRule (New-Object Microsoft.Exchange.Security.WindowsFirewall.MSExchangeABRPCFirewallRule)
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>remove-firewallexception -FirewallRule (New-Object Microsoft.Exchange.Security.WindowsFirewall.MSExchangeABRPCFirewallRule)</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Add global firewall rule for POP/IMAP -->
+    <ServerTaskInfo Id="_959c2d6566984da6b8e0e3235c1c11c2" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+           Add-FirewallException -FirewallRule (New-Object Microsoft.Exchange.Security.WindowsFirewall.MSExchangePOPBeByPortRule)
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>remove-firewallexception -FirewallRule (New-Object Microsoft.Exchange.Security.WindowsFirewall.MSExchangePOPBeByPortRule)</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+    
+    <ServerTaskInfo Id="_29864e7462374fdb84fc75eec931d8e4" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          Add-FirewallException -FirewallRule (New-Object Microsoft.Exchange.Security.WindowsFirewall.MSExchangeIMAP4BeFirewallRule)
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>remove-firewallexception -FirewallRule (New-Object Microsoft.Exchange.Security.WindowsFirewall.MSExchangeIMAP4BeFirewallRule)</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Add global firewall rule for OWA -->
+    <ServerTaskInfo Id="_052e1b794d0641ada4d6d417061af2a8" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+           Add-FirewallException -FirewallRule (New-Object Microsoft.Exchange.Security.WindowsFirewall.MSExchangeOWAByPortRule)
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>remove-firewallexception -FirewallRule (New-Object Microsoft.Exchange.Security.WindowsFirewall.MSExchangeOWAByPortRule)</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Add global firewall rule for Mailbox Replication -->
+    <ServerTaskInfo Id="_975efd8911fd41cca8b17462535d710e" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+           Add-FirewallException -FirewallRule (New-Object Microsoft.Exchange.Security.WindowsFirewall.MSExchangeMailboxReplicationByPort)
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>remove-firewallexception -FirewallRule (New-Object Microsoft.Exchange.Security.WindowsFirewall.MSExchangeMailboxReplicationByPort)</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Configure Resource Health registry flags -->
+    <ServerTaskInfo Id="_023036e43f004bda9f4f4e0b1e0d233f" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          Install-ResourceHealthActiveFlags
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall/>
+    </ServerTaskInfo>
+
+    <!-- Set install path in app config "ClientAccess/PushNotifications" -->
+    <ServerTaskInfo Id="_3a51c2876e2c4643bc892d2665754228" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>set-InstallPathInAppConfig -ConfigFileRelativePath "ClientAccess\PushNotifications\" -ConfigFileName web.config</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>    
+    
+    <!-- Set install path in app config "ClientAccess/mapi/emsmdb" -->
+    <ServerTaskInfo Id="_FCC16AC1FFED43518F8292DBE770C621" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>set-InstallPathInAppConfig -ConfigFileRelativePath "ClientAccess\mapi\emsmdb\" -ConfigFileName web.config</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>    
+    
+    <!-- Set install path in app config "ClientAccess/mapi/nspi" -->
+    <ServerTaskInfo Id="_E9C71786D02E40CBB1403E2E1A4B0758" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>set-InstallPathInAppConfig -ConfigFileRelativePath "ClientAccess\mapi\nspi\" -ConfigFileName web.config</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+    
+    <!-- Configure app pool, application and auth for mapi/emsmdb -->
+    <ServerTaskInfo Id="_9D94915F-B12D-4579-93EE-36B6DF42CF4A" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          $CommandAppCmd = join-path $env:SystemRoot System32\inetsrv\appcmd.exe;
+          $MapiClientAccessPath = [System.IO.Path]::Combine($RoleInstallPath, "ClientAccess\mapi");
+          $MapiMailboxClientAccessPath = [System.IO.Path]::Combine($RoleInstallPath, "ClientAccess\mapi\emsmdb");
+          $clrConfigFilePath = [System.IO.Path]::Combine($RoleInstallPath, "bin", "MSExchangeMapiMailboxAppPool_CLRConfig.config");
+          Start-SetupProcess -Name "$CommandAppCmd" -args "add apppool /name:MSExchangeMapiMailboxAppPool /autostart:true /managedRuntimeVersion:v4.0 /queueLength:65535 /CLRConfigFile:`"$clrConfigFilePath`" /managedRuntimeLoader:`"`" /processModel.identityType:LocalSystem /managedPipelineMode:Integrated /recycling.periodicRestart.time:00:00:00 /processModel.idleTimeout:00:00:00 /processModel.pingingEnabled:false /failure.rapidFailProtection:false" -IgnoreExitCode @(183);
+          Start-SetupProcess -Name "$CommandAppCmd" -args "add vdir /app.name:`"Exchange Back End/`" /path:`"/mapi`" /physicalPath:`"$MapiClientAccessPath`"" -IgnoreExitCode @(183);
+          Start-SetupProcess -Name "$CommandAppCmd" -args "add app /site.name:`"Exchange Back End`" /physicalPath:`"$MapiMailboxClientAccessPath`" /applicationPool:MSExchangeMapiMailboxAppPool /path:`"/mapi/emsmdb`"" -IgnoreExitCode @(183);
+          Start-SetupProcess -Name "$CommandAppCmd" -args "set config `"Exchange Back End/mapi/emsmdb`" /section:system.webServer/security/access /sslFlags:Ssl /commit:apphost";
+          Start-SetupProcess -Name "$CommandAppCmd" -args "set config `"Exchange Back End/mapi/emsmdb`" /section:system.webServer/security/authentication/anonymousAuthentication /enabled:false /commit:apphost";
+          Start-SetupProcess -Name "$CommandAppCmd" -args "set config `"Exchange Back End/mapi/emsmdb`" /section:system.webServer/security/authentication/basicAuthentication /enabled:false /commit:apphost";
+          Start-SetupProcess -Name "$CommandAppCmd" -args "set config `"Exchange Back End/mapi/emsmdb`" /section:system.webServer/security/authentication/clientCertificateMappingAuthentication /enabled:false /commit:apphost";
+          Start-SetupProcess -Name "$CommandAppCmd" -args "set config `"Exchange Back End/mapi/emsmdb`" /section:system.webServer/security/authentication/digestAuthentication /enabled:false /commit:apphost";
+          Start-SetupProcess -Name "$CommandAppCmd" -args "set config `"Exchange Back End/mapi/emsmdb`" /section:system.webServer/security/authentication/iisClientCertificateMappingAuthentication /enabled:false /commit:apphost";
+          Start-SetupProcess -Name "$CommandAppCmd" -args "set config `"Exchange Back End/mapi/emsmdb`" /section:system.webServer/security/authentication/windowsAuthentication /enabled:true /commit:apphost";
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall>
+        <Standalone>
+          $CommandAppCmd = join-path $env:SystemRoot System32\inetsrv\appcmd.exe;
+          Start-SetupProcess -Name "$CommandAppCmd" -args "delete app /app.name:`"Exchange Back End/mapi/emsmdb`"";
+          Start-SetupProcess -Name "$CommandAppCmd" -args "delete appPool /appPool.name:MSExchangeMapiMailboxAppPool";
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Configure app pool, application and auth for mapi/nspi -->
+    <ServerTaskInfo Id="_B551AAAC-0F36-428B-B1BB-3B9AFDC9EAEF" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          $CommandAppCmd = join-path $env:SystemRoot System32\inetsrv\appcmd.exe;
+          $MapiClientAccessPath = [System.IO.Path]::Combine($RoleInstallPath, "ClientAccess\mapi");
+          $MapiAddressBookClientAccessPath = [System.IO.Path]::Combine($RoleInstallPath, "ClientAccess\mapi\nspi");
+          $clrConfigFilePath = [System.IO.Path]::Combine($RoleInstallPath, "bin", "MSExchangeMapiAddressBookAppPool_CLRConfig.config");
+          Start-SetupProcess -Name "$CommandAppCmd" -args "add apppool /name:MSExchangeMapiAddressBookAppPool /autostart:true /managedRuntimeVersion:v4.0 /queueLength:65535 /CLRConfigFile:`"$clrConfigFilePath`" /managedRuntimeLoader:`"`" /processModel.identityType:LocalSystem /managedPipelineMode:Integrated /recycling.periodicRestart.time:00:00:00 /processModel.idleTimeout:00:00:00 /processModel.pingingEnabled:false /failure.rapidFailProtection:false" -IgnoreExitCode @(183);
+          Start-SetupProcess -Name "$CommandAppCmd" -args "add vdir /app.name:`"Exchange Back End/`" /path:`"/mapi`" /physicalPath:`"$MapiClientAccessPath`"" -IgnoreExitCode @(183);
+          Start-SetupProcess -Name "$CommandAppCmd" -args "add app /site.name:`"Exchange Back End`" /physicalPath:`"$MapiAddressBookClientAccessPath`" /applicationPool:MSExchangeMapiAddressBookAppPool /path:`"/mapi/nspi`"" -IgnoreExitCode @(183);
+          Start-SetupProcess -Name "$CommandAppCmd" -args "set config `"Exchange Back End/mapi/nspi`" /section:system.webServer/security/access /sslFlags:Ssl /commit:apphost";
+          Start-SetupProcess -Name "$CommandAppCmd" -args "set config `"Exchange Back End/mapi/nspi`" /section:system.webServer/security/authentication/anonymousAuthentication /enabled:false /commit:apphost";
+          Start-SetupProcess -Name "$CommandAppCmd" -args "set config `"Exchange Back End/mapi/nspi`" /section:system.webServer/security/authentication/basicAuthentication /enabled:false /commit:apphost";
+          Start-SetupProcess -Name "$CommandAppCmd" -args "set config `"Exchange Back End/mapi/nspi`" /section:system.webServer/security/authentication/clientCertificateMappingAuthentication /enabled:false /commit:apphost";
+          Start-SetupProcess -Name "$CommandAppCmd" -args "set config `"Exchange Back End/mapi/nspi`" /section:system.webServer/security/authentication/digestAuthentication /enabled:false /commit:apphost";
+          Start-SetupProcess -Name "$CommandAppCmd" -args "set config `"Exchange Back End/mapi/nspi`" /section:system.webServer/security/authentication/iisClientCertificateMappingAuthentication /enabled:false /commit:apphost";
+          Start-SetupProcess -Name "$CommandAppCmd" -args "set config `"Exchange Back End/mapi/nspi`" /section:system.webServer/security/authentication/windowsAuthentication /enabled:true /commit:apphost";
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall>
+        <Standalone>
+          $CommandAppCmd = join-path $env:SystemRoot System32\inetsrv\appcmd.exe;
+          Start-SetupProcess -Name "$CommandAppCmd" -args "delete app /app.name:`"Exchange Back End/mapi/nspi`"";
+          Start-SetupProcess -Name "$CommandAppCmd" -args "delete appPool /appPool.name:MSExchangeMapiAddressBookAppPool";
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+    
+    <!-- 
+     Add registry key containing the distinguised name of the certificate that will be used for encryption by the E4E Agent.
+    -->
+    <ServerTaskInfo Id="_178FD1A31B5949A0B4A819E39311B1FD" Component="OfficeMain:\IP\Transport and Data Loss Prevention\Encryption\E4E\">
+      <Install>
+        <Standalone>
+            $ExchangeLabsRegKey = 'HKLM:\SOFTWARE\Microsoft\ExchangeLabs'
+            $E4eCertificateDistinguishedNameRegValueName = 'E4eCertificateDistinguishedName'
+            if ($RoleDatacenterE4eCertificateDistinguishedName -ne $null)
+            {
+                New-ItemProperty -path "$ExchangeLabsRegKey" -Name $E4eCertificateDistinguishedNameRegValueName -Value $RoleDatacenterE4eCertificateDistinguishedName -Force
+                Write-ExchangeSetupLog -Info "Wrote registry key: $ExchangeLabsRegKey\$E4eCertificateDistinguishedNameRegValueName. value: $RoleDatacenterE4eCertificateDistinguishedName"
+            }
+            else
+            {
+                Write-ExchangeSetupLog -Info "Could not write registry key: $ExchangeLabsRegKey\$E4eCertificateDistinguishedNameRegValueName. Value is null."
+            }
+
+            $E4eServiceUrlRegValueName = 'E4eServiceUrl'
+            if ($RoleDatacenterE4eServiceUrl -ne $null)
+            {
+                New-ItemProperty -path "$ExchangeLabsRegKey" -Name $E4eServiceUrlRegValueName -Value $RoleDatacenterE4eServiceUrl -Force
+                Write-ExchangeSetupLog -Info "Wrote registry key: $ExchangeLabsRegKey\$E4eServiceUrlRegValueName. value: $RoleDatacenterE4eServiceUrl"
+            }
+            else
+            {
+                Write-ExchangeSetupLog -Info "Could not write registry key: $ExchangeLabsRegKey\$E4eServiceUrlRegValueName. Value is null."
+            }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!--
+    Add X-DiagInfo custom response header in order to identity target BE server for all requests processed by the cafe server
+    Note: please DO NOT add customer header for ReportingWebService, since rws inherit the config from ecp. Otherwise, it will cause duplicated key error. See bug 2940683 for more details.
+    -->
+    <ServerTaskInfo Id="_240c7e5d07f941cfbe69a692dc33a31a" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          ."$RoleInstallPath\Scripts\ConfigureCafeResponseHeaders.ps1";
+          CreateCustomHeadersNodeForBackend 'autodiscover'
+          CreateCustomHeadersNodeForBackend 'ecp'
+          CreateCustomHeadersNodeForBackend 'ews'  
+          CreateCustomHeadersNodeForBackend 'oab'
+          CreateCustomHeadersNodeForBackend 'owa'
+          CreateCustomHeadersNodeForBackend 'powershell'
+          CreateCustomHeadersNodeForBackend 'pushnotifications'
+          CreateCustomHeadersNodeForBackend 'rpcproxy'
+          CreateCustomHeadersNodeForBackend 'sync'
+          CreateCustomHeadersNodeForBackend 'mapi\emsmdb'
+          CreateCustomHeadersNodeForBackend 'mapi\nspi'
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall/>
+    </ServerTaskInfo>
+    
+    <!-- Create PushNotifications vdir -->
+    <ServerTaskInfo Id="_75f8c93d15314369983d33ec0742e189" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          New-PushNotificationsVirtualDirectory -Role Mailbox -OAuthAuthentication:$RoleIsDatacenter -DomainController $RoleDomainController;
+        </Standalone>
+      </Install>
+    <BuildToBuildUpgrade>
+      <Standalone>
+        Get-PushNotificationsVirtualDirectory -ShowMailboxVirtualDirectories -server $RoleFqdnOrName -DomainController $RoleDomainController | Remove-PushNotificationsVirtualDirectory -DomainController $RoleDomainController;
+        New-PushNotificationsVirtualDirectory -Role Mailbox -OAuthAuthentication:$RoleIsDatacenter -DomainController $RoleDomainController;
+      </Standalone>
+    </BuildToBuildUpgrade>
+    <DisasterRecovery>
+      <Standalone>
+        Get-PushNotificationsVirtualDirectory -ShowMailboxVirtualDirectories -server $RoleFqdnOrName -DomainController $RoleDomainController | Remove-PushNotificationsVirtualDirectory -DomainController $RoleDomainController;
+        New-PushNotificationsVirtualDirectory -Role Mailbox -OAuthAuthentication:$RoleIsDatacenter -DomainController $RoleDomainController;
+      </Standalone>
+    </DisasterRecovery>
+    <Uninstall>
+      <Standalone>
+        Get-PushNotificationsVirtualDirectory -ShowMailboxVirtualDirectories -server $RoleFqdnOrName -DomainController $RoleDomainController | Remove-PushNotificationsVirtualDirectory -DomainController $RoleDomainController;
+      </Standalone>
+    </Uninstall>
+    </ServerTaskInfo>
+
+  </ServerTasks>
+</SetupComponentInfo>
+

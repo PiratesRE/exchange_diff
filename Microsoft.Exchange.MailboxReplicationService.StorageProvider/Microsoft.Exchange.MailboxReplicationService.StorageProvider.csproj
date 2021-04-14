@@ -1,0 +1,128 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{09CD9476-CD82-489E-B9E2-84B47CA14151}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Microsoft.Exchange.MailboxReplicationService</RootNamespace>
+    <AssemblyName>Microsoft.Exchange.MailboxReplicationService.StorageProvider</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StorageActionsSource.cs" />
+    <Compile Include="StorageActionWatermark.cs" />
+    <Compile Include="StorageDestinationFolder.cs" />
+    <Compile Include="StorageDestinationMailbox.cs" />
+    <Compile Include="StorageFolder.cs" />
+    <Compile Include="StorageFolderProxy.cs" />
+    <Compile Include="StorageFxProxy.cs" />
+    <Compile Include="StorageFxProxyPool.cs" />
+    <Compile Include="StorageMailbox.cs" />
+    <Compile Include="StorageMessageProxy.cs" />
+    <Compile Include="StorageSourceFolder.cs" />
+    <Compile Include="StorageSourceMailbox.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.Exchange.Common\Microsoft.Exchange.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140F0}</Project>
+      <Name>Microsoft.Exchange.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Common\Microsoft.Exchange.Data.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140D3}</Project>
+      <Name>Microsoft.Exchange.Data.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Directory\Microsoft.Exchange.Data.Directory.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14105}</Project>
+      <Name>Microsoft.Exchange.Data.Directory</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Storage\Microsoft.Exchange.Data.Storage.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1410F}</Project>
+      <Name>Microsoft.Exchange.Data.Storage</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data\Microsoft.Exchange.Data.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14106}</Project>
+      <Name>Microsoft.Exchange.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Diagnostics\Microsoft.Exchange.Diagnostics.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14113}</Project>
+      <Name>Microsoft.Exchange.Diagnostics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Entities.Calendaring\Microsoft.Exchange.Entities.Calendaring.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1411E}</Project>
+      <Name>Microsoft.Exchange.Entities.Calendaring</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Entities.Common\Microsoft.Exchange.Entities.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1411F}</Project>
+      <Name>Microsoft.Exchange.Entities.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Entities.DataModel\Microsoft.Exchange.Entities.DataModel.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14120}</Project>
+      <Name>Microsoft.Exchange.Entities.DataModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.MailboxReplicationService.Common\Microsoft.Exchange.MailboxReplicationService.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14147}</Project>
+      <Name>Microsoft.Exchange.MailboxReplicationService.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Net\Microsoft.Exchange.Net.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14178}</Project>
+      <Name>Microsoft.Exchange.Net</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.RpcClientAccess.Handler\Microsoft.Exchange.RpcClientAccess.Handler.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1418B}</Project>
+      <Name>Microsoft.Exchange.RpcClientAccess.Handler</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.RpcClientAccess.Parser\Microsoft.Exchange.RpcClientAccess.Parser.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1418D}</Project>
+      <Name>Microsoft.Exchange.RpcClientAccess.Parser</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.RpcClientAccess\Microsoft.Exchange.RpcClientAccess.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14189}</Project>
+      <Name>Microsoft.Exchange.RpcClientAccess</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Search.Fast\Microsoft.Exchange.Search.Fast.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14195}</Project>
+      <Name>Microsoft.Exchange.Search.Fast</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.StoreProvider\Microsoft.Exchange.StoreProvider.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141B9}</Project>
+      <Name>Microsoft.Exchange.StoreProvider</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\mscorlib\mscorlib.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141F1}</Project>
+      <Name>mscorlib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

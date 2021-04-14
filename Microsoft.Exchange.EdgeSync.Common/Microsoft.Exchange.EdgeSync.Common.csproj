@@ -1,0 +1,151 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{09CD9476-CD82-489E-B9E2-84B47CA14119}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Microsoft.Exchange.EdgeSync</RootNamespace>
+    <AssemblyName>Microsoft.Exchange.EdgeSync.Common</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.DirectoryServices" />
+    <Reference Include="System.DirectoryServices.Protocols" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CacheLookupResult.cs" />
+    <Compile Include="Common\EdgeSyncEventLogConstants.cs" />
+    <Compile Include="Common\EdgeSyncEvents.cs" />
+    <Compile Include="Common\EdgeSyncServiceConfigNotFoundException.cs" />
+    <Compile Include="Common\Internal\Strings.cs" />
+    <Compile Include="Common\Status.cs" />
+    <Compile Include="Common\StatusResult.cs" />
+    <Compile Include="Common\StatusSerializer.cs" />
+    <Compile Include="Common\SyncTreeType.cs" />
+    <Compile Include="Common\Util.cs" />
+    <Compile Include="Common\XmlSerializationReaderStatus.cs" />
+    <Compile Include="Common\XmlSerializationWriterStatus.cs" />
+    <Compile Include="Common\XmlSerializer1.cs" />
+    <Compile Include="Common\XmlSerializerContract.cs" />
+    <Compile Include="Connection.cs" />
+    <Compile Include="Cookie.cs" />
+    <Compile Include="DistinguishedName.cs" />
+    <Compile Include="EdgeSyncAppConfig.cs" />
+    <Compile Include="EdgeSyncCycleFailedException.cs" />
+    <Compile Include="ExDirectoryException.cs" />
+    <Compile Include="ExSearchResultEntry.cs" />
+    <Compile Include="Filter.cs" />
+    <Compile Include="FilterResult.cs" />
+    <Compile Include="LdapTargetConnection.cs" />
+    <Compile Include="LoadTargetCache.cs" />
+    <Compile Include="Logging\EdgeSyncEvent.cs" />
+    <Compile Include="Logging\EdgeSyncLog.cs" />
+    <Compile Include="Logging\EdgeSyncLogSession.cs" />
+    <Compile Include="PostDecorate.cs" />
+    <Compile Include="PreDecorate.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Schema.cs" />
+    <Compile Include="SynchronizationProvider.cs" />
+    <Compile Include="SynchronizationProviderInfo.cs" />
+    <Compile Include="SyncProviderElement.cs" />
+    <Compile Include="SyncProviderElementCollection.cs" />
+    <Compile Include="SyncProviderSection.cs" />
+    <Compile Include="SyncResult.cs" />
+    <Compile Include="TargetCacheLookup.cs" />
+    <Compile Include="TargetCacheRemoveTargetOnlyEntries.cs" />
+    <Compile Include="TargetConnection.cs" />
+    <Compile Include="TargetServerConfig.cs" />
+    <Compile Include="TestShutdownAndLeaseDelegate.cs" />
+    <Compile Include="TestShutdownDelegate.cs" />
+    <Compile Include="TypeSynchronizer.cs" />
+    <Compile Include="Validation\AcceptedDomainValidator.cs" />
+    <Compile Include="Validation\ConfigValidator.cs" />
+    <Compile Include="Validation\CookieRecord.cs" />
+    <Compile Include="Validation\CookieRecords.cs" />
+    <Compile Include="Validation\CredentialRecord.cs" />
+    <Compile Include="Validation\CredentialRecords.cs" />
+    <Compile Include="Validation\CredentialRecordsLoader.cs" />
+    <Compile Include="Validation\EdgeConfigStatus.cs" />
+    <Compile Include="Validation\EdgeConnectionInfo.cs" />
+    <Compile Include="Validation\EdgeSubscriptionStatus.cs" />
+    <Compile Include="Validation\EdgeSyncRecord.cs" />
+    <Compile Include="Validation\EdgeSyncValidator.cs" />
+    <Compile Include="Validation\MessageClassificationValidator.cs" />
+    <Compile Include="Validation\Mserv\MservRecipientRecord.cs" />
+    <Compile Include="Validation\RecipientConfigStatus.cs" />
+    <Compile Include="Validation\RecipientValidator.cs" />
+    <Compile Include="Validation\RemoteDomainValidator.cs" />
+    <Compile Include="Validation\ReplicationTopology.cs" />
+    <Compile Include="Validation\SendConnectorValidator.cs" />
+    <Compile Include="Validation\SyncStatus.cs" />
+    <Compile Include="Validation\TestEdgeConnectionFactory.cs" />
+    <Compile Include="Validation\TransportConfigValidator.cs" />
+    <Compile Include="Validation\TransportServerValidator.cs" />
+    <Compile Include="Validation\ValidationStatus.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Common\Internal\Strings.resources" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Common\Microsoft.Exchange.Data.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140D3}</Project>
+      <Name>Microsoft.Exchange.Data.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Directory\Microsoft.Exchange.Data.Directory.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14105}</Project>
+      <Name>Microsoft.Exchange.Data.Directory</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data\Microsoft.Exchange.Data.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14106}</Project>
+      <Name>Microsoft.Exchange.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Diagnostics\Microsoft.Exchange.Diagnostics.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14113}</Project>
+      <Name>Microsoft.Exchange.Diagnostics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.MessageSecurity\Microsoft.Exchange.MessageSecurity.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1416A}</Project>
+      <Name>Microsoft.Exchange.MessageSecurity</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Net\Microsoft.Exchange.Net.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14178}</Project>
+      <Name>Microsoft.Exchange.Net</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\mscorlib\mscorlib.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141F1}</Project>
+      <Name>mscorlib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

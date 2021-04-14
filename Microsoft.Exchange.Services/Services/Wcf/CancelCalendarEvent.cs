@@ -1,0 +1,37 @@
+﻿using System;
+using Microsoft.Exchange.Data.Storage;
+using Microsoft.Exchange.Diagnostics;
+using Microsoft.Exchange.Entities;
+using Microsoft.Exchange.Entities.DataModel;
+using Microsoft.Exchange.Entities.DataModel.Calendaring;
+using Microsoft.Exchange.Services.Core;
+using Microsoft.Exchange.Services.Core.Types;
+using Microsoft.Exchange.Services.Wcf.Types;
+
+namespace Microsoft.Exchange.Services.Wcf
+{
+	[ClassAccessLevel(AccessLevel.Implementation)]
+	internal class CancelCalendarEvent : SingleStepServiceCommand<CancelCalendarEventRequest, VoidResult>
+	{
+		public CancelCalendarEvent(CallContext callContext, CancelCalendarEventRequest request) : base(callContext, request)
+		{
+		}
+
+		internal override IExchangeWebMethodResponse GetResponse()
+		{
+			return new CancelCalendarEventResponse(base.Result);
+		}
+
+		internal override ServiceResult<VoidResult> Execute()
+		{
+			EntitiesHelper entitiesHelper = new EntitiesHelper(base.CallContext);
+			StoreSession session;
+			IEvents events = entitiesHelper.GetEvents(base.Request.CalendarId.BaseFolderId, out session);
+			entitiesHelper.Execute(delegate(string key, CommandContext context)
+			{
+				events.Cancel(key, this.Request.Parameters, context);
+			}, session, base.Request.EventId);
+			return new ServiceResult<VoidResult>(VoidResult.Value);
+		}
+	}
+}

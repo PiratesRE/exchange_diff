@@ -1,0 +1,137 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{09CD9476-CD82-489E-B9E2-84B47CA14142}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Microsoft.Exchange.LogUploader</RootNamespace>
+    <AssemblyName>Microsoft.Exchange.LogUploader</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Office.Compliance.Audit" />
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.IdentityModel" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Actions.cs" />
+    <Compile Include="ADTopologyEndpointNotFoundException.cs" />
+    <Compile Include="AppConfigReader.cs" />
+    <Compile Include="AuditLogDataBatch.cs" />
+    <Compile Include="AuditUploaderAction.cs" />
+    <Compile Include="AuditUploaderConfig.cs" />
+    <Compile Include="AuditUploaderConfigRules.cs" />
+    <Compile Include="AuditUploaderConfigSchema.cs" />
+    <Compile Include="AuditUploaderDictionaryKey.cs" />
+    <Compile Include="CancellationContext.cs" />
+    <Compile Include="ConfigCollection.cs" />
+    <Compile Include="ConfigInstance.cs" />
+    <Compile Include="ControlElement.cs" />
+    <Compile Include="DalStubConfig.cs" />
+    <Compile Include="DatabaseWriter.cs" />
+    <Compile Include="DummyLogWriter.cs" />
+    <Compile Include="EventLogger.cs" />
+    <Compile Include="ExchangeComponent.cs" />
+    <Compile Include="FailedToInstantiateLogFileInfoException.cs" />
+    <Compile Include="FailedToRetrieveRegionTagException.cs" />
+    <Compile Include="FilteringPredicate.cs" />
+    <Compile Include="FilteringRule.cs" />
+    <Compile Include="IEventLogger.cs" />
+    <Compile Include="IllegalRangeMergeException.cs" />
+    <Compile Include="ILogFileInfo.cs" />
+    <Compile Include="ILogManager.cs" />
+    <Compile Include="ILogMonitorHelper.cs" />
+    <Compile Include="ILogUploaderPerformanceCounters.cs" />
+    <Compile Include="InputBuffer.cs" />
+    <Compile Include="InvalidLogFileRangeException.cs" />
+    <Compile Include="InvalidLogLineException.cs" />
+    <Compile Include="InvalidPropertyValueException.cs" />
+    <Compile Include="IWatermarkFile.cs" />
+    <Compile Include="IWatermarkFileHelper.cs" />
+    <Compile Include="LogConfiguration.cs" />
+    <Compile Include="LogDataBatch.cs" />
+    <Compile Include="LogDataBatchAttribute.cs" />
+    <Compile Include="LogDataBatchReflectionCache.cs" />
+    <Compile Include="LogFileInfo.cs" />
+    <Compile Include="LogFileRange.cs" />
+    <Compile Include="LogManagerPlugin.cs" />
+    <Compile Include="LogManagerPluginCollection.cs" />
+    <Compile Include="LogMonitor.cs" />
+    <Compile Include="LogReader.cs" />
+    <Compile Include="LogSchemaType.cs" />
+    <Compile Include="LogTypeInstance.cs" />
+    <Compile Include="LogTypeInstanceCollection.cs" />
+    <Compile Include="LogUploaderDefaultCommonPerfCountersInstance.cs" />
+    <Compile Include="MalformedLogRangeLineException.cs" />
+    <Compile Include="MessageBatchBase.cs" />
+    <Compile Include="MessageTracingException.cs" />
+    <Compile Include="MissingPropertyException.cs" />
+    <Compile Include="ParsedReadOnlyRow.cs" />
+    <Compile Include="Parsing.cs" />
+    <Compile Include="ParsingPredicate.cs" />
+    <Compile Include="ParsingRule.cs" />
+    <Compile Include="PartitionElement.cs" />
+    <Compile Include="PartitionsCollection.cs" />
+    <Compile Include="PerfCountersInstanceCache.cs" />
+    <Compile Include="PermanentDALException.cs" />
+    <Compile Include="ProcessingEnvironment.cs" />
+    <Compile Include="ProcessingEnvironmentCollection.cs" />
+    <Compile Include="ProcessingStatus.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Region.cs" />
+    <Compile Include="RetryHelper.cs" />
+    <Compile Include="ServiceLogger.cs" />
+    <Compile Include="SplitLogType.cs" />
+    <Compile Include="ThreadSafeQueue.cs" />
+    <Compile Include="ThrottlingInfo.cs" />
+    <Compile Include="Tools.cs" />
+    <Compile Include="TransientDALException.cs" />
+    <Compile Include="TransientDataProviderUnavailableException.cs" />
+    <Compile Include="WatermarkFile.cs" />
+    <Compile Include="WatermarkFileHelper.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.Exchange.LogUploaderProxy\Microsoft.Exchange.LogUploaderProxy.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14143}</Project>
+      <Name>Microsoft.Exchange.LogUploaderProxy</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\mscorlib\mscorlib.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141F1}</Project>
+      <Name>mscorlib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

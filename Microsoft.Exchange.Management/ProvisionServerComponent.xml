@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo Name="Provision Server" DescriptionId="SetupComponentProvisionServer" >
+  <ServerTasks>
+
+    <!-- See if the server object exists, most of the tasks in this component are not run in upgrade because provisionServer is supposed to be done only once  -->
+    <!-- This requires Exchange ViewOnly role and above -->
+    <!-- Just in case if you are observing that we are using $server across the tasks and it could break resume -->
+    <!-- and if you plan to fix it in the same way $provisionserver is reinitialized in the tasks, it won't work -->
+    <!-- That's because the $server is initialized in just one place (i.e. below) and used in other tasks with the -->
+    <!-- assumption that it doesn't exist. If you try to call get-exchangeserver before every task to make it follow our -->
+    <!-- resume decipline, it won't work. That's because after new-exchangeserver, the task get-exchangeserver will always -->
+    <!-- succeed. And hence the other tasks won't be run properly. -->
+    <!-- Coincidently the resume logic won't broken due to $server variable because, if there is a task that fails -->
+    <!-- in the install mode, then the condition would have been $server is null. So when the resume happens, $server -->
+    <!-- will be null and hence this assumption would work. If $server was not null in the first time, there would not -->
+    <!-- be any task failures at all and hence there is no issue about the resume failing -->
+    <!-- If PS# 101109 for BPA prereq is addressed, then we don't need to use $server variable at all -->
+    <ServerTaskInfo Id="_b3efb72437654cd381534b2576817946" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          $server = get-exchangeserver -Identity $RoleNetBIOSName -DomainController $RoleDomainController -ErrorAction SilentlyContinue
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade />
+      <DisasterRecovery />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Create the dummy server object -->
+    <!-- This requires OrgAdmin role and above -->
+    <ServerTaskInfo Id="_84489810458648f5ac6e47811394a284" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          if ($server -eq $null)
+          {
+          new-exchangeserver -DomainController $RoleDomainController -Name $RoleNetBIOSName
+          }
+        </Standalone>
+      </Install>
+      <!-- Upgrade admin display version information on server object when B2B upgrading -->
+      <BuildToBuildUpgrade>
+        <Standalone>upgrade-ExchangeServer -Identity $RoleFqdnOrName -DomainController $RoleDomainController</Standalone>
+      </BuildToBuildUpgrade>
+      <DisasterRecovery />
+      <!-- Server object is removed by uninstall-ExsetdataAtom -AtomName Server, in AllADRolesCommon.xml -->
+      <Uninstall>
+        <Standalone>
+          if (!$isProvisionServerInitialized)
+          {
+            $hasExchangeServersWriteAccess = test-ExchangeServersWriteAccess -DomainController $RoleDomainController -ErrorAction SilentlyContinue;
+            $provisionserver = get-provisionedexchangeserver -Identity $RoleNetBIOSName -DomainController $RoleDomainController -ErrorAction SilentlyContinue;
+            $isProvisionServerInitialized = $true;
+          }
+          if ($provisionserver -ne $null -and $hasExchangeServersWriteAccess)
+          {
+            remove-provisionedexchangeserver -Identity $RoleNetBIOSName -DomainController $RoleDomainController
+          }
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!--
+      OM: 447848: Set the ServerWideOffline of the server to be InActive right away to prevent the server from being picked up by some component, such as AutoDiscover.
+      This is done here only when it's a new deployment. For other cases, this is already done at AllServerRolesPreConfig.xml.
+      This is done only in Datacenter because we only see issues in Datacenter where the Setup invokes both Enterprise and Datacenter Setup tasks.
+      The ServerWideOffline will be set to Active at AllRolesPostSetupComponent.xml.
+    -->
+    <ServerTaskInfo Id="_c03487d988dc482d876d507850a745c4" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          if (($server -eq $null) -and (($RoleIsDatacenter -eq $true) -or ($RoleIsDatacenterDedicated -eq $true)) -and ($RoleAllRoles -ne $null))
+          {
+            $roles = $RoleAllRoles.Split(',');
+            if ($roles -contains 'CafeRole')
+            {
+              try
+              { 
+                Set-ServerComponentState $RoleNetBIOSName -Component ServerWideOffline -Requester Functional -State InActive
+              } 
+              catch 
+              {
+                Write-ExchangeSetupLog -Warning "Unable to set server state to inactive.  Setup will continue.";
+              }
+            }
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade/>
+      <DisasterRecovery />
+      <Uninstall/>
+    </ServerTaskInfo>
+
+    <!-- Indicate that this is a provisioned server -->
+    <!-- This requires ServerAdmin and above -->
+    <ServerTaskInfo Id="_a16cb82f909348d3a32b9046f3bfb9ba" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          if ($server -eq $null)
+          {
+            set-ExchangeServerRole -Identity $RoleNetBIOSName -IsProvisionedServer:$true -DomainController $RoleDomainController
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade/>
+      <DisasterRecovery />
+      <Uninstall/>
+    </ServerTaskInfo>
+
+    <!-- Add this computer to the Managed Availability Servers USG -->
+    <!-- This requires OrgAdmin and above -->
+    <ServerTaskInfo Id="_08E26ADF40724A8BACF4BB65EE3B21E9" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          if (![String]::IsNullOrEmpty($RoleDomainController))
+          {
+              $masSid = add-ManagedAvailabilityServerGroupMember -DomainController $RoleDomainController -ServerName $RoleNetBIOSName
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade/>
+      <DisasterRecovery />
+      <Uninstall/>
+    </ServerTaskInfo>
+
+    <!-- Grants the "Delegated Setup" role group permission on this server object -->
+    <!-- This requires OrgAdmin and above -->
+    <!-- "Delegated Setup" role group only exists in enterprise topology -->
+    <ServerTaskInfo Id="_c4ddeb5e81c9463e8c3a11cdd50fc708" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          if (($RoleIsDatacenter -eq $false) -and ($RoleIsDatacenterDedicated -eq $false))
+          {
+            $delegatedRoleGroupGuid = [Microsoft.Exchange.Data.Directory.Management.RoleGroup]::DelegatedSetup_InitInfo.WellKnownGuid;
+            $delegatedSetupRG = Get-RoleGroup $delegatedRoleGroupGuid;
+            add-ExchangeAdministrator -role ServerAdmin -Identity $delegatedSetupRG.Identity -Scope $RoleNetBIOSName;
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade/>
+      <DisasterRecovery />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Add this computer to the Exchange Servers USG -->
+    <!-- This requires OrgAdmin and above -->
+    <!-- NOTE: this is done for each role installation. Any role other than Frontend/Cafe will add the local machine to the ets group. -->
+    <ServerTaskInfo Id="_18976b00b7534ec0a1067e71b5af495b" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          if (($RoleIsDatacenter -or $RoleIsDatacenterDedicated) -and ($RoleRoleName -ieq 'FrontendTransportRole' -or $RoleRoleName -ieq 'CafeRole') -and ($RoleDatacenterCafeRoleInETS -eq $false))
+          {
+            $exsSid = add-ExchangeServerGroupMember -DomainController $RoleDomainController -ServerName $RoleNetBIOSName -SkipEtsGroup
+          }
+          else
+          {
+            $exsSid = add-ExchangeServerGroupMember -DomainController $RoleDomainController -ServerName $RoleNetBIOSName
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade/>
+      <DisasterRecovery/>
+      <Uninstall>
+        <Standalone>
+          if (!$isProvisionServerInitialized)
+          {
+            $hasExchangeServersWriteAccess = test-ExchangeServersWriteAccess -DomainController $RoleDomainController -ErrorAction SilentlyContinue;
+            $provisionserver = get-provisionedexchangeserver -Identity $RoleNetBIOSName -DomainController $RoleDomainController -ErrorAction SilentlyContinue;
+            $isProvisionServerInitialized = $true;
+          }
+          if ($hasExchangeServersWriteAccess)
+          {
+            remove-ExchangeServerGroupMember -ServerName $RoleNetBIOSName -DomainController $RoleDomainController
+          }
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Update Legacy GWART (for Ti interop) once the server is removed from routing group -->
+    <!-- Since uninstall tasks execute in the reverse order of install, we use a separate ServerTaskInfo element for install and uninstall -->
+    <!-- This requires OrgAdmin role and above -->
+    <ServerTaskInfo Id="_1532cfaf90c64c39875e9c9f921e5abb" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install />
+      <BuildToBuildUpgrade />
+      <DisasterRecovery />
+      <Uninstall>
+        <Standalone>
+          if (!$isProvisionServerInitialized)
+          {
+            $hasExchangeServersWriteAccess = test-ExchangeServersWriteAccess -DomainController $RoleDomainController -ErrorAction SilentlyContinue;
+            $provisionserver = get-provisionedexchangeserver -Identity $RoleNetBIOSName -DomainController $RoleDomainController -ErrorAction SilentlyContinue;
+            $isProvisionServerInitialized = $true;
+          }
+          if ($provisionserver -ne $null -and $hasExchangeServersWriteAccess)
+          {
+            Update-LegacyGwart
+          }
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- add/remove from the routing group, see bug 75885 for details -->
+    <!-- This requires OrgAdmin role and above -->
+    <ServerTaskInfo Id="_49c64f11a4174d48a5a2eed060225271" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          if ($server -eq $null)
+          {
+          Add-RoutingGroupMember -DomainController $RoleDomainController -ServerName $RoleNetBIOSName
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <DisasterRecovery/>
+      <Uninstall>
+        <Standalone>
+          if (!$isProvisionServerInitialized)
+          {
+          $hasExchangeServersWriteAccess = test-ExchangeServersWriteAccess -DomainController $RoleDomainController -ErrorAction SilentlyContinue;
+          $provisionserver = get-provisionedexchangeserver -Identity $RoleNetBIOSName -DomainController $RoleDomainController -ErrorAction SilentlyContinue;
+          $isProvisionServerInitialized = $true;
+          }
+          if ($provisionserver -ne $null -and $hasExchangeServersWriteAccess)
+          {
+          Remove-RoutingGroupMember -ServerName $RoleNetBIOSName -DomainController $RoleDomainController
+          }
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Link computer object to the RMS Shared Identity. -->
+    <!-- This requires OrgAdmin role and above -->
+    <!-- NOTE: this task must NOT run in the Datacenter because there's not RMS in the Datacenter. -->
+    <ServerTaskInfo Id="_cff4878349854618beeb2c9e17cc5214" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          if ( ($server -eq $null) -and ($RoleIsDatacenter -ne $true) )
+          {
+            Update-RmsSharedIdentity -ServerName $RoleNetBIOSName
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <DisasterRecovery/>
+      <Uninstall>
+        <Standalone>
+          if (!$isProvisionServerInitialized)
+          {
+            $hasExchangeServersWriteAccess = test-ExchangeServersWriteAccess -DomainController $RoleDomainController -ErrorAction SilentlyContinue;
+            $provisionserver = get-provisionedexchangeserver -Identity $RoleNetBIOSName -DomainController $RoleDomainController -ErrorAction SilentlyContinue;
+            $isProvisionServerInitialized = $true;
+          }
+          if ($provisionserver -ne $null -and $hasExchangeServersWriteAccess -and $RoleIsDatacenter -ne $true)
+          {
+            Update-RmsSharedIdentity -RemoveLink -ServerName $RoleNetBIOSName
+          }
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Update Legacy GWART (for Ti interop) once the server is added to routing group -->
+    <!-- This requires OrgAdmin role and above -->
+    <ServerTaskInfo Id="_708ad16d0f2e4940a7900fd2d73c7cf9" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          if ($server -eq $null)
+          {
+            Update-LegacyGwart
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade />
+      <DisasterRecovery />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- See if the server object exists, this is used in uninstall case since uninstall execution starts in opposite order, this task will be executed first in uninstall -->
+    <!-- $isProvisionServerInitialized is used across the tasks that use the $provisionserver variable to decide whether we have -->
+    <!-- already invoked the task get-provisionedexchangeserver or not in the resume scenarios. -->
+    <!-- If everything works normal, then the task get-provisionedexchangeserver will be executed only once and each task doesn't -->
+    <!-- need to reinitialize the $provisionserver variable -->
+    <ServerTaskInfo Id="_9e19c82157f04971882bb2d95327dd40" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install />
+      <BuildToBuildUpgrade />
+      <DisasterRecovery />
+      <Uninstall>
+        <Standalone>
+          $hasExchangeServersWriteAccess = test-ExchangeServersWriteAccess -DomainController $RoleDomainController -ErrorAction SilentlyContinue;
+          $provisionserver = get-provisionedexchangeserver -Identity $RoleNetBIOSName -DomainController $RoleDomainController -ErrorAction SilentlyContinue;
+          $isProvisionServerInitialized = $true;
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+    
+  </ServerTasks>
+</SetupComponentInfo>

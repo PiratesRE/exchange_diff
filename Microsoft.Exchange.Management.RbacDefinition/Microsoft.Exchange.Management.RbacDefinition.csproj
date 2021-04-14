@@ -1,0 +1,130 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{09CD9476-CD82-489E-B9E2-84B47CA14161}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Microsoft.Exchange.Management</RootNamespace>
+    <AssemblyName>Microsoft.Exchange.Management.RbacDefinition</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System.Core" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RbacDefinition\Strings.cs" />
+    <Compile Include="Tasks\AvailableEOPRoleEntries_Datacenter.cs" />
+    <Compile Include="Tasks\AvailableRoleEntries_Datacenter.cs" />
+    <Compile Include="Tasks\AvailableRoleEntries_Dedicated.cs" />
+    <Compile Include="Tasks\AvailableRoleEntries_Enterprise.cs" />
+    <Compile Include="Tasks\AvailableRoleEntries_HostedTenant.cs" />
+    <Compile Include="Tasks\AvailableRoleEntries_Hosting.cs" />
+    <Compile Include="Tasks\AvailableRoleEntries_Tenant.cs" />
+    <Compile Include="Tasks\AvailableUCCRoleEntries_Datacenter.cs" />
+    <Compile Include="Tasks\AvailableWebServiceRoleEntries_Datacenter.cs" />
+    <Compile Include="Tasks\AvailableWebServiceRoleEntries_Dedicated.cs" />
+    <Compile Include="Tasks\AvailableWebServiceRoleEntries_Enterprise.cs" />
+    <Compile Include="Tasks\AvailableWebServiceRoleEntries_HostedTenant.cs" />
+    <Compile Include="Tasks\AvailableWebServiceRoleEntries_Hosting.cs" />
+    <Compile Include="Tasks\AvailableWebServiceRoleEntries_Tenant.cs" />
+    <Compile Include="Tasks\CannedEOPRoles_Datacenter.cs" />
+    <Compile Include="Tasks\CannedRoles_Datacenter.cs" />
+    <Compile Include="Tasks\CannedRoles_Dedicated.cs" />
+    <Compile Include="Tasks\CannedRoles_Enterprise.cs" />
+    <Compile Include="Tasks\CannedRoles_HostedTenant.cs" />
+    <Compile Include="Tasks\CannedRoles_Hosting.cs" />
+    <Compile Include="Tasks\CannedRoles_Tenant.cs" />
+    <Compile Include="Tasks\CannedRoleTypes_Enterprise.cs" />
+    <Compile Include="Tasks\CannedUCCRoles_Datacenter.cs" />
+    <Compile Include="Tasks\CannedWebServiceRoles_Datacenter.cs" />
+    <Compile Include="Tasks\CannedWebServiceRoles_Dedicated.cs" />
+    <Compile Include="Tasks\CannedWebServiceRoles_Enterprise.cs" />
+    <Compile Include="Tasks\CannedWebServiceRoles_HostedTenant.cs" />
+    <Compile Include="Tasks\CannedWebServiceRoles_Hosting.cs" />
+    <Compile Include="Tasks\CannedWebServiceRoles_Tenant.cs" />
+    <Compile Include="Tasks\Datacenter_RoleGroupDefinition.cs" />
+    <Compile Include="Tasks\Dedicated_RoleGroupDefinition.cs" />
+    <Compile Include="Tasks\Enterprise_RoleGroupDefinition.cs" />
+    <Compile Include="Tasks\Enterprise_RoleToRAPMapping.cs" />
+    <Compile Include="Tasks\ExMailboxAdminSGroupNotFoundException.cs" />
+    <Compile Include="Tasks\ExOrgAdminSGroupNotFoundException.cs" />
+    <Compile Include="Tasks\ExOrgReadAdminSGroupNotFoundException.cs" />
+    <Compile Include="Tasks\ExPublicFolderAdminSGroupNotFoundException.cs" />
+    <Compile Include="Tasks\ExRbacRoleGroupNotFoundException.cs" />
+    <Compile Include="Tasks\HostedTenant_RoleGroupDefinition.cs" />
+    <Compile Include="Tasks\Hosting_RoleGroupDefinition.cs" />
+    <Compile Include="Tasks\RoleAssignmentDefinition.cs" />
+    <Compile Include="Tasks\RoleCmdlet.cs" />
+    <Compile Include="Tasks\RoleDefinition.cs" />
+    <Compile Include="Tasks\RoleGroupCollection.cs" />
+    <Compile Include="Tasks\RoleGroupDefinition.cs" />
+    <Compile Include="Tasks\RoleGroupDefinitions.cs" />
+    <Compile Include="Tasks\RoleGroupRoleMapping.cs" />
+    <Compile Include="Tasks\RoleNameMapping.cs" />
+    <Compile Include="Tasks\RoleNameMappingCollection.cs" />
+    <Compile Include="Tasks\RoleParameters.cs" />
+    <Compile Include="Tasks\RoleToRAPAssignmentDefinition.cs" />
+    <Compile Include="Tasks\RoleToRAPMapping.cs" />
+    <Compile Include="Tasks\Tenant_RoleGroupDefinition.cs" />
+    <Compile Include="Tasks\Tenant_RoleToRAPMapping.cs" />
+    <Compile Include="Tasks\ValidationRuleDefinitions.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="RbacDefinition\Strings.resources" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.Exchange.Common\Microsoft.Exchange.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140F0}</Project>
+      <Name>Microsoft.Exchange.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Core.Strings\Microsoft.Exchange.Core.Strings.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14103}</Project>
+      <Name>Microsoft.Exchange.Core.Strings</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Common\Microsoft.Exchange.Data.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140D3}</Project>
+      <Name>Microsoft.Exchange.Data.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Directory\Microsoft.Exchange.Data.Directory.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14105}</Project>
+      <Name>Microsoft.Exchange.Data.Directory</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data\Microsoft.Exchange.Data.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14106}</Project>
+      <Name>Microsoft.Exchange.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\mscorlib\mscorlib.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141F1}</Project>
+      <Name>mscorlib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

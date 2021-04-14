@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo Name="Domain-specific AD Configuration" DescriptionId="SetupComponentDomainGlobalConfig">
+
+  <OrgTasks>
+
+    <!-- Initialize permissions on the domain -->
+    <OrgTaskInfo Id="_27a706ffe123425f9ee60cb02b930e81" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Global>
+          $createTenantRoot = ($RoleIsDatacenter -or $RoleIsPartnerHosted);
+          $createMsoSyncRoot = $RoleIsDatacenter;
+
+          #$RoleDatacenterIsManagementForest is set only in Datacenter deployment; interpret its absense as $false
+          [bool]$isManagementForest = ($RoleDatacenterIsManagementForest -eq $true);
+
+          if ($RolePrepareAllDomains)
+          {
+              initialize-DomainPermissions -AllDomains:$true -CreateTenantRoot:$createTenantRoot -CreateMsoSyncRoot:$createMsoSyncRoot -IsManagementForest:$isManagementForest;
+          }
+          elseif ($RoleDomain -ne $null)
+          {
+              initialize-DomainPermissions -Domain $RoleDomain -CreateTenantRoot:$createTenantRoot -CreateMsoSyncRoot:$createMsoSyncRoot -IsManagementForest:$isManagementForest;
+          }
+          else
+          {
+              initialize-DomainPermissions -CreateTenantRoot:$createTenantRoot -CreateMsoSyncRoot:$createMsoSyncRoot -IsManagementForest:$isManagementForest;
+          }
+        </Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+
+  </OrgTasks>
+
+</SetupComponentInfo>

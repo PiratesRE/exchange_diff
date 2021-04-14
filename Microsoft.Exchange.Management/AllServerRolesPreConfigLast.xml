@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo Name="Prereq Configuration">
+  <ServerTasks>
+
+    <!-- Set registry key to enable remote administration
+         Start WMSVC for all server roles to support use of WMA apis for web configuration -->
+    <ServerTaskInfo Id="StartWMSVC" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          $keyPath = "HKLM:\Software\Microsoft\WebManagement\Server";
+          if (!(Get-Item $keyPath -ErrorAction SilentlyContinue))
+          {
+            New-Item $keyPath -Force
+          }
+          Set-ItemProperty -path $keyPath -name "EnableRemoteManagement" -value 0x1 -Type DWORD -Force;
+
+          if (Get-Service WMSVC* | ?{$_.Name -eq 'WMSVC'})
+          {
+            Set-Service WMSVC -StartupType Automatic
+            Stop-SetupService -ServiceName WMSVC;
+            Start-SetupService -ServiceName WMSVC
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>
+          if (Get-Service WMSVC* | ?{$_.Name -eq 'WMSVC'})
+          {
+            Set-Service WMSVC -StartupType Automatic
+            Start-SetupService -ServiceName WMSVC
+          }
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Set NetTcpPortSharing to Auto for all server roles as this is required by CAS, CAFE and FFT, 
+         where CAS belongs to mailbox role, and CAFE and FFT belong to clientaccess role. -->
+    <ServerTaskInfo Id="EnableNetTcpPortSharing" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          if (Get-Service NetTcpPortSharing* | ?{$_.Name -eq 'NetTcpPortSharing'})
+          {
+          Set-Service NetTcpPortSharing -StartupType Automatic
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall/>
+    </ServerTaskInfo>
+
+  </ServerTasks>
+</SetupComponentInfo>

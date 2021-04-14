@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo Name="All Roles Common Last" AlwaysExecute="true" DescriptionId="SetupComponentAllADRolesCommon">
+
+  <!-- This component is ALWAYS executed, regardless of other installed roles -->
+  <ServerTasks>
+
+    <!-- Setup depends on remote registry and wmi. So let's start them first (on uninstall). -->
+    <ServerTaskInfo Id="StartRemoteRegistry" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install/>
+      <BuildToBuildUpgrade/>
+      <DisasterRecovery/>
+      <Uninstall Weight="5" DescriptionId="SetupProgressStartingRemoteRegistryService">
+        <Standalone>
+          if (Get-Service RemoteRegistry* | ?{$_.Name -eq 'RemoteRegistry'})
+          {
+            Set-Service RemoteRegistry -StartupType Automatic
+            Start-SetupService -ServiceName RemoteRegistry
+          }
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Normally all services would be enabled in AllRolesPostFileCopy. If it failed
+    resume won't try it again. Thus we'll try to do it again here. -->
+    <ServerTaskInfo Id="_f688defc7999417ba5c8e7b4ca41a971" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install/>
+      <BuildToBuildUpgrade/>
+      <DisasterRecovery/>
+      <Uninstall>
+        <Standalone>
+          &amp; $RoleBinPath\ServiceControl.ps1 EnableServices $RoleRoleName.Replace('Role','')
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+    <ServerTaskInfo Id="_6f2b6624392e4f678c9b5a386a4916ae" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install/>
+      <BuildToBuildUpgrade/>
+      <DisasterRecovery/>
+      <Uninstall>
+        <Standalone>
+          if ($RoleRoles)
+          {
+            &amp; $RoleBinPath\ServiceControl.ps1 EnableServices $RoleRoles.Replace('Role','').Split(',')
+          }
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- E14 528333: WMI must be started before running ServiceControl.ps1 if
+         an ExecutionPolicy is being used. Note that uninstall tasks run in reverse order. -->
+    <ServerTaskInfo Id="StartWinMgmt" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install/>
+      <BuildToBuildUpgrade/>
+      <DisasterRecovery/>
+      <Uninstall Weight="5" DescriptionId="SetupProgressStartingWMIService">
+        <Standalone>
+          if (Get-Service WinMgmt* | ?{$_.Name -eq 'WinMgmt'})
+          {
+            Set-Service WinMgmt -StartupType Automatic
+            Start-SetupService -ServiceName WinMgmt
+          }
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Start MSExchangeServiceHost service -->
+    <ServerTaskInfo Id="_c48e36ad65d1430b847aa57123636542" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install Weight="4" DescriptionId="SetupProgressStartingServiceHostService" IsFatal="false">
+        <Standalone>
+          stop-SetupService -ServiceName MSExchangeServiceHost;
+          start-SetupService -ServiceName MSExchangeServiceHost
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall/>
+    </ServerTaskInfo>
+
+    <!-- Set/remove the role information in the registry -->
+    <!-- This requires local administrator role -->
+    <!-- DO NOT PLACE ANYTHING AFTER set-InstalledRoleInfo -->
+    <ServerTaskInfo Id="_25c25f6a6e484b32bedc5d6fa5ea3699" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>set-InstalledRoleInfo -RoleName $RoleRoleName</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>remove-InstalledRoleInfo -RoleName $RoleRoleName</Standalone>
+      </Uninstall>
+    </ServerTaskInfo> 
+    
+    <!-- DO NOT PLACE ANYTHING AFTER set-InstalledRoleInfo -->
+
+  </ServerTasks>
+
+</SetupComponentInfo>

@@ -1,0 +1,107 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{09CD9476-CD82-489E-B9E2-84B47CA14159}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Microsoft.Exchange.Management.Deployment.Analysis</RootNamespace>
+    <AssemblyName>Microsoft.Exchange.Management.Deployment.Analysis</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AccessedFailedResultException.cs" />
+    <Compile Include="Analysis.cs" />
+    <Compile Include="AnalysisException.cs" />
+    <Compile Include="AnalysisImplementation.cs" />
+    <Compile Include="AnalysisMember.2.cs" />
+    <Compile Include="AnalysisMember.cs" />
+    <Compile Include="AnalysisMemberBuilder.cs" />
+    <Compile Include="AnalysisProgress.cs" />
+    <Compile Include="AnalysisStatus.cs" />
+    <Compile Include="AnalysisThreading.cs" />
+    <Compile Include="CanceledException.cs" />
+    <Compile Include="Conclusion.cs" />
+    <Compile Include="ConclusionImplementation.cs" />
+    <Compile Include="ConclusionSetBuilderImplementation.cs" />
+    <Compile Include="ConclusionSetImplementation.cs" />
+    <Compile Include="CriticalException.cs" />
+    <Compile Include="EmptyResultsException.cs" />
+    <Compile Include="Evaluate.cs" />
+    <Compile Include="EvaluationModeFeature.cs" />
+    <Compile Include="FailureException.cs" />
+    <Compile Include="Feature.cs" />
+    <Compile Include="FeatureSet.cs" />
+    <Compile Include="FilteredException.cs" />
+    <Compile Include="FilterFeature.cs" />
+    <Compile Include="ForEachResultFeature.cs" />
+    <Compile Include="IAnalysisDependantSetter.cs" />
+    <Compile Include="IRuleConclusion.cs" />
+    <Compile Include="MultipleResultsException.cs" />
+    <Compile Include="Optimistic.cs" />
+    <Compile Include="Optional.cs" />
+    <Compile Include="ProgressUpdateEventArgs.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Resolver.cs" />
+    <Compile Include="Result.2.cs" />
+    <Compile Include="Result.cs" />
+    <Compile Include="Results.cs" />
+    <Compile Include="ResultsCache.cs" />
+    <Compile Include="ResultsFeature.cs" />
+    <Compile Include="RootAnalysisMember.cs" />
+    <Compile Include="Rule.cs" />
+    <Compile Include="RuleResult.cs" />
+    <Compile Include="Setting.cs" />
+    <Compile Include="Severity.cs" />
+    <Compile Include="SeverityFeature.cs" />
+    <Compile Include="Strings.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Strings.resources" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Common\Microsoft.Exchange.Data.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140D3}</Project>
+      <Name>Microsoft.Exchange.Data.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Net\Microsoft.Exchange.Net.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14178}</Project>
+      <Name>Microsoft.Exchange.Net</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\mscorlib\mscorlib.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141F1}</Project>
+      <Name>mscorlib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

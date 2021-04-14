@@ -1,0 +1,192 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{09CD9476-CD82-489E-B9E2-84B47CA1415A}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Microsoft.Exchange</RootNamespace>
+    <AssemblyName>Microsoft.Exchange.Management.Deployment</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Web.Administration" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.DirectoryServices" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.Management.Automation" />
+    <Reference Include="System.ServiceProcess" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Management\Analysis\AccessedFailedResultException.cs" />
+    <Compile Include="Management\Analysis\Analysis.cs" />
+    <Compile Include="Management\Analysis\AnalysisException.cs" />
+    <Compile Include="Management\Analysis\AnalysisHelpers.cs" />
+    <Compile Include="Management\Analysis\AnalysisMember.2.cs" />
+    <Compile Include="Management\Analysis\AnalysisMember.cs" />
+    <Compile Include="Management\Analysis\Builders\BuildContext.cs" />
+    <Compile Include="Management\Analysis\Builders\IFeatureBuilder.cs" />
+    <Compile Include="Management\Analysis\Builders\IRuleFeatureBuilder.cs" />
+    <Compile Include="Management\Analysis\Builders\ISettingFeatureBuilder.cs" />
+    <Compile Include="Management\Analysis\Builders\RuleBuildContext.cs" />
+    <Compile Include="Management\Analysis\Builders\RuleBuilder.cs" />
+    <Compile Include="Management\Analysis\Builders\RuleConcurrencyBuilder.cs" />
+    <Compile Include="Management\Analysis\Builders\RuleInBuilder.cs" />
+    <Compile Include="Management\Analysis\Builders\RuleParentBuilder.cs" />
+    <Compile Include="Management\Analysis\Builders\SettingBuildContext.cs" />
+    <Compile Include="Management\Analysis\Builders\SettingBuilder.cs" />
+    <Compile Include="Management\Analysis\Builders\SettingConcurrencyBuilder.cs" />
+    <Compile Include="Management\Analysis\Builders\SettingInBuilder.cs" />
+    <Compile Include="Management\Analysis\Builders\SettingParentBuilder.cs" />
+    <Compile Include="Management\Analysis\ConcurrencyType.cs" />
+    <Compile Include="Management\Analysis\EmptyResultsException.cs" />
+    <Compile Include="Management\Analysis\ExceptionInjectionCallback.cs" />
+    <Compile Include="Management\Analysis\FailureException.cs" />
+    <Compile Include="Management\Analysis\Features\AppliesToModeFeature.cs" />
+    <Compile Include="Management\Analysis\Features\AppliesToRoleFeature.cs" />
+    <Compile Include="Management\Analysis\Features\Feature.cs" />
+    <Compile Include="Management\Analysis\Features\FeatureBuilderExtensions.cs" />
+    <Compile Include="Management\Analysis\Features\HelpTopicFeature.cs" />
+    <Compile Include="Management\Analysis\Features\MessageFeature.cs" />
+    <Compile Include="Management\Analysis\Features\RuleType.cs" />
+    <Compile Include="Management\Analysis\Features\RuleTypeFeature.cs" />
+    <Compile Include="Management\Analysis\Features\SetupMode.cs" />
+    <Compile Include="Management\Analysis\Features\SetupRole.cs" />
+    <Compile Include="Management\Analysis\Features\ValidationConstant.cs" />
+    <Compile Include="Management\Analysis\GlobalParameters.cs" />
+    <Compile Include="Management\Analysis\IAnalysisAccessor.cs" />
+    <Compile Include="Management\Analysis\IResultAccessor.cs" />
+    <Compile Include="Management\Analysis\MultipleResultsException.cs" />
+    <Compile Include="Management\Analysis\PrereqAnalysis.cs" />
+    <Compile Include="Management\Analysis\ProgressUpdateEventArgs.cs" />
+    <Compile Include="Management\Analysis\Result.2.cs" />
+    <Compile Include="Management\Analysis\Result.cs" />
+    <Compile Include="Management\Analysis\Results.cs" />
+    <Compile Include="Management\Analysis\RootAnalysisMember.cs" />
+    <Compile Include="Management\Analysis\Rule.cs" />
+    <Compile Include="Management\Analysis\RuleResult.cs" />
+    <Compile Include="Management\Analysis\Setting.cs" />
+    <Compile Include="Management\Deployment\ADProvider.cs" />
+    <Compile Include="Management\Deployment\DataProviderFactory.cs" />
+    <Compile Include="Management\Deployment\DnsApi.cs" />
+    <Compile Include="Management\Deployment\HelpId.cs" />
+    <Compile Include="Management\Deployment\HybridConfigurationDetection\HybridConfigurationDetection.cs" />
+    <Compile Include="Management\Deployment\HybridConfigurationDetection\HybridConfigurationDetectionException.cs" />
+    <Compile Include="Management\Deployment\HybridConfigurationDetection\IHybridConfigurationDetection.cs" />
+    <Compile Include="Management\Deployment\HybridConfigurationDetection\IOnPremisesHybridDetectionCmdlets.cs" />
+    <Compile Include="Management\Deployment\HybridConfigurationDetection\ITenantHybridDetectionCmdlet.cs" />
+    <Compile Include="Management\Deployment\HybridConfigurationDetection\OnPremisesHybridDetectionCmdlets.cs" />
+    <Compile Include="Management\Deployment\HybridConfigurationDetection\PowershellConnectionType.cs" />
+    <Compile Include="Management\Deployment\HybridConfigurationDetection\PowershellHostUI.cs" />
+    <Compile Include="Management\Deployment\HybridConfigurationDetection\RemotePowershellHost.cs" />
+    <Compile Include="Management\Deployment\HybridConfigurationDetection\RemotePowershellSession.cs" />
+    <Compile Include="Management\Deployment\HybridConfigurationDetection\TenantHybridDetectionCmdlet.cs" />
+    <Compile Include="Management\Deployment\IADDataProvider.cs" />
+    <Compile Include="Management\Deployment\IDataProviderFactory.cs" />
+    <Compile Include="Management\Deployment\IEXADDataProvider.cs" />
+    <Compile Include="Management\Deployment\IManagedMethodProvider.cs" />
+    <Compile Include="Management\Deployment\IMonadDataProvider.cs" />
+    <Compile Include="Management\Deployment\INativeMethodProvider.cs" />
+    <Compile Include="Management\Deployment\IRegistryDataProvider.cs" />
+    <Compile Include="Management\Deployment\ISetupLogger.cs" />
+    <Compile Include="Management\Deployment\IWebAdminDataProvider.cs" />
+    <Compile Include="Management\Deployment\IWMIDataProvider.cs" />
+    <Compile Include="Management\Deployment\ManagedMethodProvider.cs" />
+    <Compile Include="Management\Deployment\MonadProvider.cs" />
+    <Compile Include="Management\Deployment\NativeMethodProvider.cs" />
+    <Compile Include="Management\Deployment\PrereqAnalysisSample\MessageFeature.cs" />
+    <Compile Include="Management\Deployment\PrereqAnalysisSample\ModeFeature.cs" />
+    <Compile Include="Management\Deployment\PrereqAnalysisSample\PrereqAnalysis.cs" />
+    <Compile Include="Management\Deployment\PrereqAnalysisSample\PrereqAnalysisMemberBuilder.cs" />
+    <Compile Include="Management\Deployment\PrereqAnalysisSample\PrereqConclusion.cs" />
+    <Compile Include="Management\Deployment\PrereqAnalysisSample\PrereqConclusionSet.cs" />
+    <Compile Include="Management\Deployment\PrereqAnalysisSample\PrereqConclusionSetBuilder.cs" />
+    <Compile Include="Management\Deployment\PrereqAnalysisSample\PrereqRuleConclusion.cs" />
+    <Compile Include="Management\Deployment\PrereqAnalysisSample\PrereqSettingConclusion.cs" />
+    <Compile Include="Management\Deployment\PrereqAnalysisSample\RoleFeature.cs" />
+    <Compile Include="Management\Deployment\PrereqAnalysisSample\SetupMode.cs" />
+    <Compile Include="Management\Deployment\PrereqAnalysisSample\SetupRole.cs" />
+    <Compile Include="Management\Deployment\RegistryDataProvider.cs" />
+    <Compile Include="Management\Deployment\SetupLoggerImpl.cs" />
+    <Compile Include="Management\Deployment\SetupLogInitializeException.cs" />
+    <Compile Include="Management\Deployment\SetupPrereqChecks.cs" />
+    <Compile Include="Management\Deployment\Strings.cs" />
+    <Compile Include="Management\Deployment\WebAdminDataProvider.cs" />
+    <Compile Include="Management\Deployment\WMIProvider.cs" />
+    <Compile Include="Management\Hybrid\ILogger.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Setup\Common\BridgeLogger.cs" />
+    <Compile Include="Setup\Common\SetupLogger.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Management\Deployment\Strings.resources" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.Exchange.Configuration.ObjectModel\Microsoft.Exchange.Configuration.ObjectModel.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140FC}</Project>
+      <Name>Microsoft.Exchange.Configuration.ObjectModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Common\Microsoft.Exchange.Data.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140D3}</Project>
+      <Name>Microsoft.Exchange.Data.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Directory\Microsoft.Exchange.Data.Directory.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14105}</Project>
+      <Name>Microsoft.Exchange.Data.Directory</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data\Microsoft.Exchange.Data.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14106}</Project>
+      <Name>Microsoft.Exchange.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Diagnostics\Microsoft.Exchange.Diagnostics.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14113}</Project>
+      <Name>Microsoft.Exchange.Diagnostics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.HelpProvider\Microsoft.Exchange.HelpProvider.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1412B}</Project>
+      <Name>Microsoft.Exchange.HelpProvider</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Management.Deployment.Analysis\Microsoft.Exchange.Management.Deployment.Analysis.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14159}</Project>
+      <Name>Microsoft.Exchange.Management.Deployment.Analysis</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Net\Microsoft.Exchange.Net.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14178}</Project>
+      <Name>Microsoft.Exchange.Net</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\mscorlib\mscorlib.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141F1}</Project>
+      <Name>mscorlib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

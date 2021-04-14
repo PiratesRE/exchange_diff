@@ -1,0 +1,8 @@
+﻿{
+    "__type":"ConversationResponseShape:#Exchange",
+    "AdditionalProperties":[
+        {"__type":"PropertyUri:#Exchange","FieldURI":"ConversationPreview"},
+        {"__type":"PropertyUri:#Exchange","FieldURI":"ConversationDraftItemIds"}
+    ],
+    "BaseShape":"Default"
+}

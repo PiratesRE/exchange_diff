@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<OperatorGraph xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" name="" xmlns="http://schemas.microsoft.com/ceres/studio/2009/10/flow">
+	<Operators>
+		<Operator name="Make" type="Microsoft.Ceres.Evaluation.Operators.BuiltIn.Utility.Make">
+			<Targets>
+				<Target>
+					<operatorMoniker name="//SetPropertyTypes" />
+				</Target>
+			</Targets>
+			<Properties>
+				<Property name="count" value="1" />
+				<Property name="records" value="[(1)]" />
+			</Properties>
+		</Operator>
+
+		<Operator name="SetPropertyTypes" type="Microsoft.Ceres.ContentEngine.Operators.BuiltIn.Mapper">
+			<Targets>
+				<Target>
+					<operatorMoniker name="//DictionaryTracker" />
+				</Target>
+			</Targets>
+			<Properties>
+				<Property name="fieldsToRemove" />
+				<Property name="adaptableType" value="False" />
+			</Properties>
+			<OutputSchema>
+				<Field name="DatabaseGuid" type="Guid" expression="ToGuid(&quot;${DatabaseGuid}&quot;)" />
+				<Field name="MailboxGuid" type="Guid" expression="ToGuid(&quot;${MailboxGuid}&quot;)" />
+				<Field name="TenantId" type="Guid" expression="ToGuid(&quot;${MailboxGuid}&quot;)" />
+				<Field name="indexSystemName" type="String" expression="&quot;${IndexSystemName}&quot;" />
+				<Field name="minFrequency" type="Int64" expression="ToInt64(&quot;${MinimumFrequency}&quot;)" />
+			</OutputSchema>
+		</Operator>
+
+		<Operator name="DictionaryTracker" type="Microsoft.Exchange.Search.OperatorSchema.DictionaryTrackerOperator">
+			<Targets>
+				<Target>
+					<operatorMoniker name="//TermFrequencyReader" />
+				</Target>
+			</Targets>
+			<Properties>
+				<Property name="MailboxGuid" value="TenantId" />
+				<Property name="DatabaseGuid" value="DatabaseGuid" />
+			</Properties>
+		</Operator>
+
+		<Operator name="TermFrequencyReader" type="Microsoft.Ceres.SearchCore.Query.MarsLookupComponent.Operators.TermFrequencyReader">
+			<Targets>
+				<Target>
+					<operatorMoniker name="//FilterTerms" />
+				</Target>
+			</Targets>
+			<Properties>
+				<Property name="correlationId" value="${CorrelationId}" />
+				<Property name="indexSystemNameFieldName" value="indexSystemName" />
+				<Property name="fullTextIndexName" value="content" />
+				<Property name="tenantIdFieldName" value="TenantId" />
+				<Property name="includeSourceInOutput" value="True" />
+				<Property name="returnOccurrences" value="False" />
+				<Property name="minimumFrequencyFieldName" value="minFrequency" />
+				<Property name="termFieldName" value="TermField" />
+				<Property name="frequencyFieldName" value="Frequency" />
+			</Properties>
+		</Operator>
+
+		<Operator name="FilterTerms" type="Microsoft.Ceres.ContentEngine.Operators.BuiltIn.Filter">
+			<Targets>
+				<Target>
+					<operatorMoniker name="//AddThresholdFields" />
+				</Target>
+			</Targets>
+			<Properties>
+				<!-- //depot/devmain/search/foundation/Resources/ReleaseFlows/Definitions/Microsoft.ContentAlignmentFlow/ContentAlignmentFlow.flow
+				-->
+				<Property name="condition" value="&quot;NOT IsMatch(TermField, \&quot;^.{0,2}$|.{30,}|[aeiouy]{7,}|[bcdfghjklmnpqrtsvwxz]{7,}|[\\\\u0020-\\\\u002c\\\\u002f-\\\\u0040\\\\u005b-\\\\u005d\\\\u005f\\\\u007b-\\\\u00b3\\\\u00b6-\\\\u00b7\\\\u00b9-\\\\u00bf\\\\u00d7\\\\u00f7\\\\u1d00-\\\\u1dff\\\\u2000-\\\\ufaff\\\\ufe00-\\\\ufe6f\\\\uff00-\\\\uffff]\&quot;,Compiled)&quot;" />
+			</Properties>
+		</Operator>
+
+		<Operator name="AddThresholdFields" type="Microsoft.Ceres.ContentEngine.Operators.BuiltIn.Mapper">
+			<Targets>
+				<Target breakpointEnabled="false">
+					<operatorMoniker name="//SortByTenantAndTerm" />
+				</Target>
+			</Targets>
+			<Properties>
+				<Property name="adaptableType" value="True" />
+			</Properties>
+			<OutputSchema sortedPrefix="1" >
+				<!-- also re-order output fields, first by TenantId, then by Frequency -->
+				<Field name="TenantId" type="Guid" expression="TenantId" />
+				<Field name="Frequency" type="Int64" expression="Frequency" />
+				<Field name="TermField" type="String" expression="TermField" />
+				<Field name="scoreThreshold" type="Int32" canBeNull="false" expression="15" />
+				<Field name="frequencyThreshold" type="Int64" canBeNull="false" expression="1" />
+				<Field name="termsPerTenant" type="Int64" canBeNull="false" expression="500000" />
+			</OutputSchema>
+		</Operator>
+
+		<Operator name="SortByTenantAndTerm" type="Microsoft.Ceres.Evaluation.Operators.BuiltIn.Basic.Sort">
+			<Targets>
+				<Target breakpointEnabled="false">
+					<operatorMoniker name="//TrimResults" />
+				</Target>
+			</Targets>
+			<Properties>
+				<Property name="trimOffset" value="0" />
+				<Property name="trimCount" value="-1" />
+				<Property name="sortFields" value="[(&quot;TenantId&quot;,True), (&quot;Frequency&quot;,False)]" />
+			</Properties>
+		</Operator>
+
+		<Operator name="TrimResults" type="Microsoft.Ceres.ContentEngine.NlpOperators.ContentAlignmentFilter">
+			<Targets>
+				<Target breakpointEnabled="false">
+					<operatorMoniker name="//TrimExtraneousFields" />
+				</Target>
+			</Targets>
+			<Properties>
+				<Property name="termsPerTenantField" value="termsPerTenant" />
+				<Property name="scoreThresholdField" value="scoreThreshold" />
+				<Property name="frequencyThresholdField" value="frequencyThreshold" />
+				<Property name="querySpellingCorrectionSuggestionThreshold" value="1" />
+				<Property name="querySpellingCorrectionDictionaryCoefficient" value="4.0" />
+				<Property name="tenantIdField" value="TenantId" />
+				<Property name="frequencyField" value="Frequency" />
+				<Property name="termField" value="TermField" />
+				<Property name="correlationId" value="${CorrelationId}" />
+			</Properties>
+		</Operator>
+
+		<Operator name="TrimExtraneousFields" type="Microsoft.Ceres.ContentEngine.Operators.BuiltIn.Mapper">
+			<Targets>
+				<Target breakpointEnabled="false">
+					<operatorMoniker name="//DictionaryCompiler" />
+				</Target>
+			</Targets>
+			<Properties>
+				<Property name="adaptableType" value="False" />
+			</Properties>
+			<OutputSchema>
+				<!--
+				Remove all fields that are not needed in the output dictionary.
+				Dictionary compiler only accepts non-nullable secondary keys.
+				-->
+				<Field name="value" type="Int64" canBeNull="False" expression="Frequency" />
+				<Field name="TermField" type="String" canBeNull="False" expression="TermField" />
+			</OutputSchema>
+		</Operator>
+
+		<Operator name="DictionaryCompiler" type="Microsoft.Ceres.ContentEngine.NlpOperators.CompileDictionary">
+			<Targets>
+				<Target breakpointEnabled="false">
+					<operatorMoniker name="//DictionaryStoreWriter" />
+				</Target>
+			</Targets>
+			<Properties>
+				<Property name="keyField" value="TermField" />
+				<Property name="provideCallbacks" value="False" />
+				<Property name="transformation" value="UnicodeTransformationsAndLowercase" />
+				<Property name="correlationId" value="${CorrelationId}" />
+				<Property name="dictionarySizeLimit" value="1073741824" />
+				<Property name="OutputField" value="Dictionary" />
+			</Properties>
+		</Operator>
+
+		<Operator name="DictionaryStoreWriter" type="Microsoft.Exchange.Search.OperatorSchema.DictionaryStoreWriterOperator">
+			<Properties>
+				<Property name="Dictionary" value="Dictionary" />
+				<Property name="provideCallbacks" value="False" />
+			</Properties>
+		</Operator>
+	</Operators>
+</OperatorGraph>

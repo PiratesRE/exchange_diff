@@ -1,0 +1,372 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo Name="Mailbox Service Control (Last)" DescriptionId="SetupComponentStartingMailboxServices">
+
+  <ServerTasks>
+	
+  <!-- Add/remove firewall exceptions -->
+    <!-- Add/remove firewall exception for store service process-->
+    <ServerTaskInfo Id="_9b519a96ed1b4642943e73d663e83ae6" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>add-firewallexception -BinaryPath ($RoleInstallPath + "\bin\Microsoft.Exchange.Store.Service.exe") -Name "MSExchangeIS"</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>remove-firewallexception -BinaryPath ($RoleInstallPath + "\bin\Microsoft.Exchange.Store.Service.exe") -Name "MSExchangeIS"</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+    <ServerTaskInfo Id="_4e2af99866444e169a1fa7de3f38fef2" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>add-firewallexception -BinaryPath ($RoleInstallPath + "\bin\Microsoft.Exchange.Worker.exe") -Name "MSExchangeIS"</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>remove-firewallexception -BinaryPath ($RoleInstallPath + "\bin\Microsoft.Exchange.Worker.exe") -Name "MSExchangeIS"</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+	<!-- Add/remove firewall exception for mad.exe service process -->
+    <ServerTaskInfo Id="_c9eebc4c26af403da4281d1a0d806dd2" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install />
+      <BuildToBuildUpgrade>
+        <Standalone>remove-firewallexception -BinaryPath ($RoleInstallPath + "\bin\mad.exe") -Name "MSExchangeSA"</Standalone>
+      </BuildToBuildUpgrade>
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>remove-firewallexception -BinaryPath ($RoleInstallPath + "\bin\mad.exe") -Name "MSExchangeSA"</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- REVIEW: What about clussvc.exe? Should this be done in add-/remove-dagserver?-->
+
+    <!-- After a clean install or Build-to-Build Upgrade, we must start the services -->
+
+    <!-- Stop IISAdmin service on install -->
+    <ServerTaskInfo Id="_cff4203078c84dd98769ec8916e85e92" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressStoppingIISAdminService">
+        <Standalone>stop-SetupService -ServiceName IISAdmin</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Restart/stop IISAdmin service -->
+    <ServerTaskInfo Id="_8058c5c0d32b4751b943606f1f8d9ca0" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+	  <Install DescriptionId="SetupProgressStartingIISAdminService">
+        <Standalone>start-SetupService -ServiceName IISAdmin</Standalone>
+      </Install>
+      <BuildToBuildUpgrade />
+      <DisasterRecovery UseInstallTasks="true" />
+	  <Uninstall DescriptionId="SetupProgressStoppingIISAdminService">
+        <Standalone>stop-SetupService -ServiceName IISAdmin</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Start/stop HTTPFilter service -->
+    <ServerTaskInfo Id="_b5dbf39338944a938d800f65198ecdf8" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+	  <Install DescriptionId="SetupProgressStartingHTTPFilterService">
+        <Standalone>
+	 $a = get-wmiobject win32_operatingsystem;
+        if( ([int]($a.version.split(".")[0])) -lt 6   )
+        {
+        	start-SetupService -ServiceName HTTPFilter
+	 }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade />
+      <DisasterRecovery UseInstallTasks="true" />
+	  <Uninstall DescriptionId="SetupProgressStoppingHTTPFilterService">
+        <Standalone>
+	 $a = get-wmiobject win32_operatingsystem;
+        if( ([int]($a.version.split(".")[0])) -lt 6   )
+        {
+	        stop-SetupService -ServiceName HTTPFilter
+	 }
+	 </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Start/stop W3SVC service -->
+    <ServerTaskInfo Id="_6b463b5157174ffd88e84d7cf2e9c075" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+	  <Install DescriptionId="SetupProgressStartingW3SVCService">
+        <Standalone>start-SetupService -ServiceName W3SVC</Standalone>
+      </Install>
+      <BuildToBuildUpgrade />
+      <DisasterRecovery UseInstallTasks="true" />
+	  <Uninstall DescriptionId="SetupProgressStoppingW3SVCService">
+        <Standalone>stop-SetupService -ServiceName W3SVC</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+	<!-- Start/stop MSExchangeMailboxAssistants service -->
+	<ServerTaskInfo Id="_6dafc355332b4424880090d93b6a67df" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+	  <Install Weight="2" DescriptionId="SetupProgressStartingMailboxAssistantService">
+		<Standalone>start-SetupService -ServiceName MSExchangeMailboxAssistants</Standalone>
+	  </Install>
+	  <BuildToBuildUpgrade />
+	  <DisasterRecovery UseInstallTasks="true" />
+	  <Uninstall DescriptionId="SetupProgressStoppingMailboxAssistantService">
+		<Standalone>stop-SetupService -ServiceName MSExchangeMailboxAssistants</Standalone>
+	  </Uninstall>
+	</ServerTaskInfo>
+
+    <!-- Start/stop the Fast Search service -->
+    <ServerTaskInfo Id="_791613cfe5524d3e9509292740c42764" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressStartingSearchService">
+        <Standalone>
+          start-SetupService -ServiceName MSExchangeFastSearch -IgnoreTimeout:$true
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall DescriptionId="SetupProgressStoppingSearchService">
+        <Standalone>stop-SetupService -ServiceName MSExchangeFastSearch</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Start/stop Mail Submission service -->
+	<ServerTaskInfo Id="_23a36fed7b6947e0906f388b5a90135c" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+	  <Install DescriptionId="SetupProgressStartingMailSubmissionService">
+		<Standalone>start-SetupService -ServiceName MSExchangeSubmission</Standalone>
+	  </Install>
+	  <BuildToBuildUpgrade />
+	  <DisasterRecovery UseInstallTasks="true" />
+	  <Uninstall DescriptionId="SetupProgressStoppingMailSubmissionService">
+		<Standalone>stop-SetupService -ServiceName MSExchangeSubmission</Standalone>
+	  </Uninstall>
+	</ServerTaskInfo>
+		
+	<!-- Start/stop Throttling service -->
+	<ServerTaskInfo Id="_638a83f15a334d0394acc1b7e61919c2" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+	  <Install DescriptionId="SetupProgressStartingThrottlingService">
+		<Standalone>start-SetupService -ServiceName MSExchangeThrottling</Standalone>
+	  </Install>
+	  <BuildToBuildUpgrade />
+	  <DisasterRecovery UseInstallTasks="true" />
+	  <Uninstall DescriptionId="SetupProgressStoppingThrottlingService">
+		<Standalone>stop-SetupService -ServiceName MSExchangeThrottling</Standalone>
+	  </Uninstall>
+	</ServerTaskInfo>
+
+	<!-- Start/stop Replay service -->
+	<ServerTaskInfo Id="_a271ef5b83e54536b58f1d4da875d41d" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+	  <Install DescriptionId="SetupProgressStartingReplayService">
+		<Standalone>start-SetupService -ServiceName MSExchangeRepl</Standalone>
+	  </Install>
+	  <BuildToBuildUpgrade UseInstallTasks="true" />
+	  <DisasterRecovery UseInstallTasks="true" />
+	  <Uninstall />
+	</ServerTaskInfo>
+	
+	<!-- Start/stop DAG Management service -->
+	<ServerTaskInfo Id="_2BE75C4DA081420B9B78009DB6C8CDFA" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+	  <Install DescriptionId="SetupProgressStartingDagMgmtService">
+		<Standalone>start-SetupService -ServiceName MSExchangeDagMgmt</Standalone>
+	  </Install>
+	  <BuildToBuildUpgrade UseInstallTasks="true" />
+	  <DisasterRecovery UseInstallTasks="true" />
+	  <Uninstall />
+	</ServerTaskInfo>
+	  
+	<!-- Start/stop WatchDog service -->
+	<ServerTaskInfo Id="_4C591A397F424D56BAFD640209AE7B07" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+	  <Install DescriptionId="SetupProgressStartingWatchDogService">
+		<Standalone>
+          if ($RoleIsDatacenter -eq $true)
+          {
+            start-SetupService -ServiceName MSExchangeWatchDog;
+          }
+    </Standalone>
+	  </Install>
+	  <BuildToBuildUpgrade UseInstallTasks="true" />
+	  <DisasterRecovery UseInstallTasks="true" />
+	  <Uninstall />
+	</ServerTaskInfo>
+	  
+	<ServerTaskInfo Id="_17b338d58d8f4ac3abdac7578d4320a3" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+	  <Install DescriptionId="SetupComponentConfiguringInformationStore">
+		<Standalone>Set-InformationStoreService</Standalone>
+	  </Install>
+	  <BuildToBuildUpgrade UseInstallTasks="true" />
+	  <DisasterRecovery UseInstallTasks="true" />
+	  <Uninstall />
+	</ServerTaskInfo>
+
+    <!-- Start MSExchangeIS service -->
+    <!-- NOTE: (PS#97405) Store is consuming so much CPU, memory and disk I/O on the low end machines in DART -->
+    <!-- that startup of services after it cannot register service control handler within 30 seconds, -->
+    <!-- when SCM kills the service. So moved startup of MSExchangeIS to end of setup. -->
+    <ServerTaskInfo Id="_2ed283997a7c481ea45da530c5f608e9" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install Weight="6" DescriptionId="SetupProgressStartingInformationStoreService">
+        <Standalone>start-SetupService -ServiceName MSExchangeIS </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Request all DBs hosted by this server be upgraded to the latest schema. Actual upgrade will happen at an
+         indeterminate time in the future as each DB is re-mounted. -->
+    <!-- Note that any databases not hosted on a DAG member server will auto-upgrade upon their next mount regardless of
+         running this cmdlet. This is a feature of store and no cmdlet need be run. -->
+    <ServerTaskInfo Id="_d244221b06e5449280c2fa2bcba262f8" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="RequestLocalDatabaseSchemaUpgrade" IsFatal="false">
+        <Standalone>Get-MailboxDatabase -Server $RoleFqdnOrName | Update-DatabaseSchema -ErrorAction:SilentlyContinue</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Mount the databases created by setup. If an error happens, don't care. -->
+    <!-- 
+      Databases created during setup are no longer mounted by default as of E14 #130217. We have to mount 
+      them manually once, otherwise MSExchangeRepl will keep refusing to mount them as its startup.
+    -->
+    <!-- This step should happen no sooner than the required services, MSExchangeIS and MSExchangeRepl, are started. -->
+    <!-- Don't do this on upgrade, or we may end up mounting databases we didn't create. -->
+    <ServerTaskInfo Id="_09e1746dd8d9400596b72f9e452509d3" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>Get-MailboxDatabase -Server $RoleFqdnOrName | Mount-Database -ErrorAction SilentlyContinue</Standalone>
+      </Install>
+      <BuildToBuildUpgrade />
+      <DisasterRecovery />
+      <Uninstall />
+    </ServerTaskInfo>
+    <ServerTaskInfo Id="_99c6307112ac490b962368157e7c98d4" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>Get-PublicFolderDatabase -Server $RoleFqdnOrName | Mount-Database -ErrorAction SilentlyContinue</Standalone>
+      </Install>
+      <BuildToBuildUpgrade />
+      <DisasterRecovery />
+      <Uninstall />
+    </ServerTaskInfo>
+    <ServerTaskInfo Id="_b21d8506ac264941a3481d1934af36bb" Component="EXCHANGE14:\Current\Release\PIM Storage\Store\Public Folders">
+      <Install DescriptionId="SetupProgressInstallingFreeBusyFolder">
+        <Standalone>
+          if (!$RoleIsDatacenter -and !$RoleIsPartnerHosted)
+          {
+            Install-FreeBusyFolder -ErrorAction SilentlyContinue
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade DescriptionId="SetupProgressInstallingFreeBusyFolder">
+        <Standalone>
+          if (!$RoleIsDatacenter -and !$RoleIsPartnerHosted)
+          {
+            Install-FreeBusyFolder -ErrorAction SilentlyContinue
+          }
+        </Standalone>
+      </BuildToBuildUpgrade>
+      <DisasterRecovery />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- e14:110376 Setup should wait for the default database to be mounted before finishing -->
+    <ServerTaskInfo Id="_e71442a0b2714bb7b224685f991a5a79" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install Weight="6" DescriptionId="SetupProgressStartingInformationStoreService">
+    <Standalone>
+      $databaseMounted = $false;
+      $retryAttempts = 5;
+      while ( !$databaseMounted -and ( --$retryAttempts -gt 0 ) )
+      {
+        $mountedDatabases = get-mailboxdatabase -server $env:computername -status | where { $_.Mounted -eq $true };
+        if ( $mountedDatabases -eq $null )
+        {
+          Write-ExchangeSetupLog -info "Get-MailboxDatabase reported no mounted databases. Sleeping for 5 seconds.";
+          start-sleep -seconds 5;
+        }
+        else
+        {
+          $databaseMounted = $true;
+        }
+      }
+      if ( $databaseMounted )
+      {
+        Write-ExchangeSetupLog -info "At the end of setup, the database on $env:computername is mounted.";
+      }
+      else
+      {
+        Write-ExchangeSetupLog -info "At the end of setup, there are no databases mounted on $env:computername.";
+      }
+    </Standalone>
+      </Install>
+      <BuildToBuildUpgrade />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Add FullAccess permission on "Discovery Search Mailbox" for the "Discovery Management" RBAC role group. 
+         We have to do it after MSExchangeIS is started.-->
+    <ServerTaskInfo Id="_05b3bbd421504e0c93fefa6d5d1ae590" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          $name = [Microsoft.Exchange.Management.RecipientTasks.EnableMailbox]::DiscoveryMailboxUniqueName;
+          $dispname = [Microsoft.Exchange.Management.RecipientTasks.EnableMailbox]::DiscoveryMailboxDisplayName;
+          $dismbx = get-mailbox -Filter {name -eq $name} -IgnoreDefaultScope -resultSize 1;
+          if( $dismbx -ne $null)
+          {
+          $srvname = $dismbx.ServerName;
+          if( $dismbx.Database -ne $null -and $RoleFqdnOrName -like "$srvname.*" )
+          {
+          Write-ExchangeSetupLog -info "Setup DiscoverySearchMailbox Permission.";
+          $mountedMdb = get-mailboxdatabase $dismbx.Database -status | where { $_.Mounted -eq $true };
+          if( $mountedMdb -eq $null )
+          {
+          Write-ExchangeSetupLog -info "Mounting database before stamp DiscoverySearchMailbox Permission...";
+          mount-database $dismbx.Database;
+          }
+
+          $mountedMdb = get-mailboxdatabase $dismbx.Database -status | where { $_.Mounted -eq $true };
+          if( $mountedMdb -ne $null )
+          {
+          $dmRoleGroupGuid = [Microsoft.Exchange.Data.Directory.Management.RoleGroup]::DiscoveryManagement_InitInfo.WellKnownGuid;
+          $dmRoleGroup = Get-RoleGroup -Identity $dmRoleGroupGuid -DomainController $RoleDomainController -ErrorAction:SilentlyContinue;
+          if( $dmRoleGroup -ne $null )
+          {
+            trap [Exception]
+            {
+              Add-MailboxPermission $dismbx -User $dmRoleGroup.Name -AccessRights FullAccess -DomainController $RoleDomainController -ErrorAction SilentlyContinue;
+              continue;
+            }
+            
+            Add-MailboxPermission $dismbx -User $dmRoleGroup.Identity -AccessRights FullAccess -DomainController $RoleDomainController -WarningAction SilentlyContinue;
+          }
+          }
+          }
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Set-AdminAuditLogConfig to enable the auditing by default. -->
+    <!-- It is executed only at the mailbox role server with the specified arbitration mailbox. -->
+    <ServerTaskInfo Id="_34385f18e6894267a2ec43ac827316a5" Component="EXCHANGE14:\Current\Release\PIM Storage\Archive Workflow">
+      <Install DescriptionId="SetupProgressEnableAdminAuditLog">
+        <Standalone>
+        if (($RoleIsDatacenter -ne $true) -and ($RoleIsDatacenterDedicated -ne $true))
+        {
+            $name = "SystemMailbox{e0dc1c29-89c3-4034-b678-e6c29d823ed9}";
+            $dismbx = get-mailbox -arbitration -Filter {name -eq $name} -IgnoreDefaultScope -resultSize 1;
+            if( $dismbx -ne $null)
+            {
+                $srvname = $dismbx.ServerName;
+                if( $RoleFqdnOrName -like "$srvname.*" )
+                {
+                    Set-AdminAuditLogConfig -DomainController $RoleDomainController -AdminAuditLogEnabled $true
+                }
+            }
+        }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall />
+    </ServerTaskInfo>
+
+  </ServerTasks>
+</SetupComponentInfo>

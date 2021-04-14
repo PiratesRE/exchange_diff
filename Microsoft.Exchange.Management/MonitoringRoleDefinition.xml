@@ -1,0 +1,20 @@
+<ArrayOfSetupComponentInfoReference xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <SetupComponentInfoReference>
+    <RelativeFileLocation>setup\data\AllRolesCommonFirst_RunOnce.xml</RelativeFileLocation>
+  </SetupComponentInfoReference>
+  <SetupComponentInfoReference>
+    <RelativeFileLocation>setup\data\AllRolesCommonFirst.xml</RelativeFileLocation>
+  </SetupComponentInfoReference>
+  <SetupComponentInfoReference>
+    <RelativeFileLocation>setup\data\DatacenterCentralAdminCmdletComponent.xml</RelativeFileLocation>
+  </SetupComponentInfoReference>
+  <SetupComponentInfoReference>
+    <RelativeFileLocation>setup\data\DatacenterMonitoringRoleComponent.xml</RelativeFileLocation>
+  </SetupComponentInfoReference>
+  <SetupComponentInfoReference>
+    <RelativeFileLocation>setup\data\DatacenterAllRolesCommonLast.xml</RelativeFileLocation>
+  </SetupComponentInfoReference>   
+  <SetupComponentInfoReference>
+    <RelativeFileLocation>setup\data\AllRolesCommonLast.xml</RelativeFileLocation>
+  </SetupComponentInfoReference>
+</ArrayOfSetupComponentInfoReference>

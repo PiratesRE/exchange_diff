@@ -1,0 +1,669 @@
+<?xml version="1.0" encoding="us-ascii" ?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <!-- The non-overridable "ServerTaskInfoBlock" type -->
+  <xsd:complexType name="NonOverridable_ServerTaskInfoBlock">
+    <xsd:sequence minOccurs="0" maxOccurs="1">
+      <xsd:element name="Standalone" minOccurs="1" maxOccurs="1" type="xsd:string" />
+    </xsd:sequence>
+    <xsd:attribute name="DescriptionId" type="xsd:string" />
+    <xsd:attribute name="Weight" type="xsd:positiveInteger" default="1" />
+    <xsd:attribute name="IsFatal" type="xsd:boolean" default="true" />
+  </xsd:complexType>
+
+  <!-- The overridable "ServerTaskInfoBlock" type -->
+  <xsd:complexType name="Overridable_ServerTaskInfoBlock">
+    <xsd:sequence minOccurs="0" maxOccurs="1">
+      <xsd:element name="Standalone" minOccurs="1" maxOccurs="1" type="xsd:string" />
+    </xsd:sequence>
+    <xsd:attribute name="DescriptionId" type="xsd:string" />
+    <xsd:attribute name="UseInstallTasks" type="xsd:boolean" default="false" />
+    <xsd:attribute name="Weight" type="xsd:positiveInteger" default="1" />
+    <xsd:attribute name="IsFatal" type="xsd:boolean" default="true" />
+  </xsd:complexType>
+
+  <!-- The "ServerTaskInfo" type -->
+  <xsd:complexType name="ServerTaskInfo">
+    <xsd:sequence minOccurs="1" maxOccurs="1">
+      <xsd:element name="Install" minOccurs="1" maxOccurs="1" type="NonOverridable_ServerTaskInfoBlock" />
+      <xsd:element name="BuildToBuildUpgrade" minOccurs="1" maxOccurs="1" type="Overridable_ServerTaskInfoBlock" />
+      <xsd:element name="DisasterRecovery" minOccurs="1" maxOccurs="1" type="Overridable_ServerTaskInfoBlock" />
+      <xsd:element name="Uninstall" minOccurs="1" maxOccurs="1" type="NonOverridable_ServerTaskInfoBlock" />
+    </xsd:sequence>
+    <xsd:attribute name="Id" type="xsd:ID" use="required" />
+    <xsd:attribute name="Component" type="AllComponents" use="required" />
+    <xsd:attribute name="ExcludeInDatacenterDedicated" type="xsd:boolean" default="false" use="optional" />
+  </xsd:complexType>
+
+  <!-- The "ServerTasks" type -->
+  <xsd:complexType name="ServerTasks">
+    <xsd:choice minOccurs="0" maxOccurs="unbounded">
+      <xsd:element name="ServerTaskInfo" type="ServerTaskInfo" />
+    </xsd:choice>
+  </xsd:complexType>
+
+  <!-- The "OrgTaskInfoTaskEntry" type -->
+  <xsd:complexType name="OrgTaskInfoTaskEntry">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="UseGlobalTask" type="xsd:boolean" default="false" />
+        <xsd:attribute name="UseForReconciliation" type="xsd:boolean" default="false" />
+        <xsd:attribute name="RecipientOperation" type="xsd:boolean" default="false" />
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+
+  <!-- The non-overridable "OrgTaskInfoBlock" type -->
+  <xsd:complexType name="NonOverridable_OrgTaskInfoBlock">
+    <xsd:sequence minOccurs="0" maxOccurs="1">
+      <xsd:element name="Global" minOccurs="0" maxOccurs="1" type="xsd:string" />
+      <xsd:element name="Tenant" minOccurs="0" maxOccurs="1" type="OrgTaskInfoTaskEntry" />
+    </xsd:sequence>
+    <xsd:attribute name="DescriptionId" type="xsd:string" />
+    <xsd:attribute name="Weight" type="xsd:positiveInteger" default="1" />
+    <xsd:attribute name="IsFatal" type="xsd:boolean" default="true" />
+  </xsd:complexType>
+
+  <!-- The overridable "OrgTaskInfoEntry" type -->
+  <xsd:complexType name="Overridable_OrgTaskInfoBlock">
+    <xsd:sequence minOccurs="0" maxOccurs="1">
+      <xsd:element name="Global" minOccurs="0" maxOccurs="1" type="xsd:string" />
+      <xsd:element name="Tenant" minOccurs="0" maxOccurs="1" type="OrgTaskInfoTaskEntry" />
+    </xsd:sequence>
+    <xsd:attribute name="DescriptionId" type="xsd:string" />
+    <xsd:attribute name="UseInstallTasks" type="xsd:boolean" default="false" />
+    <xsd:attribute name="Weight" type="xsd:positiveInteger" default="1" />
+    <xsd:attribute name="IsFatal" type="xsd:boolean" default="true" />
+  </xsd:complexType>
+
+  <!-- The "OrgTaskInfo" type -->
+  <xsd:complexType name="OrgTaskInfo">
+    <xsd:sequence minOccurs="1" maxOccurs="1">
+      <xsd:element name="Install" minOccurs="1" maxOccurs="1" type="NonOverridable_OrgTaskInfoBlock" />
+      <xsd:element name="BuildToBuildUpgrade" minOccurs="1" maxOccurs="1" type="Overridable_OrgTaskInfoBlock" />
+      <xsd:element name="Uninstall" minOccurs="1" maxOccurs="1" type="NonOverridable_OrgTaskInfoBlock" />
+    </xsd:sequence>
+    <xsd:attribute name="Id" type="xsd:ID" use="optional" />
+    <xsd:attribute name="Component" type="AllComponents" use="optional" />
+    <xsd:attribute name="ExcludeInDatacenterDedicated" type="xsd:boolean" default="false" use="optional" />
+  </xsd:complexType>
+
+  <!-- The "ServicePlanTaskInfo" type -->
+  <xsd:complexType name="ServicePlanTaskInfo">
+    <xsd:sequence minOccurs="1" maxOccurs="1">
+      <xsd:element name="Install" minOccurs="1" maxOccurs="1" type="NonOverridable_OrgTaskInfoBlock" />
+      <xsd:element name="BuildToBuildUpgrade" minOccurs="1" maxOccurs="1" type="Overridable_OrgTaskInfoBlock" />
+      <xsd:element name="Uninstall" minOccurs="1" maxOccurs="1" type="NonOverridable_OrgTaskInfoBlock" />
+    </xsd:sequence>
+    <xsd:attribute name="FeatureName" type="xsd:string" />
+  </xsd:complexType>
+
+  <!-- The "OrgTasks" type -->
+  <xsd:complexType name="OrgTasks">
+    <xsd:choice minOccurs="0" maxOccurs="unbounded">
+      <xsd:element name="OrgTaskInfo" type="OrgTaskInfo" />
+      <xsd:element name="ServicePlanTaskInfo" type="ServicePlanTaskInfo" />
+    </xsd:choice>
+  </xsd:complexType>
+
+  <!-- The "ServicePlanOrgTasks" type -->
+  <xsd:complexType name="ServicePlanOrgTasks">
+    <xsd:choice minOccurs="0" maxOccurs="unbounded">
+      <xsd:element name="ServicePlanTaskInfo" type="ServicePlanTaskInfo" />
+    </xsd:choice>
+  </xsd:complexType>
+
+  <!-- The "SetupComponentInfo" type -->
+  <xsd:complexType name="SetupComponentInfo">
+    <xsd:choice minOccurs="1" maxOccurs="1">
+      <xsd:element minOccurs="1" maxOccurs="1" name="ServerTasks" type="ServerTasks" />
+      <xsd:element minOccurs="1" maxOccurs="1" name="OrgTasks" type="OrgTasks" />
+      <xsd:element minOccurs="1" maxOccurs="1" name="ServicePlanOrgTasks" type="ServicePlanOrgTasks" />
+    </xsd:choice>
+    <xsd:attribute name="Name" type="xsd:string" use="required" />
+    <xsd:attribute name="DescriptionId" type="xsd:string" />
+    <xsd:attribute name="AlwaysExecute" type="xsd:boolean" default="false" />
+    <xsd:attribute name="IsDatacenterOnly" type="xsd:boolean" default="false" />
+    <xsd:attribute name="IsDatacenterDedicatedOnly" type="xsd:boolean" default="false" />
+    <xsd:attribute name="IsPartnerHostedOnly" type="xsd:boolean" default="false" />
+    <xsd:attribute name="DatacenterMode" type="DatacenterMode" default="Common"/>
+  </xsd:complexType>
+
+  <!-- The root document element -->
+  <xsd:element name="SetupComponentInfo" type="SetupComponentInfo" />
+
+  <xsd:simpleType name="AllComponents">
+    <xsd:restriction base="xsd:string">
+      <!-- This list matches current structure in Product Studio.
+      Change is only if Product Studio structure changes. -->
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\OWA' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\OWA\Address Book' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\OWA\Admin' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\OWA\ANR' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\OWA\Attachments' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\OWA\Authentication' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\OWA\Basic' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\OWA\Calendar' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\OWA\Contacts' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\OWA\Conversations' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\OWA\Core' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\OWA\Customization' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\OWA\Delegate Access' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\OWA\Document Proxy' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\OWA\ELC-Compliance' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\OWA\Flags and Categories' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\OWA\Folders' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\OWA\Forms Registry' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\OWA\Hosting' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\OWA\Instant Messaging' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\OWA\Instant Messaging\MSN Provider' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\OWA\IRM' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\OWA\ISA Integration' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\OWA\Junk E-Mail' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\OWA\Live ID' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\OWA\Mail Forms' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\OWA\MailTips' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\OWA\Messaging' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\OWA\Notifications' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\OWA\Options' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\OWA\Performance' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\OWA\Prototypes' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\OWA\Prototypes\Data' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\OWA\Prototypes\Logic' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\OWA\Prototypes\UI' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\OWA\Proxy' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\OWA\Public folders' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\OWA\Rules' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\OWA\S/MIME' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\OWA\Search' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\OWA\Setup' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\OWA\SMS' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\OWA\SpellCheck' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\OWA\Tasks' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\OWA\Transcoding' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\OWA\UM Integration' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\OWA\UM Integration\OWA UM PAA' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\OWA\WebParts' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Protocols&amp;Legacy APIs' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Protocols&amp;Legacy APIs\CDO' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Protocols&amp;Legacy APIs\EXOLEDB' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Protocols&amp;Legacy APIs\EXPROX' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Protocols&amp;Legacy APIs\HTTP-DAV' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Protocols&amp;Legacy APIs\IFS' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Protocols&amp;Legacy APIs\MAPI' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Protocols&amp;Legacy APIs\POPIMAP' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Protocols&amp;Legacy APIs\POPIMAP\Admin' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Protocols&amp;Legacy APIs\POPIMAP\Core' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Protocols&amp;Legacy APIs\POPIMAP\IMAP' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Protocols&amp;Legacy APIs\POPIMAP\POP' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Protocols&amp;Legacy APIs\POPIMAP\Setup' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Protocols&amp;Legacy APIs\RPC-HTTP' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\SMS' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\SMS\Admin' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\SMS\Core' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\SMS\Interop' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\SMS\Rules' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Sync' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Sync\Admin' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Sync\Admin\Device Management' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Sync\Admin\Logs' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Sync\Admin\Policies' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Sync\AUTD' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Sync\Protocol' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Sync\Protocol\Attachments' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Sync\Protocol\Calendar' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Sync\Protocol\Contacts' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Sync\Protocol\Folders' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Sync\Protocol\GAL' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Sync\Protocol\Mail' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Sync\Protocol\Notes' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Sync\Protocol\S/MIME' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Sync\Protocol\Search' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Sync\Protocol\Tasks' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Sync\SDK' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Sync\Setup' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Sync\XSO' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Transcoding' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Transcoding\OWA' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Transcoding\OWA\Premium' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Transcoding\Stellent' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Transcoding\TranscodingService' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Unified Messaging' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Unified Messaging\Admin' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Unified Messaging\Automated Attendant' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Unified Messaging\Call Answering' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Unified Messaging\Call Session Infrastructure' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Unified Messaging\Caller Resolution' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Unified Messaging\Diagnostics' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Unified Messaging\DRM' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Unified Messaging\Enhanced Voice Mail' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Unified Messaging\Fax Routing App' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Unified Messaging\Fax' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Unified Messaging\Globalization' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Unified Messaging\Grammar Generation' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Unified Messaging\Hosting' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Unified Messaging\Hosting\Office Live' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Unified Messaging\Interop' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Unified Messaging\Interop\Gateway\TIMG' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Unified Messaging\Interop\MSS' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Unified Messaging\Interop\OCS' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Unified Messaging\Interop\TTS' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Unified Messaging\Media' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Unified Messaging\Migration' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Unified Messaging\MWI' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Unified Messaging\OLSB' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Unified Messaging\Ooty' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Unified Messaging\Other' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Unified Messaging\Outdialing' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Unified Messaging\Outlook Plug-In' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Unified Messaging\OutlookCom' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Unified Messaging\Performance' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Unified Messaging\Personal Auto Attendant' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Unified Messaging\Personal Auto Attendant\Find Me' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Unified Messaging\Prompt Provisioning' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Unified Messaging\Service' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Unified Messaging\Setup' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Unified Messaging\Setup\Language Packs' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Unified Messaging\Setup\Service' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Unified Messaging\Signaling Infrastructure' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Unified Messaging\Speech Infrastructure' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Unified Messaging\State Machine Infrastructure' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Unified Messaging\Subscriber Access' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Unified Messaging\Subscriber Access\Calendar' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Unified Messaging\Subscriber Access\Directory' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Unified Messaging\Subscriber Access\Email' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Unified Messaging\Subscriber Access\Personal Contacts' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Unified Messaging\Subscriber Access\Personal Options' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Unified Messaging\Subscriber Access\Voicemail' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Unified Messaging\UM Test Phone' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Unified Messaging\Virtual Number' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Unified Messaging\Voicemail Submission' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Unified Messaging\Web Service' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Unified Messaging\Web Service\Play On Phone' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Web Services' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Web Services\Admin' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Web Services\ANR' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Web Services\Attachments' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Web Services\Autodiscovery' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Web Services\Autodiscovery\Outlook Provider' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Web Services\Autodiscovery\SOAP service' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Web Services\Calendar' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Web Services\Client API' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Web Services\Contacts' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Web Services\Delegate' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Web Services\Distribution Lists' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Web Services\EndToEnd' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Web Services\Enhanced Proxy' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Web Services\Extended Properties' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Web Services\FAI' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Web Services\Folder ACLs' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Web Services\Folder' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Web Services\HTTP Proxy' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Web Services\ID Conversion' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Web Services\Item' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Web Services\Localization' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Web Services\LogParser' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Web Services\Management' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Web Services\Messages' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Web Services\Monitoring' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Web Services\Notifications' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Web Services\OWA Urls' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Web Services\Perf' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Web Services\PIM Access' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Web Services\Public Folders' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Web Services\ResponseObjects' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Web Services\Search' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Web Services\Security' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Web Services\Server To Server Auth' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Web Services\Setup' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Web Services\SharePoint provider' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Web Services\Standards' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Web Services\Sync' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Web Services\Tasks' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Web Services\Throttling EWS' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Web Services\Throttling Framework' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Web Services\Timezones' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Web Services\User Configuration' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Web Services\Versioning' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Client Access\Web Services\Windows LiveID' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Common\Asserts' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Common\CQDefects' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Common\EventLogs' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Common\Exceptions' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Common\EXCHMEM' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Common\Logging&amp;Diagnostics' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Common\Perfmon' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Common\Protocol Support' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Common\RPC' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Common\Security' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Common\Tracing-Managed' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Common\Tracing-Native' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Common\Watson' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\CXP\BPA' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\CXP\BPA\Core' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\CXP\BPA\Health Rules' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\CXP\BPA\Prereqs' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\CXP\SQM' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Forefront' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Forefront\Forefront Basic' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Partner\BPOS' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Partner\Corp2Cloud' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Partner\FOSE' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Partner\LiveID' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\PIM Storage' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\PIM Storage\Archive Workflow' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\PIM Storage\Calendar' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\PIM Storage\Calendar\Assistants Infrastructure' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\PIM Storage\Calendar\Availability Service' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\PIM Storage\Calendar\Cal Assistant' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\PIM Storage\Calendar\Calendar Repair' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\PIM Storage\Calendar\Out of Office' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\PIM Storage\Calendar\Resource Management' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\PIM Storage\Calendar\XSO' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\PIM Storage\Compliance' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\PIM Storage\Compliance\Archive' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\PIM Storage\Compliance\MRM' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\PIM Storage\Content Indexing' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\PIM Storage\Content Indexing\Configuration' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\PIM Storage\Content Indexing\Crawler' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\PIM Storage\Content Indexing\MSSearch' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\PIM Storage\Content Indexing\Notifications' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\PIM Storage\Content Indexing\Protocol Handler' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\PIM Storage\Content Indexing\Query Processor' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\PIM Storage\Conversations' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\PIM Storage\Conversations\TransportAgent' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\PIM Storage\Conversations\XSO' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\PIM Storage\CTS' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\PIM Storage\CTS\Email Message' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\PIM Storage\CTS\Encoders' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\PIM Storage\CTS\ExSMIME' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\PIM Storage\CTS\Extensions' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\PIM Storage\CTS\IMAIL' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\PIM Storage\CTS\Mime' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\PIM Storage\CTS\RTFHTML' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\PIM Storage\CTS\TextConverters' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\PIM Storage\Discovery' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Shared\Datacenter\AD Core\DoMT' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\PIM Storage\High Availability' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\PIM Storage\High Availability\Clustering' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\PIM Storage\High Availability\Disaster Recovery' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\PIM Storage\High Availability\Log Replay' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\PIM Storage\JET' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\PIM Storage\JET\Backup/Restore' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\PIM Storage\JET\Logging' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\PIM Storage\JET\Misc' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\PIM Storage\JET\Recovery' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\PIM Storage\JET\Utilities' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\PIM Storage\Managed Store' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\PIM Storage\Managed Store\Documented Differences' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\PIM Storage\MRS' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\PIM Storage\MRS\ImportExport' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\PIM Storage\MRS\OfflineMove' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\PIM Storage\MRS\OnlineMove' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\PIM Storage\RPC Client Access' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\PIM Storage\RPC Client Access\Documented Differences' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\PIM Storage\RPC Client Access\Handler' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\PIM Storage\RPC Client Access\ICS-FX' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\PIM Storage\RPC Client Access\Notifications' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\PIM Storage\RPC Client Access\Parser' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\PIM Storage\Sharing' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\PIM Storage\Store' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\PIM Storage\Store\Admin API' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\PIM Storage\Store\Base' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\PIM Storage\Store\Client Providers' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\PIM Storage\Store\Events' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\PIM Storage\Store\ICS' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\PIM Storage\Store\JDB' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\PIM Storage\Store\MAPI.Net' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\PIM Storage\Store\MessageStore' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\PIM Storage\Store\Named Props' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\PIM Storage\Store\Per User Read' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\PIM Storage\Store\Performance' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\PIM Storage\Store\Public Folders' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\PIM Storage\Store\Replication' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\PIM Storage\Store\Rules' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\PIM Storage\Store\Security' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\PIM Storage\Store\Session' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\PIM Storage\Store\Snapshot Backup' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\PIM Storage\Store\Transport' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\PIM Storage\Store\Virus Scanning API' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\PIM Storage\XSO' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\PIM Storage\XSO\Content Conversion' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\PIM Storage\XSO\Core Objects' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\PIM Storage\XSO\PIM' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Shared\Datacenter\AD Core' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Shared\Datacenter\AD Core\AD Driver' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Shared\Datacenter\AD Core\DS Access' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Shared\Datacenter\AD Core\Multitenancy' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Shared\Datacenter\AD Core\Schema' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Shared\Datacenter\BPA' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Shared\Datacenter\Central Admin' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Shared\Datacenter\Cmdlet Infrastructure' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Shared\Datacenter\Migration' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Shared\Datacenter\Monitoring' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Shared\Datacenter\Optics' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Shared\Datacenter\Service Engineering' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Shared\Datacenter\Service Engineering\Service Networking' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Shared\Datacenter\Setup' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Shared\DIY\Auth&amp;Control' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Shared\DIY\Auth&amp;Control\CmdletExtAgent' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Shared\DIY\Auth&amp;Control\RBAC' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Shared\DIY\Auth&amp;Control\Service Plans' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Shared\DIY\Auth&amp;Control\WLID' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Shared\DIY\Control Panel' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Shared\DIY\Recipients&amp;Provisioning' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Shared\DIY\Recipients&amp;Provisioning\Approvals' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Shared\DIY\Recipients&amp;Provisioning\AutoGroup' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Shared\DIY\Recipients&amp;Provisioning\GalSync14' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Shared\DIY\Recipients&amp;Provisioning\OAB' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Shared\DIY\Recipients&amp;Provisioning\Provisioning' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Shared\DIY\Recipients&amp;Provisioning\Recipients' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Shared\DIY\Recipients&amp;Provisioning\Sync' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Shared\DIY\Recipients&amp;Provisioning\WLID' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Shared\EMC' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Shared\TwC\Integration' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Shared\TwC\Performance' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Shared\TwC\Scalability' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Shared\TwC\Security' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Shared\TwC\Stress' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\BCM' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\BCM\Centralized Email Signatures' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\BCM\DSNs' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\BCM\Journaling' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\BCM\MailTips' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\BCM\Message History' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\BCM\Moderated Transport' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\BCM\Rules' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\BCM\Rules\Inbox Rules' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\BCM\Rules\Transport Rules' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\BCM\StoreDriver' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\BCM\Tracking and Discovery' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\Hosting SKU\Setup' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\Internet' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\Internet\ABCH' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\Internet\Anti Spam' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\Internet\Certificates' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\Internet\ControlPoint' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\Internet\ControlPoint\B2B' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\Internet\ControlPoint\Core' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\Internet\ControlPoint\Decryption' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\Internet\ControlPoint\Encryption' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\Internet\ControlPoint\Live RMS' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\Internet\ControlPoint\Outlook Plugin' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\Internet\ControlPoint\OWA' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\Internet\ControlPoint\Pre Licensing' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\Internet\ControlPoint\Transport Decryption' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\Internet\Edge' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\Internet\Edge\MSERV' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\Internet\Federated Delivery' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\Internet\Message Classifications' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\Internet\Search' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\Internet\SMTP Auth' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\Internet\TLS' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\Migration' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\Platform' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\Platform\Datacenter Transport' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\Platform\Datacenter Transport\Analytics' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\Platform\Datacenter Transport\Analytics\Diagnostics' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\Platform\Datacenter Transport\Analytics\Logging' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\Platform\Datacenter Transport\Analytics\Monitoring' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\Platform\Datacenter Transport\Analytics\Recovery' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\Platform\Datacenter Transport\Analytics\Reporting' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\Platform\Datacenter Transport\Analytics\SLA' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\Platform\Datacenter Transport\High Availability' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\Platform\Datacenter Transport\High Availability\Dumpster' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\Platform\Datacenter Transport\High Availability\Poison Message' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\Platform\Datacenter Transport\High Availability\Shadow Redundancy' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\Platform\Datacenter Transport\Multi-Tenancy' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\Platform\Datacenter Transport\Scalability' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\Platform\Datacenter Transport\Scalability\Back Pressure' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\Platform\Datacenter Transport\Scalability\Caching' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\Platform\Datacenter Transport\Scalability\Queuing' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\Platform\Enterprise Transport' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\Platform\Enterprise Transport\Interoperability' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\Platform\Enterprise Transport\Resolution' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\Platform\Enterprise Transport\Resolution\Distribution Group Expansion' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\Platform\Enterprise Transport\Routing' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\Platform\Enterprise Transport\Routing\Accepted Domains' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\Platform\Enterprise Transport\Routing\Remote Domains' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\Platform\Extensibility' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\Platform\Extensibility\MEX' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\Platform\Extensibility\MEX\Agent API' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\Platform\Extensibility\MEX\IMailItem' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\Platform\Extensibility\Pickup Replay Drop' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\Platform\Extensibility\Protocols' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\Platform\Extensibility\Protocols\DNS' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\Platform\Extensibility\Protocols\SMTP' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\Platform\Extensibility\Transport Connectors' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\Platform\Extensibility\Transport Connectors\Delivery Agents' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\Platform\Extensibility\Transport Connectors\Foreign Gateways' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\Platform\Extensibility\Transport Connectors\SMTP' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\Platform\Outlookdotcom' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\Platform\Safety and Prevention' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\Platform\Safety and Prevention\AntiAbuse' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\Platform\Safety and Prevention\AntiAbuse\Quotas and Limits' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\Platform\Safety and Prevention\AntiAbuse\Throttling' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\Platform\Safety and Prevention\EHF' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\Platform\Safety and Prevention\EHF\EHF Provisioning' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\Platform\Safety and Prevention\EHF\EHF Sync Provider' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\Platform\Safety and Prevention\Hygiene' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\Platform\Safety and Prevention\Supervision' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\Platform\Service and Dogfood Investigations' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\Sync' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\Sync\AutoConfiguration' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\Sync\Common' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\Sync\Common\ServicePlans' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\Sync\Common\SmtpClient' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\Sync\Common\Subscription Manager' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\Sync\Common\Subscriptions' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\Sync\Framework' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\Sync\Framework\Core' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\Sync\Framework\Push' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\Sync\Framework\SyncEngine' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\Sync\Framework\Transport' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\Sync\Framework\XSO' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\Sync\Health &amp; Supportability' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\Sync\Health &amp; Supportability\Health Events and Alerts' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\Sync\Health &amp; Supportability\SyncLog' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\Sync\HomeGAL' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\Sync\HttpClient' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\Sync\Manager' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\Sync\Manager\Cache' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\Sync\Manager\CacheServer' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\Sync\Manager\Completion' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\Sync\Manager\Configuration' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\Sync\Manager\Core' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\Sync\Manager\DataAccessLayer' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\Sync\Manager\Dispatching' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\Sync\Manager\EventAssistant' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\Sync\Manager\Queue' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\Sync\Providers' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\Sync\Providers\DeltaSync' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\Sync\Providers\ExchangeDAV' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\Sync\Providers\IMAP' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\Sync\Providers\POP' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\Sync\Providers\WebFeed' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\Sync\Reporting' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\Sync\Reporting\DataWarehouse' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\Sync\Reporting\RDL' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\Sync\Reporting\StatLogs' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\Sync\Reporting\SyncHealthLog' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\Sync\SendAs' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\Sync\Sync Engine' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\Sync\Tasks' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\Sync\Tasks\Cache' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\Sync\Tasks\Configuration' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\Sync\Tasks\DeltaSync' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\Sync\Tasks\ExchangeDAV' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\Sync\Tasks\IMAP' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\Sync\Tasks\InboxRules' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\Sync\Tasks\POP' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\Sync\Tasks\RemotePolicy' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\Sync\WLCDMigration' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\Sync\Worker' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\Sync\Worker\Agents' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\Sync\Worker\Core' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\Transport\Sync\Worker\Scheduler' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\UA\Content Team' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\UA\Content Team\DIY' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\UA\Content Team\Front End' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\UA\Content Team\ITPro' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\UA\Content Team\SDK' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\UA\Content Test' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\UA\Content Test\IT Pro' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\UA\Content Test\IT Pro\EMC' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\UA\Content Test\IT Pro\Tools' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\UA\Content Test\MSDN Library' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\UA\Content Test\PowerShell' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\UA\Content Test\SDK' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\UA\Content Test\Service\ECP' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\UA\Content Test\Service\OWA' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\UA\Content Test\TechNet Library' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\UA\Criminal Compliance Tool' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\UA\ECP IT Pro' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\UA\EMC' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\UA\Global' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\UA\Global\ECP Loc' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\UA\Global\ECP Loc\My Organization' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\UA\Global\ECP Loc\MySelf' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\UA\Global\EMC Loc' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\UA\Global\EMC Loc\OC' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\UA\Global\EMC Loc\RC' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\UA\Global\EMC Loc\SC' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\UA\Global\EMC Loc\Toolbox' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\UA\Global\EMS Loc' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\UA\Global\i18n' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\UA\Global\IDN' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\UA\Global\Language Pack' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\UA\Global\Language Pack\ExSetup' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\UA\Global\Language Pack\ExSetupUI' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\UA\Global\Loc Content' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\UA\Global\OWA Loc' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\UA\Global\OWA Loc\Light' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\UA\Global\OWA Loc\Logon' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\UA\Global\OWA Loc\Premium' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\UA\Global\Setup' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\UA\Global\UM Loc' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\UA\Help Client' />
+      <xsd:enumeration value='EXCHANGE14:\Current\Release\UA\Service Status' />
+      <xsd:enumeration value='Office15:\Current\Forefront for Office Datacenter\Deployment and Configuration Management\Deployment' />
+      <xsd:enumeration value='OFFICE15:\Current\Exchange\Datacenter\Deployment' />
+      <xsd:enumeration value='OFFICE15:\Current\Forefront for Office Transport and Information Protection\AntiSpam' />
+      <xsd:enumeration value='OFFICE15:\Current\Exchange\Mailbox Intelligence\Migration\Simple Migration'/> 
+      <xsd:enumeration value='OFFICE15:\Current\Forefront for Office Datacenter\Service Locator\Migration' />
+      <xsd:enumeration value='OfficeMain:\IP\Transport and Data Loss Prevention\Encryption\E4E\'/>
+      <xsd:enumeration value='OFFICEMAIN:\IP\Transport and Data Loss Prevention\Policy and DLP\Platform\Unified Policy'/>
+      <xsd:enumeration value='OfficeMain:\O365\Suite User Experience\S2\Suite Service - EXO'/>      
+      <xsd:enumeration value='OfficeMain:\Exchange\SnackyApps\Endpoint'/>      
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="DatacenterMode">
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value='Common' />
+      <xsd:enumeration value='Ffo' />
+      <xsd:enumeration value='ExO' />
+    </xsd:restriction>
+  </xsd:simpleType>
+
+</xsd:schema>

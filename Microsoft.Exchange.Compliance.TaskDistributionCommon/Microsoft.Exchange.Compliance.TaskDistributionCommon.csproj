@@ -1,0 +1,173 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{09CD9476-CD82-489E-B9E2-84B47CA140F3}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Microsoft.Exchange.Compliance.TaskDistributionCommon</RootNamespace>
+    <AssemblyName>Microsoft.Exchange.Compliance.TaskDistributionCommon</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Exchange.Compliance.CrimsonEvents" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Management.Automation" />
+    <Reference Include="System.Runtime.Caching" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Web.Extensions" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Client\ClientType.cs" />
+    <Compile Include="Client\DriverClient.cs" />
+    <Compile Include="Client\DriverClientBase.cs" />
+    <Compile Include="Client\IMessageSender.cs" />
+    <Compile Include="Client\InterExchangeWorkloadClient.cs" />
+    <Compile Include="Client\IntraExchangeWorkloadClient.cs" />
+    <Compile Include="Client\WcfUtility.cs" />
+    <Compile Include="Client\WorkloadClientBase.cs" />
+    <Compile Include="CommonComponent.cs" />
+    <Compile Include="Contract\DataConstants.cs" />
+    <Compile Include="Contract\IMessageProcessor.cs" />
+    <Compile Include="Contract\IMessageReceiver.cs" />
+    <Compile Include="Diagnostics\ExceptionHandler.cs" />
+    <Compile Include="Extensibility\IApplicationPlugin.cs" />
+    <Compile Include="Extensibility\Registry.cs" />
+    <Compile Include="Extensibility\RegistryComponent.cs" />
+    <Compile Include="Extensibility\ResultBase.cs" />
+    <Compile Include="Extensibility\WorkDefinition.cs" />
+    <Compile Include="Instrumentation\ComplianceProtocolLog.cs" />
+    <Compile Include="Instrumentation\IPerformanceCounterAccessor.cs" />
+    <Compile Include="Instrumentation\IPerformanceCounterAccessorRegistry.cs" />
+    <Compile Include="Instrumentation\LogItem.cs" />
+    <Compile Include="Instrumentation\LogSettings.cs" />
+    <Compile Include="Instrumentation\MessageLogger.cs" />
+    <Compile Include="Instrumentation\ProcessingCompletionEvent.cs" />
+    <Compile Include="Instrumentation\ProcessorEvent.cs" />
+    <Compile Include="Instrumentation\ProtocolContext.cs" />
+    <Compile Include="Instrumentation\QueueEvent.cs" />
+    <Compile Include="ObjectModel\ComplianceBinding.cs" />
+    <Compile Include="ObjectModel\ComplianceBindingErrorType.cs" />
+    <Compile Include="ObjectModel\ComplianceBindingType.cs" />
+    <Compile Include="ObjectModel\ComplianceJob.cs" />
+    <Compile Include="ObjectModel\ComplianceJobConstants.cs" />
+    <Compile Include="ObjectModel\ComplianceJobId.cs" />
+    <Compile Include="ObjectModel\ComplianceJobLogLevel.cs" />
+    <Compile Include="ObjectModel\ComplianceJobObjectVersion.cs" />
+    <Compile Include="ObjectModel\ComplianceJobProvider.cs" />
+    <Compile Include="ObjectModel\ComplianceJobSchema.cs" />
+    <Compile Include="ObjectModel\ComplianceJobStatus.cs" />
+    <Compile Include="ObjectModel\ComplianceJobType.cs" />
+    <Compile Include="ObjectModel\ComplianceSearch.cs" />
+    <Compile Include="ObjectModel\ComplianceSearchCondition.cs" />
+    <Compile Include="ObjectModel\ComplianceSearchData.cs" />
+    <Compile Include="ObjectModel\ComplianceSearchSchema.cs" />
+    <Compile Include="ObjectModel\ComplianceTaskCreatorFactory.cs" />
+    <Compile Include="ObjectModel\CompositeTask.cs" />
+    <Compile Include="ObjectModel\CreateTaskOptions.cs" />
+    <Compile Include="ObjectModel\IComplianceTaskCreator.cs" />
+    <Compile Include="ObjectModel\TempDatabase.cs" />
+    <Compile Include="ObjectModel\Utils.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Protocol\ComplianceMessage.cs" />
+    <Compile Include="Protocol\ComplianceMessageType.cs" />
+    <Compile Include="Protocol\EDiscovery\SearchResult.cs" />
+    <Compile Include="Protocol\EDiscovery\SearchWorkDefinition.cs" />
+    <Compile Include="Protocol\FaultDefinition.cs" />
+    <Compile Include="Protocol\FaultRecord.cs" />
+    <Compile Include="Protocol\JobPayload.cs" />
+    <Compile Include="Protocol\Payload.cs" />
+    <Compile Include="Protocol\PayloadReference.cs" />
+    <Compile Include="Protocol\RetrievedPayload.cs" />
+    <Compile Include="Protocol\StatusPayload.cs" />
+    <Compile Include="Protocol\Target.cs" />
+    <Compile Include="Protocol\WorkDefinitionType.cs" />
+    <Compile Include="Protocol\WorkPayload.cs" />
+    <Compile Include="Resolver\ActiveDirectoryTargetResolver.cs" />
+    <Compile Include="Resolver\ITargetResolver.cs" />
+    <Compile Include="Serialization\BadStructureFormatException.cs" />
+    <Compile Include="Serialization\CollectionItemType.cs" />
+    <Compile Include="Serialization\ComplianceSerializationDescription.cs" />
+    <Compile Include="Serialization\ComplianceSerializer.cs" />
+    <Compile Include="Serialization\ComplianceStructureId.cs" />
+    <Compile Include="Serialization\EnumConverter.cs" />
+    <Compile Include="Utility\MessageHelper.cs" />
+    <Compile Include="Utility\PayloadHelper.cs" />
+    <Compile Include="Utility\PayloadIdentifier.cs" />
+    <Compile Include="Utility\PayloadLevel.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.Exchange.Common\Microsoft.Exchange.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140F0}</Project>
+      <Name>Microsoft.Exchange.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.ApplicationLogic\Microsoft.Exchange.Data.ApplicationLogic.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14104}</Project>
+      <Name>Microsoft.Exchange.Data.ApplicationLogic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Common\Microsoft.Exchange.Data.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140D3}</Project>
+      <Name>Microsoft.Exchange.Data.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Directory\Microsoft.Exchange.Data.Directory.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14105}</Project>
+      <Name>Microsoft.Exchange.Data.Directory</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Storage\Microsoft.Exchange.Data.Storage.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1410F}</Project>
+      <Name>Microsoft.Exchange.Data.Storage</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data\Microsoft.Exchange.Data.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14106}</Project>
+      <Name>Microsoft.Exchange.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Diagnostics\Microsoft.Exchange.Diagnostics.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14113}</Project>
+      <Name>Microsoft.Exchange.Diagnostics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Office.Datacenter.ActiveMonitoringLocal\Microsoft.Office.Datacenter.ActiveMonitoringLocal.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141ED}</Project>
+      <Name>Microsoft.Office.Datacenter.ActiveMonitoringLocal</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Office.Datacenter.WorkerTaskFrameworkInternalProvi\Microsoft.Office.Datacenter.WorkerTaskFrameworkInternalProvi.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141EF}</Project>
+      <Name>Microsoft.Office.Datacenter.WorkerTaskFrameworkInternalProvider</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\mscorlib\mscorlib.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141F1}</Project>
+      <Name>mscorlib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

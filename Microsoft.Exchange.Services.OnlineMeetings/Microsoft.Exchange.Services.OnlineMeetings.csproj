@@ -1,0 +1,278 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{09CD9476-CD82-489E-B9E2-84B47CA141AD}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Microsoft.Exchange</RootNamespace>
+    <AssemblyName>Microsoft.Exchange.Services.OnlineMeetings</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BuildVersionInfo.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\OnlineMeetings\AccessLevel.cs" />
+    <Compile Include="Services\OnlineMeetings\AttendanceAnnouncementsStatus.cs" />
+    <Compile Include="Services\OnlineMeetings\Autodiscover\AnonymousAutodiscoverResult.cs" />
+    <Compile Include="Services\OnlineMeetings\Autodiscover\AutodiscoverCache.cs" />
+    <Compile Include="Services\OnlineMeetings\Autodiscover\AutodiscoverCacheEntry.cs" />
+    <Compile Include="Services\OnlineMeetings\Autodiscover\AutodiscoverCacheOperation.cs" />
+    <Compile Include="Services\OnlineMeetings\Autodiscover\AutodiscoverError.cs" />
+    <Compile Include="Services\OnlineMeetings\Autodiscover\AutodiscoverExtensions.cs" />
+    <Compile Include="Services\OnlineMeetings\Autodiscover\AutodiscoverRequestState.cs" />
+    <Compile Include="Services\OnlineMeetings\Autodiscover\AutodiscoverResult.cs" />
+    <Compile Include="Services\OnlineMeetings\Autodiscover\AutodiscoverStep.cs" />
+    <Compile Include="Services\OnlineMeetings\Autodiscover\AutodiscoverWorker.cs" />
+    <Compile Include="Services\OnlineMeetings\Autodiscover\DataContractTransformer.cs" />
+    <Compile Include="Services\OnlineMeetings\Autodiscover\DataContract\AccessLocation.cs" />
+    <Compile Include="Services\OnlineMeetings\Autodiscover\DataContract\AutodiscoverResponse.cs" />
+    <Compile Include="Services\OnlineMeetings\AutomaticLeaderAssignment.cs" />
+    <Compile Include="Services\OnlineMeetings\CustomizationValues.cs" />
+    <Compile Include="Services\OnlineMeetings\DefaultValues.cs" />
+    <Compile Include="Services\OnlineMeetings\DialInInformation.cs" />
+    <Compile Include="Services\OnlineMeetings\DialInRegion.cs" />
+    <Compile Include="Services\OnlineMeetings\DialInRegions.cs" />
+    <Compile Include="Services\OnlineMeetings\ErrorCode.cs" />
+    <Compile Include="Services\OnlineMeetings\ErrorInformation.cs" />
+    <Compile Include="Services\OnlineMeetings\ErrorJsonDeserializer.cs" />
+    <Compile Include="Services\OnlineMeetings\ErrorSubcode.cs" />
+    <Compile Include="Services\OnlineMeetings\Helper.cs" />
+    <Compile Include="Services\OnlineMeetings\HttpOperationException.cs" />
+    <Compile Include="Services\OnlineMeetings\IApiAdapter.cs" />
+    <Compile Include="Services\OnlineMeetings\IOnlineMeetingWorker.cs" />
+    <Compile Include="Services\OnlineMeetings\LobbyBypass.cs" />
+    <Compile Include="Services\OnlineMeetings\LogEntry.cs" />
+    <Compile Include="Services\OnlineMeetings\MeetingPolicies.cs" />
+    <Compile Include="Services\OnlineMeetings\MembershipReactor.cs" />
+    <Compile Include="Services\OnlineMeetings\NewApiAdapter.cs" />
+    <Compile Include="Services\OnlineMeetings\OAuthRequestFactory.cs" />
+    <Compile Include="Services\OnlineMeetings\OAuthUtilities.cs" />
+    <Compile Include="Services\OnlineMeetings\OnlineMeeting.cs" />
+    <Compile Include="Services\OnlineMeetings\OnlineMeetingHelper.cs" />
+    <Compile Include="Services\OnlineMeetings\OnlineMeetingLogEntry.cs" />
+    <Compile Include="Services\OnlineMeetings\OnlineMeetingResult.cs" />
+    <Compile Include="Services\OnlineMeetings\OnlineMeetingScheduler.cs" />
+    <Compile Include="Services\OnlineMeetings\OnlineMeetingSchedulerException.cs" />
+    <Compile Include="Services\OnlineMeetings\OnlineMeetingSettings.cs" />
+    <Compile Include="Services\OnlineMeetings\OperationFailureException.cs" />
+    <Compile Include="Services\OnlineMeetings\OutlookAddinAdapter\AccessNumber.cs" />
+    <Compile Include="Services\OnlineMeetings\OutlookAddinAdapter\AcpAudioType.cs" />
+    <Compile Include="Services\OnlineMeetings\OutlookAddinAdapter\AcpInformation.cs" />
+    <Compile Include="Services\OnlineMeetings\OutlookAddinAdapter\AdmissionType.cs" />
+    <Compile Include="Services\OnlineMeetings\OutlookAddinAdapter\Audio.cs" />
+    <Compile Include="Services\OnlineMeetings\OutlookAddinAdapter\AudioType.cs" />
+    <Compile Include="Services\OnlineMeetings\OutlookAddinAdapter\AutoPromote.cs" />
+    <Compile Include="Services\OnlineMeetings\OutlookAddinAdapter\AutoPromoteEnum.cs" />
+    <Compile Include="Services\OnlineMeetings\OutlookAddinAdapter\CaaAudioType.cs" />
+    <Compile Include="Services\OnlineMeetings\OutlookAddinAdapter\CaaRegion.cs" />
+    <Compile Include="Services\OnlineMeetings\OutlookAddinAdapter\Capabilities.cs" />
+    <Compile Include="Services\OnlineMeetings\OutlookAddinAdapter\CustomInvite.cs" />
+    <Compile Include="Services\OnlineMeetings\OutlookAddinAdapter\FieldDefinitionStream.cs" />
+    <Compile Include="Services\OnlineMeetings\OutlookAddinAdapter\FieldDefinitionStreamFlags.cs" />
+    <Compile Include="Services\OnlineMeetings\OutlookAddinAdapter\Inband.cs" />
+    <Compile Include="Services\OnlineMeetings\OutlookAddinAdapter\MeetingOwner.cs" />
+    <Compile Include="Services\OnlineMeetings\OutlookAddinAdapter\MeetingSetting.cs" />
+    <Compile Include="Services\OnlineMeetings\OutlookAddinAdapter\OutlookAddinAdapter.cs" />
+    <Compile Include="Services\OnlineMeetings\OutlookAddinAdapter\Participants.cs" />
+    <Compile Include="Services\OnlineMeetings\OutlookAddinAdapter\Permissions.cs" />
+    <Compile Include="Services\OnlineMeetings\OutlookAddinAdapter\PropertyDefinitionStream.cs" />
+    <Compile Include="Services\OnlineMeetings\OutlookAddinAdapter\PropertyDefinitionStreamVersion.cs" />
+    <Compile Include="Services\OnlineMeetings\OutlookAddinAdapter\Region.cs" />
+    <Compile Include="Services\OnlineMeetings\OutlookAddinAdapter\User.cs" />
+    <Compile Include="Services\OnlineMeetings\Policy.cs" />
+    <Compile Include="Services\OnlineMeetings\RequestFactory.cs" />
+    <Compile Include="Services\OnlineMeetings\ResourceContract\AccessLevel.cs" />
+    <Compile Include="Services\OnlineMeetings\ResourceContract\ApplicationResource.cs" />
+    <Compile Include="Services\OnlineMeetings\ResourceContract\ApplicationSettings.cs" />
+    <Compile Include="Services\OnlineMeetings\ResourceContract\ApplicationsResource.cs" />
+    <Compile Include="Services\OnlineMeetings\ResourceContract\ApplicationState.cs" />
+    <Compile Include="Services\OnlineMeetings\ResourceContract\ApplicationType.cs" />
+    <Compile Include="Services\OnlineMeetings\ResourceContract\AssignedOnlineMeetingResource.cs" />
+    <Compile Include="Services\OnlineMeetings\ResourceContract\AttendanceAnnouncementsStatuses.cs" />
+    <Compile Include="Services\OnlineMeetings\ResourceContract\AudioPreference.cs" />
+    <Compile Include="Services\OnlineMeetings\ResourceContract\AutomaticLeaderAssignment.cs" />
+    <Compile Include="Services\OnlineMeetings\ResourceContract\AutomaticLeaderAssignments.cs" />
+    <Compile Include="Services\OnlineMeetings\ResourceContract\BatchingResource.cs" />
+    <Compile Include="Services\OnlineMeetings\ResourceContract\CollectionContainerResource.cs" />
+    <Compile Include="Services\OnlineMeetings\ResourceContract\ConferenceAccessLevels.cs" />
+    <Compile Include="Services\OnlineMeetings\ResourceContract\ConferencingRole.cs" />
+    <Compile Include="Services\OnlineMeetings\ResourceContract\ConversationConferenceResource.cs" />
+    <Compile Include="Services\OnlineMeetings\ResourceContract\DeleteAttribute.cs" />
+    <Compile Include="Services\OnlineMeetings\ResourceContract\DialInRegionResource.cs" />
+    <Compile Include="Services\OnlineMeetings\ResourceContract\EmbeddedMultipartRelatedResponse.cs" />
+    <Compile Include="Services\OnlineMeetings\ResourceContract\EmbeddedPart.cs" />
+    <Compile Include="Services\OnlineMeetings\ResourceContract\EndpointsResource.cs" />
+    <Compile Include="Services\OnlineMeetings\ResourceContract\EntryExitAnnouncement.cs" />
+    <Compile Include="Services\OnlineMeetings\ResourceContract\ErrorCode.cs" />
+    <Compile Include="Services\OnlineMeetings\ResourceContract\ErrorInformation.cs" />
+    <Compile Include="Services\OnlineMeetings\ResourceContract\ErrorSubcode.cs" />
+    <Compile Include="Services\OnlineMeetings\ResourceContract\EventChannelResource.cs" />
+    <Compile Include="Services\OnlineMeetings\ResourceContract\EventEntity.cs" />
+    <Compile Include="Services\OnlineMeetings\ResourceContract\EventEntityHelper.cs" />
+    <Compile Include="Services\OnlineMeetings\ResourceContract\EventOperation.cs" />
+    <Compile Include="Services\OnlineMeetings\ResourceContract\EventSenderEntity.cs" />
+    <Compile Include="Services\OnlineMeetings\ResourceContract\EventsEntity.cs" />
+    <Compile Include="Services\OnlineMeetings\ResourceContract\EventsRequest.cs" />
+    <Compile Include="Services\OnlineMeetings\ResourceContract\EventsResponse.cs" />
+    <Compile Include="Services\OnlineMeetings\ResourceContract\EventStatus.cs" />
+    <Compile Include="Services\OnlineMeetings\ResourceContract\ExternalResource.cs" />
+    <Compile Include="Services\OnlineMeetings\ResourceContract\GenericPolicy.cs" />
+    <Compile Include="Services\OnlineMeetings\ResourceContract\GetAttribute.cs" />
+    <Compile Include="Services\OnlineMeetings\ResourceContract\HttpMethodAttribute.cs" />
+    <Compile Include="Services\OnlineMeetings\ResourceContract\HttpStatusCodeExtensions.cs" />
+    <Compile Include="Services\OnlineMeetings\ResourceContract\HyperReference.cs" />
+    <Compile Include="Services\OnlineMeetings\ResourceContract\IEtagProvider.cs" />
+    <Compile Include="Services\OnlineMeetings\ResourceContract\IgnoreAttribute.cs" />
+    <Compile Include="Services\OnlineMeetings\ResourceContract\InputConstants.cs" />
+    <Compile Include="Services\OnlineMeetings\ResourceContract\IResource.cs" />
+    <Compile Include="Services\OnlineMeetings\ResourceContract\IResourceCollection.cs" />
+    <Compile Include="Services\OnlineMeetings\ResourceContract\JsonExampleAttribute.cs" />
+    <Compile Include="Services\OnlineMeetings\ResourceContract\KeyAttribute.cs" />
+    <Compile Include="Services\OnlineMeetings\ResourceContract\Link.cs" />
+    <Compile Include="Services\OnlineMeetings\ResourceContract\LinkAttribute.cs" />
+    <Compile Include="Services\OnlineMeetings\ResourceContract\LinksCollection.cs" />
+    <Compile Include="Services\OnlineMeetings\ResourceContract\LobbyBypassForPhoneUsers.cs" />
+    <Compile Include="Services\OnlineMeetings\ResourceContract\LobbyBypassSettings.cs" />
+    <Compile Include="Services\OnlineMeetings\ResourceContract\LockDevice.cs" />
+    <Compile Include="Services\OnlineMeetings\ResourceContract\MakeMeAvailableResource.cs" />
+    <Compile Include="Services\OnlineMeetings\ResourceContract\MakeMeAvailableSettings.cs" />
+    <Compile Include="Services\OnlineMeetings\ResourceContract\MakeMeUnavailableResource.cs" />
+    <Compile Include="Services\OnlineMeetings\ResourceContract\MediaRelay.cs" />
+    <Compile Include="Services\OnlineMeetings\ResourceContract\MediaRelayTokenResource.cs" />
+    <Compile Include="Services\OnlineMeetings\ResourceContract\MediaType.cs" />
+    <Compile Include="Services\OnlineMeetings\ResourceContract\MeetingResource.cs" />
+    <Compile Include="Services\OnlineMeetings\ResourceContract\Modality.cs" />
+    <Compile Include="Services\OnlineMeetings\ResourceContract\ModalityType.cs" />
+    <Compile Include="Services\OnlineMeetings\ResourceContract\MultipartRelatedEventsResponse.cs" />
+    <Compile Include="Services\OnlineMeetings\ResourceContract\MultipartRelatedRequest.cs" />
+    <Compile Include="Services\OnlineMeetings\ResourceContract\MyMeetingsResource.cs" />
+    <Compile Include="Services\OnlineMeetings\ResourceContract\MyOnlineMeetingsResource.cs" />
+    <Compile Include="Services\OnlineMeetings\ResourceContract\NamespaceAttribute.cs" />
+    <Compile Include="Services\OnlineMeetings\ResourceContract\NamespaceConstants.cs" />
+    <Compile Include="Services\OnlineMeetings\ResourceContract\NormalizePhoneNumber.cs" />
+    <Compile Include="Services\OnlineMeetings\ResourceContract\OnlineMeetingCapabilityResource.cs" />
+    <Compile Include="Services\OnlineMeetings\ResourceContract\OnlineMeetingDefaultValuesResource.cs" />
+    <Compile Include="Services\OnlineMeetings\ResourceContract\OnlineMeetingEligibleValuesResource.cs" />
+    <Compile Include="Services\OnlineMeetings\ResourceContract\OnlineMeetingExtensionResource.cs" />
+    <Compile Include="Services\OnlineMeetings\ResourceContract\OnlineMeetingExtensionsResource.cs" />
+    <Compile Include="Services\OnlineMeetings\ResourceContract\OnlineMeetingExtensionType.cs" />
+    <Compile Include="Services\OnlineMeetings\ResourceContract\OnlineMeetingInput.cs" />
+    <Compile Include="Services\OnlineMeetings\ResourceContract\OnlineMeetingInvitationCustomizationResource.cs" />
+    <Compile Include="Services\OnlineMeetings\ResourceContract\OnlineMeetingParticipantInformationResource.cs" />
+    <Compile Include="Services\OnlineMeetings\ResourceContract\OnlineMeetingPoliciesResource.cs" />
+    <Compile Include="Services\OnlineMeetings\ResourceContract\OnlineMeetingRel.cs" />
+    <Compile Include="Services\OnlineMeetings\ResourceContract\OnlineMeetingResource.cs" />
+    <Compile Include="Services\OnlineMeetings\ResourceContract\Operation.cs" />
+    <Compile Include="Services\OnlineMeetings\ResourceContract\ParentAttribute.cs" />
+    <Compile Include="Services\OnlineMeetings\ResourceContract\PatchAttribute.cs" />
+    <Compile Include="Services\OnlineMeetings\ResourceContract\PhoneDialInInformationResource.cs" />
+    <Compile Include="Services\OnlineMeetings\ResourceContract\PhoneInformationResource.cs" />
+    <Compile Include="Services\OnlineMeetings\ResourceContract\PhoneNormalizationResultResource.cs" />
+    <Compile Include="Services\OnlineMeetings\ResourceContract\PhoneUserAdmission.cs" />
+    <Compile Include="Services\OnlineMeetings\ResourceContract\PoliciesResource.cs" />
+    <Compile Include="Services\OnlineMeetings\ResourceContract\PostAttribute.cs" />
+    <Compile Include="Services\OnlineMeetings\ResourceContract\Property.cs" />
+    <Compile Include="Services\OnlineMeetings\ResourceContract\PropertyBag.cs" />
+    <Compile Include="Services\OnlineMeetings\ResourceContract\PublishTelemetry.cs" />
+    <Compile Include="Services\OnlineMeetings\ResourceContract\PutAttribute.cs" />
+    <Compile Include="Services\OnlineMeetings\ResourceContract\RelayLocation.cs" />
+    <Compile Include="Services\OnlineMeetings\ResourceContract\RequestContainer.cs" />
+    <Compile Include="Services\OnlineMeetings\ResourceContract\Resource.cs" />
+    <Compile Include="Services\OnlineMeetings\ResourceContract\ResourceCollection.cs" />
+    <Compile Include="Services\OnlineMeetings\ResourceContract\ResponseContainer.cs" />
+    <Compile Include="Services\OnlineMeetings\ResourceContract\SchedulingTemplates.cs" />
+    <Compile Include="Services\OnlineMeetings\ResourceContract\Status.cs" />
+    <Compile Include="Services\OnlineMeetings\ResourceContract\Telemetry.cs" />
+    <Compile Include="Services\OnlineMeetings\ResourceContract\TokenAttribute.cs" />
+    <Compile Include="Services\OnlineMeetings\ResourceContract\UserActivity.cs" />
+    <Compile Include="Services\OnlineMeetings\ResourceJsonSerializer.cs" />
+    <Compile Include="Services\OnlineMeetings\SchedulingTemplate.cs" />
+    <Compile Include="Services\OnlineMeetings\SerializationException.cs" />
+    <Compile Include="Services\OnlineMeetings\UcwaHttpMethod.cs" />
+    <Compile Include="Services\OnlineMeetings\UcwaNewExtensions.cs" />
+    <Compile Include="Services\OnlineMeetings\UcwaNewOnlineMeetingWorker.cs" />
+    <Compile Include="Services\OnlineMeetings\UcwaOnlineMeetingScheduler.cs" />
+    <Compile Include="Services\OnlineMeetings\UcwaRequestFactory.cs" />
+    <Compile Include="Services\OnlineMeetings\UcwaServerToServerClient.cs" />
+    <Compile Include="Services\OnlineMeetings\UcwaTokens.cs" />
+    <Compile Include="Services\OnlineMeetings\UcwaWebRequest.cs" />
+    <Compile Include="Services\OnlineMeetings\WebTicketRequestFactory.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.Exchange.Common\Microsoft.Exchange.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140F0}</Project>
+      <Name>Microsoft.Exchange.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Compliance\Microsoft.Exchange.Compliance.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140F2}</Project>
+      <Name>Microsoft.Exchange.Compliance</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Common\Microsoft.Exchange.Data.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140D3}</Project>
+      <Name>Microsoft.Exchange.Data.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Directory\Microsoft.Exchange.Data.Directory.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14105}</Project>
+      <Name>Microsoft.Exchange.Data.Directory</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Storage\Microsoft.Exchange.Data.Storage.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1410F}</Project>
+      <Name>Microsoft.Exchange.Data.Storage</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data\Microsoft.Exchange.Data.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14106}</Project>
+      <Name>Microsoft.Exchange.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Diagnostics\Microsoft.Exchange.Diagnostics.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14113}</Project>
+      <Name>Microsoft.Exchange.Diagnostics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Net\Microsoft.Exchange.Net.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14178}</Project>
+      <Name>Microsoft.Exchange.Net</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Security\Microsoft.Exchange.Security.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14198}</Project>
+      <Name>Microsoft.Exchange.Security</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\mscorlib\mscorlib.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141F1}</Project>
+      <Name>mscorlib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

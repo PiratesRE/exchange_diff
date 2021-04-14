@@ -1,0 +1,2289 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo IsDatacenterOnly="true" IsDatacenterDedicatedOnly="true" Name="Datacenter Client Access Configuration">
+  <ServerTasks>
+
+    <!-- Create redirection to /owa. -->
+    <ServerTaskInfo Id="_DFD13C6D773D4b6491193FAA49E21195" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          <!-- The logic here is to change the iis redirect settins so that requests made to default website will be redirected to /owa. -->
+          $CommandAppCmd = join-path $env:SystemRoot System32\inetsrv\appcmd.exe;
+
+          if (-not $RoleIsDatacenterDedicated)
+          {
+             Start-SetupProcess -Name "$CommandAppCmd" -args "set config `"Exchange Back End`" /section:httpRedirect /enabled:true /destination:/owa /childOnly:true"
+          }
+
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Redirect IIS Log folder path to $RoleDatacenterIisLogPath and Set logExtFileFlags. -->
+    <ServerTaskInfo Id="_7b6923587ed645538236e66698ad13b1" Component="EXCHANGE14:\Current\Release\Shared\TwC\Security">
+      <Install>
+        <Standalone>
+          $CommandAppCmd = join-path $env:SystemRoot System32\inetsrv\appcmd.exe;
+
+          Start-SetupProcess -Name "$CommandAppCmd" -args "set config /section:system.applicationHost/log  /centralBinaryLogFile.directory:$RoleDatacenterIisLogPath\LogFiles"
+          Start-SetupProcess -Name "$CommandAppCmd" -args "set config /section:system.applicationHost/log  /centralW3CLogFile.directory:$RoleDatacenterIisLogPath\LogFiles\W3SVC1"
+
+          Start-SetupProcess -Name "$CommandAppCmd" -args "set config -section:sites /siteDefaults.logfile.directory:$RoleDatacenterIisLogPath\LogFiles"
+          Start-SetupProcess -Name "$CommandAppCmd" -args "set config -section:sites /siteDefaults.traceFailedRequestsLogging.directory:$RoleDatacenterIisLogPath\FailedReqLogFiles"
+
+          $logExtFileFlags = "Date, Time, ClientIP, UserName, ServerIP, Method, UriStem, UriQuery, HttpStatus, Win32Status, TimeTaken, ServerPort, UserAgent, HttpSubStatus, Host, BytesRecv, BytesSent"
+          Start-SetupProcess -Name "$CommandAppCmd" -args "set config -section:sites /siteDefaults.logFile.logExtFileFlags:`"$logExtFileFlags`""
+
+          $key = "HKLM:\Software\Microsoft\ExchangeServer\v15";
+          Set-ItemProperty $key "IISLogDirectory" $RoleDatacenterIisLogPath
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Copy Live ID authentication module web files to webroot. -->
+    <ServerTaskInfo Id="_ea6aa14acb1b4a14aa6edfa35dd30235" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          Copy-Item $RoleInstallPath\ClientAccess\LIDAuth\wwwroot $env:SystemDrive\inetpub\wwwroot\LIDAuth -Recurse -Force;
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Configure SSL certificates -->
+    <ServerTaskInfo Id="_1480c8aa620b46deb09ee0a01297c7d7" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          Install-ExchangeCertificate -Thumbprint $RoleDatacenterIisSHA1Thumbprint -Services IIS
+          Install-ExchangeCertificate -WebSiteName "Exchange Back End" -Thumbprint $RoleDatacenterIisSHA1Thumbprint -Services IIS
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <ServerTaskInfo Id="_afaa2399e87442a18337a18331ab2ddd" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>Install-ExchangeCertificate -Thumbprint $RoleDatacenterImapSHA1Thumbprint -Services IMAP</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <ServerTaskInfo Id="_df2b653233f44567af975038dabdbbbf" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>Install-ExchangeCertificate -Thumbprint $RoleDatacenterPopSHA1Thumbprint -Services POP</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Set Folder/Registry Permissions for Provisioning Webservice folder-->
+    <ServerTaskInfo Id="_151faeca552140a4878058638d7e542e" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>Set-LocalPermissions -Feature:"ClientAccessDatacenter"</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Disable LiveIdBasicAuth for EWS and OAB in Dedicated (OM 1430286 & 1430159) -->
+    <ServerTaskInfo Id="_e5709403034248c2b24a109548bf0fdf" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          if ($RoleIsDatacenterDedicated)
+          {
+              ."$RoleInstallPath\Scripts\enable-LiveIDForWebApplication.ps1";              
+              RemoveLiveIdBasicAuthModuleForApplication 'ews'
+              RemoveLiveIdBasicAuthModuleForApplication 'oab'
+              RemoveLiveIdBasicAuthModuleForApplication 'autodiscover'
+              RemoveLiveIdBasicAuthModuleForApplication 'ecp'
+              RemoveLiveIdBasicAuthModuleForApplication 'emsmdb'
+              RemoveLiveIdBasicAuthModuleForApplication 'nspi'
+              RemoveLiveIdBasicAuthModuleForApplication 'outlookservice'
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall />
+    </ServerTaskInfo>
+    
+    <!-- Create PowerShell virtual directory "PowerShell-LiveID" for Windows Live ID authentication.and set its ExternalUrl -->
+    <!-- E14: 81834: All the virtual directories have to be created before any enable-LiveIDForWebApplication is called.  -->
+    <ServerTaskInfo Id="_98f0a185d5324d1ab95b8d522645b98e" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup" ExcludeInDatacenterDedicated="true">
+      <Install>
+        <Standalone>
+          $InternalPowerShellUrl="https://" + $RoleFqdnOrName + "/powershell-LiveId";
+          $adSiteName = (Get-ExchangeServer $RoleNetBIOSName).Site.Name;
+
+          if (-not ([String]::IsNullOrEmpty($RoleDatacenterE15FlatNamespace)))
+          {
+          $ExternalPowerShellUrl = "https://$RoleDatacenterE15FlatNamespace/powershell";
+          }
+          else
+          {
+          $ExternalPowerShellUrl = "https://" +[System.String]::Format($RoleDatacenterSiteRedirectTemplatePowerShell, $adSiteName) + "/powershell";
+          }
+
+          new-PowerShellVirtualDirectory "PowerShell-LiveID" -DomainController $RoleDomainController -AppPoolId "MSExchangePowerShellLiveIDAppPool" -LimitMaximumMemory $true -Path ($RoleInstallPath + "ClientAccess\PowerShell-LiveID-Proxy") -WebSiteName "Exchange Back End" -Role Mailbox | Set-PowerShellVirtualDirectory -DomainController $RoleDomainController -LiveIdBasicAuthentication:$false -BasicAuthentication:$false -WindowsAuthentication:$true;
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade>
+        <Standalone>
+          $beVdirName = "PowerShell (Default Web Site)";
+          $feVdirName = "PowerShell (Exchange Back End)";
+          $InternalPowerShellUrl="https://" + $RoleFqdnOrName + "/powershell-LiveId";
+          $adSiteName = (Get-ExchangeServer $RoleNetBIOSName).Site.Name;
+
+          if (-not ([String]::IsNullOrEmpty($RoleDatacenterE15FlatNamespace)))
+          {
+          $ExternalPowerShellUrl = "https://$RoleDatacenterE15FlatNamespace/powershell";
+          }
+          else
+          {
+          $ExternalPowerShellUrl = "https://" +[System.String]::Format($RoleDatacenterSiteRedirectTemplatePowerShell, $adSiteName) + "/powershell";
+          }
+
+          update-PowerShellVirtualDirectoryVersion -DomainController $RoleDomainController;
+          get-PowerShellVirtualDirectory -ShowMailboxVirtualDirectories -server $RoleFqdnOrName -DomainController $RoleDomainController | where { $_.Name -ne $beVdirName -and $_.Name -ne $feVdirName } | remove-PowerShellVirtualDirectory -DomainController $RoleDomainController;
+          remove-Item -Path ($RoleInstallPath + "ClientAccess\Management") -Recurse -Force -ErrorAction SilentlyContinue;
+          new-PowerShellVirtualDirectory "PowerShell-LiveID" -DomainController $RoleDomainController -AppPoolId "MSExchangePowerShellLiveIdAppPool" -LimitMaximumMemory $true -Path ($RoleInstallPath + "ClientAccess\PowerShell-LiveID-Proxy")  -WebSiteName "Exchange Back End" -Role Mailbox | Set-PowerShellVirtualDirectory -DomainController $RoleDomainController -LiveIdBasicAuthentication:$false -BasicAuthentication:$false -WindowsAuthentication:$true;
+        </Standalone>
+      </BuildToBuildUpgrade>
+      <DisasterRecovery>
+        <Standalone>
+          $beVdirName = "PowerShell (Default Web Site)";
+          $feVdirName = "PowerShell (Exchange Back End)";
+          $InternalPowerShellUrl="https://" + $RoleFqdnOrName + "/powershell-LiveId";
+          $adSiteName = (Get-ExchangeServer $RoleNetBIOSName).Site.Name;
+
+          if (-not ([String]::IsNullOrEmpty($RoleDatacenterE15FlatNamespace)))
+          {
+          $ExternalPowerShellUrl = "https://$RoleDatacenterE15FlatNamespace/powershell";
+          }
+          else
+          {
+          $ExternalPowerShellUrl = "https://" +[System.String]::Format($RoleDatacenterSiteRedirectTemplatePowerShell, $adSiteName) + "/powershell";
+          }
+
+          get-PowerShellVirtualDirectory -ShowMailboxVirtualDirectories -server $RoleFqdnOrName -DomainController $RoleDomainController | where { $_.Name -ne $beVdirName -and $_.Name -ne $feVdirName } | remove-PowerShellVirtualDirectory -DomainController $RoleDomainController;
+          remove-Item -Path ($RoleInstallPath + "ClientAccess\Management") -Recurse -Force -ErrorAction SilentlyContinue;
+          new-PowerShellVirtualDirectory "PowerShell-LiveID" -DomainController $RoleDomainController -AppPoolId "MSExchangePowerShellLiveIDAppPool" -LimitMaximumMemory $true -Path ($RoleInstallPath + "ClientAccess\PowerShell-LiveID-Proxy") -WebSiteName "Exchange Back End" -Role Mailbox | Set-PowerShellVirtualDirectory -DomainController $RoleDomainController -LiveIdBasicAuthentication:$false -BasicAuthentication:$false -WindowsAuthentication:$true;
+        </Standalone>
+      </DisasterRecovery>
+      <Uninstall>
+        <Standalone>
+          $beVdirName = "PowerShell (Default Web Site)";
+          $feVdirName = "PowerShell (Exchange Back End)";
+          get-PowerShellVirtualDirectory -ShowMailboxVirtualDirectories -server $RoleFqdnOrName -DomainController $RoleDomainController | where { $_.Name -ne $beVdirName -and $_.Name -ne $feVdirName} | remove-PowerShellVirtualDirectory -DomainController $RoleDomainController;
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Set the LiveIdNegotiate authentication for PowerShell-LiveId virtual directory. -->
+    <ServerTaskInfo Id="_a9e6dfd96f5046ffa50e619b8a31fdfc" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup" ExcludeInDatacenterDedicated="true">
+      <Install>
+        <Standalone>
+          $vdirName = "PowerShell-LiveID (Default Web Site)";
+          $osVer = [environment]::osversion;
+          $enableLiveIdNegotiate = ($RoleDatacenterEnableNegoEx -and (($osVer.Version.Major -ge 7) -or ($osVer.Version.Major -ge 6) -and ($osVer.Version.Minor -ge 1)));
+          Get-PowerShellVirtualDirectory -server $RoleFqdnOrName -DomainController $RoleDomainController | where { $_.Name -eq $vdirName } | Set-PowerShellVirtualDirectory -LiveIdNegotiateAuthentication:$enableLiveIdNegotiate;
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Set external URL on Powershell virtual directory. -->
+    <ServerTaskInfo Id="_5d9d864a99444b9b8d690e7d44e48e2a" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          $vdirName = "PowerShell (Default Web Site)";
+          $ExternalPowerShellUrl="https://" + $RoleFqdnOrName + "/powershell";
+          $vdir = Get-PowerShellVirtualDirectory -server $RoleFqdnOrName -DomainController $RoleDomainController | where { $_.Name -eq $vdirName };
+          if ($vdir -ne $null)
+          {
+          Set-PowerShellVirtualDirectory $vdirName -ExternalUrl $ExternalPowerShellUrl
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Configure WSMan IIS Hosting on Datacenter CAS server. This is just to do more checkings on DC CAS vdirs -->
+    <ServerTaskInfo Id="_17fdea85a33d433196ad58d9dddb0e73" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          configure-WSManIISHosting;
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Configure Psws services -->
+
+    <!-- Create Psws virtual directory "Psws" for Windows Live ID authentication.and set its ExternalUrl -->
+    <ServerTaskInfo Id="_69ab53d1bc254218bd3fed84717fedce" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          new-PswsVirtualDirectory "Psws" -Role Mailbox -DomainController $RoleDomainController -AppPoolId "MSExchangePswsAppPool" -LimitMaximumMemory $true -Path ($RoleInstallPath + "ClientAccess\Psws") -WebSiteName "Exchange Back End" | Set-PswsVirtualDirectory -LiveIdBasicAuthentication:$false -BasicAuthentication:$false -WindowsAuthentication:$true;
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade>
+        <Standalone>
+          update-PswsVirtualDirectoryVersion -DomainController $RoleDomainController;
+          get-PswsVirtualDirectory -ShowMailboxVirtualDirectories -server $RoleFqdnOrName -DomainController $RoleDomainController | remove-PswsVirtualDirectory -DomainController $RoleDomainController;
+          remove-Item -Path ($RoleInstallPath + "ClientAccess\Management") -Recurse -Force -ErrorAction SilentlyContinue;
+          new-PswsVirtualDirectory "Psws" -Role Mailbox -DomainController $RoleDomainController -AppPoolId "MSExchangePswsAppPool" -LimitMaximumMemory $true -Path ($RoleInstallPath + "ClientAccess\Psws") -WebSiteName "Exchange Back End" | Set-PswsVirtualDirectory -LiveIdBasicAuthentication:$false -BasicAuthentication:$false -WindowsAuthentication:$true;
+        </Standalone>
+      </BuildToBuildUpgrade>
+      <DisasterRecovery>
+        <Standalone>
+          update-PswsVirtualDirectoryVersion -DomainController $RoleDomainController;
+          get-PswsVirtualDirectory -ShowMailboxVirtualDirectories -server $RoleFqdnOrName -DomainController $RoleDomainController | remove-PswsVirtualDirectory -DomainController $RoleDomainController;
+          remove-Item -Path ($RoleInstallPath + "ClientAccess\Management") -Recurse -Force -ErrorAction SilentlyContinue;
+          new-PswsVirtualDirectory "Psws" -Role Mailbox -DomainController $RoleDomainController -AppPoolId "MSExchangePswsAppPool" -LimitMaximumMemory $true -Path ($RoleInstallPath + "ClientAccess\Psws") -WebSiteName "Exchange Back End" | Set-PswsVirtualDirectory -LiveIdBasicAuthentication:$false -BasicAuthentication:$false -WindowsAuthentication:$true;
+        </Standalone>
+      </DisasterRecovery>
+      <Uninstall>
+        <Standalone>
+          get-PswsVirtualDirectory -ShowMailboxVirtualDirectories -server $RoleFqdnOrName -DomainController $RoleDomainController | remove-PswsVirtualDirectory -DomainController $RoleDomainController;
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Set install path in app config "ClientAccess/Psws" -->
+    <ServerTaskInfo Id="_54384BD431F94AC7A023037618278F0F" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>set-InstallPathInAppConfig -ConfigFileRelativePath "ClientAccess\Psws\" -ConfigFileName web.config</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Set install path in app config "ClientAccess/E4E" -->
+    <ServerTaskInfo Id="_589C6CC88653483CA82DD8868169A441" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>set-InstallPathInAppConfig -ConfigFileRelativePath "ClientAccess\E4E\" -ConfigFileName web.config</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Create O365SuiteService vdir, at present only in TDS -->
+    <ServerTaskInfo Id="_875B11837FCB48D4AA7AA0F54988A895" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup" ExcludeInDatacenterDedicated="true">
+      <Install>
+        <Standalone>
+          $fqdn = [System.Net.Dns]::GetHostByName("localhost").HostName;
+
+          if ($fqdn -like "*extest.microsoft.com")
+          {
+            New-O365SuiteServiceVirtualDirectory -Role Mailbox -DomainController $RoleDomainController -server $RoleFqdnOrName -OAuthAuthentication $true
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade>
+        <Standalone>
+          $fqdn = [System.Net.Dns]::GetHostByName("localhost").HostName;
+
+          if ($fqdn -like "*extest.microsoft.com")
+          {
+            $BEVdirIdentity = $RoleNetBIOSName + "\O365SuiteService (Exchange Back End)";
+            Get-O365SuiteServiceVirtualDirectory -ShowMailboxVirtualDirectories -DomainController $RoleDomainController -Identity $BEVdirIdentity | Remove-O365SuiteServiceVirtualDirectory -DomainController $RoleDomainController
+            New-O365SuiteServiceVirtualDirectory -Role Mailbox -DomainController $RoleDomainController -server $RoleFqdnOrName -OAuthAuthentication $true
+          }
+        </Standalone>
+      </BuildToBuildUpgrade>
+      <DisasterRecovery>
+        <Standalone>
+          $fqdn = [System.Net.Dns]::GetHostByName("localhost").HostName;
+
+          if ($fqdn -like "*extest.microsoft.com")
+          {
+            $BEVdirIdentity = $RoleNetBIOSName + "\O365SuiteService (Exchange Back End)";
+            Get-O365SuiteServiceVirtualDirectory -ShowMailboxVirtualDirectories -DomainController $RoleDomainController -Identity $BEVdirIdentity | Remove-O365SuiteServiceVirtualDirectory -DomainController $RoleDomainController
+            New-O365SuiteServiceVirtualDirectory -Role Mailbox -DomainController $RoleDomainController -server $RoleFqdnOrName -OAuthAuthentication $true
+          }
+        </Standalone>
+      </DisasterRecovery>
+      <Uninstall IsFatal="false">
+        <Standalone>
+          $fqdn = [System.Net.Dns]::GetHostByName("localhost").HostName;
+
+          if ($fqdn -like "*extest.microsoft.com")
+          {
+            $BEVdirIdentity = $RoleNetBIOSName + "\O365SuiteService (Exchange Back End)";
+            Get-O365SuiteServiceVirtualDirectory -ShowMailboxVirtualDirectories -DomainController $RoleDomainController -Identity $BEVdirIdentity | Remove-O365SuiteServiceVirtualDirectory -DomainController $RoleDomainController
+          }
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+    
+    <!-- Set install path in app config "ClientAccess/O365SuiteService" -->
+    <ServerTaskInfo Id="_478B0169B39F4128820A7D6FA45FB60A" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup" ExcludeInDatacenterDedicated="true">
+      <Install>
+        <Standalone>set-InstallPathInAppConfig -ConfigFileRelativePath "ClientAccess\O365SuiteService\" -ConfigFileName web.config</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Create SnackyService vdir and AppPool -->
+    <ServerTaskInfo Id="_3c210d891f1449f2943e93f207e7de78" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup" ExcludeInDatacenterDedicated="true">
+      <Install>
+        <Standalone>
+          $fqdn = [System.Net.Dns]::GetHostByName("localhost").HostName.ToUpper();
+          if (($fqdn -like "*EXTEST.MICROSOFT.COM") -And (-not $RoleIsDatacenterDedicated))
+          {
+            New-SnackyServiceVirtualDirectory -Role Mailbox -DomainController $RoleDomainController -server $RoleFqdnOrName
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade>
+        <Standalone>
+          $fqdn = [System.Net.Dns]::GetHostByName("localhost").HostName.ToUpper();
+          if (($fqdn -like "*EXTEST.MICROSOFT.COM") -And (-not $RoleIsDatacenterDedicated))
+          {
+            $BEVdirIdentity = $RoleNetBIOSName + "\SnackyService (Exchange Back End)";
+            Get-SnackyServiceVirtualDirectory -ShowMailboxVirtualDirectories -DomainController $RoleDomainController -Identity $BEVdirIdentity | Remove-SnackyServiceVirtualDirectory -DomainController $RoleDomainController
+            New-SnackyServiceVirtualDirectory -Role Mailbox -DomainController $RoleDomainController -server $RoleFqdnOrName
+          }
+        </Standalone>
+      </BuildToBuildUpgrade>
+      <DisasterRecovery>
+        <Standalone>
+          $fqdn = [System.Net.Dns]::GetHostByName("localhost").HostName.ToUpper();
+
+          if (($fqdn -like "*EXTEST.MICROSOFT.COM") -And (-not $RoleIsDatacenterDedicated))
+          {
+            $BEVdirIdentity = $RoleNetBIOSName + "\SnackyService (Exchange Back End)";
+            Get-SnackyServiceVirtualDirectory -ShowMailboxVirtualDirectories -DomainController $RoleDomainController -Identity $BEVdirIdentity | Remove-SnackyServiceVirtualDirectory -DomainController $RoleDomainController
+            New-SnackyServiceVirtualDirectory -Role Mailbox -DomainController $RoleDomainController -server $RoleFqdnOrName
+          }
+        </Standalone>
+      </DisasterRecovery>
+      <Uninstall IsFatal="false">
+        <Standalone>
+          $fqdn = [System.Net.Dns]::GetHostByName("localhost").HostName.ToUpper();
+
+          if (($fqdn -like "*EXTEST.MICROSOFT.COM") -And (-not $RoleIsDatacenterDedicated))
+          {
+            $BEVdirIdentity = $RoleNetBIOSName + "\SnackyService (Exchange Back End)";
+            Get-SnackyServiceVirtualDirectory -ShowMailboxVirtualDirectories -DomainController $RoleDomainController -Identity $BEVdirIdentity | Remove-SnackyServiceVirtualDirectory -DomainController $RoleDomainController
+          }
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Set install path in app config "ClientAccess/SnackyService" -->
+    <ServerTaskInfo Id="_db57ddd26e5e48bdba9c62a8f2a2073c" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup" ExcludeInDatacenterDedicated="true">
+      <Install>
+        <Standalone>set-InstallPathInAppConfig -ConfigFileRelativePath "ClientAccess\SnackyService\" -ConfigFileName web.config</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Set OrgID authentication related and CDN settings in web.config "ClientAccess/E4E" -->
+    <ServerTaskInfo Id="_F0B318702EEA4A50B20BA76A841EB45A" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          $fullPath = "$RoleInstallPath\ClientAccess\E4E\web.config";
+          if ($RoleDatacenterE4eSiteName)
+          {
+          set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:LiveIdAuthModuleSiteName -NewValue:"$RoleDatacenterE4eSiteName";
+          }
+
+          if ($RoleDatacenterOfficeConfigServiceUrl)
+          {
+          set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:OfficeConfigServiceUrl -NewValue:"$RoleDatacenterOfficeConfigServiceUrl";
+          }
+
+          if ($RoleDatacenterWhrDomainName)
+          {
+          set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:WhrDomainName -NewValue:"$RoleDatacenterWhrDomainName";
+          }
+
+          if ($RoleDatacenterContentDeliveryNetworkEndpoint -ne $null -and $RoleDatacenterContentDeliveryNetworkEndpoint -ne "")
+          {
+          set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:ContentDeliveryNetworkEndpoint -NewValue:"$RoleDatacenterContentDeliveryNetworkEndpoint";
+          }
+
+          if ($RoleDatacenterMemberNameIgnorePrefixes -ne $null -and $RoleDatacenterMemberNameIgnorePrefixes -ne "")
+          {
+          set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:MemberNameIgnorePrefixes -NewValue:"$RoleDatacenterMemberNameIgnorePrefixes";
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Create E4E vdir -->
+    <ServerTaskInfo Id="_A8673ECBD7F146908BD1FC542F15C2FC" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          New-HostedEncryptionVirtualDirectory -Role Mailbox -DomainController $RoleDomainController;
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade>
+        <Standalone>
+          Get-HostedEncryptionVirtualDirectory -ShowMailboxVirtualDirectories -server $RoleFqdnOrName -DomainController $RoleDomainController | Remove-HostedEncryptionVirtualDirectory -DomainController $RoleDomainController;
+          New-HostedEncryptionVirtualDirectory -Role Mailbox -DomainController $RoleDomainController;
+        </Standalone>
+      </BuildToBuildUpgrade>
+      <DisasterRecovery>
+        <Standalone>
+          Get-HostedEncryptionVirtualDirectory -ShowMailboxVirtualDirectories -server $RoleFqdnOrName -DomainController $RoleDomainController | Remove-HostedEncryptionVirtualDirectory -DomainController $RoleDomainController;
+          New-HostedEncryptionVirtualDirectory -Role Mailbox -DomainController $RoleDomainController;
+        </Standalone>
+      </DisasterRecovery>
+      <Uninstall>
+        <Standalone>
+          Get-HostedEncryptionVirtualDirectory -ShowMailboxVirtualDirectories -server $RoleFqdnOrName -DomainController $RoleDomainController | Remove-HostedEncryptionVirtualDirectory -DomainController $RoleDomainController;
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Create the datacenter-only reporting service virtual directory "Reporting" -->
+    <ServerTaskInfo Id="_47559281DE3D4a13A29A464298AA6480" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Monitoring">
+      <Install>
+        <Standalone>
+          if ($RoleDatacenterIsManagementForest -eq "True")
+          {
+          New-ReportingVirtualDirectory;
+          $ClientAccessReporting = $RoleInstallPath + "\ClientAccess\Reporting";
+          Start-SetupProcess -Name "icacls.exe" -args "`"$ClientAccessReporting`" /grant `"IUSR:(OI)(CI)(RX,R)`" /T /C /inheritance:e";
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade>
+        <Standalone>
+          if ($RoleDatacenterIsManagementForest -eq "True")
+          {
+          Remove-ReportingVirtualDirectory;
+          New-ReportingVirtualDirectory;
+          $ClientAccessReporting = $RoleInstallPath + "\ClientAccess\Reporting";
+          Start-SetupProcess -Name "icacls.exe" -args "`"$ClientAccessReporting`" /grant `"IUSR:(OI)(CI)(RX,R)`" /T /C /inheritance:e";
+          }
+        </Standalone>
+      </BuildToBuildUpgrade>
+      <DisasterRecovery>
+        <Standalone>
+          if ($RoleDatacenterIsManagementForest -eq "True")
+          {
+          Remove-ReportingVirtualDirectory;
+          New-ReportingVirtualDirectory;
+          $ClientAccessReporting = $RoleInstallPath + "\ClientAccess\Reporting";
+          Start-SetupProcess -Name "icacls.exe" -args "`"$ClientAccessReporting`" /grant `"IUSR:(OI)(CI)(RX,R)`" /T /C /inheritance:e";
+          }
+        </Standalone>
+      </DisasterRecovery>
+      <Uninstall>
+        <Standalone>
+          if ($RoleDatacenterIsManagementForest -eq "True")
+          {
+          Remove-ReportingVirtualDirectory;
+          }
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Set install path in Web.config under "ClientAccess\Reporting" -->
+    <ServerTaskInfo Id="_6654FA34F2E741f2979BB36C654B5EB6" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Monitoring">
+      <Install>
+        <Standalone>
+          if ($RoleDatacenterIsManagementForest -eq "True")
+          {
+          Set-InstallPathInAppConfig -ConfigFileRelativePath "ClientAccess\Reporting\" -ConfigFileName Web.config;
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Configure OWA -->
+    <ServerTaskInfo Id="_9323e38ec10c4ba2991fc6489ad519b5" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup" ExcludeInDatacenterDedicated="true">
+      <Install>
+        <!-- The line that loads the ps1 is not added as a separate task because in case the configuration task fails
+        the task that loads the script will not be executed when setup is re-run (because setup doesn't re-run a succeeded task).
+        Even though this causes duplication its better than having setup fail because of this. -->
+        <Standalone>
+            ."$RoleInstallPath\Scripts\enable-LiveIDForWebApplication.ps1";
+
+            enable-LiveIDForWebApplication `
+                -application "owa" `
+                -liveIdInstance $RoleDatacenterWindowsLiveIdInstance `
+                -siteName $RoleDatacenterSiteName `
+                -sslOffloaded $RoleDatacenterSslOffloaded `
+                -podRedirectTemplate $RoleDatacenterPodRedirectTemplate `
+                -podSiteStartRange $RoleDatacenterPodSiteStartRange `
+                -podSiteEndRange $RoleDatacenterPodSiteEndRange `
+                -cdnMode $RoleDatacenterCdnMode `
+                -cdnConfigurationUrl $RoleDatacenterCdnConfigurationUrl `
+                -cdnBrandPreviewDomain $RoleDatacenterCdnBrandPreviewDomain `
+                -cdnBrandDepthDomainUrl $RoleDatacenterCdnBrandDepthDomainUrl `
+                -performanceConsoleEnabled $RoleDatacenterPerformanceConsoleEnabled `
+                -contentDeliveryNetworkEndpoint $RoleDatacenterContentDeliveryNetworkEndpoint `
+                -siteRedirectTemplate $null `
+                -accrualSiteName $RoleDatacenterAccrualSiteName `
+                -accrualSiteSubdomainDNS $RoleDatacenterAccrualSiteSubdomainDNS `
+                -ocsCertificateThumbprint $RoleDatacenterIisSHA1Thumbprint `
+                -ocsFrontEndServer $RoleDatacenterOcsFrontEndFqdn `
+                -eduWHR $RoleDatacenterEduWHR `
+                -owaAccrualSignUrl $RoleDatacenterOwaAccrualSignUrl `
+                -isFfoWebServiceRole $false `
+                -updateServiceBinding $true `
+                -hostedExchangeSiteName "" `
+                -legacySiteName $RoleDatacenterLegacySiteName `
+                -o365SiteName $RoleDatacenterO365SiteName `
+                -newMailUrl $RoleDatacenterNewMailUrl `
+                -premiumVanityDomainSiteName $RoleDatacenterPremiumVanityDomainSiteName `
+                -premiumVanityDomainRealm $RoleDatacenterPremiumVanityDomainRealm;
+
+            $fullPath = "$RoleInstallPath\ClientAccess\owa\web.config";
+            set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:MessengerQueryAppId -NewValue:"$RoleDatacenterMessengerQueryAppId";
+            set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:MessengerMacMD5Hash -NewValue:"$RoleDatacenterMessengerMacMD5Hash";
+            set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/system.serviceModel/client/endpoint[@name=`"MsOnlineShellService_EndPointConfiguration`"] -Attribute:address -NewValue:"$RoleDatacenterMsOnlineShellServiceUrl";
+            set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:MsOnlineShellService_CertSubject -NewValue:"$RoleDatacenterExchangeCrossForestClientCertSubject";
+            set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:MsOnlineShellService_CertThumbprint -NewValue:"$RoleDatacenterExchangeCrossForestClientCertThumbprint";
+            
+            if (-not [String]::IsNullOrEmpty($RoleDatacenterContinueOnMSAInitErrors))
+            {
+                set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:ContinueOnMSAInitErrors -NewValue:"$RoleDatacenterContinueOnMSAInitErrors";
+            }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Configure ECP -->
+    <ServerTaskInfo Id="_da588f834a704f038c6fa9cbe86e06b5" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup" ExcludeInDatacenterDedicated="true">
+      <Install>
+        <Standalone>
+            ."$RoleInstallPath\Scripts\enable-LiveIDForWebApplication.ps1";
+
+            enable-LiveIDForWebApplication `
+                -application "ecp" `
+                -liveIdInstance $RoleDatacenterWindowsLiveIdInstance `
+                -siteName $RoleDatacenterSiteName `
+                -sslOffloaded $RoleDatacenterSslOffloaded `
+                -podRedirectTemplate $RoleDatacenterPodRedirectTemplate `
+                -podSiteStartRange $RoleDatacenterPodSiteStartRange `
+                -podSiteEndRange $RoleDatacenterPodSiteEndRange `
+                -cdnMode $RoleDatacenterCdnMode `
+                -cdnConfigurationUrl $RoleDatacenterCdnConfigurationUrl `
+                -cdnBrandPreviewDomain $RoleDatacenterCdnBrandPreviewDomain `
+                -cdnBrandDepthDomainUrl $RoleDatacenterCdnBrandDepthDomainUrl `
+                -performanceConsoleEnabled $RoleDatacenterPerformanceConsoleEnabled `
+                -contentDeliveryNetworkEndpoint $RoleDatacenterContentDeliveryNetworkEndpoint `
+                -siteRedirectTemplate $RoleDatacenterSiteRedirectTemplate `
+                -accrualSiteName $RoleDatacenterAccrualSiteName `
+                -accrualSiteSubdomainDNS $RoleDatacenterAccrualSiteSubdomainDNS `
+                -ocsCertificateThumbprint $null `
+                -ocsFrontEndServer $null `
+                -eduWHR $RoleDatacenterEduWHR `
+                -owaAccrualSignUrl $RoleDatacenterOwaAccrualSignUrl `
+                -isFfoWebServiceRole $false `
+                -updateServiceBinding $true `
+                -hostedExchangeSiteName "" `
+                -legacySiteName $RoleDatacenterLegacySiteName `
+                -o365SiteName $RoleDatacenterO365SiteName `
+                -newMailUrl $RoleDatacenterNewMailUrl `
+                -premiumVanityDomainSiteName $RoleDatacenterPremiumVanityDomainSiteName `
+                -premiumVanityDomainRealm $RoleDatacenterPremiumVanityDomainRealm;
+          
+            $fullPath = "$RoleInstallPath\ClientAccess\ecp\web.config";
+            set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/system.serviceModel/client/endpoint[@name=`"MsOnlineShellService_EndPointConfiguration`"] -Attribute:address -NewValue:"$RoleDatacenterMsOnlineShellServiceUrl";
+            set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:MsOnlineShellService_CertSubject -NewValue:"$RoleDatacenterExchangeCrossForestClientCertSubject";
+            set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:MsOnlineShellService_CertThumbprint -NewValue:"$RoleDatacenterExchangeCrossForestClientCertThumbprint";
+            set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:O365Url -NewValue:"$RoleDatacenterO365Url";
+            
+            if (-not [String]::IsNullOrEmpty($RoleDatacenterContinueOnMSAInitErrors))
+            {
+                set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:ContinueOnMSAInitErrors -NewValue:"$RoleDatacenterContinueOnMSAInitErrors";
+            }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Configure O365SuiteService -->
+    <ServerTaskInfo Id="_3A9D927A436347949DA2A3F9B92E9602" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup" ExcludeInDatacenterDedicated="true">
+      <Install>
+        <!-- The line that loads the ps1 is not added as a separate task because in case the configuration task fails
+        the task that loads the script will not be executed when setup is re-run (because setup doesn't re-run a succeeded task).
+        Even though this causes duplication its better than having setup fail because of this. -->
+        <Standalone>
+          ."$RoleInstallPath\Scripts\enable-LiveIDForWebApplication.ps1";
+
+          enable-LiveIDForWebApplication `
+          -application "o365suiteservice" `
+          -liveIdInstance $RoleDatacenterWindowsLiveIdInstance `
+          -siteName $RoleDatacenterSiteName `
+          -sslOffloaded $RoleDatacenterSslOffloaded `
+          -podRedirectTemplate $RoleDatacenterPodRedirectTemplate `
+          -podSiteStartRange $RoleDatacenterPodSiteStartRange `
+          -podSiteEndRange $RoleDatacenterPodSiteEndRange `
+          -cdnMode $RoleDatacenterCdnMode `
+          -cdnConfigurationUrl $RoleDatacenterCdnConfigurationUrl `
+          -cdnBrandPreviewDomain $RoleDatacenterCdnBrandPreviewDomain `
+          -cdnBrandDepthDomainUrl $RoleDatacenterCdnBrandDepthDomainUrl `
+          -performanceConsoleEnabled $RoleDatacenterPerformanceConsoleEnabled `
+          -contentDeliveryNetworkEndpoint $RoleDatacenterContentDeliveryNetworkEndpoint `
+          -siteRedirectTemplate $null `
+          -accrualSiteName $RoleDatacenterAccrualSiteName `
+          -accrualSiteSubdomainDNS $RoleDatacenterAccrualSiteSubdomainDNS `
+          -ocsCertificateThumbprint $RoleDatacenterIisSHA1Thumbprint `
+          -ocsFrontEndServer $RoleDatacenterOcsFrontEndFqdn `
+          -eduWHR $RoleDatacenterEduWHR `
+          -owaAccrualSignUrl $RoleDatacenterOwaAccrualSignUrl `
+          -isFfoWebServiceRole $false `
+          -updateServiceBinding $true `
+          -hostedExchangeSiteName "" `
+          -legacySiteName $RoleDatacenterLegacySiteName `
+          -o365SiteName $RoleDatacenterO365SiteName;
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Configure SnackyService for Windows Live ID authentication. -->
+    <ServerTaskInfo Id="_10154a261cbc4250adfa6ce5a00fc064" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup"  ExcludeInDatacenterDedicated="true">
+      <Install>
+        <!-- The line that loads the ps1 is not added as a separate task because in case the configuration task fails
+        the task that loads the script will not be executed when setup is re-run (because setup doesn't re-run a succeeded task).
+        Even though this causes duplication its better than having setup fail because of this. -->
+        <Standalone>
+          $fqdn = [System.Net.Dns]::GetHostByName("localhost").HostName.ToUpper();
+          if (($fqdn -like "*EXTEST.MICROSOFT.COM") -And (-not $RoleIsDatacenterDedicated))
+          {
+            ."$RoleInstallPath\Scripts\enable-LiveIDForWebApplication.ps1";
+
+            enable-LiveIDForWebApplication `
+            -application "snackyservice" `
+            -liveIdInstance $RoleDatacenterWindowsLiveIdInstance `
+            -siteName $RoleDatacenterSiteName `
+            -sslOffloaded $RoleDatacenterSslOffloaded `
+            -podRedirectTemplate $RoleDatacenterPodRedirectTemplate `
+            -podSiteStartRange $RoleDatacenterPodSiteStartRange `
+            -podSiteEndRange $RoleDatacenterPodSiteEndRange `
+            -cdnMode $RoleDatacenterCdnMode `
+            -cdnConfigurationUrl $RoleDatacenterCdnConfigurationUrl `
+            -cdnBrandPreviewDomain $RoleDatacenterCdnBrandPreviewDomain `
+            -cdnBrandDepthDomainUrl $RoleDatacenterCdnBrandDepthDomainUrl `
+            -performanceConsoleEnabled $RoleDatacenterPerformanceConsoleEnabled `
+            -contentDeliveryNetworkEndpoint $RoleDatacenterContentDeliveryNetworkEndpoint `
+            -siteRedirectTemplate $null `
+            -accrualSiteName $RoleDatacenterAccrualSiteName `
+            -accrualSiteSubdomainDNS $RoleDatacenterAccrualSiteSubdomainDNS `
+            -ocsCertificateThumbprint $RoleDatacenterIisSHA1Thumbprint `
+            -ocsFrontEndServer $RoleDatacenterOcsFrontEndFqdn `
+            -eduWHR $RoleDatacenterEduWHR `
+            -owaAccrualSignUrl $RoleDatacenterOwaAccrualSignUrl `
+            -isFfoWebServiceRole $false `
+            -updateServiceBinding $true `
+            -hostedExchangeSiteName "" `
+            -legacySiteName $RoleDatacenterLegacySiteName `
+            -o365SiteName $RoleDatacenterO365SiteName;
+         }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Configure Web Services -->
+    <!-- the CDN configuration is used in EWS for the default extension paths -->
+    <ServerTaskInfo Id="_2a785517ea344d3ca5756c81990d45a6" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          if ($RoleDatacenterContentDeliveryNetworkEndpoint -ne $null -and $RoleDatacenterContentDeliveryNetworkEndpoint -ne "")
+          {
+          $fullPath = "$RoleInstallPath\ClientAccess\exchweb\ews\web.config";
+          set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:ContentDeliveryNetworkEndpoint -NewValue:"$RoleDatacenterContentDeliveryNetworkEndpoint";
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Configure PowerShell-LiveID-Proxy vdir -->
+    <ServerTaskInfo Id="_3074c530a5b741709cbe726825b3d170" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup" ExcludeInDatacenterDedicated="true">
+      <Install>
+        <!-- The line that loads the ps1 is not added as a separate task because in case the configuration task fails
+        the task that loads the script will not be executed when setup is re-run (because setup doesn't re-run a succeeded task).
+        Even though this causes duplication its better than having setup fail because of this. -->
+        <Standalone>
+          ."$RoleInstallPath\Scripts\enable-LiveIDForWebApplication.ps1";
+          enable-LiveIDForWebApplication "PowerShell-LiveID_proxy" $RoleDatacenterWindowsLiveIdInstance $RoleDatacenterSiteName $false $RoleDatacenterPodRedirectTemplatePowerShellLiveId $RoleDatacenterPodSiteStartRange $RoleDatacenterPodSiteEndRange $RoleDatacenterCdnMode $RoleDatacenterCdnConfigurationUrl $RoleDatacenterCdnBrandPreviewDomain $RoleDatacenterCdnBrandDepthDomainUrl $false $null $RoleDatacenterSiteRedirectTemplatePowerShellLiveId
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Configure the http api error logging -->
+    <ServerTaskInfo Id="_204282CEED0347afB91D57E12F8C2505" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup" ExcludeInDatacenterDedicated="true">
+      <Install>
+        <Standalone>
+          ."$RoleInstallPath\Scripts\enable-LiveIDForWebApplication.ps1";
+          ConfigureHTTPAPIErrorLogging;
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Set install path in app config "ClientAccess/PowerShell-LiveID-Proxy" -->
+    <ServerTaskInfo Id="_a478c129d88c4fcf9c69d6efe84b302f" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup" ExcludeInDatacenterDedicated="true">
+      <Install>
+        <Standalone>set-InstallPathInAppConfig -ConfigFileRelativePath "ClientAccess\PowerShell-LiveID-Proxy\" -ConfigFileName web.config</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Set redirect template strings in app config "ClientAccess/PowerShell". Settings in "ClientAccess/PowerShell-LiveID" is set in enable-LiveIDForWebApplication-->
+    <ServerTaskInfo Id="_39c40e27a1284cae8ddae7456eb3d638" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup" ExcludeInDatacenterDedicated="true">
+      <Install>
+        <Standalone>
+          $fullPath = "$RoleInstallPath\ClientAccess\PowerShell\web.config";
+          set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:PodSiteStartRange -NewValue:$RoleDatacenterPodSiteStartRange;
+          set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:PodSiteEndRange -NewValue:$RoleDatacenterPodSiteEndRange;
+          set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:PodRedirectTemplate -NewValue:"$RoleDatacenterPodRedirectTemplatePowerShell";
+          set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:SiteRedirectTemplate -NewValue:"$RoleDatacenterSiteRedirectTemplatePowerShell";
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Set trace file pointer in app config "ClientAccess/PowerShell" -->
+    <ServerTaskInfo Id="_6131fae1f30e46dd816eeb78ce61eb48" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          $fullPath = "$RoleInstallPath\ClientAccess\PowerShell\web.config";
+          set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:ExInMemoryTraceConfiguration -NewValue:"$RoleBinPath\EnabledInMemoryTraces.config"
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Set trace file pointer in app config "ClientAccess/PowerShell-Proxy" -->
+    <ServerTaskInfo Id="_f348a53cd4244c038c5171c2378b04fb" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          $fullPath = "$RoleInstallPath\ClientAccess\PowerShell-Proxy\web.config";
+          set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:ExInMemoryTraceConfiguration -NewValue:"$RoleBinPath\EnabledInMemoryTraces.config"
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Set trace file pointer in app config "ClientAccess/PowerShell-LiveID-Proxy" -->
+    <ServerTaskInfo Id="_aa7e6af8a82244cc83b7e2c3e8a1a38b" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup" ExcludeInDatacenterDedicated="true">
+      <Install>
+        <Standalone>
+          $fullPath = "$RoleInstallPath\ClientAccess\PowerShell-LiveID-Proxy\web.config";
+          set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:ExInMemoryTraceConfiguration -NewValue:"$RoleBinPath\EnabledInMemoryTraces.config"
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Set trace file pointer in app config "ClientAccess/ECP" -->
+    <ServerTaskInfo Id="_befe2e354bc242ac99b9975bb6d46e89" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          $fullPath = "$RoleInstallPath\ClientAccess\ECP\web.config";
+          set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:ExInMemoryTraceConfiguration -NewValue:"$RoleBinPath\EnabledInMemoryTraces.config"
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+    <!-- Enable in-memory tracing for these VDIrs above -->
+    <ServerTaskInfo Id="_643ae5d370ed4967ac326f80ed98d0bf" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          &amp;"$RoleInstallPath\Scripts\Enable-InMemoryTracing.ps1"
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Configure SupportedEMCVersions in app config "ClientAccess/PowerShell-LiveID-Proxy" -->
+    <ServerTaskInfo Id="_f258ef1b4ae94400973189d05d164d12" Component="EXCHANGE14:\Current\Release\Shared\EMC">
+      <Install>
+        <Standalone>
+          if ($RoleDatacenterSupportedEMCVersionsConfiguration)
+          {
+          $fullPath = "$RoleInstallPath\ClientAccess\PowerShell-LiveID-Proxy\web.config";
+          set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:SupportedEMCVersions -NewValue:$RoleDatacenterSupportedEMCVersionsConfiguration
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Update AirSync web.config file. -->
+    <ServerTaskInfo Id="_bbe005cffa4348138d792c78b796dde6" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          $fullPath = "$RoleBinPath\..\ClientAccess\Sync\Web.config";
+          set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:TemporaryStoragePath -NewValue:$RoleDatacenterAirSyncTemporaryStoragePath;
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Configure POP/IMAP services. -->
+
+    <!-- Enable Live ID and setup ports, logging, etc for POP/IMAP services. -->
+    <ServerTaskInfo Id="_ADA1242C9CB94E69A9980B0C13825078" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+
+          if ($RoleIsDatacenterDedicated)
+          {
+            Write-ExchangeSetupLog -Info "CAS: Setting IMAP settings for OwaServerUrl: https://$RoleDatacenterE15FlatNamespace/owa/, CertName: $RoleDatacenterPrimaryCertPrincipalName, LogFileLocation: $RoleDatacenterCASRoleLogRoot\Imap4, MaxConnectionsPerUser: $RoleDatacenterMaxConnectionsPerUser "
+
+            Set-ImapSettings `
+              -OwaServerUrl "https://$RoleDatacenterE15FlatNamespace/owa/" `
+              -X509CertificateName $RoleDatacenterPrimaryCertPrincipalName `
+              -ProtocolLogEnabled:$true `
+              -MaxConnectionsPerUser:$RoleDatacenterMaxConnectionsPerUser `
+              -LogFileLocation:(Join-Path $RoleDatacenterCASRoleLogRoot "Imap4")
+          }
+          else
+          {
+            if (-not ([String]::IsNullOrEmpty($RoleDatacenterE15FlatNamespace)))
+            {
+            $externalOwaUrl = "https://$RoleDatacenterE15FlatNamespace/owa/";
+            }
+            else
+            {
+            $adSiteName = (Get-ExchangeServer $RoleNetBIOSName).Site.Name;
+            $externalOwaUrl = "https://$adSiteName.$RoleDatacenterSiteName/owa/";
+            }
+
+            Write-ExchangeSetupLog -Info "CAS: Setting IMAP settings for OwaServerUrl: $externalOwaUrl, X509CertificateName: $RoleDatacenterClientImapFqdn, LogFileLocation: $RoleDatacenterCASRoleLogRoot\Imap4";
+
+            Set-ImapSettings `
+            -LiveIdBasicAuthReplacement:$true `
+            -X509CertificateName $RoleDatacenterClientImapFqdn `
+            -CalendarItemRetrievalOption Custom `
+            -OwaServerUrl $externalOwaUrl `
+            -ProxyTargetPort:1993 `
+            -ProtocolLogEnabled:$true `
+            -LogFileLocation:(Join-Path $RoleDatacenterCASRoleLogRoot "Imap4")
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <ServerTaskInfo Id="_0801710A56DB4D029060B40C8FA0B1C1" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup" ExcludeInDatacenterDedicated="true">
+      <Install>
+        <Standalone>
+
+          if ($RoleIsDatacenterDedicated)
+          {
+            Write-ExchangeSetupLog -Info "CAS: Setting POP settings for OwaServerUrl: https://$RoleDatacenterE15FlatNamespace/owa/, CertName: $RoleDatacenterPrimaryCertPrincipalName, LogFileLocation: $RoleDatacenterCASRoleLogRoot\Pop3"
+
+            Set-POPSettings `
+            -OwaServerUrl "https://$RoleDatacenterE15FlatNamespace/owa/" `
+            -X509CertificateName $RoleDatacenterPrimaryCertPrincipalName `
+            -ProtocolLogEnabled:$true `
+            -LogFileLocation:(Join-Path $RoleDatacenterCASRoleLogRoot "Pop3")
+          }
+          else
+          {
+            if (-not ([String]::IsNullOrEmpty($RoleDatacenterE15FlatNamespace)))
+            {
+            $externalOwaUrl = "https://$RoleDatacenterE15FlatNamespace/owa/";
+            }
+            else
+            {
+            $adSiteName = (Get-ExchangeServer $RoleNetBIOSName).Site.Name;
+            $externalOwaUrl = "https://$adSiteName.$RoleDatacenterSiteName/owa/";
+            }
+
+            Write-ExchangeSetupLog -Info "CAS: Setting POP settings for OwaServerUrl: $externalOwaUrl, X509CertificateName: $RoleDatacenterClientPopFqdn, LogFileLocation: $RoleDatacenterCASRoleLogRoot\Pop3";
+
+            Set-PopSettings `
+            -LiveIdBasicAuthReplacement:$true `
+            -X509CertificateName $RoleDatacenterClientPopFqdn `
+            -CalendarItemRetrievalOption Custom `
+            -OwaServerUrl $externalOwaUrl `
+            -ProxyTargetPort:1995 `
+            -ProtocolLogEnabled:$true `
+            -LogFileLocation:(Join-Path $RoleDatacenterCASRoleLogRoot "Pop3")
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Update IMAP config file. -->
+    <ServerTaskInfo Id="_e5709403034248c1a14a109548bf0ecf" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          $fullPath = "$RoleBinPath\..\ClientAccess\PopImap\Microsoft.Exchange.Imap4.exe.config";
+          set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:TemporaryStoragePath -NewValue:$RoleDatacenterPopImapTemporaryStoragePath;
+
+          if (-not $RoleIsDatacenterDedicated)
+          {
+          set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:PodSiteStartRange -NewValue:$RoleDatacenterPodSiteStartRange;
+          set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:PodSiteEndRange -NewValue:$RoleDatacenterPodSiteEndRange;
+          set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:PodRedirectTemplate -NewValue:$RoleDatacenterPodRedirectTemplateImap;
+          set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:LiveIdBasicAuthModule.SyncAD -NewValue:"true";
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Update POP config file. -->
+    <ServerTaskInfo Id="_51b4a457aefe44b69fd014cbc0dd83ed" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          $fullPath = "$RoleBinPath\..\ClientAccess\PopImap\Microsoft.Exchange.Pop3.exe.config";
+          set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:TemporaryStoragePath -NewValue:$RoleDatacenterPopImapTemporaryStoragePath;
+
+          if (-not $RoleIsDatacenterDedicated)
+          {
+          set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:PodSiteStartRange -NewValue:$RoleDatacenterPodSiteStartRange;
+          set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:PodSiteEndRange -NewValue:$RoleDatacenterPodSiteEndRange;
+          set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:PodRedirectTemplate -NewValue:$RoleDatacenterPodRedirectTemplatePop;
+          set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:LiveIdBasicAuthModule.SyncAD -NewValue:"true";
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Set POP/IMAP services to start automatically. -->
+    <ServerTaskInfo Id="_d2beb3c3fa6c4a39a7fd52d7b3e50021" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>set-service msexchangeimap4be -startuptype Automatic</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <ServerTaskInfo Id="_ceeedf7b8ba1444da052e993588d9c54" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>set-service msexchangepop3be -startuptype Automatic</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Start POP/IMAP services. -->
+    <ServerTaskInfo Id="_460cc7b0027e4dfda0721a91b77bc8af" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>Start-SetupService -ServiceName msexchangeimap4be</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <ServerTaskInfo Id="_c29103af660742f8a2033586b2c836d7" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>Start-SetupService -ServiceName msexchangepop3be</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Enable OWA app pool orphaning and automatic dump -->
+    <ServerTaskInfo Id="_8bb9fdbab5d84a40979401374d2c48c9" Component="EXCHANGE14:\Current\Release\Client Access\OWA">
+      <Install>
+        <Standalone>
+          if ($RoleDatacenterEnableWorkerProcessOrphaning -and $RoleDatacenterEnableWorkerProcessOrphaning -ieq "true")
+          {
+          . "$RoleInstallPath\Scripts\Enable-WorkerProcessOrphaning.ps1" -AppPoolName:MSExchangeOWAAppPool -AlertAlias:owacalla -SendMailIfError;
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall/>
+    </ServerTaskInfo>
+
+    <!-- Configure Autodiscovery - this is a HACK. Should remove this once all E14 servers in datacenter are on R6 build >= 175.6-->
+
+    <ServerTaskInfo Id="_a4ba2f7f23274b22865273dc9bc56b82" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          $exchangeServer = Get-ExchangeServer $RoleNetBIOSName ;
+          $adSiteName = $exchangeServer.Site.Name ;
+
+          if (-not ([String]::IsNullOrEmpty($RoleDatacenterE15FlatNamespace)))
+          {
+          $autodiscoverServiceInternalUri = "https://$RoleDatacenterE15FlatNamespace/autodiscover/autodiscover.xml";
+          }
+          else
+          {
+          $autodiscoverServiceInternalUri = "https://$adSiteName.$RoleDatacenterSiteName/autodiscover/autodiscover.xml";
+          }
+
+          $protocols = [ADSI]("LDAP://" + $exchangeServer.OriginatingServer + "/CN=Protocols," + $exchangeServer.DistinguishedName);
+          $autodiscoverCN = "CN=Autodiscover";
+          $autodiscoverContainer = $protocols.Create("container", $autodiscoverCN);
+          $autodiscoverContainer.Setinfo();
+          $exchangeServerCN = "CN=" + $exchangeServer.Name;
+          $seviceConnectionPoint = $autodiscoverContainer.Create("serviceConnectionPoint", $exchangeServerCN);
+          $seviceConnectionPoint.Put("serviceBindingInformation", $autodiscoverServiceInternalUri);
+          $seviceConnectionPoint.Put("keywords","77378F46-2C66-4aa9-A6A6-3E7A48B19596");
+          $seviceConnectionPoint.Put("serviceClassName","ms-Exchange-AutoDiscover-Service");
+          $seviceConnectionPoint.Put("serviceDNSName", $exchangeServer.Name);
+          $seviceConnectionPoint.SetInfo();
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="false"/>
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Configure RpcClientAccess web service vdir -->
+
+    <!-- Give permission to Network Service to register RpcClientAccess vdir -->
+    <ServerTaskInfo Id="_e90fe5febf2e45bab31489472e3a7ed6" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          netsh http add urlacl url="https://+:444/xrop/" user="NT AUTHORITY\NETWORK SERVICE"
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Configure Outlook RPC servers (for mailbox and directory access) -->
+
+    <!-- Set the minimum requirements for an Outlook version -->
+    <ServerTaskInfo Id="_9becfcbe47db445b962fae04342381cb" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          Set-RpcClientAccess -Server $RoleFqdnOrName -BlockedClientVersions $RoleDatacenterClientDefaultMAPIBlockOutlookVersions
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Enable Event Logs for PowerShell / WSMan by default -->
+    <ServerTaskInfo Id="_2aca88a34a854941adb740996be77326" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>
+          $pathForwevutilcmd = join-path $env:SystemRoot System32\wevtutil.exe;
+
+          $osVer = [environment]::osversion ;
+          $isWin7 = ($osVer.Version.Major -ge 7) -or (($osVer.Version.Major -ge 6) -and ($osVer.Version.Minor -ge 1));
+
+          if (Test-Path $pathForwevutilcmd)
+          {
+          if ($isWin7)
+          {
+          invoke-expression ($pathForwevutilcmd + " sl Microsoft-Windows-PowerShell/Operational /e:true /q");
+          invoke-expression ($pathForwevutilcmd + " sl Microsoft-Windows-PowerShell/Analytic /e:false /q");
+          invoke-expression ($pathForwevutilcmd + " sl Microsoft-Windows-PowerShell/Analytic /e:true /q");
+          invoke-expression ($pathForwevutilcmd + " sl Microsoft-Windows-WinRM/Operational /e:true /q");
+          invoke-expression ($pathForwevutilcmd + " sl Microsoft-Windows-WinRM/Analytic /e:false /q");
+          invoke-expression ($pathForwevutilcmd + " sl Microsoft-Windows-WinRM/Analytic /e:true /q");
+          }
+          else
+          {
+          invoke-expression ($pathForwevutilcmd + " sl Microsoft-Windows-PowerShell/Operational /e:true");
+          invoke-expression ($pathForwevutilcmd + " sl Microsoft-Windows-PowerShell/Analytic /e:false");
+          invoke-expression ($pathForwevutilcmd + " sl Microsoft-Windows-PowerShell/Analytic /e:true");
+          invoke-expression ($pathForwevutilcmd + " sl Microsoft-Windows-WinRM/Operational /e:true");
+          invoke-expression ($pathForwevutilcmd + " sl Microsoft-Windows-WinRM/Analytic /e:false");
+          invoke-expression ($pathForwevutilcmd + " sl Microsoft-Windows-WinRM/Analytic /e:true");
+          }
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery/>
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!--Create the Central Admin Servers USG if it does not exist. This will be executed only for the management forest -->
+    <ServerTaskInfo Id="_eefa7eeda9df4a88b65c79e28daa1224" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          if ($RoleDatacenterEnableFullLanguageMode -eq "True")
+          {
+          . $RoleBinPath\CentralAdminSetup.ps1;
+          CreateCAServersGroup;
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall/>
+    </ServerTaskInfo>
+
+    <!--Add the local computer account to the Central Admin Servers USG. This will be executed only for the management forest -->
+    <ServerTaskInfo Id="_ce118e17306a4c37b33c35faba1fabf0" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          if ($RoleDatacenterEnableFullLanguageMode -eq "True")
+          {
+          . $RoleBinPath\CentralAdminSetup.ps1;
+          AddLocalComputerAccountToCentralAdminServersGroup
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>
+          if ($RoleDatacenterEnableFullLanguageMode -eq "True")
+          {
+          .$RoleBinPath\CentralAdminSetup.ps1;
+          RemoveLocalComputerAccountFromCentralAdminServersGroup
+          }
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!--Create Central Admin registry key so that Central Admin cmdlets work. This will be executed only for the management forest -->
+    <ServerTaskInfo Id="_53a50bc342d94b2f8fe623ba915f0c62" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          if ($RoleDatacenterEnableFullLanguageMode -eq "True")
+          {
+          new-item HKLM:\Software\Microsoft\ExchangeServer\v15\CentralAdmin -ea SilentlyContinue;
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall/>
+    </ServerTaskInfo>
+
+    <!--Configure Central Admin registry key so that Central Admin cmdlets work. This will be executed only for the management forest -->
+    <ServerTaskInfo Id="_dc63e9ea37b24404bc51e2400b73b626" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          if ($RoleDatacenterEnableFullLanguageMode -eq "True")
+          {
+          if (-not ([String]::IsNullOrEmpty($RoleDatacenterCentralAdminDatabaseServer)))
+          {
+          set-itemproperty -path HKLM:\Software\Microsoft\ExchangeServer\v15\CentralAdmin -Name "DatabaseServer" -Value $RoleDatacenterCentralAdminDatabaseServer;
+          }
+          else
+          {
+          Write-ExchangeSetupLog -Warning "Could not identify the Central Admin database server name to store in the registry. The registry may need to be manually set after setup.";
+          }
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall/>
+    </ServerTaskInfo>
+
+    <!--Generate Central Admin proxy scripts on this machine if this is a management forest CAS machine -->
+    <ServerTaskInfo Id="_c990412daaa24a459049007e3811d1a2" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          if ($RoleDatacenterEnableFullLanguageMode -eq "True")
+          {
+          Add-PSSnapin Microsoft.Exchange.Management.Powershell.CentralAdmin -ea SilentlyContinue;
+          . $RoleBinPath\CentralAdminSetup.ps1;
+          $scriptConfigFilePath = [System.IO.Path]::Combine($RoleInstallPath, 'Datacenter\Config\CentralAdminScriptDefinitions.xml');
+          Create-ProxyScripts -ConfigFilePath $scriptConfigFilePath;
+          if($RoleDatacenterFfoEnvironment -eq "True")
+          {
+          $scriptConfigFilePath = [System.IO.Path]::Combine($RoleInstallPath, 'Datacenter\Config\FfoCentralAdminScriptDefinitions.xml');
+          Create-ProxyScripts -ConfigFilePath $scriptConfigFilePath;
+          }
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery />
+      <Uninstall/>
+    </ServerTaskInfo>
+
+    <!--Modify web.config in PowerShell vdir to enable FullLanguage mode for the management forest -->
+    <ServerTaskInfo Id="_7e7e242b265b49fa98d58403f1be4d07" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          if ($RoleDatacenterEnableFullLanguageMode -eq "True")
+          {
+          Write-ExchangeSetupLog -Info "Setting the web config for the /PowerShell virtual directory to enable FullLanguageMode";
+          $powerShellVdirPath = [System.IO.Path]::Combine((Get-ItemProperty -path 'HKLM:SOFTWARE\Microsoft\ExchangeServer\v15\Setup').MsiInstallPath,"ClientAccess\PowerShell");
+          if (Test-Path("$powerShellVdirPath\web.config"))
+          {
+          $webConfig = [xml] [string]::join("`n", (Get-Content "$powerShellVdirPath\web.config"));
+
+          ($webconfig.configuration.appSettings.add | where {$_.key -eq "PSLanguageMode"}).value = "FullLanguage";
+          $webconfig.Save("$powershellvdirpath\web.config");
+          }
+          else
+          {
+          Write-ExchangeSetupLog -Warning "Could not find web.config under $powerShellVdirPath";
+          }
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall/>
+    </ServerTaskInfo>
+
+    <!--Modify web.config in PowerShell-Proxy vdir to enable FullLanguage mode for the management forest -->
+    <ServerTaskInfo Id="_10ecf187ef034c66ae00c7827d68baa5" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          if ($RoleDatacenterEnableFullLanguageMode -eq "True")
+          {
+          Write-ExchangeSetupLog -Info "Setting the web config for the /PowerShell (proxy) virtual directory to enable FullLanguageMode";
+          $powerShellVdirPath = [System.IO.Path]::Combine((Get-ItemProperty -path 'HKLM:SOFTWARE\Microsoft\ExchangeServer\v15\Setup').MsiInstallPath,"ClientAccess\PowerShell-Proxy");
+          if (Test-Path("$powerShellVdirPath\web.config"))
+          {
+          $webConfig = [xml] [string]::join("`n", (Get-Content "$powerShellVdirPath\web.config"));
+
+          ($webconfig.configuration.appSettings.add | where {$_.key -eq "PSLanguageMode"}).value = "FullLanguage";
+          $webconfig.Save("$powershellvdirpath\web.config");
+          }
+          else
+          {
+          Write-ExchangeSetupLog -Warning "Could not find web.config under $powerShellVdirPath";
+          }
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall/>
+    </ServerTaskInfo>
+
+    <!--Disable Basic Authentication and accept client certificates on the PowerShell vdir. This step is executed only on the management forest CAS servers. -->
+    <ServerTaskInfo Id="_3c886ee10cbf4154942704c3a3744f6f" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          if ($RoleDatacenterEnableFullLanguageMode -eq "True")
+          {
+          Write-ExchangeSetupLog -Info "Disabling Basic Authentication and enabling client certificate authentication on the /PowerShell virtual directory";
+          $vdirName = "PowerShell (Default Web Site)";
+          Set-PowerShellVirtualDirectory $vdirName -DomainController $RoleDomainController -BasicAuthentication:$false -CertificateAuthentication:$true -ErrorAction SilentlyContinue;
+
+          $psvdir = get-PowerShellVirtualDirectory -server $RoleFqdnOrName -DomainController $RoleDomainController | where { $_.Name -eq $vdirName };
+          if ($psvdir -eq $null)
+          {
+          Write-ExchangeSetupLog -Warning "Could not retrieve the configuration information of the /Powershell virtual directory";
+          }
+          else
+          {
+          if ($psvdir.BasicAuthentication -ne $false)
+          {
+          Write-ExchangeSetupLog -Warning "Could not disable Basic Authentication on the /Powershell virtual directory";
+          }
+          if ($psvdir.CertificateAuthentication -ne $true)
+          {
+          Write-ExchangeSetupLog -Warning "Could not enable client certificate authentication on the /Powershell virtual directory";
+          }
+          }
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall/>
+    </ServerTaskInfo>
+
+    <!-- Enable and configure Global Criminal Compliance logging for client access data -->
+
+    <!-- Global config, this is in the registry because it needs to be read by the logger and the log agent -->
+    <ServerTaskInfo Id="_ac03f57240d3475fad5c76eea20af9cf" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          remove-itemproperty -path HKLM:\SOFTWARE\Microsoft\ExchangeServer\v15 -name "GccLogRoot" -erroraction:silentlycontinue;
+          new-itemproperty -path HKLM:\SOFTWARE\Microsoft\ExchangeServer\v15 -name "GccLogRoot" -PropertyType String -value "D:\ExchangeLogs\CriminalCompliance";
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- OWA -->
+    <ServerTaskInfo Id="_8bde38cb2cbe4c2cb6183f1ef0354515" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <!-- format for GccLogMaxAge is "days.hh:mm:ss" -->
+        <Standalone>
+          $fullPath = "$RoleInstallPath\ClientAccess\Owa\web.config";
+          set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:GccDisabled -NewValue:"false";
+          set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:GccLogMaxAge -NewValue:"90.00:00:00";
+          set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:GccLogMaxDirectorySize -NewValue:"1000000000";
+          set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:GccLogMaxLogfileSize -NewValue:"1000000000";
+          set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:GccReportIntervalMilliseconds -NewValue:"60000";
+
+          set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:BlockWacViewingThroughUI -NewValue:"$RoleDatacenterBlockWacViewingThroughUI";
+          set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:WacUrlHostName -NewValue:"$RoleDatacenterWacUrlHostName";
+
+          if ($RoleDatacenterWacDatacenterPrefix -and ([String]::IsNullOrEmpty($RoleDatacenterIsWacRunningInSDF)))
+          {
+          set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:WacDatacenterPrefix -NewValue:"$RoleDatacenterWacDatacenterPrefix";
+          }
+
+          set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:OWAIsClientLoggingEnabled -NewValue:"$RoleDatacenterOWAIsClientLoggingEnabled";
+          set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:OWAIsClientTraceLoggingEnabled -NewValue:"$RoleDatacenterOWAIsClientTraceLoggingEnabled";
+          set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:OWAIsLoggingEnabled -NewValue:"$RoleDatacenterOWAIsLoggingEnabled";
+          set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:OWAIsServerTraceLoggingEnabled -NewValue:"$RoleDatacenterOWAIsServerTraceLoggingEnabled";
+          set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:LogErrorDetails -NewValue:"$RoleDatacenterLogErrorDetails";
+          set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:LogErrorTraces -NewValue:"$RoleDatacenterLogErrorTraces";
+          set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:OwaTraceLoggingThreshold -NewValue:"$RoleDatacenterOwaTraceLoggingThreshold";
+          set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:WriteStackTraceProtocolLogOnError -NewValue:"$RoleDatacenterWriteStackTraceProtocolLogOnError";
+          set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:AnalyticsProbability -NewValue:"$RoleDatacenterAnalyticsProbability";
+          set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:ClientWatsonEnabled -NewValue:"$RoleDatacenterClientWatsonEnabled";
+          set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:DefaultTraceLevel -NewValue:"$RoleDatacenterDefaultTraceLevel";
+          set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:DefaultPerfTraceLevel -NewValue:"$RoleDatacenterDefaultPerfTraceLevel";
+          set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:CoreAnalyticsProbability -NewValue:"$RoleDatacenterCoreAnalyticsProbability";
+          if ($RoleDatacenterBootTraceUrl)
+          {
+          set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:BootTraceUrl -NewValue:"$RoleDatacenterBootTraceUrl";
+          }
+          set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:ConsoleTracingEnabled -NewValue:"$RoleDatacenterConsoleTracingEnabled";
+          set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:NetworkProbeUrl -NewValue:"$RoleDatacenterNetworkProbeUrl";
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Airsync -->
+    <ServerTaskInfo Id="_0dc331951f994dc08fede3ef43e270d2" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <!-- format for GccLogMaxAge is "days.hh:mm:ss" -->
+        <Standalone>
+          $transportConfig = Get-TransportConfig;
+          $fullPath = "$RoleInstallPath\ClientAccess\Sync\web.config";
+          set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:GccDisabled -NewValue:"false";
+          set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:GccLogMaxAge -NewValue:"90.00:00:00";
+          set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:GccLogMaxDirectorySize -NewValue:"1000000000";
+          set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:GccLogMaxLogfileSize -NewValue:"1000000000";
+          set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:GccReportIntervalMilliseconds -NewValue:"60000";
+          set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:LiveIdBasicAuthModule.SyncAD -NewValue:"true";
+          set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:AutoBlockWriteToAD -NewValue:"false";
+          set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:MaxDocumentDataSize -NewValue:$transportConfig.MaxReceiveSize.Value.ToBytes();
+          set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/system.web/httpRuntime -Attribute:maxRequestLength -NewValue:$transportConfig.MaxSendSize.Value.ToKB();
+          set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:BadItemIncludeStackTrace -NewValue:"true";
+          set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:BadItemIncludeEmailToText -NewValue:"true";
+          set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:BadItemEmailToText -NewValue:" easbugs";
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Web Services -->
+    <ServerTaskInfo Id="_8fd05ade0d10487d8c7390a5a44d6cf0" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <!-- format for GccLogMaxAge is "days.hh:mm:ss" -->
+        <Standalone>
+          $fullPath = "$RoleInstallPath\ClientAccess\exchweb\ews\web.config";
+          set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:GccDisabled -NewValue:"false";
+          set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:GccLogMaxAge -NewValue:"90.00:00:00";
+          set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:GccLogMaxDirectorySize -NewValue:"1000000000";
+          set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:GccLogMaxLogfileSize -NewValue:"1000000000";
+          set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:GccReportIntervalMilliseconds -NewValue:"60000";
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- POP3 -->
+    <ServerTaskInfo Id="_9c451ecd3ee04bcb8f3e9dcc932fb12f" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <!-- format for GccLogMaxAge is "days.hh:mm:ss" -->
+        <Standalone>
+          $fullPath = "$RoleInstallPath\ClientAccess\PopImap\Microsoft.Exchange.Pop3.exe.config";
+          set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:GccDisabled -NewValue:"false";
+          set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:GccLogMaxAge -NewValue:"90.00:00:00";
+          set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:GccLogMaxDirectorySize -NewValue:"1000000000";
+          set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:GccLogMaxLogfileSize -NewValue:"1000000000";
+          set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:GccReportIntervalMilliseconds -NewValue:"60000";
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- IMAP4 -->
+    <ServerTaskInfo Id="_b6c0a6f1cbb44d47ae647976a671e625" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup" ExcludeInDatacenterDedicated="true">
+      <Install>
+        <!-- format for GccLogMaxAge is "days.hh:mm:ss" -->
+        <Standalone>
+          $fullPath = "$RoleInstallPath\ClientAccess\PopImap\Microsoft.Exchange.Imap4.exe.config";
+          set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:GccDisabled -NewValue:"false";
+          set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:GccLogMaxAge -NewValue:"90.00:00:00";
+          set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:GccLogMaxDirectorySize -NewValue:"1000000000";
+          set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:GccLogMaxLogfileSize -NewValue:"1000000000";
+          set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:GccReportIntervalMilliseconds -NewValue:"60000";
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- MoMT -->
+    <ServerTaskInfo Id="_00743ec7ef834c0abd1571fdc1c88269" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <!-- format for GccLogMaxAge is "days.hh:mm:ss" -->
+        <Standalone>
+          $fullPath = "$RoleInstallPath\Bin\Microsoft.Exchange.RpcClientAccess.Service.exe.config";
+          set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:GccDisabled -NewValue:"false";
+          set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:GccLogMaxAge -NewValue:"90.00:00:00";
+          set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:GccLogMaxDirectorySize -NewValue:"1000000000";
+          set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:GccLogMaxLogfileSize -NewValue:"1000000000";
+          set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:GccReportIntervalMilliseconds -NewValue:"3600000";
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!--Configure Group Policy for Winrm-->
+
+    <ServerTaskInfo Id="_0503689fbf30480699f11de5e3813a19" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          if ($RoleDatacenterEnableFullLanguageMode -eq "True")
+          {
+          start-setupservice -ServiceName winrm;
+          winrm s winrm/config/client/Auth '@{CredSSP="true"}'
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall>
+        <Standalone>
+          if ($RoleDatacenterEnableFullLanguageMode -eq "True")
+          {
+          start-setupservice -ServiceName winrm;
+          winrm s winrm/config/client/Auth '@{CredSSP="false"}'
+          }
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <ServerTaskInfo Id="_f6f7fa705b474f9eb8284ee5b8257e76" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          if ($RoleDatacenterEnableFullLanguageMode -eq "True")
+          {
+          new-item  HKLM:Software\Policies\Microsoft\Windows\CredentialsDelegation -ea SilentlyContinue
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade/>
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall>
+        <Standalone>
+          if ($RoleDatacenterEnableFullLanguageMode -eq "True")
+          {
+          remove-item  HKLM:Software\Policies\Microsoft\Windows\CredentialsDelegation -ea SilentlyContinue
+          }
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <ServerTaskInfo Id="_e2323c4e32044b67b6c184b035cf91a2" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          if ($RoleDatacenterEnableFullLanguageMode -eq "True")
+          {
+          Enable-WSManCredSSP -DelegateComputer * -Role Client
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade/>
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall>
+        <Standalone>
+          if ($RoleDatacenterEnableFullLanguageMode -eq "True")
+          {
+          Disable-WSManCredSSP
+          }
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <ServerTaskInfo Id="_9c03184dce8c445da5cceb304cae23ee" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          if ($RoleDatacenterEnableFullLanguageMode -eq "True")
+          {
+          set-itemproperty -path HKLM:Software\Policies\Microsoft\Windows\CredentialsDelegation -Name AllowFreshCredentialsWhenNTLMOnly -Value 1 -Type DWORD
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade/>
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall>
+        <Standalone>
+          if ($RoleDatacenterEnableFullLanguageMode -eq "True")
+          {
+          set-itemproperty -path HKLM:Software\Policies\Microsoft\Windows\CredentialsDelegation -Name AllowFreshCredentialsWhenNTLMOnly -Value 0 -Type DWORD
+          }
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <ServerTaskInfo Id="_e21f1d59eb0c4374892d1cf20458c633" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          if ($RoleDatacenterEnableFullLanguageMode -eq "True")
+          {
+          set-itemproperty -path HKLM:Software\Policies\Microsoft\Windows\CredentialsDelegation -Name ConcatenateDefaults_AllowFreshNTLMOnly -Value 1 -Type DWORD
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade/>
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall>
+        <Standalone>
+          if ($RoleDatacenterEnableFullLanguageMode -eq "True")
+          {
+          set-itemproperty -path HKLM:Software\Policies\Microsoft\Windows\CredentialsDelegation -Name ConcatenateDefaults_AllowFreshNTLMOnly -Value 0 -Type DWORD
+          }
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <ServerTaskInfo Id="_7108b0cfa8db4933abe2e2c3491d6036" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          if ($RoleDatacenterEnableFullLanguageMode -eq "True")
+          {
+          new-item -path HKLM:Software\Policies\Microsoft\Windows\CredentialsDelegation\AllowFreshCredentialsWhenNTLMOnly -ea SilentlyContinue
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade/>
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall/>
+    </ServerTaskInfo>
+
+    <ServerTaskInfo Id="_0df4d1bcfa984168aa0d6cce2f4425a2" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          if ($RoleDatacenterEnableFullLanguageMode -eq "True")
+          {
+          set-itemproperty -path HKLM:Software\Policies\Microsoft\Windows\CredentialsDelegation\AllowFreshCredentialsWhenNTLMOnly -Name "1" -Value "WSMAN/*"
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade/>
+      <DisasterRecovery />
+      <Uninstall/>
+    </ServerTaskInfo>
+
+
+    <!-- Set the event log level for auditing to Low -->
+    <ServerTaskInfo Id="_d73a119a87a64bc6be116e21ae6793b5" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          Set-EventLogLevel "MSExchange CmdletLogs\General" -Level Low;
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall />
+
+    </ServerTaskInfo>
+
+    <!-- Change the AD Driver event log levels to low for the datacenter -->
+    <ServerTaskInfo Id="_48228CE89C5846F18B80021260A4D1C8" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\AD Core">
+      <Install>
+        <Standalone>
+          Set-EventLogLevel -Identity "MSExchange ADAccess\LDAP" -Level Low
+          Set-EventLogLevel -Identity "MSExchange ADAccess\Topology" -Level Low
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Stamp the directory in the config file of Forward Sync -->
+    <ServerTaskInfo Id="_584C53D094494b6591525DA58449183C" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup" ExcludeInDatacenterDedicated="true">
+      <Install>
+        <Standalone>
+          $file = 'microsoft.exchange.management.forwardsync.exe.config';
+          Set-InstallPathInAppConfig -ConfigFileRelativePath "bin" -ConfigFileName $file;
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Install/Uninstall the Forward Sync service -->
+    <ServerTaskInfo Id="_CDE5A284175D4dda9BBAD03A8CDE4198" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup" ExcludeInDatacenterDedicated="true">
+      <Install>
+        <Standalone>
+          if (!(get-service MSExchangeForwardSync* | where {$_.name -eq "MSExchangeForwardSync"}))
+          {
+          install-forwardsyncservice
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>uninstall-forwardsyncservice</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Upgrade Orchestrator configuration -->
+    <ServerTaskInfo Id="_D190D88F54294C8CAAAF96E19CD0F5DE" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          $keyPath = "HKLM:\SOFTWARE\Microsoft\ExchangeServer\v15\UpgradeOrchestrator\";
+
+          new-item $keyPath -force;
+          new-itemproperty -path $keyPath -name "StartUpgradeThrottlingTimePeriod" -value $RoleDatacenterStartUpgradeThrottlingTimePeriod -force;
+          new-itemproperty -path $keyPath -name "WorkingFolder" -value $RoleDatacenterOrchestratorWorkingFolder -force;
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Forward Sync Microsoft support tenant configuration -->
+    <ServerTaskInfo Id="_bb048ac6564f4639ad6242e89ba99592" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup" ExcludeInDatacenterDedicated="true">
+      <Install>
+        <Standalone>
+          $keyPath = "HKLM:\SOFTWARE\Microsoft\ExchangeServer\v15\ForwardSync\";
+
+          new-item $keyPath -force;
+          new-itemproperty -path $keyPath -name "MicrosoftSupportTenantContextId" -value $RoleDatacenterMicrosoftSupportTenantContextId -force;
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Forward Sync Throttling configuration -->
+    <ServerTaskInfo Id="_39DC65A5CC5840898AFFB57B50B922E1" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup" ExcludeInDatacenterDedicated="true">
+      <Install>
+        <Standalone>
+          $keyPath = "HKLM:\SOFTWARE\Microsoft\ExchangeServer\v15\ProvisioningThrottling\OrganizationThrottling\";
+
+          new-item $keyPath -force;
+          new-itemproperty -path $keyPath -name "BudgetLimit" -value $RoleDatacenterOrgThrottlingBudgetLimit -propertyType DWord -force;
+          new-itemproperty -path $keyPath -name "TimePeriod" -value $RoleDatacenterOrgThrottlingTimePeriod -force;
+          new-itemproperty -path $keyPath -name "SleepTime" -value $RoleDatacenterOrgThrottlingSleepTime -force;
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Creating Log directory structure for delivery reports feature in data center so that SetExchangeShares.ps1 script can set the ACLs on them. -->
+    <ServerTaskInfo Id="_3F6B39A53BAE4148AFAA4C24ABBB6B52" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>
+          $Logs = $RoleInstallPath + "\TransportRoles\Logs";
+          $DeliveryReportsLogs = $RoleInstallPath + "\TransportRoles\Logs\CommonDiagnosticsLog";
+          if (!(Test-Path -Path $Logs)) {New-Item $Logs -type directory};
+          if (!(Test-Path -Path $DeliveryReportsLogs)) {New-Item $DeliveryReportsLogs -type directory};
+          Start-SetupProcess -Name "icacls.exe" -args "`"$Logs`" /grant `"$env:USERDOMAIN\View-Only Organization Management:(OI)(CI)(R)`" /T /C /inheritance:e";
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Creating Log directory structure for SyncLogs in CAS -->
+    <ServerTaskInfo Id="_6030B1D2DADB49FCB07234CCFCA334D8" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>
+          $ClientAccessLogs = $RoleInstallPath + "\ClientAccess\Logs";
+          $ClientAccessMessengerSyncLogs = $RoleInstallPath + "\ClientAccess\Logs\MessengerSyncLog";
+          if (!(Test-Path -Path $ClientAccessLogs)) {New-Item $ClientAccessLogs -type directory};
+          if (!(Test-Path -Path $ClientAccessMessengerSyncLogs)) {New-Item $ClientAccessMessengerSyncLogs -type directory};
+          Start-SetupProcess -Name "icacls.exe" -args "`"$ClientAccessLogs`" /grant `"$env:USERDOMAIN\View-Only Organization Management:(OI)(CI)(R)`" /T /C /inheritance:e";
+          $OwaConcurrencyControlLogs = $RoleInstallPath + "\ClientAccess\Logs\ConcurrencyControlLog";
+          if (!(Test-Path -Path $OwaConcurrencyControlLogs)) {New-Item $OwaConcurrencyControlLogs -type directory};
+
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Lower default MRS throttling params -->
+    <!-- Enable MRS request and failure logging -->
+    <ServerTaskInfo Id="_ee2e5c7c763348f19250f79567ec0454" Component="EXCHANGE14:\Current\Release\PIM Storage\MRS">
+      <Install IsFatal="false">
+        <Standalone>
+          $fullPath = "$RoleInstallPath\Bin\MSExchangeMailboxReplication.exe.config";
+          set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/MRSConfiguration -Attribute:RequestLogEnabled -NewValue:"true";
+          set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/MRSConfiguration -Attribute:FailureLogEnabled -NewValue:"true";
+          set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/MRSConfiguration -Attribute:BadItemLogEnabled -NewValue:"true";
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Set the MinorPartnerId on the local ADSite. If the value is not specified as the setup parameter
+    		then we try to generate a value within the range. Additionally we check the AD to make sure that
+    		the value is not already in use. if it is in use then a random value is generated.
+    -->
+    <ServerTaskInfo Id="_ff9b642ae6074065a889a318ea4a15cb" Component="EXCHANGE14:\Current\Release\Shared\DIY\Recipients&amp;Provisioning" ExcludeInDatacenterDedicated="true">
+      <Install>
+        <Standalone>
+          $localSite = Get-LocalADSite;
+          if($localSite.MinorPartnerId -eq -1)
+          {
+          Write-ExchangeSetupLog -Info "MinorParnterId on the LocalADSite is not set.";
+          $minorPartnerId = $RoleDatacenterMinorPartnerId;
+          if($minorPartnerId -eq $null -or $minorPartnerId -eq -1)
+          {
+          Write-ExchangeSetupLog -Info "No preferred MinorPartnerId passed in as a setup parameter, will pick a random value.";
+          $minorPartnerId = Get-Random -Minimum $RoleDatacenterPodSiteStartRange -Maximum $RoleDatacenterPodSiteEndRange;
+          }
+          $sites = Get-ADSite;
+          $uniqueMinorPartnerId = $false;
+          while(!$uniqueMinorPartnerId)
+          {
+          $uniqueMinorPartnerId = $true;
+          foreach($site in $sites)
+          {
+          if($site.MinorPartnerId -eq $minorPartnerId)
+          {
+          $uniqueMinorPartnerId = $false;
+          Write-ExchangeSetupLog -Info "Selected MinorPartnerId: $minorPartnerId, is already in use by another site. Will generate another value.";
+          }
+          }
+          if(!$uniqueMinorPartnerId)
+          {
+          $minorPartnerId = Get-Random -Minimum $RoleDatacenterPodSiteStartRange -Maximum $RoleDatacenterPodSiteEndRange;
+          }
+          }
+          $localSite | Set-ADSite -MinorPartnerId $minorPartnerId;
+          Write-ExchangeSetupLog -Info "MinorPartnerId: $minorPartnerId, set on the local site.";
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Inform Outlook to use RPC/HTTP instead of RPC/TCP. -->
+    <ServerTaskInfo Id="_8c885321-8f73-4475-9ed7-304821e6f512" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          if ($RoleIsDatacenterDedicated)
+          {
+            # Configure CertPrincipalName to make one box topology work (this is global configuration that lives in AD)
+            Write-ExchangeSetupLog -Info "CAS: Setting Outlook Provider properties for ID:EXPR, CertPrincipalName: $RoleDatacenterPrimaryCertPrincipalName"
+            set-OutlookProvider EXPR -DomainController $RoleDomainController -CertPrincipalName:"msstd:$RoleDatacenterPrimaryCertPrincipalName"
+          }
+          else
+          {
+            set-OutlookProvider EXPR -DomainController $RoleDomainController -OutlookProviderFlags:ServerExclusiveConnect -CertPrincipalName:"msstd:$RoleDatacenterSiteName"
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Adds the FoseSSOUrl value to ClientAccess\ecp\web.config -->
+    <ServerTaskInfo Id="_7f845ea8135849be868a0d5aaff27f87" Component="EXCHANGE14:\Current\Release\Transport\Platform\Safety and Prevention\EHF">
+      <Install>
+        <Standalone>
+          if($RoleDatacenterEhfSingleSignonUrl -ne $null)
+          {
+          $fullPath = [System.IO.Path]::Combine($RoleInstallPath, "ClientAccess\ecp\web.config");
+
+          Write-ExchangeSetupLog -Info "Setting the FoseSSOUrl to $RoleDatacenterEhfSingleSignonUrl. Web.ConfigPath = $fullPath";
+
+          Set-AppConfigValue -Element "configuration/appSettings" -ConfigFileFullPath $fullPath -AppSettingKey FoseSsoUrl -NewValue $RoleDatacenterEhfSingleSignonUrl;
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Adds the FopeInboundSummaryUrl value to ClientAccess\PowerShell\web.config -->
+    <ServerTaskInfo Id="_09CDD3B93C8A46629DAAAB739F771B54" Component="EXCHANGE14:\Current\Release\Transport\Platform\Safety and Prevention\EHF">
+      <Install>
+        <Standalone>
+          if($RoleDatacenterFopeInboundSummaryUrl -ne $null)
+          {
+          $fullPath = [System.IO.Path]::Combine($RoleInstallPath, "ClientAccess\PowerShell\web.config");
+
+          Write-ExchangeSetupLog -Info "Setting the FopeInboundSummaryUrl to $RoleDatacenterFopeInboundSummaryUrl. Web.ConfigPath = $fullPath";
+
+          Set-AppConfigValue -Element "configuration/appSettings" -ConfigFileFullPath $fullPath -AppSettingKey FopeInboundSummaryUrl -NewValue $RoleDatacenterFopeInboundSummaryUrl;
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Adds the FopeInboundSummaryUrl value to ClientAccess\PowerShell-Proxy\web.config -->
+    <ServerTaskInfo Id="_e804183902bd43e9b08d64734b6b6964" Component="EXCHANGE14:\Current\Release\Transport\Platform\Safety and Prevention\EHF">
+      <Install>
+        <Standalone>
+          if($RoleDatacenterFopeInboundSummaryUrl -ne $null)
+          {
+          $fullPath = [System.IO.Path]::Combine($RoleInstallPath, "ClientAccess\PowerShell-Proxy\web.config");
+
+          Write-ExchangeSetupLog -Info "Setting the FopeInboundSummaryUrl to $RoleDatacenterFopeInboundSummaryUrl. Web.ConfigPath = $fullPath";
+
+          Set-AppConfigValue -Element "configuration/appSettings" -ConfigFileFullPath $fullPath -AppSettingKey FopeInboundSummaryUrl -NewValue $RoleDatacenterFopeInboundSummaryUrl;
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Adds the FISMA Banner script to ClientAccess\PowerShell\web.config -->
+    <ServerTaskInfo Id="_08CED2B93C8A46629DCACB739F771B13" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Cmdlet Infrastructure" ExcludeInDatacenterDedicated="true">
+      <Install>
+        <Standalone>
+          $fullPath = [System.IO.Path]::Combine($RoleInstallPath, "ClientAccess\PowerShell\web.config");
+
+          Write-ExchangeSetupLog -Info "Setting the ShouldShowFismaBanner to true. Web.ConfigPath = $fullPath";
+
+          Set-AppConfigValue -Element "configuration/appSettings" -ConfigFileFullPath $fullPath -AppSettingKey ShouldShowFismaBanner -NewValue $true;
+
+          $scriptFile = [System.IO.Path]::Combine($RoleInstallPath, "RemoteScripts\ExchangeFismaBannerMessage.ps1");
+          $xmlDocument = New-Object System.Xml.XmlDocument;
+          $xmlDocument.Load($fullPath);
+          $paramsNode = $xmlDocument.SelectSingleNode("configuration/system.webServer/system.management.wsmanagement.config/PluginModules/OperationsPlugins/Plugin/InitializationParameters");
+          $targetNode = $xmlDocument.SelectSingleNode("configuration/system.webServer/system.management.wsmanagement.config/PluginModules/OperationsPlugins/Plugin/InitializationParameters/Param[@Name='StartUpScript']");
+
+          if (($paramsNode -ne $null) -and ($targetNode -eq $null))
+          {
+          Write-ExchangeSetupLog -Info "Setting the StartUpScript to $scriptFile. Web.ConfigPath = $fullPath";
+          $elem = $xmlDocument.CreateElement("Param");
+          $elem.SetAttribute("Name", "StartUpScript");
+          $elem.SetAttribute("Value", $scriptFile);
+          $paramsNode.AppendChild($elem) > $null;
+          $xmlDocument.Save($fullPath);
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Adds the FISMA Banner script to ClientAccess\PowerShell-Proxy\web.config -->
+    <ServerTaskInfo Id="_aa5ffe230c5a431eb74965e29aa5c0e2" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Cmdlet Infrastructure" ExcludeInDatacenterDedicated="true">
+      <Install>
+        <Standalone>
+          $fullPath = [System.IO.Path]::Combine($RoleInstallPath, "ClientAccess\PowerShell-Proxy\web.config");
+
+          Write-ExchangeSetupLog -Info "Setting the ShouldShowFismaBanner to true. Web.ConfigPath = $fullPath";
+
+          Set-AppConfigValue -Element "configuration/appSettings" -ConfigFileFullPath $fullPath -AppSettingKey ShouldShowFismaBanner -NewValue $true;
+
+          $scriptFile = [System.IO.Path]::Combine($RoleInstallPath, "RemoteScripts\ExchangeFismaBannerMessage.ps1");
+          $xmlDocument = New-Object System.Xml.XmlDocument;
+          $xmlDocument.Load($fullPath);
+          $paramsNode = $xmlDocument.SelectSingleNode("configuration/system.webServer/system.management.wsmanagement.config/PluginModules/OperationsPlugins/Plugin/InitializationParameters");
+          $targetNode = $xmlDocument.SelectSingleNode("configuration/system.webServer/system.management.wsmanagement.config/PluginModules/OperationsPlugins/Plugin/InitializationParameters/Param[@Name='StartUpScript']");
+
+          if (($paramsNode -ne $null) -and ($targetNode -eq $null))
+          {
+          Write-ExchangeSetupLog -Info "Setting the StartUpScript to $scriptFile. Web.ConfigPath = $fullPath";
+          $elem = $xmlDocument.CreateElement("Param");
+          $elem.SetAttribute("Name", "StartUpScript");
+          $elem.SetAttribute("Value", $scriptFile);
+          $paramsNode.AppendChild($elem) > $null;
+          $xmlDocument.Save($fullPath);
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Exchange AnonymousCalendarHostUrl configuration -->
+    <!-- TODO: E14#291727: Getting publications working for outlook.com
+    <ServerTaskInfo Id="_9B0BC633F7D74bfc8188CDC6BCFA765D" Component="EXCHANGE14:\Current\Release\PIM Storage\Sharing">
+      <Install IsFatal="false">
+        <Standalone>
+          New-ServiceEndpoint -Name "AnonymousCalendarHostUrl" -Url "http://www.outlook.com/owa/calendar" -DomainController $RoleDomainController
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall />
+    </ServerTaskInfo>
+     -->
+
+    <!-- The private memory recycling threshold for App pools -->
+    <ServerTaskInfo Id="_c3997bf380e64e7a84c65c964eb758e6" Component="EXCHANGE14:\Current\Release\Shared\TwC\Performance">
+      <Install>
+        <Standalone>
+          $CommandAppCmd = join-path $env:SystemRoot System32\inetsrv\appcmd.exe;
+
+          Start-SetupProcess -Name "$CommandAppCmd" -args "set apppool MSExchangeSyncAppPool /recycling.periodicRestart.privateMemory:$RoleDatacenterMSExchangeSyncAppPoolPrivateMemoryThreshold";
+
+          Start-SetupProcess -Name "$CommandAppCmd" -args "set apppool MSExchangePowerShellAppPool /recycling.periodicRestart.privateMemory:$RoleDatacenterMSExchangePowerShellAppPoolPrivateMemoryThreshold /recycling.logEventOnRecycle:`"Time, Memory, OnDemand, PrivateMemory`" ";
+
+          if (-not $RoleIsDatacenterDedicated)
+          {
+          Start-SetupProcess -Name "$CommandAppCmd" -args "set apppool MSExchangePowerShellLiveIDAppPool /recycling.periodicRestart.privateMemory:$RoleDatacenterMSExchangePowerShellLiveIDAppPoolPrivateMemoryThreshold /recycling.logEventOnRecycle:`"Time, Memory, OnDemand, PrivateMemory`" ";
+          }
+          Start-SetupProcess -Name "$CommandAppCmd" -args "set apppool MSExchangeECPAppPool /recycling.periodicRestart.privateMemory:$RoleDatacenterMSExchangeECPAppPoolPrivateMemoryThreshold";
+
+          Start-SetupProcess -Name "$CommandAppCmd" -args "set apppool MSExchangeOABAppPool /recycling.periodicRestart.privateMemory:$RoleDatacenterMSExchangeOABAppPoolPrivateMemoryThreshold";
+
+          $fqdn = [System.Net.Dns]::GetHostByName("localhost").HostName.ToUpper();
+          if (($fqdn -like "*EXTEST.MICROSOFT.COM") -And (-not $RoleIsDatacenterDedicated))
+          { 
+          Start-SetupProcess -Name "$CommandAppCmd" -args "set apppool MSExchangeSnackyServiceAppPool /recycling.periodicRestart.privateMemory:$RoleDatacenterMSExchangeSnackyServiceAppPoolPrivateMemoryThreshold";
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- This is to add new registry for RPC Client Access latency log interval -->
+    <ServerTaskInfo Id="_B3039B2B41FD4AFF8717200DCB274787" Component="EXCHANGE14:\Current\Release\PIM Storage\RPC Client Access">
+      <Install>
+        <Standalone>
+          . "$RoleInstallPath\Scripts\ConfigureNetworkProtocolParameters.ps1";
+          Set-LogRcaConnectionLatencyPeriod -Value 15
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Web Services EwsCpuBasedDelay -->
+    <ServerTaskInfo Id="_a6d41e50162c4e90832a8b5b0d0fd7ec" Component="EXCHANGE14:\Current\Release\Client Access\Web Services">
+      <Install>
+        <Standalone>
+          $fullPath = "$RoleInstallPath\ClientAccess\exchweb\ews\web.config";
+          set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:EwsCpuBasedDelayEnabled -NewValue:"true";
+          set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:HighSystemCpuThreshold -NewValue:"99";
+          set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:BackgroundSyncTasksForWellKnownClientsEnabled -NewValue:"true";
+          set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:BackgroundSyncTasksForWellKnownClients -NewValue:"*";
+          set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:WellKnownClientsForBackgroundSync -NewValue:"MacOutlook,Mac OS X,Mac_OS_X";
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!--
+    Add X-DiagInfo custom response header in order to identity target BE server for all requests processed by the cafe server
+    -->
+    <ServerTaskInfo Id="_4f012efd3ce94990bd5b4a5e37f97707" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          ."$RoleInstallPath\Scripts\ConfigureCafeResponseHeaders.ps1";
+
+          if (-not $RoleIsDatacenterDedicated)
+          {
+          CreateCustomHeadersNodeForBackend 'powershell-liveid-proxy'
+          CreateCustomHeadersNodeForBackend 'e4e'
+          CreateCustomHeadersNodeForBackend 'snackyservice'
+          }
+          CreateCustomHeadersNodeForBackend 'psws'
+          CreateCustomHeadersNodeForBackend 'outlookservice'
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall/>
+    </ServerTaskInfo>
+
+    <!-- FederatedDirectory configuration -->
+    <ServerTaskInfo Id="_F18AF364F00148829E7D296F3E2BA2C6" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup" ExcludeInDatacenterDedicated="true">
+      <Install>
+        <Standalone>
+          Install-FederatedDirectoryConfig -Filename $RoleDatacenterFederatedDirectoryConfig;
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Set SharePoint site domain substring registry key -->
+    <ServerTaskInfo Id="_A95E1093B6A149269C97B324932C3B41" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup" ExcludeInDatacenterDedicated="true">
+      <Install>
+        <Standalone>
+          if (-not ([String]::IsNullOrEmpty($RoleDatacenterSharePointSiteDomainSubstring) ) )
+          {
+          new-item HKLM:\Software\Microsoft\ExchangeServer\v15\FederatedDirectory -ea SilentlyContinue;
+          set-itemproperty -path HKLM:\Software\Microsoft\ExchangeServer\v15\FederatedDirectory -Name "SharePointSiteDomainSubstring" -Value $RoleDatacenterSharePointSiteDomainSubstring;
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Setup DFPOWA under ClientAccess folder" -->
+    <ServerTaskInfo Id="_4A18F0BF9255414C8DD2A49ABC6C005B" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>
+          if ($RoleDatacenterDFPOWAProxyEnabled)
+          {
+          ."$RoleInstallPath\Datacenter\Setup-DFPOWA.ps1";
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Create OutlookService vdir -->
+    <ServerTaskInfo Id="_abcab6b91ac844848c58b4ee66fcbea6" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          ."$RoleInstallPath\Scripts\Install-OutlookServiceVirtualDirectory.ps1";
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Fixes any IIS modules that have been improperly installed -->
+    <ServerTaskInfo Id="_abcd4de942e1a4ab2b94d21652d5432f" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          . "$RoleInstallPath\Scripts\Fix-IisConfiguration.ps1"
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall/>
+    </ServerTaskInfo>
+    
+    <!-- Set enable skipping the AD lookup on a random BE auth server during OWA auth -->
+    <ServerTaskInfo Id="_49F8321BF61D4D7B93863F86ACE46303" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          $owaFullPath = "$RoleInstallPath\ClientAccess\Owa\web.config";
+          $ecpFullPath = "$RoleInstallPath\ClientAccess\Ecp\web.config";
+          if ($RoleDatacenterLiveIdSkipAdLookupOnRandomBE)
+          {
+            set-appconfigvalue -ConfigFileFullPath:"$owaFullPath" -Element:configuration/appSettings -AppSettingKey:LiveIdSkipAdLookupOnRandomBE -NewValue:"$RoleDatacenterLiveIdSkipAdLookupOnRandomBE";
+            set-appconfigvalue -ConfigFileFullPath:"$ecpFullPath" -Element:configuration/appSettings -AppSettingKey:LiveIdSkipAdLookupOnRandomBE -NewValue:"$RoleDatacenterLiveIdSkipAdLookupOnRandomBE";
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Set the canonical OWA and ECP Host names" -->
+    <!-- Set the deprecated canonical hostname / flighted hostname for Owa-->
+    <ServerTaskInfo Id="_7FDB19B1BF424941A00D829E44114F7A" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          $owaFullPath = "$RoleInstallPath\ClientAccess\Owa\web.config";
+          $ecpFullPath = "$RoleInstallPath\ClientAccess\Ecp\web.config";
+          $o365suiteserviceFullPath = "$RoleInstallPath\ClientAccess\o365suiteservice\web.config";
+          $fqdn = [System.Net.Dns]::GetHostByName("localhost").HostName.ToUpper();
+          if (($fqdn -like "*EXTEST.MICROSOFT.COM") -And (-not $RoleIsDatacenterDedicated))
+          {
+              $snackyserviceFullPath = "$RoleInstallPath\ClientAccess\snackyservice\web.config";
+          }
+
+          if ($RoleDatacenterOwaEcpCanonicalHostName -ne $null -and $RoleDatacenterOwaEcpCanonicalHostName -ne "")
+          {
+            set-appconfigvalue -ConfigFileFullPath:$owaFullPath -Element:configuration/appSettings -AppSettingKey:OwaEcpCanonicalHostName -NewValue:"$RoleDatacenterOwaEcpCanonicalHostName";
+            set-appconfigvalue -ConfigFileFullPath:$ecpFullPath -Element:configuration/appSettings -AppSettingKey:OwaEcpCanonicalHostName -NewValue:"$RoleDatacenterOwaEcpCanonicalHostName";
+            set-appconfigvalue -ConfigFileFullPath:$o365suiteserviceFullPath -Element:configuration/appSettings -AppSettingKey:OwaEcpCanonicalHostName -NewValue:"$RoleDatacenterOwaEcpCanonicalHostName";
+            if (($fqdn -like "*EXTEST.MICROSOFT.COM") -And (-not $RoleIsDatacenterDedicated))
+            {
+              set-appconfigvalue -ConfigFileFullPath:$snackyserviceFullPath -Element:configuration/appSettings -AppSettingKey:OwaEcpCanonicalHostName -NewValue:"$RoleDatacenterOwaEcpCanonicalHostName";
+            }
+          }
+          if ($RoleDatacenterDeprecatedOwaEcpCanonicalHostName -ne $null -and $RoleDatacenterDeprecatedOwaEcpCanonicalHostName -ne "" -and $RoleDatacenterFlightedOwaEcpCanonicalHostName -ne $null -and $RoleDatacenterFlightedOwaEcpCanonicalHostName -ne "")
+          {
+            set-appconfigvalue -ConfigFileFullPath:$owaFullPath  -Element:configuration/appSettings -AppSettingKey:DeprecatedOwaEcpCanonicalHostName -NewValue:"$RoleDatacenterDeprecatedOwaEcpCanonicalHostName";
+            set-appconfigvalue -ConfigFileFullPath:$owaFullPath  -Element:configuration/appSettings -AppSettingKey:FlightedOwaEcpCanonicalHostName -NewValue:"$RoleDatacenterFlightedOwaEcpCanonicalHostName";
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Set the SDF site names" -->
+    <ServerTaskInfo Id="_A80053D88F8A4A779979F74CF4739B5A" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          $owaFullPath = "$RoleInstallPath\ClientAccess\Owa\web.config";
+          $ecpFullPath = "$RoleInstallPath\ClientAccess\Ecp\web.config";
+          if ($RoleDatacenterLiveIdAuthModuleSDFSiteName -ne $null -and $RoleDatacenterLiveIdAuthModuleSDFSiteName -ne "")
+          {
+          set-appconfigvalue -ConfigFileFullPath:"$owaFullPath" -Element:configuration/appSettings -AppSettingKey:LiveIdAuthModuleSDFSiteName -NewValue:"$RoleDatacenterLiveIdAuthModuleSDFSiteName";
+          set-appconfigvalue -ConfigFileFullPath:"$ecpFullPath" -Element:configuration/appSettings -AppSettingKey:LiveIdAuthModuleSDFSiteName -NewValue:"$RoleDatacenterLiveIdAuthModuleSDFSiteName";
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Set the FirstRelease flighting API support in OWA -->
+    <ServerTaskInfo Id="_300F7BBEADD841EEB50B38E05E01DC5E" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          $owaFullPath = "$RoleInstallPath\ClientAccess\Owa\web.config";
+          if ($RoleDatacenterOWAFirstReleaseFlightingEnabled)
+          {
+          set-appconfigvalue -ConfigFileFullPath:$owaFullPath -Element:configuration/appSettings -AppSettingKey:FirstReleaseFlightingEnabled -NewValue:"$RoleDatacenterOWAFirstReleaseFlightingEnabled";
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Set the OwaIsNoRecycleEnabled in OWA web config-->
+    <ServerTaskInfo Id="_EA89F68AB0BB4D73A06DB739D30AC052" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          $owaFullPath = "$RoleInstallPath\ClientAccess\Owa\web.config";
+          if ($RoleDatacenterOwaIsNoRecycleEnabled)
+          {
+          set-appconfigvalue -ConfigFileFullPath:$owaFullPath -Element:configuration/appSettings -AppSettingKey:OwaIsNoRecycleEnabled -NewValue:"$RoleDatacenterOwaIsNoRecycleEnabled";
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Set the AddPseudoLocalizedLocales in OWA web config-->
+    <ServerTaskInfo Id="_B270CC0C9D8A4492B45B2690E1217187" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          $owaFullPath = "$RoleInstallPath\ClientAccess\Owa\web.config";
+          if ($RoleDatacenterAddPseudoLocalizedLocales)
+          {
+          set-appconfigvalue -ConfigFileFullPath:$owaFullPath -Element:configuration/appSettings -AppSettingKey:AddPseudoLocalizedLocales -NewValue:"$RoleDatacenterAddPseudoLocalizedLocales";
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+  </ServerTasks>
+</SetupComponentInfo>

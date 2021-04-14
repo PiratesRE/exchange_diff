@@ -1,0 +1,131 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="responseschema2006" targetNamespace="http://schemas.microsoft.com/exchange/autodiscover/mobilesync/responseschema/2006" elementFormDefault="qualified" xmlns="http://schemas.microsoft.com/exchange/autodiscover/mobilesync/responseschema/2006" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+	<!-- The Root element that contains one or more Response elements -->
+	<xs:element name="Autodiscover">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Response" type="ResponseType" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<!-- The server fills in these values by querying the AD for information-->
+	<xs:complexType name="ResponseType">
+		<!-- This is a sequence because the clients need the information in this order to process the subsequent elements -->
+		<xs:sequence>
+
+			<!-- This specifies the localization information of any message that can be displayed to the end user
+				The string will be of the form "en:us" -->
+			<xs:element name="Culture" type="xs:string"/>
+
+			<!-- The user information about whom this response element relates -->
+			<xs:element name="User" type="UserType" />
+
+			<!-- The server action type for this request -->
+			<xs:element name="Action" type="ActionType"/>
+
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="UserType">
+		<xs:all>
+
+			<!-- This is the User's Display name in the Active Directory. 
+				The client may choose to display/store this on the device -->
+			<xs:element name="DisplayName" type="xs:string" minOccurs="0"/>
+
+			<!-- The SMTP email address of the user. If the user has multiple addresses, the primary email address is returned.
+				This may or may not be the same as the email address that was sent in the request. The client device is 
+				expected to record this and use this string for all further communication -->
+			<xs:element name="EMailAddress" type="xs:string" minOccurs="1" maxOccurs="1"/>
+		</xs:all>
+	</xs:complexType>
+
+	<xs:complexType name="ActionType">
+
+		<!-- On processing the request, the server will return only one of the following possible Actions -->
+		<xs:choice>
+
+			<!-- This will be the URL of the server that the client device should send the autodiscovery request to -->
+			<xs:element name="Redirect" type="xs:string" />
+
+			<!-- On a success the following settings will be retrieved -->
+			<xs:element name="Settings" type="SettingsType" />
+
+			<!-- If the server encountered an error while processing the request this element will be sent down with the appropriate details -->
+
+			<xs:element name="Error" type="ErrorType" />
+		</xs:choice>
+
+	</xs:complexType>
+
+	<xs:complexType name="ErrorType">
+		<xs:all>
+
+			<!-- A status code corresponding to the error. A set of well know error codes will be published in the accompanying 
+				documenation and the client device might implement some custom recovery logic around them. The client device is
+				however expected to handle all unknown status codes gracefully -->
+			<xs:element name="Status" type="xs:unsignedInt" minOccurs="1"/>
+
+			<!-- An optional suggestion from the server if the client should treat this failure as a transient failure and retry
+				sending the same request again. However this suggestion can be wrong and the server may keep asking the client 
+				device to retry but at some point the device has to fail this and proceed with other servers. A value of 0 means
+				do not retry. Other values suggests the time in seconds after which the client should retry sending the message
+			-->
+			<xs:element name="Retry" type="xs:unsignedInt" minOccurs="0" maxOccurs="1"/>
+
+			<!-- This will be the localized string in the culture specified in the Request element that the client can display 
+				to the end user -->
+			<xs:element name="Message" type="xs:string" minOccurs="0" maxOccurs="1"/>
+
+			<!-- This will be further information regarding the failure that can help the system administrator to debug the 
+				source of the problem. Note that this is not a tag that the developers should use for their debugging purposes -->
+			<xs:element name="DebugData" type="xs:string" minOccurs="0" maxOccurs="1"/>
+
+		</xs:all>
+	</xs:complexType>
+
+	<xs:complexType name="SettingsType">
+		<xs:sequence>
+
+			<!-- A sequence of one or more servers will be returned -->
+			<xs:element name="Server" type="ServerType"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="ServerType">
+		<xs:all>
+
+			<!-- 
+				MobileSync
+				Management
+				CertEnroll
+			-->
+			<xs:element name="Type" type="xs:string"/>
+
+			<!-- This conveys the protocol, port, resource location and other information -->
+			<xs:element name="Url" type="xs:string"/>
+
+			<!-- 
+				A common name to the server
+			-->
+			<xs:element name="Name" type="xs:string" minOccurs="0"/>
+
+			<!-- Any server specific data needs to be conveyed. The client is expected to use this in the server context -->
+			<xs:element name="ServerData" type="xs:string" minOccurs="0"/>
+
+		</xs:all>
+	</xs:complexType>
+
+</xs:schema>
+
+
+<!-- Version 0.1 - radheshm@microsoft.com 06/01/2005 -->
+
+<!-- TBD: Referal 
+	versioning 
+	AuthPackages 
+	Publishing Discovery 
+	Images -->
+

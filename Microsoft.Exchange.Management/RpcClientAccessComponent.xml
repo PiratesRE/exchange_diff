@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo Name="RPC Client Access Service Configuration" DescriptionId="SetupComponentConfiguringRpcClientAccessService">
+
+  <ServerTasks>
+
+    <!-- E14 82092: In the appconfig file for RPC client access service, -->
+    <!-- set Code Access Security (CAS) policy to skip publisher (certificate) validation. -->
+    <ServerTaskInfo Id="_cbbe7fb6ff9f4ef691014f094e7409ca" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          $file = 'microsoft.exchange.rpcclientaccess.service.exe.config';
+          $fullPath = [System.IO.Path]::Combine([System.IO.Path]::Combine($RoleInstallPath, "bin"), $file);
+          set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/runtime/generatePublisherEvidence -Attribute:enabled -NewValue:false
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <ServerTaskInfo Id="_c2bfb135cf0e4fa7b5338981cb387402" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install Weight="5" DescriptionId="SetupProgressPrecompilingBinaries" IsFatal="false">
+        <Standalone>
+          $fullPath = [System.IO.Path]::Combine($RoleInstallPath, "bin\microsoft.exchange.rpcclientaccess.service.exe");
+          precompile-ManagedBinary -BinaryName  $fullPath;
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall Weight="5" DescriptionId="SetupProgressPrecompilingBinaries" IsFatal="false">
+        <Standalone>
+          $fullPath = [System.IO.Path]::Combine($RoleInstallPath, "bin\microsoft.exchange.rpcclientaccess.service.exe");
+          precompile-ManagedBinary -BinaryName  $fullPath -Action uninstall;
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/remove Rpc Client Access service -->
+    <ServerTaskInfo Id="_d5a87833241b4e16a44be9a5ecca6de6" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          if (!(get-service MSExchangeRPC* | where {$_.name -eq "MSExchangeRPC"}))
+          {
+            install-RpcClientAccessService
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>uninstall-RpcClientAccessService</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+    
+    <!-- 
+      Add/remove RpcClientAccess protocol node on any role where the service is installed.
+      Absence of this node will preclude MSExchangeRPC from starting.
+    -->
+    <ServerTaskInfo Id="_01e9ec45934b4f7084570bc4e169c237" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          if (!(get-RpcClientAccess -Server $RoleFqdnOrName))
+          {
+            new-RpcClientAccess -Server $RoleFqdnOrName -EncryptionRequired ($RoleIsDatacenter -eq $false)
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>
+          if (get-RpcClientAccess -Server $RoleFqdnOrName)
+          {
+            remove-RpcClientAccess -Server $RoleFqdnOrName -Confirm:$false
+          }
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+  </ServerTasks>
+
+</SetupComponentInfo>
+

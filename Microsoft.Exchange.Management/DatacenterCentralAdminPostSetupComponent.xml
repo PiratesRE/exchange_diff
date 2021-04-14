@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo IsDatacenterOnly="true" Name="Exchange Central Admin Post Setup Component">
+
+	<ServerTasks>
+		<!-- Start WDS -->
+		<ServerTaskInfo Id="_5f9ee0b12c6d473db7d137e2a0f18332" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+			<Install>
+				<Standalone>
+					if ($RoleDatacenterEnableWDS -eq "True")
+					{
+						Write-ExchangeSetupLog -Info "Restarting the Windows Deployment Services to complete the configuration";
+						Stop-Service WDSServer -ErrorAction SilentlyContinue;
+						Start-Sleep 5;
+						Start-Service WDSServer -ErrorAction SilentlyContinue;
+					}
+				</Standalone>
+			</Install>
+			<BuildToBuildUpgrade UseInstallTasks="true" />
+			<DisasterRecovery UseInstallTasks="true" />
+			<Uninstall/>
+		</ServerTaskInfo>
+	</ServerTasks>
+</SetupComponentInfo>
+

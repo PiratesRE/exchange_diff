@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo IsDatacenterOnly="true" IsDatacenterDedicatedOnly="true" Name="Datacenter AD Domain Configuration">
+
+  <OrgTasks>
+  </OrgTasks>
+
+</SetupComponentInfo>
+
+
+

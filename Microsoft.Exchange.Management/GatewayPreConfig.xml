@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo Name="Prereq Configuration">
+  <ServerTasks>
+
+    <ServerTaskInfo Id="InstallWindowsComponents" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          if($RoleInstallWindowsComponents)
+          {
+            # Install any Windows Roles or Features required for the Edge Transport role
+            &amp; $RoleBinPath\InstallWindowsComponent.ps1 -ShortNameForRole "Edge" -ADToolsNeeded $RoleADToolsNeeded
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall/>
+    </ServerTaskInfo>
+
+    <ServerTaskInfo Id="StartEventSystem" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          if (Get-Service EventSystem* | ?{$_.Name -eq 'EventSystem'})
+          {
+            Set-Service EventSystem -StartupType Automatic
+            Start-SetupService -ServiceName EventSystem
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>
+          if (Get-Service EventSystem* | ?{$_.Name -eq 'EventSystem'})
+          {
+            Set-Service EventSystem -StartupType Automatic
+            Start-SetupService -ServiceName EventSystem
+          }
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <ServerTaskInfo Id="StartADAM_MSExchange" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install/>
+      <BuildToBuildUpgrade>
+        <Standalone>
+          if (Get-Service ADAM_MSExchange* | ?{$_.Name -eq 'ADAM_MSExchange'})
+          {
+            Set-Service ADAM_MSExchange -StartupType Automatic
+            Start-SetupService -ServiceName ADAM_MSExchange
+          }
+        </Standalone>
+      </BuildToBuildUpgrade>
+      <DisasterRecovery/>
+      <Uninstall>
+        <Standalone>
+          if (Get-Service ADAM_MSExchange* | ?{$_.Name -eq 'ADAM_MSExchange'})
+          {
+            Set-Service ADAM_MSExchange -StartupType Automatic
+            Start-SetupService -ServiceName ADAM_MSExchange
+          }
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+  </ServerTasks>
+</SetupComponentInfo>

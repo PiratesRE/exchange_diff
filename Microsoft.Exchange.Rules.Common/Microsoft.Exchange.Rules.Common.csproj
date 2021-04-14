@@ -1,0 +1,149 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{09CD9476-CD82-489E-B9E2-84B47CA14191}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Microsoft.Exchange</RootNamespace>
+    <AssemblyName>Microsoft.Exchange.Rules.Common</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="MessagingPolicies\Rules\Action.cs" />
+    <Compile Include="MessagingPolicies\Rules\AndCondition.cs" />
+    <Compile Include="MessagingPolicies\Rules\Argument.cs" />
+    <Compile Include="MessagingPolicies\Rules\CaseInsensitiveStringComparer.cs" />
+    <Compile Include="MessagingPolicies\Rules\Condition.cs" />
+    <Compile Include="MessagingPolicies\Rules\ConditionEvaluationMode.cs" />
+    <Compile Include="MessagingPolicies\Rules\ConditionType.cs" />
+    <Compile Include="MessagingPolicies\Rules\ContainsPredicate.cs" />
+    <Compile Include="MessagingPolicies\Rules\CpuStopwatch.cs" />
+    <Compile Include="MessagingPolicies\Rules\EqualPredicate.cs" />
+    <Compile Include="MessagingPolicies\Rules\ExecutionControl.cs" />
+    <Compile Include="MessagingPolicies\Rules\ExistsPredicate.cs" />
+    <Compile Include="MessagingPolicies\Rules\FalseCondition.cs" />
+    <Compile Include="MessagingPolicies\Rules\GreaterThanOrEqualPredicate.cs" />
+    <Compile Include="MessagingPolicies\Rules\GreaterThanPredicate.cs" />
+    <Compile Include="MessagingPolicies\Rules\IContent.cs" />
+    <Compile Include="MessagingPolicies\Rules\IsPredicate.cs" />
+    <Compile Include="MessagingPolicies\Rules\IStringComparer.cs" />
+    <Compile Include="MessagingPolicies\Rules\ITracer.cs" />
+    <Compile Include="MessagingPolicies\Rules\LegacyMatchesPredicate.cs" />
+    <Compile Include="MessagingPolicies\Rules\LessThanOrEqualPredicate.cs" />
+    <Compile Include="MessagingPolicies\Rules\LessThanPredicate.cs" />
+    <Compile Include="MessagingPolicies\Rules\LocDescriptionAttribute.cs" />
+    <Compile Include="MessagingPolicies\Rules\MatchesRegexPredicate.cs" />
+    <Compile Include="MessagingPolicies\Rules\MultiMatcher.cs" />
+    <Compile Include="MessagingPolicies\Rules\NotCondition.cs" />
+    <Compile Include="MessagingPolicies\Rules\NotEqualPredicate.cs" />
+    <Compile Include="MessagingPolicies\Rules\NotExistsPredicate.cs" />
+    <Compile Include="MessagingPolicies\Rules\OrCondition.cs" />
+    <Compile Include="MessagingPolicies\Rules\ParserException.cs" />
+    <Compile Include="MessagingPolicies\Rules\PredicateCondition.cs" />
+    <Compile Include="MessagingPolicies\Rules\PredicateEvaluationResult.cs" />
+    <Compile Include="MessagingPolicies\Rules\Property.cs" />
+    <Compile Include="MessagingPolicies\Rules\RegexUtils.cs" />
+    <Compile Include="MessagingPolicies\Rules\Rule.cs" />
+    <Compile Include="MessagingPolicies\Rules\RuleCollection.cs" />
+    <Compile Include="MessagingPolicies\Rules\RuleConstants.cs" />
+    <Compile Include="MessagingPolicies\Rules\RuleDescription.cs" />
+    <Compile Include="MessagingPolicies\Rules\RuleErrorAction.cs" />
+    <Compile Include="MessagingPolicies\Rules\RuleEvaluationResult.cs" />
+    <Compile Include="MessagingPolicies\Rules\RuleInvalidOperationException.cs" />
+    <Compile Include="MessagingPolicies\Rules\RuleMode.cs" />
+    <Compile Include="MessagingPolicies\Rules\RuleParser.cs" />
+    <Compile Include="MessagingPolicies\Rules\RuleParsingException.cs" />
+    <Compile Include="MessagingPolicies\Rules\RulesCreationContext.cs" />
+    <Compile Include="MessagingPolicies\Rules\RuleSerializer.cs" />
+    <Compile Include="MessagingPolicies\Rules\RulesEvaluationContext.cs" />
+    <Compile Include="MessagingPolicies\Rules\RulesEvaluationHistory.cs" />
+    <Compile Include="MessagingPolicies\Rules\RulesEvaluator.cs" />
+    <Compile Include="MessagingPolicies\Rules\RulesStrings.cs" />
+    <Compile Include="MessagingPolicies\Rules\RuleState.cs" />
+    <Compile Include="MessagingPolicies\Rules\RuleSubType.cs" />
+    <Compile Include="MessagingPolicies\Rules\RulesValidationException.cs" />
+    <Compile Include="MessagingPolicies\Rules\RuleTag.cs" />
+    <Compile Include="MessagingPolicies\Rules\RuleUtils.cs" />
+    <Compile Include="MessagingPolicies\Rules\ShortList.cs" />
+    <Compile Include="MessagingPolicies\Rules\StringBuffer.cs" />
+    <Compile Include="MessagingPolicies\Rules\SupplementalData.cs" />
+    <Compile Include="MessagingPolicies\Rules\TextInputBufferToStreamAdapter.cs" />
+    <Compile Include="MessagingPolicies\Rules\TextMatchingParsingException.cs" />
+    <Compile Include="MessagingPolicies\Rules\TextMatchingPredicate.cs" />
+    <Compile Include="MessagingPolicies\Rules\TextMatchingStrings.cs" />
+    <Compile Include="MessagingPolicies\Rules\TrueCondition.cs" />
+    <Compile Include="MessagingPolicies\Rules\Value.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TextMatching\DFACodeGenerator.cs" />
+    <Compile Include="TextMatching\ITextInputBuffer.cs" />
+    <Compile Include="TextMatching\MatchAC.cs" />
+    <Compile Include="TextMatching\PatternMatcher.cs" />
+    <Compile Include="TextMatching\RegexCharacterClass.cs" />
+    <Compile Include="TextMatching\RegexCharacterClassRuntime.cs" />
+    <Compile Include="TextMatching\RegexCharSet.cs" />
+    <Compile Include="TextMatching\RegexParser.cs" />
+    <Compile Include="TextMatching\RegexState.cs" />
+    <Compile Include="TextMatching\RegexStateFactory.cs" />
+    <Compile Include="TextMatching\RegexStateSet.cs" />
+    <Compile Include="TextMatching\RegexTreeNode.cs" />
+    <Compile Include="TextMatching\Set.cs" />
+    <Compile Include="TextMatching\StateNode.cs" />
+    <Compile Include="TextMatching\TransitionTable.cs" />
+    <Compile Include="TextMatching\TrieNode.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="MessagingPolicies\Rules\RulesStrings.resources" />
+    <EmbeddedResource Include="MessagingPolicies\Rules\TextMatchingStrings.resources" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.Exchange.Compliance\Microsoft.Exchange.Compliance.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140F2}</Project>
+      <Name>Microsoft.Exchange.Compliance</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Common\Microsoft.Exchange.Data.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140D3}</Project>
+      <Name>Microsoft.Exchange.Data.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.TextProcessing\Microsoft.Exchange.TextProcessing.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141BB}</Project>
+      <Name>Microsoft.Exchange.TextProcessing</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\mscorlib\mscorlib.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141F1}</Project>
+      <Name>mscorlib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

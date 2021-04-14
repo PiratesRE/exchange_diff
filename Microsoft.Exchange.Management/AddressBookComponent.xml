@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo Name="Address Book Service Configuration" DescriptionId="SetupComponentConfiguringAddressBookService">
+
+  <ServerTasks>
+
+    <!-- Stamp the log directory in the config file -->
+    <ServerTaskInfo Id="_822b35767ae8449f8278f5e03683b749" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          $file = 'microsoft.exchange.addressbook.service.dll.config';
+          Set-InstallPathInAppConfig -ConfigFileRelativePath "bin" -ConfigFileName $file;
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+  </ServerTasks>
+
+</SetupComponentInfo>
+

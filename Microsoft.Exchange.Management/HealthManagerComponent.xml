@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo Name="Health Manager" DescriptionId="SetupComponentHealthManager">
+
+  <ServerTasks>
+
+    <ServerTaskInfo Id="_ae0671c54bf040d8addbaf3d4b9adbb1" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          Install-CrimsonManifest `
+            -DefinitionXml "bin\ActiveMonitoringEvents.man" `
+            -MessageDll "bin\ActiveMonitoringEventMsg.dll" `
+            -ProviderName "Microsoft-Exchange-ActiveMonitoring"
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade>
+        <Standalone>
+          Uninstall-CrimsonManifest -DefinitionXml "bin\ActiveMonitoringEvents.man";
+
+          Install-CrimsonManifest `
+            -DefinitionXml "bin\ActiveMonitoringEvents.man" `
+            -MessageDll "bin\ActiveMonitoringEventMsg.dll" `
+            -ProviderName "Microsoft-Exchange-ActiveMonitoring"
+        </Standalone>
+      </BuildToBuildUpgrade>
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>
+          Uninstall-CrimsonManifest -DefinitionXml "bin\ActiveMonitoringEvents.man"
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <ServerTaskInfo Id="_c99ae5f41ed745be80c0c61c466efb63" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          Install-CrimsonManifest `
+          -DefinitionXml "bin\ManagedAvailabilityCrimsonEvents.man" `
+          -MessageDll "bin\ManagedAvailabilityCrimsonMsg.dll" `
+          -ProviderName "Microsoft-Exchange-ManagedAvailability"
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade>
+        <Standalone>
+          Uninstall-CrimsonManifest -DefinitionXml "bin\ManagedAvailabilityCrimsonEvents.man";
+
+          Install-CrimsonManifest `
+          -DefinitionXml "bin\ManagedAvailabilityCrimsonEvents.man" `
+          -MessageDll "bin\ManagedAvailabilityCrimsonMsg.dll" `
+          -ProviderName "Microsoft-Exchange-ManagedAvailability"
+        </Standalone>
+      </BuildToBuildUpgrade>
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>
+          Uninstall-CrimsonManifest -DefinitionXml "bin\ManagedAvailabilityCrimsonEvents.man"
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <ServerTaskInfo Id="_10C6783591DB4B899990B4EE4171D42F" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>new-PerfCounters -DefinitionFileName WorkerTaskFrameworkPerfCounters.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-PerfCounters -DefinitionFileName WorkerTaskFrameworkPerfCounters.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <ServerTaskInfo Id="_6D8972CC27884A1D9B02B208D88BFE19" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>new-PerfCounters -DefinitionFileName LocalDataAccessPerfCounters.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-PerfCounters -DefinitionFileName LocalDataAccessPerfCounters.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <ServerTaskInfo Id="_3B556A63940E40428A792684BB8A256D" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          $file = 'MSExchangeHMHost.exe.config';
+          $fullPath = [System.IO.Path]::Combine([System.IO.Path]::Combine($RoleInstallPath, "bin"), $file);
+          copy-item ($fullPath + ".template") $fullPath;
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <ServerTaskInfo Id="_CFC4FE15AC4E4216A900A01DFC68E6FD" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          $file = 'MSExchangeHMWorker.exe.config';
+          $fullPath = [System.IO.Path]::Combine([System.IO.Path]::Combine($RoleInstallPath, "bin"), $file);
+          copy-item ($fullPath + ".template") $fullPath;
+          set-InstallPathInAppConfig -ConfigFileRelativePath "bin" -ConfigFileName $file;
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <ServerTaskInfo Id="_44FBE6CA56D74D51B44B44AF2680A98D" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install Weight="5" DescriptionId="SetupProgressPrecompilingBinaries" IsFatal="false">
+        <Standalone>
+          $fullPath = [System.IO.Path]::Combine($RoleInstallPath, "bin\MSExchangeHMHost.exe");
+          precompile-ManagedBinary -BinaryName  $fullPath;
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall Weight="5" DescriptionId="SetupProgressPrecompilingBinaries" IsFatal="false">
+        <Standalone>
+          $fullPath = [System.IO.Path]::Combine($RoleInstallPath, "bin\MSExchangeHMHost.exe");
+          precompile-ManagedBinary -BinaryName  $fullPath -Action uninstall;
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+    
+    <ServerTaskInfo Id="_61533FCF2262413F9296EA9151DCB7A9" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install Weight="5" DescriptionId="SetupProgressPrecompilingBinaries" IsFatal="false">
+        <Standalone>
+          $fullPath = [System.IO.Path]::Combine($RoleInstallPath, "bin\MSExchangeHMWorker.exe");
+          precompile-ManagedBinary -BinaryName  $fullPath;
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall Weight="5" DescriptionId="SetupProgressPrecompilingBinaries" IsFatal="false">
+        <Standalone>
+          $fullPath = [System.IO.Path]::Combine($RoleInstallPath, "bin\MSExchangeHMWorker.exe");
+          precompile-ManagedBinary -BinaryName  $fullPath -Action uninstall;
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/uninstall Active Monitoring service -->
+    <!-- This requires local administrator role -->
+    <ServerTaskInfo Id="_9E96E2F0AEB54E4CBEA7D68649C355F1" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install Weight="10" DescriptionId="SetupProgressInstallingHealthManager">
+        <Standalone>
+          if (!(get-service MSExchangeHM* | where {$_.name -eq "MSExchangeHM"}))
+          {
+            Install-HealthManagerService
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>Uninstall-HealthManagerService</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Add/Remove firewall rule for Health Manager service -->
+    <!-- This requires local administrator role -->
+    <ServerTaskInfo Id="_8F32051A01304B108D3B0CA62BD57F29" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install Weight="10" DescriptionId="SetupProgressInstallingHealthManager">
+        <Standalone>
+          Add-FirewallException -FirewallRule (New-Object Microsoft.Exchange.Security.WindowsFirewall.MSExchangeHealthManagerRPCFirewallRule)
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>remove-firewallexception -FirewallRule (New-Object Microsoft.Exchange.Security.WindowsFirewall.MSExchangeHealthManagerRPCFirewallRule)</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Add this computer to the Managed Availability Servers USG -->
+    <!-- This requires OrgAdmin and above -->
+    <ServerTaskInfo Id="_08E26ADF40724A8BACF4BB65EE3B21E9" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          if (![String]::IsNullOrEmpty($RoleDomainController))
+          {
+              $masSid = add-ManagedAvailabilityServerGroupMember -DomainController $RoleDomainController -ServerName $RoleNetBIOSName
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>
+          if (![String]::IsNullOrEmpty($RoleDomainController))
+          {
+              remove-ManagedAvailabilityServerGroupMember -ServerName $RoleNetBIOSName -DomainController $RoleDomainController
+          }
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+  </ServerTasks>
+
+</SetupComponentInfo>

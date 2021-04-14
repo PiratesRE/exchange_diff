@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo Name="Enterprise Shared Cache Service Configuration" DescriptionId="SetupComponentConfiguringSharedCacheService">
+
+  <ServerTasks>
+    <!-- Install/remove Shared Cache Service -->
+    <ServerTaskInfo Id="_263142c138327c1f1a58a0c680af4978" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install />
+      <BuildToBuildUpgrade>
+        <Standalone>
+          if ($RoleIsDatacenter -ne $true)
+          {
+            uninstall-SharedCacheService
+          }
+        </Standalone>
+      </BuildToBuildUpgrade>
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>
+          if ($RoleIsDatacenter -ne $true)
+          {
+            uninstall-SharedCacheService
+          }
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+  </ServerTasks>
+</SetupComponentInfo>
+

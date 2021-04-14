@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo Name="Mailbox Permissions Configuration" DescriptionId="SetupComponentConfiguringMailboxPermissions">
+
+	<ServerTasks>
+		<!-- Set Folder/Registry Permissions when installing, recovering or upgrade Mailbox Role-->
+	<ServerTaskInfo Id="_f70043bcfee94f9591b1d67c6fb9b763" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+			<Install>
+				<Standalone>Set-LocalPermissions -Feature:"Mailbox"</Standalone>
+			</Install>
+			<BuildToBuildUpgrade UseInstallTasks="true" />
+			<DisasterRecovery UseInstallTasks="true" />
+			<Uninstall/>
+		</ServerTaskInfo>
+	</ServerTasks>
+</SetupComponentInfo>

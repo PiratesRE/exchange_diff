@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo Name="Monitoring Service Configuration" DescriptionId="SetupComponentMonitoring">
+
+  <ServerTasks>
+
+    <!-- O15:3254791: Stop and uninstall the Monitoring service during B2B upgrade from E15 RTM to later version. -->
+    <!-- This requires local administrator role -->
+    <ServerTaskInfo Id="_ec6dd7205e7b4853b5bcd9e313c8a798" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install />
+      <BuildToBuildUpgrade DescriptionId="StopAndUninstallMonitoringService" IsFatal="false">
+        <Standalone>
+          if (Get-Service MSExchangeMonitoring* | where { $_.name -eq "MSExchangeMonitoring" })
+          {
+            Stop-SetupService -ServiceName MSExchangeMonitoring;
+            Uninstall-MonitoringService;
+          }
+        </Standalone>
+      </BuildToBuildUpgrade>
+      <DisasterRecovery />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Configure the Certificate, Endpoints, and the EscalateResponderAlertsEnabled switch to use for Local Active Monitoring to raise alerts in datacenter mode. -->
+    <ServerTaskInfo Id="_e6f639baa3b34faa9c92f46e70f05949" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          if(($RoleIsDatacenter -eq $true) -or ($RoleIsDatacenterDedicated -eq $true))
+          {
+            Write-ExchangeSetupLog -Info "Initializing Active Monitoring connection settings on the local machine.";
+            $keyPath = "HKLM:\SOFTWARE\Microsoft\ExchangeServer\v15\ActiveMonitoring\";
+
+            new-item $keyPath -force;
+            new-itemproperty -path $keyPath -name "RPSCertificateSubject" -value $RoleDatacenterAMManagementCertificateSubject -force;
+            new-itemproperty -path $keyPath -name "RPSEndpoint" -value $RoleDatacenterAMManagementPowershellEndpoint -force;
+            if ($RoleDatacenterFfoEnvironment -eq "True")
+            {
+                # In FFO environment, the AlertsEnabled reg key is written during end maintenance
+                # During setup, it stays 0
+                new-itemproperty -path $keyPath -name "AlertsEnabled" -value 0 -force;
+            }
+            else
+            {
+                new-itemproperty -path $keyPath -name "AlertsEnabled" -value ([int]$RoleDatacenterEscalateResponderAlertsEnabled) -force;
+            }
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Set registry key to skip broken and noisy repsponders. -->
+    <ServerTaskInfo Id="SetSkipAMResponderRegistryValuesForDatacenter" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          if(($RoleIsDatacenter -eq $true) -or ($RoleIsDatacenterDedicated -eq $true))
+          {
+            REG ADD "HKLM\SOFTWARE\Microsoft\ExchangeServer\v15\ActiveMonitoring\Parameters\Responder\Eds/ ProcessProcessorTimeTrigger_Warning " /v "SkipMode" /t REG_DWORD /d 1 /f		
+            REG ADD "HKLM\SOFTWARE\Microsoft\ExchangeServer\v15\ActiveMonitoring\Parameters\Responder\ComponentHealthPercentFailureMonitor: ServiceComponents/Search/Normal" /v "SkipMode" /t REG_DWORD /d 1 /f
+            REG ADD "HKLM\SOFTWARE\Microsoft\ExchangeServer\v15\ActiveMonitoring\Parameters\Responder\ComponentHealthPercentFailureMonitor: ServiceComponents/Eds/Normal" /v "SkipMode" /t REG_DWORD /d 1 /f
+            REG ADD "HKLM\SOFTWARE\Microsoft\ExchangeServer\v15\ActiveMonitoring\Parameters\Responder\Eds/PrivateWorkingSetTrigger_Warning" /v "SkipMode" /t REG_DWORD /d 1 /f
+            REG ADD "HKLM\SOFTWARE\Microsoft\ExchangeServer\v15\ActiveMonitoring\Parameters\Responder\MSExchangePop3: Average Command Processing Time Red>60s Escalate Responder" /v "SkipMode" /t REG_DWORD /d 1 /f
+            REG ADD "HKLM\SOFTWARE\Microsoft\ExchangeServer\v15\ActiveMonitoring\Parameters\Responder\POP.Protocol : PopProtocolEscalateResponder" /v "SkipMode" /t REG_DWORD /d 1 /f
+            REG ADD "HKLM\SOFTWARE\Microsoft\ExchangeServer\v15\ActiveMonitoring\Parameters\Responder\ComponentHealthPercentFailureMonitor: CustomerTouchPoints/Pop/Normal" /v "SkipMode" /t REG_DWORD /d 1 /f
+            REG ADD "HKLM\SOFTWARE\Microsoft\ExchangeServer\v15\ActiveMonitoring\Parameters\Responder\MSExchangeImap4: Average Command Processing Time Red>60s Escalate Responder" /v "SkipMode" /t REG_DWORD /d 1 /f
+            REG ADD "HKLM\SOFTWARE\Microsoft\ExchangeServer\v15\ActiveMonitoring\Parameters\Responder\MSExchangeImap4: Average Command Processing Time Red>60s" /v "SkipMode" /t REG_DWORD /d 1 /f
+            REG ADD "HKLM\SOFTWARE\Microsoft\ExchangeServer\v15\ActiveMonitoring\Parameters\Responder\IMAP.Protocol : ImapProtocolEscalateResponder" /v "SkipMode" /t REG_DWORD /d 1 /f
+            REG ADD "HKLM\SOFTWARE\Microsoft\ExchangeServer\v15\ActiveMonitoring\Parameters\Responder\Exchange IMAP4 Escalate Responder" /v "SkipMode" /t REG_DWORD /d 1 /f
+            REG ADD "HKLM\SOFTWARE\Microsoft\ExchangeServer\v15\ActiveMonitoring\Parameters\Responder\ComponentHealthPercentFailureMonitor: CustomerTouchPoints/Imap/Normal" /v "SkipMode" /t REG_DWORD /d 1 /f
+            REG ADD "HKLM\SOFTWARE\Microsoft\ExchangeServer\v15\ActiveMonitoring\Parameters\Responder\MSExchangeActiveSync: Requests Queued Red>500 Escalate Responder" /v "SkipMode" /t REG_DWORD /d 1 /f
+            REG ADD "HKLM\SOFTWARE\Microsoft\ExchangeServer\v15\ActiveMonitoring\Parameters\Responder\MSExchangeActiveSync: Requests Queued Red>500" /v "SkipMode" /t REG_DWORD /d 1 /f
+            REG ADD "HKLM\SOFTWARE\Microsoft\ExchangeServer\v15\ActiveMonitoring\Parameters\Responder\ComponentHealthPercentFailureMonitor: CustomerTouchPoints/Eas/Normal" /v "SkipMode" /t REG_DWORD /d 1 /f
+            REG ADD "HKLM\SOFTWARE\Microsoft\ExchangeServer\v15\ActiveMonitoring\Parameters\Responder\GLSRoleDBConnectivity" /v "SkipMode" /t REG_DWORD /d 1 /f
+            REG ADD "HKLM\SOFTWARE\Microsoft\ExchangeServer\v15\ActiveMonitoring\Parameters\Responder\GLSRoleDALConnectivity" /v "SkipMode" /t REG_DWORD /d 1 /f
+            REG ADD "HKLM\SOFTWARE\Microsoft\ExchangeServer\v15\ActiveMonitoring\Parameters\Responder\FfoRoleDBConnectivity" /v "SkipMode" /t REG_DWORD /d 1 /f
+            REG ADD "HKLM\SOFTWARE\Microsoft\ExchangeServer\v15\ActiveMonitoring\Parameters\Responder\FfoRoleDALConnectivity" /v "SkipMode" /t REG_DWORD /d 1 /f
+            REG ADD "HKLM\SOFTWARE\Microsoft\ExchangeServer\v15\ActiveMonitoring\Parameters\Responder\ComponentHealthPercentFailureMonitor: ServiceComponents/Gls/Normal" /v "SkipMode" /t REG_DWORD /d 1 /f
+            REG ADD "HKLM\SOFTWARE\Microsoft\ExchangeServer\v15\ActiveMonitoring\Parameters\Responder\OwaTooManyHttpErrorResponsesEncountered" /v "SkipMode" /t REG_DWORD /d 1 /f
+            REG ADD "HKLM\SOFTWARE\Microsoft\ExchangeServer\v15\ActiveMonitoring\HighAvailability\Parameters" /v "OneCopyMonitorStaleAlertInMins" /t REG_DWORD  /d 90 /f
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+  </ServerTasks>
+
+</SetupComponentInfo>
+

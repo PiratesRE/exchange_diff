@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo Name="Service Host Service Control" DescriptionId="ServiceHostServiceControlComponentDescription">
+
+  <ServerTasks>
+    
+	<!-- Stop MSExchangeServiceHost service -->
+	<ServerTaskInfo Id="_9454d619e678439faae203b9bc5b0009" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+	  <Install/>
+	  <BuildToBuildUpgrade />
+	  <DisasterRecovery UseInstallTasks="true" />
+	  <Uninstall DescriptionId="SetupProgressStoppingServiceHostService">
+		<Standalone>stop-SetupService -ServiceName MSExchangeServiceHost</Standalone>
+	  </Uninstall>
+	</ServerTaskInfo>
+
+  </ServerTasks>
+
+</SetupComponentInfo>

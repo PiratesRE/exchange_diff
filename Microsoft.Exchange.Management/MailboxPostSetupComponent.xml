@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo Name="Mailbox PostSetup" DescriptionId="SetupComponentPostSetupMailbox">
+
+  <ServerTasks>
+
+    <!-- Start Transport Log Search service -->
+    <ServerTaskInfo Id="_77c62ffabe89435093336323ca32b8ab" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressStartingTransportLogSearchService" IsFatal="false">
+        <Standalone>start-SetupService -ServiceName MSExchangeTransportLogSearch</Standalone>
+      </Install>
+      <BuildToBuildUpgrade />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall/>
+    </ServerTaskInfo>
+
+    <!-- Start MSExchangeDelivery service -->
+    <ServerTaskInfo Id="_BC382FD26E4E46CA9A9E4FC6A9C05732" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressStartingMSExchangeDeliveryService" IsFatal="false">
+        <Standalone>
+          sc.exe config MSExchangeDelivery obj= (New-Object System.Security.Principal.SecurityIdentifier("S-1-5-20")).Translate( [System.Security.Principal.NTAccount]).Value
+          start-SetupService -ServiceName MSExchangeDelivery
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall/>
+    </ServerTaskInfo>
+
+  </ServerTasks>
+
+</SetupComponentInfo>
+

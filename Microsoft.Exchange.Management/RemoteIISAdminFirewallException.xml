@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo Name="Enable Remote IIS Admin RPC firewall exception" >
+	<ServerTasks>
+		<!-- E14-111775- Need to open RPC ports for inetinfo.exe.
+        Enable the inetinfo.exe RPC exception in the Windows Firewall for the Mbx, CAS and Hub servers
+        On uninstall, remove inetinfo.exe from the windows firewall exception list in LH.-->
+		<ServerTaskInfo Id="_a9729b5d18374feba59bae28eaca1db0" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+			<Install IsFatal="false">
+				<Standalone>
+          if ([Environment]::OSVersion.Version.Major -ge 6)
+          {
+          Add-FirewallException -FirewallRule (New-Object Microsoft.Exchange.Security.WindowsFirewall.RemoteIISAdminFirewallRule)
+          }
+        </Standalone>
+			</Install>
+			<BuildToBuildUpgrade UseInstallTasks="true"/>
+			<DisasterRecovery/>
+			<Uninstall IsFatal="false">
+				<Standalone>
+          if ([Environment]::OSVersion.Version.Major -ge 6)
+          {
+          Remove-FirewallException -FirewallRule (New-Object Microsoft.Exchange.Security.WindowsFirewall.RemoteIISAdminFirewallRule)
+          }
+        </Standalone>
+			</Uninstall>
+		</ServerTaskInfo>
+	</ServerTasks>
+</SetupComponentInfo>

@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo Name="Mail Submission Service Configuration" DescriptionId="SetupComponentConfiguringMailSubmissionService">
+
+  <ServerTasks>
+    <!-- Precompile transport log search service binaries -->
+    <!-- We do a synchronous ngen call here to ngen the binaries -->
+    <!-- This call is to ensure that ngening of the necessary binaries have already completed -->
+    <!-- When a new file is added to precompile-ManagedBinary list, make sure to add it to customactions.wxi to sync install and uninstall the binary -->
+    <ServerTaskInfo Id="_7d9cd99e63ac4a1a87b0b9f4f777f892" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install Weight="5" DescriptionId="SetupProgressPrecompilingBinaries" IsFatal="false">
+        <Standalone>
+          $fullPath = [System.IO.Path]::Combine($RoleInstallPath, "bin\msexchangetransportlogsearch.exe");
+          precompile-ManagedBinary -BinaryName  $fullPath;
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall Weight="5" DescriptionId="SetupProgressPrecompilingBinaries" IsFatal="false">
+        <Standalone>
+          $fullPath = [System.IO.Path]::Combine($RoleInstallPath, "bin\msexchangetransportlogsearch.exe");
+          precompile-ManagedBinary -BinaryName  $fullPath -Action uninstall;
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Remove old Mail Submission service (i.e. MSExchMailSubmissionSvc) -->
+    <ServerTaskInfo Id="_6144d3f55cb349c78a3e422dad38135b" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install />
+      <BuildToBuildUpgrade>
+		<Standalone>uninstall-OldMailSubmissionService</Standalone>
+      </BuildToBuildUpgrade>
+      <DisasterRecovery />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Configure MSExchangeThrottling service -->
+
+    <!-- Preserve the MSExchangeThrottling.exe.config config file potentially containing user data 
+		 [REVIEW] Instead of doing a rename, it would be better to do copy to avoid bugs similar to 52647
+		 i.e. In the MSI, if the same file is accidently used by other server role, on uninstall
+		 MSI would prompt for the location for installing the MSI. Please refer to the above bug for
+		 more information.
+	-->
+    <!-- E14 82092: In the appconfig file, set -->
+    <!-- Code Access Security (CAS) policy to skip publisher (certificate) validation.-->
+    <ServerTaskInfo Id="_5ce228c2643445f398a91563a3821dc8" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          $file = 'MSExchangeThrottling.exe.config';
+          $fullPath = [System.IO.Path]::Combine([System.IO.Path]::Combine($RoleInstallPath, "bin"), $file);
+          if (!([System.IO.File]::Exists($fullPath))) { rename-item ($fullPath + ".template") $file; }
+          set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/runtime/generatePublisherEvidence -Attribute:enabled -NewValue:false
+
+          set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'LoggingEnabled' -NewValue:$true;
+
+          $ThrottingLogPath = $RoleInstallPath + "\TransportRoles\Logs\ThrottlingService"
+          set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'LogPath' -NewValue:$ThrottingLogPath;
+          
+          set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/runtime/gcServer -Attribute:enabled -NewValue:false
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Precompile throttling service binaries -->
+    <!-- We do a synchronous ngen call here to ngen the binaries -->
+    <!-- We already do an asynchronous call to ngen these binaries in the msi package -->
+    <!-- This call is to ensure that ngening of the necessary binaries have already completed -->
+    <ServerTaskInfo Id="_bcc9b46ed9a5420898fe90f8978c224d" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install Weight="5" DescriptionId="SetupProgressPrecompilingBinaries" IsFatal="false">
+        <Standalone>
+          $fullPath = [System.IO.Path]::Combine($RoleInstallPath, "bin\msexchangethrottling.exe");
+          precompile-ManagedBinary -BinaryName  $fullPath;
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall Weight="5" DescriptionId="SetupProgressPrecompilingBinaries" IsFatal="false">
+        <Standalone>
+          $fullPath = [System.IO.Path]::Combine($RoleInstallPath, "bin\msexchangethrottling.exe");
+          precompile-ManagedBinary -BinaryName  $fullPath -Action uninstall;
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/remove throttling service -->
+    <ServerTaskInfo Id="_65148304692e40c59f8486bf961e05c4" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          if (!(get-service MSExchangeThrottling* | where {$_.name -eq "MSExchangeThrottling"}))
+          {
+            install-ThrottlingService
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>uninstall-ThrottlingService</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+  </ServerTasks>
+
+</SetupComponentInfo>

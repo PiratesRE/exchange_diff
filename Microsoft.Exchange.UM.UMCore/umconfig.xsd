@@ -1,0 +1,2851 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+  <!-- Basic Type Definitions =================================================================-->
+  <xs:simpleType name="id_t">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="\d{1,4}|\w+(_\w+)*"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="refid_t">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="\d{1,4}|null|out-\d{1,4}|.+"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="dtmf_size_t">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[\d]{1,2}|extension|password|name|^$"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="numeric_size_t">
+    <xs:restriction base="xs:unsignedInt" />
+  </xs:simpleType>
+  <xs:simpleType name="dtmf_input_value_t">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="option"/>
+      <xs:enumeration value="extension"/>
+      <xs:enumeration value="password"/>
+      <xs:enumeration value="name"/>
+      <xs:enumeration value="numeric"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="prompt_type_t">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="wave"/>
+      <xs:enumeration value="text"/>
+      <xs:enumeration value="date"/>
+      <xs:enumeration value="time"/>
+      <xs:enumeration value="simpleTime"/>
+      <xs:enumeration value="timeRange"/>
+      <xs:enumeration value="digit"/>
+      <xs:enumeration value="tempwave"/>
+      <xs:enumeration value="varwave"/>
+      <xs:enumeration value="cardinal"/>
+      <xs:enumeration value="email"/>
+      <xs:enumeration value="statement"/>
+      <xs:enumeration value="multiStatement"/>
+      <xs:enumeration value="group"/>
+      <xs:enumeration value="telephone"/>
+      <xs:enumeration value="name"/>
+      <xs:enumeration value="address"/>
+      <xs:enumeration value="silence"/>
+      <xs:enumeration value="timeZone"/>
+      <xs:enumeration value="bookmark"/>
+      <xs:enumeration value="emailAddress"/>
+      <xs:enumeration value="language"/>
+      <xs:enumeration value="languageList"/>
+      <xs:enumeration value="textList"/>
+      <xs:enumeration value="businessHours"/>
+      <xs:enumeration value="aaCustomMenu"/>
+      <xs:enumeration value="aaWelcomeGreeting"/>
+      <xs:enumeration value="aaBusinessLocation"/>
+      <xs:enumeration value="mbxAwayGreeting"/>
+      <xs:enumeration value="mbxVoicemailGreeting"/>
+      <xs:enumeration value="scheduleGroupList"/>
+      <xs:enumeration value="scheduleIntervalList"/>
+      <xs:enumeration value="searchItemDetail"/>
+      <xs:enumeration value="callerNameOrNumber"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="recording_type_t">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="message"/>
+      <xs:enumeration value="greeting"/>
+      <xs:enumeration value="name"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="silence_t">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="\d+(ms|s)"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="grammar_type_t">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="static"/>
+      <xs:enumeration value="dynamic"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="dtmf_key_t">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[\d#*ABCD]+|noKey|anyKey|^$"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="prompt_suffix_t">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="singularPlural"/>
+      <xs:enumeration value=""/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="prosody_rate_t">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="+0%"/>
+      <xs:enumeration value="user"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="language_t">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value=""/>
+      <xs:enumeration value="message"/>
+      <xs:enumeration value="nl-NL"/>
+      <xs:enumeration value="en-US"/>
+      <xs:enumeration value="en-GB"/>
+      <xs:enumeration value="en-AU"/>
+      <xs:enumeration value="fr-CA"/>
+      <xs:enumeration value="fr-FR"/>
+      <xs:enumeration value="de-DE"/>
+      <xs:enumeration value="it-IT"/>
+      <xs:enumeration value="ja-JP"/>
+      <xs:enumeration value="ko-KR"/>
+      <xs:enumeration value="zh-CN"/>
+      <xs:enumeration value="zh-TW"/>
+      <xs:enumeration value="pt-BR"/>
+      <xs:enumeration value="es-ES"/>
+      <xs:enumeration value="es-MX"/>
+      <xs:enumeration value="sv-SE"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType name="base_condition_t">
+    <xs:attribute name="value" type="xs:string" use="required"/>
+  </xs:complexType>
+  <xs:complexType name="prompt_t">
+    <xs:choice maxOccurs="unbounded" minOccurs="0">
+      <xs:element name="Prompt" type="prompt_t"/>
+    </xs:choice>
+    <xs:attribute name="name" type="prompt_name_t" use="required"/>
+    <xs:attribute name="type" type="prompt_type_t" use="required"/>
+    <xs:attribute name="condition" type="xs:string" use="optional" default=""/>
+    <xs:attribute name="suffix" type="prompt_suffix_t" use="optional" default=""/>
+    <xs:attribute name="prosodyRate" type="prosody_rate_t" use="optional" default="+0%"/>
+    <xs:attribute name="language" type="language_t" use="optional" default=""/>
+    <xs:attribute name="limitKey" type="xs:string" use="optional" default=""/>
+  </xs:complexType>
+  <xs:complexType name="base_menu_t">
+    <xs:choice minOccurs = "0" maxOccurs = "unbounded" >
+      <xs:element name="PromptGroup" type="named_prompt_group_t" />
+    </xs:choice>
+    <xs:attribute name="id" type="id_t" use="required"/>
+    <xs:attribute name="minDtmfSize" type="dtmf_size_t" use="optional" default="0"/>
+    <xs:attribute name="maxDtmfSize" type="dtmf_size_t" use="optional" default="0"/>
+    <xs:attribute name="minNumericInput" type="numeric_size_t" use="optional" default="0"/>
+    <xs:attribute name="maxNumericInput" type="numeric_size_t" use="optional" default="0" />
+    <xs:attribute name="dtmfInputValue" type="dtmf_input_value_t" use="optional" default="option"/>
+    <xs:attribute name="dtmfStopTones" type="dtmf_key_t" use="optional" default=""/>
+    <xs:attribute name="interDigitTimeout" type="xs:unsignedShort" use="optional"/>
+    <xs:attribute name="inputTimeout" type="xs:unsignedShort" use="optional"/>
+    <xs:attribute name="initialSilenceTimeout" type="xs:unsignedShort" use="optional"/>
+    <xs:attribute name="uninterruptible" type="xs:boolean" use="optional" default="false"/>
+    <xs:attribute name="stopPromptOnBargeIn" type="xs:boolean" use="optional" default="true"/>
+    <xs:attribute name="keepDtmfOnNoMatch" type="xs:boolean" use="optional" default="false"/>
+  </xs:complexType>
+  <xs:complexType name="base_record_t">
+    <xs:attribute name="id" type="id_t" use="required" />
+    <xs:attribute name="dtmfStopTones" type="dtmf_key_t" use="required" />
+    <xs:attribute name="type" type="recording_type_t" use="required" />
+  </xs:complexType>
+  <xs:complexType name="base_faxRequest_t">
+    <xs:attribute name="id" type="id_t" use="required" />
+    <xs:attribute name="dtmfInputValue" type="dtmf_input_value_t" use="required" />
+  </xs:complexType>
+  <xs:simpleType name="prompt_name_t">
+    <xs:union memberTypes="wavfile_t variable_name_t loc_statement_t prompt_group_name_t silence_t"/>
+  </xs:simpleType>
+  <xs:simpleType name="wavfile_t">
+    <xs:restriction base="xs:string">
+      <xs:pattern value=".*\.wav"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="loc_statement_t">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="tui.*|vui.*"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="prompt_group_name_t">
+    <xs:restriction base="xs:string">
+      <xs:pattern value=".*Group"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="variable_name_t">
+    <xs:restriction base="xs:string">
+      <xs:pattern value=".*"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="legacy_variable_name_t">
+    <xs:restriction base="xs:string">
+      <!-- Test hook -->
+      <xs:enumeration value="InvalidVariable" />
+
+      <xs:enumeration value="lastInput" />
+      <xs:enumeration value="greeting" />
+      <xs:enumeration value="recording" />
+      <xs:enumeration value="userName" />
+      <xs:enumeration value="defaultLanguage" />
+      <xs:enumeration value="selectableLanguages" />
+      <xs:enumeration value="invalidExtension" />
+      <xs:enumeration value="adminMinPwdLen"/>
+      <xs:enumeration value="adminOldPwdLen"/>
+
+      <!-- Voicemail variables -->
+      <xs:enumeration value="messageReceivedTime"/>
+      <xs:enumeration value="currentVoicemailMessage"/>
+      <xs:enumeration value="senderInfo"/>
+      <xs:enumeration value="durationSeconds"/>
+      <xs:enumeration value="durationMinutes"/>
+
+      <!-- Message count variables -->
+      <xs:enumeration value="numVoicemail"/>
+      <xs:enumeration value="numEmail"/>
+      <xs:enumeration value="numEmailMax"/>
+      <xs:enumeration value="numMeetings"/>
+      <xs:enumeration value="location"/>
+      <xs:enumeration value="startTime"/>
+
+      <!-- Calendaring variables -->
+      <xs:enumeration value="clearDays"/>
+      <xs:enumeration value="clearTime"/>
+      <xs:enumeration value="remaining"/>
+      <xs:enumeration value="endTime"/>
+      <xs:enumeration value="time"/>
+      <xs:enumeration value="conflictTime"/>
+      <xs:enumeration value="subject"/>
+      <xs:enumeration value="location"/>
+      <xs:enumeration value="numConflicts"/>
+      <xs:enumeration value="numberOfMessages"/>
+      <xs:enumeration value="numAccepted"/>
+      <xs:enumeration value="numDeclined"/>
+      <xs:enumeration value="numUndecided"/>
+      <xs:enumeration value="numAttendees"/>
+      <xs:enumeration value="ownerName"/>
+      <xs:enumeration value="acceptedList"/>
+      <xs:enumeration value="declinedList"/>
+      <xs:enumeration value="undecidedList"/>
+      <xs:enumeration value="attendeeList"/>
+      <xs:enumeration value="calendarDate"/>
+      <xs:enumeration value="minutesLateMax" />
+      <xs:enumeration value="minutesLateMin" />
+      <xs:enumeration value="current" />
+      <xs:enumeration value="numRecipients" />
+      <xs:enumeration value="meetingTimeRange"/>
+
+      <!-- directory search variables -->
+      <xs:enumeration value="primaryKeySearch" />
+      <xs:enumeration value="secondaryKeySearch" />
+      <xs:enumeration value="primarySearchMode" />
+      <xs:enumeration value="secondarySearchMode" />
+      <xs:enumeration value="currentSearchMode" />
+      <xs:enumeration value="none" />
+      <xs:enumeration value="firstNameLastName" />
+      <xs:enumeration value="lastNameFirstName" />
+      <xs:enumeration value="emailAlias" />
+      <xs:enumeration value="newSearch" />
+      <xs:enumeration value="promptIndex" />
+      <xs:enumeration value="invalidSearchSelection" />
+      <xs:enumeration value="restartSearch" />
+      <xs:enumeration value="repeatSearchResults" />
+      <xs:enumeration value="searchInput" />
+
+      <xs:enumeration value="authenticatedUser" />
+      <xs:enumeration value="searchTarget" />
+      <xs:enumeration value="personalContacts" />
+      <xs:enumeration value="globalAddressList" />
+      <xs:enumeration value="companyName" />
+
+      <xs:enumeration value="dialingAccessDeniedPrompt" />
+      <xs:enumeration value="phoneNumberToDial" />
+      <xs:enumeration value="canonicalizedNumber" />
+      <xs:enumeration value="currentMenu" />
+      <xs:enumeration value="exactMatches"/>
+      <xs:enumeration value="partialMatches"/>
+      <xs:enumeration value="haveMorePartialMatches"/>
+      <xs:enumeration value="exceedRetryLimit"/>
+
+      <!-- autoattendant variables -->
+      <xs:enumeration value="aa_callSomeoneEnabled" />
+      <xs:enumeration value="aa_contactSomeoneEnabled" />
+      <xs:enumeration value="aa_nameLookupEnabled" />
+      <xs:enumeration value="directorySearchEnabled" />
+      <xs:enumeration value="aa_transferToOperatorEnabled" />
+      <xs:enumeration value="customizedMenuOptions" />
+      <xs:enumeration value="aa_customizedMenuEnabled" />
+      <xs:enumeration value="holidayHours" />
+      <xs:enumeration value="holidayIntroductoryGreetingPrompt" />
+      <xs:enumeration value="connectToExtensionsEnabled" />
+      <xs:enumeration value="infoAnnouncementFilename" />
+      <xs:enumeration value="infoAnnouncementEnabled" />
+      <xs:enumeration value="infoAnnouncementUninterruptible" />
+      <xs:enumeration value="mainMenuCustomPromptFilename" />
+      <xs:enumeration value="mainMenuCustomPromptEnabled" />
+      <xs:enumeration value="DtmfKey1"/>
+      <xs:enumeration value="DtmfKey2"/>
+      <xs:enumeration value="DtmfKey3"/>
+      <xs:enumeration value="DtmfKey4"/>
+      <xs:enumeration value="DtmfKey5"/>
+      <xs:enumeration value="DtmfKey6"/>
+      <xs:enumeration value="DtmfKey7"/>
+      <xs:enumeration value="DtmfKey8"/>
+      <xs:enumeration value="DtmfKey9"/>
+      <xs:enumeration value="TimeoutOption"/>
+      <xs:enumeration value="haveCustomMenuOptionPrompt"/>
+      <xs:enumeration value="customMenuOptionPrompt"/>
+      <xs:enumeration value="customMenuOption"/>
+      <xs:enumeration value="allowCall"/>
+      <xs:enumeration value="allowMessage"/>
+      <xs:enumeration value="nameOfDepartment{0}"/>
+      <xs:enumeration value="selectableDepartments"/>
+
+      <!-- speech autoattendant variables -->
+      <xs:enumeration value="aa_isBusinessHours" />
+      <xs:enumeration value="aa_dtmfFallbackEnabled" />
+      <xs:enumeration value="firstDepartment" />
+      <xs:enumeration value="customizedMenuGrammar" />
+      <xs:enumeration value="namesGrammar"/>
+      <xs:enumeration value="distributionListGrammar"/>
+      <xs:enumeration value="emailAliasGrammar"/>
+      <xs:enumeration value="resultType"/>
+      <xs:enumeration value="resultTypeString"/>
+      <xs:enumeration value="haveNameRecording"/>
+      <xs:enumeration value="haveNameRecording1"/>
+      <xs:enumeration value="haveNameRecording2"/>
+      <xs:enumeration value="haveNameRecording3"/>
+      <xs:enumeration value="haveNameRecording4"/>
+      <xs:enumeration value="haveNameRecording5"/>
+      <xs:enumeration value="haveNameRecording6"/>
+      <xs:enumeration value="haveNameRecording7"/>
+      <xs:enumeration value="haveNameRecording8"/>
+      <xs:enumeration value="haveNameRecording9"/>
+      <xs:enumeration value="departmentName"/>
+      <xs:enumeration value="namesOnly"/>
+      <xs:enumeration value="recordedNamesOnly"/>
+      <xs:enumeration value="recordedNamesAndTTS"/>
+      <xs:enumeration value="numUsers"/>
+      <xs:enumeration value="resultList"/>
+      <xs:enumeration value="user1"/>
+      <xs:enumeration value="user1"/>
+      <xs:enumeration value="user2"/>
+      <xs:enumeration value="user3"/>
+      <xs:enumeration value="user4"/>
+      <xs:enumeration value="user5"/>
+      <xs:enumeration value="user6"/>
+      <xs:enumeration value="user7"/>
+      <xs:enumeration value="user8"/>
+      <xs:enumeration value="user9"/>
+      <xs:enumeration value="AA_MainMenu_QA"/>
+      <xs:enumeration value="aa_goto_dtmf_autoattendant"/>
+      <xs:enumeration value="aa_goto_operator"/>
+
+      <!-- ASR contacts variables -->
+      <xs:enumeration value="mode"/>
+      <xs:enumeration value="alias"/>
+      <xs:enumeration value="contacts_nameLookupEnabled"/>
+      <xs:enumeration value="emailAddressSelection"/>
+
+      <!-- email variables -->
+      <xs:enumeration value="emailSender" />
+      <xs:enumeration value="emailSubject" />
+      <xs:enumeration value="normalizedSubject" />
+      <xs:enumeration value="emailReceivedTime" />
+      <xs:enumeration value="emailRequestTime" />
+      <xs:enumeration value="emailRequestTimeRange" />
+      <xs:enumeration value="emailReplyTime" />
+      <xs:enumeration value="emailToField" />
+      <xs:enumeration value="emailCCField" />
+      <xs:enumeration value="calendarStatus" />
+      <xs:enumeration value="numMessagesFromName" />
+      <xs:enumeration value="findByName" />
+      <xs:enumeration value="senderCallerID" />
+      <xs:enumeration value="messageLanguage" />
+      <xs:enumeration value="languageDetected" />
+
+      <!-- message thread variables -->
+      <xs:enumeration value="messagePart" />
+      <xs:enumeration value="waveMessagePart" />
+      <xs:enumeration value="textMessagePart" />
+
+      <!-- pilot number variables -->
+      <xs:enumeration value="pilotNumberWelcomeGreetingFilename"/>
+      <xs:enumeration value="pilotNumberWelcomeGreetingEnabled"/>
+      <xs:enumeration value="pilotNumberInfoAnnouncementFilename"/>
+      <xs:enumeration value="pilotNumberInfoAnnouncementEnabled"/>
+      <xs:enumeration value="pilotNumberInfoAnnouncementInterruptible"/>
+      <xs:enumeration value="pilotNumberTransferToOperatorEnabled"/>
+
+      <!-- prompt provisioning variables -->
+      <xs:enumeration value="tuiPromptEditingEnabled"/>
+      <xs:enumeration value="selectedPrompt"/>
+      <xs:enumeration value="selectedPromptType"/>
+      <xs:enumeration value="holidayName"/>
+      <xs:enumeration value="holidayStartDate"/>
+      <xs:enumeration value="holidayEndDate"/>
+      <xs:enumeration value="playbackIndex"/>
+      <xs:enumeration value="holidayCount"/>
+      <xs:enumeration value="moreHolidaysAvailable"/>
+      <xs:enumeration value="haveBusinessHoursPrompts"/>
+      <xs:enumeration value="haveAfterHoursPrompts"/>
+      <xs:enumeration value="haveAutoAttendantPrompts"/>
+      <xs:enumeration value="haveDialPlanPrompts"/>
+      <xs:enumeration value="haveHolidayPrompts"/>
+      <xs:enumeration value="haveInfoAnnoucement"/>
+      <xs:enumeration value="haveWelcomeGreeting"/>
+      <xs:enumeration value="haveKeyMapping"/>
+      <xs:enumeration value="haveMainMenu"/>
+      <xs:enumeration value="promptProvContext"/>
+
+      <!-- personal options variables -->
+      <xs:enumeration value="currentTimeZone"/>
+      <xs:enumeration value="offsetHours"/>
+      <xs:enumeration value="offsetMinutes"/>
+
+      <!-- personal autoattendant variables -->
+      <xs:enumeration value="HaveGreeting"/>
+      <xs:enumeration value="AutoGeneratePrompt"/>
+      <xs:enumeration value="havePersonalOperator"/>
+      <xs:enumeration value="Key1Enabled"/>
+      <xs:enumeration value="Key2Enabled"/>
+      <xs:enumeration value="Key3Enabled"/>
+      <xs:enumeration value="Key4Enabled"/>
+      <xs:enumeration value="Key5Enabled"/>
+      <xs:enumeration value="Key6Enabled"/>
+      <xs:enumeration value="Key7Enabled"/>
+      <xs:enumeration value="Key8Enabled"/>
+      <xs:enumeration value="Key9Enabled"/>
+      <xs:enumeration value="BlindTransferEnabled"/>
+      <xs:enumeration value="TransferToVoiceMessageEnabled"/>
+      <xs:enumeration value="FindMeEnabled"/>
+      <xs:enumeration value="TransferToMailboxEnabled"/>
+      <xs:enumeration value="HaveRecordedName"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="base_action_t">
+    <xs:restriction base="xs:string">
+      <xs:pattern value=".*"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="weak_action_t">
+    <xs:restriction base="xs:string">
+      <!-- Test hook -->
+      <xs:enumeration value="InvalidAction" />
+      <xs:enumeration value="stopASR"/>
+      <xs:enumeration value="null"/>
+      <xs:enumeration value="disconnect"/>
+      <xs:enumeration value="more" />
+      <xs:enumeration value="pause" />
+      <xs:enumeration value="clearRecording" />
+      <xs:enumeration value="appendRecording" />
+      <xs:enumeration value="rewind" />
+      <xs:enumeration value="fastForward" />
+      <xs:enumeration value="slowDown" />
+      <xs:enumeration value="speedUp" />
+      <xs:enumeration value="resetPlayback" />
+      <xs:enumeration value="sendMessage" />
+      <xs:enumeration value="sendMessageUrgent" />
+      <xs:enumeration value="SendMessagePrivate" />
+      <xs:enumeration value="SendMessagePrivateAndUrgent" />
+      <xs:enumeration value="ToggleImportance" />
+      <xs:enumeration value="TogglePrivacy" />
+      <xs:enumeration value="ClearSelection" />
+      <xs:enumeration value="addRecipientBySearch" />
+      <xs:enumeration value="removeRecipient" />
+      <xs:enumeration value="cancelMessage" />
+      <xs:enumeration value="getOofStatus"/>
+      <xs:enumeration value="saveRecoEvent"/>
+      <xs:enumeration value="quickMessage" />
+      <xs:enumeration value="setSpeechError" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="base_event_t">
+    <xs:restriction base="xs:string">
+      <!-- Test hook -->
+      <xs:enumeration value="InvalidEvent" />
+      <xs:enumeration value="timeout"/>
+      <xs:enumeration value="silence"/>
+      <xs:enumeration value="unknownRecipient" />
+      <xs:enumeration value="noRecipients" />
+      <xs:enumeration value="userHangup" />
+      <xs:enumeration value="xsoError" />
+      <xs:enumeration value="quotaExceeded" />
+      <xs:enumeration value="maxProsodyRate" />
+      <xs:enumeration value="minProsodyRate" />
+      <xs:enumeration value="unknownLanguage" />
+      <xs:enumeration value="umdiagnosticCall" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="reco_event_t">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="reco.*|dtmfFallback|speechError|mumble1|mumble2|silence1|silence2|help|invalidCommand|repeat"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:complexType name="base_transition_t">
+    <xs:attribute name="refId" type="refid_t" use="required"/>
+    <xs:attribute name="condition" type="xs:string" use="optional"/>
+    <xs:attribute name="heavyaction" type="xs:boolean" use="optional"/>
+    <xs:attribute name="refInfo" type="xs:string" use="optional" default=""/>
+    <xs:attribute name="playbackAction" type="xs:boolean" use="optional" default="false"/>
+  </xs:complexType>
+
+  <!-- Speech Specific Definitions -->
+  <xs:complexType name="base_speech_menu_t">
+    <xs:complexContent>
+      <xs:extension base="base_menu_t">
+        <xs:sequence>
+          <xs:element name="Main" type="prompt_group_t" minOccurs="1" maxOccurs="1"/>
+          <xs:element name="Mumble1" type="prompt_group_t" minOccurs="0" maxOccurs="1"/>
+          <xs:element name="Mumble2" type="prompt_group_t" minOccurs="0" maxOccurs="1"/>
+          <xs:element name="Silence1" type="prompt_group_t" minOccurs="0" maxOccurs="1"/>
+          <xs:element name="Silence2" type="prompt_group_t" minOccurs="0" maxOccurs="1"/>
+          <xs:element name="Help" type="prompt_group_t" minOccurs="0" maxOccurs="1"/>
+          <xs:element name="SpeechError" type="prompt_group_t" minOccurs="0" maxOccurs="1"/>
+          <xs:element name="InvalidCommand" type="prompt_group_t" minOccurs="0" maxOccurs="1"/>
+          <xs:element name="Grammars" type="grammar_group_t" minOccurs="1" maxOccurs="1"/>
+        </xs:sequence>
+        <xs:attribute name="babbleSeconds" type="xs:integer" use="optional"/>
+        <xs:attribute name="endSilenceSeconds" type="xs:integer" use="optional"/>
+        <xs:attribute name="confidence" type="xs:float" use="optional"/>
+        <xs:attribute name="minDtmfSize" type="dtmf_size_t" use="optional" default="1"/>
+        <xs:attribute name="maxDtmfSize" type="dtmf_size_t" use="optional" default="1"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="prompt_group_t">
+    <xs:choice maxOccurs="unbounded" minOccurs="0">
+      <xs:element name="Condition" type="prompt_condition_group_t"/>
+      <xs:element name="Prompt" type="prompt_t"/>
+    </xs:choice>
+  </xs:complexType >
+
+  <xs:complexType name="prompt_condition_group_t">
+    <xs:choice maxOccurs="unbounded">
+      <xs:element name="Condition" type="prompt_condition_group_t"/>
+      <xs:element name="Prompt" type="prompt_t"/>
+    </xs:choice>
+    <xs:attribute name="value" type="xs:string" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="named_prompt_group_t">
+    <xs:choice maxOccurs="unbounded">
+      <xs:element name="Condition" type="prompt_condition_group_t"/>
+      <xs:element name="Prompt" type="prompt_t"/>
+    </xs:choice>
+    <xs:attribute name="name" type="xs:string" use="required"/>
+  </xs:complexType >
+
+  <xs:complexType name="grammar_t">
+    <xs:attribute name="name" type="xs:string" use="required"/>
+    <xs:attribute name="type" type="grammar_type_t" use="required"/>
+    <xs:attribute name="rule" type="xs:string" use="required" />
+    <xs:attribute name="condition" type="xs:string" use="optional" default=""/>
+  </xs:complexType>
+
+  <xs:complexType name="grammar_group_t">
+    <xs:choice maxOccurs="unbounded">
+      <xs:element name="Condition" type="grammar_condition_group_t"/>
+      <xs:element name="Grammar" type="grammar_t"/>
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:complexType name="grammar_condition_group_t">
+    <xs:choice maxOccurs="unbounded">
+      <xs:element name="Condition" type="grammar_condition_group_t"/>
+      <xs:element name="Grammar" type="grammar_t"/>
+    </xs:choice>
+    <xs:attribute name="value" type="xs:string" use="required"/>
+  </xs:complexType>
+
+  <!-- Global Transitions =====================================================================-->
+  <xs:simpleType name="global_action_t">
+    <xs:union memberTypes="base_action_t">
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="getExtension"/>
+          <xs:enumeration value="getName"/>
+          <xs:enumeration value="doLogon"/>
+          <xs:enumeration value="validateMailbox"/>
+          <xs:enumeration value="createCallee"/>
+          <xs:enumeration value="validateCaller"/>
+          <xs:enumeration value="clearCaller"/>
+          <xs:enumeration value="oofShortcut"/>
+          <xs:enumeration value="getSummaryInfo"/>
+          <xs:enumeration value="handleCallSomeone"/>
+          <xs:enumeration value="setInitialSearchTargetGAL"/>
+          <xs:enumeration value="setInitialSearchTargetContacts"/>
+          <xs:enumeration value="setPromptProvContext"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+  <xs:simpleType name="global_event_t">
+    <xs:union memberTypes="dtmf_key_t base_event_t reco_event_t">
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="extensionFound"/>
+          <xs:enumeration value="troubleshootingToolCall"/>
+          <xs:enumeration value="virtualNumberCall"/>
+          <xs:enumeration value="validUser"/>
+          <xs:enumeration value="validDtmfAutoAttendant"/>
+          <xs:enumeration value="validSpeechAutoAttendant"/>
+          <xs:enumeration value="logonOk"/>
+          <xs:enumeration value="logonAsr"/>
+          <xs:enumeration value="logonPP"/>
+          <xs:enumeration value="firstTimeUserTask"/>
+          <xs:enumeration value="changePasswordTask"/>
+          <xs:enumeration value="invalidExtension"/>
+          <xs:enumeration value="maxInvalidExtensions"/>
+          <xs:enumeration value="mailboxFound"/>
+          <xs:enumeration value="forcePinLogin"/>
+          <xs:enumeration value="maxInvalidMailbox"/>
+          <xs:enumeration value="badPasswordDisconnect"/>
+          <xs:enumeration value="badPasswordLockout"/>
+          <xs:enumeration value="badPasswordReset"/>
+          <xs:enumeration value="staleChecksum"/>
+          <xs:enumeration value="faxtone"/>
+          <xs:enumeration value="dtmfSent"/>
+          <xs:enumeration value="recoMain"/>
+          <xs:enumeration value="runCallExtension"/>
+          <xs:enumeration value="playOnPhone"/>
+          <xs:enumeration value="findMeSubscriberCall"/>
+          <xs:enumeration value="playOnPhonePAAGreeting"/>
+          <xs:enumeration value="mailboxNotSupported"/>
+          <xs:enumeration value="noMoreServers"/>
+          <xs:enumeration value="mailboxNotSupported"/>
+          <xs:enumeration value="divertedExtensionNotAllowVoiceMail"/>
+          <xs:enumeration value="faxRequestAccepted"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+
+  <xs:complexType name="stateMachine_t">
+    <xs:choice maxOccurs="unbounded">
+      <xs:element name="FsmModule" type="fsmModule_t" />
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:complexType name="fsmModule_t">
+    <xs:sequence maxOccurs="unbounded">
+      <xs:element name="GlobalActivityManager" type="global_t" />
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="global_transition_t">
+    <xs:complexContent>
+      <xs:extension base="base_transition_t">
+        <xs:attribute name="action" type="global_action_t" use="required"/>
+        <xs:attribute name="event" type="global_event_t" use="required"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="global_menu_t">
+    <xs:complexContent>
+      <xs:extension base="base_menu_t">
+        <xs:group ref="global_activity_nodes"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="global_t">
+    <xs:choice maxOccurs="unbounded">
+      <xs:element name="SpeechMenu" type="global_speech_menu_t" />
+      <xs:element name="Menu" type="global_menu_t"/>
+      <xs:element name="PersonalOptionsManager" type="personal_options_t"/>
+      <xs:element name="RecordVoicemailManager" type="record_voicemail_t"/>
+      <xs:element name="RetrieveVoicemailManager" type="retrieve_voicemail_t"/>
+      <xs:element name="CalendarManager" type="calendar_t"/>
+      <xs:element name="CallTransfer" type="transfer_t"/>
+      <xs:element name="SubmitMessageManager" type="submit_message_t"/>
+      <xs:element name="DirectorySearchManager" type="directorysearch_t"/>
+      <xs:element name="AutoAttendantManager" type="autoattendant_t"/>
+      <xs:element name="SpeechAutoAttendantManager" type="speech_autoattendant_t"/>
+      <xs:element name="AsrContactsManager" type="asr_contacts_t"/>
+      <xs:element name="EmailManager" type="email_t"/>
+      <xs:element name="FaxManager" type="fax_t" />
+      <xs:element name="PlayOnPhoneManager" type="playonphone_t" />
+      <xs:element name="UmDiagnosticManager" type="umdiagnostic_t" />
+      <xs:element name="UmTroubleshootingToolManager" type="umtool_t" />
+      <xs:element name="PromptProvisioningManager" type="promptprovisioning_t" />
+      <xs:element name="PersonalAutoAttendantManager" type="personalautoattendant_t" />
+      <xs:element name="FindMeSubscriberManager" type="findmesubscriber_t" />
+      <xs:element name="VirtualNumberManager" type="virtualnumber_t" />
+      <xs:element name="PlayOnPhonePAAManager" type="playonphonepaa_t" />
+      <xs:element name="PlayOnPhoneAAManager" type="playonphoneaa_t" />
+      <xs:element name="Transition" type="global_transition_t"/>
+    </xs:choice>
+    <xs:attribute name="firstActivityId" type="id_t" default="1"/>
+    <xs:attribute name="id" type="id_t" default="0"/>
+  </xs:complexType>
+  <xs:complexType name="global_condition_t">
+    <xs:complexContent>
+      <xs:extension base="base_condition_t">
+        <xs:group ref="global_activity_nodes"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:group name="global_activity_nodes">
+    <xs:sequence>
+      <xs:choice maxOccurs="unbounded">
+        <xs:element name="Transition" type="global_transition_t"/>
+        <xs:element name="Prompt" type="prompt_t"/>
+        <xs:element name="Condition" type="global_condition_t"/>
+      </xs:choice>
+    </xs:sequence>
+  </xs:group>
+
+  <xs:complexType name="global_speech_menu_t">
+    <xs:complexContent>
+      <xs:extension base="base_speech_menu_t">
+        <xs:sequence>
+          <xs:element name="Transitions" type="global_transition_group_t" minOccurs="1" maxOccurs="1"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="global_transition_group_t">
+    <xs:choice maxOccurs="unbounded">
+      <xs:element name="Transition" type="global_transition_t"/>
+      <xs:element name="Condition" type="global_transition_condition_t"/>
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:complexType name="global_transition_condition_t">
+    <xs:choice maxOccurs="unbounded">
+      <xs:element name="Transition" type="global_transition_t"/>
+      <xs:element name="Condition" type="global_transition_condition_t"/>
+    </xs:choice>
+    <xs:attribute name="value" type="xs:string" use="required"/>
+  </xs:complexType>
+
+  <!-- Personal Options =======================================================================-->
+  <xs:simpleType name="personal_options_action_t">
+    <xs:union memberTypes="base_action_t">
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="getExternal"/>
+          <xs:enumeration value="getOof"/>
+          <xs:enumeration value="getName"/>
+          <xs:enumeration value="saveExternal"/>
+          <xs:enumeration value="saveOof"/>
+          <xs:enumeration value="saveName"/>
+          <xs:enumeration value="deleteExternal"/>
+          <xs:enumeration value="deleteOof"/>
+          <xs:enumeration value="deleteName"/>
+          <xs:enumeration value="validatePassword"/>
+          <xs:enumeration value="matchPasswords"/>
+          <xs:enumeration value="getSystemTask"/>
+          <xs:enumeration value="getFirstTimeUserTask"/>
+          <xs:enumeration value="firstTimeUserComplete"/>
+          <xs:enumeration value="toggleTimeFormat"/>
+          <xs:enumeration value="toggleOOF"/>
+          <xs:enumeration value="toggleASR"/>
+          <xs:enumeration value="toggleEmailOOF"/>
+          <xs:enumeration value="setGreetingsAction"/>
+          <xs:enumeration value="selectTimeZone"/>
+          <xs:enumeration value="findTimeZone"/>
+          <xs:enumeration value="nextTimeZone"/>
+          <xs:enumeration value="firstTimeZone"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+  <xs:simpleType name="personal_options_event_t">
+    <xs:union memberTypes="dtmf_key_t base_event_t">
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="noExternal"/>
+          <xs:enumeration value="noOof"/>
+          <xs:enumeration value="noName"/>
+          <xs:enumeration value="passwordsMatch"/>
+          <xs:enumeration value="passwordValidated"/>
+          <xs:enumeration value="firstTimeUserTask"/>
+          <xs:enumeration value="oofStatusTask"/>
+          <xs:enumeration value="changePasswordTask"/>
+          <xs:enumeration value="recordNameTask"/>
+          <xs:enumeration value="recordExternalTask"/>
+          <xs:enumeration value="invalidTimeZone"/>
+          <xs:enumeration value="invalidTimeFormat"/>
+          <xs:enumeration value="endOfTimeZoneList"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+  <xs:complexType name="personal_options_transition_t">
+    <xs:complexContent>
+      <xs:extension base="base_transition_t">
+        <xs:attribute name="action" type="personal_options_action_t" use="required"/>
+        <xs:attribute name="event" type="personal_options_event_t" use="required"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="personal_options_menu_t">
+    <xs:complexContent>
+      <xs:extension base="base_menu_t">
+        <xs:group ref="personal_options_activity_nodes"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="personal_options_record_t">
+    <xs:complexContent>
+      <xs:extension base="base_record_t">
+        <xs:choice maxOccurs="unbounded">
+          <xs:element name="Transition" type="personal_options_transition_t"/>
+        </xs:choice>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="personal_options_t">
+    <xs:choice maxOccurs="unbounded">
+      <xs:element name="Menu" type="personal_options_menu_t"/>
+      <xs:element name="Transition" type="personal_options_transition_t"/>
+      <xs:element name="Record" type="personal_options_record_t"/>
+    </xs:choice>
+    <xs:attribute name="firstActivityId" type="id_t" default="1"/>
+    <xs:attribute name="id" type="id_t" use="required"/>
+  </xs:complexType>
+  <xs:complexType name="personal_options_condition_t">
+    <xs:complexContent>
+      <xs:extension base="base_condition_t">
+        <xs:group ref="personal_options_activity_nodes"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:group name="personal_options_activity_nodes">
+    <xs:sequence>
+      <xs:choice maxOccurs="unbounded">
+        <xs:element name="Transition" type="personal_options_transition_t"/>
+        <xs:element name="Prompt" type="prompt_t"/>
+        <xs:element name="Condition" type="personal_options_condition_t"/>
+      </xs:choice>
+    </xs:sequence>
+  </xs:group>
+  <!-- Retrieve VoiceMail=====================================================================-->
+  <xs:simpleType name="retrieve_voicemail_action_t">
+    <xs:union memberTypes="base_action_t">
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="getNewMessages"/>
+          <xs:enumeration value="getPriorityOfMessage"/>
+          <xs:enumeration value="deleteVoiceMail"/>
+          <xs:enumeration value="undeleteVoiceMail"/>
+          <xs:enumeration value="saveVoiceMail"/>
+          <xs:enumeration value="markUnreadVoiceMail"/>
+          <xs:enumeration value="flagVoiceMail"/>
+          <xs:enumeration value="getEnvelopInfo"/>
+          <xs:enumeration value="getNextMessage"/>
+          <xs:enumeration value="getPreviousMessage"/>
+          <xs:enumeration value="replyVoiceMail"/>
+          <xs:enumeration value="forwardVoiceMail"/>
+          <xs:enumeration value="getSavedMessages"/>
+          <xs:enumeration value="getMessageReadProperty"/>
+          <xs:enumeration value="getSenderName"/>
+          <xs:enumeration value="findByName" />
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+  <xs:simpleType name="retrieve_voicemail_event_t">
+    <xs:union memberTypes="dtmf_key_t base_event_t reco_event_t">
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="isHighPriority"/>
+          <xs:enumeration value="isProtected"/>
+          <xs:enumeration value="noNewMessages"/>
+          <xs:enumeration value="noSavedMessages"/>
+          <xs:enumeration value="noPreviousNewMessages"/>
+          <xs:enumeration value="noPreviousSavedMessages"/>
+          <xs:enumeration value="currentNewMessage"/>
+          <xs:enumeration value="currentSavedMessage"/>
+          <xs:enumeration value="nameNotAvailable"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+  <xs:complexType name="retrieve_voicemail_transition_t">
+    <xs:complexContent>
+      <xs:extension base="base_transition_t">
+        <xs:attribute name="action" type="retrieve_voicemail_action_t" use="required"/>
+        <xs:attribute name="event" type="retrieve_voicemail_event_t" use="required"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="retrieve_voicemail_record_t">
+    <xs:complexContent>
+      <xs:extension base="base_record_t">
+        <xs:choice maxOccurs="unbounded">
+          <xs:element name="Transition" type="retrieve_voicemail_transition_t"/>
+        </xs:choice>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="retrieve_voicemail_menu_t">
+    <xs:complexContent>
+      <xs:extension base="base_menu_t">
+        <xs:group ref="retrieve_voicemail_activity_nodes"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="retrieve_voicemail_t">
+    <xs:choice maxOccurs="unbounded">
+      <xs:element name="Menu" type="retrieve_voicemail_menu_t"/>
+      <xs:element name="Transition" type="global_transition_t"/>
+      <xs:element name="MessagePartManager" type="message_player_t"/>
+      <xs:element name="PlayBackMenu" type="retrieve_voicemail_menu_t"/>
+      <xs:element name="Record" type="retrieve_voicemail_record_t"/>
+      <xs:element name="DirectorySearchManager" type="directorysearch_t"/>
+      <xs:element name="CallTransfer" type="transfer_t"/>
+      <xs:element name="SpeechMenu" type="vmail_speech_menu_t"/>
+      <xs:element name="AsrContactsManager" type="asr_contacts_t"/>
+    </xs:choice>
+    <xs:attribute name="firstActivityId" type="id_t" default="1"/>
+    <xs:attribute name="id" type="id_t" use="required"/>
+  </xs:complexType>
+  <xs:complexType name="retrieve_voicemail_condition_t">
+    <xs:complexContent>
+      <xs:extension base="base_condition_t">
+        <xs:group ref="retrieve_voicemail_activity_nodes"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:group name="retrieve_voicemail_activity_nodes">
+    <xs:sequence>
+      <xs:choice maxOccurs="unbounded">
+        <xs:element name="Transition" type="retrieve_voicemail_transition_t"/>
+        <xs:element name="Prompt" type="prompt_t"/>
+        <xs:element name="Condition" type="retrieve_voicemail_condition_t"/>
+      </xs:choice>
+    </xs:sequence>
+  </xs:group>
+
+  <xs:complexType name="vmail_speech_menu_t">
+    <xs:complexContent>
+      <xs:extension base="base_speech_menu_t">
+        <xs:sequence>
+          <xs:element name="Transitions" type="vmail_transition_group_t" minOccurs="1" maxOccurs="1"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="vmail_transition_group_t">
+    <xs:choice maxOccurs="unbounded">
+      <xs:element name="Transition" type="retrieve_voicemail_transition_t"/>
+      <xs:element name="Condition" type="vmail_transition_condition_t"/>
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:complexType name="vmail_transition_condition_t">
+    <xs:choice maxOccurs="unbounded">
+      <xs:element name="Transition" type="retrieve_voicemail_transition_t"/>
+      <xs:element name="Condition" type="vmail_transition_condition_t"/>
+    </xs:choice>
+    <xs:attribute name="value" type="xs:string" use="required"/>
+  </xs:complexType>
+
+  <!-- Record Voicemail =======================================================================-->
+  <xs:simpleType name="record_voicemail_action_t">
+    <xs:union memberTypes="base_action_t">
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="getGreeting"/>
+          <xs:enumeration value="getName"/>
+          <xs:enumeration value="submitVoiceMail"/>
+          <xs:enumeration value="ClearSelection"/>
+          <xs:enumeration value="ToggleImportance"/>
+          <xs:enumeration value="TogglePrivacy"/>
+          <xs:enumeration value="fillCallerInfo"/>
+          <xs:enumeration value="isQuotaExceeded"/>
+          <xs:enumeration value="canAnnonLeaveMessage"/>
+          <xs:enumeration value="isPipelineHealthy"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+  <xs:simpleType name="record_voicemail_event_t">
+    <xs:union memberTypes="dtmf_key_t base_event_t">
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="noGreeting"/>
+          <xs:enumeration value="noGreetingOof"/>
+          <xs:enumeration value="faxtone"/>
+          <xs:enumeration value="quotaNotExceeded"/>
+          <xs:enumeration value="annonCanLeaveMessage"/>
+          <xs:enumeration value="pipelineHealthy"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+  <xs:complexType name="record_voicemail_transition_t">
+    <xs:complexContent>
+      <xs:extension base="base_transition_t">
+        <xs:attribute name="action" type="record_voicemail_action_t" use="required"/>
+        <xs:attribute name="event" type="record_voicemail_event_t" use="required"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="record_voicemail_menu_t">
+    <xs:complexContent>
+      <xs:extension base="base_menu_t">
+        <xs:group ref="record_voicemail_activity_nodes"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="record_voicemail_record_t">
+    <xs:complexContent>
+      <xs:extension base="base_record_t">
+        <xs:choice maxOccurs="unbounded">
+          <xs:element name="Transition" type="record_voicemail_transition_t"/>
+        </xs:choice>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="record_voicemail_t">
+    <xs:choice maxOccurs="unbounded">
+      <xs:element name="Menu" type="record_voicemail_menu_t"/>
+      <xs:element name="Transition" type="global_transition_t"/>
+      <xs:element name="Record" type="record_voicemail_record_t"/>
+      <xs:element name="CallTransfer" type="transfer_t"/>
+    </xs:choice>
+    <xs:attribute name="firstActivityId" type="id_t" default="1"/>
+    <xs:attribute name="id" type="id_t" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="record_voicemail_condition_t">
+    <xs:complexContent>
+      <xs:extension base="base_condition_t">
+        <xs:group ref="record_voicemail_activity_nodes"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:group name="record_voicemail_activity_nodes">
+    <xs:sequence>
+      <xs:choice maxOccurs="unbounded">
+        <xs:element name="Transition" type="record_voicemail_transition_t"/>
+        <xs:element name="Prompt" type="prompt_t"/>
+        <xs:element name="Condition" type="record_voicemail_condition_t"/>
+      </xs:choice>
+    </xs:sequence>
+  </xs:group>
+
+  <!-- Fax ====================================================================================-->
+  <xs:simpleType name="fax_action_t">
+    <xs:union memberTypes="base_action_t">
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="isQuotaExceeded"/>
+          <xs:enumeration value="isPipelineHealthy"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+  <xs:simpleType name="fax_event_t">
+    <xs:union memberTypes="dtmf_key_t base_event_t">
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="quotaNotExceeded"/>
+          <xs:enumeration value="pipelineHealthy"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+  <xs:complexType name="fax_menu_t">
+    <xs:complexContent>
+      <xs:extension base="base_menu_t">
+        <xs:group ref="fax_activity_nodes"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="fax_transition_t">
+    <xs:complexContent>
+      <xs:extension base="base_transition_t">
+        <xs:attribute name="action" type="fax_action_t" use="required"/>
+        <xs:attribute name="event" type="fax_event_t" use="required"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:group name="fax_activity_nodes">
+    <xs:sequence>
+      <xs:choice maxOccurs="unbounded">
+        <xs:element name="Transition" type="fax_transition_t"/>
+        <xs:element name="Condition" type="base_condition_t"/>
+      </xs:choice>
+    </xs:sequence>
+  </xs:group>
+  <xs:complexType name="fax_t">
+    <xs:choice maxOccurs="unbounded">
+      <xs:element name="Menu" type="fax_menu_t"/>
+      <xs:element name="FaxRequest" type="faxRequest_t" maxOccurs="1" minOccurs="1"/>
+      <xs:element name="CallTransfer" type="transfer_t"/>
+    </xs:choice>
+    <xs:attribute name="firstActivityId" type="id_t" default="1" />
+    <xs:attribute name="id" type="id_t" use="required" />
+  </xs:complexType>
+  <xs:complexType name="faxRequest_t">
+    <xs:complexContent>
+      <xs:extension base="base_faxRequest_t">
+        <xs:group ref="global_activity_nodes"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <!-- Calendar ===============================================================================-->
+  <xs:simpleType name="calendar_action_t">
+    <xs:union memberTypes="base_action_t">
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="getTodaysMeetings" />
+          <xs:enumeration value="previousMeeting" />
+          <xs:enumeration value="nextMeeting" />
+          <xs:enumeration value="nextDay" />
+          <xs:enumeration value="getDetails" />
+          <xs:enumeration value="getParticipants" />
+          <xs:enumeration value="lateForMeeting" />
+          <xs:enumeration value="clearMinutesLate" />
+          <xs:enumeration value="cancelOrDecline" />
+          <xs:enumeration value="cancelSeveral" />
+          <xs:enumeration value="sendMessage" />
+          <xs:enumeration value="sendMessageUrgent" />
+          <xs:enumeration value="callOrganizer" />
+          <xs:enumeration value="replyToOrganizer" />
+          <xs:enumeration value="replyToAll" />
+          <xs:enumeration value="forward" />
+          <xs:enumeration value="giveShortcutHint" />
+          <xs:enumeration value="parseDateSpeech" />
+          <xs:enumeration value="openCalendarDate" />
+          <xs:enumeration value="nextMeetingSameDay" />
+          <xs:enumeration value="previousMeetingSameDay" />
+          <xs:enumeration value="firstMeetingSameDay" />
+          <xs:enumeration value="lastMeetingSameDay" />
+          <xs:enumeration value="acceptMeeting" />
+          <xs:enumeration value="markAsTentative" />
+          <xs:enumeration value="seekValidMeeting" />
+          <xs:enumeration value="isValidMeeting" />
+          <xs:enumeration value="skipHeader" />
+          <xs:enumeration value="readTheHeader" />
+          <xs:enumeration value="parseLateMinutes" />
+          <xs:enumeration value="parseClearTimeDays" />
+          <xs:enumeration value="parseClearHours" />
+          <xs:enumeration value="giveLateMinutesHint" />
+          <xs:enumeration value="selectLanguage"/>
+          <xs:enumeration value="nextLanguage"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+  <xs:simpleType name="calendar_event_t">
+    <xs:union memberTypes="dtmf_key_t base_event_t reco_event_t">
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="noMeetings"/>
+          <xs:enumeration value="emptyCalendar"/>
+          <xs:enumeration value="invalidTime"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+  <xs:complexType name="calendar_transition_t">
+    <xs:complexContent>
+      <xs:extension base="base_transition_t">
+        <xs:attribute name="action" type="calendar_action_t" use="required"/>
+        <xs:attribute name="event" type="calendar_event_t" use="required"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="calendar_menu_t">
+    <xs:complexContent>
+      <xs:extension base="base_menu_t">
+        <xs:group ref="calendar_activity_nodes"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="calendar_record_t">
+    <xs:complexContent>
+      <xs:extension base="base_record_t">
+        <xs:choice maxOccurs="unbounded">
+          <xs:element name="Transition" type="calendar_transition_t"/>
+        </xs:choice>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="calendar_t">
+    <xs:choice maxOccurs="unbounded">
+      <xs:element name="SpeechMenu" type="calendar_speech_menu_t" />
+      <xs:element name="Menu" type="calendar_menu_t"/>
+      <xs:element name="Transition" type="global_transition_t"/>
+      <xs:element name="Record" type="calendar_record_t"/>
+      <xs:element name="MessagePartManager" type="message_player_t"/>
+      <xs:element name="PlayBackMenu" type="calendar_menu_t"/>
+      <xs:element name="CallTransfer" type="transfer_t"/>
+      <xs:element name="AsrContactsManager" type="asr_contacts_t"/>
+      <xs:element name="DirectorySearchManager" type="directorysearch_t"/>
+    </xs:choice>
+    <xs:attribute name="firstActivityId" type="id_t" default="1"/>
+    <xs:attribute name="id" type="id_t" use="required"/>
+  </xs:complexType>
+  <xs:complexType name="calendar_condition_t">
+    <xs:complexContent>
+      <xs:extension base="base_condition_t">
+        <xs:group ref="calendar_activity_nodes"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:group name="calendar_activity_nodes">
+    <xs:sequence>
+      <xs:choice maxOccurs="unbounded">
+        <xs:element name="Transition" type="calendar_transition_t"/>
+        <xs:element name="Prompt" type="prompt_t"/>
+        <xs:element name="Condition" type="calendar_condition_t"/>
+      </xs:choice>
+    </xs:sequence>
+  </xs:group>
+
+  <xs:complexType name="calendar_speech_menu_t">
+    <xs:complexContent>
+      <xs:extension base="base_speech_menu_t">
+        <xs:sequence>
+          <xs:element name="Transitions" type="calendar_transition_group_t" minOccurs="1" maxOccurs="1"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="calendar_transition_group_t">
+    <xs:choice maxOccurs="unbounded">
+      <xs:element name="Transition" type="calendar_transition_t"/>
+      <xs:element name="Condition" type="calendar_transition_condition_t"/>
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:complexType name="calendar_transition_condition_t">
+    <xs:choice maxOccurs="unbounded">
+      <xs:element name="Transition" type="calendar_transition_t"/>
+      <xs:element name="Condition" type="calendar_transition_condition_t"/>
+    </xs:choice>
+    <xs:attribute name="value" type="xs:string" use="required"/>
+  </xs:complexType>
+
+  <!-- SubmitMessage ==============================================================================-->
+  <xs:simpleType name="submit_message_action_t">
+    <xs:union memberTypes="base_action_t">
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="sendMessage" />
+          <xs:enumeration value="sendMessageUrgent" />
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+  <xs:simpleType name="submit_message_event_t">
+    <xs:union memberTypes="dtmf_key_t base_event_t">
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+  <xs:complexType name="submit_message_transition_t">
+    <xs:complexContent>
+      <xs:extension base="base_transition_t">
+        <xs:attribute name="action" type="submit_message_action_t" use="required"/>
+        <xs:attribute name="event" type="submit_message_event_t" use="required"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="submit_message_menu_t">
+    <xs:complexContent>
+      <xs:extension base="base_menu_t">
+        <xs:group ref="submit_message_activity_nodes"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="submit_message_record_t">
+    <xs:complexContent>
+      <xs:extension base="base_record_t">
+        <xs:choice maxOccurs="unbounded">
+          <xs:element name="Transition" type="submit_message_transition_t"/>
+        </xs:choice>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="submit_message_t">
+    <xs:choice maxOccurs="unbounded">
+      <xs:element name="PlayBackMenu" type="submit_message_menu_t"/>
+      <xs:element name="Menu" type="submit_message_menu_t"/>
+      <xs:element name="Transition" type="global_transition_t"/>
+      <xs:element name="Record" type="submit_message_record_t"/>
+      <xs:element name="DirectorySearchManager" type="directorysearch_t"/>
+      <xs:element name="AsrContactsManager" type="asr_contacts_t"/>
+      <xs:element name="SpeechMenu" type="asr_contacts_menu_t"/>
+    </xs:choice>
+    <xs:attribute name="firstActivityId" type="id_t" default="1"/>
+    <xs:attribute name="id" type="id_t" use="required"/>
+  </xs:complexType>
+  <xs:complexType name="submit_message_condition_t">
+    <xs:complexContent>
+      <xs:extension base="base_condition_t">
+        <xs:group ref="submit_message_activity_nodes"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:group name="submit_message_activity_nodes">
+    <xs:sequence>
+      <xs:choice maxOccurs="unbounded">
+        <xs:element name="Transition" type="submit_message_transition_t"/>
+        <xs:element name="Prompt" type="prompt_t"/>
+        <xs:element name="Condition" type="submit_message_condition_t"/>
+      </xs:choice>
+    </xs:sequence>
+  </xs:group>
+  <!-- Call Transfer ==========================================================================-->
+  <xs:simpleType name="transfer_event_t">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="transferOK"/>
+      <xs:enumeration value="transferFailed"/>
+      <xs:enumeration value="transferFailedRemoteDisconnected"/>
+      <xs:enumeration value="moreFindMeNumbersLeft"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType name="transfer_t">
+    <xs:sequence minOccurs="0" maxOccurs="unbounded">
+      <xs:element name="Transition" type="call_transfer_transition_t"/>
+    </xs:sequence>
+    <xs:attribute name="type" type="transfer_type_t" use="required"/>
+    <xs:attribute name="number" type="xs:string" use="required"/>
+    <xs:attribute name="id" type="id_t" use="required"/>
+    <xs:attribute name="numberType" type="transfer_number_type_t" use="optional"/>
+  </xs:complexType>
+  <xs:simpleType name="transfer_type_t">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="blindTransferToPhone"/>
+      <xs:enumeration value="supervised"/>
+      <xs:enumeration value="blindTransferToHost"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="transfer_number_type_t">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="literal"/>
+      <xs:enumeration value="variable"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType name="call_transfer_transition_t">
+    <xs:attribute name="action" type="base_action_t" use="required"/>
+    <xs:attribute name="refId" type="refid_t" use="required"/>
+    <xs:attribute name="event" type="transfer_event_t" use="required"/>
+  </xs:complexType>
+  <!-- outdialing actions, and events -->
+  <xs:simpleType name="outdialing_action_t">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="checkRestrictedUser"/>
+      <xs:enumeration value="canonicalizeNumber"/>
+      <xs:enumeration value="checkDialPermissions"/>
+      <xs:enumeration value="processResult"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="outdialing_event_t">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="restrictedUser"/>
+      <xs:enumeration value="unrestrictedUser"/>
+      <xs:enumeration value="dialingPermissionCheckFailed"/>
+      <xs:enumeration value="numberCanonicalizationFailed"/>
+      <xs:enumeration value="validCanonicalNumber"/>
+      <xs:enumeration value="unreachableUser"/>
+      <xs:enumeration value="allowSendMessageOnly"/>
+      <xs:enumeration value="allowCallOnly"/>
+      <xs:enumeration value="invalidResult"/>
+      <xs:enumeration value="invalidOption"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <!-- DirectorySearch ===============================================================================-->
+  <xs:simpleType name="directorysearch_action_t">
+    <xs:union memberTypes="base_action_t outdialing_action_t">
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="setOperatorNumber"/>
+          <xs:enumeration value="changeSearchMode"/>
+          <xs:enumeration value="startNewSearch"/>
+          <xs:enumeration value="continueSearch"/>
+          <xs:enumeration value="searchDirectory"/>
+          <xs:enumeration value="anyMoreResultsToPlay"/>
+          <xs:enumeration value="validateSearchSelection"/>
+          <xs:enumeration value="validateInput"/>
+          <xs:enumeration value="replayResults"/>
+          <xs:enumeration value="changeSearchTarget"/>
+          <xs:enumeration value="setSearchTargetToContacts"/>
+          <xs:enumeration value="setSearchTargetToGlobalAddressList"/>
+          <xs:enumeration value="searchDirectoryByExtension"/>
+          <xs:enumeration value="setMobileNumber"/>
+          <xs:enumeration value="setBusinessNumber"/>
+          <xs:enumeration value="setHomeNumber"/>
+          <xs:enumeration value="handleInvalidSearchKey"/>
+          <xs:enumeration value="playContactDetails"/>
+          <xs:enumeration value="handleFaxTone"/>
+          <xs:enumeration value="checkNonUmExtension" />
+          <!-- used in DTMF AA to increment the Disallowed Transfer Perfcounter -->
+          <xs:enumeration value="prepareForProtectedSubscriberOperatorTransfer"/>
+          <xs:enumeration value="prepareForTransferToSendMessage"/>
+          <xs:enumeration value="prepareForUserInitiatedOperatorTransfer"/>
+          <xs:enumeration value="prepareForUserInitiatedOperatorTransferFromOpeningMenu"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+  <!-- directory search events -->
+  <xs:simpleType name="directorysearch_event_t">
+    <xs:union memberTypes="dtmf_key_t outdialing_event_t base_event_t">
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="invalidInput"/>
+          <xs:enumeration value="validInput"/>
+          <xs:enumeration value="noResultsMatched"/>
+          <xs:enumeration value="resultsLessThanAllowed"/>
+          <xs:enumeration value="resultsMoreThanAllowed"/>
+          <xs:enumeration value="noMoreResultsToPlay"/>
+          <xs:enumeration value="moreResultsToPlay"/>
+          <xs:enumeration value="validSelection"/>
+          <xs:enumeration value="invalidSelection"/>
+          <xs:enumeration value="invalidSearchKey"/>
+          <xs:enumeration value="phoneNumberNotFound"/>
+          <xs:enumeration value="maxNumberOfTriesExceeded"/>
+          <xs:enumeration value="userNotEnabledForUm"/>
+          <xs:enumeration value="operatorFallback"/>
+          <xs:enumeration value="ambiguousMatches"/>
+          <xs:enumeration value="promptForAlias"/>
+          <xs:enumeration value="adTransientError"/>
+          <xs:enumeration value="faxtone"/>
+          <xs:enumeration value="allowCallNonUmExtension" />
+          <xs:enumeration value="denyCallNonUmExtension" />
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+  <xs:simpleType name="directorysearch_purpose_t">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="both"/>
+      <xs:enumeration value="call"/>
+      <xs:enumeration value="sendMessage"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType name="directorysearch_transition_t">
+    <xs:complexContent>
+      <xs:extension base="base_transition_t">
+        <xs:attribute name="action" type="directorysearch_action_t" use="required"/>
+        <xs:attribute name="event" type="directorysearch_event_t" use="required"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="directorysearch_menu_t">
+    <xs:complexContent>
+      <xs:extension base="base_menu_t">
+        <xs:group ref="directorysearch_activity_nodes"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="directorysearch_t">
+    <xs:choice maxOccurs="unbounded">
+      <xs:element name="Menu" type="directorysearch_menu_t"/>
+      <xs:element name="Transition" type="global_transition_t"/>
+      <xs:element name="CallTransfer" type="transfer_t"/>
+    </xs:choice>
+    <xs:attribute name="firstActivityId" type="id_t" default="1"/>
+    <xs:attribute name="id" type="id_t" use="required"/>
+    <xs:attribute name="searchPurpose" type="directorysearch_purpose_t" use="optional" default="call"/>
+  </xs:complexType>
+  <xs:complexType name="directorysearch_condition_t">
+    <xs:complexContent>
+      <xs:extension base="base_condition_t">
+        <xs:group ref="directorysearch_activity_nodes"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:group name="directorysearch_activity_nodes">
+    <xs:sequence>
+      <xs:choice maxOccurs="unbounded">
+        <xs:element name="Transition" type="directorysearch_transition_t"/>
+        <xs:element name="Prompt" type="prompt_t"/>
+        <xs:element name="Condition" type="directorysearch_condition_t"/>
+      </xs:choice>
+    </xs:sequence>
+  </xs:group>
+  <!-- AutoAttendant  ===============================================================================-->
+  <xs:simpleType name="autoattendant_action_t">
+    <xs:union memberTypes="base_action_t outdialing_action_t">
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="initializeState"/>
+          <xs:enumeration value="transferToOperator"/>
+          <xs:enumeration value="setOperatorNumber"/>
+          <xs:enumeration value="setCustomExtensionNumber"/>
+          <xs:enumeration value="setExtensionNumber"/>
+          <xs:enumeration value="setCustomMenuVoicemailTarget"/>
+          <xs:enumeration value="setCustomMenuTargetPAA"/>
+          <xs:enumeration value="setPromptProvContext"/>
+          <xs:enumeration value="setCustomMenuAutoAttendant"/>
+          <xs:enumeration value="processCustomMenuSelection"/>
+          <xs:enumeration value="computeDtmfFallbackAction"/>
+          <xs:enumeration value="handleFaxTone"/>
+          <!-- used in DTMF AA to increment the Disallowed Transfer Perfcounter -->
+          <xs:enumeration value="prepareForProtectedSubscriberOperatorTransfer"/>
+          <xs:enumeration value="prepareForTransferToDtmfFallbackAutoAttendant"/>
+          <xs:enumeration value="prepareForTransferToPaa"/>
+          <xs:enumeration value="transferToPAASiteFailed"/>
+          <xs:enumeration value="prepareForTransferToSendMessage"/>
+          <xs:enumeration value="prepareForTransferToKeyMappingExtension"/>
+          <xs:enumeration value="prepareForTransferToKeyMappingAutoAttendant"/>
+          <xs:enumeration value="prepareForUserInitiatedOperatorTransfer"/>
+          <xs:enumeration value="prepareForUserInitiatedOperatorTransferFromOpeningMenu"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+  <!-- autoattendant events -->
+  <xs:simpleType name="autoattendant_event_t">
+    <xs:union memberTypes="dtmf_key_t base_event_t outdialing_event_t">
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="noTransferToOperator"/>
+          <xs:enumeration value="invalidOption"/>
+          <xs:enumeration value="noResultsMatched"/>
+          <xs:enumeration value="fallbackAutoAttendantFailure"/>
+          <xs:enumeration value="forwardCallsToDefaultMailbox"/>
+          <xs:enumeration value="noPAAFound"/>
+          <xs:enumeration value="cannotTransferToCustomExtension"/>
+          <xs:enumeration value="targetPAAInDifferentSite"/>
+          <xs:enumeration value="noMoreServers"/>
+          <xs:enumeration value="faxtone"/>
+          <xs:enumeration value="allowCallNonUmExtension" />
+          <xs:enumeration value="denyCallNonUmExtension" />
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+  <xs:complexType name="autoattendant_transition_t">
+    <xs:complexContent>
+      <xs:extension base="base_transition_t">
+        <xs:attribute name="action" type="autoattendant_action_t" use="required"/>
+        <xs:attribute name="event" type="autoattendant_event_t" use="required"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="autoattendant_menu_t">
+    <xs:complexContent>
+      <xs:extension base="base_menu_t">
+        <xs:group ref="autoattendant_activity_nodes"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="autoattendant_t">
+    <xs:choice maxOccurs="unbounded">
+      <xs:element name="Menu" type="autoattendant_menu_t"/>
+      <xs:element name="Transition" type="global_transition_t"/>
+      <xs:element name="CallTransfer" type="transfer_t"/>
+      <xs:element name="DirectorySearchManager" type="directorysearch_t"/>
+      <xs:element name="PromptProvisioningManager" type="promptprovisioning_t" />
+    </xs:choice>
+    <xs:attribute name="firstActivityId" type="id_t" default="1"/>
+    <xs:attribute name="id" type="id_t" use="required"/>
+  </xs:complexType>
+  <xs:complexType name="autoattendant_condition_t">
+    <xs:complexContent>
+      <xs:extension base="base_condition_t">
+        <xs:group ref="autoattendant_activity_nodes"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:group name="autoattendant_activity_nodes">
+    <xs:sequence>
+      <xs:choice maxOccurs="unbounded">
+        <xs:element name="Transition" type="autoattendant_transition_t"/>
+        <xs:element name="Prompt" type="prompt_t"/>
+        <xs:element name="Condition" type="autoattendant_condition_t"/>
+      </xs:choice>
+    </xs:sequence>
+  </xs:group>
+  <!-- ================ Speech Auto Attendant ====================================== -->
+  <!-- speech autoattendant activity nodes -->
+  <xs:group name="speech_autoattendant_activity_nodes">
+    <xs:sequence>
+      <xs:choice maxOccurs="unbounded">
+        <xs:element name="Transition" type="speech_autoattendant_transition_t"/>
+        <xs:element name="Prompt" type="prompt_t"/>
+        <xs:element name="Condition" type="autoattendant_condition_t"/>
+      </xs:choice>
+    </xs:sequence>
+  </xs:group>
+  <!-- speech autoattendant transitions -->
+  <xs:complexType name="speech_autoattendant_transition_t">
+    <xs:complexContent>
+      <xs:extension base="base_transition_t">
+        <xs:attribute name="action" type="speech_autoattendant_action_t" use="required"/>
+        <xs:attribute name="event" type="speech_autoattendant_event_t" use="required"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <!-- speech autoattendant events -->
+  <xs:simpleType name="speech_autoattendant_event_t">
+    <xs:union memberTypes="autoattendant_event_t  reco_event_t outdialing_event_t">
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="recoHelp"/>
+          <xs:enumeration value="noGrammarFile"/>
+          <xs:enumeration value="invalidResult"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+  <!-- speech autoattendant actions -->
+  <xs:simpleType name="speech_autoattendant_action_t">
+    <xs:union memberTypes="autoattendant_action_t outdialing_action_t">
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="setFallbackAutoAttendant"/>
+          <xs:enumeration value="processResult"/>
+          <xs:enumeration value="processExtension"/>
+          <xs:enumeration value="initializeNamesGrammar"/>
+          <xs:enumeration value="retryAsrSearch"/>
+          <!-- used in speech AA to increment the Disallowed Transfer Perfcounter -->
+          <xs:enumeration value="prepareForProtectedSubscriberOperatorTransfer"/>
+          <xs:enumeration value="prepareForTransferToSendMessage"/>
+          <!-- used in speech AA to handle missing grammar files -->
+          <xs:enumeration value="handleMissingGrammarFile"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+  <xs:complexType name="speech_autoattendant_t">
+    <xs:choice maxOccurs="unbounded">
+      <xs:element name="SpeechMenu" type="speech_autoattendant_menu_t"/>
+      <xs:element name="Menu" type="speech_autoattendant_dtmf_menu_t"/>
+      <xs:element name="Transition" type="global_transition_t"/>
+      <xs:element name="CallTransfer" type="transfer_t"/>
+      <xs:element name="AsrSearchManager" type="asr_search_t"/>
+      <!-- bugbug: do we need DirectorySearch manager in speech menu? -->
+      <xs:element name="DirectorySearchManager" type="directorysearch_t"/>
+    </xs:choice>
+    <xs:attribute name="firstActivityId" type="id_t" default="1"/>
+    <xs:attribute name="id" type="id_t" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="speech_autoattendant_menu_t">
+    <xs:complexContent>
+      <xs:extension base="base_speech_menu_t">
+        <xs:sequence>
+          <xs:element name="Transitions" type="speech_autoattendant_transition_group_t" minOccurs="1" maxOccurs="1"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="speech_autoattendant_transition_group_t">
+    <xs:choice maxOccurs="unbounded">
+      <xs:element name="Transition" type="speech_autoattendant_transition_t"/>
+      <xs:element name="Condition" type="speech_autoattendant_transition_condition_t"/>
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:complexType name="speech_autoattendant_transition_condition_t">
+    <xs:choice maxOccurs="unbounded">
+      <xs:element name="Transition" type="speech_autoattendant_transition_t"/>
+      <xs:element name="Condition" type="speech_autoattendant_transition_condition_t"/>
+    </xs:choice>
+    <xs:attribute name="value" type="xs:string" use="required"/>
+  </xs:complexType>
+  <xs:complexType name="speech_autoattendant_dtmf_menu_t">
+    <xs:complexContent>
+      <xs:extension base="base_menu_t">
+        <xs:group ref="speech_autoattendant_activity_nodes"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <!-- ================ Asr Contacts ====================================== -->
+  <xs:complexType name="asr_contacts_t">
+    <xs:choice maxOccurs="unbounded">
+      <xs:element name="AsrSearchManager" type="asr_search_t"/>
+      <xs:element name="SpeechMenu" type="asr_contacts_menu_t"/>
+      <xs:element name="Menu" type="asr_contacts_dtmf_menu_t"/>
+      <xs:element name="CallTransfer" type="transfer_t"/>
+      <xs:element name="Transition" type="global_transition_t"/>
+    </xs:choice>
+    <xs:attribute name="firstActivityId" type="id_t" default="1"/>
+    <xs:attribute name="id" type="id_t" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="asr_contacts_menu_t">
+    <xs:complexContent>
+      <xs:extension base="base_speech_menu_t">
+        <xs:sequence>
+          <xs:element name="Transitions" type="asr_contacts_transition_group_t" minOccurs="1" maxOccurs="1"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="asr_contacts_transition_group_t">
+    <xs:choice maxOccurs="unbounded">
+      <xs:element name="Transition" type="asr_contacts_transition_t"/>
+      <xs:element name="Condition" type="asr_contacts_transition_condition_t"/>
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:complexType name="asr_contacts_transition_condition_t">
+    <xs:choice maxOccurs="unbounded">
+      <xs:element name="Transition" type="asr_contacts_transition_t"/>
+      <xs:element name="Condition" type="asr_contacts_transition_condition_t"/>
+    </xs:choice>
+    <xs:attribute name="value" type="xs:string" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="asr_contacts_dtmf_menu_t">
+    <xs:complexContent>
+      <xs:extension base="base_menu_t">
+        <xs:group ref="asr_contacts_activity_nodes"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <!-- Asr contacts activity nodes -->
+  <xs:group name="asr_contacts_activity_nodes">
+    <xs:sequence>
+      <xs:choice maxOccurs="unbounded">
+        <xs:element name="Transition" type="asr_contacts_transition_t"/>
+        <xs:element name="Prompt" type="prompt_t"/>
+        <xs:element name="Condition" type="base_condition_t"/>
+      </xs:choice>
+    </xs:sequence>
+  </xs:group>
+
+  <!-- Asr contacts transitions -->
+  <xs:complexType name="asr_contacts_transition_t">
+    <xs:complexContent>
+      <xs:extension base="base_transition_t">
+        <xs:attribute name="action" type="asr_contacts_action_t" use="required"/>
+        <xs:attribute name="event" type="asr_contacts_event_t" use="required"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <!-- Asr contacts events -->
+  <xs:simpleType name="asr_contacts_event_t">
+    <xs:union memberTypes="dtmf_key_t reco_event_t outdialing_event_t">
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="moreThanOneAddress"/>
+          <xs:enumeration value="noGrammarFile"/>
+          <xs:enumeration value="userHangup"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+
+  <!-- Asr contacts actions -->
+  <xs:simpleType name="asr_contacts_action_t">
+    <xs:union memberTypes="base_action_t outdialing_action_t">
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="processExtension"/>
+          <xs:enumeration value="setContactInfoVariables"/>
+          <xs:enumeration value="processResult"/>
+          <xs:enumeration value="setName"/>
+          <xs:enumeration value="prepareForTransferToCell"/>
+          <xs:enumeration value="prepareForTransferToOffice"/>
+          <xs:enumeration value="prepareForTransferToHome"/>
+          <xs:enumeration value="setEmailAddress"/>
+          <xs:enumeration value="selectEmailAddress"/>
+          <xs:enumeration value="setContactInfo"/>
+          <xs:enumeration value="initializeNamesGrammar"/>
+          <xs:enumeration value="setInitialSearchTargetGAL"/>
+          <xs:enumeration value="setInitialSearchTargetContacts"/>
+          <xs:enumeration value="retryAsrSearch"/>
+          <xs:enumeration value="handlePlatformFailure"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+
+  <!-- ================ Asr Search ====================================== -->
+  <!-- Asr Search activity nodes -->
+  <xs:group name="asr_search_activity_nodes">
+    <xs:sequence>
+      <xs:choice maxOccurs="unbounded">
+        <xs:element name="Transition" type="asr_search_transition_t"/>
+        <xs:element name="Prompt" type="prompt_t"/>
+        <xs:element name="Condition" type="asr_search_transition_condition_t"/>
+      </xs:choice>
+    </xs:sequence>
+  </xs:group>
+  <!-- Asr Search transitions -->
+  <xs:complexType name="asr_search_transition_t">
+    <xs:complexContent>
+      <xs:extension base="base_transition_t">
+        <xs:attribute name="action" type="asr_search_action_t" use="required"/>
+        <xs:attribute name="event" type="asr_search_event_t" use="required"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <!-- Asr Search events -->
+  <xs:simpleType name="asr_search_event_t">
+    <xs:union memberTypes="dtmf_key_t reco_event_t">
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="recoHelp"/>
+          <xs:enumeration value="recoName"/>
+          <xs:enumeration value="recoDepartment"/>
+          <xs:enumeration value="recoNameOrDepartment"/>
+          <xs:enumeration value="doFallback"/>
+          <xs:enumeration value="confirmViaList"/>
+          <xs:enumeration value="recoYes"/>
+          <xs:enumeration value="recoNo"/>
+          <xs:enumeration value="recoMaybe"/>
+          <xs:enumeration value="recoNotSure"/>
+          <xs:enumeration value="recoPoliteEnd"/>
+          <xs:enumeration value="collision" />
+          <xs:enumeration value="invalidSearchResult" />
+          <xs:enumeration value="invalidSelection"/>
+          <xs:enumeration value="resultsMoreThanAllowed"/>
+          <xs:enumeration value="promptForAlias"/>
+          <xs:enumeration value="operatorFallback"/>
+          <xs:enumeration value="doAskAgainQA"/>
+          <xs:enumeration value="retrySearch"/>
+          <xs:enumeration value="validChoice"/>
+          <xs:enumeration value="faxtone"/>
+          <xs:enumeration value="umdiagnosticCall"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+  <!-- Asr Search actions -->
+  <xs:simpleType name="asr_search_action_t">
+    <xs:union memberTypes="base_action_t">
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="handleRecognition"/>
+          <xs:enumeration value="handleYes"/>
+          <xs:enumeration value="handleNo"/>
+          <xs:enumeration value="handleNotSure"/>
+          <xs:enumeration value="handleMaybe"/>
+          <xs:enumeration value="handleChoice"/>
+          <xs:enumeration value="handleValidChoice"/>
+          <xs:enumeration value="handleDtmfChoice"/>
+          <xs:enumeration value="handleNotListed"/>
+
+          <xs:enumeration value="initConfirmQA"/>
+          <xs:enumeration value="initConfirmAgainQA"/>
+          <xs:enumeration value="initAskAgainQA"/>
+          <xs:enumeration value="initNameCollisionQA"/>
+          <xs:enumeration value="initConfirmViaListQA"/>
+          <xs:enumeration value="initPromptForAliasConfirmQA"/>
+
+          <xs:enumeration value="setExtensionNumber"/>
+          <xs:enumeration value="setInitialSearchTargetContacts"/>
+
+          <xs:enumeration value="setPromptProvContext"/>
+          <!-- used in speech AA, when dtmf key is pressed in dept menu -->
+          <xs:enumeration value="processCustomMenuSelection"/>
+          <!-- used in speech AA to increment the ANR operator Perfcounter -->
+          <xs:enumeration value="prepareForANROperatorTransfer"/>
+
+          <xs:enumeration value="resetSearchState"/>
+          <xs:enumeration value="handleFaxTone"/>
+
+          <xs:enumeration value="prepareForUserInitiatedOperatorTransfer"/>
+          <xs:enumeration value="prepareForUserInitiatedOperatorTransferFromOpeningMenu"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+  <xs:complexType name="asr_search_t">
+    <xs:choice maxOccurs="unbounded">
+      <xs:element name="SpeechMenu" type="asr_search_menu_t"/>
+      <xs:element name="Menu" type="asr_search_dtmf_menu_t"/>
+      <xs:element name="Transition" type="global_transition_t"/>
+      <xs:element name="PromptProvisioning" type="promptprovisioning_t" />
+    </xs:choice>
+    <xs:attribute name="firstActivityId" type="id_t" default="1"/>
+    <xs:attribute name="id" type="id_t" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="asr_search_menu_t">
+    <xs:complexContent>
+      <xs:extension base="base_speech_menu_t">
+        <xs:sequence>
+          <xs:element name="Transitions" type="asr_search_transition_group_t" minOccurs="1" maxOccurs="1"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="asr_search_transition_group_t">
+    <xs:choice maxOccurs="unbounded">
+      <xs:element name="Transition" type="asr_search_transition_t"/>
+      <xs:element name="Condition" type="asr_search_transition_condition_t"/>
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:complexType name="asr_search_transition_condition_t">
+    <xs:choice maxOccurs="unbounded">
+      <xs:element name="Transition" type="asr_search_transition_t"/>
+      <xs:element name="Condition" type="asr_search_transition_condition_t"/>
+    </xs:choice>
+    <xs:attribute name="value" type="xs:string" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="asr_search_dtmf_menu_t">
+    <xs:complexContent>
+      <xs:extension base="base_menu_t">
+        <xs:group ref="asr_search_activity_nodes"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <!-- Email ==================================================================================-->
+  <xs:simpleType name="email_action_t">
+    <xs:union memberTypes="base_action_t">
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="nextMessage" />
+          <xs:enumeration value="nextUnreadMessage" />
+          <xs:enumeration value="previousMessage" />
+          <xs:enumeration value="acceptMeeting" />
+          <xs:enumeration value="acceptMeetingTentative" />
+          <xs:enumeration value="markUnread"/>
+          <xs:enumeration value="flagMessage"/>
+          <xs:enumeration value="declineMeeting" />
+          <xs:enumeration value="reply" />
+          <xs:enumeration value="replyAll" />
+          <xs:enumeration value="deleteMessage" />
+          <xs:enumeration value="undeleteMessage" />
+          <xs:enumeration value="hideThread" />
+          <xs:enumeration value="deleteThread" />
+          <xs:enumeration value="commitPendingDeletions" />
+          <xs:enumeration value="findByName" />
+          <xs:enumeration value="saveMessage" />
+          <xs:enumeration value="forward" />
+          <xs:enumeration value="sendMessage" />
+          <xs:enumeration value="sendMessageUrgent" />
+          <xs:enumeration value="setMobileNumber" />
+          <xs:enumeration value="setBusinessNumber" />
+          <xs:enumeration value="setHomeNumber" />
+          <xs:enumeration value="selectLanguage"/>
+          <xs:enumeration value="nextLanguage"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+  <xs:simpleType name="email_event_t">
+    <xs:union memberTypes="dtmf_key_t base_event_t reco_event_t">
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="endOfMessages" />
+          <xs:enumeration value="noPreviousMessages" />
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+  <xs:complexType name="email_transition_t">
+    <xs:complexContent>
+      <xs:extension base="base_transition_t">
+        <xs:attribute name="action" type="email_action_t" use="required"/>
+        <xs:attribute name="event" type="email_event_t" use="required"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="email_menu_t">
+    <xs:complexContent>
+      <xs:extension base="base_menu_t">
+        <xs:group ref="email_activity_nodes"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="email_record_t">
+    <xs:complexContent>
+      <xs:extension base="base_record_t">
+        <xs:choice maxOccurs="unbounded">
+          <xs:element name="Transition" type="email_transition_t"/>
+        </xs:choice>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="email_t">
+    <xs:choice maxOccurs="unbounded">
+      <xs:element name="SpeechMenu" type="email_speech_menu_t" />
+      <xs:element name="PlayBackMenu" type="email_menu_t"/>
+      <xs:element name="Menu" type="email_menu_t"/>
+      <xs:element name="Transition" type="global_transition_t"/>
+      <xs:element name="Record" type="email_record_t"/>
+      <xs:element name="DirectorySearchManager" type="directorysearch_t"/>
+      <xs:element name="MessagePartManager" type="message_player_t"/>
+      <xs:element name="CallTransfer" type="transfer_t"/>
+      <xs:element name="AsrContactsManager" type="asr_contacts_t"/>
+    </xs:choice>
+    <xs:attribute name="firstActivityId" type="id_t" default="1"/>
+    <xs:attribute name="id" type="id_t" use="required"/>
+  </xs:complexType>
+  <xs:complexType name="email_condition_t">
+    <xs:complexContent>
+      <xs:extension base="base_condition_t">
+        <xs:group ref="email_activity_nodes"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:group name="email_activity_nodes">
+    <xs:sequence>
+      <xs:choice maxOccurs="unbounded">
+        <xs:element name="Transition" type="email_transition_t"/>
+        <xs:element name="Prompt" type="prompt_t"/>
+        <xs:element name="Condition" type="email_condition_t"/>
+      </xs:choice>
+    </xs:sequence>
+  </xs:group>
+
+
+  <xs:complexType name="email_speech_menu_t">
+    <xs:complexContent>
+      <xs:extension base="base_speech_menu_t">
+        <xs:sequence>
+          <xs:element name="Transitions" type="email_transition_group_t" minOccurs="1" maxOccurs="1"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="email_transition_group_t">
+    <xs:choice maxOccurs="unbounded">
+      <xs:element name="Transition" type="email_transition_t"/>
+      <xs:element name="Condition" type="email_transition_condition_t"/>
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:complexType name="email_transition_condition_t">
+    <xs:choice maxOccurs="unbounded">
+      <xs:element name="Transition" type="email_transition_t"/>
+      <xs:element name="Condition" type="email_transition_condition_t"/>
+    </xs:choice>
+    <xs:attribute name="value" type="xs:string" use="required"/>
+  </xs:complexType>
+
+  <!-- MessagePlayer ==========================================================================-->
+  <xs:simpleType name="message_player_action_t">
+    <xs:union memberTypes="base_action_t email_action_t calendar_action_t retrieve_voicemail_action_t">
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="nextMessagePart" />
+          <xs:enumeration value="firstMessagePart" />
+          <xs:enumeration value="nextMessageSection" />
+          <xs:enumeration value="pause" />
+          <xs:enumeration value="clearRecording" />
+          <xs:enumeration value="appendRecording" />
+          <xs:enumeration value="selectLanguagePause"/>
+          <xs:enumeration value="nextLanguagePause"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+  <xs:simpleType name="message_player_event_t">
+    <xs:union memberTypes="dtmf_key_t base_event_t email_event_t calendar_event_t">
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="endOfSection" />
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+  <xs:complexType name="message_player_transition_t">
+    <xs:complexContent>
+      <xs:extension base="base_transition_t">
+        <xs:attribute name="action" type="message_player_action_t" use="required"/>
+        <xs:attribute name="event" type="message_player_event_t" use="required"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="message_player_menu_t">
+    <xs:complexContent>
+      <xs:extension base="base_menu_t">
+        <xs:group ref="message_player_activity_nodes"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="message_player_t">
+    <xs:choice maxOccurs="unbounded">
+      <xs:element name="PlayBackMenu" type="message_player_menu_t"/>
+      <xs:element name="Menu" type="message_player_menu_t"/>
+      <xs:element name="SpeechMenu" type="message_player_speech_menu_t"/>
+    </xs:choice>
+    <xs:attribute name="firstActivityId" type="id_t" default="1"/>
+    <xs:attribute name="id" type="id_t" use="required"/>
+  </xs:complexType>
+  <xs:complexType name="message_player_condition_t">
+    <xs:complexContent>
+      <xs:extension base="base_condition_t">
+        <xs:group ref="message_player_activity_nodes"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:group name="message_player_activity_nodes">
+    <xs:sequence>
+      <xs:choice maxOccurs="unbounded">
+        <xs:element name="Transition" type="message_player_transition_t"/>
+        <xs:element name="Prompt" type="prompt_t"/>
+        <xs:element name="Condition" type="message_player_condition_t"/>
+      </xs:choice>
+    </xs:sequence>
+  </xs:group>
+  <xs:complexType name="message_player_speech_menu_t">
+    <xs:complexContent>
+      <xs:extension base="base_speech_menu_t">
+        <xs:sequence>
+          <xs:element name="Transitions" type="message_player_transition_group_t" minOccurs="1" maxOccurs="1"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="message_player_transition_group_t">
+    <xs:choice maxOccurs="unbounded">
+      <xs:element name="Transition" type="message_player_transition_t"/>
+      <xs:element name="Condition" type="message_player_transition_condition_t"/>
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:complexType name="message_player_transition_condition_t">
+    <xs:choice maxOccurs="unbounded">
+      <xs:element name="Transition" type="message_player_transition_t"/>
+      <xs:element name="Condition" type="message_player_transition_condition_t"/>
+    </xs:choice>
+    <xs:attribute name="value" type="xs:string" use="required"/>
+  </xs:complexType>
+
+  <!-- UMTroubleshootingTool =====================================================================-->
+  <xs:simpleType name="umtool_action_t">
+    <xs:union memberTypes="base_action_t">
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="ConfirmAcceptedCallType"/>
+          <xs:enumeration value="EchoBackDtmf"/>
+          <xs:enumeration value="SendStopRecordingDtmf"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+  <xs:simpleType name="umtool_event_t">
+    <xs:union memberTypes="dtmf_key_t base_event_t">
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="dtmfSent"/>
+          <xs:enumeration value="toolInfoSent"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+  <xs:complexType name="umtool_transition_t">
+    <xs:complexContent>
+      <xs:extension base="base_transition_t">
+        <xs:attribute name="action" type="umtool_action_t" use="required"/>
+        <xs:attribute name="event" type="umtool_event_t" use="required"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="umtool_menu_t">
+    <xs:complexContent>
+      <xs:extension base="base_menu_t">
+        <xs:group ref="umtool_activity_nodes"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="umtool_t">
+    <xs:choice maxOccurs="unbounded">
+      <xs:element name="Menu" type="umtool_menu_t"/>
+      <xs:element name="Transition" type="global_transition_t"/>
+    </xs:choice>
+    <xs:attribute name="firstActivityId" type="id_t" default="1"/>
+    <xs:attribute name="id" type="id_t" use="required"/>
+  </xs:complexType>
+  <xs:complexType name="umtool_condition_t">
+    <xs:complexContent>
+      <xs:extension base="base_condition_t">
+        <xs:group ref="umtool_activity_nodes"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:group name="umtool_activity_nodes">
+    <xs:sequence>
+      <xs:choice maxOccurs="unbounded">
+        <xs:element name="Transition" type="umtool_transition_t"/>
+        <xs:element name="Prompt" type="prompt_t"/>
+        <xs:element name="Condition" type="umtool_condition_t"/>
+      </xs:choice>
+    </xs:sequence>
+  </xs:group>
+  <!-- UMDiagnostic =====================================================================-->
+  <xs:simpleType name="umdiagnostic_action_t">
+    <xs:union memberTypes="base_action_t">
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="isLocal"/>
+          <xs:enumeration value="sendDtmf"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+  <xs:simpleType name="umdiagnostic_event_t">
+    <xs:union memberTypes="dtmf_key_t base_event_t">
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="local"/>
+          <xs:enumeration value="faxtone"/>
+          <xs:enumeration value="dtmfSent"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+  <xs:complexType name="umdiagnostic_transition_t">
+    <xs:complexContent>
+      <xs:extension base="base_transition_t">
+        <xs:attribute name="action" type="umdiagnostic_action_t" use="required"/>
+        <xs:attribute name="event" type="umdiagnostic_event_t" use="required"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="umdiagnostic_menu_t">
+    <xs:complexContent>
+      <xs:extension base="base_menu_t">
+        <xs:group ref="umdiagnostic_activity_nodes"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="umdiagnostic_t">
+    <xs:choice maxOccurs="unbounded">
+      <xs:element name="Menu" type="umdiagnostic_menu_t"/>
+      <xs:element name="Transition" type="global_transition_t"/>
+      <xs:element name="DiagnosticCallListenerManager" type="diagnosticcalllistener_t"/>
+    </xs:choice>
+    <xs:attribute name="firstActivityId" type="id_t" default="1"/>
+    <xs:attribute name="id" type="id_t" use="required"/>
+  </xs:complexType>
+  <xs:complexType name="umdiagnostic_condition_t">
+    <xs:complexContent>
+      <xs:extension base="base_condition_t">
+        <xs:group ref="umdiagnostic_activity_nodes"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:group name="umdiagnostic_activity_nodes">
+    <xs:sequence>
+      <xs:choice maxOccurs="unbounded">
+        <xs:element name="Transition" type="umdiagnostic_transition_t"/>
+        <xs:element name="Prompt" type="prompt_t"/>
+        <xs:element name="Condition" type="umdiagnostic_condition_t"/>
+      </xs:choice>
+    </xs:sequence>
+  </xs:group>
+  <!-- DiagnosticCallListener =====================================================================-->
+  <xs:simpleType name="diagnosticcalllistener_action_t">
+    <xs:union memberTypes="base_action_t">
+    </xs:union>
+  </xs:simpleType>
+  <xs:simpleType name="diagnosticcalllistener_event_t">
+    <xs:union memberTypes="dtmf_key_t base_event_t">
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="faxtone"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+  <xs:complexType name="diagnosticcalllistener_transition_t">
+    <xs:complexContent>
+      <xs:extension base="base_transition_t">
+        <xs:attribute name="action" type="diagnosticcalllistener_action_t" use="required"/>
+        <xs:attribute name="event" type="diagnosticcalllistener_event_t" use="required"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="diagnosticcalllistener_menu_t">
+    <xs:complexContent>
+      <xs:extension base="base_menu_t">
+        <xs:group ref="diagnosticcalllistener_activity_nodes"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="diagnosticcalllistener_t">
+    <xs:choice maxOccurs="unbounded">
+      <xs:element name="Menu" type="diagnosticcalllistener_menu_t"/>
+      <xs:element name="Transition" type="global_transition_t"/>
+    </xs:choice>
+    <xs:attribute name="firstActivityId" type="id_t" default="1"/>
+    <xs:attribute name="id" type="id_t" use="required"/>
+  </xs:complexType>
+  <xs:complexType name="diagnosticcalllistener_condition_t">
+    <xs:complexContent>
+      <xs:extension base="base_condition_t">
+        <xs:group ref="diagnosticcalllistener_activity_nodes"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:group name="diagnosticcalllistener_activity_nodes">
+    <xs:sequence>
+      <xs:choice maxOccurs="unbounded">
+        <xs:element name="Transition" type="diagnosticcalllistener_transition_t"/>
+        <xs:element name="Prompt" type="prompt_t"/>
+        <xs:element name="Condition" type="diagnosticcalllistener_condition_t"/>
+      </xs:choice>
+    </xs:sequence>
+  </xs:group>
+
+
+
+
+  <!-- PlayOnPhone =====================================================================-->
+  <xs:simpleType name="playonphone_action_t">
+    <xs:union memberTypes="base_action_t">
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="getPlayOnPhoneType"/>
+          <xs:enumeration value="getGreeting"/>
+          <xs:enumeration value="getExternal"/>
+          <xs:enumeration value="getOof"/>
+          <xs:enumeration value="saveExternal"/>
+          <xs:enumeration value="saveOof"/>
+          <xs:enumeration value="deleteExternal"/>
+          <xs:enumeration value="deleteOof"/>
+          <xs:enumeration value="resetCallType"/>
+          <xs:enumeration value="SetOperationResultFailed"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+  <xs:simpleType name="playonphone_event_t">
+    <xs:union memberTypes="dtmf_key_t base_event_t">
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="playOnPhoneVoicemail"/>
+          <xs:enumeration value="playOnPhoneGreeting"/>
+          <xs:enumeration value="playOnPhoneAAGreeting"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+  <xs:complexType name="playonphone_transition_t">
+    <xs:complexContent>
+      <xs:extension base="base_transition_t">
+        <xs:attribute name="action" type="playonphone_action_t" use="required"/>
+        <xs:attribute name="event" type="playonphone_event_t" use="required"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="playonphone_menu_t">
+    <xs:complexContent>
+      <xs:extension base="base_menu_t">
+        <xs:group ref="playonphone_activity_nodes"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="playonphohne_record_t">
+    <xs:complexContent>
+      <xs:extension base="base_record_t">
+        <xs:choice maxOccurs="unbounded">
+          <xs:element name="Transition" type="playonphone_transition_t"/>
+        </xs:choice>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="playonphone_t">
+    <xs:choice maxOccurs="unbounded">
+      <xs:element name="Menu" type="playonphone_menu_t"/>
+      <xs:element name="Transition" type="global_transition_t"/>
+      <xs:element name="MessagePartManager" type="message_player_t"/>
+      <xs:element name="PlayBackMenu" type="playonphone_menu_t"/>
+      <xs:element name="Record" type="playonphohne_record_t"/>
+    </xs:choice>
+    <xs:attribute name="firstActivityId" type="id_t" default="1"/>
+    <xs:attribute name="id" type="id_t" use="required"/>
+  </xs:complexType>
+  <xs:complexType name="playonphone_condition_t">
+    <xs:complexContent>
+      <xs:extension base="base_condition_t">
+        <xs:group ref="playonphone_activity_nodes"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:group name="playonphone_activity_nodes">
+    <xs:sequence>
+      <xs:choice maxOccurs="unbounded">
+        <xs:element name="Transition" type="playonphone_transition_t"/>
+        <xs:element name="Prompt" type="prompt_t"/>
+        <xs:element name="Condition" type="playonphone_condition_t"/>
+      </xs:choice>
+    </xs:sequence>
+  </xs:group>
+
+  <!-- PlayOnPhone PAA =====================================================================-->
+  <xs:simpleType name="playonphonepaa_action_t">
+    <xs:union memberTypes="base_action_t">
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="getPlayOnPhoneType"/>
+          <xs:enumeration value="getGreeting"/>
+          <xs:enumeration value="getExternal"/>
+          <xs:enumeration value="getOof"/>
+          <xs:enumeration value="saveExternal"/>
+          <xs:enumeration value="saveOof"/>
+          <xs:enumeration value="deleteExternal"/>
+          <xs:enumeration value="deleteOof"/>
+          <xs:enumeration value="resetCallType"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+  <xs:simpleType name="playonphonepaa_event_t">
+    <xs:union memberTypes="dtmf_key_t base_event_t">
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="playOnPhoneVoicemail"/>
+          <xs:enumeration value="playOnPhoneGreeting"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+  <xs:complexType name="playonphonepaa_transition_t">
+    <xs:complexContent>
+      <xs:extension base="base_transition_t">
+        <xs:attribute name="action" type="playonphone_action_t" use="required"/>
+        <xs:attribute name="event" type="playonphone_event_t" use="required"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="playonphonepaa_menu_t">
+    <xs:complexContent>
+      <xs:extension base="base_menu_t">
+        <xs:group ref="playonphone_activity_nodes"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="playonphonepaa_record_t">
+    <xs:complexContent>
+      <xs:extension base="base_record_t">
+        <xs:choice maxOccurs="unbounded">
+          <xs:element name="Transition" type="playonphonepaa_transition_t"/>
+        </xs:choice>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="playonphonepaa_t">
+    <xs:choice maxOccurs="unbounded">
+      <xs:element name="Menu" type="playonphone_menu_t"/>
+      <xs:element name="Transition" type="global_transition_t"/>
+      <xs:element name="Record" type="playonphonepaa_record_t"/>
+    </xs:choice>
+    <xs:attribute name="firstActivityId" type="id_t" default="1"/>
+    <xs:attribute name="id" type="id_t" use="required"/>
+  </xs:complexType>
+  <xs:complexType name="playonphonepaa_condition_t">
+    <xs:complexContent>
+      <xs:extension base="base_condition_t">
+        <xs:group ref="playonphonepaa_activity_nodes"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:group name="playonphonepaa_activity_nodes">
+    <xs:sequence>
+      <xs:choice maxOccurs="unbounded">
+        <xs:element name="Transition" type="playonphonepaa_transition_t"/>
+        <xs:element name="Prompt" type="prompt_t"/>
+        <xs:element name="Condition" type="playonphonepaa_condition_t"/>
+      </xs:choice>
+    </xs:sequence>
+  </xs:group>
+
+  <!-- PromptProvisioning ===============================================================================-->
+  <xs:simpleType name="promptprovisioning_action_t">
+    <xs:union memberTypes="base_action_t">
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="canUpdatePrompts"/>
+          <xs:enumeration value="publishPrompt"/>
+          <xs:enumeration value="setDialPlanContext"/>
+          <xs:enumeration value="setAutoAttendantContext"/>
+          <xs:enumeration value="prepareForPlayback"/>
+
+          <xs:enumeration value="selectBusinessHoursGroup"/>
+          <xs:enumeration value="selectAfterHoursGroup"/>
+
+          <xs:enumeration value="selectWelcomeGreeting"/>
+          <xs:enumeration value="selectInfoAnnouncement"/>
+          <xs:enumeration value="selectMainMenuCustomPrompt"/>
+          <xs:enumeration value="selectKeyMapping"/>
+          <xs:enumeration value="selectHolidaySchedule"/>
+
+          <xs:enumeration value="selectPromptIndex"/>
+
+          <xs:enumeration value="nextPlaybackIndex"/>
+          <xs:enumeration value="resetPlaybackIndex"/>
+          <xs:enumeration value="selectNextHolidayPage"/>
+          <xs:enumeration value="exitPromptProvisioning"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+  <xs:simpleType name="promptprovisioning_event_t">
+    <xs:union memberTypes="dtmf_key_t base_event_t">
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="updatePromptsAllowed"/>
+          <xs:enumeration value="publishingError"/>
+          <xs:enumeration value="invalidSelectedPrompt"/>
+          <xs:enumeration value="endOfHolidayPage"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+  <xs:complexType name="promptprovisioning_transition_t">
+    <xs:complexContent>
+      <xs:extension base="base_transition_t">
+        <xs:attribute name="action" type="promptprovisioning_action_t" use="required"/>
+        <xs:attribute name="event" type="promptprovisioning_event_t" use="required"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="promptprovisioning_menu_t">
+    <xs:complexContent>
+      <xs:extension base="base_menu_t">
+        <xs:group ref="promptprovisioning_activity_nodes"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="promptprovisioning_t">
+    <xs:choice maxOccurs="unbounded">
+      <xs:element name="Menu" type="promptprovisioning_menu_t"/>
+      <xs:element name="Transition" type="global_transition_t"/>
+      <xs:element name="Record" type="promptprovisioning_record_t"/>
+    </xs:choice>
+    <xs:attribute name="firstActivityId" type="id_t" default="1"/>
+    <xs:attribute name="id" type="id_t" use="required"/>
+  </xs:complexType>
+  <xs:complexType name="promptprovisioning_condition_t">
+    <xs:complexContent>
+      <xs:extension base="base_condition_t">
+        <xs:group ref="promptprovisioning_activity_nodes"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="promptprovisioning_record_t">
+    <xs:complexContent>
+      <xs:extension base="base_record_t">
+        <xs:choice maxOccurs="unbounded">
+          <xs:element name="Transition" type="promptprovisioning_transition_t"/>
+        </xs:choice>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:group name="promptprovisioning_activity_nodes">
+    <xs:sequence>
+      <xs:choice maxOccurs="unbounded">
+        <xs:element name="Transition" type="promptprovisioning_transition_t"/>
+        <xs:element name="Prompt" type="prompt_t"/>
+        <xs:element name="Condition" type="promptprovisioning_condition_t"/>
+      </xs:choice>
+    </xs:sequence>
+  </xs:group>
+
+  <!-- PersonalAutoAttendant ===============================================================================-->
+  <xs:simpleType name="personalautoattendant_action_t">
+    <xs:union memberTypes="base_action_t">
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="ProcessSelection"/>
+          <xs:enumeration value="Disconnect"/>
+          <xs:enumeration value="PrepareForTransfer"/>
+          <xs:enumeration value="PrepareForTransferToVoicemail"/>
+          <xs:enumeration value="PrepareForFindMe"/>
+          <xs:enumeration value="PrepareForTransferToMailbox"/>
+          <xs:enumeration value="PrepareForTransferToPaa"/>
+          <xs:enumeration value="TerminateFindMe"/>
+          <xs:enumeration value="ContinueFindMe"/>
+          <xs:enumeration value="StartFindMe"/>
+          <xs:enumeration value="CleanupFindMe"/>
+          <xs:enumeration value="SetOperatorNumber"/>
+          <xs:enumeration value="SelectNextAction"/>
+          <xs:enumeration value="TransferToPAASiteFailed"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+  <xs:simpleType name="personalautoattendant_event_t">
+    <xs:union memberTypes="dtmf_key_t base_event_t">
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="faxtone"/>
+          <xs:enumeration value="validPersonalAutoAttendant"/>
+          <xs:enumeration value="moreNumbersLeft"/>
+          <xs:enumeration value="dialingRulesCheckFailed"/>
+          <xs:enumeration value="maxAllowedCallsLimitReached"/>
+          <xs:enumeration value="menuRetriesExceeded"/>
+          <xs:enumeration value="noActionLeft"/>
+          <xs:enumeration value="noMoreServers"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+  <xs:complexType name="personalautoattendant_transition_t">
+    <xs:complexContent>
+      <xs:extension base="base_transition_t">
+        <xs:attribute name="action" type="personalautoattendant_action_t" use="required"/>
+        <xs:attribute name="event" type="personalautoattendant_event_t" use="required"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="personalautoattendant_menu_t">
+    <xs:complexContent>
+      <xs:extension base="base_menu_t">
+        <xs:group ref="personalautoattendant_activity_nodes"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="personalautoattendant_t">
+    <xs:choice maxOccurs="unbounded">
+      <xs:element name="Menu" type="personalautoattendant_menu_t"/>
+      <xs:element name="Transition" type="global_transition_t"/>
+      <xs:element name="Record" type="personalautoattendant_record_t"/>
+      <xs:element name="CallTransfer" type="transfer_t"/>
+    </xs:choice>
+    <xs:attribute name="firstActivityId" type="id_t" default="1"/>
+    <xs:attribute name="id" type="id_t" use="required"/>
+  </xs:complexType>
+  <xs:complexType name="personalautoattendant_condition_t">
+    <xs:complexContent>
+      <xs:extension base="base_condition_t">
+        <xs:group ref="personalautoattendant_activity_nodes"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="personalautoattendant_record_t">
+    <xs:complexContent>
+      <xs:extension base="base_record_t">
+        <xs:choice maxOccurs="unbounded">
+          <xs:element name="Transition" type="personalautoattendant_transition_t"/>
+        </xs:choice>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:group name="personalautoattendant_activity_nodes">
+    <xs:sequence>
+      <xs:choice maxOccurs="unbounded">
+        <xs:element name="Transition" type="personalautoattendant_transition_t"/>
+        <xs:element name="Prompt" type="prompt_t"/>
+        <xs:element name="Condition" type="personalautoattendant_condition_t"/>
+      </xs:choice>
+    </xs:sequence>
+  </xs:group>
+
+  <!-- Findme subscribermanager ===============================================================================-->
+  <xs:simpleType name="findmesubscriber_action_t">
+    <xs:union memberTypes="base_action_t">
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="TerminateFindMe"/>
+          <xs:enumeration value="AcceptFindMe"/>
+          <xs:enumeration value="SendDtmf"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+  <xs:simpleType name="findmesubscriber_event_t">
+    <xs:union memberTypes="dtmf_key_t base_event_t">
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="dtmfSent"/>
+          <xs:enumeration value="faxtone"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+  <xs:complexType name="findmesubscriber_transition_t">
+    <xs:complexContent>
+      <xs:extension base="base_transition_t">
+        <xs:attribute name="action" type="findmesubscriber_action_t" use="required"/>
+        <xs:attribute name="event" type="findmesubscriber_event_t" use="required"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="findmesubscriber_menu_t">
+    <xs:complexContent>
+      <xs:extension base="base_menu_t">
+        <xs:group ref="findmesubscriber_activity_nodes"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="findmesubscriber_t">
+    <xs:choice maxOccurs="unbounded">
+      <xs:element name="Menu" type="findmesubscriber_menu_t"/>
+      <xs:element name="Transition" type="global_transition_t"/>
+    </xs:choice>
+    <xs:attribute name="firstActivityId" type="id_t" default="1"/>
+    <xs:attribute name="id" type="id_t" use="required"/>
+  </xs:complexType>
+  <xs:complexType name="findmesubscriber_condition_t">
+    <xs:complexContent>
+      <xs:extension base="base_condition_t">
+        <xs:group ref="findmesubscriber_activity_nodes"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:group name="findmesubscriber_activity_nodes">
+    <xs:sequence>
+      <xs:choice maxOccurs="unbounded">
+        <xs:element name="Transition" type="findmesubscriber_transition_t"/>
+        <xs:element name="Prompt" type="prompt_t"/>
+        <xs:element name="Condition" type="findmesubscriber_condition_t"/>
+      </xs:choice>
+    </xs:sequence>
+  </xs:group>
+
+
+  <!-- VirtualNumberManager ===============================================================================-->
+  <xs:simpleType name="virtualnumber_action_t">
+    <xs:union memberTypes="base_action_t">
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="PrepareForVoiceMail"/>
+          <xs:enumeration value="CheckIfCallFromBlockedNumber"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+  <xs:simpleType name="virtualnumber_event_t">
+    <xs:union memberTypes="dtmf_key_t base_event_t">
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+  <xs:complexType name="virtualnumber_transition_t">
+    <xs:complexContent>
+      <xs:extension base="base_transition_t">
+        <xs:attribute name="action" type="virtualnumber_action_t" use="required"/>
+        <xs:attribute name="event" type="virtualnumber_event_t" use="required"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="virtualnumber_menu_t">
+    <xs:complexContent>
+      <xs:extension base="base_menu_t">
+        <xs:group ref="virtualnumber_activity_nodes"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="virtualnumber_t">
+    <xs:choice maxOccurs="unbounded">
+      <xs:element name="Menu" type="virtualnumber_menu_t"/>
+      <xs:element name="Transition" type="global_transition_t"/>
+    </xs:choice>
+    <xs:attribute name="firstActivityId" type="id_t" default="1"/>
+    <xs:attribute name="id" type="id_t" use="required"/>
+  </xs:complexType>
+  <xs:complexType name="virtualnumber_condition_t">
+    <xs:complexContent>
+      <xs:extension base="base_condition_t">
+        <xs:group ref="virtualnumber_activity_nodes"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:group name="virtualnumber_activity_nodes">
+    <xs:sequence>
+      <xs:choice maxOccurs="unbounded">
+        <xs:element name="Transition" type="virtualnumber_transition_t"/>
+        <xs:element name="Prompt" type="prompt_t"/>
+        <xs:element name="Condition" type="virtualnumber_condition_t"/>
+      </xs:choice>
+    </xs:sequence>
+  </xs:group>
+
+  <!-- PlayOnPhoneAA Manager ===============================================================================-->
+  <xs:simpleType name="playonphoneaa_action_t">
+    <xs:union memberTypes="base_action_t">
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="ExistingGreetingAlreadyPlayed"/>
+          <xs:enumeration value="SaveGreeting"/>
+          <xs:enumeration value="SetOperationResultFailed"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+  <xs:simpleType name="playonphoneaa_event_t">
+    <xs:union memberTypes="dtmf_key_t base_event_t">
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="faxtone"/>
+          <xs:enumeration value="failedToSaveGreeting"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+  <xs:complexType name="playonphoneaa_transition_t">
+    <xs:complexContent>
+      <xs:extension base="base_transition_t">
+        <xs:attribute name="action" type="playonphoneaa_action_t" use="required"/>
+        <xs:attribute name="event" type="playonphoneaa_event_t" use="required"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="playonphoneaa_menu_t">
+    <xs:complexContent>
+      <xs:extension base="base_menu_t">
+        <xs:group ref="playonphoneaa_activity_nodes"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="playonphoneaa_record_t">
+    <xs:complexContent>
+      <xs:extension base="base_record_t">
+        <xs:choice maxOccurs="unbounded">
+          <xs:element name="Transition" type="playonphoneaa_transition_t"/>
+        </xs:choice>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="playonphoneaa_t">
+    <xs:choice maxOccurs="unbounded">
+      <xs:element name="Menu" type="playonphoneaa_menu_t"/>
+      <xs:element name="Transition" type="global_transition_t"/>
+      <xs:element name="Record" type="playonphoneaa_record_t"/>
+    </xs:choice>
+    <xs:attribute name="firstActivityId" type="id_t" default="1"/>
+    <xs:attribute name="id" type="id_t" use="required"/>
+  </xs:complexType>
+  <xs:complexType name="playonphoneaa_condition_t">
+    <xs:complexContent>
+      <xs:extension base="base_condition_t">
+        <xs:group ref="playonphoneaa_activity_nodes"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:group name="playonphoneaa_activity_nodes">
+    <xs:sequence>
+      <xs:choice maxOccurs="unbounded">
+        <xs:element name="Transition" type="playonphoneaa_transition_t"/>
+        <xs:element name="Prompt" type="prompt_t"/>
+        <xs:element name="Condition" type="playonphoneaa_condition_t"/>
+      </xs:choice>
+    </xs:sequence>
+  </xs:group>
+
+  <!-- The Actual Schema ======================================================================-->
+  <xs:element name="FiniteStateMachine" type="stateMachine_t"/>
+</xs:schema>

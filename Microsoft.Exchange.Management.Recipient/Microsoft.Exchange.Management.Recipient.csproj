@@ -1,0 +1,442 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{09CD9476-CD82-489E-B9E2-84B47CA14162}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Microsoft.Exchange.Management.RecipientTasks</RootNamespace>
+    <AssemblyName>Microsoft.Exchange.Management.Recipient</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Exchange.Common.IL" />
+    <Reference Include="Microsoft.Exchange.PswsClient" />
+    <Reference Include="Microsoft.SharePoint.Client" />
+    <Reference Include="Microsoft.SharePoint.Client.Runtime" />
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.DirectoryServices" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Management.Automation" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AcePresentationObject.cs" />
+    <Compile Include="AcePresentationObjectSchema.cs" />
+    <Compile Include="ADAcePresentationObject.cs" />
+    <Compile Include="ADAcePresentationObjectSchema.cs" />
+    <Compile Include="AddADPermission.cs" />
+    <Compile Include="AddDelegate.cs" />
+    <Compile Include="AddDistributionGroupMember.cs" />
+    <Compile Include="AddMailbox.cs" />
+    <Compile Include="AddMailboxPermission.cs" />
+    <Compile Include="AddressListType.cs" />
+    <Compile Include="AddSupervisionListEntry.cs" />
+    <Compile Include="Authenticator.cs" />
+    <Compile Include="ConsumerMailboxExtensions.cs" />
+    <Compile Include="ConsumerMailboxHelper.cs" />
+    <Compile Include="ConvertibleMailboxSubType.cs" />
+    <Compile Include="ConvertibleRemoteMailboxSubType.cs" />
+    <Compile Include="DelegateRoleType.cs" />
+    <Compile Include="DelegateTask.cs" />
+    <Compile Include="DelegateUser.cs" />
+    <Compile Include="DelegateUserId.cs" />
+    <Compile Include="DisableDistributionGroup.cs" />
+    <Compile Include="DisableInboxRule.cs" />
+    <Compile Include="DisableJournalArchiving.cs" />
+    <Compile Include="DisableMailbox.cs" />
+    <Compile Include="DisableMailContact.cs" />
+    <Compile Include="DisableMailUser.cs" />
+    <Compile Include="DisableMailUserBase.cs" />
+    <Compile Include="DisableRemoteMailbox.cs" />
+    <Compile Include="DisableUMCallAnsweringRule.cs" />
+    <Compile Include="DistributionGroupMemberTaskBase.cs" />
+    <Compile Include="DistributionGroupTaskHelper.cs" />
+    <Compile Include="DynamicDistributionGroupFilterValidation.cs" />
+    <Compile Include="DynamicDistributionGroupParameterSet.cs" />
+    <Compile Include="EnableDisableInboxRuleBase.cs" />
+    <Compile Include="EnableDisableUMCallAnsweringRuleBase.cs" />
+    <Compile Include="EnableDistributionGroup.cs" />
+    <Compile Include="EnableEOPMailUser.cs" />
+    <Compile Include="EnableInboxRule.cs" />
+    <Compile Include="EnableMailbox.cs" />
+    <Compile Include="EnableMailContact.cs" />
+    <Compile Include="EnableMailUser.cs" />
+    <Compile Include="EnableMailUserBase.cs" />
+    <Compile Include="EnableRecipientObjectTask.cs" />
+    <Compile Include="EnableRemoteMailbox.cs" />
+    <Compile Include="EnableSystemAttendantMailbox.cs" />
+    <Compile Include="EnableUMCallAnsweringRule.cs" />
+    <Compile Include="EOPRecipient.cs" />
+    <Compile Include="EOPTask.cs" />
+    <Compile Include="ExportRecipientDataProperty.cs" />
+    <Compile Include="GetADPermission.cs" />
+    <Compile Include="GetADUserBase.cs" />
+    <Compile Include="GetCASMailbox.cs" />
+    <Compile Include="GetCASMailboxBase.cs" />
+    <Compile Include="GetCASMailboxPlan.cs" />
+    <Compile Include="GetConsumerMailbox.cs" />
+    <Compile Include="GetContact.cs" />
+    <Compile Include="GetDistributionGroup.cs" />
+    <Compile Include="GetDistributionGroupBase.cs" />
+    <Compile Include="GetDistributionGroupMember.cs" />
+    <Compile Include="GetDynamicDistributionGroup.cs" />
+    <Compile Include="GetDynamicDistributionGroupBase.cs" />
+    <Compile Include="GetGroup.cs" />
+    <Compile Include="GetGroupMailbox.cs" />
+    <Compile Include="GetGroupMailboxTaskModuleFactory.cs" />
+    <Compile Include="GetInboxRule.cs" />
+    <Compile Include="GetLinkedUser.cs" />
+    <Compile Include="GetMailbox.cs" />
+    <Compile Include="GetMailboxBase.cs" />
+    <Compile Include="GetMailboxOrSyncMailbox.cs" />
+    <Compile Include="GetMailboxPermission.cs" />
+    <Compile Include="GetMailboxPlan.cs" />
+    <Compile Include="GetMailContact.cs" />
+    <Compile Include="GetMailContactBase.cs" />
+    <Compile Include="GetMailUser.cs" />
+    <Compile Include="GetMailUserBase.cs" />
+    <Compile Include="GetMessageCategory.cs" />
+    <Compile Include="GetPermissionTaskBase.cs" />
+    <Compile Include="GetRecipient.cs" />
+    <Compile Include="GetRecipientWithAddressListBase.cs" />
+    <Compile Include="GetRemoteMailbox.cs" />
+    <Compile Include="GetRemovedMailbox.cs" />
+    <Compile Include="GetSiteMailbox.cs" />
+    <Compile Include="GetSiteMailboxDiagnostics.cs" />
+    <Compile Include="GetSupervisionListEntry.cs" />
+    <Compile Include="GetSyncDeletedRecipient.cs" />
+    <Compile Include="GetSyncDistributionGroup.cs" />
+    <Compile Include="GetSyncDynamicDistributionGroup.cs" />
+    <Compile Include="GetSyncGroup.cs" />
+    <Compile Include="GetSyncMailbox.cs" />
+    <Compile Include="GetSyncMailContact.cs" />
+    <Compile Include="GetSyncMailUser.cs" />
+    <Compile Include="GetSyncUser.cs" />
+    <Compile Include="GetUMCallAnsweringRule.cs" />
+    <Compile Include="GetUMMailbox.cs" />
+    <Compile Include="GetUMMailboxBase.cs" />
+    <Compile Include="GetUMMailboxPlan.cs" />
+    <Compile Include="GetUser.cs" />
+    <Compile Include="GroupMailboxContext.cs" />
+    <Compile Include="GroupType.cs" />
+    <Compile Include="ImportRecipientDataProperty.cs" />
+    <Compile Include="LinkSharePointSiteResult.cs" />
+    <Compile Include="MailboxAcePresentationObject.cs" />
+    <Compile Include="MailboxAcePresentationObjectSchema.cs" />
+    <Compile Include="MailboxRights.cs" />
+    <Compile Include="MailContactTaskHelper.cs" />
+    <Compile Include="ModernGroupTypeInfo.cs" />
+    <Compile Include="ModifySupervisionListEntryBase.cs" />
+    <Compile Include="NewConsumerMailbox.cs" />
+    <Compile Include="NewDistributionGroup.cs" />
+    <Compile Include="NewDistributionGroupBase.cs" />
+    <Compile Include="NewDynamicDistributionGroup.cs" />
+    <Compile Include="NewEOPDistributionGroup.cs" />
+    <Compile Include="NewEOPMailUser.cs" />
+    <Compile Include="NewGroupMailbox.cs" />
+    <Compile Include="NewGroupMailboxTaskModuleFactory.cs" />
+    <Compile Include="NewInboxRule.cs" />
+    <Compile Include="NewLinkedUser.cs" />
+    <Compile Include="NewMailbox.cs" />
+    <Compile Include="NewMailboxBase.cs" />
+    <Compile Include="NewMailboxHealthCountersModule.cs" />
+    <Compile Include="NewMailboxOrSyncMailbox.cs" />
+    <Compile Include="NewMailboxPlan.cs" />
+    <Compile Include="NewMailboxTaskModuleFactory.cs" />
+    <Compile Include="NewMailContact.cs" />
+    <Compile Include="NewMailContactBase.cs" />
+    <Compile Include="NewMailUser.cs" />
+    <Compile Include="NewMailUserBase.cs" />
+    <Compile Include="NewMicrosoftExchangeRecipient.cs" />
+    <Compile Include="NewRemoteMailbox.cs" />
+    <Compile Include="NewSiteMailbox.cs" />
+    <Compile Include="NewSyncDistributionGroup.cs" />
+    <Compile Include="NewSyncGroup.cs" />
+    <Compile Include="NewSyncMailbox.cs" />
+    <Compile Include="NewSyncMailContact.cs" />
+    <Compile Include="NewSyncMailUser.cs" />
+    <Compile Include="NewSyncUser.cs" />
+    <Compile Include="NewUMCallAnsweringRule.cs" />
+    <Compile Include="OwnerPresentationObject.cs" />
+    <Compile Include="PermissionParameterSets.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="PsWsClientErrorParser.cs" />
+    <Compile Include="RecipientIdType.cs" />
+    <Compile Include="RemoteMailboxParameterSet.cs" />
+    <Compile Include="RemoteMailboxTaskHelper.cs" />
+    <Compile Include="RemoteMailboxType.cs" />
+    <Compile Include="RemoteRoutingAddressGenerator.cs" />
+    <Compile Include="RemoveADPermission.cs" />
+    <Compile Include="RemoveArbitrationMailbox.cs" />
+    <Compile Include="RemoveConsumerMailbox.cs" />
+    <Compile Include="RemoveDistributionGroup.cs" />
+    <Compile Include="RemoveDistributionGroupBase.cs" />
+    <Compile Include="RemoveDistributionGroupMember.cs" />
+    <Compile Include="RemoveDynamicDistributionGroup.cs" />
+    <Compile Include="RemoveEOPDistributionGroup.cs" />
+    <Compile Include="RemoveEOPMailUser.cs" />
+    <Compile Include="RemoveGroupMailbox.cs" />
+    <Compile Include="RemoveGroupMailboxTaskModuleFactory.cs" />
+    <Compile Include="RemoveInboxRule.cs" />
+    <Compile Include="RemoveLinkedUser.cs" />
+    <Compile Include="RemoveMailbox.cs" />
+    <Compile Include="RemoveMailboxBase.cs" />
+    <Compile Include="RemoveMailboxPermission.cs" />
+    <Compile Include="RemoveMailboxPlan.cs" />
+    <Compile Include="RemoveMailContact.cs" />
+    <Compile Include="RemoveMailContactBase.cs" />
+    <Compile Include="RemoveMailUser.cs" />
+    <Compile Include="RemoveMailUserBase.cs" />
+    <Compile Include="RemoveMailUserOrRemoteMailboxBase.cs" />
+    <Compile Include="RemoveMicrosoftExchangeRecipient.cs" />
+    <Compile Include="RemoveRemoteMailbox.cs" />
+    <Compile Include="RemoveSupervisionListEntry.cs" />
+    <Compile Include="RemoveSyncDistributionGroup.cs" />
+    <Compile Include="RemoveSyncGroup.cs" />
+    <Compile Include="RemoveSyncMailbox.cs" />
+    <Compile Include="RemoveSyncMailContact.cs" />
+    <Compile Include="RemoveSyncMailUser.cs" />
+    <Compile Include="RemoveSyncUser.cs" />
+    <Compile Include="RemoveUMCallAnsweringRule.cs" />
+    <Compile Include="SelectUserForReconciliation.cs" />
+    <Compile Include="SetADPermissionTaskBase.cs" />
+    <Compile Include="SetADPermissionTaskModuleFactory.cs" />
+    <Compile Include="SetADUserBase.cs" />
+    <Compile Include="SetCASMailbox.cs" />
+    <Compile Include="SetCASMailboxBase.cs" />
+    <Compile Include="SetCASMailboxPlan.cs" />
+    <Compile Include="SetConsumerMailbox.cs" />
+    <Compile Include="SetContact.cs" />
+    <Compile Include="SetDistributionGroup.cs" />
+    <Compile Include="SetDistributionGroupBase.cs" />
+    <Compile Include="SetDynamicDistributionGroup.cs" />
+    <Compile Include="SetEOPDistributionGroup.cs" />
+    <Compile Include="SetEOPGroup.cs" />
+    <Compile Include="SetEOPMailUser.cs" />
+    <Compile Include="SetEOPUser.cs" />
+    <Compile Include="SetGroup.cs" />
+    <Compile Include="SetGroupMailbox.cs" />
+    <Compile Include="SetGroupMailboxTaskModuleFactory.cs" />
+    <Compile Include="SetInboxRule.cs" />
+    <Compile Include="SetLinkedUser.cs" />
+    <Compile Include="SetMailbox.cs" />
+    <Compile Include="SetMailboxBase.cs" />
+    <Compile Include="SetMailboxPermissionTaskBase.cs" />
+    <Compile Include="SetMailboxPlan.cs" />
+    <Compile Include="SetMailboxTaskModuleFactory.cs" />
+    <Compile Include="SetMailContact.cs" />
+    <Compile Include="SetMailContactBase.cs" />
+    <Compile Include="SetMailEnabledOrgPersonObjectTask.cs" />
+    <Compile Include="SetMailUser.cs" />
+    <Compile Include="SetMailUserBase.cs" />
+    <Compile Include="SetOrgPersonObjectTask.cs" />
+    <Compile Include="SetPermissionTaskBase.cs" />
+    <Compile Include="SetRecipientInternalOption.cs" />
+    <Compile Include="SetRemoteMailbox.cs" />
+    <Compile Include="SetSiteMailbox.cs" />
+    <Compile Include="SetSyncDistributionGroup.cs" />
+    <Compile Include="SetSyncGroup.cs" />
+    <Compile Include="SetSyncMailbox.cs" />
+    <Compile Include="SetSyncMailContact.cs" />
+    <Compile Include="SetSyncMailUser.cs" />
+    <Compile Include="SetSyncUser.cs" />
+    <Compile Include="SetUMCallAnsweringRule.cs" />
+    <Compile Include="SetUMMailbox.cs" />
+    <Compile Include="SetUMMailboxBase.cs" />
+    <Compile Include="SetUMMailboxPlan.cs" />
+    <Compile Include="SetUser.cs" />
+    <Compile Include="SetUserBase.cs" />
+    <Compile Include="SharePointMemberShip.cs" />
+    <Compile Include="SiteMailboxAddressesTemplate.cs" />
+    <Compile Include="SoftDeletedTaskHelper.cs" />
+    <Compile Include="SupervisionListEntry.cs" />
+    <Compile Include="SupervisionListEntryId.cs" />
+    <Compile Include="SupervisionListEntryPropertyBag.cs" />
+    <Compile Include="SupervisionListEntrySchema.cs" />
+    <Compile Include="SupervisionRecipientType.cs" />
+    <Compile Include="SyncDistributionGroupMemberParameterSet.cs" />
+    <Compile Include="TeamMailboxDiagnosticsBase.cs" />
+    <Compile Include="TeamMailboxGetDataObject.cs" />
+    <Compile Include="TeamMailboxHelper.cs" />
+    <Compile Include="TeamMailboxSecurityRefresher.cs" />
+    <Compile Include="TestSiteMailbox.cs" />
+    <Compile Include="UMCallAnsweringRule.cs" />
+    <Compile Include="UMCallAnsweringRuleDataProvider.cs" />
+    <Compile Include="UMCallAnsweringRuleDescription.cs" />
+    <Compile Include="UMCallAnsweringRuleSchema.cs" />
+    <Compile Include="UMCallAnsweringRuleUtils.cs" />
+    <Compile Include="UndoSoftDeletedMailbox.cs" />
+    <Compile Include="UndoSyncSoftDeletedMailbox.cs" />
+    <Compile Include="UndoSyncSoftDeletedMailUser.cs" />
+    <Compile Include="UndoSyncSoftDeletedUser.cs" />
+    <Compile Include="UpdateDistributionGroupMember.cs" />
+    <Compile Include="UpdateDistributionGroupMemberBase.cs" />
+    <Compile Include="UpdateEOPDistributionGroupMember.cs" />
+    <Compile Include="UpdateGroupMailboxBase.cs" />
+    <Compile Include="UpdateGroupMailboxEwsBinding.cs" />
+    <Compile Include="UpdateGroupMailboxFactory.cs" />
+    <Compile Include="UpdateGroupMailboxViaEWS.cs" />
+    <Compile Include="UpdateGroupMailboxViaXSO.cs" />
+    <Compile Include="UpdateRecipient.cs" />
+    <Compile Include="UpdateSafeList.cs" />
+    <Compile Include="UpdateSiteMailbox.cs" />
+    <Compile Include="UpdateSyncDistributionGroupMember.cs" />
+    <Compile Include="UpdateSyncStatistics.cs" />
+    <Compile Include="UpdateType.cs" />
+    <Compile Include="WriteOperationType.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Microsoft.Exchange.Management.Recipient.Strings.resources" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.Exchange.AirSync\Microsoft.Exchange.AirSync.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140D9}</Project>
+      <Name>Microsoft.Exchange.AirSync</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.AnchorService\Microsoft.Exchange.AnchorService.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140DB}</Project>
+      <Name>Microsoft.Exchange.AnchorService</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Approval.Applications\Microsoft.Exchange.Approval.Applications.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140DC}</Project>
+      <Name>Microsoft.Exchange.Approval.Applications</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Common\Microsoft.Exchange.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140F0}</Project>
+      <Name>Microsoft.Exchange.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Configuration.Core\Microsoft.Exchange.Configuration.Core.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140F8}</Project>
+      <Name>Microsoft.Exchange.Configuration.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Configuration.ObjectModel\Microsoft.Exchange.Configuration.ObjectModel.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140FC}</Project>
+      <Name>Microsoft.Exchange.Configuration.ObjectModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Configuration.RedirectionModule\Microsoft.Exchange.Configuration.RedirectionModule.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140FD}</Project>
+      <Name>Microsoft.Exchange.Configuration.RedirectionModule</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Core.Strings\Microsoft.Exchange.Core.Strings.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14103}</Project>
+      <Name>Microsoft.Exchange.Core.Strings</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.ApplicationLogic\Microsoft.Exchange.Data.ApplicationLogic.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14104}</Project>
+      <Name>Microsoft.Exchange.Data.ApplicationLogic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Common\Microsoft.Exchange.Data.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140D3}</Project>
+      <Name>Microsoft.Exchange.Data.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Directory\Microsoft.Exchange.Data.Directory.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14105}</Project>
+      <Name>Microsoft.Exchange.Data.Directory</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.GroupMailboxAccessLayer\Microsoft.Exchange.Data.GroupMailboxAccessLayer.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14107}</Project>
+      <Name>Microsoft.Exchange.Data.GroupMailboxAccessLayer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Mapi\Microsoft.Exchange.Data.Mapi.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1410A}</Project>
+      <Name>Microsoft.Exchange.Data.Mapi</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Storage\Microsoft.Exchange.Data.Storage.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1410F}</Project>
+      <Name>Microsoft.Exchange.Data.Storage</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data\Microsoft.Exchange.Data.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14106}</Project>
+      <Name>Microsoft.Exchange.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Diagnostics\Microsoft.Exchange.Diagnostics.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14113}</Project>
+      <Name>Microsoft.Exchange.Diagnostics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.InfoWorker.Common\Microsoft.Exchange.InfoWorker.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1413C}</Project>
+      <Name>Microsoft.Exchange.InfoWorker.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.MailboxLoadBalanceClient\Microsoft.Exchange.MailboxLoadBalanceClient.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14146}</Project>
+      <Name>Microsoft.Exchange.MailboxLoadBalanceClient</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.MailboxReplicationService.Common\Microsoft.Exchange.MailboxReplicationService.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14147}</Project>
+      <Name>Microsoft.Exchange.MailboxReplicationService.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Management\Microsoft.Exchange.Management.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1415C}</Project>
+      <Name>Microsoft.Exchange.Management</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Net\Microsoft.Exchange.Net.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14178}</Project>
+      <Name>Microsoft.Exchange.Net</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Rules.Common\Microsoft.Exchange.Rules.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14191}</Project>
+      <Name>Microsoft.Exchange.Rules.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Security\Microsoft.Exchange.Security.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14198}</Project>
+      <Name>Microsoft.Exchange.Security</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.StoreProvider\Microsoft.Exchange.StoreProvider.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141B9}</Project>
+      <Name>Microsoft.Exchange.StoreProvider</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Transport.Sync.Common\Microsoft.Exchange.Transport.Sync.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141D5}</Project>
+      <Name>Microsoft.Exchange.Transport.Sync.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.UM.UMCommon\Microsoft.Exchange.UM.UMCommon.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141DB}</Project>
+      <Name>Microsoft.Exchange.UM.UMCommon</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.VariantConfiguration\Microsoft.Exchange.VariantConfiguration.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141E0}</Project>
+      <Name>Microsoft.Exchange.VariantConfiguration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Office.Datacenter.ActiveMonitoringLocal\Microsoft.Office.Datacenter.ActiveMonitoringLocal.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141ED}</Project>
+      <Name>Microsoft.Office.Datacenter.ActiveMonitoringLocal</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\mscorlib\mscorlib.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141F1}</Project>
+      <Name>mscorlib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo Name="FrontendTransport PostSetup" DescriptionId="SetupComponentPostSetupFrontendTransport">
+
+  <ServerTasks>
+
+  <ServerTaskInfo Id="_d471d2669c0348509252c3883d86f414" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+    <Install DescriptionId="SetupProgressStartingFrontendTransportService">
+      <Standalone>start-SetupService -ServiceName MSExchangeFrontendTransport</Standalone>
+    </Install>
+    <BuildToBuildUpgrade />
+    <DisasterRecovery UseInstallTasks="true" />
+    <Uninstall />
+  </ServerTaskInfo>
+
+  </ServerTasks>
+</SetupComponentInfo>

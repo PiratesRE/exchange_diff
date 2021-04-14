@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo IsDatacenterOnly="true" Name="Exchange Central Admin Database Post Setup Component">
+  <ServerTasks>
+  </ServerTasks>
+</SetupComponentInfo>
+

@@ -1,0 +1,296 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{09CD9476-CD82-489E-B9E2-84B47CA140EE}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Microsoft.Exchange</RootNamespace>
+    <AssemblyName>Microsoft.Exchange.Cluster.Shared</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Exchange.Cluster.Common" />
+    <Reference Include="Microsoft.Exchange.DxStore.HA.Events" />
+    <Reference Include="Microsoft.Practices.Unity" />
+    <Reference Include="ReplayCrimsonMsg" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.Management.Automation" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Cluster\ClusApi\AmClusEnumHandle.cs" />
+    <Compile Include="Cluster\ClusApi\AmClusGroupEnumHandle.cs" />
+    <Compile Include="Cluster\ClusApi\AmClusNetworkEnumHandle.cs" />
+    <Compile Include="Cluster\ClusApi\AmClusNodeEnumHandle.cs" />
+    <Compile Include="Cluster\ClusApi\AmClusPropListMaker.cs" />
+    <Compile Include="Cluster\ClusApi\AmClusResourceEnumHandle.cs" />
+    <Compile Include="Cluster\ClusApi\AmCluster.cs" />
+    <Compile Include="Cluster\ClusApi\AmClusterBatchHandle.cs" />
+    <Compile Include="Cluster\ClusApi\AmClusterClusterControlCode.cs" />
+    <Compile Include="Cluster\ClusApi\AmClusterEnum.cs" />
+    <Compile Include="Cluster\ClusApi\AmClusterEventInfo.cs" />
+    <Compile Include="Cluster\ClusApi\AmClusterGroup.cs" />
+    <Compile Include="Cluster\ClusApi\AmClusterGroupControlCode.cs" />
+    <Compile Include="Cluster\ClusApi\AmClusterGroupEnum.cs" />
+    <Compile Include="Cluster\ClusApi\AmClusterGroupHandle.cs" />
+    <Compile Include="Cluster\ClusApi\AmClusterHandle.cs" />
+    <Compile Include="Cluster\ClusApi\AmClusterNetInterface.cs" />
+    <Compile Include="Cluster\ClusApi\AmClusterNetInterfaceControlCode.cs" />
+    <Compile Include="Cluster\ClusApi\AmClusterNetInterfaceHandle.cs" />
+    <Compile Include="Cluster\ClusApi\AmClusterNetwork.cs" />
+    <Compile Include="Cluster\ClusApi\AmClusterNetworkControlCode.cs" />
+    <Compile Include="Cluster\ClusApi\AmClusterNetworkEnum.cs" />
+    <Compile Include="Cluster\ClusApi\AmClusterNetworkHandle.cs" />
+    <Compile Include="Cluster\ClusApi\AmClusterNode.cs" />
+    <Compile Include="Cluster\ClusApi\AmClusterNodeControlCode.cs" />
+    <Compile Include="Cluster\ClusApi\AmClusterNodeEnum.cs" />
+    <Compile Include="Cluster\ClusApi\AmClusterNodeHandle.cs" />
+    <Compile Include="Cluster\ClusApi\AmClusterNotify.cs" />
+    <Compile Include="Cluster\ClusApi\AmClusterNotifyHandle.cs" />
+    <Compile Include="Cluster\ClusApi\AmClusterPropList.cs" />
+    <Compile Include="Cluster\ClusApi\AmClusterPropListDisposable.cs" />
+    <Compile Include="Cluster\ClusApi\AmClusterRawData.cs" />
+    <Compile Include="Cluster\ClusApi\AmClusterRegkeyHandle.cs" />
+    <Compile Include="Cluster\ClusApi\AmClusterRegProperty.cs" />
+    <Compile Include="Cluster\ClusApi\AmClusterResource.cs" />
+    <Compile Include="Cluster\ClusApi\AmClusterResourceControlCode.cs" />
+    <Compile Include="Cluster\ClusApi\AmClusterResourceEnum.cs" />
+    <Compile Include="Cluster\ClusApi\AmClusterResourceHandle.cs" />
+    <Compile Include="Cluster\ClusApi\AmClusterResourceHelper.cs" />
+    <Compile Include="Cluster\ClusApi\AmExceptionHelper.cs" />
+    <Compile Include="Cluster\ClusApi\AmGroupState.cs" />
+    <Compile Include="Cluster\ClusApi\AmNetInterfaceState.cs" />
+    <Compile Include="Cluster\ClusApi\AmNetworkRole.cs" />
+    <Compile Include="Cluster\ClusApi\AmNetworkState.cs" />
+    <Compile Include="Cluster\ClusApi\AmNodeClusterState.cs" />
+    <Compile Include="Cluster\ClusApi\AmNodeState.cs" />
+    <Compile Include="Cluster\ClusApi\AmResourceState.cs" />
+    <Compile Include="Cluster\ClusApi\ClusApiHook.cs" />
+    <Compile Include="Cluster\ClusApi\ClusApiHooks.cs" />
+    <Compile Include="Cluster\ClusApi\ClusapiMethods.cs" />
+    <Compile Include="Cluster\ClusApi\ClusterDB.cs" />
+    <Compile Include="Cluster\ClusApi\ClusterDBHelpers.cs" />
+    <Compile Include="Cluster\ClusApi\ClusterGroupFlag.cs" />
+    <Compile Include="Cluster\ClusApi\ClusterNetworkDeletedException.cs" />
+    <Compile Include="Cluster\ClusApi\ClusterNotifyFlags.cs" />
+    <Compile Include="Cluster\ClusApi\ClusterResourceCreateFlags.cs" />
+    <Compile Include="Cluster\ClusApi\CLUSTER_REG_COMMAND.cs" />
+    <Compile Include="Cluster\ClusApi\IAmCluster.cs" />
+    <Compile Include="Cluster\ClusApi\IAmClusterGroup.cs" />
+    <Compile Include="Cluster\ClusApi\IAmClusterNetwork.cs" />
+    <Compile Include="Cluster\ClusApi\IAmClusterNode.cs" />
+    <Compile Include="Cluster\ClusApi\IAmClusterResource.cs" />
+    <Compile Include="Cluster\ClusApi\IClusApiHook.cs" />
+    <Compile Include="Cluster\ClusApi\IClusterDB.cs" />
+    <Compile Include="Cluster\ClusApi\IClusterDBWriteBatch.cs" />
+    <Compile Include="Cluster\ClusApi\IClusterSetupProgress.cs" />
+    <Compile Include="Cluster\ClusApi\IMockableCluster.cs" />
+    <Compile Include="Cluster\ClusApi\IPVersion.cs" />
+    <Compile Include="Cluster\ClusApi\IsReplayRunning.cs" />
+    <Compile Include="Cluster\ClusApi\MockableCluster.cs" />
+    <Compile Include="Cluster\ClusApi\RegSAM.cs" />
+    <Compile Include="Cluster\ClusApi\ResourceType.cs" />
+    <Compile Include="Cluster\ClusApi\SafeDisposeTrackerHandleZeroOrMinusOneIsInvalid.cs" />
+    <Compile Include="Cluster\ClusApi\WindowsErrorCodes.cs" />
+    <Compile Include="Cluster\ReplayEventLog\ReplayEventLogConstants.cs" />
+    <Compile Include="Cluster\Shared\AmCoreGroupRegNotFound.cs" />
+    <Compile Include="Cluster\Shared\AmGetFqdnFailedADErrorException.cs" />
+    <Compile Include="Cluster\Shared\AmGetFqdnFailedNotFoundException.cs" />
+    <Compile Include="Cluster\Shared\AmServerName.cs" />
+    <Compile Include="Cluster\Shared\AmServerNameCache.cs" />
+    <Compile Include="Cluster\Shared\AmServerNameCacheLogEvent.cs" />
+    <Compile Include="Cluster\Shared\AmServerNameCacheManager.cs" />
+    <Compile Include="Cluster\Shared\AmServerNameResolveFqdnException.cs" />
+    <Compile Include="Cluster\Shared\AmTrace.cs" />
+    <Compile Include="Cluster\Shared\ChangeNotificationFlags.cs" />
+    <Compile Include="Cluster\Shared\ClusCommonFailException.cs" />
+    <Compile Include="Cluster\Shared\ClusCommonNonRetryableTransientException.cs" />
+    <Compile Include="Cluster\Shared\ClusCommonRetryableTransientException.cs" />
+    <Compile Include="Cluster\Shared\ClusCommonTaskPendingException.cs" />
+    <Compile Include="Cluster\Shared\ClusCommonTransientException.cs" />
+    <Compile Include="Cluster\Shared\ClusCommonValidationFailedException.cs" />
+    <Compile Include="Cluster\Shared\ClusdbBatchRequest.cs" />
+    <Compile Include="Cluster\Shared\ClusdbMarshalledProperty.cs" />
+    <Compile Include="Cluster\Shared\ClusdbSnapshotMaker.cs" />
+    <Compile Include="Cluster\Shared\ClusResourceAlreadyExistsException.cs" />
+    <Compile Include="Cluster\Shared\ClusterApiException.cs" />
+    <Compile Include="Cluster\Shared\ClusterDatabaseTransientException.cs" />
+    <Compile Include="Cluster\Shared\ClusterDbKey.cs" />
+    <Compile Include="Cluster\Shared\ClusterEvictWithoutCleanupException.cs" />
+    <Compile Include="Cluster\Shared\ClusterException.cs" />
+    <Compile Include="Cluster\Shared\ClusterFileNotFoundException.cs" />
+    <Compile Include="Cluster\Shared\ClusteringNotInstalledOnLHException.cs" />
+    <Compile Include="Cluster\Shared\ClusterNodeJoinedException.cs" />
+    <Compile Include="Cluster\Shared\ClusterNodeNotFoundException.cs" />
+    <Compile Include="Cluster\Shared\ClusterNoServerToConnectException.cs" />
+    <Compile Include="Cluster\Shared\ClusterNotInstalledException.cs" />
+    <Compile Include="Cluster\Shared\ClusterNotJoinedException.cs" />
+    <Compile Include="Cluster\Shared\ClusterNotRunningException.cs" />
+    <Compile Include="Cluster\Shared\ClusterUnsupportedRegistryTypeException.cs" />
+    <Compile Include="Cluster\Shared\CouldNotFindServerObject.cs" />
+    <Compile Include="Cluster\Shared\DataStoreSettings.cs" />
+    <Compile Include="Cluster\Shared\DateTimeHelper.cs" />
+    <Compile Include="Cluster\Shared\DirectoryHelper.cs" />
+    <Compile Include="Cluster\Shared\DistributedStore.cs" />
+    <Compile Include="Cluster\Shared\DistributedStoreKey.cs" />
+    <Compile Include="Cluster\Shared\DxStoreKey.cs" />
+    <Compile Include="Cluster\Shared\DxStoreKeyAccessMode.cs" />
+    <Compile Include="Cluster\Shared\DxStoreKeyApiOperationException.cs" />
+    <Compile Include="Cluster\Shared\DxStoreKeyFactory.cs" />
+    <Compile Include="Cluster\Shared\DxStoreKeyInvalidKeyException.cs" />
+    <Compile Include="Cluster\Shared\DxStoreKeyNotFoundException.cs" />
+    <Compile Include="Cluster\Shared\DxStorePropertyNotFoundException.cs" />
+    <Compile Include="Cluster\Shared\DxStoreSetting.cs" />
+    <Compile Include="Cluster\Shared\EnumUtility.cs" />
+    <Compile Include="Cluster\Shared\ExtensionMethods.cs" />
+    <Compile Include="Cluster\Shared\FailedToFindNetwork.cs" />
+    <Compile Include="Cluster\Shared\FailToOfflineClusResourceException.cs" />
+    <Compile Include="Cluster\Shared\FailToOnlineClusResourceException.cs" />
+    <Compile Include="Cluster\Shared\FileFlags.cs" />
+    <Compile Include="Cluster\Shared\GenericBatchRequest.cs" />
+    <Compile Include="Cluster\Shared\IAmServerNameLookup.cs" />
+    <Compile Include="Cluster\Shared\IDiagCoreImpl.cs" />
+    <Compile Include="Cluster\Shared\IDistributedStoreBatchRequest.cs" />
+    <Compile Include="Cluster\Shared\IDistributedStoreChangeNotify.cs" />
+    <Compile Include="Cluster\Shared\IDistributedStoreKey.cs" />
+    <Compile Include="Cluster\Shared\IKernelTransaction.cs" />
+    <Compile Include="Cluster\Shared\ILogTraceHelper.cs" />
+    <Compile Include="Cluster\Shared\IManagementClassHelper.cs" />
+    <Compile Include="Cluster\Shared\InvalidResourceOpException.cs" />
+    <Compile Include="Cluster\Shared\InvalidSubnetSpecException.cs" />
+    <Compile Include="Cluster\Shared\IpResourceCreationOnWrongTypeOfNetworkException.cs" />
+    <Compile Include="Cluster\Shared\IPv4AddressesHasDuplicateEntries.cs" />
+    <Compile Include="Cluster\Shared\IPv4NetworksHasDuplicateEntries.cs" />
+    <Compile Include="Cluster\Shared\IPv6NetworksHasDuplicateEntries.cs" />
+    <Compile Include="Cluster\Shared\IStartStop.cs" />
+    <Compile Include="Cluster\Shared\ITaskOutputHelper.cs" />
+    <Compile Include="Cluster\Shared\IWritableAD.cs" />
+    <Compile Include="Cluster\Shared\LocDescriptionAttribute.cs" />
+    <Compile Include="Cluster\Shared\ManagementClassHelper.cs" />
+    <Compile Include="Cluster\Shared\ModuleHandle.cs" />
+    <Compile Include="Cluster\Shared\MountPoint\SafeVolumeFindHandle.cs" />
+    <Compile Include="Cluster\Shared\MountPoint\SafeVolumeMountPointFindHandle.cs" />
+    <Compile Include="Cluster\Shared\NativeMethods.cs" />
+    <Compile Include="Cluster\Shared\NoClusResourceFoundException.cs" />
+    <Compile Include="Cluster\Shared\NoSuchNetworkException.cs" />
+    <Compile Include="Cluster\Shared\NullLogTraceHelper.cs" />
+    <Compile Include="Cluster\Shared\NullTaskOutputHelper.cs" />
+    <Compile Include="Cluster\Shared\OfflineOperationTimedOutException.cs" />
+    <Compile Include="Cluster\Shared\OpenClusterTimedoutException.cs" />
+    <Compile Include="Cluster\Shared\OperationCategory.cs" />
+    <Compile Include="Cluster\Shared\OperationType.cs" />
+    <Compile Include="Cluster\Shared\OperationValidOnlyOnLonghornException.cs" />
+    <Compile Include="Cluster\Shared\PerformanceEntry.cs" />
+    <Compile Include="Cluster\Shared\PerformanceTracker.cs" />
+    <Compile Include="Cluster\Shared\ReaderWriterLockedBase.cs" />
+    <Compile Include="Cluster\Shared\RegistryParameterDefinitions.cs" />
+    <Compile Include="Cluster\Shared\RegistryParameterException.cs" />
+    <Compile Include="Cluster\Shared\RegistryParameterKeyNotOpenedException.cs" />
+    <Compile Include="Cluster\Shared\RegistryParameterReadException.cs" />
+    <Compile Include="Cluster\Shared\RegistryParameters.cs" />
+    <Compile Include="Cluster\Shared\RegistryParameterValues.cs" />
+    <Compile Include="Cluster\Shared\RegistryParameterWriteException.cs" />
+    <Compile Include="Cluster\Shared\RegistryStateAccess.cs" />
+    <Compile Include="Cluster\Shared\RemoteClusterWin2k3ToWin2k8NotSupportedException.cs" />
+    <Compile Include="Cluster\Shared\RemoteClusterWin2k8ToWin2k3NotSupportedException.cs" />
+    <Compile Include="Cluster\Shared\ReplDiagCoreImpl.cs" />
+    <Compile Include="Cluster\Shared\RequestedNetworkIsNotDhcpEnabled.cs" />
+    <Compile Include="Cluster\Shared\RequestedNetworkIsNotIPv6Enabled.cs" />
+    <Compile Include="Cluster\Shared\RequestInfo.cs" />
+    <Compile Include="Cluster\Shared\ResPropTypeNotSupportedException.cs" />
+    <Compile Include="Cluster\Shared\Serialization\DataContractSerializeHelper.cs" />
+    <Compile Include="Cluster\Shared\SharedDependencies.cs" />
+    <Compile Include="Cluster\Shared\SharedDiag.cs" />
+    <Compile Include="Cluster\Shared\SharedHelper.cs" />
+    <Compile Include="Cluster\Shared\StoreKind.cs" />
+    <Compile Include="Cluster\Shared\StoreMode.cs" />
+    <Compile Include="Cluster\Shared\Strings.cs" />
+    <Compile Include="Cluster\Shared\SynchronizedAction.cs" />
+    <Compile Include="Cluster\Shared\TasksHelper.cs" />
+    <Compile Include="Cluster\Shared\TimerComponent.cs" />
+    <Compile Include="Cluster\Shared\WatchdogAction.cs" />
+    <Compile Include="Cluster\Shared\WritableADHelper.cs" />
+    <Compile Include="DxStore\HA\DistributedStoreEventLogger.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Cluster\Shared\Strings.resources" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.Exchange.Cluster.Common.Extensions\Microsoft.Exchange.Cluster.Common.Extensions.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140EA}</Project>
+      <Name>Microsoft.Exchange.Cluster.Common.Extensions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Common\Microsoft.Exchange.Data.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140D3}</Project>
+      <Name>Microsoft.Exchange.Data.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Directory\Microsoft.Exchange.Data.Directory.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14105}</Project>
+      <Name>Microsoft.Exchange.Data.Directory</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.HA\Microsoft.Exchange.Data.HA.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14108}</Project>
+      <Name>Microsoft.Exchange.Data.HA</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data\Microsoft.Exchange.Data.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14106}</Project>
+      <Name>Microsoft.Exchange.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Diagnostics\Microsoft.Exchange.Diagnostics.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14113}</Project>
+      <Name>Microsoft.Exchange.Diagnostics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.DxStore\Microsoft.Exchange.DxStore.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14118}</Project>
+      <Name>Microsoft.Exchange.DxStore</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Net\Microsoft.Exchange.Net.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14178}</Project>
+      <Name>Microsoft.Exchange.Net</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.VariantConfiguration\Microsoft.Exchange.VariantConfiguration.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141E0}</Project>
+      <Name>Microsoft.Exchange.VariantConfiguration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\mscorlib\mscorlib.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141F1}</Project>
+      <Name>mscorlib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

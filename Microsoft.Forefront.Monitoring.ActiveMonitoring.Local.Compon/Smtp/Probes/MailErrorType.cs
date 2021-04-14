@@ -1,0 +1,51 @@
+﻿using System;
+
+namespace Microsoft.Forefront.Monitoring.ActiveMonitoring.Smtp.Probes
+{
+	public enum MailErrorType
+	{
+		Success,
+		SlaExceeded,
+		NoDelivery,
+		VerificationFailure,
+		UnexpectedDelivery,
+		CheckMailException,
+		SendMailException,
+		ProbeTimeOut,
+		ConfigurationError,
+		DnsFailure,
+		FfoConnectionFailure,
+		FfoProxyFailure,
+		FfoAttributionFailure,
+		FfoGlsFailure,
+		FfoAntispamFailure,
+		ShadowFailure,
+		ServerInBackpressure,
+		MiscAckFailure,
+		SmtpAuthFailure,
+		MailboxLoginFailure,
+		CertificateExpiredFailure,
+		StartTlsNotAdvertisedFailure,
+		UnableToConnect,
+		AzureDnsFailure,
+		ServiceLocatorFailure,
+		SqlQueryFailure,
+		ConnectorConfigurationError,
+		ProxySocketFailure,
+		MaxConcurrentConnectionFailure,
+		ServiceNotAvailableFailure,
+		NoDestinationsFailure,
+		PopProxyFailure,
+		ContentConversionFailure,
+		FindProbeResultsTimeOut,
+		SmtpSendAuthTimeOut,
+		ActiveDirectoryFailure,
+		ConnectionDroppedFailure,
+		CheckMailTimeOut,
+		SendMailTimeOut,
+		SendMailConnectTimeOut,
+		UpdateUndeliveredTimeOut,
+		NetworkingConfigurationFailure,
+		SaveStatusTimeout
+	}
+}

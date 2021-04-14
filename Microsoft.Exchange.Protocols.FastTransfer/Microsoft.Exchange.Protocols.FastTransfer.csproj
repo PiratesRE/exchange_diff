@@ -1,0 +1,129 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{09CD9476-CD82-489E-B9E2-84B47CA14181}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Microsoft.Exchange.Protocols.FastTransfer</RootNamespace>
+    <AssemblyName>Microsoft.Exchange.Protocols.FastTransfer</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System.Core" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ContentSynchronizationScope.cs" />
+    <Compile Include="ContentSynchronizationScopeBase.cs" />
+    <Compile Include="ConversationSynchronizationScope.cs" />
+    <Compile Include="FastTransferAttachment.cs" />
+    <Compile Include="FastTransferContext.cs" />
+    <Compile Include="FastTransferDownloadContext.cs" />
+    <Compile Include="FastTransferFolder.cs" />
+    <Compile Include="FastTransferMessage.cs" />
+    <Compile Include="FastTransferPropertyBag.cs" />
+    <Compile Include="FastTransferRecipient.cs" />
+    <Compile Include="FastTransferStream.cs" />
+    <Compile Include="FastTransferStreamMode.cs" />
+    <Compile Include="FastTransferUploadContext.cs" />
+    <Compile Include="FolderChangeEntry.cs" />
+    <Compile Include="Globals.cs" />
+    <Compile Include="HierarchySynchronizationScope.cs" />
+    <Compile Include="IContentSynchronizationScope.cs" />
+    <Compile Include="IcsContentDownloadContext.cs" />
+    <Compile Include="IcsContentUploadContext.cs" />
+    <Compile Include="IcsDownloadContext.cs" />
+    <Compile Include="IcsHierarchyDownloadContext.cs" />
+    <Compile Include="IcsHierarchyUploadContext.cs" />
+    <Compile Include="IcsState.cs" />
+    <Compile Include="IcsUploadContext.cs" />
+    <Compile Include="IHierarchySynchronizationScope.cs" />
+    <Compile Include="InferenceLogIterator.cs" />
+    <Compile Include="MessagePropertyFilter.cs" />
+    <Compile Include="PerUserTableIterator.cs" />
+    <Compile Include="PerUserType.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="PropertyFilterFactory.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Common\Microsoft.Exchange.Data.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140D3}</Project>
+      <Name>Microsoft.Exchange.Data.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Diagnostics\Microsoft.Exchange.Diagnostics.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14113}</Project>
+      <Name>Microsoft.Exchange.Diagnostics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Net\Microsoft.Exchange.Net.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14178}</Project>
+      <Name>Microsoft.Exchange.Net</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Protocols.MAPI\Microsoft.Exchange.Protocols.MAPI.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14182}</Project>
+      <Name>Microsoft.Exchange.Protocols.MAPI</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.RpcClientAccess.Parser\Microsoft.Exchange.RpcClientAccess.Parser.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1418D}</Project>
+      <Name>Microsoft.Exchange.RpcClientAccess.Parser</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Server.Storage.Common\Microsoft.Exchange.Server.Storage.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1419A}</Project>
+      <Name>Microsoft.Exchange.Server.Storage.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Server.Storage.LazyIndexing\Microsoft.Exchange.Server.Storage.LazyIndexing.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141A0}</Project>
+      <Name>Microsoft.Exchange.Server.Storage.LazyIndexing</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Server.Storage.LogicalDataModel\Microsoft.Exchange.Server.Storage.LogicalDataModel.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141A1}</Project>
+      <Name>Microsoft.Exchange.Server.Storage.LogicalDataModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Server.Storage.PhysicalAccess\Microsoft.Exchange.Server.Storage.PhysicalAccess.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141A4}</Project>
+      <Name>Microsoft.Exchange.Server.Storage.PhysicalAccess</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Server.Storage.PropertyDefinitions\Microsoft.Exchange.Server.Storage.PropertyDefinitions.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141A5}</Project>
+      <Name>Microsoft.Exchange.Server.Storage.PropertyDefinitions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Server.Storage.PropertyTag\Microsoft.Exchange.Server.Storage.PropertyTag.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141A6}</Project>
+      <Name>Microsoft.Exchange.Server.Storage.PropertyTag</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Server.Storage.StoreCommonServices\Microsoft.Exchange.Server.Storage.StoreCommonServices.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141A8}</Project>
+      <Name>Microsoft.Exchange.Server.Storage.StoreCommonServices</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\mscorlib\mscorlib.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141F1}</Project>
+      <Name>mscorlib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

@@ -1,0 +1,190 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{09CD9476-CD82-489E-B9E2-84B47CA140D8}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Microsoft.Exchange.AddressBook</RootNamespace>
+    <AssemblyName>Microsoft.Exchange.AddressBook.Service</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.PowerShell.HostingTools" />
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Management.Automation" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="EventLog\AddressBookEventLogConstants.cs" />
+    <Compile Include="Nspi\Client\NspiConnection.cs" />
+    <Compile Include="Nspi\Client\NspiConnectionPool.cs" />
+    <Compile Include="Nspi\EntryId.cs" />
+    <Compile Include="Nspi\EphemeralIdTable.cs" />
+    <Compile Include="Nspi\NspiPropMapper.cs" />
+    <Compile Include="Nspi\NspiPropMapperFlags.cs" />
+    <Compile Include="Nspi\PhotoRequestAddressbookLogger.cs" />
+    <Compile Include="Nspi\QueryFilterBuilder.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Service\AddressBookPerformanceCounters.cs" />
+    <Compile Include="Service\AddressBookPerformanceCountersWrapper.cs" />
+    <Compile Include="Service\AddressBookService.cs" />
+    <Compile Include="Service\ClientContextCache.cs" />
+    <Compile Include="Service\Configuration.cs" />
+    <Compile Include="Service\ConvertHelper.cs" />
+    <Compile Include="Service\DispatchTask.cs" />
+    <Compile Include="Service\DispatchTaskAsyncResult.cs" />
+    <Compile Include="Service\IAddressBookPerformanceCounters.cs" />
+    <Compile Include="Service\ModCache.cs" />
+    <Compile Include="Service\MovingAveragePerfCounter.cs" />
+    <Compile Include="Service\NspiAsyncDispatch.cs" />
+    <Compile Include="Service\NspiBindDispatchTask.cs" />
+    <Compile Include="Service\NspiCompareDNTsDispatchTask.cs" />
+    <Compile Include="Service\NspiContext.cs" />
+    <Compile Include="Service\NspiDeleteEntriesDispatchTask.cs" />
+    <Compile Include="Service\NspiDispatchTask.cs" />
+    <Compile Include="Service\NspiDNToEphDispatchTask.cs" />
+    <Compile Include="Service\NspiException.cs" />
+    <Compile Include="Service\NspiGetHierarchyInfoDispatchTask.cs" />
+    <Compile Include="Service\NspiGetIDsFromNamesDispatchTask.cs" />
+    <Compile Include="Service\NspiGetMatchesDispatchTask.cs" />
+    <Compile Include="Service\NspiGetNamesFromIDsDispatchTask.cs" />
+    <Compile Include="Service\NspiGetPropListDispatchTask.cs" />
+    <Compile Include="Service\NspiGetPropsDispatchTask.cs" />
+    <Compile Include="Service\NspiGetTemplateInfoDispatchTask.cs" />
+    <Compile Include="Service\NspiModLinkAttDispatchTask.cs" />
+    <Compile Include="Service\NspiModPropsDispatchTask.cs" />
+    <Compile Include="Service\NspiPrincipal.cs" />
+    <Compile Include="Service\NspiQueryColumnsDispatchTask.cs" />
+    <Compile Include="Service\NspiQueryRowsDispatchTask.cs" />
+    <Compile Include="Service\NspiResolveNamesDispatchTask.cs" />
+    <Compile Include="Service\NspiResolveNamesWDispatchTask.cs" />
+    <Compile Include="Service\NspiResortRestrictionDispatchTask.cs" />
+    <Compile Include="Service\NspiSeekEntriesDispatchTask.cs" />
+    <Compile Include="Service\NspiServer.cs" />
+    <Compile Include="Service\NspiStateDispatchTask.cs" />
+    <Compile Include="Service\NspiUnbindDispatchTask.cs" />
+    <Compile Include="Service\NspiUpdateStatDispatchTask.cs" />
+    <Compile Include="Service\NullAddressBookPerformanceCounters.cs" />
+    <Compile Include="Service\NullPerformanceCounter.cs" />
+    <Compile Include="Service\PerformanceCounters\AddressBookCounters.cs" />
+    <Compile Include="Service\ProtocolLog.cs" />
+    <Compile Include="Service\ProtocolLogSession.cs" />
+    <Compile Include="Service\RfriAsyncDispatch.cs" />
+    <Compile Include="Service\RfriContext.cs" />
+    <Compile Include="Service\RfriDispatchTask.cs" />
+    <Compile Include="Service\RfriException.cs" />
+    <Compile Include="Service\RfriGetAddressBookUrlDispatchTask.cs" />
+    <Compile Include="Service\RfriGetFQDNFromLegacyDNDispatchTask.cs" />
+    <Compile Include="Service\RfriGetMailboxUrlDispatchTask.cs" />
+    <Compile Include="Service\RfriGetNewDSADispatchTask.cs" />
+    <Compile Include="Service\RfriServer.cs" />
+    <Compile Include="Service\ServerFqdnCache.cs" />
+    <Compile Include="Service\WorkloadManagerDispatchTask.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.Exchange.Common\Microsoft.Exchange.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140F0}</Project>
+      <Name>Microsoft.Exchange.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Configuration.ObjectModel\Microsoft.Exchange.Configuration.ObjectModel.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140FC}</Project>
+      <Name>Microsoft.Exchange.Configuration.ObjectModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.ApplicationLogic\Microsoft.Exchange.Data.ApplicationLogic.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14104}</Project>
+      <Name>Microsoft.Exchange.Data.ApplicationLogic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Common\Microsoft.Exchange.Data.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140D3}</Project>
+      <Name>Microsoft.Exchange.Data.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Directory\Microsoft.Exchange.Data.Directory.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14105}</Project>
+      <Name>Microsoft.Exchange.Data.Directory</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Storage\Microsoft.Exchange.Data.Storage.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1410F}</Project>
+      <Name>Microsoft.Exchange.Data.Storage</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data\Microsoft.Exchange.Data.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14106}</Project>
+      <Name>Microsoft.Exchange.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Diagnostics\Microsoft.Exchange.Diagnostics.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14113}</Project>
+      <Name>Microsoft.Exchange.Diagnostics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.InfoWorker.Common\Microsoft.Exchange.InfoWorker.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1413C}</Project>
+      <Name>Microsoft.Exchange.InfoWorker.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Management\Microsoft.Exchange.Management.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1415C}</Project>
+      <Name>Microsoft.Exchange.Management</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Net\Microsoft.Exchange.Net.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14178}</Project>
+      <Name>Microsoft.Exchange.Net</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.RpcClientAccess.Parser\Microsoft.Exchange.RpcClientAccess.Parser.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1418D}</Project>
+      <Name>Microsoft.Exchange.RpcClientAccess.Parser</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.RpcClientAccess.Server\Microsoft.Exchange.RpcClientAccess.Server.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1418E}</Project>
+      <Name>Microsoft.Exchange.RpcClientAccess.Server</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.RpcClientAccess\Microsoft.Exchange.RpcClientAccess.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14189}</Project>
+      <Name>Microsoft.Exchange.RpcClientAccess</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Rpc\Microsoft.Exchange.Rpc.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14188}</Project>
+      <Name>Microsoft.Exchange.Rpc</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.StoreProvider\Microsoft.Exchange.StoreProvider.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141B9}</Project>
+      <Name>Microsoft.Exchange.StoreProvider</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.WorkloadManagement\Microsoft.Exchange.WorkloadManagement.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141E1}</Project>
+      <Name>Microsoft.Exchange.WorkloadManagement</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\mscorlib\mscorlib.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141F1}</Project>
+      <Name>mscorlib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

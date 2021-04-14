@@ -1,0 +1,383 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo IsDatacenterOnly="true" Name="HubTransport Ffo only component" DatacenterMode="Ffo">
+
+    <ServerTasks>
+
+        <!-- Task for installing the webstore performance counters 
+         Note: This task is first since other components may make calls to webstore shortly after being installed
+         and we do not want to pollute the event log with error messages indicating that a perf counter is missing. -->
+        <ServerTaskInfo Id="_76A9538E41C74D8EB46AD1C008FFF68F" Component="Office15:\Current\Forefront for Office Datacenter\Deployment and Configuration Management\Deployment">
+            <Install IsFatal="false">
+                <Standalone>
+                    new-perfcounters -DefinitionFileName DirectoryWebstoreCounters.xml
+                    new-perfcounters -DefinitionFileName MessageTracingWebstoreCounters.xml
+                    new-perfcounters -DefinitionFileName SpamWebstoreCounters.xml
+                    new-perfcounters -DefinitionFileName StoredProcedureCounters.xml
+                    new-perfcounters -DefinitionFileName WstThrottlerCounters.xml
+                    new-perfcounters -DefinitionFileName CacheDataProvider.xml
+                    new-perfcounters -DefinitionFileName CompositeDataProvider.xml
+                    new-perfcounters -DefinitionFileName SpamAnalysisRoutingAgentPerfCounters.xml
+                    new-perfcounters -DefinitionFileName SpamFeedDeliveryAgentPerfCounters.xml
+                    new-perfcounters -DefinitionFileName KesServicePerfCounters.xml
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true" />
+            <DisasterRecovery UseInstallTasks="true" />
+            <Uninstall IsFatal="false">
+                <Standalone>
+                    remove-perfcounters -DefinitionFileName DirectoryWebstoreCounters.xml
+                    remove-perfcounters -DefinitionFileName MessageTracingWebstoreCounters.xml
+                    remove-perfcounters -DefinitionFileName SpamWebstoreCounters.xml
+                    remove-perfcounters -DefinitionFileName StoredProcedureCounters.xml
+                    remove-perfcounters -DefinitionFileName WstThrottlerCounters.xml
+                    remove-perfcounters -DefinitionFileName CacheDataProvider.xml
+                    remove-perfcounters -DefinitionFileName CompositeDataProvider.xml
+                    remove-perfcounters -DefinitionFileName SpamAnalysisRoutingAgentPerfCounters.xml
+                    remove-perfcounters -DefinitionFileName SpamFeedDeliveryAgentPerfCounters.xml
+                    remove-perfcounters -DefinitionFileName KesServicePerfCounters.xml
+                </Standalone>
+            </Uninstall>
+        </ServerTaskInfo>
+
+        <!-- Disable all the agents on the Hub Role and re-enable the Transport Rules and Spam Agent -->
+        <ServerTaskInfo Id="_51fe47f236c84ff7bc93916519a8445a" Component="Office15:\Current\Forefront for Office Datacenter\Deployment and Configuration Management\Deployment">
+            <Install>
+                <Standalone>
+                    ## Disable all other agents on the Hub Role and re-enable the Transport Rules Agent
+                    ## TODO: Change this logic to disable the agents that we dont want, otherwise we need to keep adding
+                    ## code to enable agents here that were installed in the DatacenterBridgeheadComponent.xml
+                    Get-TransportAgent | Disable-TransportAgent -Confirm:$false -ErrorAction SilentlyContinue
+                    $transportAgentName = "Transport Rule Agent";                
+                    enable-transportagent -Identity:$transportAgentName;
+                    $spamAnalysisAgentName = "Spam Analysis Agent";
+                    enable-transportagent -Identity:$spamAnalysisAgentName;
+                    $contentFilterAgentName = "DC Content Filter Agent";
+                    enable-transportagent -Identity:$contentFilterAgentName;
+                    $protocolFilterAgentName = "Protocol Filter Agent";
+                    enable-transportagent -Identity:$protocolFilterAgentName;
+                    $spamFilterAgentName = "Spam Filter Agent";                 
+                    enable-transportagent -Identity:$spamFilterAgentName;
+                    if (!$RoleDisableAMFiltering)
+                    {
+                        Enable-TransportAgent -Identity:"Malware Agent"
+                    }                    
+                </Standalone>
+            </Install>
+            <!-- During upgrades, agents retain their state. So, agents that were disabled during install, will continue to remain disabled. We MUST not change the state during upgrade. -->
+            <BuildToBuildUpgrade />
+            <DisasterRecovery UseInstallTasks="true" />
+            <Uninstall />
+        </ServerTaskInfo>
+
+        <!-- Install/uninstall "Spam Analysis Routing Agent", preserve state on upgrade -->
+        <ServerTaskInfo Id="_410E5C6E91D24cd4B827057635AEA5CF" Component="Office15:\Current\Forefront for Office Datacenter\Deployment and Configuration Management\Deployment">
+            <Install DescriptionId="SetupProgressInstallingSpamAnalysisRoutingAgent">
+                <Standalone>
+                    $agentName = "Spam Analysis Routing Agent";
+                    $agentFactory = "Microsoft.Exchange.AntiSpam.SpamAnalysis.RoutingAgent.SpamAnalysisRoutingAgentFactory";
+                    $agentAssembly = ($RoleInstallPath + "TransportRoles\agents\Hygiene\Microsoft.Exchange.AntiSpam.SpamAnalysis.RoutingAgent.dll");
+                    $agent = get-transportagent -Identity:$agentName;
+                    if ($agent)
+                    {
+                        uninstall-transportagent -Identity:$agentName;
+                    };
+
+                    install-TransportAgent -Name:$agentName -TransportAgentFactory:$agentFactory -AssemblyPath:$agentAssembly;
+
+                    ## Set priority order to be just before Spam Filter Agent
+                    $spamFilterAgent = get-transportagent -Identity:"Spam Filter Agent";
+                    if ($spamFilterAgent)
+                    {
+                        set-transportagent -Identity:$agentName -Priority:$spamFilterAgent.Priority
+                    }
+
+                    ## Enable it back only if it is new or it was in enabled state prior to uninstall
+                    if (!$agent -or $agent.enabled)
+                    {
+                        enable-transportagent -Identity:$agentName
+                    };
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true" />
+            <DisasterRecovery UseInstallTasks="true" />
+            <Uninstall DescriptionId="SetupProgressRemovingSpamAnalysisRoutingAgent">
+                <Standalone>
+                    $agentName = "Spam Analysis Routing Agent";
+                    $agent = get-transportagent -Identity:$agentName;
+                    if ($agent)
+                    {
+                        uninstall-transportagent -Identity:$agentName;
+                    };
+                </Standalone>
+            </Uninstall>
+        </ServerTaskInfo>
+
+        <!-- Install FFO Quarantine Insertion Agent -->
+        <ServerTaskInfo Id="_4F1CB93F650E4EC384889A05B6A7279B" Component="Office15:\Current\Forefront for Office Datacenter\Deployment and Configuration Management\Deployment">
+            <Install>
+                <!-- This will install the FFO Quarantine Insertion Agent.  This agent is responsible for sending messages to the FFO Quarantine.-->
+                <Standalone>
+                    $agentName = "Ffo Quarantine Insertion Agent";
+                    $agentFactory = "Microsoft.Exchange.Hygiene.Quarantine.QuarantineInsertionAgentFactory";
+                    $agentAssembly = ($RoleInstallPath + "TransportRoles\agents\Hygiene\Microsoft.Exchange.Hygiene.Quarantine.Agent.dll");
+                    $agent = get-transportagent -Identity:$agentName;
+
+                    if ($agent)
+                    {
+                    	uninstall-transportagent -Identity:$agentName;
+                    };
+                    
+                    install-TransportAgent -Name:$agentName -TransportAgentFactory:$agentFactory -AssemblyPath:$agentAssembly;
+
+                    if ($agent.enabled -or ! $agent)
+                    {
+                    	enable-transportagent -Identity:$agentName
+                    };
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true" />
+            <DisasterRecovery UseInstallTasks="true"/>
+            <Uninstall>
+                <Standalone>
+                    $agent = get-transportagent -Identity:$agentName;
+
+                    if ($agent)
+                    {
+                        uninstall-transportagent -Identity:$agentName;
+                    };
+                </Standalone>
+            </Uninstall>
+        </ServerTaskInfo>
+
+        <!-- Install EOP SpamFeed Delivery Agent -->
+        <ServerTaskInfo Id="_2B15142AFC634faeB9974ED2BDC9172B" Component="Office15:\Current\Forefront for Office Datacenter\Deployment and Configuration Management\Deployment">
+            <Install>
+                <!-- This will install the EOP SpamFeed Delivery Agent. This agent is responsible for delivering spam feed messages to KEStore.-->
+                <Standalone>
+                    $agentName = "Eop SpamFeed Delivery Agent";
+                    $agentFactory = "Microsoft.Exchange.AntiSpam.SpamFeedDeliveryAgent.SpamFeedDeliveryAgentFactory";
+                    $agentAssembly = ($RoleInstallPath + "TransportRoles\agents\Hygiene\Microsoft.Exchange.AntiSpam.SpamFeedDeliveryAgent.dll");
+                    $agent = get-transportagent -Identity:$agentName;
+
+                    if ($agent)
+                    {
+                        uninstall-transportagent -Identity:$agentName;
+                    };
+
+                    install-TransportAgent -Name:$agentName -TransportAgentFactory:$agentFactory -AssemblyPath:$agentAssembly;
+
+                    if ($RoleDatacenterSpamFeedRoutingEnabled -eq $true)
+                    {
+                        ## Enable it back only if it is new or it was in enabled state prior to uninstall
+                        if (!$agent -or $agent.enabled)
+                        {
+                            enable-transportagent -Identity:$agentName;
+                        }
+                    }
+                    else
+                    {
+                        if ($agent -and $agent.enabled)
+                        {
+                            disable-transportagent -Identity:$agentName -Confirm:$false;
+                        }
+                    }
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true" />
+            <DisasterRecovery UseInstallTasks="true"/>
+            <Uninstall>
+                <Standalone>
+                    $agentName = "Eop SpamFeed Delivery Agent";
+                    $agent = get-transportagent -Identity:$agentName;
+
+                    if ($agent)
+                    {
+                        uninstall-transportagent -Identity:$agentName;
+                    };
+                </Standalone>
+            </Uninstall>
+        </ServerTaskInfo>
+
+        <!-- Install/uninstall "Tenant Outbound Connector Agent" preserve state on upgrade -->
+        <ServerTaskInfo Id="_6e51d3bd49f8406c9620ab1d90538148" Component="Office15:\Current\Forefront for Office Datacenter\Deployment and Configuration Management\Deployment">
+            <Install DescriptionId="SetupProgressInstallingTenantOutboundConnectorAgent">
+                <Standalone>
+                    $agentName = "Tenant Outbound Connector Agent";
+                    $agentFactory = "Microsoft.Exchange.Hygiene.TenantAttribution.TenantOutboundConnectorAgentFactory";
+                    $agentAssembly = ($RoleInstallPath + "TransportRoles\agents\Hygiene\Microsoft.Exchange.Hygiene.TenantAttribution.TenantOutboundConnectorAgent.dll");
+                    $agent = get-transportagent -Identity:$agentName;
+                    if ($agent) {
+                    uninstall-transportagent -Identity:$agentName;
+                    };
+                    install-TransportAgent -Name:$agentName -TransportAgentFactory:$agentFactory -AssemblyPath:$agentAssembly;
+                    if ($agent.enabled -or ! $agent) { enable-transportagent -Identity:$agentName };
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true" />
+            <DisasterRecovery UseInstallTasks="true" />
+            <Uninstall DescriptionId="SetupProgressRemovingTenantOutboundConnectorAgent">
+                <Standalone>
+                    $agentName = "Tenant Outbound Connector Agent";
+                    $agent = get-transportagent -Identity:$agentName;
+                    if ($agent) {
+                    uninstall-transportagent -Identity:$agentName;
+                    };
+                </Standalone>
+            </Uninstall>
+        </ServerTaskInfo>
+
+        <!-- Install/uninstall "Sip validation agent" preserve state on upgrade -->
+        <ServerTaskInfo Id="_dd19d4955f334de99e013634ccba3616" Component="Office15:\Current\Forefront for Office Datacenter\Deployment and Configuration Management\Deployment">
+            <Install DescriptionId="SetupProgressInstallingSipValidationAgent">
+                <Standalone>
+                    if ($RoleDatacenterSipValidationAgentInstall -eq $true) {
+                      $agentName = "Sip validation agent";
+                      $agentFactory = "Microsoft.Exchange.Hygiene.SipValidation.SipValidationRoutingAgentFactory";
+                      $agentAssembly = ($RoleInstallPath + "TransportRoles\agents\Hygiene\Microsoft.Exchange.Hygiene.SipValidationAgent.dll");
+                      $agent = get-transportagent -Identity:$agentName;
+                      if ($agent) {
+                      uninstall-transportagent -Identity:$agentName;
+                      };
+                      install-TransportAgent -Name:$agentName -TransportAgentFactory:$agentFactory -AssemblyPath:$agentAssembly;
+                      if (! $agent -or $agent.enabled) { enable-transportagent -Identity:$agentName };
+                    }
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true" />
+            <DisasterRecovery UseInstallTasks="true" />
+            <Uninstall DescriptionId="SetupProgressRemovingSipValidationAgent">
+                <Standalone>
+                    $agentName = "Sip validation agent";
+                    $agent = get-transportagent -Identity:$agentName;
+                    if ($agent) {
+                    uninstall-transportagent -Identity:$agentName;
+                    };
+                </Standalone>
+            </Uninstall>
+        </ServerTaskInfo>
+
+        <!-- Install/uninstall "Sip capture message agent" preserve state on upgrade -->
+        <ServerTaskInfo Id="_b29047801a4345ab9bc02c7f9b720d36" Component="Office15:\Current\Forefront for Office Datacenter\Deployment and Configuration Management\Deployment">
+            <Install DescriptionId="SetupProgressInstallingSipCaptureMessageAgent">
+                <Standalone>
+                    if ($RoleDatacenterSipValidationAgentInstall -eq $true) {
+                      $agentName = "Sip capture message agent";
+                      $agentFactory = "Microsoft.Exchange.Hygiene.SipValidation.SipValidationHubSmtpAgentFactory";
+                      $agentAssembly = ($RoleInstallPath + "TransportRoles\agents\Hygiene\Microsoft.Exchange.Hygiene.SipValidationAgent.dll");
+                      $agent = get-transportagent -Identity:$agentName;
+                      if ($agent) {
+                      uninstall-transportagent -Identity:$agentName;
+                      };
+                      install-TransportAgent -Name:$agentName -TransportAgentFactory:$agentFactory -AssemblyPath:$agentAssembly;
+                      if (! $agent -or $agent.enabled) { enable-transportagent -Identity:$agentName };
+                      set-TransportAgent -priority:1 -Identity:$agentName
+                    }
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true" />
+            <DisasterRecovery UseInstallTasks="true" />
+            <Uninstall DescriptionId="SetupProgressRemovingSipCaptureMessageAgent">
+                <Standalone>
+                    $agentName = "Sip capture message agent";
+                    $agent = get-transportagent -Identity:$agentName;
+                    if ($agent) {
+                    uninstall-transportagent -Identity:$agentName;
+                    };
+                </Standalone>
+            </Uninstall>
+        </ServerTaskInfo>
+
+        <!-- Configure default receive connector permission groups -->
+        <ServerTaskInfo Id="_9d6ea479-790b-40d8-8bff-53802b85903f" Component="Office15:\Current\Forefront for Office Datacenter\Deployment and Configuration Management\Deployment">
+            <Install>
+                <Standalone>
+                    $computerName = (get-childitem -path Env:ComputerName).Value;
+                    $hubDefaultConnector = get-receiveconnector -Server $RoleFqdnOrName -DomainController $RoleDomainController | where {$_.Identity -eq "$computerName\Default $computerName" -and $_.TransportRole -eq "HubTransport"};
+                    if ($hubDefaultConnector -eq $null)
+                    {
+                        Write-ExchangeSetupLog -Error "Default hub receive connector is not found";
+                    }
+                    else
+                    {
+                        if (-not [String]::IsNullOrEmpty($RoleDatacenterReceiveConnectorConnectionTimeout))
+                        {
+                          set-ReceiveConnector $hubDefaultConnector `
+                              -PermissionGroups:"ExchangeServers, ExchangeLegacyServers, AnonymousUsers" `
+                              -MessageRateLimit:unlimited `
+                              -MessageRateSource:"IPAddress" `
+                              -MaxInboundConnectionPerSource:200 `
+                              -ProtocolLoggingLevel:verbose `
+                              -MaxMessageSize:$RoleDatacenterConnectorMaxMessageSize `
+                              -TarpitInterval:00:00:01 `
+                              -ConnectionTimeout:$RoleDatacenterReceiveConnectorConnectionTimeout `
+                              -DomainController $RoleDomainController
+                        }
+                        else
+                        {
+                          set-ReceiveConnector $hubDefaultConnector `
+                              -PermissionGroups:"ExchangeServers, ExchangeLegacyServers, AnonymousUsers" `
+                              -MessageRateLimit:unlimited `
+                              -MessageRateSource:"IPAddress" `
+                              -MaxInboundConnectionPerSource:200 `
+                              -ProtocolLoggingLevel:verbose `
+                              -MaxMessageSize:$RoleDatacenterConnectorMaxMessageSize `
+                              -TarpitInterval:00:00:01 `
+                              -DomainController $RoleDomainController
+                        }
+                    }
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true" />
+            <DisasterRecovery UseInstallTasks="true"/>
+            <Uninstall />
+        </ServerTaskInfo>
+
+      <!-- Update transport app.config file. -->
+      <ServerTaskInfo Id="_2834FED8-BC09-11E1-985C-198A6188709B" Component="Office15:\Current\Forefront for Office Datacenter\Deployment and Configuration Management\Deployment">
+          <Install>
+              <Standalone>
+                $fullPath = "$RoleBinPath\EdgeTransport.exe.config";
+
+                Write-ExchangeSetupLog -Info "Updating max job threads and executing jobs so that EdgeTransport can drive throughput high....";
+                Set-AppConfigValue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'MaxJobThreads' -NewValue:6;
+                Set-AppConfigValue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'MaxExecutingJobs' -NewValue:12;
+                Set-AppConfigValue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'EnableConnectionCache' -NewValue:$RoleDatacenterEnableHubSmtpConnectionCache;
+                Set-AppConfigValue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'MessageRetryIntervalProgressiveBackoffEnabled' -NewValue:$RoleDatacenterMessageRetryIntervalProgressiveBackoffEnabled;
+
+                if (-not [String]::IsNullorEmpty($RoleDatacenterFfoHubToFESmtpCertificateFqdn))
+                {
+                    set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'OutboundProxyExternalCertificateSubject' -NewValue:$RoleDatacenterFfoHubToFESmtpCertificateFqdn;
+                }
+                else
+                {
+                    Write-ExchangeSetupLog -Info "RoleDatacenterFfoHubToFESmtpCertificateFqdn is empty";
+                }
+
+                ## Set the ComputerName.FopeFrontendConnectorFqdn to use as the Generating server in DSNs' for FFO Hubs
+                if (-not [String]::IsNullorEmpty($RoleDatacenterFopeFrontendConnectorFqdn))
+                {
+                    $computerName = (get-childitem -path Env:ComputerName).Value;
+                    set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'DSNServerConnectorFqdn' -NewValue:"$computerName.$RoleDatacenterFopeFrontendConnectorFqdn";
+                }
+                else
+                {
+                    Write-ExchangeSetupLog -Info "RoleDatacenterFopeFrontendConnectorFqdn is empty";
+                }
+
+                if (-not [String]::IsNullOrEmpty($RoleDatacenterReceiveConnectorConnectionTimeout))          
+                { 
+                    set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'ConnectionTimeoutForNonOutboundProxy' -NewValue:$RoleDatacenterReceiveConnectorConnectionTimeout;
+                    set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'ConnectionTimeoutForOutboundProxy' -NewValue:$RoleDatacenterReceiveConnectorConnectionTimeout;
+                }
+
+                Set-AppConfigValue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'SpamFeedRoutingEnabled' -NewValue:$RoleDatacenterSpamFeedRoutingEnabled;
+                Set-AppConfigValue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'IsResolverEnabled' -NewValue:$false;
+              </Standalone>
+          </Install>
+          <BuildToBuildUpgrade UseInstallTasks="true"/>
+          <DisasterRecovery UseInstallTasks="true"/>
+          <Uninstall />
+      </ServerTaskInfo>
+
+  </ServerTasks>
+</SetupComponentInfo>

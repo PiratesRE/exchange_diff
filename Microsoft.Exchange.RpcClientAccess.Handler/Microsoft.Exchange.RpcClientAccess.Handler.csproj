@@ -1,0 +1,248 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{09CD9476-CD82-489E-B9E2-84B47CA1418B}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Microsoft.Exchange.RpcClientAccess</RootNamespace>
+    <AssemblyName>Microsoft.Exchange.RpcClientAccess.Handler</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Exchange.WebServices" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="FastTransfer\Handler\AttachmentAdaptor.cs" />
+    <Compile Include="FastTransfer\Handler\ContentsSynchronizer.cs" />
+    <Compile Include="FastTransfer\Handler\ConversionCallback.cs" />
+    <Compile Include="FastTransfer\Handler\CoreAttachmentPropertyBagAdaptor.cs" />
+    <Compile Include="FastTransfer\Handler\CoreItemPropertyBag.cs" />
+    <Compile Include="FastTransfer\Handler\CorePropertyBagAdaptor.cs" />
+    <Compile Include="FastTransfer\Handler\DownloadBodyOption.cs" />
+    <Compile Include="FastTransfer\Handler\FastTransferDownload.cs" />
+    <Compile Include="FastTransfer\Handler\FastTransferInjectFailure.cs" />
+    <Compile Include="FastTransfer\Handler\FastTransferServerObject.cs" />
+    <Compile Include="FastTransfer\Handler\FastTransferUpload.cs" />
+    <Compile Include="FastTransfer\Handler\FolderAdaptor.cs" />
+    <Compile Include="FastTransfer\Handler\FolderChangeAdaptor.cs" />
+    <Compile Include="FastTransfer\Handler\FolderIdConverter.cs" />
+    <Compile Include="FastTransfer\Handler\FolderPropertyBagAdaptor.cs" />
+    <Compile Include="FastTransfer\Handler\HierarchySynchronizer.cs" />
+    <Compile Include="FastTransfer\Handler\IcsDownload.cs" />
+    <Compile Include="FastTransfer\Handler\IcsDownloadPassThru.cs" />
+    <Compile Include="FastTransfer\Handler\IcsFolderUpload.cs" />
+    <Compile Include="FastTransfer\Handler\IcsMessageUpload.cs" />
+    <Compile Include="FastTransfer\Handler\IcsState.cs" />
+    <Compile Include="FastTransfer\Handler\IcsStateAdaptor.cs" />
+    <Compile Include="FastTransfer\Handler\IcsStateHelper.cs" />
+    <Compile Include="FastTransfer\Handler\IcsStateOrigin.cs" />
+    <Compile Include="FastTransfer\Handler\IcsStateStream.cs" />
+    <Compile Include="FastTransfer\Handler\IcsUpload.cs" />
+    <Compile Include="FastTransfer\Handler\IdConverter.cs" />
+    <Compile Include="FastTransfer\Handler\IdConverters.cs" />
+    <Compile Include="FastTransfer\Handler\IIcsStateCheckpoint.cs" />
+    <Compile Include="FastTransfer\Handler\MessageAdaptor.cs" />
+    <Compile Include="FastTransfer\Handler\MessageChangeAdaptor.cs" />
+    <Compile Include="FastTransfer\Handler\MessageIdConverter.cs" />
+    <Compile Include="FastTransfer\Handler\MessageIterator.cs" />
+    <Compile Include="FastTransfer\Handler\MessageIteratorClient.cs" />
+    <Compile Include="FastTransfer\Handler\PropertyFilterFactory.cs" />
+    <Compile Include="FastTransfer\Handler\RecipientAdaptor.cs" />
+    <Compile Include="FastTransfer\Handler\RecipientPropertyBagAdaptor.cs" />
+    <Compile Include="FastTransfer\Handler\SessionAdaptor.cs" />
+    <Compile Include="FastTransfer\Handler\SynchronizerBase.cs" />
+    <Compile Include="Handler\AddressBookEntryId.cs" />
+    <Compile Include="Handler\AddressEntryId.cs" />
+    <Compile Include="Handler\AddressEntryList.cs" />
+    <Compile Include="Handler\AsyncOperationExecutor.cs" />
+    <Compile Include="Handler\Attachment.cs" />
+    <Compile Include="Handler\AttachmentView.cs" />
+    <Compile Include="Handler\BodyConversionStream.cs" />
+    <Compile Include="Handler\BodyHelper.cs" />
+    <Compile Include="Handler\ClientSideProperties.cs" />
+    <Compile Include="Handler\ConflictMsgKeyConversion.cs" />
+    <Compile Include="Handler\ConnectionHandler.cs" />
+    <Compile Include="Handler\ContentsView.cs" />
+    <Compile Include="Handler\ConversationMvItemIdsConversion.cs" />
+    <Compile Include="Handler\ConversationMvItemIdsConversionBase.cs" />
+    <Compile Include="Handler\ConversationMvItemIdsMailboxWideConversion.cs" />
+    <Compile Include="Handler\CopyFolderSegmentedOperation.cs" />
+    <Compile Include="Handler\DamOrgMsgConversion.cs" />
+    <Compile Include="Handler\DeleteMessagesSegmentedOperation.cs" />
+    <Compile Include="Handler\EmbeddedMessage.cs" />
+    <Compile Include="Handler\EmptyFolderSegmentedOperation.cs" />
+    <Compile Include="Handler\EntryIdConverter.cs" />
+    <Compile Include="Handler\EWSPropertyTranslator.cs" />
+    <Compile Include="Handler\ExceptionTranslator.cs" />
+    <Compile Include="Handler\FilterRestrictionTranslator.cs" />
+    <Compile Include="Handler\FixupMapping.cs" />
+    <Compile Include="Handler\Folder.cs" />
+    <Compile Include="Handler\FolderBasedView.cs" />
+    <Compile Include="Handler\FolderSecurityDescriptorConversion.cs" />
+    <Compile Include="Handler\HardDeleteMessagesSegmentedOperation.cs" />
+    <Compile Include="Handler\HardEmptyFolderSegmentedOperation.cs" />
+    <Compile Include="Handler\HierarchyView.cs" />
+    <Compile Include="Handler\IAsyncOperationExecutor.cs" />
+    <Compile Include="Handler\IdsSegmentEnumerator.cs" />
+    <Compile Include="Handler\IPrimaryHierarchyHandler.cs" />
+    <Compile Include="Handler\IServiceProvider.cs" />
+    <Compile Include="Handler\IViewDataSource.cs" />
+    <Compile Include="Handler\LocalDirectoryEntryIdConversion.cs" />
+    <Compile Include="Handler\Logon.cs" />
+    <Compile Include="Handler\MEDSPropertyTranslator.cs" />
+    <Compile Include="Handler\Message.cs" />
+    <Compile Include="Handler\MessageSubmissionIdConversion.cs" />
+    <Compile Include="Handler\ModernCalendarItemFilteringHelper.cs" />
+    <Compile Include="Handler\MoveCopyMessagesSegmentedOperation.cs" />
+    <Compile Include="Handler\MoveFolderSegmentedOperation.cs" />
+    <Compile Include="Handler\NotificationData.cs" />
+    <Compile Include="Handler\NotificationDataQueue.cs" />
+    <Compile Include="Handler\NotificationHandler.cs" />
+    <Compile Include="Handler\NotificationQueue.cs" />
+    <Compile Include="Handler\NotificationRegistration.cs" />
+    <Compile Include="Handler\NotificationSink.cs" />
+    <Compile Include="Handler\NullStream.cs" />
+    <Compile Include="Handler\OneOffDataType.cs" />
+    <Compile Include="Handler\OneOffEntryId.cs" />
+    <Compile Include="Handler\ParentIdConversion.cs" />
+    <Compile Include="Handler\PermissionsView.cs" />
+    <Compile Include="Handler\PerServerActivityThrottle.cs" />
+    <Compile Include="Handler\PrivateLogon.cs" />
+    <Compile Include="Handler\ProgressInfo.cs" />
+    <Compile Include="Handler\PropertyConversion.cs" />
+    <Compile Include="Handler\PropertyConversionHelper.cs" />
+    <Compile Include="Handler\PropertyConverter.cs" />
+    <Compile Include="Handler\PropertyServerObject.cs" />
+    <Compile Include="Handler\PropertyStream.cs" />
+    <Compile Include="Handler\PropertyTagExtensions.cs" />
+    <Compile Include="Handler\PublicFolderOperations.cs" />
+    <Compile Include="Handler\PublicLogon.cs" />
+    <Compile Include="Handler\QueryResultViewDataSource.cs" />
+    <Compile Include="Handler\QuerySegmentEnumerator.cs" />
+    <Compile Include="Handler\RecipientTranslationException.cs" />
+    <Compile Include="Handler\RecipientTranslator.cs" />
+    <Compile Include="Handler\ResourceTracker.cs" />
+    <Compile Include="Handler\RestrictionHelper.cs" />
+    <Compile Include="Handler\RopHandler.cs" />
+    <Compile Include="Handler\RopHandlerHelper.cs" />
+    <Compile Include="Handler\RPCPrimaryHierarchyHandler.cs" />
+    <Compile Include="Handler\RuleActionTranslator.cs" />
+    <Compile Include="Handler\RuleFolderIdConversion.cs" />
+    <Compile Include="Handler\RulesView.cs" />
+    <Compile Include="Handler\SegmentedRopOperation.cs" />
+    <Compile Include="Handler\SegmentEnumerator.cs" />
+    <Compile Include="Handler\SegmentOperationResult.cs" />
+    <Compile Include="Handler\SentMailConversion.cs" />
+    <Compile Include="Handler\ServerIdConverter.cs" />
+    <Compile Include="Handler\ServerObject.cs" />
+    <Compile Include="Handler\SessionServerObject.cs" />
+    <Compile Include="Handler\SetReadFlagsSegmentedOperation.cs" />
+    <Compile Include="Handler\SoftDeleteMessagesSegmentedOperation.cs" />
+    <Compile Include="Handler\SoftEmptyFolderSegmentedOperation.cs" />
+    <Compile Include="Handler\StorageObjects\BestBodyCoreObjectProperties.cs" />
+    <Compile Include="Handler\StorageObjects\CoreObjectProperties.cs" />
+    <Compile Include="Handler\StorageObjects\CoreObjectPropertyDefinitionFactory.cs" />
+    <Compile Include="Handler\StorageObjects\IPropertyDefinitionFactory.cs" />
+    <Compile Include="Handler\StorageObjects\IStorageObjectProperties.cs" />
+    <Compile Include="Handler\Stream.cs" />
+    <Compile Include="Handler\StreamSource.2.cs" />
+    <Compile Include="Handler\StreamSource.cs" />
+    <Compile Include="Handler\TeamMailboxExecutionHelper.cs" />
+    <Compile Include="Handler\TestInterceptor.cs" />
+    <Compile Include="Handler\TestInterceptorLocation.cs" />
+    <Compile Include="Handler\UpgradeableBodyConversionStream.cs" />
+    <Compile Include="Handler\View.cs" />
+    <Compile Include="Handler\ViewCache.cs" />
+    <Compile Include="Handler\ViewClientProperties.cs" />
+    <Compile Include="Handler\ViewType.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.ApplicationLogic\Microsoft.Exchange.Data.ApplicationLogic.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14104}</Project>
+      <Name>Microsoft.Exchange.Data.ApplicationLogic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Common\Microsoft.Exchange.Data.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140D3}</Project>
+      <Name>Microsoft.Exchange.Data.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Directory\Microsoft.Exchange.Data.Directory.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14105}</Project>
+      <Name>Microsoft.Exchange.Data.Directory</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Storage\Microsoft.Exchange.Data.Storage.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1410F}</Project>
+      <Name>Microsoft.Exchange.Data.Storage</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data\Microsoft.Exchange.Data.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14106}</Project>
+      <Name>Microsoft.Exchange.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Diagnostics\Microsoft.Exchange.Diagnostics.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14113}</Project>
+      <Name>Microsoft.Exchange.Diagnostics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Net\Microsoft.Exchange.Net.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14178}</Project>
+      <Name>Microsoft.Exchange.Net</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.RpcClientAccess.Parser\Microsoft.Exchange.RpcClientAccess.Parser.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1418D}</Project>
+      <Name>Microsoft.Exchange.RpcClientAccess.Parser</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.RpcClientAccess\Microsoft.Exchange.RpcClientAccess.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14189}</Project>
+      <Name>Microsoft.Exchange.RpcClientAccess</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Security\Microsoft.Exchange.Security.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14198}</Project>
+      <Name>Microsoft.Exchange.Security</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.StoreProvider\Microsoft.Exchange.StoreProvider.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141B9}</Project>
+      <Name>Microsoft.Exchange.StoreProvider</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.VariantConfiguration\Microsoft.Exchange.VariantConfiguration.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141E0}</Project>
+      <Name>Microsoft.Exchange.VariantConfiguration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\mscorlib\mscorlib.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141F1}</Project>
+      <Name>mscorlib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\mscorlib\mscorlib.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141F1}</Project>
+      <Name>mscorlib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo IsDatacenterOnly="true" IsDatacenterDedicatedOnly="true" Name="Datacenter FrontendTransport Configuration">
+
+  <ServerTasks>
+
+    <!-- Configure SSL certificates -->
+    <ServerTaskInfo Id="_354250ef-27e3-4251-b8e1-cba75067bdcc" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>Install-ExchangeCertificate -Thumbprint $RoleDatacenterIisSHA1Thumbprint -Services IIS</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <ServerTaskInfo Id="_8d852919-a35f-4177-8954-0c9d69768eff" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>Install-ExchangeCertificate -Thumbprint $RoleDatacenterSmtpSHA1Thumbprint -Services SMTP</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall />
+    </ServerTaskInfo>
+
+      <!-- Creating Log directory structure for data center so that SetExchangeShares.ps1 script can set the ACLs on them. -->
+      <ServerTaskInfo Id="_8c716ee605da4491b5b5159d77d2f786" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+          <Install IsFatal="false">
+              <Standalone>
+                  $TransportLogs = $RoleInstallPath + "\TransportRoles\Logs";
+                  $HealthMonitoringLogPath = $TransportLogs + "\HealthMonitoring";
+                  $AgentLogPath = $TransportLogs + "\FrontEnd\AgentLog";
+                  $EdgeSyncLogPath = $TransportLogs + "\EdgeSync";
+                  $InterceptorArchivePath = $RoleDatacenterInterceptorArchiveRoot + "\Interceptor";
+                  if (!(Test-Path -Path $TransportLogs)) {New-Item $TransportLogs -type directory};
+                  if (!(Test-Path -Path $HealthMonitoringLogPath)) {New-Item $HealthMonitoringLogPath -type directory};
+                  if (!(Test-Path -Path $AgentLogPath)) {New-Item $AgentLogPath -type directory};
+                  if (!(Test-Path -Path $EdgeSyncLogPath)) {New-Item $EdgeSyncLogPath -type directory};
+                  if (!(Test-Path -Path $InterceptorArchivePath)) {New-Item $InterceptorArchivePath -type directory};
+                  Start-SetupProcess -Name "icacls.exe" -args "`"$TransportLogs`" /grant `"$env:USERDOMAIN\View-Only Organization Management:(OI)(CI)(R)`" /T /C /inheritance:e";
+              </Standalone>
+          </Install>
+          <BuildToBuildUpgrade UseInstallTasks="true" />
+          <DisasterRecovery UseInstallTasks="true" />
+          <Uninstall />
+      </ServerTaskInfo>
+            
+	<!-- Change the AD Driver event log levels to low for the datacenter -->
+    <ServerTaskInfo Id="_3612686c-dd06-43d5-abe8-d7600e00e394" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\AD Core">
+      <Install>
+        <Standalone>
+          Set-EventLogLevel -Identity "MSExchange ADAccess\LDAP" -Level Low
+          Set-EventLogLevel -Identity "MSExchange ADAccess\Topology" -Level Low
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- disable MSMessageTracing Client on FE -->
+    <ServerTaskInfo Id="_c58f357c-2144-43de-ac94-29531dd67b15" Component="Office15:\Current\Forefront for Office Datacenter\Deployment and Configuration Management\Deployment" ExcludeInDatacenterDedicated="true">
+      <Install>
+        <Standalone>
+          if (!(get-service MSMessageTracingClient* | where {$_.name -eq "MSMessageTracingClient"}))
+          {
+            Stop-SetupService -ServiceName MSMessageTracingClient
+            Uninstall-MessageTracingClientService
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>
+            Uninstall-MessageTracingClientService
+            Remove-Perfcounters -DefinitionFileName MessageTracingPerfCounters.xml
+            Remove-Perfcounters -DefinitionFileName StreamingOpticsPerfCounters.xml
+            Remove-Perfcounters -DefinitionFileName TblAggregatorPerfCounters.xml
+			Remove-Perfcounters -DefinitionFileName OutboundSingleSenderPerfCounters.xml
+			Remove-Perfcounters -DefinitionFileName OpticsDataProviderPerfCounters.xml
+            Remove-Perfcounters -DefinitionFileName RegionTagPerfCounters.xml
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/remove Interceptor Agent perf counters -->
+    <ServerTaskInfo Id="_d46f66473cb74833972218fc6b1424a9" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>new-PerfCounters -DefinitionFileName InterceptorAgentPerfCounters.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-PerfCounters -DefinitionFileName InterceptorAgentPerfCounters.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+    
+    <!-- Update the receive connectors -->
+    <ServerTaskInfo Id="_1c61d89f427841d88cc8f83d7850e8d2" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup" ExcludeInDatacenterDedicated="true">
+      <Install>
+        <Standalone>
+            set-ReceiveConnector ("Client Frontend " + [String][System.Environment]::MachineName ) -FQDN:$RoleFqdnOrName -MessageRateLimit:5 -MessageRateSource:"User" -ProtocolLoggingLevel:verbose -MaxMessageSize:35MB -MaxRecipientsPerMessage:5000 -LiveCredentialEnabled $true -AuthMechanism:tls,basicauth,basicauthrequiretls
+            if (-not [String]::IsNullOrEmpty($RoleDatacenterReceiveConnectorConnectionTimeout))
+            { 
+                set-ReceiveConnector ("Default Frontend " + [String][System.Environment]::MachineName ) -ConnectionTimeout:$RoleDatacenterReceiveConnectorConnectionTimeout
+            }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade />
+      <DisasterRecovery />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Update frontendtransport config file. -->
+    <ServerTaskInfo Id="_2e43625557664d5ab51ac9ed7bc549ac" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          $fullPath = "$RoleBinPath\MSExchangeFrontEndTransport.exe.config";
+          Copy-Item $fullPath "$fullPath.backup";
+          set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'SMTPAcceptAnyRecipientOverride' -NewValue:$true;
+          set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'InboundProxySendNewXProxyFromArguments' -NewValue:$true;
+          set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'WaitForSmtpSessionsAtShutdown' -NewValue:$true;
+          set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'ClientProxyReplayAuthLogin' -NewValue:$true;
+          set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'RoutingConfigReloadInterval' -NewValue:'00:05:00';
+          set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'ClientProxyPreferMailboxMountedServer' -NewValue:$false;
+          if (-not [String]::IsNullOrEmpty($RoleDatacenterReceiveConnectorConnectionTimeout))
+          {
+          set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'ConnectionTimeoutForNonOutboundProxy' -NewValue:$RoleDatacenterReceiveConnectorConnectionTimeout;
+          }
+          set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:"AntiSpamLogEnabled" -NewValue:"SpamEngineLog"
+          set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:"AntiSpamLogPath" -NewValue:"$RoleDatacenterTransportRoleLogRoot\FrontEnd\SpamEngine"
+
+          # set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'EnableResourceMonitoring' -NewValue:$false;
+          # set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'ResourceTrackingEnabled' -NewValue:$true;
+          # set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'ResourceThrottlingEnabled' -NewValue:$true;
+
+          #  Add the following assembly binding for "Newtonsoft.Json" in MSExchangeFrontEndTransport.exe.Config
+          . "$RoleInstallPath\Scripts\Set-AssemblyVersionRedirect.ps1" -AppConfigPath $fullPath -AssemblyName "Newtonsoft.Json" -PublicKeyToken "30ad4fe6b2a6aeed" -CodeBaseCulture "neutral" -OldVersion "0.0.0.0-6.0.0.0" -NewVersion "6.0.0.0"
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Changing Log Paths -->
+    <ServerTaskInfo Id="_ab18aa34a1414608a8f31f86a4de23ea" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+        <Install>
+            <Standalone>
+              Write-ExchangeSetupLog -Info "Changing Logs Path.";
+              Set-FrontendTransportService `
+              -Identity $RoleNetBiosName `
+              -ResourceLogPath "$RoleDatacenterTransportRoleLogRoot\Throttling\ResourceLog" `
+              -ReceiveProtocolLogPath "$RoleDatacenterTransportRoleLogRoot\FrontEnd\ProtocolLog\SmtpReceive" `
+              -ReceiveProtocolLogMaxDirectorySize:15000MB -ReceiveProtocolLogMaxAge:7.00:00:00 `
+              -SendProtocolLogPath "$RoleDatacenterTransportRoleLogRoot\FrontEnd\ProtocolLog\SmtpSend" `
+              -SendProtocolLogMaxDirectorySize:15000MB -SendProtocolLogMaxAge:7.00:00:00 `
+              -AgentLogPath "$RoleDatacenterTransportRoleLogRoot\FrontEnd\AgentLog" `
+              -AgentLogMaxAge:7.00:00:00 `
+              -DnsLogEnabled $true `
+              -DnsLogPath "$RoleDatacenterTransportRoleLogRoot\FrontEnd\Dns" `
+              -DnsLogMaxAge:7.00:00:00 `
+              -DnsLogMaxDirectorySize "100MB" `
+              -DnsLogMaxFileSize "10MB" `
+              -ConnectivityLogPath "$RoleDatacenterTransportRoleLogRoot\FrontEnd\Connectivity" `
+              -ConnectivityLogEnabled:$TRUE -ConnectivityLogMaxDirectorySize:1500MB -ConnectivityLogMaxAge:7.00:00:00
+            </Standalone>
+        </Install>
+        <BuildToBuildUpgrade UseInstallTasks="true"/>
+        <DisasterRecovery UseInstallTasks="true"/>
+        <Uninstall />
+    </ServerTaskInfo>
+
+  </ServerTasks>
+
+</SetupComponentInfo>

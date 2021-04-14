@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfPerformanceCounterCheckSetting xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <!--    The CPU checker.    -->
+  <PerformanceCounterCheckSetting>
+    <ReasonToSkip>Skip Due to High CPU.</ReasonToSkip>
+    <MinThreshold>0</MinThreshold>
+    <MaxThreshold>90</MaxThreshold>
+    <CategoryName>Processor</CategoryName>
+    <CounterName>% Processor Time</CounterName>
+    <InstanceName>_Total</InstanceName>
+  </PerformanceCounterCheckSetting>
+    <!--    The ROP/Sec checker.    -->
+  <PerformanceCounterCheckSetting>
+    <ReasonToSkip>Skip Due to High ROP/Second</ReasonToSkip>
+    <MinThreshold>0</MinThreshold>
+    <MaxThreshold>50</MaxThreshold>
+    <CategoryName>MSExchange RpcClientAccess</CategoryName>
+    <CounterName>RPC Operations/sec</CounterName>
+    <InstanceName></InstanceName>
+  </PerformanceCounterCheckSetting>
+</ArrayOfPerformanceCounterCheckSetting>

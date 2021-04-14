@@ -1,0 +1,682 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x64</Platform>
+    <ProjectGuid>{09CD9476-CD82-489E-B9E2-84B47CA140ED}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Microsoft.Exchange.Cluster.ReplicaVSSWriter</RootNamespace>
+    <AssemblyName>Microsoft.Exchange.Cluster.ReplicaVSSWriter</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ApplicationIcon>Microsoft.Exchange.Cluster.ReplicaVSSWriter.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x64' ">
+    <PlatformTarget>x64</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x64' ">
+    <PlatformTarget>x64</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="$_s__CatchableTypeArray$_extraBytes_8.cs" />
+    <Compile Include="$_s__RTTIBaseClassArray$_extraBytes_16.cs" />
+    <Compile Include="$_s__RTTIBaseClassArray$_extraBytes_24.cs" />
+    <Compile Include="$_s__RTTIBaseClassArray$_extraBytes_32.cs" />
+    <Compile Include="$_s__RTTIBaseClassArray$_extraBytes_8.cs" />
+    <Compile Include="$_TypeDescriptor$_extraBytes_102.cs" />
+    <Compile Include="$_TypeDescriptor$_extraBytes_15.cs" />
+    <Compile Include="$_TypeDescriptor$_extraBytes_17.cs" />
+    <Compile Include="$_TypeDescriptor$_extraBytes_21.cs" />
+    <Compile Include="$_TypeDescriptor$_extraBytes_24.cs" />
+    <Compile Include="$_TypeDescriptor$_extraBytes_31.cs" />
+    <Compile Include="$_TypeDescriptor$_extraBytes_42.cs" />
+    <Compile Include="-CppImplementationDetails-\$ArrayType$$$BY00$$CBG.cs" />
+    <Compile Include="-CppImplementationDetails-\$ArrayType$$$BY00Q6MPEBXXZ.cs" />
+    <Compile Include="-CppImplementationDetails-\$ArrayType$$$BY01$$CBG.cs" />
+    <Compile Include="-CppImplementationDetails-\$ArrayType$$$BY01Q6AXXZ.cs" />
+    <Compile Include="-CppImplementationDetails-\$ArrayType$$$BY02Q6AXXZ.cs" />
+    <Compile Include="-CppImplementationDetails-\$ArrayType$$$BY03$$CBG.cs" />
+    <Compile Include="-CppImplementationDetails-\$ArrayType$$$BY03$$CBUtypemap@-1--VTFromRegType@CRegParser@A.cs" />
+    <Compile Include="-CppImplementationDetails-\$ArrayType$$$BY03Q6AXXZ.cs" />
+    <Compile Include="-CppImplementationDetails-\$ArrayType$$$BY04$$CBG.cs" />
+    <Compile Include="-CppImplementationDetails-\$ArrayType$$$BY05$$CBG.cs" />
+    <Compile Include="-CppImplementationDetails-\$ArrayType$$$BY05Q6AXXZ.cs" />
+    <Compile Include="-CppImplementationDetails-\$ArrayType$$$BY06$$CBG.cs" />
+    <Compile Include="-CppImplementationDetails-\$ArrayType$$$BY06Q6AXXZ.cs" />
+    <Compile Include="-CppImplementationDetails-\$ArrayType$$$BY07$$CBG.cs" />
+    <Compile Include="-CppImplementationDetails-\$ArrayType$$$BY08$$CBG.cs" />
+    <Compile Include="-CppImplementationDetails-\$ArrayType$$$BY09$$CBG.cs" />
+    <Compile Include="-CppImplementationDetails-\$ArrayType$$$BY0A@P6AHXZ.cs" />
+    <Compile Include="-CppImplementationDetails-\$ArrayType$$$BY0A@P6AXXZ.cs" />
+    <Compile Include="-CppImplementationDetails-\$ArrayType$$$BY0BA@$$CBD.cs" />
+    <Compile Include="-CppImplementationDetails-\$ArrayType$$$BY0BB@Q6AXXZ.cs" />
+    <Compile Include="-CppImplementationDetails-\$ArrayType$$$BY0BC@$$CBD.cs" />
+    <Compile Include="-CppImplementationDetails-\$ArrayType$$$BY0BC@$$CBG.cs" />
+    <Compile Include="-CppImplementationDetails-\$ArrayType$$$BY0BD@$$CBG.cs" />
+    <Compile Include="-CppImplementationDetails-\$ArrayType$$$BY0BE@$$CBD.cs" />
+    <Compile Include="-CppImplementationDetails-\$ArrayType$$$BY0BE@$$CBG.cs" />
+    <Compile Include="-CppImplementationDetails-\$ArrayType$$$BY0BF@$$CBG.cs" />
+    <Compile Include="-CppImplementationDetails-\$ArrayType$$$BY0BG@$$CBD.cs" />
+    <Compile Include="-CppImplementationDetails-\$ArrayType$$$BY0BG@$$CBG.cs" />
+    <Compile Include="-CppImplementationDetails-\$ArrayType$$$BY0BH@$$CBD.cs" />
+    <Compile Include="-CppImplementationDetails-\$ArrayType$$$BY0BI@$$CBD.cs" />
+    <Compile Include="-CppImplementationDetails-\$ArrayType$$$BY0BI@$$CBG.cs" />
+    <Compile Include="-CppImplementationDetails-\$ArrayType$$$BY0BJ@$$CBD.cs" />
+    <Compile Include="-CppImplementationDetails-\$ArrayType$$$BY0BJ@$$CBG.cs" />
+    <Compile Include="-CppImplementationDetails-\$ArrayType$$$BY0BK@$$CBG.cs" />
+    <Compile Include="-CppImplementationDetails-\$ArrayType$$$BY0BN@$$CBD.cs" />
+    <Compile Include="-CppImplementationDetails-\$ArrayType$$$BY0BN@$$CBG.cs" />
+    <Compile Include="-CppImplementationDetails-\$ArrayType$$$BY0CA@$$CBG.cs" />
+    <Compile Include="-CppImplementationDetails-\$ArrayType$$$BY0DA@$$CBG.cs" />
+    <Compile Include="-CppImplementationDetails-\$ArrayType$$$BY0L@$$CBG.cs" />
+    <Compile Include="-CppImplementationDetails-\$ArrayType$$$BY0L@Q6AXXZ.cs" />
+    <Compile Include="-CppImplementationDetails-\$ArrayType$$$BY0M@$$CBD.cs" />
+    <Compile Include="-CppImplementationDetails-\$ArrayType$$$BY0M@$$CBG.cs" />
+    <Compile Include="-CppImplementationDetails-\$ArrayType$$$BY0M@QEBG.cs" />
+    <Compile Include="-CppImplementationDetails-\$ArrayType$$$BY0N@$$CBG.cs" />
+    <Compile Include="-CppImplementationDetails-\$ArrayType$$$BY0N@$$CB_W.cs" />
+    <Compile Include="-CppImplementationDetails-\$ArrayType$$$BY0O@$$CBG.cs" />
+    <Compile Include="-CppImplementationDetails-\$ArrayType$$$BY0O@$$CBUkeymap@-1--HKeyFromString@CRegParser@.cs" />
+    <Compile Include="-CppImplementationDetails-\$ArrayType$$$BY0O@$$CB_W.cs" />
+    <Compile Include="-CppImplementationDetails-\$ArrayType$$$BY0P@$$CBG.cs" />
+    <Compile Include="-CppImplementationDetails-\$PTMType$PEQtagVARIANT@@D.cs" />
+    <Compile Include="-CppImplementationDetails-\$PTMType$PEQtagVARIANT@@E.cs" />
+    <Compile Include="-CppImplementationDetails-\$PTMType$PEQtagVARIANT@@F.cs" />
+    <Compile Include="-CppImplementationDetails-\$PTMType$PEQtagVARIANT@@G.cs" />
+    <Compile Include="-CppImplementationDetails-\$PTMType$PEQtagVARIANT@@H.cs" />
+    <Compile Include="-CppImplementationDetails-\$PTMType$PEQtagVARIANT@@I.cs" />
+    <Compile Include="-CppImplementationDetails-\$PTMType$PEQtagVARIANT@@J.cs" />
+    <Compile Include="-CppImplementationDetails-\$PTMType$PEQtagVARIANT@@K.cs" />
+    <Compile Include="-CppImplementationDetails-\$PTMType$PEQtagVARIANT@@M.cs" />
+    <Compile Include="-CppImplementationDetails-\$PTMType$PEQtagVARIANT@@N.cs" />
+    <Compile Include="-CppImplementationDetails-\$PTMType$PEQtagVARIANT@@PEAD.cs" />
+    <Compile Include="-CppImplementationDetails-\$PTMType$PEQtagVARIANT@@PEAE.cs" />
+    <Compile Include="-CppImplementationDetails-\$PTMType$PEQtagVARIANT@@PEAF.cs" />
+    <Compile Include="-CppImplementationDetails-\$PTMType$PEQtagVARIANT@@PEAG.cs" />
+    <Compile Include="-CppImplementationDetails-\$PTMType$PEQtagVARIANT@@PEAH.cs" />
+    <Compile Include="-CppImplementationDetails-\$PTMType$PEQtagVARIANT@@PEAI.cs" />
+    <Compile Include="-CppImplementationDetails-\$PTMType$PEQtagVARIANT@@PEAJ.cs" />
+    <Compile Include="-CppImplementationDetails-\$PTMType$PEQtagVARIANT@@PEAK.cs" />
+    <Compile Include="-CppImplementationDetails-\$PTMType$PEQtagVARIANT@@PEAM.cs" />
+    <Compile Include="-CppImplementationDetails-\$PTMType$PEQtagVARIANT@@PEAN.cs" />
+    <Compile Include="-CppImplementationDetails-\$PTMType$PEQtagVARIANT@@PEAPEAG.cs" />
+    <Compile Include="-CppImplementationDetails-\$PTMType$PEQtagVARIANT@@PEAPEAUIDispatch@@.cs" />
+    <Compile Include="-CppImplementationDetails-\$PTMType$PEQtagVARIANT@@PEAPEAUIUnknown@@.cs" />
+    <Compile Include="-CppImplementationDetails-\$PTMType$PEQtagVARIANT@@PEATtagCY@@.cs" />
+    <Compile Include="-CppImplementationDetails-\$PTMType$PEQtagVARIANT@@PEAUIDispatch@@.cs" />
+    <Compile Include="-CppImplementationDetails-\$PTMType$PEQtagVARIANT@@PEAUIUnknown@@.cs" />
+    <Compile Include="-CppImplementationDetails-\$PTMType$PEQtagVARIANT@@PEA_J.cs" />
+    <Compile Include="-CppImplementationDetails-\$PTMType$PEQtagVARIANT@@PEA_K.cs" />
+    <Compile Include="-CppImplementationDetails-\$PTMType$PEQtagVARIANT@@TtagCY@@.cs" />
+    <Compile Include="-CppImplementationDetails-\$PTMType$PEQtagVARIANT@@_J.cs" />
+    <Compile Include="-CppImplementationDetails-\$PTMType$PEQtagVARIANT@@_K.cs" />
+    <Compile Include="-CppImplementationDetails-\$PTMType$QEQtagVARIANT@@D.cs" />
+    <Compile Include="-CppImplementationDetails-\$PTMType$QEQtagVARIANT@@E.cs" />
+    <Compile Include="-CppImplementationDetails-\$PTMType$QEQtagVARIANT@@F.cs" />
+    <Compile Include="-CppImplementationDetails-\$PTMType$QEQtagVARIANT@@G.cs" />
+    <Compile Include="-CppImplementationDetails-\$PTMType$QEQtagVARIANT@@H.cs" />
+    <Compile Include="-CppImplementationDetails-\$PTMType$QEQtagVARIANT@@I.cs" />
+    <Compile Include="-CppImplementationDetails-\$PTMType$QEQtagVARIANT@@J.cs" />
+    <Compile Include="-CppImplementationDetails-\$PTMType$QEQtagVARIANT@@K.cs" />
+    <Compile Include="-CppImplementationDetails-\$PTMType$QEQtagVARIANT@@M.cs" />
+    <Compile Include="-CppImplementationDetails-\$PTMType$QEQtagVARIANT@@N.cs" />
+    <Compile Include="-CppImplementationDetails-\$PTMType$QEQtagVARIANT@@PEAD.cs" />
+    <Compile Include="-CppImplementationDetails-\$PTMType$QEQtagVARIANT@@PEAE.cs" />
+    <Compile Include="-CppImplementationDetails-\$PTMType$QEQtagVARIANT@@PEAF.cs" />
+    <Compile Include="-CppImplementationDetails-\$PTMType$QEQtagVARIANT@@PEAG.cs" />
+    <Compile Include="-CppImplementationDetails-\$PTMType$QEQtagVARIANT@@PEAH.cs" />
+    <Compile Include="-CppImplementationDetails-\$PTMType$QEQtagVARIANT@@PEAI.cs" />
+    <Compile Include="-CppImplementationDetails-\$PTMType$QEQtagVARIANT@@PEAJ.cs" />
+    <Compile Include="-CppImplementationDetails-\$PTMType$QEQtagVARIANT@@PEAK.cs" />
+    <Compile Include="-CppImplementationDetails-\$PTMType$QEQtagVARIANT@@PEAM.cs" />
+    <Compile Include="-CppImplementationDetails-\$PTMType$QEQtagVARIANT@@PEAN.cs" />
+    <Compile Include="-CppImplementationDetails-\$PTMType$QEQtagVARIANT@@PEAPEAG.cs" />
+    <Compile Include="-CppImplementationDetails-\$PTMType$QEQtagVARIANT@@PEAPEAUIDispatch@@.cs" />
+    <Compile Include="-CppImplementationDetails-\$PTMType$QEQtagVARIANT@@PEAPEAUIUnknown@@.cs" />
+    <Compile Include="-CppImplementationDetails-\$PTMType$QEQtagVARIANT@@PEATtagCY@@.cs" />
+    <Compile Include="-CppImplementationDetails-\$PTMType$QEQtagVARIANT@@PEAUIDispatch@@.cs" />
+    <Compile Include="-CppImplementationDetails-\$PTMType$QEQtagVARIANT@@PEAUIUnknown@@.cs" />
+    <Compile Include="-CppImplementationDetails-\$PTMType$QEQtagVARIANT@@PEA_J.cs" />
+    <Compile Include="-CppImplementationDetails-\$PTMType$QEQtagVARIANT@@PEA_K.cs" />
+    <Compile Include="-CppImplementationDetails-\$PTMType$QEQtagVARIANT@@TtagCY@@.cs" />
+    <Compile Include="-CppImplementationDetails-\$PTMType$QEQtagVARIANT@@_J.cs" />
+    <Compile Include="-CppImplementationDetails-\$PTMType$QEQtagVARIANT@@_K.cs" />
+    <Compile Include="-CrtImplementationDetails-\AtExitLock.cs" />
+    <Compile Include="-CrtImplementationDetails-\DefaultDomain.cs" />
+    <Compile Include="-CrtImplementationDetails-\Exception.cs" />
+    <Compile Include="-CrtImplementationDetails-\LanguageSupport.cs" />
+    <Compile Include="-CrtImplementationDetails-\ModuleLoadException.cs" />
+    <Compile Include="-CrtImplementationDetails-\ModuleLoadExceptionHandlerException.cs" />
+    <Compile Include="-CrtImplementationDetails-\ModuleUninitializer.cs" />
+    <Compile Include="-CrtImplementationDetails-\NativeDll.cs" />
+    <Compile Include="-CrtImplementationDetails-\OpenMPWithMultipleAppdomainsException.cs" />
+    <Compile Include="-CrtImplementationDetails-\Progress.cs" />
+    <Compile Include="-CrtImplementationDetails-\ThisModule.cs" />
+    <Compile Include="-CrtImplementationDetails-\TriBool.cs" />
+    <Compile Include="-Module-.cs" />
+    <Compile Include="AnnoScope.cs" />
+    <Compile Include="ASSOCCLASS.cs" />
+    <Compile Include="ATL\-AtlImplementationDetails-\CComModuleHelper.cs" />
+    <Compile Include="ATL\-HKeyFromString@CRegParser@ATL@@$$FKAPEA\__l2\keymap.cs" />
+    <Compile Include="ATL\-VTFromRegType@CRegParser@ATL@@$$FKAHPEB\__l2\typemap.cs" />
+    <Compile Include="ATL\ATLSTRINGRESOURCEIMAGE.cs" />
+    <Compile Include="ATL\CAtlAutoThreadModuleT-ATL.cs" />
+    <Compile Include="ATL\CAtlBaseModule.cs" />
+    <Compile Include="ATL\CAtlComModule.cs" />
+    <Compile Include="ATL\CAtlException.cs" />
+    <Compile Include="ATL\CAtlModule.cs" />
+    <Compile Include="ATL\CAtlModuleT-ATL.cs" />
+    <Compile Include="ATL\CAtlReleaseManagedClassFactories.cs" />
+    <Compile Include="ATL\CAtlTransactionManager.cs" />
+    <Compile Include="ATL\CAtlWinModule.cs" />
+    <Compile Include="ATL\CAutoVectorPtr-unsigned short-.cs" />
+    <Compile Include="ATL\CComApartment.cs" />
+    <Compile Include="ATL\CComAutoDeleteCriticalSection.cs" />
+    <Compile Include="ATL\CComBSTR.cs" />
+    <Compile Include="ATL\CComCriticalSection.cs" />
+    <Compile Include="ATL\CComCritSecLock-ATL.cs" />
+    <Compile Include="ATL\CComModule.cs" />
+    <Compile Include="ATL\CComMultiThreadModel.cs" />
+    <Compile Include="ATL\CComPtr-ICatRegister-.cs" />
+    <Compile Include="ATL\CComPtr-IConnectionPoint-.cs" />
+    <Compile Include="ATL\CComPtr-IConnectionPointContainer-.cs" />
+    <Compile Include="ATL\CComPtr-IDispatch-.cs" />
+    <Compile Include="ATL\CComPtr-IPersistStream-.cs" />
+    <Compile Include="ATL\CComPtr-ITypeLib-.cs" />
+    <Compile Include="ATL\CComPtr-IUnknown-.cs" />
+    <Compile Include="ATL\CComPtr-IVssComponent-.cs" />
+    <Compile Include="ATL\CComPtrBase-ICatRegister-.cs" />
+    <Compile Include="ATL\CComPtrBase-IConnectionPoint-.cs" />
+    <Compile Include="ATL\CComPtrBase-IConnectionPointContainer-.cs" />
+    <Compile Include="ATL\CComPtrBase-IDispatch-.cs" />
+    <Compile Include="ATL\CComPtrBase-IPersistStream-.cs" />
+    <Compile Include="ATL\CComPtrBase-ITypeLib-.cs" />
+    <Compile Include="ATL\CComPtrBase-IUnknown-.cs" />
+    <Compile Include="ATL\CComPtrBase-IVssComponent-.cs" />
+    <Compile Include="ATL\CComQIPtr-IUnknown,&amp;IID_IUnknown-.cs" />
+    <Compile Include="ATL\CComSafeDeleteCriticalSection.cs" />
+    <Compile Include="ATL\CComSimpleThreadAllocator.cs" />
+    <Compile Include="ATL\CComVariant.cs" />
+    <Compile Include="ATL\CCritSecLock.cs" />
+    <Compile Include="ATL\CCRTAllocator.cs" />
+    <Compile Include="ATL\CExpansionVector.cs" />
+    <Compile Include="ATL\CExpansionVectorEqualHelper.cs" />
+    <Compile Include="ATL\CGlobalAllocator.cs" />
+    <Compile Include="ATL\CHandle.cs" />
+    <Compile Include="ATL\ClassesAllowedInStream.cs" />
+    <Compile Include="ATL\CLocalAllocator.cs" />
+    <Compile Include="ATL\CRegKey.cs" />
+    <Compile Include="ATL\CRegObject.cs" />
+    <Compile Include="ATL\CRegParser.cs" />
+    <Compile Include="ATL\CSimpleArray-unsigned short,ATL.cs" />
+    <Compile Include="ATL\CSimpleMap-unsigned short -,unsigned short -,ATL.cs" />
+    <Compile Include="ATL\CTempBuffer-char,1024,ATL.cs" />
+    <Compile Include="ATL\CTempBuffer-unsigned char,256,ATL.cs" />
+    <Compile Include="ATL\CTempBuffer-unsigned short,1024,ATL.cs" />
+    <Compile Include="ATL\CTempBuffer-unsigned short,256,ATL.cs" />
+    <Compile Include="ATL\IAtlAutoThreadModule.cs" />
+    <Compile Include="ATL\_AtlCreateWndData.cs" />
+    <Compile Include="ATL\_ATL_CATMAP_ENTRY.cs" />
+    <Compile Include="ATL\_ATL_COM_MODULE70.cs" />
+    <Compile Include="ATL\_ATL_MODULE70.cs" />
+    <Compile Include="ATL\_ATL_OBJMAP_ENTRY110.cs" />
+    <Compile Include="ATL\_ATL_OBJMAP_ENTRY30.cs" />
+    <Compile Include="ATL\_ATL_REGMAP_ENTRY.cs" />
+    <Compile Include="ATL\_ATL_SAFE_ALLOCA_IMPL\CAtlSafeAllocBufferManager-ATL.cs" />
+    <Compile Include="ATL\_ATL_WIN_MODULE70.cs" />
+    <Compile Include="ATL\_NoAddRefReleaseOnCComPtr-ICatRegister-.cs" />
+    <Compile Include="ATL\_NoAddRefReleaseOnCComPtr-IConnectionPoint-.cs" />
+    <Compile Include="ATL\_NoAddRefReleaseOnCComPtr-IConnectionPointContainer-.cs" />
+    <Compile Include="ATL\_NoAddRefReleaseOnCComPtr-IPersistStream-.cs" />
+    <Compile Include="ATL\_NoAddRefReleaseOnCComPtr-ITypeLib-.cs" />
+    <Compile Include="ATL\_NoAddRefReleaseOnCComPtr-IUnknown-.cs" />
+    <Compile Include="ATL\_NoAddRefReleaseOnCComPtr-IVssComponent-.cs" />
+    <Compile Include="CO_MARSHALING_CONTEXT_ATTRIBUTES.cs" />
+    <Compile Include="CReplicaVssWriter.cs" />
+    <Compile Include="CVssWriter.cs" />
+    <Compile Include="CVssWriterEx.cs" />
+    <Compile Include="DEVICE_SCALE_FACTOR.cs" />
+    <Compile Include="ETaskType.cs" />
+    <Compile Include="gcroot-System.cs" />
+    <Compile Include="HDC__.cs" />
+    <Compile Include="HINSTANCE__.cs" />
+    <Compile Include="HKEY__.cs" />
+    <Compile Include="HRSRC__.cs" />
+    <Compile Include="HWND__.cs" />
+    <Compile Include="ICatRegister.cs" />
+    <Compile Include="ICLRRuntimeHost.cs" />
+    <Compile Include="IConnectionPoint.cs" />
+    <Compile Include="IConnectionPointContainer.cs" />
+    <Compile Include="ICorRuntimeHost.cs" />
+    <Compile Include="IDispatch.cs" />
+    <Compile Include="IGlobalInterfaceTable.cs" />
+    <Compile Include="IGlobalOptions.cs" />
+    <Compile Include="IMAGE_AUX_SYMBOL_TYPE.cs" />
+    <Compile Include="IMPORT_OBJECT_NAME_TYPE.cs" />
+    <Compile Include="IMPORT_OBJECT_TYPE.cs" />
+    <Compile Include="IObjectWithSite.cs" />
+    <Compile Include="IPersistStream.cs" />
+    <Compile Include="IRegistrar.cs" />
+    <Compile Include="IRegistrarBase.cs" />
+    <Compile Include="ISA_AVAILABILITY.cs" />
+    <Compile Include="ISequentialStream.cs" />
+    <Compile Include="IStream.cs" />
+    <Compile Include="ITypeLib.cs" />
+    <Compile Include="IUnknown.cs" />
+    <Compile Include="IVssComponent.cs" />
+    <Compile Include="IVssCreateWriterMetadata.cs" />
+    <Compile Include="IVssExpressWriter.cs" />
+    <Compile Include="IVssWMFiledesc.cs" />
+    <Compile Include="IVssWriterComponents.cs" />
+    <Compile Include="IVssWriterImpl.cs" />
+    <Compile Include="localeinfo_struct.cs" />
+    <Compile Include="MEMICONDIR.cs" />
+    <Compile Include="Microsoft\Exchange\Cluster\ReplicaVssWriter\AbortDelegate.cs" />
+    <Compile Include="Microsoft\Exchange\Cluster\ReplicaVssWriter\BackupCompleteDelegate.cs" />
+    <Compile Include="Microsoft\Exchange\Cluster\ReplicaVssWriter\BackupInstance.cs" />
+    <Compile Include="Microsoft\Exchange\Cluster\ReplicaVssWriter\ComponentInformation.cs" />
+    <Compile Include="Microsoft\Exchange\Cluster\ReplicaVssWriter\CReplicaVssWriterInterop.cs" />
+    <Compile Include="Microsoft\Exchange\Cluster\ReplicaVssWriter\FreezeOrThawDelegate.cs" />
+    <Compile Include="Microsoft\Exchange\Cluster\ReplicaVssWriter\IdentifyDelegate.cs" />
+    <Compile Include="Microsoft\Exchange\Cluster\ReplicaVssWriter\PostRestoreDelegate.cs" />
+    <Compile Include="Microsoft\Exchange\Cluster\ReplicaVssWriter\PostSnapshotDelegate.cs" />
+    <Compile Include="Microsoft\Exchange\Cluster\ReplicaVssWriter\PrepareBackupDelegate.cs" />
+    <Compile Include="Microsoft\Exchange\Cluster\ReplicaVssWriter\PrepareSnapshotDelegate.cs" />
+    <Compile Include="Microsoft\Exchange\Cluster\ReplicaVssWriter\PreRestoreDelegate.cs" />
+    <Compile Include="Microsoft\Exchange\Cluster\ReplicaVssWriter\ShutdownBackupDelegate.cs" />
+    <Compile Include="Microsoft\Exchange\Cluster\ReplicaVssWriter\StorageGroupBackup.cs" />
+    <Compile Include="Microsoft\Exchange\Cluster\ReplicaVssWriter\VssRestoreScenario.cs" />
+    <Compile Include="PIDMSI_STATUS_VALUE.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ReplacesCorHdrNumericDefines.cs" />
+    <Compile Include="RpcProxyPerfCounters.cs" />
+    <Compile Include="RPC_ADDRESS_CHANGE_TYPE.cs" />
+    <Compile Include="SHSTOCKICONID.cs" />
+    <Compile Include="std\nothrow_t.cs" />
+    <Compile Include="SYSGEOCLASS.cs" />
+    <Compile Include="SYSGEOTYPE.cs" />
+    <Compile Include="SYSNLS_FUNCTION.cs" />
+    <Compile Include="tagACTIVATEFLAGS.cs" />
+    <Compile Include="tagADVF.cs" />
+    <Compile Include="tagApplicationType.cs" />
+    <Compile Include="tagAspectInfoFlag.cs" />
+    <Compile Include="tagBINDSPEED.cs" />
+    <Compile Include="tagBINDSTATUS.cs" />
+    <Compile Include="tagBINDSTRING.cs" />
+    <Compile Include="tagBIND_FLAGS.cs" />
+    <Compile Include="tagCALLCONV.cs" />
+    <Compile Include="tagCALLTYPE.cs" />
+    <Compile Include="tagCHANGEKIND.cs" />
+    <Compile Include="tagCLSCTX.cs" />
+    <Compile Include="tagCOINIT.cs" />
+    <Compile Include="tagCOINITBASE.cs" />
+    <Compile Include="tagCOMSD.cs" />
+    <Compile Include="tagCOWAIT_FLAGS.cs" />
+    <Compile Include="tagCTRLINFO.cs" />
+    <Compile Include="tagDATADIR.cs" />
+    <Compile Include="tagDCOM_CALL_STATE.cs" />
+    <Compile Include="tagDESCKIND.cs" />
+    <Compile Include="tagDISCARDCACHE.cs" />
+    <Compile Include="tagDISPPARAMS.cs" />
+    <Compile Include="tagDOCHOSTUIDBLCLKDispatch.cs" />
+    <Compile Include="tagDocHostUIFlagDispatch.cs" />
+    <Compile Include="tagDOMNodeType.cs" />
+    <Compile Include="tagDVASPECT.cs" />
+    <Compile Include="tagDVASPECT2.cs" />
+    <Compile Include="tagEOLE_AUTHENTICATION_CAPABILITIES.cs" />
+    <Compile Include="tagEXCEPINFO.cs" />
+    <Compile Include="tagEXTCONN.cs" />
+    <Compile Include="tagExtendedErrorParamTypes.cs" />
+    <Compile Include="tagExtentMode.cs" />
+    <Compile Include="tagFUNCFLAGS.cs" />
+    <Compile Include="tagFUNCKIND.cs" />
+    <Compile Include="tagGLOBALOPT_EH_VALUES.cs" />
+    <Compile Include="tagGLOBALOPT_PROPERTIES.cs" />
+    <Compile Include="tagGLOBALOPT_RO_FLAGS.cs" />
+    <Compile Include="tagGLOBALOPT_RPCTP_VALUES.cs" />
+    <Compile Include="tagGLOBALOPT_UNMARSHALING_POLICY_VALUES.cs" />
+    <Compile Include="tagGUIDKIND.cs" />
+    <Compile Include="tagHITRESULT.cs" />
+    <Compile Include="tagINVOKEKIND.cs" />
+    <Compile Include="tagLIBFLAGS.cs" />
+    <Compile Include="tagLOCKTYPE.cs" />
+    <Compile Include="tagMEMCTX.cs" />
+    <Compile Include="tagMKREDUCE.cs" />
+    <Compile Include="tagMKSYS.cs" />
+    <Compile Include="tagMSG.cs" />
+    <Compile Include="tagMSHCTX.cs" />
+    <Compile Include="tagMSHLFLAGS.cs" />
+    <Compile Include="tagOLECLOSE.cs" />
+    <Compile Include="tagOLECONTF.cs" />
+    <Compile Include="tagOLEDCFLAGS.cs" />
+    <Compile Include="tagOLEGETMONIKER.cs" />
+    <Compile Include="tagOLELINKBIND.cs" />
+    <Compile Include="tagOLEMISC.cs" />
+    <Compile Include="tagOLERENDER.cs" />
+    <Compile Include="tagOLEUPDATE.cs" />
+    <Compile Include="tagOLEVERBATTRIB.cs" />
+    <Compile Include="tagOLEWHICHMK.cs" />
+    <Compile Include="tagPENDINGMSG.cs" />
+    <Compile Include="tagPENDINGTYPE.cs" />
+    <Compile Include="tagPERCEIVED.cs" />
+    <Compile Include="tagPictureAttributes.cs" />
+    <Compile Include="tagPOINTERINACTIVE.cs" />
+    <Compile Include="tagPROPBAG2_TYPE.cs" />
+    <Compile Include="tagPROPPAGESTATUS.cs" />
+    <Compile Include="tagPROPVARIANT.cs" />
+    <Compile Include="tagQACONTAINERFLAGS.cs" />
+    <Compile Include="tagREADYSTATE.cs" />
+    <Compile Include="tagRECT.cs" />
+    <Compile Include="tagREGCLS.cs" />
+    <Compile Include="tagREGKIND.cs" />
+    <Compile Include="tagRpcCallClientLocality.cs" />
+    <Compile Include="tagRpcCallType.cs" />
+    <Compile Include="tagRpcLocalAddressFormat.cs" />
+    <Compile Include="tagRPCOPT_PROPERTIES.cs" />
+    <Compile Include="tagRPCOPT_SERVER_LOCALITY_VALUES.cs" />
+    <Compile Include="tagSAFEARRAY.cs" />
+    <Compile Include="tagSERVERCALL.cs" />
+    <Compile Include="tagSF_TYPE.cs" />
+    <Compile Include="tagSHCOLSTATE.cs" />
+    <Compile Include="tagShutdownType.cs" />
+    <Compile Include="tagSOLE_AUTHENTICATION_SERVICE.cs" />
+    <Compile Include="tagSTATFLAG.cs" />
+    <Compile Include="tagSTDMSHLFLAGS.cs" />
+    <Compile Include="tagSTGC.cs" />
+    <Compile Include="tagSTGMOVE.cs" />
+    <Compile Include="tagSTGTY.cs" />
+    <Compile Include="tagSTREAM_SEEK.cs" />
+    <Compile Include="tagSTRRET_TYPE.cs" />
+    <Compile Include="tagSYSKIND.cs" />
+    <Compile Include="tagTEXTMETRICA.cs" />
+    <Compile Include="tagTEXTMETRICW.cs" />
+    <Compile Include="tagTLIBATTR.cs" />
+    <Compile Include="tagTYMED.cs" />
+    <Compile Include="tagTYPEFLAGS.cs" />
+    <Compile Include="tagTYPEKIND.cs" />
+    <Compile Include="tagTYSPEC.cs" />
+    <Compile Include="tagUASFLAGS.cs" />
+    <Compile Include="tagURLTEMPLATE.cs" />
+    <Compile Include="tagURLZONE.cs" />
+    <Compile Include="tagUSERCLASSTYPE.cs" />
+    <Compile Include="tagVARFLAGS.cs" />
+    <Compile Include="tagVARIANT.cs" />
+    <Compile Include="tagVARKIND.cs" />
+    <Compile Include="tagVIEWSTATUS.cs" />
+    <Compile Include="tagXFORMCOORDS.cs" />
+    <Compile Include="tagXMLEMEM_TYPE.cs" />
+    <Compile Include="tm.cs" />
+    <Compile Include="ValidatorFlags.cs" />
+    <Compile Include="VARENUM.cs" />
+    <Compile Include="VSS_ALTERNATE_WRITER_STATE.cs" />
+    <Compile Include="VSS_COMPONENT_FLAGS.cs" />
+    <Compile Include="VSS_COMPONENT_TYPE.cs" />
+    <Compile Include="VSS_FILE_RESTORE_STATUS.cs" />
+    <Compile Include="VSS_RESTOREMETHOD_ENUM.cs" />
+    <Compile Include="VSS_RESTORE_TARGET.cs" />
+    <Compile Include="VSS_SOURCE_TYPE.cs" />
+    <Compile Include="VSS_SUBSCRIBE_MASK.cs" />
+    <Compile Include="VSS_USAGE_TYPE.cs" />
+    <Compile Include="VSS_WRITERRESTORE_ENUM.cs" />
+    <Compile Include="_ACCESS_REASON_TYPE.cs" />
+    <Compile Include="_ACL_INFORMATION_CLASS.cs" />
+    <Compile Include="_ACTIVATION_CONTEXT_INFO_CLASS.cs" />
+    <Compile Include="_APTTYPE.cs" />
+    <Compile Include="_APTTYPEQUALIFIER.cs" />
+    <Compile Include="_AUDIT_EVENT_TYPE.cs" />
+    <Compile Include="_BIN_TYPES.cs" />
+    <Compile Include="_CHANGER_DEVICE_PROBLEM_TYPE.cs" />
+    <Compile Include="_CLRAssemblyIdentityFlags.cs" />
+    <Compile Include="_CM_ERROR_CONTROL_TYPE.cs" />
+    <Compile Include="_CM_SERVICE_LOAD_TYPE.cs" />
+    <Compile Include="_CM_SERVICE_NODE_TYPE.cs" />
+    <Compile Include="_COMPUTER_NAME_FORMAT.cs" />
+    <Compile Include="_DEP_SYSTEM_POLICY_TYPE.cs" />
+    <Compile Include="_DETECTION_TYPE.cs" />
+    <Compile Include="_DEVICEDUMP_COLLECTION_TYPE.cs" />
+    <Compile Include="_DEVICE_POWER_STATE.cs" />
+    <Compile Include="_ELEMENT_TYPE.cs" />
+    <Compile Include="_ENLISTMENT_INFORMATION_CLASS.cs" />
+    <Compile Include="_EXCEPTION_DISPOSITION.cs" />
+    <Compile Include="_EXCEPTION_POINTERS.cs" />
+    <Compile Include="_FILETIME.cs" />
+    <Compile Include="_FILE_ID_TYPE.cs" />
+    <Compile Include="_FILE_INFO_BY_HANDLE_CLASS.cs" />
+    <Compile Include="_FINDEX_INFO_LEVELS.cs" />
+    <Compile Include="_FINDEX_SEARCH_OPS.cs" />
+    <Compile Include="_FIRMWARE_TYPE.cs" />
+    <Compile Include="_GET_FILEEX_INFO_LEVELS.cs" />
+    <Compile Include="_GUID.cs" />
+    <Compile Include="_HARDWARE_COUNTER_TYPE.cs" />
+    <Compile Include="_HEAP_INFORMATION_CLASS.cs" />
+    <Compile Include="_HostApplicationPolicy.cs" />
+    <Compile Include="_hostBiningPolicyModifyFlags.cs" />
+    <Compile Include="_IDL_CS_CONVERT.cs" />
+    <Compile Include="_IMAGE_DOS_HEADER.cs" />
+    <Compile Include="_iobuf.cs" />
+    <Compile Include="_JOBOBJECTINFOCLASS.cs" />
+    <Compile Include="_JOBOBJECT_RATE_CONTROL_TOLERANCE.cs" />
+    <Compile Include="_JOBOBJECT_RATE_CONTROL_TOLERANCE_INTERVAL.cs" />
+    <Compile Include="_KTMOBJECT_TYPE.cs" />
+    <Compile Include="_LARGE_INTEGER.cs" />
+    <Compile Include="_ldiv_t.cs" />
+    <Compile Include="_lldiv_t.cs" />
+    <Compile Include="_LOGICAL_PROCESSOR_RELATIONSHIP.cs" />
+    <Compile Include="_MANDATORY_LEVEL.cs" />
+    <Compile Include="_MEDIA_TYPE.cs" />
+    <Compile Include="_MEMORY_RESOURCE_NOTIFICATION_TYPE.cs" />
+    <Compile Include="_MONITOR_DISPLAY_STATE.cs" />
+    <Compile Include="_NORM_FORM.cs" />
+    <Compile Include="_OVERLAPPED.cs" />
+    <Compile Include="_PARTITION_STYLE.cs" />
+    <Compile Include="_POWER_PLATFORM_ROLE.cs" />
+    <Compile Include="_POWER_REQUEST_TYPE.cs" />
+    <Compile Include="_PRINTER_OPTION_FLAGS.cs" />
+    <Compile Include="_PRIORITY_HINT.cs" />
+    <Compile Include="_PROCESSOR_CACHE_TYPE.cs" />
+    <Compile Include="_PROCESS_INFORMATION_CLASS.cs" />
+    <Compile Include="_PROCESS_MITIGATION_POLICY.cs" />
+    <Compile Include="_PROC_THREAD_ATTRIBUTE_NUM.cs" />
+    <Compile Include="_RESOURCEMANAGER_INFORMATION_CLASS.cs" />
+    <Compile Include="_RPC_ASYNC_EVENT.cs" />
+    <Compile Include="_RPC_HTTP_REDIRECTOR_STAGE.cs" />
+    <Compile Include="_RPC_NOTIFICATIONS.cs" />
+    <Compile Include="_RPC_NOTIFICATION_TYPES.cs" />
+    <Compile Include="_RTL_CRITICAL_SECTION.cs" />
+    <Compile Include="_RTL_UMS_SCHEDULER_REASON.cs" />
+    <Compile Include="_RTL_UMS_THREAD_INFO_CLASS.cs" />
+    <Compile Include="_SC_ACTION_TYPE.cs" />
+    <Compile Include="_SC_ENUM_TYPE.cs" />
+    <Compile Include="_SC_STATUS_TYPE.cs" />
+    <Compile Include="_SECURITY_ATTRIBUTES.cs" />
+    <Compile Include="_SECURITY_IMPERSONATION_LEVEL.cs" />
+    <Compile Include="_SE_LEARNING_MODE_DATA_TYPE.cs" />
+    <Compile Include="_SHRINK_VOLUME_REQUEST_TYPES.cs" />
+    <Compile Include="_SID_NAME_USE.cs" />
+    <Compile Include="_STORAGE_ASSOCIATION_TYPE.cs" />
+    <Compile Include="_STORAGE_BUS_TYPE.cs" />
+    <Compile Include="_STORAGE_IDENTIFIER_CODE_SET.cs" />
+    <Compile Include="_STORAGE_IDENTIFIER_TYPE.cs" />
+    <Compile Include="_STORAGE_ID_NAA_FORMAT.cs" />
+    <Compile Include="_STORAGE_MEDIA_TYPE.cs" />
+    <Compile Include="_STORAGE_PORT_CODE_SET.cs" />
+    <Compile Include="_STORAGE_POWERUP_REASON_TYPE.cs" />
+    <Compile Include="_STORAGE_PROPERTY_ID.cs" />
+    <Compile Include="_STORAGE_QUERY_TYPE.cs" />
+    <Compile Include="_STREAM_INFO_LEVELS.cs" />
+    <Compile Include="_SYSTEMTIME.cs" />
+    <Compile Include="_SYSTEM_POWER_STATE.cs" />
+    <Compile Include="_s__CatchableType.cs" />
+    <Compile Include="_s__RTTIBaseClassDescriptor2.cs" />
+    <Compile Include="_s__RTTIClassHierarchyDescriptor.cs" />
+    <Compile Include="_s__RTTICompleteObjectLocator2.cs" />
+    <Compile Include="_s__ThrowInfo.cs" />
+    <Compile Include="_tagINTERNETFEATURELIST.cs" />
+    <Compile Include="_tagOIBDG_FLAGS.cs" />
+    <Compile Include="_tagPARSEACTION.cs" />
+    <Compile Include="_tagPI_FLAGS.cs" />
+    <Compile Include="_tagPSUACTION.cs" />
+    <Compile Include="_tagQUERYOPTION.cs" />
+    <Compile Include="_TAPE_DRIVE_PROBLEM_TYPE.cs" />
+    <Compile Include="_THDTYPE.cs" />
+    <Compile Include="_THREAD_INFORMATION_CLASS.cs" />
+    <Compile Include="_TOKEN_ELEVATION_TYPE.cs" />
+    <Compile Include="_TOKEN_INFORMATION_CLASS.cs" />
+    <Compile Include="_TOKEN_TYPE.cs" />
+    <Compile Include="_TP_CALLBACK_ENVIRON_V1.cs" />
+    <Compile Include="_TP_CALLBACK_PRIORITY.cs" />
+    <Compile Include="_TRANSACTIONMANAGER_INFORMATION_CLASS.cs" />
+    <Compile Include="_TRANSACTION_INFORMATION_CLASS.cs" />
+    <Compile Include="_TRANSACTION_OUTCOME.cs" />
+    <Compile Include="_TRANSACTION_STATE.cs" />
+    <Compile Include="_ULARGE_INTEGER.cs" />
+    <Compile Include="_URLZONEREG.cs" />
+    <Compile Include="_USER_ACTIVITY_PRESENCE.cs" />
+    <Compile Include="_USER_MARSHAL_CB_TYPE.cs" />
+    <Compile Include="_VSS_APPLICATION_LEVEL.cs" />
+    <Compile Include="_VSS_BACKUP_SCHEMA.cs" />
+    <Compile Include="_VSS_BACKUP_TYPE.cs" />
+    <Compile Include="_VSS_FILE_SPEC_BACKUP_TYPE.cs" />
+    <Compile Include="_VSS_HARDWARE_OPTIONS.cs" />
+    <Compile Include="_VSS_OBJECT_TYPE.cs" />
+    <Compile Include="_VSS_PROVIDER_CAPABILITIES.cs" />
+    <Compile Include="_VSS_PROVIDER_TYPE.cs" />
+    <Compile Include="_VSS_RECOVERY_OPTIONS.cs" />
+    <Compile Include="_VSS_RESTORE_TYPE.cs" />
+    <Compile Include="_VSS_ROLLFORWARD_TYPE.cs" />
+    <Compile Include="_VSS_SNAPSHOT_COMPATIBILITY.cs" />
+    <Compile Include="_VSS_SNAPSHOT_CONTEXT.cs" />
+    <Compile Include="_VSS_SNAPSHOT_PROPERTY_ID.cs" />
+    <Compile Include="_VSS_SNAPSHOT_STATE.cs" />
+    <Compile Include="_VSS_VOLUME_SNAPSHOT_ATTRIBUTES.cs" />
+    <Compile Include="_VSS_WRITER_STATE.cs" />
+    <Compile Include="_WIN32_FIND_DATAW.cs" />
+    <Compile Include="_WRITE_CACHE_CHANGE.cs" />
+    <Compile Include="_WRITE_CACHE_ENABLE.cs" />
+    <Compile Include="_WRITE_CACHE_TYPE.cs" />
+    <Compile Include="_WRITE_THROUGH.cs" />
+    <Compile Include="_WSACOMPLETIONTYPE.cs" />
+    <Compile Include="_WSAEcomparator.cs" />
+    <Compile Include="_WSAESETSERVICEOP.cs" />
+    <Compile Include="__enative_startup_state.cs" />
+    <Compile Include="__MIDL_IAuthenticateEx_0001.cs" />
+    <Compile Include="__MIDL_IBindStatusCallbackEx_0001.cs" />
+    <Compile Include="__MIDL_IBindStatusCallback_0001.cs" />
+    <Compile Include="__MIDL_IBindStatusCallback_0002.cs" />
+    <Compile Include="__MIDL_IBindStatusCallback_0003.cs" />
+    <Compile Include="__MIDL_IBindStatusCallback_0004.cs" />
+    <Compile Include="__MIDL_IBindStatusCallback_0005.cs" />
+    <Compile Include="__MIDL_IBindStatusCallback_0006.cs" />
+    <Compile Include="__MIDL_ICodeInstall_0001.cs" />
+    <Compile Include="__MIDL_IGetBindHandle_0001.cs" />
+    <Compile Include="__MIDL_IInternetSecurityManager_0001.cs" />
+    <Compile Include="__MIDL_IInternetSecurityManager_0002.cs" />
+    <Compile Include="__MIDL_IInternetSecurityManager_0003.cs" />
+    <Compile Include="__MIDL_IInternetZoneManager_0001.cs" />
+    <Compile Include="__MIDL_IInternetZoneManager_0002.cs" />
+    <Compile Include="__MIDL_IMonikerProp_0001.cs" />
+    <Compile Include="__MIDL___MIDL_itf_gchost_0000_0000_0001.cs" />
+    <Compile Include="__MIDL___MIDL_itf_gchost_0000_0000_0002.cs" />
+    <Compile Include="__MIDL___MIDL_itf_mscoree_0000_0000_0001.cs" />
+    <Compile Include="__MIDL___MIDL_itf_mscoree_0000_0000_0002.cs" />
+    <Compile Include="__MIDL___MIDL_itf_mscoree_0000_0000_0003.cs" />
+    <Compile Include="__MIDL___MIDL_itf_mscoree_0000_0000_0004.cs" />
+    <Compile Include="__MIDL___MIDL_itf_mscoree_0000_0000_0005.cs" />
+    <Compile Include="__MIDL___MIDL_itf_mscoree_0000_0009_0001.cs" />
+    <Compile Include="__MIDL___MIDL_itf_mscoree_0000_0009_0002.cs" />
+    <Compile Include="__MIDL___MIDL_itf_mscoree_0000_0009_0003.cs" />
+    <Compile Include="__MIDL___MIDL_itf_mscoree_0000_0011_0001.cs" />
+    <Compile Include="__MIDL___MIDL_itf_mscoree_0000_0020_0001.cs" />
+    <Compile Include="__MIDL___MIDL_itf_mscoree_0000_0021_0001.cs" />
+    <Compile Include="__MIDL___MIDL_itf_mscoree_0000_0021_0002.cs" />
+    <Compile Include="__MIDL___MIDL_itf_mscoree_0000_0028_0001.cs" />
+    <Compile Include="__MIDL___MIDL_itf_mscoree_0000_0028_0002.cs" />
+    <Compile Include="__MIDL___MIDL_itf_mscoree_0000_0028_0003.cs" />
+    <Compile Include="__MIDL___MIDL_itf_mscoree_0000_0028_0004.cs" />
+    <Compile Include="__MIDL___MIDL_itf_mscoree_0000_0030_0001.cs" />
+    <Compile Include="__MIDL___MIDL_itf_mscoree_0000_0030_0002.cs" />
+    <Compile Include="__MIDL___MIDL_itf_mscoree_0000_0040_0001.cs" />
+    <Compile Include="__MIDL___MIDL_itf_mscoree_0000_0045_0001.cs" />
+    <Compile Include="__MIDL___MIDL_itf_mscoree_0000_0046_0001.cs" />
+    <Compile Include="__MIDL___MIDL_itf_mscoree_0000_0048_0001.cs" />
+    <Compile Include="__s_GUID.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.Exchange.Cluster.Replay\Microsoft.Exchange.Cluster.Replay.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140EB}</Project>
+      <Name>Microsoft.Exchange.Cluster.Replay</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Cluster.Shared\Microsoft.Exchange.Cluster.Shared.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140EE}</Project>
+      <Name>Microsoft.Exchange.Cluster.Shared</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Common\Microsoft.Exchange.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140F0}</Project>
+      <Name>Microsoft.Exchange.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Common\Microsoft.Exchange.Data.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140D3}</Project>
+      <Name>Microsoft.Exchange.Data.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Directory\Microsoft.Exchange.Data.Directory.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14105}</Project>
+      <Name>Microsoft.Exchange.Data.Directory</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.HA\Microsoft.Exchange.Data.HA.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14108}</Project>
+      <Name>Microsoft.Exchange.Data.HA</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Storage\Microsoft.Exchange.Data.Storage.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1410F}</Project>
+      <Name>Microsoft.Exchange.Data.Storage</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data\Microsoft.Exchange.Data.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14106}</Project>
+      <Name>Microsoft.Exchange.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Diagnostics\Microsoft.Exchange.Diagnostics.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14113}</Project>
+      <Name>Microsoft.Exchange.Diagnostics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Rpc\Microsoft.Exchange.Rpc.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14188}</Project>
+      <Name>Microsoft.Exchange.Rpc</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.StoreProvider\Microsoft.Exchange.StoreProvider.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141B9}</Project>
+      <Name>Microsoft.Exchange.StoreProvider</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Isam.Esent.Interop\Microsoft.Isam.Esent.Interop.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141E8}</Project>
+      <Name>Microsoft.Isam.Esent.Interop</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\mscorlib\mscorlib.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141F1}</Project>
+      <Name>mscorlib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

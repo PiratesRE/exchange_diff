@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo Name="Prereq Configuration">
+  <ServerTasks>
+    <ServerTaskInfo Id="InstallWindowsComponents" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          if($RoleInstallWindowsComponents)
+          {          
+            # Install any Windows Roles or Features required for the Management Tools role
+            &amp; $RoleBinPath\InstallWindowsComponent.ps1 -ShortNameForRole "AdminTools" -ADToolsNeeded $RoleADToolsNeeded
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall/>
+    </ServerTaskInfo>
+    
+    <ServerTaskInfo Id="StartRemoteRegistry" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          if (Get-Service RemoteRegistry* | ?{$_.Name -eq 'RemoteRegistry'})
+          {
+            Set-Service RemoteRegistry -StartupType Automatic
+            Start-SetupService -ServiceName RemoteRegistry
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>
+          if (Get-Service RemoteRegistry* | ?{$_.Name -eq 'RemoteRegistry'})
+          {
+            Set-Service RemoteRegistry -StartupType Automatic
+            Start-SetupService -ServiceName RemoteRegistry
+          }
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <ServerTaskInfo Id="StartWinMgmt" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          if (Get-Service WinMgmt* | ?{$_.Name -eq 'WinMgmt'})
+          {
+            Set-Service WinMgmt -StartupType Automatic
+            Start-SetupService -ServiceName WinMgmt
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>
+          if (Get-Service WinMgmt* | ?{$_.Name -eq 'WinMgmt'})
+          {
+            Set-Service WinMgmt -StartupType Automatic
+            Start-SetupService -ServiceName WinMgmt
+          }
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+  </ServerTasks>
+</SetupComponentInfo>

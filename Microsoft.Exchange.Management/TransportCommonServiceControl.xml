@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo Name="Transport Common Service Control" DescriptionId="TransportCommonServiceControlComponentDescription">
+
+  <ServerTasks>
+
+	<!-- Start/stop Transport Log Search service -->
+	<ServerTaskInfo Id="_21e76be09edb423d90791f01d34a0a2c" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+	  <Install/>
+	  <BuildToBuildUpgrade />
+	  <DisasterRecovery UseInstallTasks="true" />
+	  <Uninstall DescriptionId="SetupProgressStoppingTransportLogSearchService">
+		<Standalone>stop-SetupService -ServiceName MSExchangeTransportLogSearch</Standalone>
+	  </Uninstall>
+	</ServerTaskInfo>
+
+  </ServerTasks>
+
+</SetupComponentInfo>

@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="NewDataSet" xmlns="" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+  <xs:element name="CalendarNotificationContent">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="CalNotifType" type="xs:string" msdata:Ordinal="0" />
+        <xs:element name="CalNotifTypeDesc" type="xs:string" msdata:Ordinal="1" />
+        <xs:element name="CalEvent" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="DayOfWeekOfStartTime" type="xs:string" />
+              <xs:element name="DateOfStartTime" type="xs:string" />
+              <xs:element name="TimeOfStartTime" type="xs:string" />
+              <xs:element name="DayOfWeekOfEndTime" type="xs:string" />
+              <xs:element name="DateOfEndTime" type="xs:string" />
+              <xs:element name="TimeOfEndTime" type="xs:string" />
+              <xs:element name="Subject" type="xs:string" />
+              <xs:element name="Location" type="xs:string" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+      <xs:attribute name="Version" type="xs:string" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="NewDataSet" msdata:IsDataSet="true" msdata:UseCurrentLocale="true">
+    <xs:complexType>
+      <xs:choice>
+        <xs:element ref="CalendarNotificationContent" />
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

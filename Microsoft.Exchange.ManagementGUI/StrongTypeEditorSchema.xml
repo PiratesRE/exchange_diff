@@ -1,0 +1,157 @@
+<!-- Copyright (C) 2007 Microsoft Corporation.  All Rights Reserved. -->
+<StrongTypeEditorSchema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+  <!-- Schema for Smtp AddressSpace-->
+  <StrongTypeEditor Name="SmtpAddressSpace">
+    <Columns>
+      <Column Name="Type" Type="System.String" DefaultValue="SMTP" UpdateTable="True"></Column>
+      <Column Name="Domain" Type="System.String" DefaultValue="" UpdateTable="True"></Column>
+      <Column Name="Cost" Type="System.Int32" DefaultValue="1" UpdateTable="True"></Column>
+      <Column Name="IncludeSubDomains" Type="System.Boolean" DefaultValue="false" UpdateTable="True"></Column>
+      <Column Name="IsSmtp" Type="System.Boolean" DefaultValue="true" UpdateTable="False"></Column>
+      <Column Name="IsNameReadOnly" Type="System.Boolean" DefaultValue="false" UpdateTable="False" Expression="IsSmtp=true OR IsEditMode=true"></Column>
+    </Columns>
+    <ParseStrongType>
+      <arg>Type</arg>
+      <arg>Domain</arg>
+      <arg>Cost</arg>
+      <arg>IncludeSubDomains</arg>
+    </ParseStrongType>
+  </StrongTypeEditor>
+
+  <!-- Schema for Customized AddressSpace-->
+  <StrongTypeEditor Name="CustomizedAddressSpace">
+    <Columns>
+      <Column Name="Type" Type="System.String" DefaultValue="" UpdateTable="True"></Column>
+      <Column Name="Domain" Type="System.String" DefaultValue="" UpdateTable="True"></Column>
+      <Column Name="Cost" Type="System.Int32" DefaultValue="1" UpdateTable="True"></Column>
+      <Column Name="IncludeSubDomains" Type="System.Boolean" DefaultValue="false" UpdateTable="True"></Column>
+      <Column Name="IsSmtp" Type="System.Boolean" DefaultValue="false" UpdateTable="False"></Column>
+      <Column Name="IsNameReadOnly" Type="System.Boolean" DefaultValue="false" UpdateTable="False" Expression="IsSmtp=true OR IsEditMode=true"></Column>
+    </Columns>
+    <ParseStrongType>
+      <arg>Type</arg>
+      <arg>Domain</arg>
+      <arg>Cost</arg>
+      <arg>IncludeSubDomains</arg>
+    </ParseStrongType>
+  </StrongTypeEditor>
+
+  <!-- Schema for Public Folder Referral Server strong type-->
+  <StrongTypeEditor Name="PFReferralServer">
+    <Columns>
+      <Column Name="ServerName" Type="System.String" DefaultValue="" UpdateTable="True"></Column>
+      <Column Name="Cost" Type="System.Int32" DefaultValue="1" UpdateTable="True"></Column>
+    </Columns>
+  </StrongTypeEditor>
+
+  <!-- Schema for UM AutoAttendant HolidaySchedule strong type-->
+  <StrongTypeEditor Name="HolidaySchedule">
+    <Columns>
+      <Column Name="Name" Type="System.String" DefaultValue="" UpdateTable="True"></Column>
+      <Column Name="StartDate" Type="System.DateTime" DefaultValue="" TextConverter="Microsoft.Exchange.Management.SystemManager.WinForms.StartDateTimeCoverter" UpdateTable="True"></Column>
+      <Column Name="EndDate" Type="System.DateTime" DefaultValue="" TextConverter="Microsoft.Exchange.Management.SystemManager.WinForms.EndDateTimeCoverter" UpdateTable="True"></Column>
+      <Column Name="Greeting" Type="System.String" DefaultValue="" UpdateTable="True"></Column>
+    </Columns>
+    <ParseStrongType>
+      <arg>Name</arg>
+      <arg>Greeting</arg>
+      <arg>StartDate</arg>
+      <arg>EndDate</arg>
+    </ParseStrongType>
+  </StrongTypeEditor>
+
+  <!-- Schema for UM AutoAttendant CustomMenuKeyMapping strong type-->
+  <StrongTypeEditor Name="CustomMenuKeyMapping">
+    <Columns>
+      <Column Name="timeOutRadioButtonEnabled" Type="System.Boolean" DefaultValue="true" UpdateTable="False" Expression="IsEditMode=false"></Column>
+      <Column Name="keyPressedTextBoxEnabled" Type="System.Boolean" DefaultValue="true" UpdateTable="False" Expression="IsEditMode=false"></Column>
+      <Column Name="keyPressedRadioButtonEnabled" Type="System.Boolean" DefaultValue="true" UpdateTable="False" Expression="IsEditMode=false"></Column>
+      <Column Name="keyPressedRadioButtonChecked" Type="System.Boolean" DefaultValue="true" UpdateTable="False"></Column>
+      <Column Name="audioFileCheckedPickerLauncherTextBoxChecked" Type="System.Boolean" DefaultValue="false" UpdateTable="False"></Column>
+      <Column Name="extensionRadioButtonChecked" Type="System.Object" DefaultValue="1" UpdateTable="False"></Column>
+      <Column Name="enableCallTransferCheckBoxChecked" Type="System.Boolean" DefaultValue="false" UpdateTable="False" ></Column>
+      <Column Name="Extension" Type="System.String" DefaultValue="" UpdateTable="True"></Column>
+      <Column Name="AutoAttendantName" Type="System.String" DefaultValue="" UpdateTable="True"></Column>
+      <Column Name="Key" Type="System.String" DefaultValue="" UpdateTable="True"></Column>
+      <Column Name="Description" Type="System.String" DefaultValue="" UpdateTable="True"></Column>
+      <Column Name="PromptFileName" Type="System.String" UpdateTable="True"></Column>
+      <Column Name="LeaveVoicemailFor" Type="System.String" UpdateTable="True"></Column>
+      <Column Name="TransferToMailbox" Type="System.String" UpdateTable="True"></Column>
+      <Column Name="AsrPhrases" Type="System.String" DefaultValue="" UpdateTable="True"></Column>
+      <Column Name="CalculatedKey" Type="System.String" DefaultValue="-" UpdateTable="False" Expression="IIF(keyPressedRadioButtonChecked=true,Key,'-')"></Column>
+      <Column Name="CalculatedExtension" Type="System.String" DefaultValue="" UpdateTable="False" Expression="IIF(enableCallTransferCheckBoxChecked=true AND extensionRadioButtonChecked=1, Extension, '')"></Column>
+      <Column Name="CalculatedAutoAttendantName" Type="System.String" DefaultValue="" UpdateTable="False" Expression="IIF(enableCallTransferCheckBoxChecked=true AND extensionRadioButtonChecked=2, AutoAttendantName, '')"></Column>
+      <Column Name="CalculatedLeaveVoicemailFor" Type="System.String" DefaultValue="" UpdateTable="False" Expression="IIF(enableCallTransferCheckBoxChecked=true AND extensionRadioButtonChecked=3, LeaveVoicemailFor, '')"></Column>
+      <Column Name="AnnounceBusinessLocation" Type="System.String" DefaultValue="" UpdateTable="False" Expression="IIF(enableCallTransferCheckBoxChecked=true AND extensionRadioButtonChecked=4,'1','')"></Column>
+      <Column Name="AnnounceBusinessHours" Type="System.String" DefaultValue="" UpdateTable="False" Expression="IIF(enableCallTransferCheckBoxChecked=true AND extensionRadioButtonChecked=5,'1','')"></Column>
+    </Columns>
+    <ParseStrongType>
+      <arg>CalculatedKey</arg>
+      <arg>Description</arg>
+      <arg>CalculatedExtension</arg>
+      <arg>CalculatedAutoAttendantName</arg>
+      <arg>PromptFileName</arg>
+      <arg>AsrPhrases</arg>
+      <arg>CalculatedLeaveVoicemailFor</arg>
+      <arg>TransferToMailbox</arg>
+      <arg>AnnounceBusinessLocation</arg>
+      <arg>AnnounceBusinessHours</arg>
+    </ParseStrongType>
+  </StrongTypeEditor>
+
+  <!-- Schema for SmartHost strong type-->
+  <StrongTypeEditor Name="SmartHost">
+    <Columns>
+      <Column Name="Address" Type="System.Net.IPAddress" DefaultValue="0.0.0.0" TextConverter="Microsoft.Exchange.Management.SystemManager.WinForms.IPAddressAnyCoverter" UpdateTable="True"></Column>
+      <Column Name="Domain" Type="Microsoft.Exchange.Data.Hostname, Microsoft.Exchange.Data" DefaultValue="" TextConverter="Microsoft.Exchange.Management.SystemManager.WinForms.EmptyStringToNullCoverter" UpdateTable="True"></Column>
+      <Column Name="IsIPAddress" Type="System.Boolean" DefaultValue="true" UpdateTable="True"></Column>
+      <Column Name="IsCloudOrganizationMode" Type="System.Boolean" DefaultValue="false" UpdateTable="False"></Column>
+    </Columns>
+  </StrongTypeEditor>
+
+  <!-- Schema for DateDuration strong type-->
+  <StrongTypeEditor Name="DateDuration">
+    <Columns>
+      <Column Name="StartDate" Type="System.DateTime" UpdateTable="True"></Column>
+      <Column Name="EndDate" Type="System.DateTime" UpdateTable="True"></Column>
+    </Columns>
+    <ParseStrongType>
+      <arg>StartDate</arg>
+      <arg>EndDate</arg>
+    </ParseStrongType>
+  </StrongTypeEditor>
+
+  <!-- Schema for PSCredential strong type-->
+  <StrongTypeEditor Name="PSCredential">
+    <Columns>
+      <!--all the column name must be same as the Exception's arugment name. so when the binding has some 
+      error, the IVP will find the Binding by the argument name. so the IVP can show the error correctly from the 
+      binding info.-->
+      <Column Name="userName" Type="System.String" UpdateTable="True"></Column>
+      <Column Name="password" Type="System.String" UpdateTable="True"></Column>
+    </Columns>
+  </StrongTypeEditor>
+  
+  <!-- Schema for SharingPolicyDomain strong type-->
+  <StrongTypeEditor Name="SharingPolicyDomain">
+    <Columns>
+      <Column Name="Domain" Type="System.String" UpdateTable="True"></Column>
+      <Column Name="Actions" Type="System.Object" UpdateTable="True"></Column>
+    </Columns>
+  </StrongTypeEditor>
+
+  <!-- Schema for RecipientAttributeValuePair strong type-->
+  <StrongTypeEditor Name="RecipientAttributeValuePair">
+    <Columns>
+      <Column Name="Attribute" Type="System.String" UpdateTable="True"></Column>
+      <Column Name="Value" Type="System.String" UpdateTable="True"></Column>
+      <Column Name="IsTextPattern" Type="System.Boolean" UpdateTable="false" DefaultValue="false"></Column>
+    </Columns>
+    <ParseStrongType>
+      <arg>Attribute</arg>
+      <arg>Value</arg>
+      <arg>IsTextPattern</arg>
+    </ParseStrongType>
+  </StrongTypeEditor>
+</StrongTypeEditorSchema>

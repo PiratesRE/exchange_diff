@@ -1,0 +1,137 @@
+<font face="Segoe UI" size="3"><b>Investigation Steps</b></font><br>
+<p>You can visit the notebook <a href="onenote:https://msft.spoppe.com/teams/EXOos/Shared%20Documents/HxService/HxService%20Exchange%20Wiki/On-Call%20-%20Book%20Of%20Knowledge.one#section-id={20CBBD89-D202-496A-968B-65BDA1935CA1}&end">On Call Book of Knowledge</a>
+ (<a href="https://msft.spoppe.com/teams/EXOos/_layouts/OneNote.aspx?id=%2Fteams%2FEXOos%2FShared%20Documents%2FHxService%2FHxService%20Exchange%20Wiki&wd=target%28On-Call%20-%20Book%20Of%20Knowledge.one%7C20CBBD89-D202-496A-968B-65BDA1935CA1%2F%29">Web view</a>) for more information. 
+Once connecting to a debug server, you can use the following tools to diagnose further. Instructions on connecting to debug servers can be found at 
+<a href="onenote:https://msft.spoppe.com/teams/EXOos/Shared%20Documents/HxService/HxService%20Exchange%20Wiki/On-Call%20-%20Book%20Of%20Knowledge.one#Connect%20to%20Debug%20Servers%20(RDP/MSTC/RDCMAN)&section-id={20CBBD89-D202-496A-968B-65BDA1935CA1}&page-id={27B21035-0BDA-4B82-A9CC-8F4596041AAD}&end">Connect to Debug Servers</a>
+ (<a href="https://msft.spoppe.com/teams/EXOos/_layouts/OneNote.aspx?id=%2Fteams%2FEXOos%2FShared%20Documents%2FHxService%2FHxService%20Exchange%20Wiki&wd=target%28On-Call%20-%20Book%20Of%20Knowledge.one%7C20CBBD89-D202-496A-968B-65BDA1935CA1%2FConnect%20to%20Debug%20Servers%20%28RDP%5C%2FMSTC%5C%2FRDCMAN%5C%29%7C27B21035-0BDA-4B82-A9CC-8F4596041AAD%2F%29">Web view</a>).<br><br>
+</p>
+<table cellpadding="0" cellspacing="0">
+    <tr style="">
+        <td style="background: #1D96E0;text-align: center; height: 40px; width: 160px; font-family: Calibri; font-size: 15px;">
+        <a href="{Extra.OSPUrl}" target="_blank" style="text-decoration: none; color: white; padding: 10px 15px;">
+        Office Service Pulse
+        </a></td>
+        
+        <td style="width: 10px;">&nbsp;</td>
+        
+        <td style="background: #455E66; text-align: center; height: 40px; width: 210px; font-family: Calibri; font-size: 15px;">
+        <a href="{Extra.DebugUrl}" target="_blank" style="text-decoration: none; color: white; padding: 10px 18px;">
+        Connect to a Debug Server
+        </a></td>
+    </tr>
+</table>
+
+<ul>
+<li style="margin-bottom:20px">
+    <b>Get a general overview on the Server Health</b><br>  
+    <ol>
+        <li>Copy <a href="onenote:https://msft.spoppe.com/teams/EXOos/Shared%20Documents/HxService/HxService%20Exchange%20Wiki/On-Call%20-%20Book%20Of%20Knowledge.one#Exchange%20Support%20Shell%20(ESS)&section-id={20CBBD89-D202-496A-968B-65BDA1935CA1}&page-id={D21157F9-2D61-4818-B4E7-93B7C3696D16}&end"> Exchange Support Shell (ESS)</a>
+        (<a href="https://msft.spoppe.com/teams/EXOos/_layouts/OneNote.aspx?id=%2Fteams%2FEXOos%2FShared%20Documents%2FHxService%2FHxService%20Exchange%20Wiki&wd=target%28On-Call%20-%20Book%20Of%20Knowledge.one%7C20CBBD89-D202-496A-968B-65BDA1935CA1%2FExchange%20Support%20Shell%20%28ESS%5C%29%7CD21157F9-2D61-4818-B4E7-93B7C3696D16%2F%29">Web view</a>)
+         to the desktop on a debug machine</li>
+        <li>Open the Exchange Support Shell (ESS) to the server's forest and run the command below.<br> 
+            
+        <table cellpadding="0" cellspacing="0" style="margin: 10px; width: 90%;">
+        <tr><td style="padding: 6px; font-size:13px;font-family:consolas;background: #D6EDFF;"><p style="margin: 0; padding: 0;">
+        Get-OutlookServiceStatus -Server {Extra.ServerName}
+        </p></td></tr>
+        </table>
+
+        It will display an overview on the overall server health. For more details on this command, see 
+        <a href="onenote:https://msft.spoppe.com/teams/EXOos/Shared%20Documents/HxService/HxService%20Exchange%20Wiki/On-Call%20-%20Book%20Of%20Knowledge.one#How%20To%20Use%20Get-OutlookServiceStatus.ps1&section-id={20CBBD89-D202-496A-968B-65BDA1935CA1}&page-id={9F4A51A4-96EC-47AA-8C17-71499E3B91FA}&end">How To Use Get-OutlookServiceStatus.ps1
+        </a> (<a href="https://msft.spoppe.com/teams/EXOos/_layouts/OneNote.aspx?id=%2Fteams%2FEXOos%2FShared%20Documents%2FHxService%2FHxService%20Exchange%20Wiki&wd=target%28On-Call%20-%20Book%20Of%20Knowledge.one%7C20CBBD89-D202-496A-968B-65BDA1935CA1%2FHow%20To%20Use%20Get-OutlookServiceStatus.ps1%7C9F4A51A4-96EC-47AA-8C17-71499E3B91FA%2F%29">Web view</a>).
+    </ol> 
+</li>
+
+<li style="margin-bottom:20px">
+    <p><b>Troubleshooting Credentials:</b><br>
+    The credentials are for a mailbox which is active on the server which raised the alert. Through the course of your investigation, you can use these credentials to login to OutlookService 
+    or any other protocol (i.e. OWA). Please follow <a href="onenote:https://msft.spoppe.com/teams/EXOos/Shared%20Documents/HxService/HxService%20Exchange%20Wiki/On-Call%20-%20Book%20Of%20Knowledge.one#How%20to%20Use%20Get-MonitoringAccounts&section-id={20CBBD89-D202-496A-968B-65BDA1935CA1}&page-id={5BB0ACF5-FCEF-4644-8B30-788BAE541ACD}&end">How to Use Get-MonitoringAccounts
+</a> (<a href="https://msft.spoppe.com/teams/EXOos/_layouts/OneNote.aspx?id=%2Fteams%2FEXOos%2FShared%20Documents%2FHxService%2FHxService%20Exchange%20Wiki&wd=target%28On-Call%20-%20Book%20Of%20Knowledge.one%7C20CBBD89-D202-496A-968B-65BDA1935CA1%2FHow%20to%20Use%20Get-MonitoringAccounts%7C5BB0ACF5-FCEF-4644-8B30-788BAE541ACD%2F%29">Web view</a>) to access the protected information.  </p>    
+</li>
+
+<li style="margin-bottom:20px">
+    <b>View protocol logs for the service</b><br> 
+    <ol>
+        <li>Copy this folder to the desktop on a debug machine: \\redmond\exchange\build\e15\latest\sources\sources\test\tools\src\LogMiningScripts</li>
+        <li>Open a capacity forest shell to the server's forest, change to the directory just copied and execute this command. <br> 
+            
+        <table cellpadding="0" cellspacing="0" style="margin: 10px; width: 90%;">
+        <tr><td style="padding: 6px; font-size:13px;font-family:consolas;background: #D6EDFF;"><p style="margin: 0; padding: 0;">
+        $servers = Get-ExchangeServer {Extra.ServerName}; <br />
+        .\GetProtocolLogs.ps1 -Component "OutlookServiceRequest" -DebugScript $true -Start "{Extra.LogStartTime}" -End "{Extra.LogEndTime}" -OutputFolder ".\out" -Servers $servers
+        </p></td></tr>
+        </table>
+
+        <li>Results will be in in the .\out folder.</li>
+        <li>For more information, please see <a href="onenote:https://msft.spoppe.com/teams/EXOos/Shared%20Documents/HxService/HxService%20Exchange%20Wiki/On-Call%20-%20Book%20Of%20Knowledge.one#How%20To%20Mine%20Server%20Logs&section-id={20CBBD89-D202-496A-968B-65BDA1935CA1}&page-id={103597C5-611C-4CB9-BE1B-EB978221E2B6}&end">How To Mine Server Logs</a>
+         (<a href="https://msft.spoppe.com/teams/EXOos/_layouts/OneNote.aspx?id=%2Fteams%2FEXOos%2FShared%20Documents%2FHxService%2FHxService%20Exchange%20Wiki&wd=target%28On-Call%20-%20Book%20Of%20Knowledge.one%7C20CBBD89-D202-496A-968B-65BDA1935CA1%2FHow%20To%20Mine%20Server%20Logs%7C103597C5-611C-4CB9-BE1B-EB978221E2B6%2F%29">Web view</a>). 
+        </li>
+    </ol> 
+</li>
+
+<li style="margin-bottom:20px">
+    <p><b>Check for unhealthy components</b><br>
+    Is this the only protocol that's affected?  Has the server recovered since the alert?  Dependent components that are unhealthy may be the cause of this failure. 
+    The following must be run in the server's management & capacity forest.</p>
+
+    <table cellpadding="0" cellspacing="0" style="margin: 10px; width: 90%;">
+    <tr><td style="padding: 6px; font-size:13px;font-family:consolas;background: #D6EDFF;"><p style="margin: 0; padding: 0;">
+    Get-ServerHealth -Server {Extra.ServerName}  | ?{$_.AlertValue -Eq "Unhealthy" | Format-Table -Wrap}
+    </p></td></tr>
+    </table>
+      
+    <p>You can also visit the health check page from a debug machine (click through the SSL certificate warning).  If the response shows the build number then the server is responding to requests.</p>
+    
+    <table cellpadding="0" cellspacing="0" style="margin: 10px; width: 90%;">
+    <tr><td style="padding: 6px; font-size:13px;font-family:consolas;background: #e7e7e7;"><p style="margin: 0; padding: 0;">
+    https://{Extra.ServerFQDN}:444/OutlookService/OutlookService.hxs?Cmd=Ping
+    </td></tr>
+    </table>   
+</li>
+
+<li style="margin-bottom:20px">
+    <p><b>Rerun the probe</b><br>
+    If you think the problem has been fixed, you can manually run the probe to verify the server is healthy.</p>
+    
+    <table cellpadding="0" cellspacing="0" style="margin: 10px; width: 90%;">
+    <tr><td style="padding: 6px; font-size:13px;font-family:consolas;background: #D6EDFF;"><p style="margin: 0; padding: 0;">
+    Invoke-MonitoringProbe -Identity {Probe.ServiceName}{Extra.ProbeFullName} -Server {Extra.ServerName} | fl
+    </p></td></tr>
+    </table>
+</li>
+
+<li style="margin-bottom:20px">
+    <p><b>Collect a dump of the process</b><br>
+    Run this command to request a full memory dump of the process.  Beware that when you run the cmdlet below, the process will be terminated.  You must fill in your alias and the reason. </p>
+    
+    <table cellpadding="0" cellspacing="0" style="margin: 10px; width: 90%;">
+    <tr><td style="padding: 6px; font-size:13px;font-family:consolas;background: #D6EDFF;"><p style="margin: 0; padding: 0;">
+        $alias = "YOUR_ALIAS_HERE";<br>$reason = "";<br>
+        $counters = Get-Counter -ComputerName {Extra.ServerFQDN} -Counter "\WAS_W3WP(*)\Health Ping Reply Latency";$instanceName = $counters.CounterSamples | ?{$_.InstanceName -like '*{Extra.AppPoolName}*'} | 
+        Select-Object InstanceName;$id = $instanceName.InstanceName.Substring(0, $instanceName.InstanceName.IndexOf('_'));
+        Request-DumpProcess.ps1 -processName w3wp -Target {Extra.ServerName} -full -uniquePid $id -Alias ($alias + "@microsoft.com") -Reason $reason
+    </p></td></tr>
+    </table>
+</li>
+
+<li style="margin-bottom:20px">
+    <p>
+        <b>Recycle the application pool</b><br>
+        Since the ultimate goal is to have the service up and running, it might be necessary to recycle the Application Pool to re-stablish it.<br />
+        The general guideline is to try finding the root cause and recycle as a last resource. Spend around 30 minutes trying to find the root cause before recycling. <br />
+        Before Recycling the Application Pool please make sure that:
+        <ol>
+            <li> That the problem hasn't been resolved by re-running the probe and making sure it continues to fail </li>
+            <li> Before recycling the AppPool collect a dump of the process for later investigation</li>
+            Run the following command to recycle this app pool.
+            <b> Fill in the reason appropriately. </b>
+        </ol>
+    </p>
+    
+    <table cellpadding="0" cellspacing="0" style="margin: 10px; width: 90%;">
+    <tr><td style="padding: 6px; font-size:13px;font-family:consolas;background: #D6EDFF;"><p style="margin: 0; padding: 0;">
+    Request-RecycleAppPool.ps1 -AppPoolName {Extra.AppPoolName} -Target {Extra.ServerName} -Reason ""
+    </p></td></tr>
+    </table>
+</li>
+</ul>

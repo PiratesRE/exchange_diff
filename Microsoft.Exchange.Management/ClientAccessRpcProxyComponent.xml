@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo Name="RPC-over-HTTP Proxy Configuration" DescriptionId="SetupComponentConfiguringRpcProxy">
+
+  <ServerTasks>
+
+    <!-- Set install path in app config "ClientAccess/RpcProxy" -->
+    <ServerTaskInfo Id="_680097a75e8b4d48a0fa21bd464699ed" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>set-InstallPathInAppConfig -ConfigFileRelativePath "ClientAccess\RpcProxy\" -ConfigFileName web.config</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- 
+         Increase the default TCP port range beyond 16K ports and allow RPC listening on 
+         alternate IP addresses. This is needed because RpcProxy might be running on this box 
+         and as a result opening abundant outbound connections (E14 #124634)
+    -->
+    <ServerTaskInfo Id="_971821dab1cc4689a28b41186a862fd5" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          . "$RoleInstallPath\Scripts\ConfigureNetworkProtocolParameters.ps1"; 
+          Enable-RpcOverTcpPortScaling; 
+          Enable-ExtendedTcpPortRange
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall/>
+    </ServerTaskInfo>
+
+    <!-- 
+      Disable kernel-mode authentication. 
+      RpcProxy setup does it by default for its VDirs, but we'll do it for the entire web server.
+    -->
+    <ServerTaskInfo Id="_2f6bc93fb427499f86c5116f004acd14" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          . "$RoleInstallPath\Scripts\ConfigureNetworkProtocolParameters.ps1"; 
+          Set-IisKernelModeAuthentication $false
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- 
+      Disable recycling (impacts durability of sessions) 
+      and idle timeout (or NTLM front-end auth won't work)
+      on the application pool used by RpcProxy.
+    -->
+    <ServerTaskInfo Id="_a3352cc73b42439b985071d41196ebd3" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          . "$RoleInstallPath\Scripts\ConfigureNetworkProtocolParameters.ps1"; 
+          Set-IisApplicationPoolRecycling 'DefaultAppPool' 0 0
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall />
+    </ServerTaskInfo>
+
+  </ServerTasks>
+
+</SetupComponentInfo>
+

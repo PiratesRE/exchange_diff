@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo Name="Active Directory Topology Service Configuration" DescriptionId="SetupComponentConfiguringADTopologyService">
+
+  <ServerTasks>
+
+    <!-- After a clean install or Build-to-Build Upgrade, we must start the services -->
+
+    <!-- Start/stop the AD Topology service -->
+    <!-- This requires local administrator permission -->
+    <!-- NOTE: (PS# 94013) BuildToBuildUpgrade should use install tasks because even though the ServiceControl.ps1 -->
+    <!-- can automatically start the services that were running when upgrade was started, the next task -->
+    <!-- set-sharedconfigdc and the system attendant requres ADTopologyService to be running. so in this -->
+    <!-- case we override the ServiceControl.ps1 and start ADTopologyService unconditionaly -->
+    <ServerTaskInfo Id="_e95681b135f04f6ca85c706536bfbeed" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="StartADTopologyService">
+        <Standalone>
+          if ($exsSid -eq $null -or $exsSid -eq "")
+          {
+            $exsSid = get-ExchangeServerGroupSID -DomainController $RoleDomainController
+          }
+          start-setupservice -ServiceName MSExchangeADTopology -ServiceParameters $exsSid,$RoleDomainController
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall DescriptionId="StopADTopologyService">
+        <Standalone>stop-setupservice -ServiceName MSExchangeADTopology</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Set the shared config DC to be the one that setup has chosen, this is to tell ADDriver to be in sync with setup, otherwise we will see replication issues -->
+    <!-- This is in memory setting and it doesn't require a particular permission -->
+    <!-- Even though in the above task, preferred domain controller is passed to service startup parameters -->
+    <!-- this task would still be required. Because it is possible that if ADTopology service is already running  -->
+    <!-- then the previous task will be a no-op. So this tasks is always required. DO NOT REMOVE IT -->
+    <!-- 015.3168567 We retry for up to 5 minutes to avoid transient issues with AD, due to replication (ie. group membership, ACLs, etc) -->
+    <ServerTaskInfo Id="_ee47ab1c06fb47919398e2e95ed99c6c" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          $maxWait = New-TimeSpan -Minutes 8
+          $timeout = Get-Date;
+          $timeout = $timeout.Add($maxWait);
+          $currTime = Get-Date;
+          $successfullySetConfigDC = $false;
+
+          while($currTime -le $timeout)
+          {
+            $setSharedCDCErrors = @();
+            try
+            {
+              Set-SharedConfigDC -DomainController $RoleDomainController -ErrorVariable setSharedCDCErrors -ErrorAction SilentlyContinue;
+              $successfullySetConfigDC = ($setSharedCDCErrors.Count -eq 0);
+
+              if($successfullySetConfigDC)
+              {
+                break;
+              }
+              Write-ExchangeSetupLog -Info ("An error ocurred while setting shared config DC. Error: " + $setSharedCDCErrors[0]);
+            }
+            catch
+            {
+              Write-ExchangeSetupLog -Info ("An exception ocurred while setting shared config DC. Exception: " + $_.Exception.Message);
+            }
+
+            Write-ExchangeSetupLog -Info ("Waiting 30 seconds before attempting again.");
+            Start-Sleep -Seconds 30;
+            $currTime = Get-Date;
+          }
+
+          if( -not $successfullySetConfigDC)
+          {
+            Write-ExchangeSetupLog -Error "Unable to set shared config DC.";
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+    
+    <!-- Enabled the current user for Remote PowerShell -->
+    <!-- This code is specifically for the user running setup. Think of this -->
+    <!-- change as akin to how we mail-enable the admin running setup... We don't -->
+    <!-- mail-enable all administrators. The idea here is to give someone access -->
+    <!-- to use remote powershell (and just as importantly, EMC) out of the box. -->
+    <ServerTaskInfo Id="_e37c81e3362447f3b7d99d5c1ea168a4" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>
+          $user = Get-User -Identity $RoleLoggedOnUser;
+          Set-User -Identity $user.Identity -RemotePowerShellEnabled $true;
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade />
+      <DisasterRecovery />
+      <Uninstall />
+    </ServerTaskInfo>
+
+  </ServerTasks>
+</SetupComponentInfo>

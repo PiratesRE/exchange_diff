@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo Name="Gateway PostSetup" DescriptionId="SetupComponentPostSetupGateway">
+
+  <ServerTasks>    
+    <!-- Start Anti-spam Update service -->
+    <ServerTaskInfo Id="_9b515d2cfd8641b79baaffe3f7d11295" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressStartingASUpdateService" IsFatal="false">
+        <Standalone>start-SetupService -ServiceName MSExchangeAntispamUpdate</Standalone>
+      </Install>
+      <BuildToBuildUpgrade />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall/>
+    </ServerTaskInfo>
+
+    <ServerTaskInfo Id="_6ae8ec2d082a4fbc9fac6f8cc910d291" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressStartingCredentialService" IsFatal="false">
+        <Standalone>start-SetupService -ServiceName MSExchangeEdgeCredential</Standalone>
+      </Install>
+      <BuildToBuildUpgrade/>
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Start/Stop Transport LogSearch service -->
+    <ServerTaskInfo Id="_063EB45955B84ECF873A206F2423332D" Component="EXCHANGE14:\Current\Release\Transport\BCM\Tracking and Discovery">
+      <Install DescriptionId="SetupProgressStartingTransportLogSearchService" IsFatal="false">
+        <Standalone>start-SetupService -ServiceName MSExchangeTransportLogSearch</Standalone>
+      </Install>
+      <BuildToBuildUpgrade />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall/>
+    </ServerTaskInfo>  
+
+  </ServerTasks>
+  </SetupComponentInfo>
+

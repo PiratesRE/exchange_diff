@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo Name="Client Access Global AD Configuration" DescriptionId="SetupComponentClientAccessGlobalConfig">
+
+  <!-- Creates the Client Access container and objects underneath the conatiner required by Client Access role -->
+  <OrgTasks>
+
+    <!-- Create Client Access container (CN=Client Access,CN=<Org Name>,... ) -->
+    <OrgTaskInfo Id="_84a4b5baa96e4ae68da2649e4ad7e7a9" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressCreateClientAccessContainer">
+        <Global>install-Container -Name:"Client Access" -DomainController $RoleDomainController</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+
+    <!-- Create Client Access/AutoDiscover container (CN=AutoDiscover,CN=Client Access,... ) -->
+    <OrgTaskInfo Id="_6960c36268f6417aa3343ac6ef7fc907" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressCreateAutoDiscoverContainer">
+        <Global>install-Container -Name:"Client Access","AutoDiscover" -DomainController $RoleDomainController</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+
+    <!-- Create Client Access/AutoDiscover/Outlook container (CN=Outlook,CN=AoutDiscover,... )
+       - only in First Organization - we do not need these containers in tenant context, as New-OutlookProvider task is not granted to tenant,
+         and we do not create any objects there during provisioning time-->
+    <OrgTaskInfo Id="_8b4b459126a1473b985d3af821a7b75d" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressCreateOutlookContainer">
+        <Global>install-Container -Name:"Client Access","AutoDiscover","Outlook" -DomainController $RoleDomainController</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+
+    <!-- Add msExchMimeTypes -->
+    <OrgTaskInfo Id="_1951e26ed1744ffca2cbd6571f5215b8" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressCreateExchangeMimeTypes">
+        <Global>initialize-ExchangeMimeTypes</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+
+    <!-- Create OWA Mailbox Policies container (CN=OWA Mailbox Policies,CN=<Org Name>,... )-->
+    <OrgTaskInfo Id="_1dbc3685bee4476e820cf930bb081e16" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressCreateOWAMailboxPolicyContainers">
+            <Global>install-Container -Name "OWA Mailbox Policies" -DomainController $RoleDomainController</Global>
+            <Tenant>
+              if (!$CreateSharedConfiguration)
+              {
+                install-Container -Name "OWA Mailbox Policies" -DomainController $RoleDomainController -Organization $RoleOrganizationHierarchicalPath;
+              }
+            </Tenant>
+        </Install>
+        <BuildToBuildUpgrade UseInstallTasks="true" />
+        <Uninstall />
+    </OrgTaskInfo>
+
+    <!-- Add the default OWA mailbox policy for Ent. Tenant policy is created in ProvisioningFeatureCatalog.xml -->
+    <OrgTaskInfo Id="_66892495c43c4806b06f3e038ef91568" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressCreateDefaultOWAMailboxPolicy">
+        <Global>
+          $policyDefault = Get-OwaMailboxPolicy -DomainController $RoleDomainController | where {$_.Identity -eq "Default"};
+
+          if($policyDefault -eq $null)
+          {
+              New-OwaMailboxPolicy -Name "Default" -DomainController $RoleDomainController
+          }
+        </Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+
+    <!-- Create ActiveSync Mailbox Policies container (CN=Mobile Mailbox Policies,CN=<Org Name>,... )-->
+    <OrgTaskInfo Id="_718d9fc3d49f4e4b837b893220255fe9" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+        <Install DescriptionId="SetupProgressCreateMobileDeviceMailboxPolicyContainers">
+            <Global>install-Container -Name "Mobile Mailbox Policies" -DomainController $RoleDomainController</Global>
+            <Tenant>
+              if(!$CreateSharedConfiguration)
+              {
+                install-Container -Name "Mobile Mailbox Policies" -DomainController $RoleDomainController -Organization $TenantOrganizationFullPath
+              }
+            </Tenant>
+        </Install>
+        <BuildToBuildUpgrade UseInstallTasks="true" />
+        <Uninstall />
+    </OrgTaskInfo>
+
+    <!-- Create default MobileDeviceMailboxPolicy -->
+    <OrgTaskInfo Id="_f165a950bf90462184f3793fdc5850cb" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="CreateDefaultMobileDeviceMailboxPolicy">
+    	<!-- Global default policy is created in sources\dev\management\src\management\deployment\components\servicescomponent.xml -->
+        <Global/>
+        <Tenant>
+          if(!$CreateSharedConfiguration)
+          {
+            $defaultPolicy = Get-MobileDeviceMailboxPolicy -DomainController $RoleDomainController -Organization $TenantOrganizationFullPath | where {$_.IsDefault -eq $true};
+
+            if($defaultPolicy -eq $null)
+            {
+              $policyDefault = Get-MobileDeviceMailboxPolicy -DomainController $RoleDomainController -Organization $TenantOrganizationFullPath | where {$_.Name -eq "Default"};
+
+              if($policyDefault -eq $null)
+              {
+                  New-MobileDeviceMailboxPolicy "Default" -DomainController $RoleDomainController -Organization $TenantOrganizationFullPath -IsDefault:$true -AllowNonProvisionableDevices:$true -Confirm:$false;
+              }
+              else
+              {
+                  Set-MobileDeviceMailboxPolicy -DomainController $RoleDomainController -Identity:$policyDefault.Identity -IsDefault:$true -Confirm:$false;
+              }
+            }
+          }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade />
+      <Uninstall />
+    </OrgTaskInfo>
+
+    <!-- Create ActiveSync Organization Settings -->
+    <OrgTaskInfo Id="_124cf62fe73c41cc895f137e5f292e75" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+        <Install DescriptionId="CreateActiveSyncOraganizationSettings">
+          <!-- Global container is created in sources\dev\management\src\management\deployment\components\servicescomponent.xml -->
+          <Global/>
+          <Tenant>
+            if (!$CreateSharedConfiguration)
+            {
+              $activeSyncOrganizationSettings = Get-ActiveSyncOrganizationSettings -DomainController $RoleDomainController -Organization $TenantOrganizationFullPath;
+
+              if($activeSyncOrganizationSettings -eq $null)
+              {
+                   New-ActiveSyncOrganizationSettings -DomainController $RoleDomainController -Organization $TenantOrganizationFullPath;
+              }
+            }
+          </Tenant>
+        </Install>
+        <BuildToBuildUpgrade UseInstallTasks="true" />
+        <Uninstall />
+    </OrgTaskInfo>
+
+    <!-- Install ActiveSync Device Class Container -->
+    <OrgTaskInfo Id="_76230895A7D947eaA31BEBCA2B40CF2D" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+        <Install DescriptionId="CreateActiveSyncDeviceClasses">
+          <!-- Global container is created in sources\dev\management\src\management\deployment\components\servicescomponent.xml -->
+          <Global/>
+          <Tenant>
+            <!-- Create the container for DeviceClass nodes.  If it already exists, this task will succeed with noop. -->
+            if (!$CreateSharedConfiguration)
+            {
+              Install-ActiveSyncDeviceClassContainer -DomainController $RoleDomainController -Organization $TenantOrganizationFullPath
+            }
+          </Tenant>
+        </Install>
+        <BuildToBuildUpgrade UseInstallTasks="true" />
+        <Uninstall />
+    </OrgTaskInfo>
+
+    <!-- Install ActiveSync Device Autoblock thresholds -->
+    <OrgTaskInfo Id="_a980a09b209443d8b5564385cb18cc3c" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+        <Install DescriptionId="CreateActiveSyncDeviceAutoblockThresholds">
+          <Global>
+            $threshold = get-ActiveSyncDeviceAutoblockThreshold -DomainController $RoleDomainController | where {$_.BehaviorType -eq 0}
+
+            if ($threshold -eq $null)
+            {
+                New-ActiveSyncDeviceAutoblockThreshold -BehaviorType 0 -BehaviorTypeIncidenceLimit 0 -BehaviorTypeIncidenceDuration 0 -DeviceBlockDuration: 0 -DomainController $RoleDomainController
+            }
+
+            $threshold = get-ActiveSyncDeviceAutoblockThreshold -DomainController $RoleDomainController | where {$_.BehaviorType -eq 1}
+
+            if ($threshold -eq $null)
+            {
+                New-ActiveSyncDeviceAutoblockThreshold -BehaviorType 1 -BehaviorTypeIncidenceLimit 0 -BehaviorTypeIncidenceDuration 0 -DeviceBlockDuration: 0 -DomainController $RoleDomainController
+            }
+
+            $threshold = get-ActiveSyncDeviceAutoblockThreshold -DomainController $RoleDomainController | where {$_.BehaviorType -eq 2}
+
+            if ($threshold -eq $null)
+            {
+                New-ActiveSyncDeviceAutoblockThreshold -BehaviorType 2 -BehaviorTypeIncidenceLimit 0 -BehaviorTypeIncidenceDuration 0 -DeviceBlockDuration: 0 -DomainController $RoleDomainController
+            }
+
+            $threshold = get-ActiveSyncDeviceAutoblockThreshold -DomainController $RoleDomainController | where {$_.BehaviorType -eq 3}
+
+            if ($threshold -eq $null)
+            {
+                New-ActiveSyncDeviceAutoblockThreshold -BehaviorType 3 -BehaviorTypeIncidenceLimit 0 -BehaviorTypeIncidenceDuration 0 -DeviceBlockDuration: 0 -DomainController $RoleDomainController
+            }
+
+            $threshold = get-ActiveSyncDeviceAutoblockThreshold -DomainController $RoleDomainController | where {$_.BehaviorType -eq 4}
+
+            if ($threshold -eq $null)
+            {
+                New-ActiveSyncDeviceAutoblockThreshold -BehaviorType 4 -BehaviorTypeIncidenceLimit 0 -BehaviorTypeIncidenceDuration 0 -DeviceBlockDuration: 0 -DomainController $RoleDomainController
+            }
+
+            $threshold = get-ActiveSyncDeviceAutoblockThreshold -DomainController $RoleDomainController | where {$_.BehaviorType -eq 5}
+
+            if ($threshold -eq $null)
+            {
+                New-ActiveSyncDeviceAutoblockThreshold -BehaviorType 5 -BehaviorTypeIncidenceLimit 0 -BehaviorTypeIncidenceDuration 0 -DeviceBlockDuration: 0 -DomainController $RoleDomainController
+            }
+
+            $threshold = get-ActiveSyncDeviceAutoblockThreshold -DomainController $RoleDomainController | where {$_.BehaviorType -eq 6}
+
+            if ($threshold -eq $null)
+            {
+                New-ActiveSyncDeviceAutoblockThreshold -BehaviorType 6 -BehaviorTypeIncidenceLimit 0 -BehaviorTypeIncidenceDuration 0 -DeviceBlockDuration: 0 -DomainController $RoleDomainController
+            }
+          </Global>
+          <Tenant/>
+        </Install>
+        <BuildToBuildUpgrade UseInstallTasks="true" />
+        <Uninstall />
+    </OrgTaskInfo>
+
+  </OrgTasks>
+
+</SetupComponentInfo>

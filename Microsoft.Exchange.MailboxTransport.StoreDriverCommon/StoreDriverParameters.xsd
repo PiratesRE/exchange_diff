@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+	<xsd:element name="configuration" type="configurationType" />
+
+	<xsd:complexType name="configurationType">
+		<xsd:sequence>
+			<xsd:element name="storeDriver" type="storeDriverType" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="storeDriverType">
+		<xsd:sequence>
+			<xsd:element name="parameters" type="parametersType" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="parametersType">
+		<xsd:sequence>
+			<xsd:element name="add" type="addType" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="addType">
+		<xsd:attribute name="key" type="non-empty-string" />
+		<xsd:attribute name="value" type="non-empty-string" />
+	</xsd:complexType>
+
+	<xsd:simpleType name="non-empty-string">
+		<xsd:restriction base="xsd:string">
+			<xsd:minLength value="1" />
+		</xsd:restriction>
+	</xsd:simpleType>
+</xsd:schema>

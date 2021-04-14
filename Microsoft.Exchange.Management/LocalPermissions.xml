@@ -1,0 +1,869 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<Permissions>
+  <!--Now this xml file only support permissions on RegistryKey and Folders.-->
+
+  <!--We have three kinds of permissions set: FeaturePermissionSet, CommonPermissionSet and SharedPermissionSet.-->
+  <!--FeaturePermissionSet is used to set folder or registry permissions on folders or registry keys when installing
+  one feature. The feature name have one-on-one correspondance with E12 roles.
+  E12 has seven features: AdminTools, Mailbox, ClientAccess, Gateway(Edge), UnifiedMessaging and Bridgehead(Hub), FrontendTransport.
+  Because AdminTools never need additional permission settings, we never need provide FeaturePermissionSet for AdminTools.
+  For other features, every feature has one FeaturePermissionSet which name is equal to feature name.
+  If one feature have no one FeaturePermissionSet, it means that that feature has no special permission settings at the
+  current time, for example, UnifiedMessaging.-->
+  <!--The permissions in one FeaturePermissionSet can be divided into three parts:
+  Particular for the current feature, Shared with others features, shared with all features.
+  For particular permissions for one feature, we should place directly them in the FeaturePermissionSet of that feature.
+  For shared permissions with others features, we should define one SharedPermissionSet which includes some shared
+  permissions among some features, and place one reference in every feature which shares the permissions. For shared
+  permissions with all features, we should place them in CommonPermissionSet. In the entire file, we should have only
+  one CommonPermissionSet, and it has no "Name" attributes.-->
+
+  <!--The sub nodes of FeaturePermissionSet include two parts. The first part includes Folder or Registry permissions
+  directly. The second part include the references to other SharedPermissionSets.   One FeaturePermissionSet can not
+  include references to FeaturePermissionSets and CommonPermissionSet, and if it includes them, they will be ingored.-->
+  <!--CommonPermissionSet only include the direct permission setting on folder or registry key, and it cannot refer
+  other XXXPermissionSet, and even it include them, they will be ignored.-->
+  <!--SharedPermissionSet is same as CommonPermissionSet.-->
+
+  <!--Now we support the following Well know sid: System, Administrators, AuthenticatedUser, NetworkService, LocalService.
+  If you want to add other Well know sid, please also update the wellKnowSecurityIdentitiesDictionary
+  in InstallExchangeServerMsi class.-->
+
+  <!--Now we support the following  file system right: genericall, genericread, read, traverse, genericwrite,
+  readextendedattributes, readpermission,readattributes,deletechild. If you want to add other file system right,
+  please also update the fileSystemRightsDictionary in InstallExchangeServerMsi class.-->
+
+  <!--Now we support the following registry right: genericall. If you want to add other registry right,
+  please also update the rootRegistryKeysDictionary in InstallExchangeServerMsi class.-->
+
+  <!-- As part of separating Datacenter only files from the Product MSI, adding new feature elements for DatacenterOnly
+   installations of roles. For eg:Any folder or registry entry which are created only in Datacenter installations of ClientAccess
+    role will need permissions set under "ClientAccessDatacenter" permissionset-->
+
+  <FeaturePermissionSet Name ="Mailbox">
+    <!-- Set permissions for TARGETDIR\Mailbox\Address -->
+    <!-- Preserve inheritance from Parent Directory by specifying Protected ="no".
+    The change on the permission of parent directory will affect the permissions of current directory.-->
+    <Folder Path ="Mailbox\Address" Protected ="no">
+      <!-- NT AUTHORITY\AuthenticatedUser:GenericRead (Read Attributes, Read Extended Attributes, Read Permissions)
+                          Read        (List Folder/Read Data) -->
+      <!-- Preserve inheritance from Parent Directory and add additional permissons by specifying Extended="yes".
+      If Protected ="no", we always preserve inheritance of one user's permissions even Extended do not appear or
+      Extended ="no". This is because if Protected = "no", we cannot remove any inheirited permission, and the inherited
+      permissions is always effective except that we disable them explicitly.-->
+      <Permission User="AuthenticatedUser" Extended="yes" GenericRead="yes" Read="yes" />
+    </Folder>
+
+    <!-- Set permissions for TARGETDIR\ClientAccess\PowerShell -->
+    <!-- Preserve inheritance from Parent Directory by specifying Protected ="no" -->
+    <Folder Path = "ClientAccess\PowerShell" Protected ="no">
+      <!-- NT AUTHORITY\AuthenticatedUser:GenericRead (Read Attributes, Read Extended Attributes, Read Permissions)
+                          Read        (List Folder/Read Data) -->
+      <!-- Preserve inheritance from Parent Directory and add additional permissons by specifying Extended="yes" -->
+      <Permission User="AuthenticatedUser" Extended="yes" GenericRead="yes" Read="yes" />
+    </Folder>
+
+    <!-- The reference to SharePermissionSet "XSOFolders" -->
+    <SharedPermissionSet Name="XSOFolders"/>
+
+    <!-- The reference to SharePermissionSet "LoggingFolder" -->
+    <SharedPermissionSet Name="LoggingFolder"/>
+
+    <!-- The reference to SharePermissionSet "Search" -->
+    <SharedPermissionSet Name="Search"/>
+  </FeaturePermissionSet>
+
+  <FeaturePermissionSet Name ="ClientAccess">
+    <!-- Set permissions for TARGETDIR\Setup\Perf -->
+    <!-- Preserve inheritance from Parent Directory by specifying Protected ="no" -->
+    <Folder Path="Setup\Perf" Protected ="no">
+      <!-- Preserve the permissions inherited from Parent Directory and add additional permissons by specifying Extended="yes" -->
+      <Permission User="NetworkService" Extended="yes" GenericRead="yes" Read="yes" />
+    </Folder>
+
+    <!-- Set permissions for TARGETDIR\ClientAccess\Sync -->
+    <!-- Preserve inheritance from Parent Directory by specifying Protected ="no" -->
+    <Folder Path = "ClientAccess\Sync" Protected ="no">
+      <!-- NT AUTHORITY\AuthenticatedUser:GenericRead (Read Attributes, Read Extended Attributes, Read Permissions)
+                          Read        (List Folder/Read Data) -->
+      <!-- Preserve inheritance from Parent Directory and add additional permissons by specifying Extended="yes" -->
+      <Permission User="AuthenticatedUser" Extended="yes" GenericRead="yes" Read="yes" />
+    </Folder>
+
+    <!-- Set permissions for TARGETDIR\ClientAccess\Sync\bin -->
+    <!-- Preserve inheritance from Parent Directory by specifying Protected ="no" -->
+    <Folder Path = "ClientAccess\Sync\bin" Protected ="no">
+      <!-- NT AUTHORITY\AuthenticatedUser:Traverse       (Traverse Folder / Execute File) -->
+      <!-- Preserve inheritance from Parent Directory and add additional permissons by specifying Extended="yes" -->
+      <Permission User="AuthenticatedUser" Extended="yes" Traverse="yes" />
+    </Folder>
+
+    <!-- Set permissions for TARGETDIR\ClientAccess\PopImap -->
+    <!-- Preserve inheritance from Parent Directory by specifying Protected ="no" -->
+    <Folder Path = "ClientAccess\PopImap" Protected ="no">
+      <!-- NT AUTHORITY\NETWORK SERVICE:GenericRead  (Read Attributes, Read Extended Attributes, Read Permissions)
+                    Read         (List Folder / Read Data)
+                    Traverse     (Traverse Folder / Execute File) -->
+      <!-- Preserve inheritance from Parent Directory and add additional permissons by specifying Extended="yes" -->
+      <Permission User="NetworkService" Extended="yes" GenericRead="yes" Read="yes" Traverse="yes" />
+    </Folder>
+
+    <!-- Set permissions for TARGETDIR\ClientAccess\Autodiscover -->
+    <!-- Perserve inheritance from Parent Directory by specifying Protected ="no" -->
+    <Folder Path = "ClientAccess\Autodiscover" Protected ="no">
+      <!-- Preserve inheritance from Parent Directory and add additional permissons by specifying Extended="yes" -->
+      <Permission User="AuthenticatedUser" Extended="yes" GenericRead="yes" Read="yes" ReadExtendedAttributes="yes" ReadPermission="yes" Traverse="yes" ReadAttributes="yes" />
+    </Folder>
+
+    <!-- Set permissions for TARGETDIR\ClientAccess\Owa -->
+    <!-- Preserve inheritance from Parent Directory by specifying Protected ="no" -->
+    <Folder Path = "ClientAccess\Owa" Protected ="no">
+      <!-- NT AUTHORITY\AuthenticatedUser:GenericRead (Read Attributes, Read Extended Attributes, Read Permissions)
+                          Read        (List Folder/Read Data) -->
+      <!-- Preserve inheritance from Parent Directory and add additional permissons by specifying Extended="yes" -->
+      <Permission User="AuthenticatedUser" Extended="yes" GenericRead="yes" Read="yes" />
+    </Folder>
+
+    <!-- Set permissions for TARGETDIR\ClientAccess\Owa\bin  -->
+    <!-- Preserve inheritance from Parent Directory by specifying Protected ="no" -->
+    <Folder Path = "ClientAccess\Owa\bin" Protected ="no">
+      <!-- NT AUTHORITY\AuthenticatedUser:Traverse       (Traverse Folder / Execute File) -->
+      <!-- Preserve inheritance from Parent Directory and add additional permissons by specifying Extended="yes" -->
+      <Permission User="AuthenticatedUser" Extended="yes" Traverse="yes" />
+    </Folder>
+
+    <!-- Set permissions for TARGETDIR\ClientAccess\Owa\auth -->
+    <!-- Preserve inheritance from Parent Directory by specifying Protected ="no" -->
+    <Folder Path = "ClientAccess\Owa\auth" Protected ="no">
+      <!-- Preserve inheritance by specifying Extended="yes" -->
+      <!-- NT AUTHORITY\AuthenticatedUser:Traverse       (Traverse Folder / Execute File) -->
+      <!-- Preserve inheritance from Parent Directory and add additional permissons by specifying Extended="yes" -->
+      <Permission User="AuthenticatedUser" Extended="yes" Traverse="yes" />
+    </Folder>
+
+    <!-- Set permissions for TARGETDIR\ClientAccess\Ecp -->
+    <!-- Preserve inheritance from Parent Directory by specifying Protected ="no" -->
+    <Folder Path = "ClientAccess\Ecp" Protected ="no">
+      <!-- NT AUTHORITY\AuthenticatedUser:GenericRead (Read Attributes, Read Extended Attributes, Read Permissions)
+                          Read        (List Folder/Read Data) -->
+      <!-- Preserve inheritance from Parent Directory and add additional permissons by specifying Extended="yes" -->
+      <Permission User="AuthenticatedUser" Extended="yes" GenericRead="yes" Read="yes" />
+    </Folder>
+
+    <!-- Set permissions for TARGETDIR\ClientAccess\Ecp\bin  -->
+    <!-- Preserve inheritance from Parent Directory by specifying Protected ="no" -->
+    <Folder Path = "ClientAccess\Ecp\bin" Protected ="no">
+      <!-- NT AUTHORITY\AuthenticatedUser:Traverse       (Traverse Folder / Execute File) -->
+      <!-- Preserve inheritance from Parent Directory and add additional permissons by specifying Extended="yes" -->
+      <Permission User="AuthenticatedUser" Extended="yes" Traverse="yes" />
+    </Folder>
+
+    <!-- Set permissions for TARGETDIR\ClientAccess\PowerShell -->
+    <!-- Preserve inheritance from Parent Directory by specifying Protected ="no" -->
+    <Folder Path = "ClientAccess\PowerShell" Protected ="no">
+      <!-- NT AUTHORITY\AuthenticatedUser:GenericRead (Read Attributes, Read Extended Attributes, Read Permissions)
+                          Read        (List Folder/Read Data) -->
+      <!-- Preserve inheritance from Parent Directory and add additional permissons by specifying Extended="yes" -->
+      <Permission User="AuthenticatedUser" Extended="yes" GenericRead="yes" Read="yes" />
+    </Folder>
+
+    <!-- Set permissions for TARGETDIR\ClientAccess\exchweb\ews -->
+    <!-- Preserve inheritance from Parent Directory by specifying Protected ="no" -->
+    <Folder Path = "ClientAccess\exchweb\ews" Protected ="no">
+      <!-- Preserve inheritance from Parent Directory and add additional permissons by specifying Extended="yes" -->
+      <Permission User="AuthenticatedUser" Extended="yes" GenericRead="yes" Read="yes" />
+    </Folder>
+
+    <!-- Set permissions for TARGETDIR\ClientAccess\exchweb\ews\bin -->
+    <!-- Preserve inheritance from Parent Directory by specifying Protected ="no" -->
+    <Folder Path = "ClientAccess\exchweb\ews\bin" Protected ="no">
+      <!-- Preserve inheritance from Parent Directory and add additional permissons by specifying Extended="yes" -->
+      <Permission User="AuthenticatedUser" Extended="yes" GenericRead="yes" Read="yes" ReadExtendedAttributes="yes" ReadPermission="yes" Traverse="yes" ReadAttributes="yes" />
+    </Folder>
+
+    <!-- The reference to SharePermissionSet "XSOFolders" -->
+    <SharedPermissionSet Name="XSOFolders"/>
+
+    <!-- The reference to SharePermissionSet "LoggingFolder" -->
+    <SharedPermissionSet Name="LoggingFolder"/>
+  </FeaturePermissionSet>
+
+  <FeaturePermissionSet Name ="Bridgehead">
+
+    <!-- The reference to SharePermissionSet "FlightingFolder" -->
+    <SharedPermissionSet Name="FlightingFolder"/>
+
+    <!-- The reference to SharePermissionSet "XSOFolders" -->
+    <SharedPermissionSet Name="XSOFolders"/>
+
+    <!-- The reference to SharePermissionSet "Transport" -->
+    <SharedPermissionSet Name="Transport"/>
+
+    <!-- The reference to SharePermissionSet "Search" -->
+    <SharedPermissionSet Name="Search"/>
+
+    <!-- Set permissions for TARGETDIR\ClientAccess\PowerShell -->
+    <!-- Preserve inheritance from Parent Directory by specifying Protected ="no" -->
+    <Folder Path = "ClientAccess\PowerShell" Protected ="no">
+      <!-- NT AUTHORITY\AuthenticatedUser:GenericRead (Read Attributes, Read Extended Attributes, Read Permissions)
+                          Read        (List Folder/Read Data) -->
+      <!-- Preserve inheritance from Parent Directory and add additional permissons by specifying Extended="yes" -->
+      <Permission User="AuthenticatedUser" Extended="yes" GenericRead="yes" Read="yes" />
+    </Folder>
+
+    <!-- Set permissions for TARGETDIR\FIP-FS -->
+    <!-- Preserve inheritance from Parent Directory by specifying Protected ="no" -->
+    <Folder Path = "FIP-FS" Protected ="no">
+      <!-- NT AUTHORITY\NETWORK SERVICE:
+                          GenericRead (Read Attributes, Read Extended Attributes, Read Permissions)
+                          Read        (List Folder/Read Data)
+                          Traverse (List Folder/Execute)-->
+      <!-- Preserve inheritance from Parent Directory and add additional permissons by specifying Extended="yes" -->
+      <Permission User="NetworkService" Extended="yes" GenericRead="yes" Read="yes" Traverse="yes" />
+      <!-- NT AUTHORITY\LOCAL SERVICE:
+                          GenericRead (Read Attributes, Read Extended Attributes, Read Permissions)
+                          Read        (List Folder/Read Data)
+                          Traverse (List Folder/Execute)-->
+      <!-- Preserve inheritance from Parent Directory and add additional permissons by specifying Extended="yes" -->
+      <Permission User="LocalService" Extended="yes" GenericRead="yes" Read="yes" Traverse="yes" />
+    </Folder>
+
+    <Folder Path = "FIP-FS\Data" Protected ="yes" PreserveInheritance ="no">
+      <!-- Break Inheritence from Parent directory Directory-->
+      <Permission User="System" GenericAll="yes" />
+
+      <!-- Break Inheritence from Parent directory Directory-->
+      <Permission User="Administrators" GenericAll="yes" />
+
+      <!-- NT AUTHORITY\NETWORK SERVICE: Delete="yes"
+                                         GenericExecute="yes" Traverse="yes"
+                                         Read="yes" ReadAttributes="yes" ReadExtendedAttributes="yes" ReadPermission="yes"
+                                         GenericWrite="yes" -->
+      <Permission User="NetworkService" DeleteChild="yes" GenericRead="yes" Read="yes" Traverse="yes" GenericWrite="yes" />
+      <!-- NT AUTHORITY\LOCAL SERVICE:   Delete="yes"
+                                         GenericExecute="yes" Traverse="yes"
+                                         Read="yes" ReadAttributes="yes" ReadExtendedAttributes="yes" ReadPermission="yes"
+                                         GenericWrite="yes"-->
+      <Permission User="LocalService" DeleteChild="yes" GenericRead="yes" Read="yes" Traverse="yes" GenericWrite="yes" />
+    </Folder>
+
+    <Folder Path = "FIP-FS\Data\log" Protected ="yes" PreserveInheritance ="no">
+
+      <!-- Break Inheritence from Parent directory Directory-->
+      <Permission User="System" GenericAll="yes" />
+
+      <!-- Break Inheritence from Parent directory Directory-->
+      <Permission User="Administrators" GenericAll="yes" />
+
+      <Permission User="NetworkService" GenericAll="yes" />
+
+      <Permission User="LocalService" GenericAll="yes" />
+    </Folder>
+
+    <Folder Path = "FIP-FS\Data\Engines" Protected ="yes" PreserveInheritance ="no">
+      <!-- Break Inheritence from Parent directory Directory-->
+      <Permission User="System" GenericAll="yes" />
+
+      <!-- Break Inheritence from Parent directory Directory-->
+      <Permission User="Administrators" GenericAll="yes" />
+
+      <!-- NT AUTHORITY\NETWORK SERVICE: GenericAll="yes" -->
+      <Permission User="NetworkService" GenericAll="yes" />
+
+      <!-- NT AUTHORITY\LOCAL SERVICE: GenericAll="yes"-->
+      <Permission User="LocalService" GenericAll="yes" />
+    </Folder>
+
+
+    <Folder Path = "FIP-FS\Data\recovery" Protected ="yes" PreserveInheritance ="no">
+      <!-- Break Inheritence from Parent directory Directory-->
+      <Permission User="System" GenericAll="yes" />
+
+      <!-- Break Inheritence from Parent directory Directory-->
+      <Permission User="Administrators" GenericAll="yes" />
+
+      <!-- NT AUTHORITY\LOCAL SERVICE: GenericAll="yes" -->
+      <Permission User="LocalService" GenericAll="yes" />
+    </Folder>
+
+    <!-- break inheritance from Parent Directory by specifying Protected ="yes" -->
+    <!-- Remove the permissions inherited from Parent Directory by specifying PreserveInheritance = "no". -->
+    <!-- The root only can be the following base registry key: HKEY_CLASSES_ROOT, HKEY_CURRENT_CONFIG, HKEY_CURRENT_USER
+    HKEY_LOCAL_MACHINE, HKEY_USERS, HKEY_DYN_DATA, HKEY_PERFORMANCE_DATA-->
+    <Registry Root="HKEY_LOCAL_MACHINE" Key="SOFTWARE\Microsoft\ExchangeServer\v15\FIP-FS" Protected ="yes" PreserveInheritance ="no">
+      <!-- Break Inheritence from Parent Key -->
+      <Permission User="Administrators" GenericAll="yes" />
+
+      <!-- Break Inheritence from Parent Key -->
+      <Permission User="System" GenericAll="yes" />
+
+      <!-- Break Inheritence from Parent Key -->
+      <Permission User="NetworkService" Read="yes" />
+
+      <!-- Break Inheritence from Parent Key -->
+      <Permission User="LocalService" Read="yes" />
+
+    </Registry>
+
+    <Registry Root="HKEY_LOCAL_MACHINE" Key="SOFTWARE\Microsoft\ExchangeServer\v15\FIP-FS\SQM" Protected ="yes" PreserveInheritance ="no">
+      <!-- Break Inheritence from Parent Key -->
+      <Permission User="Administrators" GenericAll="yes" />
+
+      <!-- Break Inheritence from Parent Key -->
+      <Permission User="System" GenericAll="yes" />
+
+      <!-- Break Inheritence from Parent Key -->
+      <Permission User="AuthenticatedUser" Read="yes" />
+
+      <!-- Break Inheritence from Parent Key -->
+      <Permission User="NetworkService"  GenericAll="yes" />
+
+    </Registry>
+
+    <!-- The reference to SharePermissionSet "LoggingFolder" -->
+    <SharedPermissionSet Name="LoggingFolder"/>
+  </FeaturePermissionSet>
+
+  <FeaturePermissionSet Name ="FrontendTransport">
+    <!-- The reference to SharePermissionSet "XSOFolders" -->
+    <SharedPermissionSet Name="XSOFolders"/>
+
+    <!-- The reference to SharePermissionSet "Transport" -->
+    <SharedPermissionSet Name="Transport"/>
+
+    <!-- The reference to SharePermissionSet "Search" -->
+    <SharedPermissionSet Name="Search"/>
+
+    <!-- Set permissions for TARGETDIR\ClientAccess\PowerShell -->
+    <!-- Preserve inheritance from Parent Directory by specifying Protected ="no" -->
+    <Folder Path = "ClientAccess\PowerShell" Protected ="no">
+      <!-- NT AUTHORITY\AuthenticatedUser:GenericRead (Read Attributes, Read Extended Attributes, Read Permissions)
+                          Read        (List Folder/Read Data) -->
+      <!-- Preserve inheritance from Parent Directory and add additional permissons by specifying Extended="yes" -->
+      <Permission User="AuthenticatedUser" Extended="yes" GenericRead="yes" Read="yes" />
+    </Folder>
+
+    <!-- The reference to SharePermissionSet "LoggingFolder" -->
+    <SharedPermissionSet Name="LoggingFolder"/>
+  </FeaturePermissionSet>
+
+  <FeaturePermissionSet Name ="Gateway">
+    <!--The reference to SharePermissionSet "Transport" -->
+    <SharedPermissionSet Name="Transport"/>
+  </FeaturePermissionSet>
+
+  <FeaturePermissionSet Name ="UnifiedMessaging">
+    <!-- The reference to SharePermissionSet "XSOFolders" -->
+    <SharedPermissionSet Name="XSOFolders"/>
+
+    <!-- Set permissions for TARGETDIR\ClientAccess\PowerShell -->
+    <!-- Preserve inheritance from Parent Directory by specifying Protected ="no" -->
+    <Folder Path = "ClientAccess\PowerShell" Protected ="no">
+      <!-- NT AUTHORITY\AuthenticatedUser:GenericRead (Read Attributes, Read Extended Attributes, Read Permissions)
+                          Read        (List Folder/Read Data) -->
+      <!-- Preserve inheritance from Parent Directory and add additional permissons by specifying Extended="yes" -->
+      <Permission User="AuthenticatedUser" Extended="yes" GenericRead="yes" Read="yes" />
+    </Folder>
+  </FeaturePermissionSet>
+
+  <FeaturePermissionSet Name ="ClientAccessDatacenter">
+    <!-- Set permissions for TARGETDIR\ClientAccess\OAB -->
+    <!-- Preserve inheritance from Parent Directory by specifying Protected ="no" -->
+    <Folder Path = "ClientAccess\OAB" Protected ="no">
+      <!-- NT AUTHORITY\AuthenticatedUser:GenericRead (Read Attributes, Read Extended Attributes, Read Permissions)
+                          Read        (List Folder/Read Data) -->
+      <!-- Preserve inheritance from Parent Directory and add additional permissons by specifying Extended="yes" -->
+      <Permission User="AuthenticatedUser" Extended="yes" GenericRead="yes" Read="yes" />
+    </Folder>
+
+    <!-- Set permissions for TARGETDIR\ClientAccess\Psws -->
+    <!-- Preserve inheritance from Parent Directory by specifying Protected ="no" -->
+    <Folder Path = "ClientAccess\Psws" Protected ="no">
+      <!-- NT AUTHORITY\AuthenticatedUser:GenericRead (Read Attributes, Read Extended Attributes, Read Permissions)
+                          Read        (List Folder/Read Data) -->
+      <!-- Preserve inheritance from Parent Directory and add additional permissons by specifying Extended="yes" -->
+      <Permission User="AuthenticatedUser" Extended="yes" GenericRead="yes" Read="yes" />
+    </Folder>
+
+    <!-- Set permissions for TARGETDIR\ClientAccess\E4E -->
+    <!-- Preserve inheritance from Parent Directory by specifying Protected ="no" -->
+    <Folder Path = "ClientAccess\E4E" Protected ="no">
+      <!-- NT AUTHORITY\AuthenticatedUser:GenericRead (Read Attributes, Read Extended Attributes, Read Permissions)
+                          Read        (List Folder/Read Data) -->
+      <!-- Preserve inheritance from Parent Directory and add additional permissons by specifying Extended="yes" -->
+      <Permission User="AuthenticatedUser" Extended="yes" GenericRead="yes" Read="yes" />
+    </Folder>
+
+    <!-- Set permissions for TARGETDIR\ClientAccess\E4E\bin  -->
+    <!-- Preserve inheritance from Parent Directory by specifying Protected ="no" -->
+    <Folder Path = "ClientAccess\E4E\bin" Protected ="no">
+      <!-- NT AUTHORITY\AuthenticatedUser:Traverse       (Traverse Folder / Execute File) -->
+      <!-- Preserve inheritance from Parent Directory and add additional permissons by specifying Extended="yes" -->
+      <Permission User="AuthenticatedUser" Extended="yes" Traverse="yes" />
+    </Folder>
+
+    <!-- The reference to SharePermissionSet "Datacenter" -->
+    <SharedPermissionSet Name="DatacenterFolder"/>
+  </FeaturePermissionSet>
+
+  <FeaturePermissionSet Name ="FfoWebService">
+
+    <!-- Set permissions for TARGETDIR\Bin\ServicePlans -->
+    <!-- Preserve inheritance from Parent Directory by specifying Protected ="no" -->
+    <Folder Path="Bin\ServicePlans" Protected ="no">
+      <!-- Preserve the permissions inherited from Parent Directory and add additional permissons by specifying Extended="yes" -->
+      <Permission User="NetworkService" Extended="yes" GenericRead="yes" Read="yes" />
+    </Folder>
+
+    <!-- Set permissions for TARGETDIR\Setup\Perf -->
+    <!-- Preserve inheritance from Parent Directory by specifying Protected ="no" -->
+    <Folder Path="Setup\Perf" Protected ="no">
+      <!-- Preserve the permissions inherited from Parent Directory and add additional permissons by specifying Extended="yes" -->
+      <Permission User="NetworkService" Extended="yes" GenericRead="yes" Read="yes" />
+    </Folder>
+
+    <!-- Set permissions for TARGETDIR\ClientAccess\Ecp -->
+    <!-- Preserve inheritance from Parent Directory by specifying Protected ="no" -->
+    <Folder Path = "ClientAccess\Ecp" Protected ="no">
+      <!-- NT AUTHORITY\AuthenticatedUser:GenericRead (Read Attributes, Read Extended Attributes, Read Permissions)
+                          Read        (List Folder/Read Data) -->
+      <!-- Preserve inheritance from Parent Directory and add additional permissons by specifying Extended="yes" -->
+      <Permission User="AuthenticatedUser" Extended="yes" GenericRead="yes" Read="yes" />
+    </Folder>
+
+    <!-- Set permissions for TARGETDIR\ClientAccess\Ecp\bin  -->
+    <!-- Preserve inheritance from Parent Directory by specifying Protected ="no" -->
+    <Folder Path = "ClientAccess\Ecp\bin" Protected ="no">
+      <!-- NT AUTHORITY\AuthenticatedUser:Traverse       (Traverse Folder / Execute File) -->
+      <!-- Preserve inheritance from Parent Directory and add additional permissons by specifying Extended="yes" -->
+      <Permission User="AuthenticatedUser" Extended="yes" Traverse="yes" />
+    </Folder>
+
+    <!-- Set permissions for TARGETDIR\ClientAccess\Data -->
+    <!-- Preserve inheritance from Parent Directory by specifying Protected ="no" -->
+    <Folder Path = "ClientAccess\Data" Protected ="no">
+      <!-- NT AUTHORITY\AuthenticatedUser:GenericRead (Read Attributes, Read Extended Attributes, Read Permissions)
+                          Read        (List Folder/Read Data) -->
+      <!-- Preserve inheritance from Parent Directory and add additional permissons by specifying Extended="yes" -->
+      <Permission User="AuthenticatedUser" Extended="yes" GenericRead="yes" Read="yes" />
+    </Folder>
+
+    <!-- Set permissions for TARGETDIR\ClientAccess\Data\bin  -->
+    <!-- Preserve inheritance from Parent Directory by specifying Protected ="no" -->
+    <Folder Path = "ClientAccess\Data\bin" Protected ="no">
+      <!-- NT AUTHORITY\AuthenticatedUser:Traverse       (Traverse Folder / Execute File) -->
+      <!-- Preserve inheritance from Parent Directory and add additional permissons by specifying Extended="yes" -->
+      <Permission User="AuthenticatedUser" Extended="yes" Traverse="yes" />
+    </Folder>
+
+    <!-- Set permissions for TARGETDIR\ClientAccess\Directory -->
+    <!-- Preserve inheritance from Parent Directory by specifying Protected ="no" -->
+    <Folder Path = "ClientAccess\Directory" Protected ="no">
+      <!-- NT AUTHORITY\AuthenticatedUser:GenericRead (Read Attributes, Read Extended Attributes, Read Permissions)
+                          Read        (List Folder/Read Directory) -->
+      <!-- Preserve inheritance from Parent Directory and add additional permissons by specifying Extended="yes" -->
+      <Permission User="AuthenticatedUser" Extended="yes" GenericRead="yes" Read="yes" />
+    </Folder>
+
+    <!-- Set permissions for TARGETDIR\ClientAccess\Directory\bin  -->
+    <!-- Preserve inheritance from Parent Directory by specifying Protected ="no" -->
+    <Folder Path = "ClientAccess\Directory\bin" Protected ="no">
+      <!-- NT AUTHORITY\AuthenticatedUser:Traverse       (Traverse Folder / Execute File) -->
+      <!-- Preserve inheritance from Parent Directory and add additional permissons by specifying Extended="yes" -->
+      <Permission User="AuthenticatedUser" Extended="yes" Traverse="yes" />
+    </Folder>
+
+    <!-- Set permissions for TARGETDIR\ClientAccess\Spam -->
+    <!-- Preserve inheritance from Parent Spam by specifying Protected ="no" -->
+    <Folder Path = "ClientAccess\Spam" Protected ="no">
+      <!-- NT AUTHORITY\AuthenticatedUser:GenericRead (Read Attributes, Read Extended Attributes, Read Permissions)
+                          Read        (List Folder/Read Spam) -->
+      <!-- Preserve inheritance from Parent Spam and add additional permissons by specifying Extended="yes" -->
+      <Permission User="AuthenticatedUser" Extended="yes" GenericRead="yes" Read="yes" />
+    </Folder>
+
+    <!-- Set permissions for TARGETDIR\ClientAccess\Spam\bin  -->
+    <!-- Preserve inheritance from Parent Spam by specifying Protected ="no" -->
+    <Folder Path = "ClientAccess\Spam\bin" Protected ="no">
+      <!-- NT AUTHORITY\AuthenticatedUser:Traverse       (Traverse Folder / Execute File) -->
+      <!-- Preserve inheritance from Parent Spam and add additional permissons by specifying Extended="yes" -->
+      <Permission User="AuthenticatedUser" Extended="yes" Traverse="yes" />
+    </Folder>
+
+    <!-- Set permissions for TARGETDIR\ClientAccess\Reporting -->
+    <!-- Preserve inheritance from Parent Reporting by specifying Protected ="no" -->
+    <Folder Path = "ClientAccess\Reporting" Protected ="no">
+      <!-- NT AUTHORITY\AuthenticatedUser:GenericRead (Read Attributes, Read Extended Attributes, Read Permissions)
+                          Read        (List Folder/Read Reporting) -->
+      <!-- Preserve inheritance from Parent Reporting and add additional permissons by specifying Extended="yes" -->
+      <Permission User="AuthenticatedUser" Extended="yes" GenericRead="yes" Read="yes" />
+    </Folder>
+
+    <!-- Set permissions for TARGETDIR\ClientAccess\Reporting\bin  -->
+    <!-- Preserve inheritance from Parent Reporting by specifying Protected ="no" -->
+    <Folder Path = "ClientAccess\Reporting\bin" Protected ="no">
+      <!-- NT AUTHORITY\AuthenticatedUser:Traverse       (Traverse Folder / Execute File) -->
+      <!-- Preserve inheritance from Parent Reporting and add additional permissons by specifying Extended="yes" -->
+      <Permission User="AuthenticatedUser" Extended="yes" Traverse="yes" />
+    </Folder>
+
+    <!-- Set permissions for TARGETDIR\ClientAccess\Mtrt -->
+    <!-- Preserve inheritance from Parent Mtrt by specifying Protected ="no" -->
+    <Folder Path = "ClientAccess\Mtrt" Protected ="no">
+      <!-- NT AUTHORITY\AuthenticatedUser:GenericRead (Read Attributes, Read Extended Attributes, Read Permissions)
+                          Read        (List Folder/Read Mtrt) -->
+      <!-- Preserve inheritance from Parent Mtrt and add additional permissons by specifying Extended="yes" -->
+      <Permission User="AuthenticatedUser" Extended="yes" GenericRead="yes" Read="yes" />
+    </Folder>
+
+    <!-- Set permissions for TARGETDIR\ClientAccess\Mtrt\bin  -->
+    <!-- Preserve inheritance from Parent Mtrt by specifying Protected ="no" -->
+    <Folder Path = "ClientAccess\Mtrt\bin" Protected ="no">
+      <!-- NT AUTHORITY\AuthenticatedUser:Traverse       (Traverse Folder / Execute File) -->
+      <!-- Preserve inheritance from Parent Mtrt and add additional permissons by specifying Extended="yes" -->
+      <Permission User="AuthenticatedUser" Extended="yes" Traverse="yes" />
+    </Folder>
+
+    <!-- Set permissions for TARGETDIR\ClientAccess\Kes -->
+    <!-- Preserve inheritance from Parent Kes by specifying Protected ="no" -->
+    <Folder Path = "ClientAccess\Kes" Protected ="no">
+      <!-- NT AUTHORITY\AuthenticatedUser:GenericRead (Read Attributes, Read Extended Attributes, Read Permissions)
+                          Read        (List Folder/Read Kes) -->
+      <!-- Preserve inheritance from Parent Kes and add additional permissons by specifying Extended="yes" -->
+      <Permission User="AuthenticatedUser" Extended="yes" GenericRead="yes" Read="yes" />
+    </Folder>
+
+    <!-- Set permissions for TARGETDIR\ClientAccess\Kes\bin  -->
+    <!-- Preserve inheritance from Parent Kes by specifying Protected ="no" -->
+    <Folder Path = "ClientAccess\Kes\bin" Protected ="no">
+      <!-- NT AUTHORITY\AuthenticatedUser:Traverse       (Traverse Folder / Execute File) -->
+      <!-- Preserve inheritance from Parent Kes and add additional permissons by specifying Extended="yes" -->
+      <Permission User="AuthenticatedUser" Extended="yes" Traverse="yes" />
+    </Folder>
+
+    <!-- Set permissions for TARGETDIR\ClientAccess\Optics -->
+    <!-- Preserve inheritance from Parent Optics by specifying Protected ="no" -->
+    <Folder Path = "ClientAccess\Optics" Protected ="no">
+      <!-- NT AUTHORITY\AuthenticatedUser:GenericRead (Read Attributes, Read Extended Attributes, Read Permissions)
+                          Read        (List Folder/Read Optics) -->
+      <!-- Preserve inheritance from Parent Optics and add additional permissons by specifying Extended="yes" -->
+      <Permission User="AuthenticatedUser" Extended="yes" GenericRead="yes" Read="yes" />
+    </Folder>
+
+    <!-- Set permissions for TARGETDIR\ClientAccess\Optics\bin  -->
+    <!-- Preserve inheritance from Parent Optics by specifying Protected ="no" -->
+    <Folder Path = "ClientAccess\Optics\bin" Protected ="no">
+      <!-- NT AUTHORITY\AuthenticatedUser:Traverse       (Traverse Folder / Execute File) -->
+      <!-- Preserve inheritance from Parent Optics and add additional permissons by specifying Extended="yes" -->
+      <Permission User="AuthenticatedUser" Extended="yes" Traverse="yes" />
+    </Folder>
+
+    <!-- Set permissions for TARGETDIR\ClientAccess\KEStore -->
+    <!-- Preserve inheritance from parent directory by specifying Protected ="no" -->
+    <Folder Path = "ClientAccess\KEStore" Protected ="no">
+      <!-- NT AUTHORITY\AuthenticatedUser:GenericRead (Read Attributes, Read Extended Attributes, Read Permissions)
+                          Read        (List Folder/Read KEStore) -->
+      <!-- Preserve inheritance from parent directory and add additional permissons by specifying Extended="yes" -->
+      <Permission User="AuthenticatedUser" Extended="yes" GenericRead="yes" Read="yes" />
+    </Folder>
+
+    <!-- Set permissions for TARGETDIR\ClientAccess\KEStore\bin  -->
+    <!-- Preserve inheritance from parent directory by specifying Protected ="no" -->
+    <Folder Path = "ClientAccess\KEStore\bin" Protected ="no">
+      <!-- NT AUTHORITY\AuthenticatedUser:Traverse       (Traverse Folder / Execute File) -->
+      <!-- Preserve inheritance from parent directory and add additional permissons by specifying Extended="yes" -->
+      <Permission User="AuthenticatedUser" Extended="yes" Traverse="yes" />
+    </Folder>
+
+    <!-- Set permissions for TARGETDIR\ClientAccess\SpamDigest -->
+    <!-- Preserve inheritance from Parent Directory by specifying Protected ="no" -->
+    <Folder Path = "ClientAccess\SpamDigest" Protected ="no">
+      <!-- NT AUTHORITY\AuthenticatedUser:GenericRead (Read Attributes, Read Extended Attributes, Read Permissions)
+                          Read        (List Folder/Read Data) -->
+      <!-- Preserve inheritance from Parent Directory and add additional permissons by specifying Extended="yes" -->
+      <Permission User="AuthenticatedUser" Extended="yes" GenericRead="yes" Read="yes" />
+    </Folder>
+
+    <!-- Set permissions for TARGETDIR\ClientAccess\SpamDigest\bin  -->
+    <!-- Preserve inheritance from Parent Directory by specifying Protected ="no" -->
+    <Folder Path = "ClientAccess\SpamDigest\bin" Protected ="no">
+      <!-- NT AUTHORITY\AuthenticatedUser:Traverse       (Traverse Folder / Execute File) -->
+      <!-- Preserve inheritance from Parent Directory and add additional permissons by specifying Extended="yes" -->
+      <Permission User="AuthenticatedUser" Extended="yes" Traverse="yes" />
+    </Folder>
+
+    <!-- Set permissions for TARGETDIR\ClientAccess\FfoOnCallReporting -->
+    <!-- Preserve inheritance from Parent Directory by specifying Protected ="no" -->
+    <Folder Path = "ClientAccess\FfoOnCallReporting" Protected ="no">
+      <!-- NT AUTHORITY\AuthenticatedUser:GenericRead (Read Attributes, Read Extended Attributes, Read Permissions)
+                          Read        (List Folder/Read Data) -->
+      <!-- Preserve inheritance from Parent Directory and add additional permissons by specifying Extended="yes" -->
+      <Permission User="AuthenticatedUser" Extended="yes" GenericRead="yes" Read="yes" />
+    </Folder>
+
+    <!-- Set permissions for TARGETDIR\ClientAccess\FfoOnCallReporting\bin  -->
+    <!-- Preserve inheritance from Parent Directory by specifying Protected ="no" -->
+    <Folder Path = "ClientAccess\FfoOnCallReporting\bin" Protected ="no">
+      <!-- NT AUTHORITY\AuthenticatedUser:Traverse       (Traverse Folder / Execute File) -->
+      <!-- Preserve inheritance from Parent Directory and add additional permissons by specifying Extended="yes" -->
+      <Permission User="AuthenticatedUser" Extended="yes" Traverse="yes" />
+    </Folder>
+
+    <!-- Set permissions for TARGETDIR\ClientAccess\PolicySync -->
+    <!-- Preserve inheritance from Parent Directory by specifying Protected ="no" -->
+    <Folder Path = "ClientAccess\PolicySync" Protected ="no">
+      <!-- NT AUTHORITY\AuthenticatedUser:GenericRead (Read Attributes, Read Extended Attributes, Read Permissions)
+                          Read        (List Folder/Read Data) -->
+      <!-- Preserve inheritance from Parent Directory and add additional permissons by specifying Extended="yes" -->
+      <Permission User="AuthenticatedUser" Extended="yes" GenericRead="yes" Read="yes" />
+    </Folder>
+
+    <!-- Set permissions for TARGETDIR\ClientAccess\PolicySync\bin  -->
+    <!-- Preserve inheritance from Parent Directory by specifying Protected ="no" -->
+    <Folder Path = "ClientAccess\PolicySync\bin" Protected ="no">
+      <!-- NT AUTHORITY\AuthenticatedUser:Traverse       (Traverse Folder / Execute File) -->
+      <!-- Preserve inheritance from Parent Directory and add additional permissons by specifying Extended="yes" -->
+      <Permission User="AuthenticatedUser" Extended="yes" Traverse="yes" />
+    </Folder>
+
+    <!-- Set permissions for TARGETDIR\ClientAccess\PowerShell -->
+    <!-- Preserve inheritance from Parent Directory by specifying Protected ="no" -->
+    <Folder Path = "ClientAccess\PowerShell" Protected ="no">
+      <!-- NT AUTHORITY\AuthenticatedUser:GenericRead (Read Attributes, Read Extended Attributes, Read Permissions)
+                          Read        (List Folder/Read Data) -->
+      <!-- Preserve inheritance from Parent Directory and add additional permissons by specifying Extended="yes" -->
+      <Permission User="AuthenticatedUser" Extended="yes" GenericRead="yes" Read="yes" />
+    </Folder>
+
+    <!-- The reference to SharePermissionSet "LoggingFolder" -->
+    <SharedPermissionSet Name="LoggingFolder"/>
+  </FeaturePermissionSet>
+
+  <!-- The follow ACL restricts access to the folder containing CAFE's routing tables -->
+  <FeaturePermissionSet Name="SharedCacheDatacenter">
+    <Folder Path = "D:\FrontEnd\Routing" Protected ="yes" PreserveInheritance ="no">
+      <Permission User="System" GenericAll="yes" />
+      <Permission User="Administrators" GenericAll="yes" />
+      <Permission User="LocalService" GenericAll="yes" />
+    </Folder>
+  </FeaturePermissionSet>
+
+  <FeaturePermissionSet Name ="Cafe">
+    <!-- The reference to SharePermissionSet "FlightingFolder" -->
+    <SharedPermissionSet Name="FlightingFolder"/>
+
+    <!-- Set permissions for TARGETDIR\FrontEnd\HttpProxy -->
+    <!-- Preserve inheritance from Parent Directory by specifying Protected ="no" -->
+    <Folder Path = "FrontEnd\HttpProxy" Protected ="no">
+      <!-- NT AUTHORITY\AuthenticatedUser:GenericRead (Read Attributes, Read Extended Attributes, Read Permissions)
+                          Read        (List Folder/Read Data) -->
+      <!-- Preserve inheritance from Parent Directory and add additional permissons by specifying Extended="yes" -->
+      <Permission User="AuthenticatedUser" Extended="yes" GenericRead="yes" Read="yes" />
+    </Folder>
+
+    <!-- Set permissions for TARGETDIR\FrontEnd\HttpProxy\bin  -->
+    <!-- Preserve inheritance from Parent Directory by specifying Protected ="no" -->
+    <Folder Path = "FrontEnd\HttpProxy\bin" Protected ="no">
+      <!-- NT AUTHORITY\AuthenticatedUser:Traverse       (Traverse Folder / Execute File) -->
+      <!-- Preserve inheritance from Parent Directory and add additional permissons by specifying Extended="yes" -->
+      <Permission User="AuthenticatedUser" Extended="yes" Traverse="yes" />
+    </Folder>
+  </FeaturePermissionSet>
+
+<FeaturePermissionSet Name ="CentralAdminFrontEnd">  
+    <!-- Set permissions for TARGETDIR\FrontEnd\HttpProxy -->
+    <!-- Preserve inheritance from Parent Directory by specifying Protected ="no" -->
+    <Folder Path = "FrontEnd\HttpProxy" Protected ="no">
+      <!-- NT AUTHORITY\AuthenticatedUser:GenericRead (Read Attributes, Read Extended Attributes, Read Permissions)
+                          Read        (List Folder/Read Data) -->
+      <!-- Preserve inheritance from Parent Directory and add additional permissons by specifying Extended="yes" -->
+      <Permission User="AuthenticatedUser" Extended="yes" GenericRead="yes" Read="yes" />
+    </Folder>
+    
+    <!-- Set permissions for TARGETDIR\FrontEnd\HttpProxy\bin  -->
+    <!-- Preserve inheritance from Parent Directory by specifying Protected ="no" -->
+    <Folder Path = "FrontEnd\HttpProxy\bin" Protected ="no">
+      <!-- NT AUTHORITY\AuthenticatedUser:Traverse       (Traverse Folder / Execute File) -->
+      <!-- Preserve inheritance from Parent Directory and add additional permissons by specifying Extended="yes" -->
+      <Permission User="AuthenticatedUser" Extended="yes" Traverse="yes" />
+    </Folder>
+
+    <!-- Set permissions for TARGETDIR\ClientAccess\PowerShell -->
+    <!-- Preserve inheritance from Parent Directory by specifying Protected ="no" -->
+    <Folder Path = "ClientAccess\PowerShell" Protected ="no">
+      <!-- NT AUTHORITY\AuthenticatedUser:GenericRead (Read Attributes, Read Extended Attributes, Read Permissions)
+                          Read        (List Folder/Read Data) -->
+      <!-- Preserve inheritance from Parent Directory and add additional permissons by specifying Extended="yes" -->
+      <Permission User="AuthenticatedUser" Extended="yes" GenericRead="yes" Read="yes" />
+    </Folder>
+  </FeaturePermissionSet>
+
+    <!--The common permission set for all server roles-->
+  <CommonPermissionSet>
+    <!--Set permissions for TARGETDIR Directory -->
+    <!--Break inheritence from parent directory.
+    The changes on permissions of parent directory will not affect the current directory.-->
+    <!--Remove the inherited permissions from parent directory. -->
+    <!--E12:123226 Give Authenticated Users read/traverse permissions on the directory itself only.
+    This is needed for an MMC to be able to open Exchange snap-in.-->
+    <Folder Path="" Sddl="D:PAI(A;;FRFX;;;AU)(A;OICI;FA;;;SY)(A;OICI;FA;;;BA)"/>
+
+    <!-- Set permissions for TARGETDIR\Bin -->
+    <!-- Perserve Inheritence from Parent Directory by specifying Protected ="no" -->
+    <Folder Path="Bin" Protected ="no">
+      <!-- Authenticated Users requires Read & Execute permissions for Legacy DAV. -->
+      <!-- NT AUTHORITY\AuthenticatedUser:  GenericRead    (Read Attributes, Read Extended Attributes, Read Permissions)
+                          Read           (List Folder / Read Data)
+                          Traverse       (Traverse Folder / Execute File-->
+      <!-- Preserve inheritance from Parent Directory and add additional permissons by specifying Extended="yes" -->
+      <Permission User="AuthenticatedUser" Extended="yes" GenericRead="yes" Read="yes" Traverse="yes" />
+    </Folder>
+
+    <!-- Set permissions for TARGETDIR\Scripts -->
+    <!-- Perserve Inheritence from Parent Directory by specifying Protected ="no" -->
+    <Folder Path="Scripts" Protected ="no">
+      <!-- Authenticated Users requires Read & Execute permissions for Legacy DAV. -->
+      <!-- NT AUTHORITY\AuthenticatedUser:  GenericRead    (Read Attributes, Read Extended Attributes, Read Permissions)
+                          Read           (List Folder / Read Data)
+                          Traverse       (Traverse Folder / Execute File-->
+      <!-- Preserve inheritance from Parent Directory and add additional permissons by specifying Extended="yes" -->
+      <Permission User="AuthenticatedUser" Extended="yes" GenericRead="yes" Read="yes" Traverse="yes" />
+    </Folder>
+
+    <!-- Set permissions for TARGETDIR\Public -->
+    <!-- Preserve inheritance from Parent Directory by specifying Protected ="no" -->
+    <Folder Path="Public" Protected ="no">
+      <!-- NT AUTHORITY\AuthenticatedUser:  GenericRead    (Read Attributes, Read Extended Attributes, Read Permissions)
+                          Read           (List Folder / Read Data)
+                          Traverse       (Traverse Folder / Execute File-->
+      <!-- Preserve permissions inherited from Parent Directory and add additional permissons by specifying Extended="yes" -->
+      <Permission User="AuthenticatedUser" Extended="yes" GenericRead="yes" Read="yes" Traverse="yes" />
+    </Folder>
+  </CommonPermissionSet>
+
+    <!--The permission set for Flighting Config Folder-->
+  <SharedPermissionSet Name="FlightingFolder">
+    <!-- MsExchangeDelivery runs under Network service account and needs access to flighting -->
+    <!-- Preserve inheritance from Parent Directory by specifying Protected ="no" -->
+    <Folder Path="Config" Protected ="no">
+      <!-- Preserve the permissions inherited from Parent Directory and add additional permissons by specifying Extended="yes" -->
+      <Permission User="NetworkService" Extended="yes" GenericRead="yes" Read="yes" />
+    </Folder>
+  </SharedPermissionSet>
+
+    <!--The permission set for Datacenter Folder-->
+  <SharedPermissionSet Name="DatacenterFolder">
+    <!-- POP and IMAP run under Network service account and needs access to Datacenter config for LRS logging -->
+    <!-- Preserve inheritance from Parent Directory by specifying Protected ="no" -->
+    <Folder Path="Datacenter" Protected ="no">
+      <!-- Preserve the permissions inherited from Parent Directory and add additional permissons by specifying Extended="yes" -->
+      <Permission User="NetworkService" Extended="yes" GenericRead="yes" Read="yes" />
+    </Folder>
+  </SharedPermissionSet>
+
+  <!--The permission set for XSOFolders-->
+  <SharedPermissionSet Name="XSOFolders">
+    <!-- Set permissions for Working\OleConverter -->
+    <!-- Break inheritance from Parent Directory by specifying Protected ="yes" -->
+    <!-- Remove the permission inherited from parent directory by specifying PreserveInheritance = "no". -->
+    <Folder Path="Working\OleConverter" Protected ="yes" PreserveInheritance ="no">
+      <!-- Break Inheritence from Parent directory Directory-->
+      <Permission User="System" GenericAll="yes" />
+
+      <!-- Break Inheritence from Parent directory Directory-->
+      <Permission User="Administrators" GenericAll="yes" />
+
+      <!-- NT AUTHORITY\NETWORK SERVICE:GenericRead  (Read Attributes, Read Extended Attributes, Read Permissions)
+                        Read         (List Folder / Read Data)
+                        GenericWrite (Create Files / Write Data, Create Folders / Append Data, Write Attributes, Write Extended Attributes) -->
+      <!-- Break Inheritence from Parent Directory to remove Execute permission for NETWORK SERVICE -->
+      <Permission User="NetworkService" GenericRead="yes" Read="yes" GenericWrite="yes" />
+
+      <!-- NT AUTHORITY\LOCAL SERVICE:GenericRead  (Read Attributes, Read Extended Attributes, Read Permissions)
+                        Read         (List Folder / Read Data)
+                        GenericWrite (Create Files / Write Data, Create Folders / Append Data, Write Attributes, Write Extended Attributes) -->
+      <!-- Break Inheritence from Parent Directory to remove Execute permission for LOCAL SERVICE -->
+      <Permission User="LocalService" GenericRead="yes" Read="yes" GenericWrite="yes" />
+    </Folder>
+  </SharedPermissionSet>
+
+  <!--The permission set for LoggingFolder-->
+  <SharedPermissionSet Name="LoggingFolder">
+    <!-- Set permissions for TARGETDIR\Logging -->
+    <!-- Preserve inheritance from Parent Directory by specifying Protected ="no" -->
+    <Folder Path = "Logging" Protected ="no">
+      <!-- NT AUTHORITY\NETWORK SERVICE:GenericAll (Full Control) -->
+      <!-- Preserve inheritance from Parent Directory and add additional permissons by specifying Extended="yes" -->
+      <Permission User="NetworkService" Extended="yes" GenericAll="yes" />
+    </Folder>
+  </SharedPermissionSet>
+
+  <!--The permission set for transport-->
+  <SharedPermissionSet Name="Transport">
+    <!-- Set permissions for TARGETDIR\TransportRoles -->
+    <!-- Preserve inheritance from Parent Directory by specifying Protected ="no" -->
+    <Folder Path = "TransportRoles" Protected ="no">
+      <!-- NT AUTHORITY\NETWORK SERVICE:GenericRead  (Read Attributes, Read Extended Attributes, Read Permissions)
+                        Read         (List Folder / Read Data)
+                        Traverse     (Traverse Folder / Execute File)
+                        GenericWrite (Create Files / Write Data, Create Folders / Append Data, Write Attributes, Write Extended Attributes)
+                        DeleteChild  (Delete Subfolders and Files) -->
+      <!-- Preserve inheritance from Parent Directory and add additional permissons by specifying Extended="yes" -->
+      <Permission User="NetworkService" Extended="yes" GenericRead="yes" Read="yes" Traverse="yes" GenericWrite="yes" DeleteChild="yes" />
+    </Folder>
+
+    <!-- Set permissions for TARGETDIR\TransportRoles\data -->
+    <!-- Preserve inheritance from Parent Directory by specifying Protected ="no" -->
+    <Folder Path = "TransportRoles\data" Protected ="no">
+      <!-- NT AUTHORITY\NETWORK SERVICE:GenericAll (Full Control) -->
+      <!-- Preserve inheritance from Parent Directory and add additional permissons by specifying Extended="yes" -->
+      <Permission User="NetworkService" Extended="yes" GenericAll="yes" />
+    </Folder>
+
+    <!-- Set permissions for TARGETDIR\TransportRoles\agents -->
+    <!-- Preserve inheritance from Parent Directory by specifying Protected ="no" -->
+    <Folder Path = "TransportRoles\agents" Protected ="no">
+      <!-- NT AUTHORITY\NETWORK SERVICE:
+                        GenericWrite (Create Files / Write Data, Create Folders / Append Data, Write Attributes, Write Extended Attributes) -->
+      <!-- Preserve inheritance from Parent Directory and add additional permissons by specifying Extended="yes" -->
+      <Permission User="NetworkService" Extended="yes" GenericWrite="no"  />
+    </Folder>
+
+    <!-- The following are needed for poison message context storage -->
+    <!-- break inheritance from Parent Directory by specifying Protected ="yes" -->
+    <!-- Remove the permissions inherited from Parent Directory by specifying PreserveInheritance = "no". -->
+    <!-- The root only can be the following base registry key: HKEY_CLASSES_ROOT, HKEY_CURRENT_CONFIG, HKEY_CURRENT_USER
+    HKEY_LOCAL_MACHINE, HKEY_USERS, HKEY_DYN_DATA, HKEY_PERFORMANCE_DATA-->
+    <Registry Root="HKEY_LOCAL_MACHINE" Key="SOFTWARE\Microsoft\ExchangeServer\v15\Transport" Protected ="yes" PreserveInheritance ="no">
+      <!-- Break Inheritence from Parent Key -->
+      <Permission User="Administrators" GenericAll="yes" />
+
+      <!-- Break Inheritence from Parent Key -->
+      <Permission User="System" GenericAll="yes" />
+
+      <!-- Break Inheritence from Parent Key -->
+      <Permission User="NetworkService" GenericAll="yes" />
+    </Registry>
+
+    <!-- The following are needed for to store Pickup path for CDO -->
+    <!-- Use inheritance from Parent Directory by specifying Protected ="No" -->
+    <!-- The root only can be the following base registry key: HKEY_CLASSES_ROOT, HKEY_CURRENT_CONFIG, HKEY_CURRENT_USER
+    HKEY_LOCAL_MACHINE, HKEY_USERS, HKEY_DYN_DATA, HKEY_PERFORMANCE_DATA-->
+    <Registry Root="HKEY_LOCAL_MACHINE" Key="SOFTWARE\Microsoft\ExchangeServer\v15\Pickup" Protected ="no">
+      <!-- Add NetworkService to have full control -->
+      <Permission User="NetworkService" GenericAll="yes" />
+    </Registry>
+  </SharedPermissionSet>
+
+  <!--The permission set for search-->
+  <SharedPermissionSet Name="Search">
+    <!-- The following are needed for search related configurations -->
+    <!-- Use inheritance from Parent Directory by specifying Protected ="No" -->
+    <!-- The root only can be the following base registry key: HKEY_CLASSES_ROOT, HKEY_CURRENT_CONFIG, HKEY_CURRENT_USER
+    HKEY_LOCAL_MACHINE, HKEY_USERS, HKEY_DYN_DATA, HKEY_PERFORMANCE_DATA-->
+    <Registry Root="HKEY_LOCAL_MACHINE" Key="SOFTWARE\Microsoft\ExchangeServer\v15\Search\SystemParameters" Protected ="no">
+      <!-- Add NetworkService to have ReadOnly permission -->
+      <Permission User="NetworkService" Read="yes" />
+    </Registry>
+  </SharedPermissionSet>
+</Permissions>

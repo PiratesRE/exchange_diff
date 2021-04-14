@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo Name="Resource Property Schema Component" DescriptionId="SetupComponentUpdateResourcePropertySchema">
+
+<!--
+  This component updates the resource property schema attribute that was added in E2K7 RTM.  When performing a clean install 
+  of the schema or upgrading from a non-E2K7 RTM Schema (i.e. Platinum), these tasks are unnecessary
+-->
+
+  <OrgTasks>
+
+    <!-- Export the old value -->
+    <OrgTaskInfo Id="_34f36cb8653946e9b3368aa89313a184" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install />
+      <BuildToBuildUpgrade>
+        <Global>
+          if($RoleUpdateResourcePropertySchema -and !(test-path $RoleResourcePropertySchemaSaveFile))
+          {
+          get-resourceconfig -DomainController $RoleDomainController | export-clixml $RoleResourcePropertySchemaSaveFile
+          }
+        </Global>
+      </BuildToBuildUpgrade>
+      <Uninstall />
+    </OrgTaskInfo>
+
+    <!-- Clear out the value -->
+    <OrgTaskInfo Id="_7ba84802125b4d9d8deeb896520d3f44" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install />
+      <BuildToBuildUpgrade>
+        <Global>
+          if($RoleUpdateResourcePropertySchema)
+          {
+          set-resourceconfig -ResourcePropertySchema $null -DomainController $RoleDomainController
+          }
+        </Global>
+      </BuildToBuildUpgrade>
+      <Uninstall />
+    </OrgTaskInfo>
+
+    <!-- Update the OID of the ms-exch-resource-property-schema attribute -->
+    <OrgTaskInfo Id="_6cb643e3173243eb8cabfc021713c918" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install />
+      <BuildToBuildUpgrade DescriptionId="SetupProgressUpdatingResourcePropertySchema">
+        <Global>
+          if($RoleUpdateResourcePropertySchema)
+          {
+          Install-ExchangeSchema -LdapFileName ($roleInstallPath + "Setup\Data\update_ResourcePropertySchema.ldf")
+          }
+        </Global>
+      </BuildToBuildUpgrade>
+      <Uninstall />
+    </OrgTaskInfo>
+
+    <!-- Import the saved value -->
+    <OrgTaskInfo Id="_65803309487e4c98a322ef42882add6d" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install />
+      <BuildToBuildUpgrade>
+        <Global>
+          if(test-path $RoleResourcePropertySchemaSaveFile)
+          {
+          $value = import-clixml $RoleResourcePropertySchemaSaveFile;
+          set-resourceconfig -resourcepropertyschema $value.ResourcePropertySchema -DomainController $RoleDomainController
+          }
+        </Global>
+      </BuildToBuildUpgrade>
+      <Uninstall />
+    </OrgTaskInfo>
+
+    <!-- Remove the saved file -->
+    <OrgTaskInfo Id="_e2379da6b6bc40c78c82b65e5625eb2b" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install />
+      <BuildToBuildUpgrade>
+        <Global>
+          Remove-SetupFile -FilePath $RoleResourcePropertySchemaSaveFile
+        </Global>
+      </BuildToBuildUpgrade>
+      <Uninstall />
+    </OrgTaskInfo>
+
+  </OrgTasks>
+
+</SetupComponentInfo>

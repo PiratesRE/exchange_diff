@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo Name="Unified Messaging Global AD Configuration" DescriptionId="SetupComponentUnifiedMessagingGlobalConfig">
+
+  <OrgTasks>
+
+    <!-- Create UM DialPlan container (CN=UM DialPlan Container,CN=<Org Name>,... ) in first org context.
+        In tenant context this container is created implicitly by New-UMDialPlan cmdlet
+    -->
+    <OrgTaskInfo Id="_fdd59860352f4477a5615ca20eb74f52" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressCreateUnifiedMessagingContainers">
+        <Global>
+          install-Container -Name "UM DialPlan Container" -DomainController $RoleDomainController
+          Initialize-UMDialPlanContainerPermission
+        </Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+
+    <!-- Create UM IPGateway container (CN=UM IPGateway Container,CN=<Org Name>,... ) in first org context.
+        In tenant context this container is created implicitly by New-UMIPGateway cmdlet
+    -->
+    <OrgTaskInfo Id="_e4ba9f58edfe46de9846d9b5fd432b20" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressCreateUnifiedMessagingContainers">
+        <Global>install-Container -Name "UM IPGateway Container" -DomainController $RoleDomainController</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+
+    <!-- Create UM AutoAttendant container (CN=UM AutoAttendant Container,CN=<Org Name>,... ) in first org context.
+        In tenant context this container is created implicitly by New-UMAutoAttendant cmdlet
+    -->
+    <OrgTaskInfo Id="_6c92fade255c41868b0220e8a93d9a79" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressCreateUnifiedMessagingContainers">
+        <Global>install-Container -Name "UM AutoAttendant Container" -DomainController $RoleDomainController</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+
+    <!-- Remove hunt groups pointing to tenant dial plans (e.g. Outlook Live) -->
+    <OrgTaskInfo Id="_be477c7439fd48f282e8c19c48025c74" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install />
+      <BuildToBuildUpgrade />
+      <Uninstall DescriptionId="RemoveHuntGroupsLinkedToTenantDialPlans">
+        <Tenant UseForReconciliation="true">
+          Write-ExchangeSetupLog -Info "Removing hunt groups that are linked to a dial plan in tenant '$RoleTenantOrganizationFullPath'";
+          Write-ExchangeSetupLog -Info "Retrieving dial plans in tenant '$RoleTenantOrganizationFullPath'...";
+          $dialPlans = @(Get-UMDialPlan -Organization $RoleTenantOrganizationFullPath);
+          for ($i = 0; $i -lt $dialPlans.Length; $i++)
+          {
+            $dialPlan = $dialPlans[$i];
+
+            Write-ExchangeSetupLog -Info "Processing dial plan '$dialPlan'. Retrieved linked gateways...";
+            $gatewayIds = @($dialPlan.UMIPGateway);
+            for ($j = 0; $j -lt $gatewayIds.Length; $j++)
+            {
+              $gatewayId = $gatewayIds[$j];
+
+              Write-ExchangeSetupLog -Info "Processing gateway '$gatewayId'...";
+              $gateway = Get-UMIPGateway $gatewayId;
+              $huntGroups = @($gateway.HuntGroups);
+              for ($k = 0; $k -lt $huntGroups.Length; $k++)
+              {
+                $huntGroup = $huntGroups[$k];
+                $huntGroupName = $huntGroup.Name;
+                if ($huntGroup.UMDialPlan -eq $dialPlan.Identity)
+                {
+                  Write-ExchangeSetupLog -Info "Removing hunt group '$huntGroupName' of '$gateway'...";
+                  Remove-UMHuntGroup -Confirm:$false $huntGroup.Identity;
+                }
+              }
+            }
+          }
+          Write-ExchangeSetupLog -Info "Finished removing hunt groups that are linked to a dial plan in tenant '$RoleTenantOrganizationFullPath'";
+        </Tenant>
+      </Uninstall>
+    </OrgTaskInfo>
+  </OrgTasks>
+
+</SetupComponentInfo>

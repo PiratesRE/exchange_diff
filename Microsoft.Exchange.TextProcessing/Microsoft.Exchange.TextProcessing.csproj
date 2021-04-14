@@ -1,0 +1,150 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{09CD9476-CD82-489E-B9E2-84B47CA141BB}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Microsoft.Exchange.TextProcessing</RootNamespace>
+    <AssemblyName>Microsoft.Exchange.TextProcessing</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Security" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ABit.cs" />
+    <Compile Include="ActionEnum.cs" />
+    <Compile Include="ActiveState.cs" />
+    <Compile Include="ActiveStatePool.cs" />
+    <Compile Include="ArrayTrie.cs" />
+    <Compile Include="ArrayTrieEdge.cs" />
+    <Compile Include="ArrayTrieFactory.cs" />
+    <Compile Include="ArrayTrieNode.cs" />
+    <Compile Include="ArrayTrieState.cs" />
+    <Compile Include="ArrayTrieStatePool.cs" />
+    <Compile Include="BBitHash.cs" />
+    <Compile Include="BigMap.cs" />
+    <Compile Include="Bit1.cs" />
+    <Compile Include="Bits16.cs" />
+    <Compile Include="Bits4.cs" />
+    <Compile Include="Bits8.cs" />
+    <Compile Include="Boomerang\BoomerangHelper.cs" />
+    <Compile Include="Boomerang\BoomerangProvider.cs" />
+    <Compile Include="Boomerang\Constants.cs" />
+    <Compile Include="Boomerang\SupportedHashAlgorithmType.cs" />
+    <Compile Include="BoundaryType.cs" />
+    <Compile Include="CaseSensitivityMode.cs" />
+    <Compile Include="ClusterBin.cs" />
+    <Compile Include="ClusterBucket.cs" />
+    <Compile Include="ClusterContext.cs" />
+    <Compile Include="ClusteringStatusEnum.cs" />
+    <Compile Include="ClusterPropertyEnum.cs" />
+    <Compile Include="ClusterResult.cs" />
+    <Compile Include="ConditionalMatch.cs" />
+    <Compile Include="CountingBloomFilter.cs" />
+    <Compile Include="DirectionEnum.cs" />
+    <Compile Include="Fingerprint.cs" />
+    <Compile Include="FingerprintConstants.cs" />
+    <Compile Include="FingerprintGenerator.cs" />
+    <Compile Include="FingerprintMatch.cs" />
+    <Compile Include="FnvHash.cs" />
+    <Compile Include="HashSeeds.cs" />
+    <Compile Include="IDGenerator.cs" />
+    <Compile Include="IInitialize.cs" />
+    <Compile Include="IMatch.cs" />
+    <Compile Include="IntermediateNode.cs" />
+    <Compile Include="IntermediateNodePool.cs" />
+    <Compile Include="InternalClusterBucket.cs" />
+    <Compile Include="KeywordEntry.cs" />
+    <Compile Include="LowAllocSet.cs" />
+    <Compile Include="LshFingerprint.cs" />
+    <Compile Include="LshFingerprintConstants.cs" />
+    <Compile Include="LshFingerprintGenerator.cs" />
+    <Compile Include="LshHashSeeds.cs" />
+    <Compile Include="MailInfo.cs" />
+    <Compile Include="MatcherConstants.cs" />
+    <Compile Include="MatchFactory.cs" />
+    <Compile Include="MatchRegexOptions.cs" />
+    <Compile Include="NullMatch.cs" />
+    <Compile Include="Offset.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RegexMatch.cs" />
+    <Compile Include="RegexTermMatch.cs" />
+    <Compile Include="RopeList.cs" />
+    <Compile Include="SearchResult.cs" />
+    <Compile Include="SearchResultEncodedId.cs" />
+    <Compile Include="SearchResultWithOffsets.cs" />
+    <Compile Include="SearchResultWithoutOffsets.cs" />
+    <Compile Include="ShingleGenerator.cs" />
+    <Compile Include="SingleTrieTermMatch.cs" />
+    <Compile Include="SmallCounterMap.cs" />
+    <Compile Include="StringHelper.cs" />
+    <Compile Include="Strings.cs" />
+    <Compile Include="TermMatch.cs" />
+    <Compile Include="TextScanContext.cs" />
+    <Compile Include="TimePeriodBigMap.cs" />
+    <Compile Include="TimePeriodObjectPool.cs" />
+    <Compile Include="Trie.cs" />
+    <Compile Include="TrieInfo.cs" />
+    <Compile Include="TrieNode.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Strings.resources" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.Exchange.Compliance\Microsoft.Exchange.Compliance.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140F2}</Project>
+      <Name>Microsoft.Exchange.Compliance</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Common\Microsoft.Exchange.Data.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140D3}</Project>
+      <Name>Microsoft.Exchange.Data.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Diagnostics\Microsoft.Exchange.Diagnostics.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14113}</Project>
+      <Name>Microsoft.Exchange.Diagnostics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Net\Microsoft.Exchange.Net.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14178}</Project>
+      <Name>Microsoft.Exchange.Net</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.VariantConfiguration\Microsoft.Exchange.VariantConfiguration.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141E0}</Project>
+      <Name>Microsoft.Exchange.VariantConfiguration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\mscorlib\mscorlib.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141F1}</Project>
+      <Name>mscorlib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

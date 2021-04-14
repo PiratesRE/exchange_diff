@@ -1,0 +1,100 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{09CD9476-CD82-489E-B9E2-84B47CA141CF}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Microsoft.Exchange</RootNamespace>
+    <AssemblyName>Microsoft.Exchange.Transport.LoggingCommon</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="FfoSyncLog\FfoSyncLogEventLogConstants.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Transport\LoggingCommon\AgentAction.cs" />
+    <Compile Include="Transport\LoggingCommon\AgentLogField.cs" />
+    <Compile Include="Transport\LoggingCommon\AsyncQueueLogLineSchema.cs" />
+    <Compile Include="Transport\LoggingCommon\AvEngineUpdateLogLineFields.cs" />
+    <Compile Include="Transport\LoggingCommon\AvEngineUpdateSchema.cs" />
+    <Compile Include="Transport\LoggingCommon\LocDescriptionAttribute.cs" />
+    <Compile Include="Transport\LoggingCommon\LoggingFormatter.cs" />
+    <Compile Include="Transport\LoggingCommon\MessageTrackingSchema.cs" />
+    <Compile Include="Transport\LoggingCommon\MsgTrackField.cs" />
+    <Compile Include="Transport\LoggingCommon\QueueLogEventId.cs" />
+    <Compile Include="Transport\LoggingCommon\SpamDigestLogSchema.cs" />
+    <Compile Include="Transport\LoggingCommon\SpamEngineOpticsLogSchema.cs" />
+    <Compile Include="Transport\LoggingCommon\Strings.cs" />
+    <Compile Include="Transport\LoggingCommon\TenantSettingChangeType.cs" />
+    <Compile Include="Transport\LoggingCommon\TenantSettingSchema.cs" />
+    <Compile Include="Transport\LoggingCommon\TenantSettingSchemaFields.cs" />
+    <Compile Include="Transport\LoggingCommon\TenantSettingSyncLogGenerator.cs" />
+    <Compile Include="Transport\LoggingCommon\TenantSettingSyncLogType.cs" />
+    <Compile Include="Transport\LoggingCommon\ThrottlingAction.cs" />
+    <Compile Include="Transport\LoggingCommon\ThrottlingEvent.cs" />
+    <Compile Include="Transport\LoggingCommon\ThrottlingImpactUnits.cs" />
+    <Compile Include="Transport\LoggingCommon\ThrottlingResource.cs" />
+    <Compile Include="Transport\LoggingCommon\ThrottlingScope.cs" />
+    <Compile Include="Transport\LoggingCommon\ThrottlingSource.cs" />
+    <Compile Include="Transport\LoggingCommon\TrackAgentInfoAgentName.cs" />
+    <Compile Include="Transport\LoggingCommon\TrackAgentInfoGroupName.cs" />
+    <Compile Include="Transport\Logging\Search\AgentLogSchema.cs" />
+    <Compile Include="Transport\QueueViewer\QueueLogSchema.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Transport\LoggingCommon\Strings.resources" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Common\Microsoft.Exchange.Data.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140D3}</Project>
+      <Name>Microsoft.Exchange.Data.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Directory\Microsoft.Exchange.Data.Directory.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14105}</Project>
+      <Name>Microsoft.Exchange.Data.Directory</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Diagnostics\Microsoft.Exchange.Diagnostics.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14113}</Project>
+      <Name>Microsoft.Exchange.Diagnostics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.VariantConfiguration\Microsoft.Exchange.VariantConfiguration.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141E0}</Project>
+      <Name>Microsoft.Exchange.VariantConfiguration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\mscorlib\mscorlib.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141F1}</Project>
+      <Name>mscorlib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

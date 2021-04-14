@@ -1,0 +1,31 @@
+﻿using System;
+using System.CodeDom.Compiler;
+using System.ComponentModel;
+using System.Diagnostics;
+using System.Xml.Serialization;
+
+namespace Microsoft.Exchange.EDiscovery.Export.EwsProxy
+{
+	[DesignerCategory("code")]
+	[DebuggerStepThrough]
+	[XmlType(Namespace = "http://schemas.microsoft.com/exchange/services/2006/messages")]
+	[GeneratedCode("wsdl", "4.0.30319.17627")]
+	[Serializable]
+	public class InstallAppType : BaseRequestType
+	{
+		[XmlElement(DataType = "base64Binary")]
+		public byte[] Manifest
+		{
+			get
+			{
+				return this.manifestField;
+			}
+			set
+			{
+				this.manifestField = value;
+			}
+		}
+
+		private byte[] manifestField;
+	}
+}

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo Name="Exchange 2003 Miscellaneous Configuration" DescriptionId="SetupComponentConfiguringLegacyMailbox">
+
+  <ServerTasks>
+
+	<!-- 
+		Create/delete Exchfilt configuration 
+		Installs/Uninstalls exchfilt.dll as a filter for IIS W3SVC and Sets up registry entries for exchfilt.dll
+	-->
+    <ServerTaskInfo Id="_34595f2b211b498888b3ca5169933a33" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>install-ExsetdataAtom -AtomName Exchfilt -DomainController $RoleDomainController</Standalone>
+      </Install>
+      <BuildToBuildUpgrade>
+        <Standalone>buildToBuildUpgrade-ExsetdataAtom -AtomName Exchfilt -DomainController $RoleDomainController</Standalone>
+      </BuildToBuildUpgrade>
+      <DisasterRecovery>
+        <Standalone>disasterRecovery-ExsetdataAtom -AtomName Exchfilt -DomainController $RoleDomainController</Standalone>
+      </DisasterRecovery>
+      <Uninstall>
+        <Standalone>uninstall-ExsetdataAtom -AtomName Exchfilt -DomainController $RoleDomainController</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Create/delete server-related event log settings -->
+    <ServerTaskInfo Id="_8875015414004156a572f3bed9b36241" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>install-ExsetdataAtom -AtomName ServerEventLog -DomainController $RoleDomainController</Standalone>
+      </Install>
+      <BuildToBuildUpgrade>
+        <Standalone>buildToBuildUpgrade-ExsetdataAtom -AtomName ServerEventLog -DomainController $RoleDomainController</Standalone>
+      </BuildToBuildUpgrade>
+      <DisasterRecovery>
+        <Standalone>disasterRecovery-ExsetdataAtom -AtomName ServerEventLog -DomainController $RoleDomainController</Standalone>
+      </DisasterRecovery>
+      <Uninstall>
+        <Standalone>uninstall-ExsetdataAtom -AtomName ServerEventLog -DomainController $RoleDomainController</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+	<!-- 
+		 Create/delete MAPI settings - This atom's implementation does nothing and also 
+		 the .ins and .uns files associated with this atom also does nothing and just has a
+		 comment saying "This file is intentionally left blank". This atom should
+		 be removed if it does nothing. 
+	-->
+    <ServerTaskInfo Id="_0c17b506d0ec4e43bf94de1c43da9e38" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>install-ExsetdataAtom -AtomName MapiSettings -DomainController $RoleDomainController</Standalone>
+      </Install>
+      <BuildToBuildUpgrade>
+        <Standalone>buildToBuildUpgrade-ExsetdataAtom -AtomName MapiSettings -DomainController $RoleDomainController</Standalone>
+      </BuildToBuildUpgrade>
+      <DisasterRecovery>
+        <Standalone>disasterRecovery-ExsetdataAtom -AtomName MapiSettings -DomainController $RoleDomainController</Standalone>
+      </DisasterRecovery>
+      <Uninstall>
+        <Standalone>uninstall-ExsetdataAtom -AtomName MapiSettings -DomainController $RoleDomainController</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+	<!-- Create/delete legacy ESM settings -->
+	<!-- [REVIEW] Do we really need this? Many of the registry entries in the INS and UNS files seem not to exist in the source tree -->
+    <ServerTaskInfo Id="_8e4f98e8dcd04254878f0935236b04fe" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>install-ExsetdataAtom -AtomName Admin -DomainController $RoleDomainController</Standalone>
+      </Install>
+      <BuildToBuildUpgrade>
+        <Standalone>buildToBuildUpgrade-ExsetdataAtom -AtomName Admin -DomainController $RoleDomainController</Standalone>
+      </BuildToBuildUpgrade>
+      <DisasterRecovery>
+        <Standalone>disasterRecovery-ExsetdataAtom -AtomName Admin -DomainController $RoleDomainController</Standalone>
+      </DisasterRecovery>
+      <Uninstall>
+        <Standalone>uninstall-ExsetdataAtom -AtomName Admin -DomainController $RoleDomainController</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+  </ServerTasks>
+
+</SetupComponentInfo>
+

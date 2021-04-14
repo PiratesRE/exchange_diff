@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo IsDatacenterOnly="true" Name="Datacenter Admin Tools Component" IsDatacenterDedicatedOnly="true">
+
+  <ServerTasks>
+
+    <!-- Create Exchange shares on datacenter exchange servers.  Also adjusts permissions on the IISLOGS share if it exists, for single-sign on -->
+    <ServerTaskInfo Id="_9de3879c56ed4c7da164b1aff8e19c48" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          &amp; "$RoleInstallPath\Scripts\SetExchangeShares.ps1" -InstallPath $RoleInstallPath -ForeignForestFQDN $RoleDataCenterManagementForestFQDN;
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery />
+      <Uninstall />
+    </ServerTaskInfo>
+
+  </ServerTasks>
+
+</SetupComponentInfo>
+

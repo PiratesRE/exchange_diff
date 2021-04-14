@@ -1,0 +1,783 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!--
+  This is the main component for configuring a default gateway server
+  
+  Notes:
+  - Edge does not support clustering.  All cluster entries should be empty.
+  - Edge does not support Disaster Recovery from setup.  All DisasterRecovery nodes should be empty.
+  - Edge AD entries are stored in an ADAM instance specific to this installation.  On uninstall,
+    the whole database is removed, so there is no need to delete individual AD settings.
+  
+-->
+<SetupComponentInfo Name="Gateway Configuration" DescriptionId="SetupComponentConfiguringGatewaySettings">
+
+  <ServerTasks>
+
+    <!-- Setup Transport Server -->
+    <ServerTaskInfo Id="_23c5420ddb114b4ea226f8c624939cbb" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          set-transportservice `
+          -Identity $RoleFqdnOrName `
+          -ReceiveProtocolLogPath ($RoleInstallPath + "\TransportRoles\Logs\Edge\ProtocolLog\SmtpReceive") `
+          -SendProtocolLogPath ($RoleInstallPath + "\TransportRoles\Logs\Edge\ProtocolLog\SmtpSend") `
+          -ConnectivityLogPath ($RoleInstallPath + "\TransportRoles\Logs\Edge\Connectivity") `
+          -MessageTrackingLogPath ($RoleInstallPath + "\TransportRoles\Logs\MessageTracking") `
+          -ActiveUserStatisticsLogPath ($RoleInstallPath + "\TransportRoles\Logs\Edge\ActiveUsersStats") `
+          -ServerStatisticsLogPath ($RoleInstallPath + "\TransportRoles\Logs\Edge\ServerStats") `
+          -PipelineTracingPath ($RoleInstallPath + "\TransportRoles\Logs\Edge\PipelineTracing") `
+          -RoutingTableLogPath ($RoleInstallPath + "\TransportRoles\Logs\Edge\Routing") `
+          -AgentLogPath ($RoleInstallPath + "\TransportRoles\Logs\Edge\AgentLog") `
+          -WlmLogPath ($RoleInstallPath + "\TransportRoles\Logs\Edge\WLM") `
+          -IrmLogPath ($RoleInstallPath + "\Logging\IRMLogs") `
+          -MaxOutboundConnections 1000 `
+          -MaxPerDomainOutboundConnections 20 `
+          -ReceiveProtocolLogMaxDirectorySize 250MB `
+          -ReceiveProtocolLogMaxFileSize 10MB `
+          -SendProtocolLogMaxDirectorySize 250MB `
+          -SendProtocolLogMaxFileSize 10MB `
+          -DnsLogEnabled $false `
+          -DnsLogMaxAge:7.00:00:00 `
+          -DnsLogMaxDirectorySize "100MB" `
+          -DnsLogMaxFileSize "10MB" `
+          -MessageTrackingLogMaxDirectorySize 1000MB `
+          -MessageTrackingLogMaxFileSize 10MB `
+          -IrmLogMaxDirectorySize 250MB `
+          -IrmLogMaxFileSize 10MB `
+          -ActiveUserStatisticsLogMaxDirectorySize 250MB `
+          -ActiveUserStatisticsLogMaxFileSize 10MB `
+          -ServerStatisticsLogMaxDirectorySize 250MB `
+          -ServerStatisticsLogMaxFileSize 10MB `
+          -ConnectivityLogMaxDirectorySize 1000MB `
+          -ConnectivityLogMaxFileSize 10MB `
+          -ConnectivityLogEnabled $true `
+          -AgentLogMaxDirectorySize 250MB `
+          -AgentLogMaxFileSize 10MB `
+          -AgentLogEnabled $true `
+          -WlmLogMaxDirectorySize 250MB `
+          -WlmLogMaxFileSize 10MB `
+          -RoutingTableLogMaxDirectorySize 50MB `
+          -PickupDirectoryPath ($RoleInstallPath + "\TransportRoles\Pickup") `
+          -ReplayDirectoryPath ($RoleInstallPath + "\TransportRoles\Replay") `
+          -DomainController $RoleDomainController
+          Set-TransportConfig -SafetyNetHoldTime 00:10:00
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade>
+        <Standalone>
+          set-transportservice `
+            -Identity $RoleFqdnOrName `
+            -IrmLogPath ($RoleInstallPath + "\Logging\IRMLogs") `
+            -IrmLogEnabled $true `
+            -IrmLogMaxDirectorySize 250MB `
+            -IrmLogMaxFileSize 10MB
+          Set-TransportConfig -SafetyNetHoldTime 00:10:00
+        </Standalone>
+      </BuildToBuildUpgrade>
+      <DisasterRecovery />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Install containers for Remote Domains (Global Settings) -->
+    <ServerTaskInfo Id="_eeec3b2847cb4afd8ab133a767c96bde" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressCreatingEdgeContainers">
+        <Standalone>install-Container -Name:"Global Settings" -DomainController $RoleDomainController</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Install containers for Remote Domains (Global Settings/Internet Message Formats) -->
+    <ServerTaskInfo Id="_a267b4c040f643c1978eef0ec7a4a44e" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressCreatingEdgeContainers">
+        <Standalone>install-ContentConfigContainer -Name:"Global Settings","Internet Message Formats" -DomainController $RoleDomainController</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Install default remote domain -->
+    <ServerTaskInfo Id="_dd9816b64c51487d98c29992774f64fa" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>New-RemoteDomain -Name:"Default Domain" -DomainName:"*" -DomainController $RoleDomainController</Standalone>
+      </Install>
+      <BuildToBuildUpgrade>
+        <Standalone>
+          <!-- Make sure we don't already have a default.  New-RemoteDomain cannot run on subscribed Edges -->
+          if(!(Get-EdgeSubscription -DomainController $RoleDomainController) -and
+             !(Get-RemoteDomain -DomainController $RoleDomainController | where { $_.DomainName -eq "*"}))
+          {
+              New-RemoteDomain -Name:"Default Domain" -DomainName:"*" -DomainController $RoleDomainController
+          }
+        </Standalone>
+      </BuildToBuildUpgrade>
+      <DisasterRecovery />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Install containers for Address Rewriting (Address Rewrite Configuration) -->
+    <ServerTaskInfo Id="_ceefff37b26444c9bc04c59286085ad0" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressCreatingEdgeContainers">
+        <Standalone>install-AddressRewriteConfigContainer -Name:"Address Rewrite Configuration" -DomainController $RoleDomainController</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Install containers for Address Rewriting (Address Rewrite Configuration/Domain Entries) -->
+    <ServerTaskInfo Id="_4f58c38405194a559cefc31600077cf1" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressCreatingEdgeContainers">
+        <Standalone>install-AddressRewriteConfigContainer -Name:"Address Rewrite Configuration","Domain Entries" -DomainController $RoleDomainController</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Install containers for Address Rewriting (Address Rewrite Configuration/Email Entries) -->
+    <ServerTaskInfo Id="_7a2716f4ced7450a85023abb9a3fe643" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressCreatingEdgeContainers">
+        <Standalone>install-AddressRewriteConfigContainer -Name:"Address Rewrite Configuration","Email Entries" -DomainController $RoleDomainController</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Turn secure messaging on -->
+    <ServerTaskInfo Id="_7930281677214a86802611296eb5983f" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>set-TransportService -Identity $RoleFqdnOrName -AntispamAgentsEnabled:$true -RecipientValidationCacheEnabled:$true</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Set connection retry intervals and counts specific for the Edge role -->
+    <ServerTaskInfo Id="_da5ff3603b9244db9372dda9d6385e66" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          set-TransportService `
+            -Identity $RoleFqdnOrName `
+            -TransientFailureRetryInterval:00:10:00 `
+            -TransientFailureRetryCount:6 `
+            -OutboundConnectionFailureRetryInterval:00:30:00
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Create rule collection -->
+    <ServerTaskInfo Id="_8fdf064091d44970b81252f88734efdb" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>install-RuleCollection -Name:"Edge" -DomainController $RoleDomainController</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Create an initial SmtpReceive Connector -->
+    <ServerTaskInfo Id="_42a34e881286438b88560b8ab5c82b6d" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          new-receiveconnector `
+            -Name ("Default internal receive connector " + [String][System.Environment]::MachineName ) `
+            -Bindings 0.0.0.0:25 `
+            -RemoteIPRanges 0.0.0.0-255.255.255.255 `
+            -DomainSecureEnabled $true
+        </Standalone>
+      </Install>
+      <!-- An admin can remove the default receive connector.  In that case, we shouldn't re-create it.
+      The entry itself doesn't need to be upgraded.  As a result, there is no action to be taken on 
+      upgrade. -->
+      <BuildToBuildUpgrade />
+      <DisasterRecovery />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Install/remove edge credential service -->
+    <ServerTaskInfo Id="_b57ec81bbf544f549d93fe2329af9f44" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone> Install-EdgeCredentialService -ServicesDependedOn ADAM_MSExchange </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery />
+      <Uninstall>
+        <Standalone> Uninstall-EdgeCredentialService </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- 
+      Register and enable the Transport Agents 
+
+      1. Preserve the old agent state (enabled, disabled, or absent)
+      2. If the old agent is installed, uninstall it
+      3. Install the new agent
+      4. Enable the new agent if the old agent was enabled or absent
+
+      ! Note that the address rewriting agents *must* be the first and last mail/rcpt agents installed !
+      Please make sure your agents are installed in the right order here.
+
+      Third party agents are unaffected by setup and will retain their current state after upgrade or 
+      reinstallation.  The agents have separate installers, so they can uninstalled after Exchange is removed.
+      This is different from other exchange objects like Exchange vdirs, which would still 
+      appear in IIS manager if they were left after Exchange was removed.  The agents will still have an entry
+      in the configuration file.  By design, if the user reinstalls and uses the same configuration file, 
+      the 3rd-party agents will have their previous state.  If the agent was removed, but the configuration
+      entry remains, a warning will be entered in the event log, and the user can remove it using 
+      uninstall-transportagent.
+    -->
+
+    <!-- Install/uninstall "Connection Filtering Agent" preserve state on upgrade -->
+    <!-- - step 1: Preserve previous agent state if any -->
+    <!-- - step 2: clean up previous agent -->
+    <!-- - step 3: install agent -->
+    <!-- - step 4: enable agent (if not previously disabled) -->
+    <ServerTaskInfo Id="_7fb5d288808840d78cf0cc5264584db3" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressInstallingDefaultTransportAgents">
+        <Standalone>
+          $agentName = "Connection Filtering Agent";
+          $agentFactory = "Microsoft.Exchange.Transport.Agent.ConnectionFiltering.ConnectionFilteringAgentFactory";
+          $agentAssembly = ($RoleInstallPath + "TransportRoles\agents\Hygiene\Microsoft.Exchange.Transport.Agent.Hygiene.dll");
+          $agent = get-transportagent -Identity:$agentName;
+          if ($agent) {
+            uninstall-transportagent -Identity:$agentName;
+          };
+          install-TransportAgent -Name:$agentName -TransportAgentFactory:$agentFactory -AssemblyPath:$agentAssembly;
+          if ($agent.enabled -or ! $agent) { enable-transportagent -Identity:$agentName };
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery />
+      <Uninstall DescriptionId="SetupProgressRemovingDefaultTransportAgents">
+        <Standalone>
+          $agentName = "Connection Filtering Agent";
+          $agent = get-transportagent -Identity:$agentName;
+          if ($agent) {
+            uninstall-transportagent -Identity:$agentName;
+          };
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+
+    <!-- Must be first mail/rcpt agent in the group -->
+    <!-- Install/uninstall "Address Rewriting Inbound Agent" preserve state on upgrade -->
+    <!-- - step 1: Preserve previous agent state if any -->
+    <!-- - step 2: clean up previous agent -->
+    <!-- - step 3: install agent -->
+    <!-- - step 4: enable agent (if not previously disabled) -->
+    <ServerTaskInfo Id="_358ba12c352341269d27ec0040b88c1a" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressInstallingDefaultTransportAgents">
+        <Standalone>
+          $agentName = "Address Rewriting Inbound Agent";
+          $agentFactory = "Microsoft.Exchange.MessagingPolicies.AddressRewrite.FactoryInbound";
+          $agentAssembly = ($RoleInstallPath + "TransportRoles\agents\EdgeMessagingPolicies\Microsoft.Exchange.MessagingPolicies.EdgeAgents.dll");
+          $agent = get-transportagent -Identity:$agentName;
+          if ($agent) {
+            uninstall-transportagent -Identity:$agentName;
+          };
+          install-TransportAgent -Name:$agentName -TransportAgentFactory:$agentFactory -AssemblyPath:$agentAssembly;
+          if ($agent.enabled -or ! $agent) { enable-transportagent -Identity:$agentName };
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery />
+      <Uninstall DescriptionId="SetupProgressRemovingDefaultTransportAgents">
+        <Standalone>
+          $agentName = "Address Rewriting Inbound Agent";
+          $agent = get-transportagent -Identity:$agentName;
+          if ($agent) {
+            uninstall-transportagent -Identity:$agentName;
+          };
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+
+    <!-- Install/uninstall "Edge Rule Agent" preserve state on upgrade -->
+    <!-- - step 1: Preserve previous agent state if any -->
+    <!-- - step 2: clean up previous agent -->
+    <!-- - step 3: install agent -->
+    <!-- - step 4: enable agent (if not previously disabled) -->
+    <ServerTaskInfo Id="_8c50092f2e07411ca98d43956e3eaa00" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressInstallingDefaultTransportAgents">
+        <Standalone>
+          $agentName = "Edge Rule Agent";
+          $agentFactory = "Microsoft.Exchange.MessagingPolicies.EdgeRuleAgent.EdgeRuleAgentFactory";
+          $agentAssembly = ($RoleInstallPath + "TransportRoles\agents\EdgeMessagingPolicies\Microsoft.Exchange.MessagingPolicies.EdgeAgents.dll");
+          $agent = get-transportagent -Identity:$agentName;
+          if ($agent) {
+            uninstall-transportagent -Identity:$agentName;
+          };
+          install-TransportAgent -Name:$agentName -TransportAgentFactory:$agentFactory -AssemblyPath:$agentAssembly;
+          if ($agent.enabled -or ! $agent) { enable-transportagent -Identity:$agentName };
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery />
+      <Uninstall DescriptionId="SetupProgressRemovingDefaultTransportAgents">
+        <Standalone>
+          $agentName = "Edge Rule Agent";
+          $agent = get-transportagent -Identity:$agentName;
+          if ($agent) {
+            uninstall-transportagent -Identity:$agentName;
+          };
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/uninstall "Content Filter Agent" preserve state on upgrade -->
+    <!-- - step 1: Preserve previous agent state if any -->
+    <!-- - step 2: clean up previous agent -->
+    <!-- - step 3: install agent -->
+    <!-- - step 4: enable agent (if not previously disabled) -->
+    <ServerTaskInfo Id="_8e66d2d0b46f435492b92c7279316038" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressInstallingDefaultTransportAgents">
+        <Standalone>
+          $agentName = "Content Filter Agent";
+          $agentFactory = "Microsoft.Exchange.Transport.Agent.ContentFilter.ContentFilterAgentFactory";
+          $agentAssembly = ($RoleInstallPath + "TransportRoles\agents\Hygiene\Microsoft.Exchange.Transport.Agent.Hygiene.dll");
+          $agent = get-transportagent -Identity:$agentName;
+          if ($agent) {
+            uninstall-transportagent -Identity:$agentName;
+          };
+          install-TransportAgent -Name:$agentName -TransportAgentFactory:$agentFactory -AssemblyPath:$agentAssembly;
+          if ($agent.enabled -or ! $agent) { enable-transportagent -Identity:$agentName };
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery />
+      <Uninstall DescriptionId="SetupProgressRemovingDefaultTransportAgents">
+        <Standalone>
+          $agentName = "Content Filter Agent";
+          $agent = get-transportagent -Identity:$agentName;
+          if ($agent) {
+            uninstall-transportagent -Identity:$agentName;
+          };
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+
+    <!-- Install/uninstall "Sender Id Agent" preserve state on upgrade -->
+    <!-- - step 1: Preserve previous agent state if any -->
+    <!-- - step 2: clean up previous agent -->
+    <!-- - step 3: install agent -->
+    <!-- - step 4: enable agent (if not previously disabled) -->
+    <ServerTaskInfo Id="_6ff4871f9add43a1a74886eae1ac0f2e" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressInstallingDefaultTransportAgents">
+        <Standalone>
+          $agentName = "Sender Id Agent";
+          $agentFactory = "Microsoft.Exchange.Transport.Agent.SenderId.SenderIdAgentFactory";
+          $agentAssembly = ($RoleInstallPath + "TransportRoles\agents\Hygiene\Microsoft.Exchange.Transport.Agent.Hygiene.dll");
+          $agent = get-transportagent -Identity:$agentName;
+          if ($agent) {
+            uninstall-transportagent -Identity:$agentName;
+          };
+          install-TransportAgent -Name:$agentName -TransportAgentFactory:$agentFactory -AssemblyPath:$agentAssembly;
+          if ($agent.enabled -or ! $agent) { enable-transportagent -Identity:$agentName };
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery />
+      <Uninstall DescriptionId="SetupProgressRemovingDefaultTransportAgents">
+        <Standalone>
+          $agentName = "Sender Id Agent";
+          $agent = get-transportagent -Identity:$agentName;
+          if ($agent) {
+            uninstall-transportagent -Identity:$agentName;
+          };
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+
+    <!-- Install/uninstall "Sender Filter Agent" preserve state on upgrade -->
+    <!-- - step 1: Preserve previous agent state if any -->
+    <!-- - step 2: clean up previous agent -->
+    <!-- - step 3: install agent -->
+    <!-- - step 4: enable agent (if not previously disabled) -->
+    <ServerTaskInfo Id="_08e65e46f0454972bcf6cf0694cb246b" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressInstallingDefaultTransportAgents">
+        <Standalone>
+          $agentName = "Sender Filter Agent";
+          $agentFactory = "Microsoft.Exchange.Transport.Agent.ProtocolFilter.SenderFilterAgentFactory";
+          $agentAssembly = ($RoleInstallPath + "TransportRoles\agents\Hygiene\Microsoft.Exchange.Transport.Agent.Hygiene.dll");
+          $agent = get-transportagent -Identity:$agentName;
+          if ($agent) {
+            uninstall-transportagent -Identity:$agentName;
+          };
+          install-TransportAgent -Name:$agentName -TransportAgentFactory:$agentFactory -AssemblyPath:$agentAssembly;
+          if ($agent.enabled -or ! $agent) { enable-transportagent -Identity:$agentName };
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery />
+      <Uninstall DescriptionId="SetupProgressRemovingDefaultTransportAgents">
+        <Standalone>
+          $agentName = "Sender Filter Agent";
+          $agent = get-transportagent -Identity:$agentName;
+          if ($agent) {
+            uninstall-transportagent -Identity:$agentName;
+          };
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/uninstall "Recipient Filter Agent" preserve state on upgrade -->
+    <!-- - step 1: Preserve previous agent state if any -->
+    <!-- - step 2: clean up previous agent -->
+    <!-- - step 3: install agent -->
+    <!-- - step 4: enable agent (if not previously disabled) -->
+    <ServerTaskInfo Id="_286694e823bf4864bbe2deb320bc67f8" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressInstallingDefaultTransportAgents">
+        <Standalone>
+          $agentName = "Recipient Filter Agent";
+          $agentFactory = "Microsoft.Exchange.Transport.Agent.ProtocolFilter.RecipientFilterAgentFactory";
+          $agentAssembly = ($RoleInstallPath + "TransportRoles\agents\Hygiene\Microsoft.Exchange.Transport.Agent.Hygiene.dll");
+          $agent = get-transportagent -Identity:$agentName;
+          if ($agent) {
+            uninstall-transportagent -Identity:$agentName;
+          };
+          install-TransportAgent -Name:$agentName -TransportAgentFactory:$agentFactory -AssemblyPath:$agentAssembly;
+          if ($agent.enabled -or ! $agent) { enable-transportagent -Identity:$agentName };
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery />
+      <Uninstall DescriptionId="SetupProgressRemovingDefaultTransportAgents">
+        <Standalone>
+          $agentName = "Recipient Filter Agent";
+          $agent = get-transportagent -Identity:$agentName;
+          if ($agent) {
+            uninstall-transportagent -Identity:$agentName;
+          };
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+
+    <!-- Install/uninstall "Protocol Analysis Agent" preserve state on upgrade -->
+    <!-- - step 1: Preserve previous agent state if any -->
+    <!-- - step 2: clean up previous agent -->
+    <!-- - step 3: install agent -->
+    <!-- - step 4: enable agent (if not previously disabled) -->
+    <ServerTaskInfo Id="_e47f0c787b734e58b2071ab3f4edf642" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressInstallingDefaultTransportAgents">
+        <Standalone>
+          $agentName = "Protocol Analysis Agent";
+          $agentFactory = "Microsoft.Exchange.Transport.Agent.ProtocolAnalysis.ProtocolAnalysisAgentFactory";
+          $agentAssembly = ($RoleInstallPath + "TransportRoles\agents\Hygiene\Microsoft.Exchange.Transport.Agent.Hygiene.dll");
+	  $agent = get-transportagent -Identity:$agentName;
+	  if ($agent) {
+	    uninstall-transportagent -Identity:$agentName;
+	  };
+	  install-TransportAgent -Name:$agentName -TransportAgentFactory:$agentFactory -AssemblyPath:$agentAssembly;
+	  if ($agent.enabled -or ! $agent) { enable-transportagent -Identity:$agentName };
+	</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery />
+      <Uninstall DescriptionId="SetupProgressRemovingDefaultTransportAgents">
+        <Standalone>
+          $agentName = "Protocol Analysis Agent";
+          $agent = get-transportagent -Identity:$agentName;
+          if ($agent) {
+            uninstall-transportagent -Identity:$agentName;
+          };
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/uninstall "Protocol Analysis Background Agent" preserve state on upgrade -->
+    <!-- - the agent no longer exists; the following code is to remove it on upgrade -->
+    <ServerTaskInfo Id="_e6f28bde5ec9429db9f3a30288009841" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install />
+      <BuildToBuildUpgrade>
+        <Standalone>
+          $agentName = "Protocol Analysis Background Agent";
+          $agent = get-transportagent -Identity:$agentName;
+          if ($agent) {
+            uninstall-transportagent -Identity:$agentName;
+          };
+        </Standalone>
+      </BuildToBuildUpgrade>
+      <DisasterRecovery />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Install/uninstall "STS Update Agent" preserve agent state on upgrade -->
+    <!-- - the agent no longer exists; the following code is to remove it on upgrade -->
+    <ServerTaskInfo Id="_5a0de48768064c0ea411c1ab9da89d59" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install />
+      <BuildToBuildUpgrade>
+        <Standalone>
+          $agentName = "STS Update Agent";
+          $agent = get-transportagent -Identity:$agentName;
+          if ($agent) {
+            uninstall-transportagent -Identity:$agentName;
+          };
+        </Standalone>
+      </BuildToBuildUpgrade>
+      <DisasterRecovery />
+      <Uninstall />
+    </ServerTaskInfo>
+
+
+    <!-- Install/uninstall "Attachment Filtering Agent" preserve agent state on upgrade -->
+    <!-- - step 1: Preserve previous agent state if any -->
+    <!-- - step 2: clean up previous agent -->
+    <!-- - step 3: install agent -->
+    <!-- - step 4: enable agent (if not previously disabled) -->
+    <ServerTaskInfo Id="_2c6bb9d7919940fa840a65d147334c98" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressInstallingDefaultTransportAgents">
+        <Standalone>
+          $agentName = "Attachment Filtering Agent";
+          $agentFactory = "Microsoft.Exchange.MessagingPolicies.AttachFilter.Factory";
+          $agentAssembly = ($RoleInstallPath + "TransportRoles\agents\EdgeMessagingPolicies\Microsoft.Exchange.MessagingPolicies.EdgeAgents.dll");
+	  $agent = get-transportagent -Identity:$agentName;
+	  if ($agent) {
+	    uninstall-transportagent -Identity:$agentName;
+	  };
+	  install-TransportAgent -Name:$agentName -TransportAgentFactory:$agentFactory -AssemblyPath:$agentAssembly;
+          if ($agent.enabled -or ! $agent) { enable-transportagent -Identity:$agentName };
+	</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery />
+      <Uninstall DescriptionId="SetupProgressRemovingDefaultTransportAgents">
+        <Standalone>
+          $agentName = "Attachment Filtering Agent";
+          $agent = get-transportagent -Identity:$agentName;
+          if ($agent) {
+            uninstall-transportagent -Identity:$agentName;
+          };
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <ServerTaskInfo Id="_9082448af04c48709d70ef8ab39d39ee" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>set-attachmentfilteringconfigdefaults</Standalone>
+      </Install>
+      <!-- Don't erase any previously set configuration -->
+      <BuildToBuildUpgrade UseInstallTasks="false" />
+      <DisasterRecovery />
+      <!-- The attachement filter entries are AD-based, so they'll be removed when the ADAM instance is removed -->
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Run script to set Attachment Filter Entries -->
+    <ServerTaskInfo Id="_4d3ff7b209814037896e31cc2ffed75c" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>&amp;($RoleInstallPath + "scripts\resetAttachmentFilterEntry.ps1")</Standalone>
+      </Install>
+      <!-- Don't erase any previously set list -->
+      <BuildToBuildUpgrade UseInstallTasks="false" />
+      <DisasterRecovery />
+      <!-- The attachement filter entries are AD-based, so they'll be removed when the ADAM instance is removed -->
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Must be last mail/rcpt agent in the group -->
+    <!-- Install/uninstall "Address Rewriting Outbound Agent" preserve agent state on upgrade -->
+    <!-- - step 1: Preserve previous agent state if any -->
+    <!-- - step 2: clean up previous agent -->
+    <!-- - step 3: install agent -->
+    <!-- - step 4: enable agent (if not previously disabled) -->
+    <ServerTaskInfo Id="_a8f2292a84b44dbe8c4f1fe1e51d66a7" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressInstallingDefaultTransportAgents">
+        <Standalone>
+          $agentName = "Address Rewriting Outbound Agent";
+          $agentFactory = "Microsoft.Exchange.MessagingPolicies.AddressRewrite.FactoryOutbound";
+          $agentAssembly = ($RoleInstallPath + "TransportRoles\agents\EdgeMessagingPolicies\Microsoft.Exchange.MessagingPolicies.EdgeAgents.dll");
+          $agent = get-transportagent -Identity:$agentName;
+          if ($agent) {
+            uninstall-transportagent -Identity:$agentName;
+          };
+          install-TransportAgent -Name:$agentName -TransportAgentFactory:$agentFactory -AssemblyPath:$agentAssembly;
+          if ($agent.enabled -or ! $agent) { enable-transportagent -Identity:$agentName };
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery />
+      <Uninstall DescriptionId="SetupProgressRemovingDefaultTransportAgents">
+        <Standalone>
+          $agentName = "Address Rewriting Outbound Agent";
+          $agent = get-transportagent -Identity:$agentName;
+          if ($agent) {
+            uninstall-transportagent -Identity:$agentName;
+          };
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- uninstall old Edge Transport service -->
+    <ServerTaskInfo Id="_7fcd29cd820b4a7d8e0787cb7f370d94" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install />
+      <BuildToBuildUpgrade>
+        <Standalone>uninstall-OldEdgeTransportService</Standalone>
+      </BuildToBuildUpgrade>
+      <DisasterRecovery />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Precompile transport service binaries -->
+    <!-- We do a synchronous ngen call here to ngen the binaries -->
+    <!-- This call is to ensure that ngening of the necessary binaries have already completed -->
+    <!-- When a new file is added to precompile-ManagedBinary list, make sure to add it to customactions.wxi to sync install and uninstall the binary -->
+    <ServerTaskInfo Id="_422b72ffcf744a4eb73a818957430a89" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install Weight="5" DescriptionId="SetupProgressPrecompilingBinaries" IsFatal="false">
+        <Standalone>
+          $fullPath = [System.IO.Path]::Combine($RoleInstallPath, "bin\edgetransport.exe");
+          precompile-ManagedBinary -BinaryName  $fullPath; 
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall Weight="5" DescriptionId="SetupProgressPrecompilingBinaries" IsFatal="false">
+        <Standalone>
+          $fullPath = [System.IO.Path]::Combine($RoleInstallPath, "bin\edgetransport.exe");
+          precompile-ManagedBinary -BinaryName  $fullPath -Action uninstall; 
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <ServerTaskInfo Id="_01ac254f3e38430a834ec45ab2e79121" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install Weight="5" DescriptionId="SetupProgressPrecompilingBinaries" IsFatal="false">
+        <Standalone>
+          $fullPath = [System.IO.Path]::Combine($RoleInstallPath, "bin\msexchangetransport.exe");
+          precompile-ManagedBinary -BinaryName  $fullPath; 
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall Weight="5" DescriptionId="SetupProgressPrecompilingBinaries" IsFatal="false">
+        <Standalone>
+          $fullPath = [System.IO.Path]::Combine($RoleInstallPath, "bin\msexchangetransport.exe");
+          precompile-ManagedBinary -BinaryName  $fullPath -Action uninstall; 
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/remove transport service -->
+    <ServerTaskInfo Id="_c44c081e0112450c9ff2385cb0f4c540" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          if (!(get-service MSExchangeTransport* | where {$_.name -eq "MSExchangeTransport"}))
+          {
+            install-EdgeTransportService -ServicesDependedOnParameter ADAM_MSExchange
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery />
+      <Uninstall>
+        <Standalone>uninstall-EdgeTransportService</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+    
+    <!-- Add/remove firewall exception for edgetransport.exe worker process -->
+    <ServerTaskInfo Id="_3d0eb516a2b84498a47a45244d29a83e" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>add-firewallexception -BinaryPath ($RoleInstallPath + "\bin\edgetransport.exe") -Name "MSExchangeEdgeTransportWorker"</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>remove-firewallexception -Name "MSExchangeEdgeTransportWorker" -BinaryPath ($RoleInstallPath + "\bin\edgetransport.exe")</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/remove transport log search service -->
+    <ServerTaskInfo Id="_3d09e195c7d2485a9b16538b60b9448a" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          if (!(get-service MSExchangeTransportLogSearch* | where {$_.name -eq "MSExchangeTransportLogSearch"}))
+          {
+            install-TransportLogSearchService -ServicesDependedOnParameter ADAM_MSExchange
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery />
+      <Uninstall>
+        <Standalone>uninstall-TransportLogSearchService</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/uninstall Anti-spam Update service -->
+    <ServerTaskInfo Id="_eefa1a6c3d144251921b92cd69ff7a32" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          if (!(get-service MSExchangeAntispamUpdate* | where {$_.name -eq "MSExchangeAntispamUpdate"}))
+          {
+          install-AntispamUpdateService -ServicesDependedOnParameter ADAM_MSExchange
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery />
+      <Uninstall>
+        <Standalone>uninstall-AntispamUpdateService</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- E14 82092: In the appconfig file for ServiceHost service, set Code Access Security (CAS) policy to skip publisher (certificate) validation.-->
+    <ServerTaskInfo Id="_e2cdb53228154475a02b1b39d4e44a0e" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          $file = 'microsoft.exchange.servicehost.exe.config';
+          $fullPath = [System.IO.Path]::Combine([System.IO.Path]::Combine($RoleInstallPath, "bin"), $file);
+          set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/runtime/generatePublisherEvidence -Attribute:enabled -NewValue:false
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Install/uninstall ServiceHost service -->
+    <ServerTaskInfo Id="_d8fbddb5deea48ccb524dcd61281ffda" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install Weight="5" DescriptionId="SetupProgressPrecompilingBinaries" IsFatal="false">
+        <Standalone>
+          $fullPath = [System.IO.Path]::Combine($RoleInstallPath, "bin\microsoft.exchange.servicehost.exe");
+          precompile-ManagedBinary -BinaryName  $fullPath;
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall Weight="5" DescriptionId="SetupProgressPrecompilingBinaries" IsFatal="false">
+        <Standalone>
+          $fullPath = [System.IO.Path]::Combine($RoleInstallPath, "bin\microsoft.exchange.servicehost.exe");
+          precompile-ManagedBinary -BinaryName  $fullPath -Action uninstall;
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/remove Service Host service -->
+    <ServerTaskInfo Id="_a454a374a78c48acbe94908375d3c5e2" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          if (!(get-service MSExchangeServiceHost* | where {$_.name -eq "MSExchangeServiceHost"}))
+          {
+          install-ServiceHost -ServicesDependedOnParameter ADAM_MSExchange
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>uninstall-ServiceHost</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+  </ServerTasks>
+</SetupComponentInfo>

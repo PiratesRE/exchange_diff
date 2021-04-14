@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo Name="MailboxExchangeCertificate" DescriptionId="MailboxExchangeCertificateComponentDescription">
+
+  <ServerTasks>
+
+    <!-- MailboxExchangeCertificate -->
+    <ServerTaskInfo Id="_303dfbdd691442e5af0fa93e1620d4a9" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          Install-ExchangeCertificate -services IIS -DomainController $RoleDomainController
+          if ($RoleIsDatacenter -ne $true -And $RoleIsPartnerHosted -ne $true)
+          {
+            Install-AuthCertificate -DomainController $RoleDomainController
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall/>
+    </ServerTaskInfo>
+
+  </ServerTasks>
+</SetupComponentInfo>
+

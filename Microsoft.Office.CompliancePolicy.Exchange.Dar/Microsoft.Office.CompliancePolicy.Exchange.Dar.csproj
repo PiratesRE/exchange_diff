@@ -1,0 +1,142 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{09CD9476-CD82-489E-B9E2-84B47CA141E9}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Microsoft</RootNamespace>
+    <AssemblyName>Microsoft.Office.CompliancePolicy.Exchange.Dar</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Exchange.Compliance.CrimsonEvents" />
+    <Reference Include="Microsoft.Exchange.ServiceHost" />
+    <Reference Include="Microsoft.Exchange.WebServices" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Exchange\Servicelets\CommonCode\ExPerfCounterProvider.cs" />
+    <Compile Include="Exchange\Servicelets\CommonCode\UnifiedPolicySyncPerfCounters.cs" />
+    <Compile Include="Office\CompliancePolicy\Exchange\Dar\Diagnostics\ExceptionAction.cs" />
+    <Compile Include="Office\CompliancePolicy\Exchange\Dar\Diagnostics\ExceptionActionEventArgs.cs" />
+    <Compile Include="Office\CompliancePolicy\Exchange\Dar\Diagnostics\ExceptionGroupHandler.cs" />
+    <Compile Include="Office\CompliancePolicy\Exchange\Dar\Diagnostics\ExceptionGroupHandlers.cs" />
+    <Compile Include="Office\CompliancePolicy\Exchange\Dar\Diagnostics\ExceptionHandler.cs" />
+    <Compile Include="Office\CompliancePolicy\Exchange\Dar\Diagnostics\ExceptionHandlingOptions.cs" />
+    <Compile Include="Office\CompliancePolicy\Exchange\Dar\Diagnostics\LogItem.cs" />
+    <Compile Include="Office\CompliancePolicy\Exchange\Dar\Diagnostics\LogSettings.cs" />
+    <Compile Include="Office\CompliancePolicy\Exchange\Dar\Diagnostics\OperationContext.cs" />
+    <Compile Include="Office\CompliancePolicy\Exchange\Dar\ExDarServiceProvider.cs" />
+    <Compile Include="Office\CompliancePolicy\Exchange\Dar\ExDarTaskAggregateProvider.cs" />
+    <Compile Include="Office\CompliancePolicy\Exchange\Dar\ExDarTaskFactory.cs" />
+    <Compile Include="Office\CompliancePolicy\Exchange\Dar\ExDarTaskQueue.cs" />
+    <Compile Include="Office\CompliancePolicy\Exchange\Dar\ExDarWorkloadHost.cs" />
+    <Compile Include="Office\CompliancePolicy\Exchange\Dar\Execution\ActiveTasks.cs" />
+    <Compile Include="Office\CompliancePolicy\Exchange\Dar\Execution\ExecutionSettings.cs" />
+    <Compile Include="Office\CompliancePolicy\Exchange\Dar\Execution\InstanceManager.cs" />
+    <Compile Include="Office\CompliancePolicy\Exchange\Dar\Execution\Scheduler.cs" />
+    <Compile Include="Office\CompliancePolicy\Exchange\Dar\Execution\TaskAggregates.cs" />
+    <Compile Include="Office\CompliancePolicy\Exchange\Dar\Execution\TaskWrapper.cs" />
+    <Compile Include="Office\CompliancePolicy\Exchange\Dar\Execution\TenantStore.cs" />
+    <Compile Include="Office\CompliancePolicy\Exchange\Dar\ExExecutionLog.cs" />
+    <Compile Include="Office\CompliancePolicy\Exchange\Dar\LocStrings\Strings.cs" />
+    <Compile Include="Office\CompliancePolicy\Exchange\Dar\Service\HostRpcServer.cs" />
+    <Compile Include="Office\CompliancePolicy\Exchange\Dar\Service\Servicelet.cs" />
+    <Compile Include="Office\CompliancePolicy\Exchange\Dar\Utility\Helper.cs" />
+    <Compile Include="Office\CompliancePolicy\Exchange\Dar\Utility\TaskHelper.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Office\CompliancePolicy\Exchange\Dar\LocStrings\Strings.resources" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.ApplicationLogic\Microsoft.Exchange.Data.ApplicationLogic.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14104}</Project>
+      <Name>Microsoft.Exchange.Data.ApplicationLogic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Common\Microsoft.Exchange.Data.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140D3}</Project>
+      <Name>Microsoft.Exchange.Data.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Directory\Microsoft.Exchange.Data.Directory.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14105}</Project>
+      <Name>Microsoft.Exchange.Data.Directory</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Storage\Microsoft.Exchange.Data.Storage.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1410F}</Project>
+      <Name>Microsoft.Exchange.Data.Storage</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data\Microsoft.Exchange.Data.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14106}</Project>
+      <Name>Microsoft.Exchange.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Diagnostics\Microsoft.Exchange.Diagnostics.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14113}</Project>
+      <Name>Microsoft.Exchange.Diagnostics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Management.CompliancePolicy\Microsoft.Exchange.Management.CompliancePolicy.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14156}</Project>
+      <Name>Microsoft.Exchange.Management.CompliancePolicy</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Rpc\Microsoft.Exchange.Rpc.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14188}</Project>
+      <Name>Microsoft.Exchange.Rpc</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.WorkloadManagement\Microsoft.Exchange.WorkloadManagement.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141E1}</Project>
+      <Name>Microsoft.Exchange.WorkloadManagement</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Office.CompliancePolicy.Platform\Microsoft.Office.CompliancePolicy.Platform.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141EA}</Project>
+      <Name>Microsoft.Office.CompliancePolicy.Platform</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Office.Datacenter.ActiveMonitoringLocal\Microsoft.Office.Datacenter.ActiveMonitoringLocal.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141ED}</Project>
+      <Name>Microsoft.Office.Datacenter.ActiveMonitoringLocal</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Office.Datacenter.WorkerTaskFrameworkInternalProvi\Microsoft.Office.Datacenter.WorkerTaskFrameworkInternalProvi.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141EF}</Project>
+      <Name>Microsoft.Office.Datacenter.WorkerTaskFrameworkInternalProvider</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\mscorlib\mscorlib.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141F1}</Project>
+      <Name>mscorlib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\mscorlib\mscorlib.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141F1}</Project>
+      <Name>mscorlib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

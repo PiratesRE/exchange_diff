@@ -1,0 +1,488 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema elementFormDefault="qualified" targetNamespace="http://schemas.microsoft.com/online/directoryservices/sync/2008/11" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:a="http://schemas.microsoft.com/online/directoryservices/annotations/2008/06" xmlns:arr="http://schemas.microsoft.com/2003/10/Serialization/Arrays" xmlns:chg="http://schemas.microsoft.com/online/directoryservices/change/2008/11" xmlns:tns="http://schemas.microsoft.com/online/directoryservices/sync/2008/11">
+  <!-- WCF-generated schema for this namespace. -->
+  <!-- This schema is not loaded by the server (where WCF supplies the generated types
+       automatically), but is here to support use of svcutil.exe without reference to the server
+       implementation. -->
+  <xs:import namespace="http://schemas.microsoft.com/online/directoryservices/change/2008/11" />
+  <xs:import namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+  <xs:import namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+  <xs:element name="NewCookie">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="serviceInstance" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="options" type="tns:SyncOptions" />
+        <xs:element minOccurs="0" name="alwaysReturnProperties" nillable="true" type="arr:ArrayOfstring" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="NewCookieResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="NewCookieResult" nillable="true" type="xs:base64Binary" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="NewCookie2">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="schemaRevision" type="xs:int" />
+        <xs:element minOccurs="0" name="serviceInstance" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="options" type="tns:SyncOptions" />
+        <xs:element minOccurs="0" name="objectClassesOfInterest" nillable="true" type="arr:ArrayOfstring" />
+        <xs:element minOccurs="0" name="propertiesOfInterest" nillable="true" type="arr:ArrayOfstring" />
+        <xs:element minOccurs="0" name="linkClassesOfInterest" nillable="true" type="arr:ArrayOfstring" />
+        <xs:element minOccurs="0" name="alwaysReturnProperties" nillable="true" type="arr:ArrayOfstring" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="NewCookie2Response">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="NewCookie2Result" nillable="true" type="xs:base64Binary" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetChanges">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="lastCookie" nillable="true" type="xs:base64Binary" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetChangesResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="GetChangesResult" nillable="true" type="tns:DirectoryChanges" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Publish">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="publications" nillable="true" type="tns:ArrayOfServicePublication" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="PublishResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="PublishResult" nillable="true" type="tns:ArrayOfUpdateResultCode" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetContext">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="lastCookie" nillable="true" type="xs:base64Binary" />
+        <xs:element minOccurs="0" name="contextId" nillable="true" type="chg:ContextId" />
+        <xs:element minOccurs="0" name="lastPageToken" nillable="true" type="xs:base64Binary" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetContextResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="GetContextResult" nillable="true" type="tns:DirectoryObjectsAndLinks" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetDirectoryObjects">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="lastGetChangesCookieOrGetContextPageToken" nillable="true" type="xs:base64Binary" />
+        <xs:element minOccurs="0" name="objectIdentities" nillable="true" type="tns:ArrayOfDirectoryObjectIdentity" />
+        <xs:element minOccurs="0" name="options" nillable="true" type="tns:GetDirectoryObjectsOptions" />
+        <xs:element minOccurs="0" name="lastPageToken" nillable="true" type="xs:base64Binary" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetDirectoryObjectsResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="GetDirectoryObjectsResult" nillable="true" type="tns:DirectoryObjectsAndLinks" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="MergeCookies">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="lastGetChangesCookie" nillable="true" type="xs:base64Binary" />
+        <xs:element minOccurs="0" name="lastGetContextPageToken" nillable="true" type="xs:base64Binary" />
+        <xs:element minOccurs="0" name="lastMergeCookie" nillable="true" type="xs:base64Binary" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="MergeCookiesResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="MergeCookiesResult" nillable="true" type="tns:DirectoryChanges" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetDirSyncDrainageStatus">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="contextDirSyncStatusList" nillable="true" type="tns:ArrayOfContextDirSyncStatus" />
+        <xs:element minOccurs="0" name="getChangesCookie" nillable="true" type="xs:base64Binary" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetDirSyncDrainageStatusResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="GetDirSyncDrainageStatusResult" nillable="true" type="tns:ArrayOfDirSyncDrainageCode" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="UpdateCookie">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="getChangesCookie" nillable="true" type="xs:base64Binary" />
+        <xs:element minOccurs="0" name="schemaRevision" nillable="true" type="xs:int" />
+        <xs:element minOccurs="0" name="options" nillable="true" type="tns:SyncOptions" />
+        <xs:element minOccurs="0" name="objectClassesOfInterest" nillable="true" type="arr:ArrayOfstring" />
+        <xs:element minOccurs="0" name="propertiesOfInterest" nillable="true" type="arr:ArrayOfstring" />
+        <xs:element minOccurs="0" name="linkClassesOfInterest" nillable="true" type="arr:ArrayOfstring" />
+        <xs:element minOccurs="0" name="alwaysReturnProperties" nillable="true" type="arr:ArrayOfstring" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="UpdateCookieResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="UpdateCookieResult" nillable="true" type="xs:base64Binary" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetCookieUpdateStatus">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="getChangesCookie" nillable="true" type="xs:base64Binary" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetCookieUpdateStatusResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="GetCookieUpdateStatusResult" type="tns:CookieUpdateStatus" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="FilterAndGetContextRecoveryInfo">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="getChangesCookie" nillable="true" type="xs:base64Binary" />
+        <xs:element minOccurs="0" name="contextId" type="chg:ContextId" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="FilterAndGetContextRecoveryInfoResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="FilterAndGetContextRecoveryInfoResult" type="tns:ContextRecoveryInfo" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="EstimateBacklog">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="latestGetChangesCookie" nillable="true" type="xs:base64Binary" />
+        <xs:element minOccurs="0" name="lastPageToken" nillable="true" type="xs:base64Binary" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="EstimateBacklogResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="EstimateBacklogResult" type="tns:BacklogEstimateBatch" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ArrayOfServicePublication" type="tns:ArrayOfServicePublication" />
+  <xs:complexType name="ArrayOfServicePublication">
+    <xs:sequence>
+      <xs:element ref="tns:ServicePublication" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfDirectoryObjectIdentity" type="tns:ArrayOfDirectoryObjectIdentity" />
+  <xs:complexType name="ArrayOfDirectoryObjectIdentity">
+    <xs:sequence>
+      <xs:element ref="tns:DirectoryObjectIdentity" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfContextDirSyncStatus" type="tns:ArrayOfContextDirSyncStatus" />
+  <xs:complexType name="ArrayOfContextDirSyncStatus">
+    <xs:sequence>
+      <xs:element ref="tns:ContextDirSyncStatus" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="UpdateResultCode" type="tns:UpdateResultCode">
+    <xs:annotation>
+      <xs:documentation>
+        Indicates the result of an attempt to update the directory.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:simpleType name="UpdateResultCode">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Success">
+        <xs:annotation>
+          <xs:documentation>The operation completed successfully.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="PartitionUnavailable">
+        <xs:annotation>
+          <xs:documentation>
+            The directory partition for the specified ContextId is temporarily unavailable.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="ObjectNotFound">
+        <xs:annotation>
+          <xs:documentation>
+            The object with the specified ObjectId could not be found.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="ProvisionedPlanPublishNotAllowed">
+        <xs:annotation>
+          <xs:documentation>
+            Publishing ProvisionedPlan property is not allowed for this object class.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="ServiceInfoVersionOutdated">
+        <xs:annotation>
+          <xs:documentation>
+            Publishing ServiceInfo with this version is not allowed because the version is outdated.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="ChangeSubscriptionUpdateFailed">
+        <xs:annotation>
+          <xs:documentation>
+            Update of change subscription for this context failed.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="UnspecifiedError">
+        <xs:annotation>
+          <xs:documentation>
+            An unspecified error occured.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="ValidationErrorPublishNotAllowed">
+        <xs:annotation>
+          <xs:documentation>
+            Publishing ValidationError property is not allowed for this object class.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="CloudSipProxyAddressPublishNotAllowed">
+        <xs:annotation>
+          <xs:documentation>
+            Publishing CloudSipProxyAddress property is not allowed for this object class.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="ArrayOfUpdateResultCode" type="tns:ArrayOfUpdateResultCode" />
+  <xs:complexType name="ArrayOfUpdateResultCode">
+    <xs:sequence>
+      <xs:element ref="tns:UpdateResultCode" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="DirSyncDrainageCode" type="tns:DirSyncDrainageCode">
+    <xs:annotation>
+      <xs:documentation>
+        Indicates the progress of propagating changes from an on-premise directory through MSO DS to a sync client.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:simpleType name="DirSyncDrainageCode">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Completed">
+        <xs:annotation>
+          <xs:documentation>
+            Current values of the DirSyncStatus property match the specified values and the GetChanges cookie indicates
+            the sync client has received all changes synchronized from the on-premise directory.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="ContextNotFound">
+        <xs:annotation>
+          <xs:documentation>
+            No Company with the specified ContextId was found.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="ContextOutOfScope">
+        <xs:annotation>
+          <xs:documentation>
+            The Company with the specified ContextId is out of the scope of objects synchronized to the sync client.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="PartitionUnavailable">
+        <xs:annotation>
+          <xs:documentation>
+            The directory partition containing the Company with the specified ContextId is temporarily unavailable.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="ContextDeleted">
+        <xs:annotation>
+          <xs:documentation>
+            The Company with the specified ContextId is deleted.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="DirSyncStatusMismatch">
+        <xs:annotation>
+          <xs:documentation>
+            One or more of the given DirSyncStatus values has no match in the current DirSyncStatus values of the
+            Company with the specified ContextId.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="InProgress">
+        <xs:annotation>
+          <xs:documentation>
+            Current values of the DirSyncStatus property match the specified values but the GetChanges cookie indicates
+            the sync client may not yet have received all changes synchronized from the on-premise directory.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="UnspecifiedError">
+        <xs:annotation>
+          <xs:documentation>
+            An unspecified error occured.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="ArrayOfDirSyncDrainageCode" type="tns:ArrayOfDirSyncDrainageCode" />
+  <xs:complexType name="ArrayOfDirSyncDrainageCode">
+    <xs:sequence>
+      <xs:element ref="tns:DirSyncDrainageCode" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:simpleType name="SyncOptions">
+    <xs:list>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="None">
+            <xs:annotation>
+              <xs:appinfo>
+                <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">0</EnumerationValue>
+              </xs:appinfo>
+              <xs:documentation>
+                No options.
+              </xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="DelayUntilContextIsProvisioned">
+            <xs:annotation>
+              <xs:appinfo>
+                <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">1</EnumerationValue>
+              </xs:appinfo>
+              <xs:documentation>
+                When a context has a license assigned to, but not provisioned by a service instance,
+                that service instance receives changes to just the company object.
+                When a context has a license assigned to and provisioned by a service instance,
+                that service instance receives changes for all objects in the context.
+              </xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="SkipExchangeSpecificFiltering">
+            <xs:annotation>
+              <xs:appinfo>
+                <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">128</EnumerationValue>
+              </xs:appinfo>
+              <xs:documentation>
+                Skip Exchange specific filtering (can be supplied for Exchange service instances only).
+              </xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="SkipBackfillOnRevisionUpdate">
+            <xs:annotation>
+              <xs:appinfo>
+                <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">1024</EnumerationValue>
+              </xs:appinfo>
+              <xs:documentation>
+                Skip backfill on schema version update.
+              </xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="SkipBackfill">
+            <xs:annotation>
+              <xs:appinfo>
+                <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">32768</EnumerationValue>
+              </xs:appinfo>
+              <xs:documentation>
+                Skip backfill totally. Used only for adding new properties or object classes or 
+                link classes in Sync filter through update cookie.
+              </xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:list>
+  </xs:simpleType>
+  <xs:element name="SyncOptions" nillable="true" type="tns:SyncOptions">
+    <xs:annotation>
+      <xs:documentation>
+        Flags that a federated service may specify to influence the data it receives during synchronization.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:simpleType name="GetDirectoryObjectsOptions">
+    <xs:list>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="None">
+            <xs:annotation>
+              <xs:appinfo>
+                <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">0</EnumerationValue>
+              </xs:appinfo>
+              <xs:documentation>
+                No options.
+              </xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="IncludeForwardLinks">
+            <xs:annotation>
+              <xs:appinfo>
+                <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">1</EnumerationValue>
+              </xs:appinfo>
+              <xs:documentation>
+                Include forward links (which have the directory object set as source) with the directory objects.
+              </xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="IncludeBackLinks">
+            <xs:annotation>
+              <xs:appinfo>
+                <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">2</EnumerationValue>
+              </xs:appinfo>
+              <xs:documentation>
+                Include back links (which have the directory object set as target) with the directory objects.
+              </xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:list>
+  </xs:simpleType>
+  <xs:element name="GetDirectoryObjectsOptions" nillable="true" type="tns:GetDirectoryObjectsOptions">
+    <xs:annotation>
+      <xs:documentation>
+        Flags that a federated service may specify to influence the data it receives from GetDirectoryObjects operation.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+</xs:schema>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!--
+  Configure performance counters for the gateway role
+
+  Notes:
+  - Edge does not support clustering.  All cluster entries should be empty.
+  - Edge does not support Disaster Recovery from setup.  All DisasterRecovery nodes should be empty.
+-->
+<SetupComponentInfo Name="Gateway Perf Counters" DescriptionId="SetupProgressGatewayPerfCounters">
+
+  <ServerTasks>
+
+    <!-- Install/remove Attach Filter perf counters -->
+    <ServerTaskInfo Id="_11f9da316ddb4198bfa9fab3809c9bfd" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>new-PerfCounters -DefinitionFileName AttachFilterPerfCounters.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-PerfCounters -DefinitionFileName AttachFilterPerfCounters.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+  </ServerTasks>
+
+</SetupComponentInfo>
+

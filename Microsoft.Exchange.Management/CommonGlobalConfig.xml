@@ -1,0 +1,2513 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo Name="Common Global AD Configuration" DescriptionId="SetupComponentCommonGlobalConfig">
+
+  <OrgTasks>
+
+    <!-- When XML is processed from new-organization task Setup plug-in needs to be explicitly loaded
+         to allow use of setup tasks. -->
+    <OrgTaskInfo Id="_830b0e6810664106936a5c668dcccda0" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Global/>
+        <!-- $TODO: E14:11806 Figure out precise condition or better solution.
+            The goal is to ingore the following error:
+            Add-PSSnapin : Windows PowerShell snap-in "Microsoft.Exchange.Management.PowerShell.Setup" is loaded with the following warnings:  There were errors in loading the format data file:
+            Microsoft.Exchange.Management.PowerShell.Setup, D:\Program Files\Microsoft\Exchange Server\bin\Exchange.format.ps1xml : File skipped because it was already present from "Microsoft.Exchange.Management.PowerShell.E2010".
+            -->
+        <Tenant>add-PSSnapin -Name Microsoft.Exchange.Management.PowerShell.Setup -ErrorAction SilentlyContinue</Tenant>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall/>
+    </OrgTaskInfo>
+
+    <!-- This task checks the -Name parameter for New-Organization task. -->
+    <OrgTaskInfo Id="_c813613f7e064f3cb5d27ee09dc3985f" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Global/>
+        <Tenant>Test-NewOrganizationName -Value $RoleTenantName</Tenant>
+      </Install>
+      <BuildToBuildUpgrade/>
+      <Uninstall/>
+    </OrgTaskInfo>
+
+    <!-- This task checks the -DomainName parameter for New-Organization task. -->
+    <OrgTaskInfo Id="_fefd75d50fbd4e8ca57b2f76e98d4b5c" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Global/>
+        <Tenant>Test-NewOrganizationDomainName -Value $RoleTenantDomainName</Tenant>
+      </Install>
+      <BuildToBuildUpgrade/>
+      <Uninstall/>
+    </OrgTaskInfo>
+	
+    <!-- Check that this organization is marked for upgrade when running Start-OrganizationUpgrade on E14 orgs-->
+    <!-- This should be removed once E14 to E15 upgrades are completed -->
+    <OrgTaskInfo Id="_52a7259556144c27a86ba570593dfcb6" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Tenant />
+      </Install>
+      <BuildToBuildUpgrade>
+        <Tenant>
+            if (!$PilotEnabled)
+            {
+                $organization = Get-Organization -Identity $RoleOrganizationHierarchicalPath -DomainController $RoleDomainController;
+                if ($organization.AdminDisplayVersion -match "\(14." -and $organization.UpgradeRequest -ne "TenantUpgrade")
+                {
+                  throw "Can not run Start-OrganizationUpgrade on an organization not marked with UpgradeRequest of TenantUpgrade"
+                }
+            }
+        </Tenant>
+      </BuildToBuildUpgrade>
+      <Uninstall />
+    </OrgTaskInfo>
+
+    <!-- Remove tenant configuration container. -->
+    <OrgTaskInfo Id="_fbde5090c73e43eda8bad776df8e9fc8" Component="EXCHANGE14:\Current\Release\Shared\DIY\Recipients&amp;Provisioning">
+      <Install/>
+      <BuildToBuildUpgrade/>
+      <Uninstall>
+        <Global/>
+        <Tenant UseForReconciliation="true">
+          uninstall-Container -Identity $RoleTenantCUFullPath -Recursive
+        </Tenant>
+      </Uninstall>
+    </OrgTaskInfo>
+
+    <!-- Remove tenant organizational unit. -->
+    <OrgTaskInfo Id="_7e2926081606472bb9865ebea22abfd2" Component="EXCHANGE14:\Current\Release\Shared\DIY\Recipients&amp;Provisioning">
+      <Install/>
+      <BuildToBuildUpgrade/>
+      <Uninstall>
+        <Global/>
+        <Tenant UseForReconciliation="true">
+          Uninstall-OrganizationalUnit -Identity $RoleTenantOrganizationFullPath
+        </Tenant>
+      </Uninstall>
+    </OrgTaskInfo>
+
+    <!--  Ensure we have no lingering OldVersion mailbox plans as they break MRS during upgrade for all mailboxes in the tenant -->
+    <OrgTaskInfo Id="_7bb02de3922945daad767761595b94aa" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install/>
+      <BuildToBuildUpgrade>
+        <Tenant>
+          if ($PilotEnabled)
+          {
+              $oldPlans = @(Get-MailboxPlan .OldVersion* -Organization $RoleOrganizationHierarchicalPath -ErrorAction SilentlyContinue -DomainController $RoleDomainController);
+              $oldPlans | %{$_ | Remove-MailboxPlan -DomainController $RoleDomainController};
+          }
+        </Tenant>
+      </BuildToBuildUpgrade>
+      <Uninstall />
+    </OrgTaskInfo>
+
+    <!-- Set MailboxRelease to be the current (latest) value. -->
+    <OrgTaskInfo Id="_d34286ad0a7a4322b87c466235ee4595" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Tenant />
+      </Install>
+      <BuildToBuildUpgrade>
+        <Tenant>
+          $newMailboxRelease = [Microsoft.Exchange.Data.Directory.SystemConfiguration.ExchangeConfigurationUnit]::CurrentMailboxRelease;
+          if ($PilotEnabled)
+          {
+            Set-Organization $RoleOrganizationHierarchicalPath -PilotMailboxRelease:$newMailboxRelease -PreviousMailboxRelease:None -DomainController $RoleDomainController;
+          }
+          else
+          {
+            $organization = Get-Organization -Identity $RoleOrganizationHierarchicalPath -DomainController $RoleDomainController;
+            if ($organization.IsUpgradeOperationInProgress)
+            {
+              Set-Organization $RoleOrganizationHierarchicalPath -MailboxRelease:$newMailboxRelease -PilotMailboxRelease:None -DomainController $RoleDomainController;
+            }
+            else
+            {
+              Set-Organization $RoleOrganizationHierarchicalPath -MailboxRelease:$newMailboxRelease -PilotMailboxRelease:None -PreviousMailboxRelease:$($organization.MailboxRelease) -DomainController $RoleDomainController;
+            }
+          }
+        </Tenant>
+      </BuildToBuildUpgrade>
+      <Uninstall />
+    </OrgTaskInfo>
+    
+    <!-- Enable IsUpgradingOrganization bit in OrganizationFlags. -->
+    <OrgTaskInfo Id="_da88a38e43914512a3dda6a11d524ee5" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Tenant />
+      </Install>
+        <BuildToBuildUpgrade>
+          <Tenant>
+              if ($PilotEnabled)
+              {
+                Set-OrganizationFlags $RoleOrganizationHierarchicalPath -IsPilotingOrganization:$true -IsUpgradeOperationInProgress:$true -DomainController $RoleDomainController;
+              }
+              else
+              {
+                Set-OrganizationFlags $RoleOrganizationHierarchicalPath -IsUpgradingOrganization:$true -IsPilotingOrganization:$false -IsUpgradeOperationInProgress:$true -DomainController $RoleDomainController;
+              }
+          </Tenant>
+        </BuildToBuildUpgrade>
+      <Uninstall />
+    </OrgTaskInfo>
+
+    <!-- 
+        Sets the FFO migration in progress flag to true to disable hygiene configuration until FFO migration is complete
+    -->
+    <OrgTaskInfo Id="_ec89ae2f8bc14a49b5838e5249e6bdd1" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Tenant />
+      </Install>
+      <BuildToBuildUpgrade>
+        <Tenant>
+          $orgVersion = (Get-OrganizationConfig $RoleOrganizationHierarchicalPath -DomainController $RoleDomainController).ObjectVersion;
+
+          # This should only run for the major version W14 -> W15 upgrade -->
+          if ($orgVersion -gt 14000 -and $orgVersion -lt 15000)
+          {
+            Set-OrganizationConfig $RoleOrganizationHierarchicalPath -IsFfoMigrationInProgress:$true -DomainController $RoleDomainController;
+          }
+        </Tenant>
+      </BuildToBuildUpgrade>
+      <Uninstall />
+    </OrgTaskInfo>
+
+    <!-- Add the global directory entry that pins the tenant to this particular resource and account forests  -->
+    <OrgTaskInfo Id="_daf3b063635743a394991a65778dd33e" Component="EXCHANGE14:\Current\Release\Shared\DIY\Recipients&amp;Provisioning">
+      <Install>
+        <Global/>
+        <Tenant>
+          if(!$CreateSharedConfiguration)
+          {
+            Add-ManagementEndPointHook -ExternalDirectoryOrganizationId:$RoleTenantExternalDirectoryOrganizationId -AccountPartition:$RolePartition -PopulateCacheWithDomainName:$RoleTenantDomainName -TenantContainerCN:$RoleTenantName
+          }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade>
+        <Global/>
+        <Tenant>
+          if (-not $PilotEnabled -and !$CreateSharedConfiguration)
+          {
+              Set-ManagementEndPointHook -ExternalDirectoryOrganizationId:$RoleTenantExternalDirectoryOrganizationId -AccountPartition:$RolePartition
+          }
+        </Tenant>
+      </BuildToBuildUpgrade>
+      <Uninstall>
+        <Global/>
+        <Tenant>
+          if(!$CreateSharedConfiguration)
+          {
+            Remove-ManagementEndPointHook -ExternalDirectoryOrganizationId:$RoleTenantExternalDirectoryOrganizationId
+          }
+        </Tenant>
+      </Uninstall>
+    </OrgTaskInfo>
+
+    <!-- upgrade the existing OAB -->
+    <OrgTaskInfo Id="_b8799635ccf242d9addb74d7a3755237" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install />
+      <BuildToBuildUpgrade IsFatal="false">
+        <Global>
+          if ((Get-OrganizationConfig).ObjectVersion -lt 10649)
+          {
+            Get-OfflineAddressBook | foreach
+            {
+              if ((Get-ExchangeServer $_.Server.ObjectGuid.ToString()).IsExchange2007OrLater)
+              { $_ | Set-OfflineAddressBook -DiffRetentionPeriod:30 }
+            }
+          }
+          if ((Get-OrganizationConfig).ObjectVersion -lt 12424)
+          {
+            Get-OfflineAddressBook | foreach
+            {
+              if ((Get-ExchangeServer $_.Server.ObjectGuid.ToString()).IsExchange2007OrLater)
+              { $_ | Set-OfflineAddressBook -UseDefaultAttributes -MaxBinaryPropertySize:32768 -MaxMultivaluedBinaryPropertySize:65536 -MaxStringPropertySize:3400 -MaxMultivaluedStringPropertySize:65536 }
+            }
+          }
+        </Global>
+      </BuildToBuildUpgrade>
+      <Uninstall />
+    </OrgTaskInfo>
+
+    <!-- Create tenant organizational unit.
+         Resolve the ADServerSettings for new-organization. This should be the first "tenant" level operation
+         performed when creating a tenant so that all other cmdlets will use the same DCs to create the organiztion. The
+         server is selected by the new-organization cmdlet so that the inner and outter runspaces use the same DCs for
+         all operations. The cmdlet install-OrganizationalUnit will pick up the correct DC to use automatically (by the RSS) but getting it
+         it to work by forcing the Set-ADServerSetting call sooner is very though because the DC affinity infrastructure treats the
+         parent object (MEHO) special and falls back to RF DCs for some not important checks and fails if the affinity is already
+         forced to an AF DC. So we verify that the correct DC was used and then force the affinity on the session to ensure that
+         nothing can alter it.-->
+    <OrgTaskInfo Id="_9e04baa2a8be47be9e52edfb2c2b007f" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Global/>
+        <Tenant>
+          $TenantOrganizationalUnit = install-OrganizationalUnit -Name $RoleTenantName -MSOSyncEnabled:$ServicePlanSettings.Organization.MSOSyncEnabled -SMTPAddressCheckWithAcceptedDomain:$ServicePlanSettings.Organization.SMTPAddressCheckWithAcceptedDomainEnabled -AccountPartition $RolePartition;
+          if (![string]::IsNullorEmpty($RolePreferredServer))
+          {
+            Set-ADServerSettings -PreferredServer $RolePreferredServer;
+          }
+
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade/>
+      <Uninstall/>
+    </OrgTaskInfo>
+
+    <!-- Create tenant container. -->
+    <OrgTaskInfo Id="_591ededeb77345c9b0298c88bea675e9" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Global/>
+        <Tenant>
+          $TenantContainer = install-TenantContainer -Name $RoleTenantName -AccountPartition $RolePartition
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade/>
+      <Uninstall/>
+    </OrgTaskInfo>
+
+    <!-- Create tenant configuration container. -->
+    <OrgTaskInfo Id="_2030f28a64164b498ce553600ff81c9c" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Global/>
+        <Tenant>
+            $IsDirSyncRunning = (($RoleTenantIsDirSyncRunning -ne $null) -and ($RoleTenantIsDirSyncRunning -eq $true));
+            $DirSyncStatus = $null;
+            if ($RoleTenantDirSyncStatus -ne $null)
+            {
+                $DirSyncStatus = $RoleTenantDirSyncStatus;
+            }
+            if ($RoleTenantExternalDirectoryOrganizationId -eq $null)
+            {
+                install-ConfigurationContainer `
+                    -ParentContainerDN $TenantContainer.DistinguishedName `
+                    -OrganizationalUnit $TenantOrganizationalUnit.DistinguishedName `
+                    -ProgramId $RoleTenantProgramId `
+                    -OfferId $RoleTenantOfferId `
+                    -ServicePlan $RoleTenantServicePlanName `
+                    -IsDirSyncRunning $IsDirSyncRunning `
+                    -DirSyncStatus $DirSyncStatus `
+                    -Location $RoleTenantLocation `
+                    -CompanyTags $RoleTenantCompanyTags `
+                    -PersistedCapabilities $RoleTenantPersistedCapabilities `
+                    -CreateSharedConfiguration $CreateSharedConfiguration
+            }
+            else
+            {
+                install-ConfigurationContainer `
+                    -ParentContainerDN $TenantContainer.DistinguishedName `
+                    -OrganizationalUnit $TenantOrganizationalUnit.DistinguishedName `
+                    -ProgramId $RoleTenantProgramId `
+                    -OfferId $RoleTenantOfferId `
+                    -ServicePlan $RoleTenantServicePlanName `
+                    -ExternalDirectoryOrganizationId $RoleTenantExternalDirectoryOrganizationId `
+                    -IsDirSyncRunning $IsDirSyncRunning `
+                    -DirSyncStatus $DirSyncStatus `
+                    -Location $RoleTenantLocation `
+                    -CompanyTags $RoleTenantCompanyTags `
+                    -PersistedCapabilities $RoleTenantPersistedCapabilities `
+                    -CreateSharedConfiguration $CreateSharedConfiguration
+            }
+
+            if ($RoleTenantDirSyncServiceInstance -ne $null)
+            {
+                Set-Organization -Identity $RoleTenantName -DirSyncServiceInstance $RoleTenantDirSyncServiceInstance
+            }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade/>
+      <Uninstall/>
+    </OrgTaskInfo>
+
+    <!-- Set tenant organization path. -->
+    <!-- Tenant organization path is a temporary solution until scope is implemented. -->
+    <!-- Replacing with scope is tracked by E14:12484. -->
+    <OrgTaskInfo Id="_2621b5819c3d49d089213799b38c97e7" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Global/>
+        <Tenant>
+          $TenantOrganizationFullPath = $RoleTenantName
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade>
+        <Global/>
+        <Tenant>$TenantOrganizationFullPath = $RoleTenantOrganizationDN</Tenant>
+      </BuildToBuildUpgrade>
+      <Uninstall/>
+    </OrgTaskInfo>
+
+    <!-- Create/delete the org container -->
+    <!-- 1. Creates the Exchange Configuration Container under Configuration Naming Context (CN=Microsoft Exchange,CN=Configuration,DC=...) -->
+    <!-- 2. Creates the Exchange Organization Container under Exchange Configuration Container  (CN=<Org Name>,CN=Microsoft Exchange,CN=Configuration,...) -->
+    <!-- 3. Creates the extended rights for exchange in the Extended-Rights container ( CN=<Rights name>,CN=Extended-Rights,CN=Configuration,...) -->
+    <!-- 4. ACLs the Deleted Object Container for Enterprise Admin-->
+    <OrgTaskInfo Id="_a79d51e9e9424d53a462c1254e1ecece" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install Weight ="10" DescriptionId="SetupProgressCreateOrgContainer">
+        <Global>install-ExsetDataAtom -AtomName OrgLevelCt -DomainController $RoleDomainController -Organization $RoleOrganizationName</Global>
+      </Install>
+      <BuildToBuildUpgrade>
+        <Global>buildToBuildUpgrade-ExsetDataAtom -AtomName OrgLevelCt -DomainController $RoleDomainController</Global>
+      </BuildToBuildUpgrade>
+      <Uninstall>
+        <Global>uninstall-ExsetDataAtom -AtomName OrgLevelCt -DomainController $RoleDomainController</Global>
+      </Uninstall>
+    </OrgTaskInfo>
+
+    <!-- Stamp version on the org container -->
+    <OrgTaskInfo Id="_ffa0b8877529439fbe22f0454a3a429d" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Global>install-RootOrganizationContainer -DomainController $RoleDomainController</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+
+    <!--Initialize Service Endpoints -->
+    <!-- We do this right after creating the organization container in case any other setup features ever need to access any services. -->
+    <OrgTaskInfo Id="_2d43d10db8a847dc8ce8a7a597a06a71" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Global>Install-Container "ServiceEndpoints"</Global>
+        <Tenant/>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall>
+        <Global>Uninstall-Container "ServiceEndpoints"</Global>
+        <Tenant/>
+      </Uninstall>
+    </OrgTaskInfo>
+
+    <!-- If the endpoint already exists, the new-ServiceEndpoint tasks updates values, instead of throwing an error. -->
+    <OrgTaskInfo Id="_c8d5ee510f044dcea47b50cf5e495c35" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Global>
+          Get-Variable RoleDatacenterServiceEndpoint* |
+          foreach {
+              Write-ExchangeSetupLog -Info ("Adding endpoint from variable " + $_.Name);
+              $epName = $_.Name.Substring("RoleDatacenterServiceEndpoint".Length);
+              $epXml = [xml]$_.Value;
+              $epUrl = $epXml.ServiceEndpoint.Url;
+              $epUrlTemplate = $epXml.ServiceEndpoint.UrlTemplate;
+              $epToken = $epXml.ServiceEndpoint.Token;
+              $epCert = $epXml.ServiceEndpoint.CertificateSubjectName;              
+              if ([string]::IsNullorEmpty($epUrl))
+              {
+                  Write-ExchangeSetupLog -Info ("Calling New-ServiceEndPoint for endpoint $epName with URL template $epUrlTemplate, Token $epToken and certificate subject $epCert");
+                  New-ServiceEndpoint -Name $epName -UrlTemplate $epUrlTemplate -Token $epToken -CertificateSubjectName $epCert -DomainController $RoleDomainController;
+              }
+              else
+              {
+                  Write-ExchangeSetupLog -Info ("Calling New-ServiceEndPoint for endpoint $epName with URL $epUrl, URL template $epUrlTemplate, Token $epToken and certificate subject $epCert");
+                  New-ServiceEndpoint -Name $epName -Url $epUrl -UrlTemplate $epUrlTemplate -Token $epToken -CertificateSubjectName $epCert -DomainController $RoleDomainController;
+              }
+          }
+        </Global>
+        <Tenant/>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall>
+        <Global>Get-ServiceEndpoint -DomainController $RoleDomainController | Remove-ServiceEndpoint -DomainController $RoleDomainController</Global>
+        <Tenant/>
+      </Uninstall>
+    </OrgTaskInfo>
+
+    <!-- Create the WLM container for first org only (CN=Workload Management Settings,CN=First Organization,CN=Microsoft Exchange,...) -->
+    <!-- Current code does not use this container. We keep it in case PrepareAD of higher version is run on a clean forest and then server of older version is installed. -->
+    <OrgTaskInfo Id="_10A0DDE146D8444384917E31BBE2C50D" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressCreateWLMContainer">
+        <Global>install-Container -Name:"Workload Management Settings" -DomainController $RoleDomainController</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+
+    <!-- Create the container for monitoring settings, first org only -->
+    <OrgTaskInfo Id="_B57B426076CB4343B14DCB5F5B65645A" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressCreateMonitoringSettingsContainer">
+        <Global>install-Container -Name:"Monitoring Settings" -DomainController $RoleDomainController</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+
+    <!-- Create the container for monitoring overrides, first org only -->
+    <OrgTaskInfo Id="_7EA7EAA49F53458EAFCD5FB6FD83064A" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressCreateMonitoringOverrideContainer">
+        <Global>install-Container -Name:"Monitoring Settings","Overrides" -DomainController $RoleDomainController</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+
+    <!-- Create the container for probe overrides, first org only -->
+    <OrgTaskInfo Id="_1D3365E9953B4F4F833AB326AFD88F2D" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressCreateProbeOverrideContainer">
+        <Global>install-Container -Name:"Monitoring Settings","Overrides","Probe" -DomainController $RoleDomainController</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+
+    <!-- Create the container for monitor overrides, first org only -->
+    <OrgTaskInfo Id="_C6B5A3219AA44A418968D136F4DB554E" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressCreateMonitorOverrideContainer">
+        <Global>install-Container -Name:"Monitoring Settings","Overrides","Monitor" -DomainController $RoleDomainController</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+
+    <!-- Create the container for responder overrides, first org only -->
+    <OrgTaskInfo Id="_765BF07136444F01BE554DB4AD3900B7" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressCreateResponderOverrideContainer">
+        <Global>install-Container -Name:"Monitoring Settings","Overrides","Responder" -DomainController $RoleDomainController</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+
+    <!-- Create the container for maintenance overrides, first org only -->
+    <OrgTaskInfo Id="_79923D53202446ADB83F026FA5362661" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressCreateMaintenanceOverrideContainer">
+        <Global>install-Container -Name:"Monitoring Settings","Overrides","Maintenance" -DomainController $RoleDomainController</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+      
+    <!-- Create the AutoDiscover container (CN=Microsoft Exchange AutoDiscover,CN=Services,CN=Configuration,...) -->
+    <OrgTaskInfo Id="_82827bd4d929406dae2d02a65c43d23a" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressCreateGlobalAutoDiscoverContainer">
+        <Global>Install-AutoDiscoverContainer -DomainController $RoleDomainController</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+
+    <!-- Set the ManagementSiteLink
+    -->
+    <OrgTaskInfo Id="_6fe8c182e5464bd6adcfb2e8c70b3fc3" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Global/>
+        <Tenant>
+            if (!$CreateSharedConfiguration -and -not $PilotEnabled)
+            {
+               Set-ManagementSiteLink $TenantOrganizationFullPath -DomainController $RoleDomainController
+            }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall/>
+    </OrgTaskInfo>
+
+    <!--Global CEIP Opt-in/Out-->
+    <OrgTaskInfo Id="_ce9be251bfc945fdb642d9bab6311cb7" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Global>
+          if ($RoleCustomerFeedbackEnabled -ne $null)
+          {
+            Set-OrganizationConfig -CustomerFeedbackEnabled $RoleCustomerFeedbackEnabled;
+          }
+        </Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+
+    <!--Industry-->
+    <OrgTaskInfo Id="_729be0c3e8e44c5f9944fe5c46e91ebe" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Global>
+            Set-OrganizationConfig -Industry $RoleIndustry;
+        </Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+
+    <!-- Create configuration units root for multi-tenancy. -->
+    <OrgTaskInfo Id="_2a04412aae934d0d9281ba376ef5c40d" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Global>
+          if ($RoleIsDatacenter -eq $true -or $RoleIsPartnerHosted -eq $true)
+          {
+            install-ConfigurationUnitsContainer -DomainController $RoleDomainController
+          }
+        </Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+
+    <!-- Install a "Provisioning Policy Container" as well as child "Enforcement" container under
+         Organization Container (CN=Provisioning Policy Container,CN=<Org Name>,CN=Microsoft Exchange,...) -->
+    <ServicePlanTaskInfo FeatureName="AdvancedHydrateableObjectsSharedEnabled">
+      <Install>
+        <Global>install-Container -Name:"Provisioning Policy Container" -DomainController $RoleDomainController</Global>
+        <Tenant>
+          if(!$AdvancedHydrateableObjectsSharedEnabled)
+          {
+            # Regular tenant
+            install-Container -Name:"Provisioning Policy Container" -DomainController $RoleDomainController -Organization $RoleOrganizationHierarchicalPath
+          }
+          elseif( $OldServicePlanSettings -ne $null -and -not $OldServicePlanSettings.Organization.ShareableConfigurationEnabled)
+          {
+            # Transition to tiny tenant
+            $o = Get-Organization -Identity $RoleOrganizationHierarchicalPath
+            $c = $o.OrganizationId.ConfigurationUnit.GetChildId("Provisioning Policy Container").DistinguishedName
+            uninstall-Container -Identity $c -DomainController $RoleDomainController -Recursive;
+          }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </ServicePlanTaskInfo>
+
+    <ServicePlanTaskInfo FeatureName="AdvancedHydrateableObjectsSharedEnabled">
+      <Install>
+        <Global>install-Container -Name:"Provisioning Policy Container","Enforcement" -DomainController $RoleDomainController</Global>
+        <Tenant>
+          if(!$AdvancedHydrateableObjectsSharedEnabled)
+          {
+            install-Container -Name:"Provisioning Policy Container","Enforcement" -DomainController $RoleDomainController -Organization $RoleOrganizationHierarchicalPath
+          }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </ServicePlanTaskInfo>
+
+    <!-- Create a recipient enforcement provisioning policy object.  All limits are "Unlimited" until set to specific
+         values later by service plan.
+
+         NB: Prior to R4, recipient enforcement policy objects were created only if a service plan specified a
+         DistributionListCountQuota (most did.)  In that event, a policy object named "GroupQuotaPolicy" was
+         created.
+
+         In R4 we expect the policy object to always exist in tenants (not necessarily in enterprise), and it
+         became fixed-name object with the name "Recipient Quota Policy."  If the policy object with the old name
+         exists during R3->R4 upgrade, we need to delete and re-create it with the correct name.  Deletion and
+         re-creation is necessary because the TargetObjects property has changed, and that's a WriteOnce property.
+         In a tenant only, if no policy object exists at all we need to create it.
+         
+         The only setting of interest to be preserved from the old enforcement policy was "DistributionListCountQuota"...
+         but the backing schema has changed, so the old schema is now exposed via the property "R3_Deprecated_DLCountQuota."
+         We have to copy it to the new property.  We leave the old schema attribute set so that R3 clients will still see
+         a limit, albeit the old one and not one stamped by updated service plans. -->
+    <ServicePlanTaskInfo FeatureName="AdvancedHydrateableObjectsSharedEnabled">
+      <Install>
+        <Global />
+        <Tenant>
+          # RecipientEnforcementProvisioningPolicy object is:
+          # -Static object in tiny tenants   (BPOS_L)
+          # -Hydrated objects in dehydrated tenants (BPOS_S)
+          if(!$AdvancedHydrateableObjectsSharedEnabled)
+          {
+            # Support cross sku migration.
+            $policy = Get-RecipientEnforcementProvisioningPolicy -DomainController $RoleDomainController -Organization $RoleOrganizationHierarchicalPath -IgnoreDehydratedFlag;
+            if ($policy -eq $null)
+            {
+              New-RecipientEnforcementProvisioningPolicy -DomainController $RoleDomainController -Organization $RoleOrganizationHierarchicalPath -IgnoreDehydratedFlag;
+            }
+          }
+      </Tenant>
+    </Install>
+    <BuildToBuildUpgrade>
+      <Global>
+          $policy = Get-RecipientEnforcementProvisioningPolicy -DomainController $RoleDomainController;
+          if ($policy -ne $null -and (($policy.Name -ne "Recipient Quota Policy") -or (-not $policy.TargetObjects.Contains("SyncMailbox"))))
+          {
+            $dlQuota = $policy.DistributionListCountQuota;
+            $mbQuota = $policy.MailboxCountQuota;
+            $muQuota = $policy.MailUserCountQuota;
+            $mcQuota = $policy.ContactCountQuota;
+            $pfmbQuota = $policy.PublicFolderMailboxCountQuota;
+            $tmbQuota = $policy.TeamMailboxCountQuota;
+            $mpfQuota = $policy.MailPublicFolderCountQuota;
+
+            Remove-RecipientEnforcementProvisioningPolicy -Identity $policy.Identity -Confirm:$false -DomainController $RoleDomainController;
+            $newPolicy = New-RecipientEnforcementProvisioningPolicy -DomainController $RoleDomainController;
+            Set-RecipientEnforcementProvisioningPolicy -Identity $newPolicy.Identity `
+              -DistributionListCountQuota $dlQuota `
+              -MailboxCountQuota $mbQuota `
+              -MailUserCountQuota $muQuota `
+              -ContactCountQuota $mcQuota `
+              -PublicFolderMailboxCountQuota $pfmbQuota `
+              -TeamMailboxCountQuota $tmbQuota `
+              -MailPublicFolderCountQuota $mpfQuota `
+              -DomainController $RoleDomainController;
+            }
+      </Global>
+      <Tenant>
+          # RecipientEnforcementProvisioningPolicy object is:
+          # -Static object in tiny tenants   (BPOS_L)
+          # -Hydrated objects in dehydrated tenants (BPOS_S)
+          if(!$AdvancedHydrateableObjectsSharedEnabled)
+          {
+            $policy = Get-RecipientEnforcementProvisioningPolicy -DomainController $RoleDomainController -Organization $TenantOrganizationFullPath -IgnoreDehydratedFlag;
+            if ($policy -eq $null)
+            {
+              New-RecipientEnforcementProvisioningPolicy -DomainController $RoleDomainController -Organization $TenantOrganizationFullPath -IgnoreDehydratedFlag;
+            }
+            elseif (($policy.Name -ne "Recipient Quota Policy") -or (-not $policy.TargetObjects.Contains("SyncMailbox")))
+            {
+              $dlQuota = $policy.DistributionListCountQuota;
+              $mbQuota = $policy.MailboxCountQuota;
+              $muQuota = $policy.MailUserCountQuota;
+              $mcQuota = $policy.ContactCountQuota;
+              $pfmbQuota = $policy.PublicFolderMailboxCountQuota;
+              $tmbQuota = $policy.TeamMailboxCountQuota;
+              $mpfQuota = $policy.MailPublicFolderCountQuota;
+
+              Remove-RecipientEnforcementProvisioningPolicy -Identity $policy.Identity -Confirm:$false -DomainController $RoleDomainController;
+              $newPolicy = New-RecipientEnforcementProvisioningPolicy -Organization $TenantOrganizationFullPath -DomainController $RoleDomainController -IgnoreDehydratedFlag;
+              Set-RecipientEnforcementProvisioningPolicy -Identity $newPolicy.Identity `
+                -DistributionListCountQuota $dlQuota `
+                -MailboxCountQuota $mbQuota `
+                -MailUserCountQuota $muQuota `
+                -ContactCountQuota $mcQuota `
+                -PublicFolderMailboxCountQuota $pfmbQuota `
+                -TeamMailboxCountQuota $tmbQuota `
+                -MailPublicFolderCountQuota $mpfQuota `
+                -DomainController $RoleDomainController;
+            }
+          }
+      </Tenant>
+      </BuildToBuildUpgrade>
+      <Uninstall />
+    </ServicePlanTaskInfo>
+
+    <!-- Install an "Address Lists Container" container under Organization Container (CN=Address Lists Container,CN=<Org Name>,CN=Microsoft Exchange,...) -->
+    <OrgTaskInfo Id="_0bacae60e7a44f2790527a71c0f31a7d" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Global>install-Container -Name:"Address Lists Container" -DomainController $RoleDomainController</Global>
+        <Tenant>
+          if (!$CreateSharedConfiguration)
+          {
+            install-Container -Name:"Address Lists Container" -DomainController $RoleDomainController -Organization $TenantOrganizationFullPath
+          }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+
+    <!-- Install an "Offline Address Lists" container (CN=Offline Address Lists,CN=Address Lists Container,CN=<OrgName>,...) -->
+    <ServicePlanTaskInfo FeatureName="OfflineAddressBookEnabled">
+      <Install>
+        <Global>install-Container -Name:"Address Lists Container","Offline Address Lists" -DomainController $RoleDomainController</Global>
+        <Tenant>
+            if($ServicePlanSettings.Organization.OfflineAddressBookEnabled -and !$CreateSharedConfiguration)
+            {
+                install-Container -Name:"Address Lists Container","Offline Address Lists" -DomainController $RoleDomainController -Organization $RoleOrganizationHierarchicalPath;
+            }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </ServicePlanTaskInfo>
+
+    <!-- Create the "All Address Lists" container and canned address lists -->
+    <!-- 1. Creates "All Address Lists" container (CN=All Address Lists,CN=Address Lists Container,...) -->
+    <!-- 2. Adds the All Address Lists container to addressBookRoots attribute on Exchange Configuration Container  -->
+    <!-- 3. Creates "All Contacts", "All Distribution Lists", "All Rooms", "All Users", "Public Folders" containers under "All Address Lists" container -->
+    <!-- 4. Adds the "All Rooms" container to the msExchResourceAddressLists attribute of the Exchange Organization Container -->
+    <!-- 5. For on-prem and datacenter tenants, updates the "All Users" address list to exclude modern groups. -->
+    <!-- If serviceplan is provided, Tenant address lists are conditionally created in ProvisioningFeatureCatalog.xml -->    
+    <OrgTaskInfo Id="_662cf7f2fd9149118e6f9b763c24ffb6" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Global>install-CannedAddressLists -DomainController $RoleDomainController</Global>
+        <Tenant />
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+
+    <!-- Create the "All Global Address Lists" container and the default global address list -->
+    <!-- 1. Creates "All Global Address Lists" container  (CN=All Global Address Lists,CN=Address Lists Container,... ) -->
+    <!-- 2. Creates "Deafult Global Address List" container (CN=Default Global Address List,CN=All Global Address Lists,...) -->
+    <!-- 3. Adds the "Default Global Address List" container to "GlobalAddressList" attribute of Exchange Configuration Container -->
+    <OrgTaskInfo Id="_07c2fc2075a74d548d0aecb825253d24" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Global>install-GlobalAddressLists -DomainController $RoleDomainController</Global>
+        <Tenant>
+          if (!$CreateSharedConfiguration)
+          {
+            install-GlobalAddressLists -DomainController $RoleDomainController -Organization $TenantOrganizationFullPath
+          }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+
+    <!-- Create the "All System Address Lists" container and canned system address lists -->
+    <!-- 1. Creates "All System Address Lists" container  (CN=All System Address Lists,CN=Address Lists Container,... ) -->
+    <!-- 2. Creates "All Recipient(VLV)", "All Mailboxes(VLV)", "All Groups(VLV)" under container (CN=All System Address Listsess Lists,...)  -->
+    <!-- 3. We DON'T do this for B2B upgrade of the Enterprise org since this operation may take a long time for a big org                    -->
+    <!--   3a. Enterprise orgs that want to pick up additional address lists must run Enable-AddressListPaging manually                       -->
+    <!-- 4. We DO do this for B2B upgrade of a tenant organization since tenant admins have no right to run enable\disable-AddressListPaging  -->
+    <!--   4a. BUT we run the task with the "-DoNotUpdateRecipients" switch which creates new address lists but does NOT update recipients.   -->
+    <!--       Datacenter Ops must later manually run Enable-AddressListPaging with the -ForceUpdateOfRecipients switch to update recipients. -->
+    <ServicePlanTaskInfo FeatureName="FastRecipientCountingDisabled">
+      <Install>
+        <Global>enable-AddressListPaging -DomainController $RoleDomainController</Global>
+        <Tenant>
+        if(-not $ServicePlanSettings.Organization.FastRecipientCountingDisabled -and !$CreateSharedConfiguration)
+        {
+            enable-AddressListPaging -DomainController $RoleDomainController -Identity $RoleOrganizationHierarchicalPath;
+        }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade>
+        <Global />
+        <Tenant>
+        if(-not $ServicePlanSettings.Organization.FastRecipientCountingDisabled -and !$CreateSharedConfiguration)
+        {
+            enable-AddressListPaging -DoNotUpdateRecipients -DomainController $RoleDomainController -Identity $TenantOrganizationFullPath
+        }
+        </Tenant>
+      </BuildToBuildUpgrade>
+      <Uninstall />
+    </ServicePlanTaskInfo>
+
+    <!-- Create the RBAC container (CN=RBAC,CN=<Org Name>,CN=Microsoft Exchange,...) -->
+    <ServicePlanTaskInfo FeatureName="AdvancedHydrateableObjectsSharedEnabled">
+      <Install DescriptionId="SetupProgressCreateRBACContainer">
+        <Global>install-Container -Name:"RBAC" -DomainController $RoleDomainController</Global>
+        <Tenant>
+            if(!$AdvancedHydrateableObjectsSharedEnabled)
+            {
+                install-Container -Name:"RBAC" -DomainController $RoleDomainController -Organization $RoleOrganizationHierarchicalPath
+            }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </ServicePlanTaskInfo>
+    
+    <!-- Create the RBAC/Roles container (CN=Roles,CN=RBAC,...) -->
+    <ServicePlanTaskInfo FeatureName="AdvancedHydrateableObjectsSharedEnabled">
+      <Install DescriptionId="SetupProgressCreateRBACRolesContainer">
+        <Global>install-Container -Name:"RBAC","Roles" -DomainController $RoleDomainController</Global>
+        <Tenant>
+            # handle install, upgrade and transition to different service plan, including transition to tiny-tenant
+
+            #1. tiny tenant                                   -> skip
+            #2. regular/shared tenant - install               -> install-container
+            #3. regular/shared tenant - upgrade               -> install-container
+            #4. regular        tenant - transition to regular -> install-container
+            #5. tiny           tenant - transition to regular -> install-container
+            #6. regular        tenant - transition to tiny    -> uninstall-container
+
+            if(!$AdvancedHydrateableObjectsSharedEnabled)
+            {
+                # 2..5 - regular/shared tenant, or migration from tiny to regular
+                install-Container -Name:"RBAC","Roles" -DomainController $RoleDomainController -Organization $RoleOrganizationHierarchicalPath
+            }
+            elseif($OldServicePlanSettings -ne $null -and !$OldServicePlanSettings.Organization.AdvancedHydrateableObjectsSharedEnabled)
+            {
+                #6 - transition to tiny tenant
+                $o = Get-Organization -Identity $RoleOrganizationHierarchicalPath
+                $c = $o.OrganizationId.ConfigurationUnit.GetDescendantId("RBAC", "Roles").DistinguishedName
+                uninstall-Container -Identity $c -DomainController $RoleDomainController -Recursive;
+            }
+            else
+            {
+                #1 - tiny tenant, do nothing
+            }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </ServicePlanTaskInfo>
+
+    <!-- Create the RBAC/Scopes container (CN=Scopes,CN=RBAC,...) -->
+    <ServicePlanTaskInfo FeatureName="AdvancedHydrateableObjectsSharedEnabled">
+      <Install DescriptionId="SetupProgressCreateRBACScopesContainer">
+        <Global>install-Container -Name:"RBAC","Scopes" -DomainController $RoleDomainController</Global>
+        <Tenant>
+            #using the same logic as in CreateRBACRolesContainer
+            if(!$AdvancedHydrateableObjectsSharedEnabled)
+            {
+                install-Container -Name:"RBAC","Scopes" -DomainController $RoleDomainController -Organization $RoleOrganizationHierarchicalPath
+            }
+            elseif($OldServicePlanSettings -ne $null -and !$OldServicePlanSettings.Organization.AdvancedHydrateableObjectsSharedEnabled)
+            {
+                #transition to tiny tenant
+                $o = Get-Organization -Identity $RoleOrganizationHierarchicalPath
+                $c = $o.OrganizationId.ConfigurationUnit.GetDescendantId("RBAC", "Scopes").DistinguishedName
+                uninstall-Container -Identity $c -DomainController $RoleDomainController -Recursive;
+            }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </ServicePlanTaskInfo>
+
+    <!-- Create the RBAC/Role Assignments container (CN=Role Assignments,CN=RBAC,...) -->
+    <ServicePlanTaskInfo FeatureName="AdvancedHydrateableObjectsSharedEnabled">
+      <Install DescriptionId="SetupProgressCreateRBACRoleAssignmentsContainer">
+        <Global>install-Container -Name:"RBAC","Role Assignments" -DomainController $RoleDomainController</Global>
+        <Tenant>
+            #using the same logic as in CreateRBACRolesContainer
+            if(!$AdvancedHydrateableObjectsSharedEnabled)
+            {
+                install-Container -Name:"RBAC","Role Assignments" -DomainController $RoleDomainController -Organization $RoleOrganizationHierarchicalPath
+            }
+            elseif($OldServicePlanSettings -ne $null -and !$OldServicePlanSettings.Organization.AdvancedHydrateableObjectsSharedEnabled)
+            {
+                #transition to tiny tenant
+                $o = Get-Organization -Identity $RoleOrganizationHierarchicalPath
+                $c = $o.OrganizationId.ConfigurationUnit.GetDescendantId("RBAC", "Role Assignments").DistinguishedName
+                uninstall-Container -Identity $c -DomainController $RoleDomainController -Recursive;
+            }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </ServicePlanTaskInfo>
+
+    <!-- Create the RBAC/Policies container (CN=Policies,CN=RBAC,...) -->
+    <ServicePlanTaskInfo FeatureName="AdvancedHydrateableObjectsSharedEnabled">
+      <Install DescriptionId="SetupProgressCreateRBACPoliciesContainer">
+        <Global>install-Container -Name:"RBAC","Policies" -DomainController $RoleDomainController</Global>
+        <Tenant>
+            #using the same logic as in CreateRBACRolesContainer
+            if(!$AdvancedHydrateableObjectsSharedEnabled)
+            {
+                install-Container -Name:"RBAC","Policies" -DomainController $RoleDomainController -Organization $RoleOrganizationHierarchicalPath
+            }
+            elseif($OldServicePlanSettings -ne $null -and !$OldServicePlanSettings.Organization.AdvancedHydrateableObjectsSharedEnabled)
+            {
+                #transition to tiny tenant
+                $o = Get-Organization -Identity $RoleOrganizationHierarchicalPath
+                $c = $o.OrganizationId.ConfigurationUnit.GetDescendantId("RBAC", "Policies").DistinguishedName
+                uninstall-Container -Identity $c -DomainController $RoleDomainController -Recursive;
+            }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </ServicePlanTaskInfo>
+
+    <!-- Create the transport settings container (CN=Transport Settings,CN=<Org Name>,CN=Microsoft Exchange,...) -->
+    <OrgTaskInfo Id="_5f89843083a64840a82e7d0e82db63d2" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressCreateTransportSettingsContainer">
+        <Global>install-TransportConfigContainer -Name:"Transport Settings" -DomainController $RoleDomainController</Global>
+        <Tenant>install-TransportConfigContainer -Name:"Transport Settings" -DomainController $RoleDomainController -Organization $TenantOrganizationFullPath</Tenant>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+   
+    <!-- Creates singleton config objects for Perimeter config (CN=Tenant Perimeter Settings,CN=TransportSettings,CN=<Org Name>... ). This holds 
+    information/settings for Perimeter (e.g. Hotmail, FOPE).-->
+    <OrgTaskInfo Id="_06585009e00d4d51bde6c70b61ebe080" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressConfigurePerimeterConfig">
+        <Tenant>
+          if (!$CreateSharedConfiguration)
+          {
+            install-PerimeterConfigContainer -Name:"Transport Settings","Tenant Perimeter Settings" -DomainController $RoleDomainController -Organization $TenantOrganizationFullPath
+          }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+    
+    <!-- Create default malware filtering policy (CN=Default,CN=Malware Filter,CN=Tranport Settings,... ) -->
+    <OrgTaskInfo Id="_adfde39cc90549bb93b602c9a4a58c46" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressMalwareFilterPolicy">
+        <Global>
+          if($RoleIsDatacenter -ne $true -and $RoleIsPartnerHosted -ne $true)
+          {
+            if ((Get-MalwareFilterPolicy -DomainController $RoleDomainController | where {$_.IsDefault -eq $true}) -eq $null)
+            {
+              New-MalwareFilterPolicy -Name "Default" -DomainController $RoleDomainController
+            }
+          }
+        </Global>
+        <Tenant />
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+    
+    <!-- Create the Transport Settings/Accepted Domains container (CN=Accepted Domains,CN=Transport Settings,...) -->
+    <OrgTaskInfo Id="_6bd5c03dd69e4fc28c27fec64bac8441" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressCreateAcceptedDomainsContainer">
+        <Global>install-Container -Name:"Transport Settings","Accepted Domains" -DomainController $RoleDomainController</Global>
+        <Tenant>install-Container -Name:"Transport Settings","Accepted Domains" -DomainController $RoleDomainController -Organization $TenantOrganizationFullPath</Tenant>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+    
+    <!-- Install a default accepted domain. (CN=<FDQN of the root domain>,CN=Accepted Domains,...) -->
+    <OrgTaskInfo Id="_1b3401f8bd354d89904ac8222900e85a" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressInstallDefaultAcceptedDomain">
+        <Global>install-DefaultAcceptedDomain -Name $RoleFullyQualifiedDomainName -DomainName $RoleFullyQualifiedDomainName -DomainController $RoleDomainController</Global>
+        <Tenant>new-AcceptedDomain -Name $RoleTenantDomainName -DomainName $RoleTenantDomainName -DomainController $RoleDomainController -Organization $TenantOrganizationFullPath -AuthenticationType $RoleAuthenticationType -LiveIdInstanceType $RoleLiveIdInstanceType -OutBoundOnly $RoleOutBoundOnly -InitialDomain:$true;</Tenant>
+      </Install>
+      <BuildToBuildUpgrade>
+        <Global>install-DefaultAcceptedDomain -Name $RoleFullyQualifiedDomainName -DomainName $RoleFullyQualifiedDomainName -DomainController $RoleDomainController</Global>
+        <Tenant/>
+      </BuildToBuildUpgrade>
+      <Uninstall>
+        <Global />
+        <Tenant>
+          <!--Coexistence Domains probably have Dns Records registered with WebDns. Remove-AcceptedDomain will clean this up if we call it.-->
+          $acceptedDomains = get-accepteddomain -organization $RoleTenantOrganizationFullPath | where {$_.IsCoexistenceDomain -eq $true}
+          if($acceptedDomains -ne $null)
+          {
+          foreach($acceptedDomain in $acceptedDomains)
+          {
+          set-acceptedDomain -Identity $acceptedDomain.Identity -IsCoexistenceDomain:$false -Confirm:$false;
+          }
+          }
+        </Tenant>
+      </Uninstall>
+    </OrgTaskInfo>
+
+    <!-- Create the Transport Settings/Interceptor Rules container (CN=Interceptor Rules,CN=Transport Settings,...) -->
+    <OrgTaskInfo Id="_c0620b6e59684d2299b8f989af07d9be" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressCreateInterceptorRulesContainer">
+        <Global>install-Container -Name:"Transport Settings","Interceptor Rules" -DomainController $RoleDomainController</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+
+    <!-- Install a default email address policy -->
+    <!-- 1. Creates "Recipient Policies" container (CN=Recipient Policies,CN=<Org Name>,...) -->
+    <!-- 2. Creates recipient policy "Default Policy" (CN=Default Policy,CN=Recipient Policies,CN=<Org Name>,...) -->
+    <OrgTaskInfo Id="_3152afec31dd4f5aa57a37923b4e7404" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressInstallDefaultEmailAddressPolicy">
+        <Global>install-EmailAddressPolicy -DomainController $RoleDomainController</Global>
+        <Tenant>
+          if (!$CreateSharedConfiguration)
+          {
+            install-EmailAddressPolicy -DomainController $RoleDomainController -DomainName $RoleTenantDomainName -Organization $TenantOrganizationFullPath
+          }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+
+    <!-- Propagate EmailAddressPolicy domain config to AcceptedDomain config -->
+    <OrgTaskInfo Id="_dcee6c5f86f24e85b5fe1e9cef0b175c" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Global>
+          $acceptedDomains = @{};
+          Get-AcceptedDomain | foreach {
+              $domainName = $_.DomainName.ToString();
+              if ($acceptedDomains.Contains($domainName)) {
+                  Write-ExchangeSetupLog -Warning "Duplicate AcceptedDomain found.  '$($acceptedDomains[$domainName])' and '$($_.Name)' both reference domain '$domainName'";
+              } else {
+                  $acceptedDomains.Add($domainName, $_.Name);
+              };
+          };
+
+          function getSmtpTemplates ([string]$property)
+          {
+              $input |
+                  Select-Object -ExpandProperty $property |
+                  Where-Object {$_.PrefixString -eq "SMTP"} |
+                  Foreach-Object {$_.AddressTemplateString -replace ".*@", ""};
+          }
+
+
+          function addDomains ([Microsoft.Exchange.Data.Directory.SystemConfiguration.AcceptedDomainType]$domainType)
+          {
+              $domain = $null;
+              $input |
+                  Where-Object {-not $acceptedDomains.ContainsKey($_) -and -not $acceptedDomains.ContainsKey("*.$_")} |
+                  Where-Object {[Microsoft.Exchange.Data.SmtpDomainWithSubdomains]::TryParse($_, [ref] $domain)} |
+                  Foreach-Object {
+                      
+                      $name = $domain.ToString();
+
+                      # Test to see if email address policy matches a recipient policy 
+                      # with a wildcard domain before adding it
+                      $needToAddDomain = $true;
+                      While ($name.Contains(".")) {
+                          $index = $name.IndexOf(".") + 1;
+                          $name = $name.Substring($index);
+                          if ($acceptedDomains.ContainsKey("*.$name")) {
+                              $needToAddDomain = $false;
+                              Break;
+                          };
+                      };
+
+                      if ($needToAddDomain) {
+                          $name = $domain.ToString();
+                          if ($name.Length -gt 64) { $name = $name.Substring(0, 64) };
+                          if ($acceptedDomains.ContainsValue($name) ) {$name = [System.Guid]::NewGuid().ToString()};
+
+                          New-AcceptedDomain -Name:$name -DomainName:$domain -DomainType:$domainType;
+                          $acceptedDomains[$domain.ToString()] = $name;
+                      };
+                  };
+          }
+
+          $emailAddressPolicies = Get-EmailAddressPolicy;
+          $emailAddressPolicies | getSmtpTemplates "NonAuthoritativeDomains" | addDomains "InternalRelay";
+          $emailAddressPolicies | getSmtpTemplates "EnabledEmailAddressTemplates" | addDomains "Authoritative";
+        </Global>
+        <Tenant/>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+    
+    <!-- Ensure the Default Email Address Policy is set as the Default Accepted Domain -->
+    <OrgTaskInfo Id="_6ef41a1df54d4beb8f803c27b96c59ba" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Global>
+          Write-ExchangeSetupLog -Info "Set the default Accepted domain from the default recipient policy";
+          $defaultEmailAddressPolicy = get-EmailAddressPolicy -Identity:"Default Policy";
+
+          $defaultSmtpTemplate = $defaultEmailAddressPolicy.EnabledPrimarySMTPAddressTemplate;
+
+          $index = $defaultSmtpTemplate.IndexOf("@") + 1;
+          $eapAuthoritativeDomain = $defaultSmtpTemplate.Substring($index);
+
+          $acceptedDomains = Get-AcceptedDomain;
+          $defaultDomain = $acceptedDomains | Where {$_.DomainName -eq $eapAuthoritativeDomain -or $_.DomanName -eq "*.$eapAuthoritativeDomain" };
+
+          # If an accepted domain couldn't be found which matches the default email address policy, then try and find
+          # the wildcard domain which matches it and set that as the default
+          While ($defaultDomain -eq $null -and $eapAuthoritativeDomain.Contains(".")) {
+              $index = $eapAuthoritativeDomain.IndexOf(".") + 1;
+              $eapAuthoritativeDomain = $eapAuthoritativeDomain.Substring($index);
+              $defaultDomain = $acceptedDomains | Where {$_.DomainName -eq "*.$eapAuthoritativeDomain" };
+          };
+
+          $defaultDomain | set-accepteddomain -MakeDefault:$true;
+          Write-ExchangeSetupLog -Info "Default domain $defaultDomain";
+        </Global>
+        <Tenant/>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+
+    <!-- Install a "Connections" container under Organization Container (CN=Connections,CN=<Org Name>,...) -->
+    <OrgTaskInfo Id="_3485a303735247aaa209f7db14efa587" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Global>Install-Container -Name:"Connections" -DomainController $RoleDomainController</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall/>
+    </OrgTaskInfo>
+
+    <!-- Creates "ExchangeAssistance" container under "Organization" container ( CN=ExchangeAssistance,CN=<Org Name>, CN=Microsoft Exchange,... ) -->
+    <ServicePlanTaskInfo FeatureName="AdvancedHydrateableObjectsSharedEnabled">
+      <Install>
+        <Global>New-ExchangeAssistanceConfig -DomainController $RoleDomainController</Global>
+        <Tenant>
+          # ExchangeAssistanceConfig object is:
+          # -Static object in tiny tenants   (BPOS_L)
+          # -Hydrated objects in dehydrated tenants (BPOS_S)
+          if(!$AdvancedHydrateableObjectsSharedEnabled)
+          {
+            New-ExchangeAssistanceConfig -DomainController $RoleDomainController -Organization $RoleOrganizationHierarchicalPath -IgnoreDehydratedFlag;
+          }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </ServicePlanTaskInfo>
+    
+    <!-- Creates "Global Settings" container under "Organization" container ( CN=Global Settings,CN=<Org Name>, CN=Microsoft Exchange,... ) -->
+    <OrgTaskInfo Id="_92375c95c2b041d5aab8de0dd3b43fd4" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressInstallGlobalSettingsContainer">
+        <Global>Install-GlobalSettingsContainer -Name:"Global Settings" -DomainController $RoleDomainController</Global>
+        <Tenant>Install-GlobalSettingsContainer -Name:"Global Settings" -DomainController $RoleDomainController -Organization $TenantOrganizationFullPath</Tenant>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+
+    <!-- Creates "Message Delivery" container under "Global Settings" container -->
+    <OrgTaskInfo Id="_1fc786ae4cc5404ba62795b1603903af" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressInstallMessageDeliveryContainer">
+        <Global>Install-MessageDeliveryContainer -DomainController $RoleDomainController</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+
+    <!-- Creates "Default Message Filter" container under "Message Delivery" container  -->
+    <OrgTaskInfo Id="_a4db31ff4dd44cd389eb6b6020cc84ec" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressInstallDefaultMessageFilterContainer">
+        <Global>Install-DefaultMessageFilterContainer -DomainController $RoleDomainController</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+
+    <!-- Creates "Default Connection Filter" container under "Default Message Filter" container  -->
+    <OrgTaskInfo Id="_ea7fa46558634d94be3399b4786fc356" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressInstallDefaultConnectionFilterContainer">
+        <Global>Install-DefaultConnectionFilterContainer -DomainController $RoleDomainController</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+
+    <!-- Install a default Internet Message Format -->
+    <!-- 1. Creates "Internet Message Formats" container under "Global Settings" container (CN=Internet Message Formats, CN=Global Settings,CN=<Org Name>,... ) -->
+    <!-- 2. Creates "Default" internet message format object under "Internet Message Formats" container (CN=Default, CN=Internet Message Formats, CN=Global Settings,CN=<Org Name>,... ) -->
+    <OrgTaskInfo Id="_9c09f6031d0f49f8ba3969cb7b53865f" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressInstallInternetMessageFormat">
+        <Global>Install-InternetMessageFormat -DomainController $RoleDomainController</Global>
+        <Tenant>
+          if (!$CreateSharedConfiguration)
+          {
+            Install-InternetMessageFormat -DomainController $RoleDomainController -Organization $RoleOrganizationHierarchicalPath
+          }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+
+    <!-- Create/delete global containers underneath the org container -->
+    <!-- 1. Creates "Message Delivery" container under "Global Settings" container (CN=Message Delivery,CN=Global Settings,CN=<Org Name>,... ) -->
+    <!-- 2. Creates "Addressing" container and the objects underneath it (CN=Addressing,CN=<Org Name>,... ) -->
+    <!-- 3. Creates "System Policies" container  (CN=System Policies,CN=<Org Name>,... ) -->
+    <!-- 4. Creates "Mail Enable Recipient" and "Mailbox Enable User" system policies under "System Policies" container -->
+    <OrgTaskInfo Id="_cd6bb3bad16a40cda5ef6dfde0d67ff3" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install Weight ="10" DescriptionId="SetupProgressCreateGlobalContainers">
+        <Global>install-ExsetDataAtom -AtomName OrgCtChildren -DomainController $RoleDomainController</Global>
+      </Install>
+      <BuildToBuildUpgrade>
+        <Global>buildToBuildUpgrade-ExsetDataAtom -AtomName OrgCtChildren -DomainController $RoleDomainController</Global>
+      </BuildToBuildUpgrade>
+      <Uninstall>
+        <Global>uninstall-ExsetDataAtom -AtomName OrgCtChildren -DomainController $RoleDomainController</Global>
+      </Uninstall>
+    </OrgTaskInfo>
+
+    <ServicePlanTaskInfo FeatureName="RecreateCannedRBACRoleGroups">
+      <Install Weight ="5" DescriptionId="SetupProgressCreateGlobalExchangeUSGs">
+        <!-- Create/delete the global Exchange USGs under the root domain -->
+        <!-- 1. Creates "Microsoft Exchange Security Groups" organizational unit under the root domain (OU=Microsoft Exchange Security Groups,<Root Domain>) -->
+        <!-- 2. Creates "Exchange Servers" group (CN=Exchange Servers,OU=Microsoft Exchange Security Groups,... ) -->
+        <!-- 3. Creates "Recipient Management" group (CN=Recipient Management,OU=Microsoft Exchange Security Groups,... ) -->
+        <!-- 4. Creates "View-Only Organization Management" group (CN=View-Only Organization Management,OU=Microsoft Exchange Security Groups,... ) -->
+        <!-- 5. Creates "ExchangeLegacyInterop" group (CN=ExchangeLegacyInterop,OU=Microsoft Exchange Security Groups,... ) -->
+        <!-- 6. Creates "Organization Management" role group (CN=Organization Management,OU=Microsoft Exchange Security Groups,... ) -->
+        <!-- 7. Adds the created USGs to the otherWellKnownObjects attribute on  Exchange Configuration container -->
+        <Global>initialize-ExchangeUniversalGroups -DomainController $RoleDomainController -ActiveDirectorySplitPermissions $RoleActiveDirectorySplitPermissions</Global>
+        <!-- Create/delete the global Exchange USGs under the Org's root OU -->
+        <!-- 1. Creates "Hosted Organization Security Groups" organizational unit under the org's root ou (OU=Hosted Organization Security Groups,<...>) -->
+        <!-- 2. Creates "Hosted Organization Mailboxes" group (CN=Hosted Organization Mailboxes,OU=Hosted Organization Security Groups,... ) -->
+        <!-- 3. Creates RBAC RoleGroups base on ServicePlan Settings-->
+        <Tenant>
+            if($NewServicePlanSettings)
+            {
+                $ServicePlanSettingsParameter = $NewServicePlanSettings
+            }
+            else
+            {
+                $ServicePlanSettingsParameter = $ServicePlanSettings
+            }
+
+            $isDehydrated = $CommonHydrateableObjectsSharedEnabled;
+            Initialize-TenantUniversalGroups -ServicePlanSettings $ServicePlanSettingsParameter -DomainController $RoleDomainController -Organization $RoleOrganizationHierarchicalPath -IsDehydrated:$isDehydrated;
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall>
+        <Global>uninstall-ExchangeUniversalGroups</Global>
+      </Uninstall>
+    </ServicePlanTaskInfo>
+
+    <!-- Install an "Administrative Groups" container under Organization Container  (CN=Administrative Groups,CN=<Org Name>,CN=Microsoft Exchange,...) -->
+    <OrgTaskInfo Id="_b10b3f6dc8ae43bb981e62fd38c8e0cb" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressInstallAdministrativeGroupContainer">
+        <Global>Install-AdministrativeGroupContainer -Name:"Administrative Groups" -DomainController $RoleDomainController</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+
+    <!-- Create/delete the well-known E12 admin group -->
+    <!-- 1. Create "Exchange Administrative Group (FYDIBOHF23SPDLT)" admin group (CN=Exchange Administrative Group (FYDIBOHF23SPDLT),CN=Administrative Groups,... ) -->
+    <!-- 2. Create "Folder Hierarchies" container (CN=Folder Hierarchies,CN=Exchange Administrative Group (FYDIBOHF23SPDLT),... ) -->
+    <!-- 3. Create "Public Folders" public folder tree (CN=Public Folders,CN=Folder Hierarchies,... ) -->
+    <!-- 4. Create "Servers" container (CN=Servers,CN=Exchange Administrative Group (FYDIBOHF23SPDLT),... ) -->
+    <!-- 5. Create "Advanced Security" container (CN=Advanced Security,CN=Exchange Administrative Group (FYDIBOHF23SPDLT),... ) -->
+    <!-- 6. Create "Encryption" encryption config object (CN=Encryption,CN=Advanced Security,... ) -->
+    <!-- 7. Create "Legacy GWART" site addressing object (CN==Legacy GWART,CN=Exchange Administrative Group (FYDIBOHF23SPDLT),... ) -->
+    <!-- 8. Create "Routing Groups" container (CN=Routing Groups,CN=Exchange Administrative Group (FYDIBOHF23SPDLT),... ) -->
+    <!-- 9. Create "Exchange Routing Group (DWBGZMFD01QNBJR)" routing group (CN=Exchange Routing Group (DWBGZMFD01QNBJR),CN=Routing Groups,... ) -->
+    <!-- 10. Create "Connections" connector object (CN=Conncections,CN=Exchange Routing Group (DWBGZMFD01QNBJR),... ) -->
+
+    <OrgTaskInfo Id="_48aad7b8f00942afbc699677d60bb3fe" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressConfigureAdminGroup">
+        <Global>install-AdministrativeGroup -DomainController $RoleDomainController</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+
+    <!-- Initialize the Exchange configuration container permissions. 
+         Re-run in Update-ServicePlan if feature SkipCustomPolicyContainersEnabled is changed - need to update permissions on OAB container-->
+    <ServicePlanTaskInfo FeatureName="OfflineAddressBookEnabled">
+      <Install Weight ="5" DescriptionId="SetupProgressInitializeExchangeConfigurationContainer">
+        <Global>initialize-ExchangeConfigurationPermissions -DomainController $RoleDomainController</Global>
+        <Tenant>
+            if($ServicePlanSettings.Organization.OfflineAddressBookEnabled -and !$CreateSharedConfiguration)
+            {
+                initialize-TenantConfigurationPermissions -DomainController $RoleDomainController -Organization $RoleOrganizationHierarchicalPath
+            }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </ServicePlanTaskInfo>
+
+    <!-- Initialize permissions on the admin group -->
+    <OrgTaskInfo Id="_b175f8c16c41495fa9b1e6f26681a32b" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressSetPermissionsOnAdminGroup">
+        <Global>initialize-AdminGroupPermissions -DomainController $RoleDomainController</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+
+    <!-- create the Microsoft Exchange Recipient object -->
+    <!-- This task will create the Microsoft Exchange Recipient object if the object does not exist-->
+    <!-- This task does not apply RUS against the object, it should be done on the first mailbox server install or upgrade whose build number is greater than 641-->
+    <OrgTaskInfo Id="_a8b72258034b4410851e699d27af52e2" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Global>New-MicrosoftExchangeRecipient -DomainController $RoleDomainController</Global>
+        <Tenant>
+          if (!$CreateSharedConfiguration)
+          {
+            New-MicrosoftExchangeRecipient -DomainController $RoleDomainController -Organization $TenantOrganizationFullPath
+          }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Global>Remove-MicrosoftExchangeRecipient -DomainController $RoleDomainController</Global>
+      </Uninstall>
+    </OrgTaskInfo>
+
+    <!-- Create default supervision tags-->
+    <OrgTaskInfo Id="_804b3f230af0437bb7dfebb4dfb8de8d" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Global>Set-TransportConfig -DomainController $RoleDomainController -SupervisionTags Allow,Reject</Global>
+        <Tenant>
+          if (!$CreateSharedConfiguration)
+          {
+            Set-TransportConfig -DomainController $RoleDomainController -Identity $TenantOrganizationFullPath -SupervisionTags Allow,Reject
+          }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade>
+        <Global>
+          $tc=Get-TransportConfig -DomainController $RoleDomainController;
+          if (!$tc.SupervisionTags.Contains("Allow"))
+          {
+            $tc.SupervisionTags.Add("Allow");
+          }
+          if (!$tc.SupervisionTags.Contains("Reject"))
+          {
+            $tc.SupervisionTags.Add("Reject");
+          }
+          Set-TransportConfig -DomainController $RoleDomainController -SupervisionTags $tc.SupervisionTags;
+        </Global>
+        <Tenant>
+          if (!$CreateSharedConfiguration)
+          {
+            $tc=Get-TransportConfig -DomainController $RoleDomainController -Identity $TenantOrganizationFullPath;
+            if (!$tc.SupervisionTags.Contains("Allow"))
+            {
+              $tc.SupervisionTags.Add("Allow");
+            }
+            if (!$tc.SupervisionTags.Contains("Reject"))
+            {
+              $tc.SupervisionTags.Add("Reject");
+            }
+            Set-TransportConfig -DomainController $RoleDomainController -Identity $TenantOrganizationFullPath -SupervisionTags $tc.SupervisionTags
+          }
+        </Tenant>
+      </BuildToBuildUpgrade>
+      <Uninstall />
+    </OrgTaskInfo>
+
+    <!-- Update ThrottlingLimit for tenant based on estimated license count if needed-->
+    <OrgTaskInfo Id="_52a7259556144c27a96ba570593dfcb7" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Tenant />
+      </Install>
+      <BuildToBuildUpgrade>
+        <Tenant>
+          Write-ExchangeSetupLog -Info "Entry for Update ThrottlingLimit for estimated license count if needed."
+          if (!$CommonHydrateableObjectsSharedEnabled -and $EnableUpdateThrottling -and (($TargetOfferId -eq 'BPOS_S_Hydrated') -or ($TargetOfferId -eq 'BPOS_M_Hydrated')))
+          {
+              $needToApplyChange = $false
+              $needToCreateNewOrgThrottling = $false
+              $HashArguments = @{}
+
+              $orgProvisioning = Get-RecipientEnforcementProvisioningPolicy -Organization $RoleOrganizationHierarchicalPath -status
+              $estimatedLicensedUser = $orgProvisioning.MailboxCount + $orgProvisioning.MailUserCount
+
+              Write-ExchangeSetupLog -Info "there are '$estimatedLicensedUser' license user count in '$RoleOrganizationHierarchicalPath'."
+
+              $globalThrottling =  Get-ThrottlingPolicy -ThrottlingPolicyScope Global
+              $orgThrottling = Get-ThrottlingPolicy -Organization $RoleOrganizationHierarchicalPath -ThrottlingPolicyScope Organization
+              $nameWithB2BUpgrade = "[{0}]-B2BUpgrade-{1}" -f $env:computername, [DateTime]::UtcNow.ToString("o")
+
+              if (!$orgThrottling -or $orgThrottling.ThrottlingPolicyScope -eq "Global")
+              {
+                 Write-ExchangeSetupLog -Info "The tenant doesn't have organization scope policy yet."
+
+                 if (($estimatedLicensedUser -gt 1000) -and ($estimatedLicensedUser -le 5000) -and (($globalThrottling.PowerShellMaxConcurrency.Value -lt 10) -or ($globalThrottling.PowerShellMaxTenantConcurrency.Value -lt 50 ) -or ($globalThrottling.PowerShellMaxBurst.Value -lt 600000) -or ($globalThrottling.PowerShellRechargeRate -lt 1800000 )))
+                 {
+                     $needToCreateOrgThrottling = $true
+                     Write-ExchangeSetupLog -Info "we have to create organizational throttling for '$estimatedLicensedUser' license user."
+                 }
+
+                 if (($estimatedLicensedUser -gt 5000) -and (($globalThrottling.PowerShellMaxConcurrency.Value -lt 20) -or ($globalThrottling.PowerShellMaxTenantConcurrency.Value -lt 100 ) -or ($globalThrottling.PowerShellMaxBurst.Value -lt 900000) -or ($globalThrottling.PowerShellRechargeRate -lt 2160000 )))
+                 {
+                     $needToCreateOrgThrottling = $true
+                     Write-ExchangeSetupLog -Info "we have to create organizational throttling for '$estimatedLicensedUser' license user."
+                 }
+
+                 if ($needToCreateOrgThrottling)
+                 {
+                    if ($globalThrottling.PowerShellMaxConcurrency.IsUnlimited -and $globalThrottling.PowerShellMaxTenantConcurrency.IsUnlimited -and $globalThrottling.PowerShellMaxBurst.IsUnlimited -and $globalThrottling.PowerShellRechargeRate.IsUnlimited)
+                    {
+                        Write-ExchangeSetupLog -Info "A special case - In Topology we set powershell throttling to unlimited and we skip creating org level throttling policy"
+                    }
+                    else
+                    {
+                       Write-ExchangeSetupLog -Info "start to create organizational throttling."
+                       $orgThrottling = New-ThrottlingPolicy -Name $nameWithB2BUpgrade -Organization $RoleOrganizationHierarchicalPath -ThrottlingPolicyScope Organization
+                       Write-ExchangeSetupLog -Info "organizational throttling for '$estimatedLicensedUser' license user are created successfully."
+                    }
+                  }
+                }
+
+               if ($orgThrottling -and $orgThrottling.ThrottlingPolicyScope -eq "Organization")
+               {
+                   Write-ExchangeSetupLog -Info "we are now starting to verify and try to update Organizational throttling policy."
+                   if (!$orgThrottling.PowerShellMaxConcurrency.IsUnlimited)
+                   {
+                       $actualPowerShellMaxConcurrency = $orgThrottling.PowerShellMaxConcurrency.Value
+                       Write-ExchangeSetupLog -Info "The actual PowerShellMaxConcurrency value is '$actualPowerShellMaxConcurrency'."
+                   }
+                   else
+                   {
+                      $actualPowerShellMaxConcurrency = [Int32]::MaxValue
+                      Write-ExchangeSetupLog -Info "The actual PowerShellMaxConcurrency is Unlimited."
+                   }
+
+                   if (!$orgThrottling.PowerShellMaxTenantConcurrency.IsUnlimited)
+                   {
+                      $actualPowerShellMaxTenantConcurrency = $orgThrottling.PowerShellMaxTenantConcurrency.Value
+                      Write-ExchangeSetupLog -Info "The actual PowerShellMaxTenantConcurrency value is '$actualPowerShellMaxTenantConcurrency'."
+                   }
+                   else
+                   {
+                      $actualPowerShellMaxTenantConcurrency = [Int32]::MaxValue
+                      Write-ExchangeSetupLog -Info "The actual PowerShellMaxTenantConcurrency is Unlimited."
+                    }
+
+                   if (!$orgThrottling.PowerShellMaxBurst.IsUnlimited)
+                   {
+                       $actualPowerShellMaxBurst = $orgThrottling.PowerShellMaxBurst.Value
+                       Write-ExchangeSetupLog -Info "The actual PowerShellMaxBurst value is '$actualPowerShellMaxBurst'."
+                   }
+                   else
+                   {
+                       $actualPowerShellMaxBurst = [Int32]::MaxValue
+                       Write-ExchangeSetupLog -Info "The actual PowerShellMaxBurst is Unlimited."
+                   }
+
+                   if (!$orgThrottling.PowerShellRechargeRate.IsUnlimited)
+                   {
+                       $actualPowerShellRechargeRate = $orgThrottling.PowerShellRechargeRate.Value
+                       Write-ExchangeSetupLog -Info "The actual PowerShellRechargeRate value is '$actualPowerShellRechargeRate'."
+                   }
+                   else
+                   {
+                       $actualPowerShellRechargeRate = [Int32]::MaxValue
+                       Write-ExchangeSetupLog -Info "The actual PowerShellRechargeRate is Unlimited."
+                   }
+
+                   if ($estimatedLicensedUser -le 1000)
+                   {
+                        Write-ExchangeSetupLog -Info "for '$estimatedLicensedUser' license less than 1000, at this time we don't want to update throttling limit this time and keep needToApplyChange to '$needToApplyChange' and it should be false."
+                   }
+                   elseif ($estimatedLicensedUser -le 5000)
+                   {
+                        if (($actualPowerShellMaxConcurrency -lt 10) -or ($actualPowerShellMaxTenantConcurrency -lt 50 ) -or ($actualPowerShellMaxBurst -lt 600000) -or ($actualPowerShellRechargeRate -lt 1800000 ))
+                        {
+                              $needToApplyChange = $true
+                              $exchangeMaxCmdlets = 200
+                              $powerShellMaxConcurrency = 10
+                              $powerShellMaxBurst = 600000
+                              $powerShellRechargeRate = 1800000
+                              $powerShellCutoffBalance = 3000000
+                              $powerShellMaxTenantConcurrency = 50
+                              $powerShellMaxDestructiveCmdlets = 120
+                              Write-ExchangeSetupLog -Info "for '$estimatedLicensedUser' license between 1000 and 5000, needToApplyChange is '$needToApplyChange' and it should be true."
+                         }
+                   }
+                  elseif ($estimatedLicensedUser -le 20000)
+                  {
+                      if (($actualPowerShellMaxConcurrency -lt 20) -or ($actualPowerShellMaxTenantConcurrency -lt 100 ) -or ($actualPowerShellMaxBurst -lt 900000) -or ($actualPowerShellRechargeRate -lt 2160000 ))
+                      {
+                           $needToApplyChange = $true
+                           $exchangeMaxCmdlets = 200
+                           $powerShellMaxConcurrency = 20
+                           $powerShellMaxBurst = 900000
+                           $powerShellRechargeRate = 2160000
+                           $powerShellCutoffBalance = 3000000
+                           $powerShellMaxTenantConcurrency = 100
+                           $powerShellMaxDestructiveCmdlets = 120
+                           Write-ExchangeSetupLog -Info "for '$estimatedLicensedUser' license between 5000 and 20000, needToApplyChange is '$needToApplyChange' and it should be true."
+                       }
+                    }
+                   else
+                   {
+                        if (($actualPowerShellMaxConcurrency -lt 20) -or ($actualPowerShellMaxTenantConcurrency -lt 100 ) -or ($actualPowerShellMaxBurst -lt 900000) -or ($actualPowerShellRechargeRate -lt 2520000 ))
+                        {
+                            $needToApplyChange = $true
+                            $exchangeMaxCmdlets = 200
+                            $powerShellMaxConcurrency = 20
+                            $powerShellMaxBurst = 900000
+                            $powerShellRechargeRate = 2520000
+                            $powerShellCutoffBalance = 3000000
+                            $powerShellMaxTenantConcurrency = 100
+                            $powerShellMaxDestructiveCmdlets = 120
+                            Write-ExchangeSetupLog -Info "for '$estimatedLicensedUser' license greater than 20000, needToApplyChange is '$needToApplyChange' and it should be true."
+                         }
+                    }
+
+                   if ($needToApplyChange)
+                   {
+                       Write-ExchangeSetupLog -Info "for '$estimatedLicensedUser' license tenant, we are updating throttling limit."
+                       $powerShellMaxCmdlets = $exchangeMaxCmdlets * 2
+                       $powerShellMaxOperations = $exchangeMaxCmdlets * 2
+                       $powerShellMaxCmdletsTimePeriod = 5
+                       $powerShellMaxCmdletQueueDepth = 100
+                       $powerShellMaxDestructiveCmdletsTimePeriod = 60
+                       $powerShellMaxRunspacesTimePeriod = 60
+                       $powerShellMaxRunspaces = 20
+                       $powerShellMaxTenantRunspaces = 200
+
+                       if((!$orgThrottling.ExchangeMaxCmdlets.IsUnlimited) -and ($exchangeMaxCmdlets -gt $orgThrottling.ExchangeMaxCmdlets.Value))
+                       {
+                          $HashArguments.Add('ExchangeMaxCmdlets', $exchangeMaxCmdlets)
+                          Write-ExchangeSetupLog -Info "ExchangeMaxCmdlets '$exchangeMaxCmdlets' is added to HashArguments for set-throttlingpolicy."
+                       }
+
+                       if((!$orgThrottling.PowerShellMaxConcurrency.IsUnlimited) -and ( $powerShellMaxConcurrency -gt $orgThrottling.PowerShellMaxConcurrency.Value))
+                       {
+                          $HashArguments.Add('PowerShellMaxConcurrency', $powerShellMaxConcurrency)
+                          Write-ExchangeSetupLog -Info "PowerShellMaxConcurrency '$powerShellMaxConcurrency' is added to HashArguments for set-throttlingpolicy."
+                        }
+
+                        if((!$orgThrottling.PowerShellMaxBurst.IsUnlimited) -and ( $powerShellMaxBurst -gt $orgThrottling.PowerShellMaxBurst.Value))
+                        {
+                           $HashArguments.Add('PowerShellMaxBurst',  $powerShellMaxBurst)
+                           Write-ExchangeSetupLog -Info "PowerShellMaxBurst '$powerShellMaxBurst' is added to HashArguments for set-throttlingpolicy."
+                        }
+
+                        if((!$orgThrottling.PowerShellRechargeRate.IsUnlimited) -and ( $powerShellRechargeRate -gt $orgThrottling.PowerShellRechargeRate.Value))
+                        {
+                           $HashArguments.Add('PowerShellRechargeRate',  $powerShellRechargeRate)
+                           Write-ExchangeSetupLog -Info "PowerShellRechargeRate '$powerShellRechargeRate' is added to HashArguments for set-throttlingpolicy."
+                        }
+
+                        if((!$orgThrottling.PowerShellCutoffBalance.IsUnlimited) -and ( $powerShellCutoffBalance -gt $orgThrottling.PowerShellCutoffBalance.Value))
+                        {
+                            $HashArguments.Add('PowerShellCutoffBalance',  $powerShellCutoffBalance)
+                            Write-ExchangeSetupLog -Info "PowerShellCutoffBalance ' $powerShellCutoffBalance' is added to HashArguments for set-throttlingpolicy."
+                        }
+
+                        if((!$orgThrottling.PowerShellMaxTenantConcurrency.IsUnlimited) -and ( $powerShellMaxTenantConcurrency-gt $orgThrottling.PowerShellMaxTenantConcurrency.Value))
+                        {
+                           $HashArguments.Add('PowerShellMaxTenantConcurrency',  $powerShellMaxTenantConcurrency)
+                           Write-ExchangeSetupLog -Info "PowerShellMaxTenantConcurrency '$powerShellMaxTenantConcurrency' is added to HashArguments for set-throttlingpolicy."
+                        }
+
+                        if((!$orgThrottling.PowerShellMaxOperations.IsUnlimited) -and ( $powerShellMaxOperations -gt $orgThrottling.PowerShellMaxOperations.Value))
+                        {
+                            $HashArguments.Add('PowerShellMaxOperations',  $powerShellMaxOperations)
+                            Write-ExchangeSetupLog -Info "PowerShellMaxOperations '$powerShellMaxOperations' is added to HashArguments for set-throttlingpolicy."
+                         }
+
+                         if((!$orgThrottling.PowerShellMaxCmdletsTimePeriod.IsUnlimited) -and ( $powerShellMaxCmdletsTimePeriod -gt $orgThrottling.PowerShellMaxCmdletsTimePeriod.Value))
+                         {
+                             $HashArguments.Add('PowerShellMaxCmdletsTimePeriod',  $powerShellMaxCmdletsTimePeriod)
+                             Write-ExchangeSetupLog -Info "PowerShellMaxCmdletsTimePeriod '$powerShellMaxCmdletsTimePeriod' is added to HashArguments for set-throttlingpolicy."
+                          }
+
+                          if((!$orgThrottling.PowerShellMaxCmdletQueueDepth.IsUnlimited) -and ( $powerShellMaxCmdletQueueDepth -gt $orgThrottling.PowerShellMaxCmdletQueueDepth.Value))
+                          {
+                              $HashArguments.Add('PowerShellMaxCmdletQueueDepth', $powerShellMaxCmdletQueueDepth)
+                              Write-ExchangeSetupLog -Info "PowerShellMaxCmdletQueueDepth '$powerShellMaxCmdletQueueDepth' is added to HashArguments for set-throttlingpolicy."
+                          }
+
+                          if((!$orgThrottling.PowerShellMaxDestructiveCmdlets.IsUnlimited) -and ( $powerShellMaxDestructiveCmdlets -gt $orgThrottling.PowerShellMaxDestructiveCmdlets.Value))
+                          {
+                               $HashArguments.Add('PowerShellMaxDestructiveCmdlets', $powerShellMaxDestructiveCmdlets)
+                               Write-ExchangeSetupLog -Info "PowerShellMaxDestructiveCmdlets '$powerShellMaxDestructiveCmdlets' is added to HashArguments for set-throttlingpolicy."
+                          }
+
+                          if((!$orgThrottling.PowerShellMaxDestructiveCmdletsTimePeriod.IsUnlimited) -and ( $powerShellMaxDestructiveCmdletsTimePeriod -gt $orgThrottling.PowerShellMaxDestructiveCmdletsTimePeriod.Value))
+                          {
+                               $HashArguments.Add('PowerShellMaxDestructiveCmdletsTimePeriod',  $powerShellMaxDestructiveCmdletsTimePeriod)
+                               Write-ExchangeSetupLog -Info "PowerShellMaxDestructiveCmdletsTimePeriod '$powerShellMaxDestructiveCmdletsTimePeriod' is added to HashArguments for set-throttlingpolicy."
+                           }
+
+                           if((!$orgThrottling.PowerShellMaxCmdlets.IsUnlimited) -and ( $powerShellMaxCmdlets -gt $orgThrottling.PowerShellMaxCmdlets.Value))
+                           {
+                                $HashArguments.Add('PowerShellMaxCmdlets',  $powerShellMaxCmdlets)
+                                Write-ExchangeSetupLog -Info "PowerShellMaxCmdlets '$powerShellMaxCmdlets' is added to HashArguments for set-throttlingpolicy."
+                           }
+
+                           if((!$orgThrottling.PowerShellMaxRunspaces.IsUnlimited) -and ( $powerShellMaxRunspaces -gt $orgThrottling.PowerShellMaxRunspaces.Value))
+                           {
+                                $HashArguments.Add('PowerShellMaxRunspaces',  $powerShellMaxRunspaces)
+                                Write-ExchangeSetupLog -Info "PowerShellMaxRunspaces '$powerShellMaxRunspaces' is added to HashArguments for set-throttlingpolicy."
+                           }
+
+                          if((!$orgThrottling.PowerShellMaxTenantRunspaces.IsUnlimited) -and ( $powerShellMaxTenantRunspaces -gt $orgThrottling.PowerShellMaxTenantRunspaces.Value))
+                          {
+                               $HashArguments.Add('PowerShellMaxTenantRunspaces', $powerShellMaxTenantRunspaces)
+                               Write-ExchangeSetupLog -Info "PowerShellMaxTenantRunspaces '$powerShellMaxTenantRunspaces' is added to HashArguments for set-throttlingpolicy."
+                           }
+
+                          if((!$orgThrottling.PowerShellMaxRunspacesTimePeriod.IsUnlimited) -and ( $powerShellMaxRunspacesTimePeriod -gt $orgThrottling.PowerShellMaxRunspacesTimePeriod.Value))
+                          {
+                               $HashArguments.Add('PowerShellMaxRunspacesTimePeriod',  $powerShellMaxRunspacesTimePeriod)
+                               Write-ExchangeSetupLog -Info "PowerShellMaxRunspacesTimePeriod '$powerShellMaxRunspacesTimePeriod' is added to HashArguments for set-throttlingpolicy."
+                           }
+
+                          if ($HashArguments.Count -gt 0)
+                          {
+                             $HashArguments.Add('Identity', $orgThrottling.Identity)
+                             $HashArguments.Add('Name', $nameWithB2BUpgrade)
+                             
+                             Write-ExchangeSetupLog -Info "Calling Set-ThrottlingPolicy ..."
+                             $logArguments = $HashArguments | out-string -width 180
+ 
+                             Write-ExchangeSetupLog -Info "arguments passed in set-throttlingPolicy cmdlet: $logArguments "
+                             Set-ThrottlingPolicy @HashArguments
+                             Write-ExchangeSetupLog -Info "ThrottlingPolicy Update is done."
+                         }
+                         else
+                         {
+                             Write-ExchangeSetupLog -Info "We only have Name and Identify in the Arguments, so there is no need to set throttling policy."
+                         }
+                   }
+              }
+          }
+        </Tenant>
+      </BuildToBuildUpgrade>
+      <Uninstall />
+    </OrgTaskInfo>
+    
+    <!-- Create precanned RBAC roles -->
+    <ServicePlanTaskInfo FeatureName="RecreateCannedRBACRoles">
+      <Install DescriptionId="SetupProgressCreateRBACRoles">
+        <Global>
+          if ($RoleDatacenterFfoEnvironment -eq "True")
+          {
+            Install-CannedRbacRoles -InvocationMode $RoleInstallationMode -DomainController $RoleDomainController -IsFfo
+          }
+          else
+          {
+            Install-CannedRbacRoles -InvocationMode $RoleInstallationMode -DomainController $RoleDomainController
+          }
+        </Global>
+        <Tenant>
+           if ($RoleDatacenterFfoEnvironment -ne "True")
+           {
+            # handle install, upgrade and transition to different service plan, including transition tor tiny-tenant
+
+            #1. tiny tenant                                   -> never do anything
+            #2. regular/shared tenant - install               -> Install-CannedRbacRoles -InvocationMode $RoleInstallationMode
+            #3. regular/shared tenant - upgrade               -> Install-CannedRbacRoles -InvocationMode $RoleInstallationMode
+            #4. regular        tenant - transition to regular -> Install-CannedRbacRoles -InvocationMode "ServicePlanUpdate"
+            #5. regular        tenant - transition to tiny    -> skip
+            #6. shared         tenant - transition to shared  -> Install-CannedRbacRoles -InvocationMode $RoleInstallationMode
+
+            $isServicePlanUpdate = ($OldServicePlanSettings -ne $null);
+            if($NewServicePlanSettings -ne $null)
+            {
+                $ServicePlanSettingsParameter = $NewServicePlanSettings
+            }
+            else
+            {
+                $ServicePlanSettingsParameter = $ServicePlanSettings
+            }
+
+            if($AdvancedHydrateableObjectsSharedEnabled)
+            {
+                # cases 1 or 5
+            }
+            else
+            {
+                if(!$isServicePlanUpdate)
+                {
+                    # cases 2 or 3
+                    $TenantRoleInstallationMode = $RoleInstallationMode;
+                }
+                else
+                {
+                    if($OldServicePlanSettings.Organization.ShareableConfigurationEnabled)
+                    {
+                        # case 6, Transition from tiny tenant to the regular one, creating all roles unconditionally ($RoleInstallationMode=Install)
+                        $TenantRoleInstallationMode = $RoleInstallationMode;
+                    }
+                    else
+                    {
+                        # case 4, Service plan transition for regular tenant, creating all roles conditionally
+                        $TenantRoleInstallationMode = "ServicePlanUpdate";
+                    }
+                }
+
+                Install-CannedRbacRoles -InvocationMode $TenantRoleInstallationMode -ServicePlanSettings $ServicePlanSettingsParameter -DomainController $RoleDomainController -Organization $RoleOrganizationHierarchicalPath;
+            }
+          }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </ServicePlanTaskInfo>
+
+    <!-- Create precanned RBAC Role Assignments -->
+    <ServicePlanTaskInfo FeatureName="RecreateCannedRBACRoleAssignments">
+      <Install DescriptionId="SetupProgressCreateRBACRoleAssignments">
+        <Global>
+          if ($RoleDatacenterFfoEnvironment -eq "True")
+          {
+            Install-CannedRbacRoleAssignments -InvocationMode $RoleInstallationMode -DomainController $RoleDomainController -IsFfo
+          }
+          else
+          {
+            Install-CannedRbacRoleAssignments -InvocationMode $RoleInstallationMode -DomainController $RoleDomainController
+          }
+        </Global>
+        <Tenant>
+          if ($RoleDatacenterFfoEnvironment -ne "True")
+          {
+            # handle install, upgrade and transition to different service plan, including transition tor tiny-tenant
+
+            #1. tiny tenant -> never do anything
+            #2. regular/shared tenant - install               -> Install-CannedRbacRoleAssignments -InvocationMode $RoleInstallationMode
+            #3. regular/shared tenant - upgrade               -> Install-CannedRbacRoleAssignments -InvocationMode $RoleInstallationMode
+            #4. regular        tenant - transition to regular -> Install-CannedRbacRoleAssignments -InvocationMode "ServicePlanUpdate"
+            #5. regular        tenant - transition to tiny    -> skip
+            #6. shared         tenant - transition to shared  -> Install-CannedRbacRoleAssignments -InvocationMode $RoleInstallationMode
+
+            $isServicePlanUpdate = ($OldServicePlanSettings -ne $null);
+
+            if($NewServicePlanSettings -ne $null)
+            {
+                $ServicePlanSettingsParameter = $NewServicePlanSettings
+            }
+            else
+            {
+                $ServicePlanSettingsParameter = $ServicePlanSettings
+            }
+
+            if($AdvancedHydrateableObjectsSharedEnabled)
+            {
+                # cases 1 or 5
+            }
+            else
+            {
+                if(!$isServicePlanUpdate)
+                {
+                    # cases 2 or 3
+                    Install-CannedRbacRoleAssignments `
+                        -InvocationMode $RoleInstallationMode `
+                        -ServicePlanSettings $ServicePlanSettingsParameter `
+                        -DomainController $RoleDomainController `
+                        -Organization $RoleOrganizationHierarchicalPath;
+                }
+                else
+                {
+                    if($OldServicePlanSettings.Organization.ShareableConfigurationEnabled)
+                    {
+                        # case 6, Transition from tiny tenant to the regular one, creating all role assignments unconditionally ($RoleInstallationMode=Install)
+                        $TenantRoleInstallationMode = $RoleInstallationMode;
+                    }
+                    else
+                    {
+                      # case 4, Service plan transition for regular tenant, creating all role assignments conditionally
+                      $TenantRoleInstallationMode = "ServicePlanUpdate";
+                    }
+
+                    Install-CannedRbacRoleAssignments `
+                        -InvocationMode $TenantRoleInstallationMode `
+                        -ServicePlanSettings $NewServicePlanSettings `
+                        -PreviousServicePlanSettings $OldServicePlanSettings `
+                        -DomainController $RoleDomainController `
+                        -Organization $RoleOrganizationHierarchicalPath;
+                }
+
+                if($ServicePlanSettings.Organization.RIMRoleGroupEnabled)
+                {
+                    # if RIMRoleGroupEnabled is enabled for the service plan and the current mode requires
+                    # us to create the pre canned role assignements, then we create the RIM role group and
+                    # the role assignment 1e6b6d42-7174-4e4b-8de1-0df23acb1c42
+                    $rimAdminRoleGroup = get-rolegroup -Organization $RoleOrganizationHierarchicalPath -Identity:"1e6b6d42-7174-4e4b-8de1-0df23acb1c42" -ErrorAction:SilentlyContinue -DomainController $RoleDomainController
+
+                    if($rimAdminRoleGroup -eq $null)
+                    {
+                        $randomName = "RIM-MailboxAdmins" + [System.Guid]::NewGuid().ToString("N");
+                        $orgManagementRoleGroup = get-rolegroup -Organization $RoleOrganizationHierarchicalPath -Identity:"29A962C2-91D6-4AB7-9E06-8728F8F842EA" -DomainController $RoleDomainController;
+                        $rimAdminRoleGroup = new-rolegroup -Name $randomName -Organization $RoleOrganizationHierarchicalPath -ManagedBy:$orgManagementRoleGroup.DistinguishedName -PartnerManaged:$True -WellKnownObjectGuid '1e6b6d42-7174-4e4b-8de1-0df23acb1c42' -Confirm:$False -DomainController $RoleDomainController;
+                    }
+
+                    $rimAssignment = Get-ManagementRoleAssignment -Organization $RoleOrganizationHierarchicalPath -Role:"ApplicationImpersonation" -RoleAssignee $rimAdminRoleGroup.DistinguishedName -ErrorAction:SilentlyContinue -DomainController $RoleDomainController -IgnoreDehydratedFlag:$true;
+        
+                    if($rimAssignment -eq $null)
+                    {
+                        New-ManagementRoleAssignment -Role "ApplicationImpersonation" -SecurityGroup $rimAdminRoleGroup.Identity -Organization $RoleOrganizationHierarchicalPath -DomainController $RoleDomainController -IgnoreDehydratedFlag:$true;
+                    }
+                }
+            }
+          }  
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </ServicePlanTaskInfo>
+
+    <!-- Create the CmdletExtensionAgent Settings container under "Global Settings" (CN=CmdletExtensionAgent Settings,CN=Global Settings,...) -->
+    <OrgTaskInfo Id="_c043f7932ceb4fd89b3e4800f38a2b33" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressCreateCmdletExtensionAgentContainer">
+        <Global>install-Container -Name:"Global Settings","CmdletExtensionAgent Settings" -DomainController $RoleDomainController</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+
+    <!-- Create the UpgradeOrchestration container under "Global Settings" (CN=UpgradeOrchestration,CN=Global Settings,...) -->
+    <OrgTaskInfo Id="_01c0569f08cd4a2c9e02ced5e4e1d6e6" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressCreateUpgradeOrchestrationContainer">
+        <Global>install-Container -Name:"Global Settings","UpgradeOrchestration" -DomainController $RoleDomainController</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+
+    <!-- Create the ConfigurationSettings container under "Global Settings" (CN=Configuration Settings,CN=Global Settings,...) -->
+    <OrgTaskInfo Id="_1f7d8473066945cdb19ef17627b67de3" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressCreateConfigurationSettingsContainer">
+        <Global>install-Container -Name:"Global Settings","Configuration Settings" -DomainController $RoleDomainController</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+
+    <!-- Create the Setting Overrides container under "Global Settings" (CN=Setting Overrides,CN=Global Settings,...) -->
+    <OrgTaskInfo Id="SettingOverrides" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressCreateConfigurationSettingsContainer">
+        <Global>install-Container -Name:"Global Settings","Setting Overrides" -DomainController $RoleDomainController</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+
+    <!-- Create the Federation Trusts container (CN=Federation Trusts,CN=<Org Name>,CN=Microsoft Exchange,...) -->
+    <OrgTaskInfo Id="_65570469127547809c45d52edac28b68" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressCreateFederationTrusts">
+        <Global>Install-Container -Name "Federation Trusts" -DomainController $RoleDomainController</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+
+    <!-- Create the Federation container (CN=Federation,CN=<Org Name>,CN=Microsoft Exchange,...) -->
+    <!-- Also create container for tenants (CN=Federation,CN=Configuration,CN=<Tenant Name>,CN=ConfigurationUnits,...) -->
+    <OrgTaskInfo Id="_e017930be31d49d28ae22bfa05bbd6a0" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressCreateFederationContainer">
+        <Global>Install-FederationContainer -DomainController $RoleDomainController</Global>
+        <Tenant>Install-FederationContainer -DomainController $RoleDomainController -Organization $TenantOrganizationFullPath</Tenant>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+
+    <!-- Create the Auth Config container (CN=Auth Config,CN=<Org Name>,CN=Microsoft Exchange,...) -->
+    <OrgTaskInfo Id="_161BC803A1724564A7D223FFE78E6D49" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressCreateAuthConfig">
+        <Global>
+          Install-AuthConfig -DomainController $RoleDomainController;
+          $authConfig = Get-AuthConfig -DomainController $RoleDomainController;
+          if ($RoleDatacenterFfoEnvironment -eq "True")
+          {
+            # EOP environment
+            $eopServiceName = [Microsoft.Exchange.Data.Directory.SystemConfiguration.WellknownPartnerApplicationIdentifiers]::ExchangeOnlineProtection;
+            if ($eopServiceName -ine $authConfig.ServiceName)
+            {
+              Write-ExchangeSetupLog -Info "Update EOP AuthConfig ServiceName to '$eopServiceName'."
+              Set-AuthConfig -ServiceName $eopServiceName -DomainController $RoleDomainController;
+            }
+          }
+          else
+          {
+            # EXO environment
+            if ([System.String]::IsNullOrEmpty($authConfig.ServiceName))
+            {
+              $defaultServiceName = [Microsoft.Exchange.Data.Directory.SystemConfiguration.AuthConfig]::DefaultServiceNameValue;
+              Set-AuthConfig -ServiceName $defaultServiceName -DomainController $RoleDomainController;
+            }
+          }
+        </Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+
+    <!-- Create the PartnerApplications (CN=PartnerApplications, CN=Auth Config,CN=<Org Name>,CN=Microsoft Exchange,...) -->
+    <OrgTaskInfo Id="_907E0EE000AB4117A05F237A81E53AA2" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressCreatePartnerApplications">
+        <Global>
+            #
+            # O15# 2844081 - Create PartnerApplication "Exchange Online" in DC and On-Premise
+            #
+            $exch = [Microsoft.Exchange.Data.Directory.SystemConfiguration.WellknownPartnerApplicationIdentifiers]::Exchange;
+            $exchApp = Get-PartnerApplication $exch -ErrorAction SilentlyContinue -DomainController $RoleDomainController | Where { $_.UseAuthServer };
+            if ($exchApp -eq $null)
+            {
+                $exchAppName = "Exchange Online";
+                $exchApp = New-PartnerApplication -Name $exchAppName -ApplicationIdentifier $exch -Enabled $RoleIsDatacenter -AcceptSecurityIdentifierInformation $false -DomainController $RoleDomainController;
+            }
+
+            # Create application account for Exchange
+            $appAccountName = $exchApp.Name + "-ApplicationAccount";
+            $appAccount = Get-LinkedUser -Identity $appAccountName -ErrorAction SilentlyContinue -DomainController $RoleDomainController;
+            if ($appAccount -eq $null)
+            {
+                $appAccountUpn = $appAccountName.Replace(" ", "_") + "@" + $RoleFullyQualifiedDomainName;
+                $appAccount = New-LinkedUser -Name $appAccountName -UserPrincipalName $appAccountUpn -DomainController $RoleDomainController;
+                Set-PartnerApplication -Identity $exchApp.Identity -LinkedAccount $appAccount.Identity -DomainController $RoleDomainController;
+            }
+
+            foreach ($roleName in ("UserApplication", "ArchiveApplication", "LegalHoldApplication", "Mailbox Search", "TeamMailboxLifecycleApplication", "MailboxSearchApplication"))
+            {
+                $roleIdentity = Get-ManagementRole $roleName -DomainController $RoleDomainController;
+                $roleAssignment = Get-ManagementRoleAssignment -Role $roleIdentity.Identity -RoleAssignee $appAccount.Identity -DomainController $RoleDomainController;
+                if ($roleAssignment -eq $null)
+                {
+                    New-ManagementRoleAssignment -Role $roleName -User $appAccount.Identity -DomainController $RoleDomainController;
+                }
+            }
+        </Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+
+      <!-- Create the default sharing policy for this org -->
+    <ServicePlanTaskInfo FeatureName="CommonHydrateableObjectsSharedEnabled">
+          <Install DescriptionId="SetupProcessCreateDefaultSharingPolicy">
+              <Global>
+                  Install-DefaultSharingPolicy -DomainController $RoleDomainController
+              </Global>
+              <Tenant>
+                  if(!$CommonHydrateableObjectsSharedEnabled)
+                  {
+                      Install-DefaultSharingPolicy -DomainController $RoleDomainController -Organization $RoleOrganizationHierarchicalPath
+                  }
+              </Tenant>
+          </Install>
+          <BuildToBuildUpgrade UseInstallTasks="true"/>
+          <Uninstall />
+    </ServicePlanTaskInfo>
+
+      <!-- Create the default throttling policy for this org -->
+    <ServicePlanTaskInfo FeatureName="AdvancedHydrateableObjectsSharedEnabled">
+          <Install DescriptionId="SetupProcessCreateDefaultThrottlingPolicy">
+              <Global>
+                  Install-ThrottlingPolicies -InstallationMode $RoleInstallationMode -DomainController $RoleDomainController;
+              </Global>
+          </Install>
+          <BuildToBuildUpgrade UseInstallTasks="true"/>
+          <Uninstall />
+    </ServicePlanTaskInfo>
+
+    <!-- Enable MailTips for first-org.  For tenants, this will depend on the service plan. -->
+    <OrgTaskInfo Id="_a9db38837a784df6b02447942fb9d528" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="ConfigureMailTips">
+        <Global>
+          if (-not $RoleIsDatacenterDedicated)
+          {
+            Set-OrganizationConfig -MailTipsAllTipsEnabled $true;
+            Set-OrganizationConfig -MailTipsGroupMetricsEnabled $true;
+            Set-OrganizationConfig -MailTipsMailboxSourcedTipsEnabled $true;
+            Set-OrganizationConfig -MailTipsLargeAudienceThreshold 25
+          }
+        </Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+
+    <!-- 
+        Enable Self Management for first-org users.  For tenants this is done conditionally in ProvisioningFeatureCatalog.xml. 
+        - Create default role assignment policy
+        - Assign selected Self Management roles to default role assignment policy. 
+          (MyProfileInformation MyRetentionPolicies MyDistributionGroups MyDiagnostics MyMailSubscriptions are not assigned by default.)
+    -->
+    <OrgTaskInfo Id="_692177745d1b4f71b06505a0ef1e33b3" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressEnableSelfManagement">
+        <Global>
+          $InstallMode = $RoleInstallationMode;
+          $policyName = [Microsoft.Exchange.Data.Directory.SystemConfiguration.RoleAssignmentPolicy]::DefaultRoleAssignmentPolicyName;
+          $p = get-RoleAssignmentPolicy -DomainController $RoleDomainController;
+          if($p -eq $null)
+          {
+            $policyDescription = [Microsoft.Exchange.Data.Directory.SystemConfiguration.RoleAssignmentPolicy]::PrecannedRoleAssignmentPolicyDescription;
+            New-RoleAssignmentPolicy -IsDefault -name $policyName -DomainController $RoleDomainController -Description $policyDescription;
+
+            # when ever we create the default policy treat it as an new installation, instead of possibly as a upgrade
+            # which would leave off some default RAP role assignments.
+            $InstallMode = "Install";
+          }
+          Install-CannedRBACRoleassignmentsRAP -InvocationMode $InstallMode -DomainController $RoleDomainController;
+        </Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <Uninstall />
+    </OrgTaskInfo>
+
+    <!-- Enable HotmailMigration bit in the OrganizationFlags. -->
+    <OrgTaskInfo Id="_a1e94d12e59f49b3a44df10727277ca2" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Global/>
+        <Tenant>
+            if($RoleHotmailMigration -eq $true)
+            {
+               Set-OrganizationFlags $RoleOrganizationHierarchicalPath -IsHotmailMigration:$true -DomainController $RoleDomainController;
+            }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+
+    <!-- Below two features are moved from ProvisioningFeatureCatalog.xml. These fatures need to be created before any mailbox can be created. 
+            'MSOSyncEnabled' feature; -->
+    <ServicePlanTaskInfo FeatureName="MSOSyncEnabled">
+      <Install DescriptionId="SetupProgressMSOSyncEnabled">
+        <Tenant>
+            Write-ExchangeSetupLog -info "MSOSyncEnabled feature provisioning";
+            Set-Organization -MSOSyncEnabled $ServicePlanSettings.Organization.MSOSyncEnabled -DomainController $RoleDomainController -Identity $RoleOrganizationHierarchicalPath;
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade>
+        <Tenant>
+            Set-organization -MSOSyncEnabled $ServicePlanSettings.Organization.MSOSyncEnabled -DomainController $RoleDomainController -Identity $RoleOrganizationHierarchicalPath;
+            $Organization = Get-Organization $RoleOrganizationHierarchicalPath -DomainController $RoleDomainController
+            Set-MServSyncConfigFlags $Organization.DistinguishedName -MSOSyncEnabled:$ServicePlanSettings.Organization.MSOSyncEnabled -DomainController $RoleDomainController        
+        </Tenant>
+      </BuildToBuildUpgrade>
+      <Uninstall /> 
+    </ServicePlanTaskInfo>
+    
+    <!-- 'SMTPAddressCheckWithAcceptedDomainEnabled' feature - apply the SMTPAddressCheckWithAcceptedDomain flag -->
+    <ServicePlanTaskInfo FeatureName="SMTPAddressCheckWithAcceptedDomainEnabled">
+      <Install DescriptionId="SetupProgressSMTPAddressCheckWithAcceptedDomain">
+        <Tenant>
+            Set-OrganizationFlags $RoleOrganizationHierarchicalPath -SMTPAddressCheckWithAcceptedDomain:$ServicePlanSettings.Organization.SMTPAddressCheckWithAcceptedDomainEnabled -DomainController $RoleDomainController;
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade>
+        <Tenant>
+            Set-OrganizationFlags $RoleOrganizationHierarchicalPath -SMTPAddressCheckWithAcceptedDomain:$ServicePlanSettings.Organization.SMTPAddressCheckWithAcceptedDomainEnabled -DomainController $RoleDomainController;
+            $Organization = Get-Organization $RoleOrganizationHierarchicalPath -DomainController $RoleDomainController
+            Set-MServSyncConfigFlags $Organization.DistinguishedName -SMTPAddressCheckWithAcceptedDomain:$ServicePlanSettings.Organization.SMTPAddressCheckWithAcceptedDomainEnabled -DomainController $RoleDomainController
+        </Tenant>
+      </BuildToBuildUpgrade>
+      <Uninstall />
+    </ServicePlanTaskInfo>
+    
+      <!-- This task enables this tenant for federation.
+       Only set if Federation Trust object found.
+       If already set then keep existing setting and do not change.
+       If not set and $RoleTenantDomainName defined, set up on that.
+       Otherwise upgrade and never been set, then iterate accepted domains -->
+  <OrgTaskInfo Id="_2fb1d32fae7a40d5bcd8d76d11cc03b2" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+    <Install>
+      <Global/>
+      <Tenant>
+        if(!$CreateSharedConfiguration)
+        {
+          $delegationTrust = Get-FederationTrust | where {$_.Name -ieq "WindowsLiveId"};
+          if($delegationTrust -ne $null)
+          {
+            $federatedOrganizationIdentifier = Get-FederatedOrganizationIdentifier -Identity $TenantOrganizationFullPath;
+            if( $federatedOrganizationIdentifier.AccountNamespace -eq $null )
+            {
+              if (($RoleLiveIdInstanceType -eq "Consumer") -or ($RoleLiveIdInstanceType -eq 0))
+              {
+                $federationTrustName = "WindowsLiveId";
+              }
+              else
+              {
+                $federationTrustName = "MicrosoftOnline";
+              }
+              
+              if( $RoleTenantDomainName -ne $null )
+              {
+                Set-FederatedOrganizationIdentifier -Identity $TenantOrganizationFullPath -AccountNamespace $RoleTenantDomainName -DelegationFederationTrust $federationTrustName;
+              }
+              else
+              {
+                $defaultAcceptedDomain = get-accepteddomain -organization $TenantOrganizationFullPath | Where-Object {$_.Default -eq $true};
+                if( $defaultAcceptedDomain -ne $null )
+                {
+                    Set-FederatedOrganizationIdentifier -Identity $TenantOrganizationFullPath -AccountNamespace $defaultAcceptedDomain.DomainName.ToString() -DelegationFederationTrust $federationTrustName;
+
+                    $acceptedDomains = get-accepteddomain -organization $TenantOrganizationFullPath | Where-Object {$_.Default -eq $false};
+                    foreach($acceptedDomain in $acceptedDomains)
+                    {
+                        $domainname = $acceptedDomain.DomainName.ToString();
+                        Add-FederatedDomain -Identity $TenantOrganizationFullPath -DomainName $domainname;
+                    }
+                }
+              }
+            }
+          }
+        }
+      </Tenant>
+    </Install>
+    <BuildToBuildUpgrade UseInstallTasks="true" />
+    <Uninstall />
+  </OrgTaskInfo>
+    
+    <!-- Create the Admin Audit Log Settings for this org -->
+    <ServicePlanTaskInfo FeatureName="AdvancedHydrateableObjectsSharedEnabled">
+      <Install DescriptionId="InstallAdminAuditLogConfig">
+        <Global>
+          Install-AdminAuditLogConfig -DomainController $RoleDomainController;
+        </Global>
+        <Tenant>
+          # AdminAuditLogConfig object is:
+          # -Static object in tiny tenants  (BPOS_L)
+          # -Hydrated objects in dehydrated tenants (BPOS_S)
+          if(!$AdvancedHydrateableObjectsSharedEnabled)
+          {
+            Install-AdminAuditLogConfig -DomainController $RoleDomainController -Organization $RoleOrganizationHierarchicalPath;
+          }
+          elseif( $OldServicePlanSettings -ne $null -and -not $OldServicePlanSettings.Organization.ShareableConfigurationEnabled )
+          {
+            # Transition to tiny tenant
+            Get-AdminAuditLogConfig $RoleOrganizationHierarchicalPath -DomainController $RoleDomainController -IgnoreDehydratedFlag  | Remove-AdminAuditLogConfig -Confirm:$false -DomainController $RoleDomainController;
+          }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <Uninstall IsFatal="false">
+        <Global>Get-AdminAuditLogConfig -DomainController $RoleDomainController | Remove-AdminAuditLogConfig -Confirm:$false -DomainController $RoleDomainController</Global>
+      </Uninstall>
+    </ServicePlanTaskInfo>
+
+    <!-- Create the Remote Accounts Policies container (CN=Remote Accounts Policies Container,CN=<Org Name>,CN=Microsoft Exchange,...) -->
+    <!-- Also create container for tenants (CN=Remote Accounts Policies Container,CN=Configuration,CN=<Tenant Name>,CN=ConfigurationUnits,...) -->
+    <ServicePlanTaskInfo FeatureName="SyncAccountsEnabled">
+      <Install>
+        <Global>install-Container -Name:"Remote Accounts Policies Container" -DomainController $RoleDomainController</Global>
+        <Tenant>
+            if($ServicePlanSettings.Organization.SyncAccountsEnabled)
+            {
+                install-Container -Name:"Remote Accounts Policies Container" -DomainController $RoleDomainController -Organization $RoleOrganizationHierarchicalPath;
+            }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </ServicePlanTaskInfo>
+
+
+    <!-- Install standard CmdletExtensionAgents.
+         If you are adding new CmdletExtensionAgent 
+            bump up the organization version, to make sure this component file is executed on upgrade;
+            bump up major version of the CmdletExtensionAgent object, to make it invisible to the servers still running older version without new agent;
+            
+         New agent created with implicit priority (-Priority parameter is not passed) will have priority 0. All existing agents pririties will be moved up;
+         Admin Audit Log Agent needs to be installed with priority 255 
+         
+         Install Mailbox Plans Agent as in E14 RTM only for Datacenter or Hosting SKU-specific.
+    -->
+    <OrgTaskInfo Id="_f7783be5859a4b7f90e1b0cd15432c10" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressRegisterCmdletExtensionAgents">
+        <Global>
+            $assembly = "Microsoft.Exchange.ProvisioningAgent.dll";
+            $installedAgents = Get-CmdletExtensionAgent -DomainController $RoleDomainController;
+
+            $classFactory = "Microsoft.Exchange.ProvisioningAgent.AdminLogAgentClassFactory";
+            $agent = $installedAgents | where {$_.ClassFactory -ieq $classFactory}
+            if($null -ne $agent)
+            {
+                if (!($agent.IsSystem))
+                {
+                    Set-CmdletExtensionAgent $agent.Name -IsSystem $true;
+                }
+            }
+            else
+            {
+                New-CmdletExtensionAgent -Name "Admin Audit Log Agent" -ClassFactory $classFactory -Assembly $assembly -Priority 255 -DomainController $RoleDomainController -IsSystem $true;
+            }
+
+            $classFactory = "Microsoft.Exchange.ProvisioningAgent.ScriptingAgentClassFactory";
+            if($null -eq ($installedAgents | where {$_.ClassFactory -ieq $classFactory}))
+            {
+                New-CmdletExtensionAgent -Name "Scripting Agent" -ClassFactory $classFactory -Assembly $assembly -Enabled:$false -DomainController $RoleDomainController;
+            }
+
+            $h = new-object  System.Collections.Hashtable;
+            $h.Add("Rus Agent", "Microsoft.Exchange.ProvisioningAgent.RusAgentClassFactory");
+            $h.Add("Mailbox Resources Management Agent", "Microsoft.Exchange.ProvisioningAgent.MailboxResourcesManagementAgentClassFactory");
+            $h.Add("OAB Resources Management Agent", "Microsoft.Exchange.ProvisioningAgent.OABResourcesManagementAgentClassFactory");
+            $h.Add("Provisioning Policy Agent", "Microsoft.Exchange.ProvisioningAgent.ProvisioningPolicyAgentClassFactory");
+            $h.Add("Query Base DN Agent", "Microsoft.Exchange.ProvisioningAgent.QueryBaseDNRestrictionAgentClassFactory");
+            $h.Add("Mailbox Creation Time Agent", "Microsoft.Exchange.ProvisioningAgent.MailboxCreationTimeAgentClassFactory");
+
+            if ($RoleIsDatacenter -eq $true -or $RoleIsPartnerHosted -eq $true)
+            {
+                $h.Add("Mailbox Plans Agent", "Microsoft.Exchange.ProvisioningAgent.MailboxPlansAgentClassFactory");
+            }
+            
+            $h.Keys | foreach {
+                $name = $_;
+                $classFactory = $h[$_];
+
+                if($null -eq ($installedAgents | where {$_.ClassFactory -ieq $classFactory}))
+                {
+                    New-CmdletExtensionAgent -Name $name -ClassFactory $classFactory -Assembly $assembly -DomainController $RoleDomainController;
+                }
+            }
+        </Global>
+       </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+     <Uninstall />
+    </OrgTaskInfo>
+    
+    
+        
+    <!-- Create user account for Approval arbitration mailbox -->
+    <OrgTaskInfo Id="_fbbd0fbf8b7943cf95700a01d7e5d2ff" Component="EXCHANGE14:\Current\Release\Transport\BCM\Moderated Transport">
+      <Install>
+        <Global>
+          if (!$RoleIsDatacenter -and !$RoleIsDatacenterDedicated)
+          {
+          $arbMbxname = "SystemMailbox{1f05a927-" + [System.Guid]::NewGuid().ToString().Substring(9) + "}";
+          $arbMbxLastName = "MSExchApproval 1f05a927-3be2-4fb9-aa03-b59fe3b56f4c";
+          $arbUser = @(Get-User -Filter {LastName -eq $arbMbxLastName} -IgnoreDefaultScope -ResultSize 1);
+          if ($arbUser.Length -eq 0)
+          {
+          $arbUser = @(Get-User -Arbitration -Filter {LastName -eq $arbMbxLastName} -IgnoreDefaultScope -ResultSize 1);
+          }
+
+          if ($arbUser.Length -eq 0)
+          {
+          Install-UserAccount -Name $arbMbxname -LastName $arbMbxLastName;
+          }
+          }
+        </Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+
+    <!-- Create user account for E15 system mailbox -->
+    <OrgTaskInfo Id="_2FBBDB5A7E2C442CB722C6ADEC4ECE11" Component="EXCHANGE14:\Current\Release\Client Access\Unified Messaging">
+      <Install>
+        <Global>
+          $arbMbxName = "SystemMailbox{bb558c35-97f1-4cb9-8ff7-d53741dc928c}";
+          $arbMbxLastName = "SystemMailbox bb558c35-97f1-4cb9-8ff7-d53741dc928c";
+          Write-ExchangeSetupLog -Info ("Retrieving users with LastName=$arbMbxLastName.");
+          $arbUser = @(Get-User -Filter {LastName -eq $arbMbxLastName} -IgnoreDefaultScope -ResultSize 1);
+          if ($arbUser.Length -eq 0)
+          {
+            Write-ExchangeSetupLog -Info ("Retrieving arbitration users with LastName=$arbMbxLastName.");
+            $arbUser = @(Get-User -Arbitration -Filter {LastName -eq $arbMbxLastName} -IgnoreDefaultScope -ResultSize 1);
+          }
+
+          if ($arbUser.Length -eq 0)
+          {
+            Write-ExchangeSetupLog -Info ("Installing user account with Name=$arbMbxName and LastName=$arbMbxLastName.");
+            Install-UserAccount -Name $arbMbxName -LastName $arbMbxLastName;
+          }
+        </Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+    
+    <!-- Create user account for E-Discovery arbitration mailbox -->
+    <OrgTaskInfo Id="_04f8b3bdd23644f38fcfed07620d42f5" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Global>
+          $arbMbxname = "SystemMailbox{e0dc1c29-89c3-4034-b678-e6c29d823ed9}";
+          $arbMbxLastName = "MsExchDiscovery e0dc1c29-89c3-4034-b678-e6c29d823ed9";
+          $arbUser = @(Get-User -Filter {LastName -eq $arbMbxLastName} -IgnoreDefaultScope -ResultSize 1);
+          if ($arbUser.Length -eq 0) 
+          {
+            $arbUser = @(Get-User -Arbitration -Filter {LastName -eq $arbMbxLastName} -IgnoreDefaultScope -ResultSize 1);
+          }
+
+          if ($arbUser.Length -eq 0)
+          {
+            Install-UserAccount -Name $arbMbxname -LastName $arbMbxLastName;
+          }
+        </Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+    
+    <!-- Create user account for Discovery Search mailbox -->
+    <OrgTaskInfo Id="_60d3d971dea741ff919e3b1b4aa196ac" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Global>
+          $arbMbxname = [Microsoft.Exchange.Management.RecipientTasks.EnableMailbox]::DiscoveryMailboxUniqueName;
+          $arbMbxLastName = "MsExchDiscoveryMailbox D919BA05-46A6-415f-80AD-7E09334BB852";
+          $arbUser = @(Get-User -Filter {LastName -eq $arbMbxLastName} -IgnoreDefaultScope -ResultSize 1);
+        
+          if ($arbUser.Length -eq 0)
+          {
+            Install-UserAccount -Name $arbMbxname -LastName $arbMbxLastName;
+          }
+        </Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+
+    <!-- Create user account for migration arbitration mailbox -->
+    <OrgTaskInfo Id="_bb453dde297d4a438040c82c37bbf02a" Component="OFFICE15:\Current\Exchange\Mailbox Intelligence\Migration\Simple Migration">
+      <Install>
+        <Global>
+            $mailboxId = [Microsoft.Exchange.Management.Migration.MigrationBatchIdParameter]::MigrationMailboxName;
+            Write-ExchangeSetupLog -info ("about to create the mailbox user $mailboxId");
+            $users = @(Get-User -Filter {LastName -eq $mailboxId} -IgnoreDefaultScope -ResultSize 1);
+            if ($users.Length -eq 0)
+            {
+              $users = @(Get-User -Arbitration -Filter {LastName -eq $mailboxId} -IgnoreDefaultScope -ResultSize 1);
+            }
+
+            if ($users.Length -eq 0)
+            {
+              Install-UserAccount -Name $mailboxId -LastName $mailboxId;
+            }
+        </Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+
+    <!-- Create user account for Federated delivery arbitration mailbox -->
+    <OrgTaskInfo Id="_25ab755736884fa9a81055bdafcb4baf" Component="EXCHANGE14:\Current\Release\Transport\Internet">
+      <Install>
+        <Global>
+          if (!$RoleIsDatacenter)
+          {
+            $federatedMailboxId = [Microsoft.Exchange.Management.Deployment.UpdateRmsSharedIdentity]::SharedIdentityCommonName;
+            $federatedEmailUsers = @(Get-User -Filter {LastName -eq $federatedMailboxId} -IgnoreDefaultScope -ResultSize 1);
+            if ($federatedEmailUsers.Length -eq 0)
+            {
+              $federatedEmailUsers = @(Get-User -Arbitration -Filter {LastName -eq $federatedMailboxId} -IgnoreDefaultScope -ResultSize 1);
+            }
+
+            if ($federatedEmailUsers.Length -eq 0)
+            {
+              Install-UserAccount -Name $federatedMailboxId -LastName $federatedMailboxId;
+            }
+          }
+        </Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+
+    <!-- Add outlook.com as trusted hoster -->
+    <OrgTaskInfo Id="_6808ddc58861488ebbd56c87b0aecabe" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Global>New-ServiceConnectionPoint -Name "Microsoft Exchange Online" -TrustedHoster -TrustedHostnames "*.outlook.com" -DomainController $RoleDomainController</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+
+    <!-- Remove domains that map to Windows Live Calendar application URI -->
+    <OrgTaskInfo Id="_d9dd7c63a6db46da970ca06b66829fc6" Component="EXCHANGE14:\Current\Release\PIM Storage\Sharing">
+      <Install />
+      <BuildToBuildUpgrade IsFatal="false">
+        <Global>Remove-ServiceEndpoint "Windows Live Calendar" -DomainController $RoleDomainController</Global>
+      </BuildToBuildUpgrade>
+      <Uninstall />
+    </OrgTaskInfo>
+
+    <!-- Enable Transport Migration feature for all DC organizations -->
+    <OrgTaskInfo Id="_77076EF1990B4c4cB67DF238922E5BCA" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Tenant>Set-TransportConfig -DomainController $RoleDomainController -Identity $TenantOrganizationFullPath -MigrationEnabled $true</Tenant>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="false" />
+      <Uninstall />
+    </OrgTaskInfo>
+
+    <!-- Upgrade retention policy tags with MoveToDeletedItems action to DeleteAndAllowRecovery action -->
+    <OrgTaskInfo Id="_B5F905A5FBA54c62B2743313206CC525" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install />
+      <BuildToBuildUpgrade>
+        <Global/> 
+        <Tenant>
+          # Only upgrade hydrated tenants
+          if(!$CommonHydrateableObjectsSharedEnabled)
+          {
+            # Get all retention policy tags with retention action MoveToDeletedItems
+            Write-ExchangeSetupLog -info ("Getting all retention policy tags with retention action MoveToDeletedItems");
+            $policyTags = Get-RetentionPolicyTag -IgnoreDehydratedFlag -DomainController $RoleDomainController -Organization $RoleOrganizationHierarchicalPath | ?{$_.RetentionAction -eq "MoveToDeletedItems"};
+            if ($policyTags -ne $null)
+            {
+              foreach ($policyTag in $policyTags)
+              {
+                Write-ExchangeSetupLog -info ("Updating retention policy tag '$($policyTag)' retention action to DeleteAndAllowRecovery");
+                Set-RetentionPolicyTag $policyTag -RetentionAction DeleteAndAllowRecovery -DomainController $RoleDomainController;
+              }
+            }
+          }
+        </Tenant>
+      </BuildToBuildUpgrade>
+      <Uninstall/>
+    </OrgTaskInfo>
+
+    <!-- Modify (MaxNotificationPerConn) Directory Policy -->
+    <OrgTaskInfo Id="_A85247D294E8-4964852CDD7D02B4C4B3" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\AD Core">
+      <Install>
+        <Global>
+          if($RoleIsPartnerHosted -eq $true)
+          {
+            Write-Verbose "Updating Default Active Directory Query Policy";
+            $ldapDefaultQueryPolicyName = [Microsoft.Exchange.Data.Directory.SystemConfiguration.ADQueryPolicy]::ADDefaultQueryPolicyName;
+            $ldapDefaultQueryPolicy = Get-ADQueryPolicy $ldapDefaultQueryPolicyName -DomainController $RoleDomainController;
+
+            if( $null -ne $ldapDefaultQueryPolicy )
+            {
+              Set-ADQueryPolicy $ldapDefaultQueryPolicy -MaxNotificationPerConnection 100 -DomainController $RoleDomainController;
+            }
+            else
+            {
+              # If we cannot find the policy we should fail, otherwise we will have unexpected behavior with notifications.
+              Write-ExchangeSetupLog -Error "Unable to find Default Active Directory Query Policy";
+            }
+          }
+        </Global>
+        <Tenant />
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+    
+    <!-- Create default data classification config -->
+    <ServicePlanTaskInfo FeatureName="AdvancedHydrateableObjectsSharedEnabled">
+      <Install DescriptionId="SetupProcessCreateDefaultDataClassificationConfig">
+        <Global />
+        <Tenant>
+          if(!$AdvancedHydrateableObjectsSharedEnabled)
+          {
+            Install-DataClassificationConfig -Organization $RoleOrganizationHierarchicalPath -DomainController $RoleDomainController;
+          }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <Uninstall />
+    </ServicePlanTaskInfo>
+
+    <!--Initialize the 'Push Notifications Settings' container -->
+    <OrgTaskInfo Id="_f47bf634470a4ffdad86e61d9e4e65bf" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Global>
+            $name = [Microsoft.Exchange.Data.Directory.SystemConfiguration.PushNotificationApp]::PushNotificationAppContainerName;
+            Install-Container $name -DomainController $RoleDomainController;
+        </Global>
+        <Tenant/>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+      
+    <!--Disable parameters of OWAMailboxpolicy that were not defaulted during upgrades. Note - UserDiagnosticEnabled is always
+    set to false, during any upgrade. As we only enable it to true for our internal tenants through custom scripts. So, we 
+    always want to turn it to false.-->
+    <OrgTaskInfo Id="_805f6109eefa4dc89b5e055234979456" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+        <Install>
+            <Tenant />
+        </Install>
+        <BuildToBuildUpgrade>
+            <Tenant>
+                $organization = Get-Organization -Identity $RoleOrganizationHierarchicalPath -DomainController $RoleDomainController;
+                if ($organization.AdminDisplayVersion -like "*(14*")
+                {
+                    Get-OwaMailboxPolicy -Organization $RoleOrganizationHierarchicalPath | Set-OwaMailboxPolicy -UserDiagnosticEnabled $false;
+                }
+            </Tenant>
+        </BuildToBuildUpgrade>
+        <Uninstall />
+    </OrgTaskInfo>
+    
+    <!--Creates the Pre-Canned PushNotificationApps-->
+    <OrgTaskInfo Id="_f166b0eae3934ac7b4ea4ab5360832b4" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+        <Install>
+            <Global>
+                if (!$RoleIsDatacenter -and !$RoleIsDatacenterDedicated)
+                {
+                    Install-CannedPushNotificationApp -Environment:OnPrem;
+                }
+            </Global>
+        </Install>
+        <BuildToBuildUpgrade UseInstallTasks="true" />
+        <Uninstall />
+    </OrgTaskInfo>
+    
+    <!--Enables v2 soft-link format on TDS topologies-->
+    <OrgTaskInfo Id="_71e5fb09f09d4622bb1f52bd4f6d325c" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+        <Install>
+            <Global>
+              if ($RoleIsDatacenter -and $RoleDatacenterIsTestEnv)
+              {
+                $softLinkSettingsGroup = "SoftLinkV2"
+                $adDriverSettings = Get-ExchangeSettings -Identity AdDriver -ErrorAction SilentlyContinue
+
+                if ($adDriverSettings -eq $null)
+                {
+                  New-ExchangeSettings -Name AdDriver
+                  Set-ExchangeSettings -Identity AdDriver -CreateSettingsGroup -GroupName $softLinkSettingsGroup -Reason test -Confirm:$false
+                  Set-ExchangeSettings -Identity AdDriver -GroupName $softLinkSettingsGroup -UpdateSetting -ConfigName SoftLinkFormatVersion -ConfigValue 2 -Reason test -Confirm:$false
+                }
+                elseif (!$adDriverSettings.GroupNames.Contains($softLinkSettingsGroup))
+                {
+                  Set-ExchangeSettings -Identity AdDriver -CreateSettingsGroup -GroupName $softLinkSettingsGroup -Reason test -Confirm:$false
+                  Set-ExchangeSettings -Identity AdDriver -GroupName $softLinkSettingsGroup -UpdateSetting -ConfigName SoftLinkFormatVersion -ConfigValue 2 -Reason test -Confirm:$false
+                }
+                else
+                {
+                  Set-ExchangeSettings -Identity AdDriver -GroupName $softLinkSettingsGroup -UpdateSetting -ConfigName SoftLinkFormatVersion -ConfigValue 2 -Reason test -Confirm:$false
+                }
+              }
+            </Global>
+        </Install>
+        <BuildToBuildUpgrade UseInstallTasks="true" />
+        <Uninstall />
+    </OrgTaskInfo>
+
+  </OrgTasks>
+</SetupComponentInfo>

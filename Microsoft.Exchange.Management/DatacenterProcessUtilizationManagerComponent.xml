@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo IsDatacenterOnly="true" IsDatacenterDedicatedOnly="true" Name="ProcessUtilizationManager Component" DescriptionId="SetupProcessUtilizationManagerServiceComponent">
+  <ServerTasks>
+    <!-- Install Diagnostics. -->
+    <ServerTaskInfo Id="_InstallProcessUtilizationManagerService" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          if (!(get-service MSExchangeProcessUtilizationManager* | where {$_.name -eq "MSExchangeProcessUtilizationManager"}))
+          {
+            Write-ExchangeSetupLog -Info "Installing ProcessUtilizationManager"
+            Install-ProcessUtilizationManagerService
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall>
+        <Standalone>
+          Uninstall-ProcessUtilizationManagerService
+        </Standalone>
+      </Uninstall>    
+    </ServerTaskInfo>
+  </ServerTasks>
+</SetupComponentInfo>

@@ -1,0 +1,352 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{09CD9476-CD82-489E-B9E2-84B47CA141A8}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Microsoft.Exchange.Server.Storage</RootNamespace>
+    <AssemblyName>Microsoft.Exchange.Server.Storage.StoreCommonServices</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Exchange.Common.IL" />
+    <Reference Include="Microsoft.Exchange.Search.OperatorSchema" />
+    <Reference Include="Microsoft.Isam.Esent.Interop.Types" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AttachmentBlob\AttachmentBlob.cs" />
+    <Compile Include="AttachmentBlob\InvalidAttachmentBlobException.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="PropertyBlob\AdditionalPropertyInfo.cs" />
+    <Compile Include="PropertyBlob\InvalidBlobException.cs" />
+    <Compile Include="PropertyBlob\PropertyBlob.cs" />
+    <Compile Include="StoreCommonServices\AclTableHelper.cs" />
+    <Compile Include="StoreCommonServices\AddressBookEID.cs" />
+    <Compile Include="StoreCommonServices\AddressInfoEntryFlags.cs" />
+    <Compile Include="StoreCommonServices\AddressInfoGetter.cs" />
+    <Compile Include="StoreCommonServices\AddressInfoSetter.cs" />
+    <Compile Include="StoreCommonServices\AssistantActivityMonitor.cs" />
+    <Compile Include="StoreCommonServices\AssistantActivityState.cs" />
+    <Compile Include="StoreCommonServices\BadPlanDetector.cs" />
+    <Compile Include="StoreCommonServices\Bookmark.cs" />
+    <Compile Include="StoreCommonServices\BufferedPerformanceCounter.cs" />
+    <Compile Include="StoreCommonServices\CannotPreserveMailboxSignature.cs" />
+    <Compile Include="StoreCommonServices\CannotRegisterNewNamedPropertyMapping.cs" />
+    <Compile Include="StoreCommonServices\CannotRegisterNewReplidGuidMapping.cs" />
+    <Compile Include="StoreCommonServices\CategorizedQueryParams.cs" />
+    <Compile Include="StoreCommonServices\ChangeNumberAndIdCounters.cs" />
+    <Compile Include="StoreCommonServices\CheckpointSmoother.cs" />
+    <Compile Include="StoreCommonServices\ChunkedEnumerable.cs" />
+    <Compile Include="StoreCommonServices\ClientActivityStrings.cs" />
+    <Compile Include="StoreCommonServices\ClientType.cs" />
+    <Compile Include="StoreCommonServices\ColumnRanges.cs" />
+    <Compile Include="StoreCommonServices\ComponentDataStorageBase.cs" />
+    <Compile Include="StoreCommonServices\CompositeChunked.cs" />
+    <Compile Include="StoreCommonServices\ComputedPropertyMapping.cs" />
+    <Compile Include="StoreCommonServices\ConstantPropertyMapping.cs" />
+    <Compile Include="StoreCommonServices\Context.cs" />
+    <Compile Include="StoreCommonServices\ConversationIdHelpers.cs" />
+    <Compile Include="StoreCommonServices\ConversionPropertyMapping.cs" />
+    <Compile Include="StoreCommonServices\CorrelationIdHelper.cs" />
+    <Compile Include="StoreCommonServices\CorruptDataException.cs" />
+    <Compile Include="StoreCommonServices\CriticalBlockScope.cs" />
+    <Compile Include="StoreCommonServices\DatabaseBadVersion.cs" />
+    <Compile Include="StoreCommonServices\DatabaseLogicalCorruption.cs" />
+    <Compile Include="StoreCommonServices\DatabaseSchema.cs" />
+    <Compile Include="StoreCommonServices\DatabaseStatus.cs" />
+    <Compile Include="StoreCommonServices\DatabaseUpgraders\AddDatabaseDsGuidToGlobalsTable.cs" />
+    <Compile Include="StoreCommonServices\DatabaseUpgraders\AddEventCounterBoundsToGlobalsTable.cs" />
+    <Compile Include="StoreCommonServices\DatabaseUpgraders\AddGroupMailboxType.cs" />
+    <Compile Include="StoreCommonServices\DatabaseUpgraders\AddLastMaintenanceTimeToMailbox.cs" />
+    <Compile Include="StoreCommonServices\DatabaseUpgraders\AddMidsetDeletedDelta.cs" />
+    <Compile Include="StoreCommonServices\DatabaseUpgraders\AddUpgradeHistoryTable.cs" />
+    <Compile Include="StoreCommonServices\DatabaseUpgraders\AsyncMessageCleanup.cs" />
+    <Compile Include="StoreCommonServices\DatabaseUpgraders\EnableAddingSpecialFolders.cs" />
+    <Compile Include="StoreCommonServices\DatabaseUpgraders\FixGlobalsTablePK.cs" />
+    <Compile Include="StoreCommonServices\DatabaseUpgraders\FixReceiveFolderPK.cs" />
+    <Compile Include="StoreCommonServices\DatabaseUpgraders\RemoveFolderIdsetIn.cs" />
+    <Compile Include="StoreCommonServices\DatabaseUpgraders\TombstoneTableDiagnostics.cs" />
+    <Compile Include="StoreCommonServices\DatabaseUpgraders\UnifiedMailbox.cs" />
+    <Compile Include="StoreCommonServices\DatabaseUpgraders\UserInfoUpgrader.cs" />
+    <Compile Include="StoreCommonServices\DefaultPropertyMapping.cs" />
+    <Compile Include="StoreCommonServices\DiagnosticQueryStrings.cs" />
+    <Compile Include="StoreCommonServices\DiagnosticSource.cs" />
+    <Compile Include="StoreCommonServices\Eidt.cs" />
+    <Compile Include="StoreCommonServices\EntryIdHelpers.cs" />
+    <Compile Include="StoreCommonServices\ExchangeId.cs" />
+    <Compile Include="StoreCommonServices\ExchangeIdHelpers.cs" />
+    <Compile Include="StoreCommonServices\ExchangeIdListHelpers.cs" />
+    <Compile Include="StoreCommonServices\ExchangeShortId.cs" />
+    <Compile Include="StoreCommonServices\ExecutionDiagnostics.cs" />
+    <Compile Include="StoreCommonServices\ExtendedPropertyNameMappingTable.cs" />
+    <Compile Include="StoreCommonServices\FilterFactorHint.cs" />
+    <Compile Include="StoreCommonServices\FullComputedPropertyMapping.cs" />
+    <Compile Include="StoreCommonServices\FullTextIndex.cs" />
+    <Compile Include="StoreCommonServices\FullTextIndexTableFunctionTableFunction.cs" />
+    <Compile Include="StoreCommonServices\FunctionPropertyMapping.cs" />
+    <Compile Include="StoreCommonServices\GlobalNamedPropertyMap.cs" />
+    <Compile Include="StoreCommonServices\Globals.cs" />
+    <Compile Include="StoreCommonServices\GlobalsTable.cs" />
+    <Compile Include="StoreCommonServices\GlobalsTableHelper.cs" />
+    <Compile Include="StoreCommonServices\GlobcntAllocationCache.cs" />
+    <Compile Include="StoreCommonServices\HashHelpers.cs" />
+    <Compile Include="StoreCommonServices\ICache.cs" />
+    <Compile Include="StoreCommonServices\IChunked.cs" />
+    <Compile Include="StoreCommonServices\IColumnValueBag.cs" />
+    <Compile Include="StoreCommonServices\IComponentData.cs" />
+    <Compile Include="StoreCommonServices\IContextProvider.cs" />
+    <Compile Include="StoreCommonServices\ICriticalBlockFailureHandler.cs" />
+    <Compile Include="StoreCommonServices\IDatabaseMaintenance.cs" />
+    <Compile Include="StoreCommonServices\IDigestCollector.cs" />
+    <Compile Include="StoreCommonServices\IdSet.cs" />
+    <Compile Include="StoreCommonServices\IdSetUtilities.cs" />
+    <Compile Include="StoreCommonServices\IInstanceNumberOverride.cs" />
+    <Compile Include="StoreCommonServices\IMailboxContext.cs" />
+    <Compile Include="StoreCommonServices\IMailboxListRestriction.cs" />
+    <Compile Include="StoreCommonServices\IMailboxLockName.cs" />
+    <Compile Include="StoreCommonServices\IMailboxMaintenance.cs" />
+    <Compile Include="StoreCommonServices\IMailboxQuarantineProvider.cs" />
+    <Compile Include="StoreCommonServices\InferenceClientActivityLoggingFlags.cs" />
+    <Compile Include="StoreCommonServices\INotificationSession.cs" />
+    <Compile Include="StoreCommonServices\INotificationSubscriptionList.cs" />
+    <Compile Include="StoreCommonServices\IOriginalPropertyBag.cs" />
+    <Compile Include="StoreCommonServices\IPseudoIndex.cs" />
+    <Compile Include="StoreCommonServices\IReplidGuidMap.cs" />
+    <Compile Include="StoreCommonServices\IRopSummaryCollector.cs" />
+    <Compile Include="StoreCommonServices\ISchemaVersion.cs" />
+    <Compile Include="StoreCommonServices\ISimplePropertyBag.cs" />
+    <Compile Include="StoreCommonServices\ISimplePropertyBagWithChangeTracking.cs" />
+    <Compile Include="StoreCommonServices\ISimplePropertyStorage.cs" />
+    <Compile Include="StoreCommonServices\ISimplePropertyStorageWithChangeTracking.cs" />
+    <Compile Include="StoreCommonServices\ISimpleReadOnlyPropertyBag.cs" />
+    <Compile Include="StoreCommonServices\ISimpleReadOnlyPropertyStorage.cs" />
+    <Compile Include="StoreCommonServices\IStateObject.cs" />
+    <Compile Include="StoreCommonServices\ITimedEventHandler.cs" />
+    <Compile Include="StoreCommonServices\ITraceCollector.cs" />
+    <Compile Include="StoreCommonServices\ITraceParameters.cs" />
+    <Compile Include="StoreCommonServices\LazyMailboxActionList.cs" />
+    <Compile Include="StoreCommonServices\LockableMailboxComponent.cs" />
+    <Compile Include="StoreCommonServices\LockAcquisitionTracker.cs" />
+    <Compile Include="StoreCommonServices\LogTransactionInformationBlockType.cs" />
+    <Compile Include="StoreCommonServices\LogTransactionInformationCollector.cs" />
+    <Compile Include="StoreCommonServices\LogTransactionInformationDigest.cs" />
+    <Compile Include="StoreCommonServices\LogTransactionInformationForTestPurposes.cs" />
+    <Compile Include="StoreCommonServices\LogTransactionInformationIdentity.cs" />
+    <Compile Include="StoreCommonServices\LogTransactionInformationTask.cs" />
+    <Compile Include="StoreCommonServices\Mailbox.cs" />
+    <Compile Include="StoreCommonServices\MailboxComponentId.cs" />
+    <Compile Include="StoreCommonServices\MailboxComponentLockName.cs" />
+    <Compile Include="StoreCommonServices\MailboxComponentOperationFrame.cs" />
+    <Compile Include="StoreCommonServices\MailboxCreation.cs" />
+    <Compile Include="StoreCommonServices\MailboxIdentityTable.cs" />
+    <Compile Include="StoreCommonServices\MailboxList.cs" />
+    <Compile Include="StoreCommonServices\MailboxListRestrictionActive.cs" />
+    <Compile Include="StoreCommonServices\MailboxListRestrictionActiveAndDisabled.cs" />
+    <Compile Include="StoreCommonServices\MailboxListRestrictionActiveAndDisconnected.cs" />
+    <Compile Include="StoreCommonServices\MailboxListRestrictionFinalCleanup.cs" />
+    <Compile Include="StoreCommonServices\MailboxListRestrictionSoftDeleted.cs" />
+    <Compile Include="StoreCommonServices\MailboxLockName.cs" />
+    <Compile Include="StoreCommonServices\MailboxLockNameBase.cs" />
+    <Compile Include="StoreCommonServices\MailboxMiscFlags.cs" />
+    <Compile Include="StoreCommonServices\MailboxQuarantineProvider.cs" />
+    <Compile Include="StoreCommonServices\MailboxQuarantiner.cs" />
+    <Compile Include="StoreCommonServices\MailboxShapeAppConfig.cs" />
+    <Compile Include="StoreCommonServices\MailboxState.cs" />
+    <Compile Include="StoreCommonServices\MailboxStateCache.cs" />
+    <Compile Include="StoreCommonServices\MailboxStatus.cs" />
+    <Compile Include="StoreCommonServices\MailboxTable.cs" />
+    <Compile Include="StoreCommonServices\MailboxTaskContext.cs" />
+    <Compile Include="StoreCommonServices\MailboxTaskQueue.cs" />
+    <Compile Include="StoreCommonServices\MailboxUpgraders\UpgradeReceiveFolderContent.cs" />
+    <Compile Include="StoreCommonServices\MaintenanceHandler.cs" />
+    <Compile Include="StoreCommonServices\MapiAPIFlags.cs" />
+    <Compile Include="StoreCommonServices\MaxValue.cs" />
+    <Compile Include="StoreCommonServices\MinValue.cs" />
+    <Compile Include="StoreCommonServices\MountFlags.cs" />
+    <Compile Include="StoreCommonServices\MovingAverage.cs" />
+    <Compile Include="StoreCommonServices\NamedPropertyMap.cs" />
+    <Compile Include="StoreCommonServices\NotificationCallback.cs" />
+    <Compile Include="StoreCommonServices\NotificationContext.cs" />
+    <Compile Include="StoreCommonServices\NotificationContextEvents.cs" />
+    <Compile Include="StoreCommonServices\NotificationEvent.cs" />
+    <Compile Include="StoreCommonServices\NotificationPublishPhase.cs" />
+    <Compile Include="StoreCommonServices\NotificationSubscription.cs" />
+    <Compile Include="StoreCommonServices\ObjectPropertyBag.cs" />
+    <Compile Include="StoreCommonServices\ObjectPropertySchema.cs" />
+    <Compile Include="StoreCommonServices\OperationDetail.cs" />
+    <Compile Include="StoreCommonServices\OperationType.cs" />
+    <Compile Include="StoreCommonServices\PCL.cs" />
+    <Compile Include="StoreCommonServices\PerClientTypeTracing.cs" />
+    <Compile Include="StoreCommonServices\PerformanceCounterFactory.cs" />
+    <Compile Include="StoreCommonServices\PhysicalColumnPropertyMapping.cs" />
+    <Compile Include="StoreCommonServices\PrequarantinedMailbox.cs" />
+    <Compile Include="StoreCommonServices\PrivateObjectPropertyBag.cs" />
+    <Compile Include="StoreCommonServices\PrivatePropertyBag.cs" />
+    <Compile Include="StoreCommonServices\Properties.cs" />
+    <Compile Include="StoreCommonServices\Property.cs" />
+    <Compile Include="StoreCommonServices\PropertyBag.cs" />
+    <Compile Include="StoreCommonServices\PropertyBagHelpers.cs" />
+    <Compile Include="StoreCommonServices\PropertyComparerByTag.cs" />
+    <Compile Include="StoreCommonServices\PropertyMapping.cs" />
+    <Compile Include="StoreCommonServices\PropertyMappingKind.cs" />
+    <Compile Include="StoreCommonServices\PropertyPromotionHelper.cs" />
+    <Compile Include="StoreCommonServices\PropertySchema.cs" />
+    <Compile Include="StoreCommonServices\PropertySchemaPopulation.cs" />
+    <Compile Include="StoreCommonServices\QueryPlanner.cs" />
+    <Compile Include="StoreCommonServices\ReplidGuidMap.cs" />
+    <Compile Include="StoreCommonServices\ReplidGuidMapTable.cs" />
+    <Compile Include="StoreCommonServices\ReplidNotFoundException.cs" />
+    <Compile Include="StoreCommonServices\RequiredMaintenanceResourceType.cs" />
+    <Compile Include="StoreCommonServices\ResourceDigestStats.cs" />
+    <Compile Include="StoreCommonServices\ResourceMonitorDigest.cs" />
+    <Compile Include="StoreCommonServices\ResourceMonitorDigestSnapshot.cs" />
+    <Compile Include="StoreCommonServices\RopSummaryAggregator.cs" />
+    <Compile Include="StoreCommonServices\RopSummaryCollector.cs" />
+    <Compile Include="StoreCommonServices\RopSummaryContainer.cs" />
+    <Compile Include="StoreCommonServices\RopSummaryParameters.cs" />
+    <Compile Include="StoreCommonServices\RopSummaryReporter.cs" />
+    <Compile Include="StoreCommonServices\RopSummaryResolver.cs" />
+    <Compile Include="StoreCommonServices\RopTraceKey.cs" />
+    <Compile Include="StoreCommonServices\RowPropertyBag.cs" />
+    <Compile Include="StoreCommonServices\SchemaUpgrader.cs" />
+    <Compile Include="StoreCommonServices\SchemaUpgradeService.cs" />
+    <Compile Include="StoreCommonServices\SearchExecutionDiagnostics.cs" />
+    <Compile Include="StoreCommonServices\SecurityHelper.cs" />
+    <Compile Include="StoreCommonServices\SharedObjectPropertyBag.cs" />
+    <Compile Include="StoreCommonServices\SharedObjectPropertyBagData.cs" />
+    <Compile Include="StoreCommonServices\SharedObjectPropertyBagDataCache.cs" />
+    <Compile Include="StoreCommonServices\SimplePseudoIndex.cs" />
+    <Compile Include="StoreCommonServices\Storage.cs" />
+    <Compile Include="StoreCommonServices\StoreCommonServicesHelper.cs" />
+    <Compile Include="StoreCommonServices\StoreDatabase.cs" />
+    <Compile Include="StoreCommonServices\StoreFullTextIndexHelper.cs" />
+    <Compile Include="StoreCommonServices\StoreFullTextIndexQuery.cs" />
+    <Compile Include="StoreCommonServices\StorePerClientTypePerformanceCounters.cs" />
+    <Compile Include="StoreCommonServices\StorePerClientTypePerformanceCountersInstance.cs" />
+    <Compile Include="StoreCommonServices\StorePerDatabasePerformanceCounters.cs" />
+    <Compile Include="StoreCommonServices\StorePerDatabasePerformanceCountersInstance.cs" />
+    <Compile Include="StoreCommonServices\StoreSerializedValue.cs" />
+    <Compile Include="StoreCommonServices\StreamGetterDelegate.cs" />
+    <Compile Include="StoreCommonServices\SubscriptionEnumerationCallback.cs" />
+    <Compile Include="StoreCommonServices\SubscriptionKind.cs" />
+    <Compile Include="StoreCommonServices\SyntheticCounters.cs" />
+    <Compile Include="StoreCommonServices\TaskDiagnosticInformation.cs" />
+    <Compile Include="StoreCommonServices\TaskExecutionDiagnostics.cs" />
+    <Compile Include="StoreCommonServices\TaskExecutionWrapper.cs" />
+    <Compile Include="StoreCommonServices\TaskExecutionWrapperTestHook.cs" />
+    <Compile Include="StoreCommonServices\TaskTypeId.cs" />
+    <Compile Include="StoreCommonServices\TimedEventDispatcher.cs" />
+    <Compile Include="StoreCommonServices\TimedEventEntry.cs" />
+    <Compile Include="StoreCommonServices\TimedEventsQueue.cs" />
+    <Compile Include="StoreCommonServices\TimedEventsTable.cs" />
+    <Compile Include="StoreCommonServices\TraceCollector.cs" />
+    <Compile Include="StoreCommonServices\TraceContainer.cs" />
+    <Compile Include="StoreCommonServices\TraceContextFlags.cs" />
+    <Compile Include="StoreCommonServices\TraceDataAggregator.cs" />
+    <Compile Include="StoreCommonServices\TraceDataReporter.cs" />
+    <Compile Include="StoreCommonServices\UpgradeHistoryTable.cs" />
+    <Compile Include="StoreCommonServices\ValueRange.cs" />
+    <Compile Include="StoreCommonServices\ViewSeekOrigin.cs" />
+    <Compile Include="StoreCommonServices\ViewSetColumnsFlag.cs" />
+    <Compile Include="StoreCommonServices\ViewTable.cs" />
+    <Compile Include="StoreCommonServices\WorkLoadType.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.Exchange.Cluster.Shared\Microsoft.Exchange.Cluster.Shared.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140EE}</Project>
+      <Name>Microsoft.Exchange.Cluster.Shared</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Common\Microsoft.Exchange.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140F0}</Project>
+      <Name>Microsoft.Exchange.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Compliance\Microsoft.Exchange.Compliance.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140F2}</Project>
+      <Name>Microsoft.Exchange.Compliance</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Common\Microsoft.Exchange.Data.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140D3}</Project>
+      <Name>Microsoft.Exchange.Data.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Diagnostics\Microsoft.Exchange.Diagnostics.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14113}</Project>
+      <Name>Microsoft.Exchange.Diagnostics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Net\Microsoft.Exchange.Net.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14178}</Project>
+      <Name>Microsoft.Exchange.Net</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.RpcClientAccess.ExMonHandler\Microsoft.Exchange.RpcClientAccess.ExMonHandler.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1418A}</Project>
+      <Name>Microsoft.Exchange.RpcClientAccess.ExMonHandler</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.RpcClientAccess.Parser\Microsoft.Exchange.RpcClientAccess.Parser.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1418D}</Project>
+      <Name>Microsoft.Exchange.RpcClientAccess.Parser</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Server.Storage.Common\Microsoft.Exchange.Server.Storage.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1419A}</Project>
+      <Name>Microsoft.Exchange.Server.Storage.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Server.Storage.FullTextIndex\Microsoft.Exchange.Server.Storage.FullTextIndex.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1419E}</Project>
+      <Name>Microsoft.Exchange.Server.Storage.FullTextIndex</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Server.Storage.PhysicalAccess\Microsoft.Exchange.Server.Storage.PhysicalAccess.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141A4}</Project>
+      <Name>Microsoft.Exchange.Server.Storage.PhysicalAccess</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Server.Storage.PropertyDefinitions\Microsoft.Exchange.Server.Storage.PropertyDefinitions.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141A5}</Project>
+      <Name>Microsoft.Exchange.Server.Storage.PropertyDefinitions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Server.Storage.PropertyTag\Microsoft.Exchange.Server.Storage.PropertyTag.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141A6}</Project>
+      <Name>Microsoft.Exchange.Server.Storage.PropertyTag</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Office.Datacenter.ActiveMonitoringLocal\Microsoft.Office.Datacenter.ActiveMonitoringLocal.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141ED}</Project>
+      <Name>Microsoft.Office.Datacenter.ActiveMonitoringLocal</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\mscorlib\mscorlib.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141F1}</Project>
+      <Name>mscorlib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

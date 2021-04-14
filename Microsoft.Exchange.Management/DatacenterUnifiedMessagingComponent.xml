@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo IsDatacenterOnly="true" IsDatacenterDedicatedOnly="true" Name="Datacenter Unified Messaging Configuration" DescriptionId="UnifiedMessagingDatacenterComponentDescription">
+   <ServerTasks>
+
+    <!-- Configure SSL certificates -->
+    <ServerTaskInfo Id="_f81f77bb6dab4a6f923cd7452f9ae736" Component="EXCHANGE14:\Current\Release\Client Access\Unified Messaging\Setup">
+      <Install>
+        <Standalone>Install-ExchangeCertificate -Thumbprint $RoleDatacenterIisSHA1Thumbprint -Services IIS</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Configure UM for Dual mode. -->
+    <ServerTaskInfo Id="_2737064257c24eabb269c3986dccc5bb" Component="EXCHANGE14:\Current\Release\Client Access\Unified Messaging\Setup">
+      <Install>
+        <Standalone>
+        Write-ExchangeSetupLog -Info "UMStartupMode will be set to Dual";
+        Set-UMService -UMStartupMode Dual -Identity $RoleFqdnOrName -DomainController $RoleDomainController;
+        Write-ExchangeSetupLog -Info "UMCertificateThumbprint is being set with '$RoleDatacenterUMSHA1Thumbprint'";
+        Install-ExchangeCertificate -Thumbprint $RoleDatacenterUMSHA1Thumbprint -Services UM -DomainController $RoleDomainController;
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+    <ServerTaskInfo Id="_399b517e08cc48fc83f21aa99898d5e3" Component="EXCHANGE14:\Current\Release\Client Access\Unified Messaging\Setup" ExcludeInDatacenterDedicated="true">
+      <Install>
+        <!-- Set the ExternalHostFqdn server configuration parameter -->
+        <Standalone>
+          Write-ExchangeSetupLog -Info "UM ExternalHostFQDN will be set to null";
+          Set-UMService -Identity $RoleFqdnOrName -ExternalHostFqdn $null -DomainController $RoleDomainController;
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>
+          Set-UMService -Identity $RoleFqdnOrName -ExternalHostFqdn $null -DomainController $RoleDomainController;
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+
+    <ServerTaskInfo Id="_b9a85c0c4f1b4b97b7dff2c771a1e824" Component="EXCHANGE14:\Current\Release\Client Access\Unified Messaging\Setup" ExcludeInDatacenterDedicated="true">
+     <Install>
+	  <!-- Set the ExternalServiceFqdn server configuration parameter -->
+	  <!-- Example: -->	
+          <!-- $adSiteName will be bl2prd0102 -->	
+          <!-- $RoleDatacenterSiteName will be outlook.com -->	
+	  <!-- So, the final ExternalServiceFqdn will be bl2prd0102.um.prod.outlook.com -->
+	  <!-- get the site of the exchange server -->
+	<Standalone>
+          $adSiteName = (Get-ExchangeServer $RoleFqdnOrName -DomainController $RoleDomainController).Site.Name;
+	  $externalServiceFqdn =  $adSiteName + ".um.prod." + $RoleDatacenterSiteName;
+	  Write-ExchangeSetupLog -Info "Setting ExternalServiceFqdn to '$externalServiceFqdn'";	  
+          Set-UMService -Identity $RoleFqdnOrName -ExternalServiceFqdn $externalServiceFqdn -DomainController $RoleDomainController;
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>
+          Set-UMService -Identity $RoleFqdnOrName -ExternalServiceFqdn $null -DomainController $RoleDomainController;
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Configure UM Pod Redirect Template -->
+    <ServerTaskInfo Id="_83fcc7e9da344ad1a50fc76f8e1d95d8" Component="EXCHANGE14:\Current\Release\Client Access\Unified Messaging\Setup" ExcludeInDatacenterDedicated="true">
+      <Install>
+        <Standalone>
+          if ($RoleDatacenterPodRedirectTemplateUm)
+          {
+            Write-ExchangeSetupLog -Info "UMPodRedirectTemplate will be set to '$RoleDatacenterPodRedirectTemplateUm'";
+            Set-UMService -Identity $RoleFqdnOrName -UMPodRedirectTemplate $RoleDatacenterPodRedirectTemplateUm -DomainController $RoleDomainController;
+          }
+          else
+          {
+            Write-ExchangeSetupLog -Error "UMPodRedirectTemplate is not set";
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Configure UM Forwarding Address Template -->
+    <ServerTaskInfo Id="_91380f870d984c14a332fe187ecbd6b4" Component="EXCHANGE14:\Current\Release\Client Access\Unified Messaging\Setup" ExcludeInDatacenterDedicated="true">
+      <Install>
+        <Standalone>
+          if ($RoleDatacenterSiteName)
+          {
+            $forwardingAddressTemplate =  "{0}.um." + $RoleDatacenterSiteName;
+            Write-ExchangeSetupLog -Info "UMForwardingAddressTemplate will be set to '$forwardingAddressTemplate'";
+            Set-UMService -Identity $RoleFqdnOrName -UMForwardingAddressTemplate $forwardingAddressTemplate -DomainController $RoleDomainController;
+          }
+          else
+          {
+            Write-ExchangeSetupLog -Error "UMForwardingAddressTemplate cannot be set because SiteName is not set";
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+	
+	<!-- Change the AD Driver event log levels to low for the datacenter -->
+    <ServerTaskInfo Id="_52F14B27352747138812EF743136CB3E" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\AD Core">
+      <Install>
+        <Standalone>
+          Set-EventLogLevel -Identity "MSExchange ADAccess\LDAP" -Level Low
+          Set-EventLogLevel -Identity "MSExchange ADAccess\Topology" -Level Low
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+	<!-- Change event log level to Expert for UM -->
+    <ServerTaskInfo Id="_06610829c7fe4fa8ba08604cbe61189d" Component="EXCHANGE14:\Current\Release\Client Access\Unified Messaging\Setup">
+      <Install>
+        <Standalone>
+          Set-EventLogLevel -Identity "MSExchange Unified Messaging\UMWorkerProcess" -Level Expert
+          Set-EventLogLevel -Identity "MSExchange Unified Messaging\UMCore" -Level Expert
+          Set-EventLogLevel -Identity "MSExchange Unified Messaging\UMService" -Level Expert
+          Set-EventLogLevel -Identity "MSExchange Unified Messaging\UMManagement" -Level Expert
+          Set-EventLogLevel -Identity "MSExchange Unified Messaging\UMClientAccess" -Level Expert
+          Set-EventLogLevel -Identity "MSExchange Unified Messaging\UMCallData" -Level Expert
+          Set-EventLogLevel -Identity "MSExchange Unified Messaging\MWI General" -Level Expert
+          Set-EventLogLevel -Identity "MSExchange Unified Messaging\UMCallRouter" -Level Expert
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>	
+
+   <!-- E14 476646, 476840 - Services such as MsExchangeServiceHost are getting timed out on UM servers in the Datacenter. Extending SCM timeout to 90 seconds to avoid such issues. -->
+    <ServerTaskInfo Id="_608e4681e50046f48ccfd5d5dd8ffb8b" Component="EXCHANGE14:\Current\Release\Client Access\Unified Messaging\Setup">
+      <Install>
+        <Standalone>
+            # Configure SCM timeout
+            $scmParentKey = "HKLM:\SYSTEM\CurrentControlSet\Control";
+            $scmKey = "ServicesPipeTimeout";
+            $scmTimeout = 90000;
+            $parentKeyValue = Get-ItemProperty $scmParentKey -ErrorAction:Continue;
+              
+            if( $parentKeyValue -ne $null )
+            {
+                # Configure SCM timeout
+                if ( $parentKeyValue.$scmKey -eq $null )
+                {
+                    # Property doesn't exist. Create it
+                    Write-exchangeSetupLog -info "Creating property '$scmKey' on key '$scmParentKey' with value of $scmTimeout on UM server";
+                    New-ItemProperty -Path $scmParentKey -Name $scmKey -Value $scmTimeout -PropertyType "DWORD";
+                }
+                else
+                {
+                    # Update property.
+                    Write-exchangeSetupLog -info "Updating property '$scmKey' on key '$scmParentKey' with value of $scmTimeout on UM server";
+                    Set-ItemProperty -Path $scmParentKey -Name $scmKey -Value $scmTimeout;
+                }
+            }
+            else
+            {
+                Write-exchangeSetupLog -error "Key '$scmParentKey' NOT FOUND";
+            }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+	
+  </ServerTasks>
+</SetupComponentInfo>

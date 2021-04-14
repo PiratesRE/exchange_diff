@@ -1,0 +1,155 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{09CD9476-CD82-489E-B9E2-84B47CA140F0}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Microsoft.Exchange</RootNamespace>
+    <AssemblyName>Microsoft.Exchange.Common</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Exchange.Common.IL" />
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceProcess" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Common\AppConfigLoader.cs" />
+    <Compile Include="Common\AsyncBuffer.cs" />
+    <Compile Include="Common\AsyncCopy.cs" />
+    <Compile Include="Common\AsyncCopyGetException.cs" />
+    <Compile Include="Common\AsyncEnumerator.2.cs" />
+    <Compile Include="Common\AsyncEnumerator.cs" />
+    <Compile Include="Common\AsyncExceptionWrapper.cs" />
+    <Compile Include="Common\AsyncExceptionWrapperHelper.cs" />
+    <Compile Include="Common\AsyncLocalizedExceptionWrapper.cs" />
+    <Compile Include="Common\AsyncResult.2.cs" />
+    <Compile Include="Common\AsyncResult.cs" />
+    <Compile Include="Common\AsyncResultCallback.2.cs" />
+    <Compile Include="Common\AsyncResultCallback.cs" />
+    <Compile Include="Common\AutoReadThroughCache.cs" />
+    <Compile Include="Common\BoxedConstants.cs" />
+    <Compile Include="Common\CannotDetermineExchangeModeException.cs" />
+    <Compile Include="Common\CommonReflectionHelper.cs" />
+    <Compile Include="Common\CommonStrings.cs" />
+    <Compile Include="Common\ComputerNameFormat.cs" />
+    <Compile Include="Common\CopyMode.cs" />
+    <Compile Include="Common\CopyProgressUpdatedEventDelegate.cs" />
+    <Compile Include="Common\CopyState.cs" />
+    <Compile Include="Common\Counter.cs" />
+    <Compile Include="Common\CounterDictionary.cs" />
+    <Compile Include="Common\CrimsonChannelReader.cs" />
+    <Compile Include="Common\CrimsonChannelType.cs" />
+    <Compile Include="Common\Datacenter.cs" />
+    <Compile Include="Common\DisposableFrame.cs" />
+    <Compile Include="Common\EventLogReaderAdapter.cs" />
+    <Compile Include="Common\ExClusTransientException.cs" />
+    <Compile Include="Common\ExDbApiException.cs" />
+    <Compile Include="Common\ExDiagnostics.cs" />
+    <Compile Include="Common\ExecuterProxy.cs" />
+    <Compile Include="Common\ExMonitoringRequestTracker.cs" />
+    <Compile Include="Common\ExServiceBase.cs" />
+    <Compile Include="Common\ExWebHealthHandler.cs" />
+    <Compile Include="Common\ExWebHealthModule.cs" />
+    <Compile Include="Common\ExWebHealthResponseWrapper.cs" />
+    <Compile Include="Common\ExWebTimeoutReportHandler.cs" />
+    <Compile Include="Common\FailFastException.cs" />
+    <Compile Include="Common\FailFastMode.cs" />
+    <Compile Include="Common\GenericExecuter.cs" />
+    <Compile Include="Common\GrayException.cs" />
+    <Compile Include="Common\HA\DatabaseFailureItem.cs" />
+    <Compile Include="Common\HA\EventRecordParameteIndex.cs" />
+    <Compile Include="Common\HA\ExDbFailureItemApi.cs" />
+    <Compile Include="Common\HA\FailureNameSpace.cs" />
+    <Compile Include="Common\HA\FailureTag.cs" />
+    <Compile Include="Common\HA\IoErrorCategory.cs" />
+    <Compile Include="Common\HA\IoErrorInfo.cs" />
+    <Compile Include="Common\HA\NotificationEventInfo.cs" />
+    <Compile Include="Common\IBuilder.cs" />
+    <Compile Include="Common\IdentityExceptionTranslator.cs" />
+    <Compile Include="Common\IExceptionTranslator.cs" />
+    <Compile Include="Common\IExecuter.cs" />
+    <Compile Include="Common\IExWebHealthResponseWrapper.cs" />
+    <Compile Include="Common\InstanceBuilder.cs" />
+    <Compile Include="Common\InvalidFailureItemException.cs" />
+    <Compile Include="Common\IPushNotificationRawSettings.cs" />
+    <Compile Include="Common\LocalizedStringSerializer.cs" />
+    <Compile Include="Common\Logic.cs" />
+    <Compile Include="Common\MarshalHelper.cs" />
+    <Compile Include="Common\PasswordHelper.cs" />
+    <Compile Include="Common\PublicFolderConstants.cs" />
+    <Compile Include="Common\PushNotificationPlatform.cs" />
+    <Compile Include="Common\ReadOnlyStream.cs" />
+    <Compile Include="Common\RefCountedSet.cs" />
+    <Compile Include="Common\ScheduleInterval.cs" />
+    <Compile Include="Common\SecureArray.cs" />
+    <Compile Include="Common\ServiceControllerUtils.cs" />
+    <Compile Include="Common\SingletonBuilder.cs" />
+    <Compile Include="Common\Sniff\DataSniff.cs" />
+    <Compile Include="Common\StringUtil.cs" />
+    <Compile Include="Common\TestFailFastException.cs" />
+    <Compile Include="Common\WeekDayAndTime.cs" />
+    <Compile Include="Extensions\ArrayExtensions.cs" />
+    <Compile Include="Extensions\CharArrayExtensions.cs" />
+    <Compile Include="Extensions\CharTransformDelegate.cs" />
+    <Compile Include="Extensions\CollectionExtensions.cs" />
+    <Compile Include="Extensions\ExceptionExtension.cs" />
+    <Compile Include="Extensions\SecureStringExtensions.cs" />
+    <Compile Include="Extensions\StringExtensions.cs" />
+    <Compile Include="Extensions\TaskFactoryExtensions.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Common\Strings.resources" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Common\Microsoft.Exchange.Data.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140D3}</Project>
+      <Name>Microsoft.Exchange.Data.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Diagnostics\Microsoft.Exchange.Diagnostics.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14113}</Project>
+      <Name>Microsoft.Exchange.Diagnostics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\mscorlib\mscorlib.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141F1}</Project>
+      <Name>mscorlib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

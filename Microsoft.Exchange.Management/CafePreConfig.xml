@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo Name="Prereq Configuration">
+  <ServerTasks>
+
+    <!-- Need to have at least one ServerTaskInfo block, even an empty one. -->
+    <ServerTaskInfo Id="_b5a7eb567509460c9b7b3f1cb9b4ee5a" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          if($RoleInstallWindowsComponents)
+          {
+            # Install any Windows Roles or Features required for the CAFE role
+            &amp; $RoleBinPath\InstallWindowsComponent.ps1 -ShortNameForRole "Internal-CAFE" -ADToolsNeeded $RoleADToolsNeeded
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+  </ServerTasks>
+</SetupComponentInfo>

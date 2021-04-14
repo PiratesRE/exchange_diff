@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo Name="All Roles Pre Setup Last">
+
+  <ServerTasks>
+
+    <!-- 
+      Save service state 
+      
+      During uninstall some services might be holding Exchange files open, thereby 
+      thwarting our attempt to uninstall without reboot. To prevent this, we need
+      to stop these services before replacing files.
+      
+      To do this, we first save the state of the services if the file
+      StoppedServices.xml is not present.  We always stop the services and disable
+      only if we have saved the state. This is required in case uninstall fails
+      during configuration of a role. A resume will uninstall the msi, so we need
+      to stop the services. To preserve the state that was there on the first
+      attempt of uninstall, the state files are not overwritten. 
+      
+      During post-setup, we'll restore the services to the state recorded here.
+
+      This requires local machine admin permissions.
+    -->
+    <ServerTaskInfo Id="_cc320093bbc24ff484cb22b2f8340290" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install/>
+      <BuildToBuildUpgrade/>
+      <DisasterRecovery/>
+      <Uninstall>
+        <Standalone>
+          &amp; $RoleBinPath\ServiceControl.ps1 Save
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+  </ServerTasks>
+</SetupComponentInfo>

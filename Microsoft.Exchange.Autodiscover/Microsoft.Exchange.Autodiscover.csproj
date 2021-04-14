@@ -1,0 +1,300 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{09CD9476-CD82-489E-B9E2-84B47CA140E1}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Microsoft.Exchange.Autodiscover</RootNamespace>
+    <AssemblyName>Microsoft.Exchange.Autodiscover</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Office365.DataInsights.Uploader" />
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.DirectoryServices.Protocols" />
+    <Reference Include="System.IdentityModel" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.ServiceModel.Web" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AuthMetadataBuilderException.cs" />
+    <Compile Include="AuthMetadataInternalException.cs" />
+    <Compile Include="AutodiscoverDatacenterPerformanceCounters.cs" />
+    <Compile Include="AutodiscoverDatacenterPerformanceCountersInstance.cs" />
+    <Compile Include="AutodiscoverEventLogConstants.cs" />
+    <Compile Include="AutoDiscoverMetadata.cs" />
+    <Compile Include="AutodiscoverPerformanceCounters.cs" />
+    <Compile Include="AutoDiscoverRawData.cs" />
+    <Compile Include="CallerRequestedCapabilities.cs" />
+    <Compile Include="Common.cs" />
+    <Compile Include="ConfigurationCache\ADServiceConnectionPointCache.cs" />
+    <Compile Include="ConfigurationCache\ClientAccessArrayCache.cs" />
+    <Compile Include="ConfigurationCache\FilterType.cs" />
+    <Compile Include="ConfigurationCache\IConfigCache.cs" />
+    <Compile Include="ConfigurationCache\MailboxDatabaseCache.cs" />
+    <Compile Include="ConfigurationCache\OabCache.cs" />
+    <Compile Include="ConfigurationCache\OabLruCache.cs" />
+    <Compile Include="ConfigurationCache\OfflineAddressBookCacheEntry.cs" />
+    <Compile Include="ConfigurationCache\OfflineAddressBookCacheKey.cs" />
+    <Compile Include="ConfigurationCache\OrganizationCache.cs" />
+    <Compile Include="ConfigurationCache\OutlookProviderCache.cs" />
+    <Compile Include="ConfigurationCache\ServerCache.cs" />
+    <Compile Include="ConfigurationCache\ServerConfigurationCache.cs" />
+    <Compile Include="ConfigurationCache\ServerId.cs" />
+    <Compile Include="ConfigurationCache\SimpleConfigCache.cs" />
+    <Compile Include="ConfigurationCache\SiteCache.cs" />
+    <Compile Include="ConfigurationSettings\AlternateMailbox.cs" />
+    <Compile Include="ConfigurationSettings\AlternateMailboxCollection.cs" />
+    <Compile Include="ConfigurationSettings\AutodiscoverProxy.cs" />
+    <Compile Include="ConfigurationSettings\ClientAccessModes.cs" />
+    <Compile Include="ConfigurationSettings\DocumentSharingLocation.cs" />
+    <Compile Include="ConfigurationSettings\DocumentSharingLocationCollection.cs" />
+    <Compile Include="ConfigurationSettings\DomainConfigurationSettingName.cs" />
+    <Compile Include="ConfigurationSettings\ExchangeServerVersion.cs" />
+    <Compile Include="ConfigurationSettings\MapiHttpProtocolUrls.cs" />
+    <Compile Include="ConfigurationSettings\MapiHttpSettingsProvider.cs" />
+    <Compile Include="ConfigurationSettings\MobilePolicySettingsHelper.cs" />
+    <Compile Include="ConfigurationSettings\MobileRedirectOptimization.cs" />
+    <Compile Include="ConfigurationSettings\MobileRedirectOptimizationSettings.cs" />
+    <Compile Include="ConfigurationSettings\OwaServiceUriComparer.cs" />
+    <Compile Include="ConfigurationSettings\OwaUrl.cs" />
+    <Compile Include="ConfigurationSettings\OwaUrlCollection.cs" />
+    <Compile Include="ConfigurationSettings\PopImapSmtpConnection.cs" />
+    <Compile Include="ConfigurationSettings\PopImapSmtpConnectionCollection.cs" />
+    <Compile Include="ConfigurationSettings\ProxyLoopException.cs" />
+    <Compile Include="ConfigurationSettings\SiteCostComparer.cs" />
+    <Compile Include="ConfigurationSettings\UserAgentHelper.cs" />
+    <Compile Include="ConfigurationSettings\UserConfigurationSettingName.cs" />
+    <Compile Include="ConfigurationSettings\UserConfigurationSettings.cs" />
+    <Compile Include="ConfigurationSettings\UserConfigurationSettingsErrorCode.cs" />
+    <Compile Include="ConfigurationSettings\UserSettingsProvider.cs" />
+    <Compile Include="CreateProviderDelegate.cs" />
+    <Compile Include="FaultInjection.cs" />
+    <Compile Include="Global.cs" />
+    <Compile Include="MobileSyncStrings.cs" />
+    <Compile Include="OptInCapabilities.cs" />
+    <Compile Include="PerformanceCounters.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ProviderInfo.cs" />
+    <Compile Include="ProvidersTable.cs" />
+    <Compile Include="Providers\MobileSync\MobileSyncProvider.cs" />
+    <Compile Include="Providers\Outlook\MapiHttpProvider.cs" />
+    <Compile Include="Providers\Outlook\OutlookAutoDiscoverProvider.cs" />
+    <Compile Include="Providers\Outlook\ProtocolType.cs" />
+    <Compile Include="Providers\Provider.cs" />
+    <Compile Include="Providers\ProviderAttribute.cs" />
+    <Compile Include="ProxyRequestData.cs" />
+    <Compile Include="RedirectionType.cs" />
+    <Compile Include="RequestData.cs" />
+    <Compile Include="RequestDetailsLogger.cs" />
+    <Compile Include="Strings.cs" />
+    <Compile Include="WCF\ADQueryList.cs" />
+    <Compile Include="WCF\ADQueryResult.cs" />
+    <Compile Include="WCF\AlternateMailbox.cs" />
+    <Compile Include="WCF\AlternateMailboxCollection.cs" />
+    <Compile Include="WCF\AlternateMailboxCollectionSetting.cs" />
+    <Compile Include="WCF\AuthMetadataBuilder.cs" />
+    <Compile Include="WCF\AuthMetadataHttpHandler.cs" />
+    <Compile Include="WCF\AutodiscoverAuthorizationManager.cs" />
+    <Compile Include="WCF\AutodiscoverBasicAuthenticationHttpModule.cs" />
+    <Compile Include="WCF\AutodiscoverDiscoveryHttpHandler.cs" />
+    <Compile Include="WCF\AutodiscoverRedirectHttpModule.cs" />
+    <Compile Include="WCF\AutodiscoverRequest.cs" />
+    <Compile Include="WCF\AutodiscoverRequestMessage.cs" />
+    <Compile Include="WCF\AutodiscoverResponse.cs" />
+    <Compile Include="WCF\AutodiscoverResponseMessage.cs" />
+    <Compile Include="WCF\AutodiscoverSecurityBindingElement.cs" />
+    <Compile Include="WCF\AutodiscoverSecurityBindingElementExtension.cs" />
+    <Compile Include="WCF\AutodiscoverService.cs" />
+    <Compile Include="WCF\AutodiscoverServiceCredentialsElement.cs" />
+    <Compile Include="WCF\AutodiscoverThrottlingModule.cs" />
+    <Compile Include="WCF\AutodiscoverWebConfiguration.cs" />
+    <Compile Include="WCF\AutodiscoverX509CertificateValidator.cs" />
+    <Compile Include="WCF\CallContext.cs" />
+    <Compile Include="WCF\DocumentSharingLocation.cs" />
+    <Compile Include="WCF\DocumentSharingLocationCollection.cs" />
+    <Compile Include="WCF\DocumentSharingLocationCollectionSetting.cs" />
+    <Compile Include="WCF\DomainCollection.cs" />
+    <Compile Include="WCF\DomainResponse.cs" />
+    <Compile Include="WCF\DomainSetting.cs" />
+    <Compile Include="WCF\DomainSettingCollection.cs" />
+    <Compile Include="WCF\DomainSettingError.cs" />
+    <Compile Include="WCF\DomainSettingErrorCollection.cs" />
+    <Compile Include="WCF\DomainStringSetting.cs" />
+    <Compile Include="WCF\ErrorCode.cs" />
+    <Compile Include="WCF\ExchangeVersion.cs" />
+    <Compile Include="WCF\ExternalIdentity.cs" />
+    <Compile Include="WCF\FileExtensionCollection.cs" />
+    <Compile Include="WCF\GetDomainSettingsCallContext.cs" />
+    <Compile Include="WCF\GetDomainSettingsRequest.cs" />
+    <Compile Include="WCF\GetDomainSettingsRequestMessage.cs" />
+    <Compile Include="WCF\GetDomainSettingsResponse.cs" />
+    <Compile Include="WCF\GetDomainSettingsResponseMessage.cs" />
+    <Compile Include="WCF\GetFederationInformationRequest.cs" />
+    <Compile Include="WCF\GetFederationInformationRequestMessage.cs" />
+    <Compile Include="WCF\GetFederationInformationResponse.cs" />
+    <Compile Include="WCF\GetFederationInformationResponseMessage.cs" />
+    <Compile Include="WCF\GetOrganizationRelationshipSettingsRequest.cs" />
+    <Compile Include="WCF\GetOrganizationRelationshipSettingsRequestMessage.cs" />
+    <Compile Include="WCF\GetOrganizationRelationshipSettingsResponse.cs" />
+    <Compile Include="WCF\GetOrganizationRelationshipSettingsResponseMessage.cs" />
+    <Compile Include="WCF\GetUserSettingsCommandBase.cs" />
+    <Compile Include="WCF\GetUserSettingsForExternalUser.cs" />
+    <Compile Include="WCF\GetUserSettingsForPartner.cs" />
+    <Compile Include="WCF\GetUserSettingsForPartnerUser.cs" />
+    <Compile Include="WCF\GetUserSettingsForUser.cs" />
+    <Compile Include="WCF\GetUserSettingsForUserWithUnscopedCaller.cs" />
+    <Compile Include="WCF\GetUserSettingsRequest.cs" />
+    <Compile Include="WCF\GetUserSettingsRequestMessage.cs" />
+    <Compile Include="WCF\GetUserSettingsResponse.cs" />
+    <Compile Include="WCF\GetUserSettingsResponseMessage.cs" />
+    <Compile Include="WCF\IAutodiscover.cs" />
+    <Compile Include="WCF\ILegacyAutodiscover.cs" />
+    <Compile Include="WCF\InvalidSmtpAddressResult.cs" />
+    <Compile Include="WCF\IQueryList.cs" />
+    <Compile Include="WCF\LegacyAutodiscoverService.cs" />
+    <Compile Include="WCF\LegacyBodyWriter.cs" />
+    <Compile Include="WCF\LegacyErrorHandler.cs" />
+    <Compile Include="WCF\LegacyHttpHandler.cs" />
+    <Compile Include="WCF\LegacyMessageEncoder.cs" />
+    <Compile Include="WCF\LegacyMessageEncoderBindingElement.cs" />
+    <Compile Include="WCF\LegacyMessageEncoderBindingElementExtension.cs" />
+    <Compile Include="WCF\LegacyMessageEncoderFactory.cs" />
+    <Compile Include="WCF\LegacyServiceBehavior.cs" />
+    <Compile Include="WCF\MailboxAccessPartnerInfoCache.cs" />
+    <Compile Include="WCF\MailboxAccessPartnerInfoCacheKey.cs" />
+    <Compile Include="WCF\MServe.cs" />
+    <Compile Include="WCF\MserveDomainCache.cs" />
+    <Compile Include="WCF\MServeDomainQueryList.cs" />
+    <Compile Include="WCF\MServeQueryList.cs" />
+    <Compile Include="WCF\MServeQueryResult.cs" />
+    <Compile Include="WCF\OrganizationRelationshipSettings.cs" />
+    <Compile Include="WCF\OrganizationRelationshipSettingsCollection.cs" />
+    <Compile Include="WCF\ProtocolConnection.cs" />
+    <Compile Include="WCF\ProtocolConnectionCollection.cs" />
+    <Compile Include="WCF\ProtocolConnectionCollectionSetting.cs" />
+    <Compile Include="WCF\QueryListBase.cs" />
+    <Compile Include="WCF\RequestedSettingCollection.cs" />
+    <Compile Include="WCF\ResultBase.cs" />
+    <Compile Include="WCF\ServerVersionInfo.cs" />
+    <Compile Include="WCF\StringSetting.cs" />
+    <Compile Include="WCF\TokenIssuer.cs" />
+    <Compile Include="WCF\TokenIssuerCollection.cs" />
+    <Compile Include="WCF\User.cs" />
+    <Compile Include="WCF\UserCollection.cs" />
+    <Compile Include="WCF\UserResponse.cs" />
+    <Compile Include="WCF\UserResultMapping.cs" />
+    <Compile Include="WCF\UserSetting.cs" />
+    <Compile Include="WCF\UserSettingCollection.cs" />
+    <Compile Include="WCF\UserSettingError.cs" />
+    <Compile Include="WCF\UserSettingErrorCollection.cs" />
+    <Compile Include="WCF\WebClientUrl.cs" />
+    <Compile Include="WCF\WebClientUrlCollection.cs" />
+    <Compile Include="WCF\WebClientUrlCollectionSetting.cs" />
+    <Compile Include="WCF\XmlNamespaces.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="MobileSyncRequestSchema2006.xsd" />
+    <EmbeddedResource Include="MobileSyncResponseSchema2006.xsd" />
+    <EmbeddedResource Include="OutlookRequestSchema2006.xsd" />
+    <EmbeddedResource Include="OutlookResponseSchema2006a.xsd" />
+    <EmbeddedResource Include="Strings.resources" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.Exchange.AirSync\Microsoft.Exchange.AirSync.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140D9}</Project>
+      <Name>Microsoft.Exchange.AirSync</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Common\Microsoft.Exchange.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140F0}</Project>
+      <Name>Microsoft.Exchange.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Compliance\Microsoft.Exchange.Compliance.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140F2}</Project>
+      <Name>Microsoft.Exchange.Compliance</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Configuration.ObjectModel\Microsoft.Exchange.Configuration.ObjectModel.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140FC}</Project>
+      <Name>Microsoft.Exchange.Configuration.ObjectModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.ApplicationLogic\Microsoft.Exchange.Data.ApplicationLogic.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14104}</Project>
+      <Name>Microsoft.Exchange.Data.ApplicationLogic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Common\Microsoft.Exchange.Data.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140D3}</Project>
+      <Name>Microsoft.Exchange.Data.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Directory\Microsoft.Exchange.Data.Directory.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14105}</Project>
+      <Name>Microsoft.Exchange.Data.Directory</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Storage\Microsoft.Exchange.Data.Storage.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1410F}</Project>
+      <Name>Microsoft.Exchange.Data.Storage</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data\Microsoft.Exchange.Data.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14106}</Project>
+      <Name>Microsoft.Exchange.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Diagnostics\Microsoft.Exchange.Diagnostics.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14113}</Project>
+      <Name>Microsoft.Exchange.Diagnostics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.InfoWorker.Common\Microsoft.Exchange.InfoWorker.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1413C}</Project>
+      <Name>Microsoft.Exchange.InfoWorker.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Net\Microsoft.Exchange.Net.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14178}</Project>
+      <Name>Microsoft.Exchange.Net</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Security\Microsoft.Exchange.Security.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14198}</Project>
+      <Name>Microsoft.Exchange.Security</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.VariantConfiguration\Microsoft.Exchange.VariantConfiguration.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141E0}</Project>
+      <Name>Microsoft.Exchange.VariantConfiguration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\mscorlib\mscorlib.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141F1}</Project>
+      <Name>mscorlib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

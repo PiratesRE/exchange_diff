@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo IsDatacenterOnly="true" Name="Datacenter CAFE MidFileCopy" IsDatacenterDedicatedOnly="true">
+
+  <ServerTasks>
+
+    <ServerTaskInfo Id="_59befa1b2cbe40d7a41f84f414d53a5a" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install />
+      <BuildToBuildUpgrade/>
+      <DisasterRecovery />
+      <Uninstall />
+    </ServerTaskInfo>
+
+  </ServerTasks>
+
+</SetupComponentInfo>
+

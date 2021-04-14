@@ -1,0 +1,52 @@
+﻿using System;
+
+namespace Microsoft.Exchange.InfoWorker.Common.Availability
+{
+	internal enum ErrorConstants
+	{
+		RequestStreamTooBig = 5000,
+		IdentityArrayEmpty,
+		IdentityArrayTooBig,
+		TimeIntervalTooBig,
+		InvalidMergedFreeBusyInterval,
+		ResultSetTooBig = 5006,
+		InvalidClientSecurityContext,
+		MailboxLogonFailed,
+		MailRecipientNotFound,
+		InvalidTimeInterval,
+		PublicFolderServerNotFound,
+		InvalidAccessLevel,
+		InvalidSecurityDescriptor,
+		Win32InteropError,
+		ProxyRequestNotAllowed,
+		ProxyRequestProcessingFailed,
+		PublicFolderRequestProcessingFailed,
+		WorkingHoursXmlMalformed = 5019,
+		ServiceDiscoveryFailed = 5021,
+		AddressSpaceNotFound = 5023,
+		AvailabilityConfigNotFound,
+		InvalidCrossForestCredentials,
+		InvalidFreeBusyViewType,
+		TimeoutExpired,
+		MissingArgument,
+		NoCalendar,
+		InvalidAuthorizationContext = 5032,
+		LogonAsNetworkServiceFailed,
+		InvalidNetworkServiceContext,
+		InvalidSmtpAddress,
+		IndividualMailboxLimitReached,
+		NoFreeBusyAccess,
+		AutoDiscoverFailed = 5039,
+		MeetingSuggestionGenerationFailed,
+		FreeBusyGenerationFailed,
+		ClientDisconnected,
+		FreeBusyDLLimitReached,
+		E14orHigherProxyServerNotFound,
+		ProxyForPersonalNotAllowed,
+		MailboxFailover,
+		InvalidOrganizationRelationshipForFreeBusy,
+		DeliveryRestricted,
+		GetFolderRequestProcessingFailed = 5100,
+		NotDefaultCalendar
+	}
+}

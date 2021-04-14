@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo Name="Replay Service Configuration" DescriptionId="SetupComponentConfiguringReplayService">
+
+  <ServerTasks>
+
+    <!-- When a new file is added to precompile-ManagedBinary list, make sure to add it to customactions.wxi to sync install and uninstall the binary -->
+    <ServerTaskInfo Id="_04da8b5bb870429aa238e530958620e9" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install Weight="5" DescriptionId="SetupProgressPrecompilingBinaries" IsFatal="false">
+        <Standalone>
+          $fullPath = [System.IO.Path]::Combine($RoleInstallPath, "bin\msexchangerepl.exe");
+          precompile-ManagedBinary -BinaryName  $fullPath;
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall Weight="5" DescriptionId="SetupProgressPrecompilingBinaries" IsFatal="false">
+        <Standalone>
+          $fullPath = [System.IO.Path]::Combine($RoleInstallPath, "bin\msexchangerepl.exe");
+          precompile-ManagedBinary -BinaryName  $fullPath -Action uninstall;
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- When a new file is added to precompile-ManagedBinary list, make sure to add it to customactions.wxi to sync install and uninstall the binary -->
+    <ServerTaskInfo Id="_99FCBD4C72DD4901A9B546C46371D04A" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install Weight="5" DescriptionId="SetupProgressPrecompilingBinaries" IsFatal="false">
+        <Standalone>
+          $fullPath = [System.IO.Path]::Combine($RoleInstallPath, "bin\MSExchangeDagMgmt.exe");
+          precompile-ManagedBinary -BinaryName  $fullPath;
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall Weight="5" DescriptionId="SetupProgressPrecompilingBinaries" IsFatal="false">
+        <Standalone>
+          $fullPath = [System.IO.Path]::Combine($RoleInstallPath, "bin\MSExchangeDagMgmt.exe");
+          precompile-ManagedBinary -BinaryName  $fullPath -Action uninstall;
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+	
+    <!--Install IP Crimson Manifest -->
+    <ServerTaskInfo Id="_09e54d8839fc4f9ba5cb905084f7c008" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          Install-CrimsonManifest `
+          -DefinitionXml "bin\Microsoft.Exchange.DxStore.HA.Events.man" `
+          -MessageDll "bin\Microsoft.Exchange.DxStore.HA.Events.dll" `
+          -ProviderName "Microsoft-Exchange-DxStoreHA";
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade>
+        <Standalone>
+          Uninstall-CrimsonManifest -DefinitionXml "bin\Microsoft.Exchange.DxStore.HA.Events.man";
+          
+          Install-CrimsonManifest `
+          -DefinitionXml "bin\Microsoft.Exchange.DxStore.HA.Events.man" `
+          -MessageDll "bin\Microsoft.Exchange.DxStore.HA.Events.dll" `
+          -ProviderName "Microsoft-Exchange-DxStoreHA";
+        </Standalone>
+      </BuildToBuildUpgrade>
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>
+          Uninstall-CrimsonManifest -DefinitionXml "bin\Microsoft.Exchange.DxStore.HA.Events.man"
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+	
+    <!-- Install/remove Replay service
+        
+        !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!                          
+        IMPORTANT CAUTION: 
+        !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        
+        We'd like to set EnforceDbFolderUnderMountPoint regkey to 1 here for Datacenter roles, but can't.
+        This is because the the Datacenter* smoke topologies call New/Mount-Database which will fail due
+        to the missing mount points.
+        
+    -->
+    <ServerTaskInfo Id="_0b334a179e444314b9d7abff8d07153c" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          if ( (get-service MSExchangeRepl* | where {$_.name -eq "MSExchangeRepl"}))
+          {
+          upgrade-MSExchangeReplService
+          }
+          else
+          {
+          install-MSExchangeReplService
+          }
+          if (($RoleIsDatacenter -eq $true) -or ($RoleIsDatacenterDedicated -eq $true))
+          {
+            [string]$version = [Microsoft.Exchange.Diagnostics.BuildVersionConstants]::RegistryVersionSubKey
+            $isKernelWatchDogEnabled = [int] 1;
+            set-ItemProperty -path "HKLM:\SOFTWARE\Microsoft\ExchangeServer\$version\Replay\Parameters" -name "78341438-9b4a-4554-bbff-fd3ac2b5bbe3" -value $isKernelWatchDogEnabled
+            
+            set-ItemProperty -path "HKLM:\SOFTWARE\Microsoft\ExchangeServer\$version\Replay\Parameters" -name "DatabaseHealthTrackerDisabled" -value 0
+            
+            set-ItemProperty -path "HKLM:\SOFTWARE\Microsoft\ExchangeServer\$version\Replay\Parameters" -name "AutoDagUseServerConfiguredProperty" -value 1
+            set-ItemProperty -path "HKLM:\SOFTWARE\Microsoft\ExchangeServer\$version\Replay\Parameters" -name "AutoReseedDbFailedSuspendedUseNeighborsForDbGroups" -value 1
+            
+            if (!(Test-Path "HKLM:\SOFTWARE\Microsoft\ExchangeServer\$version\Replay\AutoReseed"))
+            {
+                New-Item -Path "HKLM:\SOFTWARE\Microsoft\ExchangeServer\$version\Replay\AutoReseed"
+            }
+
+            New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\ExchangeServer\$version\Replay\AutoReseed" -Name 'ConfigureMountPointsPostReInstall' -PropertyType DWord -Value 1
+          }
+        </Standalone>
+      </Install>
+	  <!-- [REVIEW] Task is non fatal. Component XML guidelines discourages having non-fatal tasks in setup -->
+	  <BuildToBuildUpgrade UseInstallTasks="true" IsFatal="false" />
+      <DisasterRecovery UseInstallTasks="true" />
+	  <Uninstall>
+        <Standalone>uninstall-MSExchangeReplService</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+    
+    <!-- Install/remove DAG Management service -->
+    <ServerTaskInfo Id="_9DCF5E11F6BC44788B39D61ACE640646" Component="EXCHANGE14:\Current\Release\PIM Storage\High Availability">
+      <Install>
+        <Standalone>
+          if (!(get-service MSExchangeDagMgmt* | where {$_.name -eq "MSExchangeDagMgmt"}))
+          {
+            Install-DagMgmtService
+          }
+        </Standalone>
+      </Install>
+	  <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+	  <Uninstall>
+        <Standalone>Uninstall-DagMgmtService</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+    
+    <!-- Install/remove WatchDog service -->
+    <ServerTaskInfo Id="_3419E03745764B9CB90AAEE4FEDA26CC" Component="EXCHANGE14:\Current\Release\PIM Storage\High Availability">
+      <Install>
+        <Standalone>
+          if ($RoleIsDatacenter -eq $true)
+          {
+            if (!(get-service MSExchangeWatchDog* | where {$_.name -eq "MSExchangeWatchDog"}))
+            {
+              Install-WatchDogService;
+            }
+          }
+        </Standalone>
+      </Install>
+	  <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+	  <Uninstall>
+        <Standalone>
+          if ($RoleIsDatacenter -eq $true)
+          {
+            Uninstall-WatchDogService;
+          }
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+    
+	<!-- E14 319943: Install/Remove One-Copy alert scheduled task -->
+	<!-- E15 2303117: Move one-copy alert mechanism into replay service, so all we have to do is uninstall the old scheduled task during B2B upgrade -->
+    <ServerTaskInfo Id="_ef89b21f19b645dc8f81c0747eef66ec" Component="EXCHANGE14:\Current\Release\PIM Storage\High Availability">
+      <Install />
+	  <BuildToBuildUpgrade>
+        <Standalone>
+			$InstallerScriptFileName = 'Scripts\ManageScheduledTask.ps1'
+        	$PsInstallerScriptPath = Join-Path $RoleInstallPath $InstallerScriptFileName
+        	
+        	&amp; $PsInstallerScriptPath -RunFromSetup -Uninstall -ServerName $RoleNetBIOSName -TaskName "Database One Copy Alert" -Verbose
+        </Standalone>
+      </BuildToBuildUpgrade>
+      <DisasterRecovery />
+	  <Uninstall />
+    </ServerTaskInfo>
+
+  </ServerTasks>
+
+</SetupComponentInfo>
+

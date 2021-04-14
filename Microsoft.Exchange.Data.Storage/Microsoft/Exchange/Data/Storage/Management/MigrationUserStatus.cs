@@ -1,0 +1,51 @@
+﻿using System;
+
+namespace Microsoft.Exchange.Data.Storage.Management
+{
+	[Serializable]
+	public enum MigrationUserStatus
+	{
+		[LocDescription(ServerStrings.IDs.MigrationUserStatusQueued)]
+		Queued,
+		[LocDescription(ServerStrings.IDs.MigrationUserStatusSyncing)]
+		Syncing,
+		[LocDescription(ServerStrings.IDs.MigrationUserStatusFailed)]
+		Failed,
+		[LocDescription(ServerStrings.IDs.MigrationUserStatusSynced)]
+		Synced,
+		[LocDescription(ServerStrings.IDs.MigrationUserStatusIncrementalFailed)]
+		IncrementalFailed,
+		[LocDescription(ServerStrings.IDs.MigrationUserStatusCompleting)]
+		Completing,
+		[LocDescription(ServerStrings.IDs.MigrationUserStatusCompleted)]
+		Completed,
+		[LocDescription(ServerStrings.IDs.MigrationUserStatusCompletionFailed)]
+		CompletionFailed,
+		[LocDescription(ServerStrings.IDs.MigrationUserStatusCorrupted)]
+		Corrupted,
+		[LocDescription(ServerStrings.IDs.MigrationUserStatusProvisioning)]
+		Provisioning,
+		[LocDescription(ServerStrings.IDs.MigrationUserStatusProvisionUpdating)]
+		ProvisionUpdating,
+		[LocDescription(ServerStrings.IDs.MigrationUserStatusCompletionSynced)]
+		CompletionSynced,
+		[LocDescription(ServerStrings.IDs.MigrationUserStatusValidating)]
+		Validating,
+		[LocDescription(ServerStrings.IDs.MigrationUserStatusIncrementalSyncing)]
+		IncrementalSyncing,
+		[LocDescription(ServerStrings.IDs.MigrationUserStatusIncrementalSynced)]
+		IncrementalSynced,
+		[LocDescription(ServerStrings.IDs.MigrationUserStatusCompletedWithWarning)]
+		CompletedWithWarnings,
+		[LocDescription(ServerStrings.IDs.MigrationUserStatusStopped)]
+		Stopped,
+		[LocDescription(ServerStrings.IDs.MigrationUserStatusIncrementalStopped)]
+		IncrementalStopped,
+		[LocDescription(ServerStrings.IDs.MigrationUserStatusStarting)]
+		Starting,
+		[LocDescription(ServerStrings.IDs.MigrationUserStatusStopping)]
+		Stopping,
+		[LocDescription(ServerStrings.IDs.MigrationUserStatusRemoving)]
+		Removing
+	}
+}

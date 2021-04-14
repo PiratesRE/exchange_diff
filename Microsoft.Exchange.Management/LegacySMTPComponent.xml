@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo Name="Exchange 2003 SMTP VSI Configuration" DescriptionId="SetupComponentSMTPConfiguration">
+
+  <ServerTasks>
+
+	  <!-- Create/delete the SMTP VSI object in the AD This task modifies the SMTP object in the AD, 
+         the user requires permissions that allow access to AD 
+    -->
+    <ServerTaskInfo Id="_018cd23197294a33932d8458bdf7c28b" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>install-ExsetdataAtom -AtomName SMTP -DomainController $RoleDomainController</Standalone>
+      </Install>
+      <BuildToBuildUpgrade>
+        <Standalone>buildToBuildUpgrade-ExsetdataAtom -AtomName SMTP -DomainController $RoleDomainController</Standalone>
+      </BuildToBuildUpgrade>
+      <DisasterRecovery>
+        <Standalone>disasterRecovery-ExsetdataAtom -AtomName SMTP -DomainController $RoleDomainController</Standalone>
+      </DisasterRecovery>
+      <Uninstall>
+        <Standalone>uninstall-ExsetdataAtom -AtomName SMTP -DomainController $RoleDomainController</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+  </ServerTasks>
+
+</SetupComponentInfo>
+

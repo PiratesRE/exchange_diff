@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo Name="Mailbox PreSetup" DescriptionId="SetupComponentPreSetupMailbox">
+
+  <ServerTasks>
+  <ServerTaskInfo Id="_652cf10a4b0e4eba8732dd5d9c4b51f2" Component="EXCHANGE14:\Current\Release\PIM Storage\Content Indexing\MSSearch">
+      <Install />
+      <BuildToBuildUpgrade Weight="4" DescriptionId="SetupProgressUninstallingMsFteMSI">
+        <Standalone>
+          if ($RoleProductPlatform -eq "amd64")
+          {
+            $MsfteProductCode = '{6574FDC2-40FC-405A-9554-22D1CE15686B}'
+          }
+          else
+          {
+            $MsfteProductCode = '{872B0842-0412-46ca-B484-AC56D7320B34}'
+          }
+          uninstall-MsiPackage `
+            -ProductCode $MsfteProductCode `
+            -LogFile ($RoleSetupLoggingPath + "\InstallSearch.msilog");
+        </Standalone>
+      </BuildToBuildUpgrade>
+      <DisasterRecovery />
+      <Uninstall />
+    </ServerTaskInfo>
+  </ServerTasks>
+
+</SetupComponentInfo>
+

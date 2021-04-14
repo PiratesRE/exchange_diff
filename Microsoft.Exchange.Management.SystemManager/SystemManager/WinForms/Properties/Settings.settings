@@ -1,0 +1,9 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile CurrentProfile="(Default)" GeneratedClassNamespace="Microsoft.Exchange.Management.SystemManager.WinForms.Properties" GeneratedClassName="Settings" xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="EnableVisualEffects" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Automatic</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

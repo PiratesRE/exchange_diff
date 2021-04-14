@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo IsDatacenterOnly="true"  IsDatacenterDedicatedOnly="true" Name="FrontendTransport ExO only component" DatacenterMode="ExO">
+    <ServerTasks>
+        <!-- Update frontendtransport config file. -->
+        <ServerTaskInfo Id="_f01998217a184bf7a248fd55Be09cb92" Component="OFFICE15:\Current\Exchange\Datacenter\Deployment">
+          <Install>
+            <Standalone>
+              $fullPath = "$RoleBinPath\MSExchangeFrontEndTransport.exe.config";
+              set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'InboundProxyPreserveTargetResponse' -NewValue:$RoleDatacenterInboundProxyPreserveTargetResponse;
+              set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'ClientSmtpProbeCertificate' -NewValue:$RoleDatacenterClientSmtpProbeCertificate;
+
+              # Do not modify this without good reason - see OM:1585629
+              set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/runtime/gcServer -Attribute:enabled -NewValue:false;
+            </Standalone>
+          </Install>
+          <BuildToBuildUpgrade UseInstallTasks="true"/>
+          <DisasterRecovery UseInstallTasks="true"/>
+          <Uninstall />
+        </ServerTaskInfo>
+        
+        <!-- Update frontendtransport config. Does not run in dedicated. -->
+        <ServerTaskInfo Id="_B430507032684157A35EC7614351D1F7" Component="OFFICE15:\Current\Exchange\Datacenter\Deployment" ExcludeInDatacenterDedicated="true">
+          <Install>
+            <Standalone>
+              $fullPath = "$RoleBinPath\MSExchangeFrontEndTransport.exe.config";
+              set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'DagSelectorEnabled' -NewValue:$true;
+              set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'ProxyRoutingServerSelectStrategy' -NewValue:'FavorLoadBalance';
+              set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'TransferAdditionalTenantDataThroughXATTR' -NewValue:false;
+              set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'UseAdditionalTenantDataFromXATTR' -NewValue:false;
+
+              # Do not modify this without good reason - see OM:1585629
+              set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/runtime/gcServer -Attribute:enabled -NewValue:false;
+            </Standalone>
+          </Install>
+          <BuildToBuildUpgrade UseInstallTasks="true"/>
+          <DisasterRecovery UseInstallTasks="true"/>
+          <Uninstall />
+        </ServerTaskInfo>
+
+        <!-- Configure receive connectors -->
+        <ServerTaskInfo Id="_6ff5bee71a984cb2a9d8024a9e388d12" Component="OFFICE15:\Current\Exchange\Datacenter\Deployment" ExcludeInDatacenterDedicated="true">
+          <Install>
+            <Standalone>
+               $computerName = [String][System.Environment]::MachineName;
+               $frontendDefaultConnector = get-receiveconnector -Server $RoleFqdnOrName -DomainController $RoleDomainController | where {$_.Identity -eq "$computerName\Default Frontend $computerName" -and $_.TransportRole -eq "FrontendTransport"};
+               if ($frontendDefaultConnector -eq $null)
+               {
+                    Write-ExchangeSetupLog -Error "Default frontend receive connector was not found";
+               }
+               else
+               {
+                  $tlsDomainCapabilities = 
+                      ($RoleDatacenterFopeFrontendConnectorFqdn + ":AcceptOorgProtocol,AcceptProxyFromProtocol,AcceptXAttrProtocol,AcceptCrossForestMail,AcceptXSysProbeProtocol"),
+                      ("outlook.com:AcceptOorgProtocol,AcceptProxyFromProtocol,AcceptXAttrProtocol,AcceptCrossForestMail,AcceptXSysProbeProtocol");
+
+                  # We prepend the machine name to the connector fqdn. This connector will be used both for inbound traffic from FFO
+                  # and client submissions. The MaxRecipientsPerMessage will not apply to FFO submissions because those mails come in
+                  # with "Externally Secured" permissions which has the BypassMessageSizeLimit permission. The MessageRateSource of
+                  # "User" (which causes the MessageRateLimit to be obained from the throttling policy) does not affect the fact that
+                  # for non-mailbox users, the MessageRateSource will still be IPAddress and the MessageRateLimit on the connector will
+                  # be honored. The AuthMechanism in this case does not have ExchangeServer since that would prevent having a custom
+                  # fqdn on the connector. Also in EXO, there is no need for this connector to support exchange auth since there will
+                  # not be colocated roles and outbound proxy already has a dedicated receive connector.
+                  $connectorFqdn = [String][System.Environment]::MachineName + "." + $RoleDatacenterReceiveConnectorFqdnSuffix;
+                  set-ReceiveConnector $frontendDefaultConnector `
+                       -Fqdn $connectorFqdn `
+                       -ServiceDiscoveryFqdn $RoleDatacenterE15ClientSmtpFqdn `
+                       -AuthMechanism Tls, Integrated, BasicAuth, BasicAuthRequireTLS `
+                       -LiveCredentialEnabled $true `
+                       -MaxRecipientsPerMessage 200 `
+                       -MessageRateSource User `
+                       -MaxInboundConnectionPerSource 5000 `
+                       -MaxInboundConnectionPercentagePerSource 100 `
+                       -MaxMessageSize $RoleDatacenterConnectorMaxMessageSize `
+                       -TlsDomainCapabilities $tlsDomainCapabilities `
+                       -PermissionGroups ExchangeServers, ExchangeUsers `
+                       -DomainController $RoleDomainController;
+               }
+
+               $frontendClientConnector = get-receiveconnector -Server $RoleFqdnOrName -DomainController $RoleDomainController | where {$_.Identity -eq "$computerName\Client Frontend $computerName" -and $_.TransportRole -eq "FrontendTransport"};
+               if ($frontendClientConnector -eq $null)
+               {
+                    Write-ExchangeSetupLog -Error "Client frontend receive connector was not found";
+               }
+               else
+               {
+                  $clientTlsDomainCapabilities = 
+                      ($RoleDatacenterClientSmtpProbeCertificate + ":AcceptXSysProbeProtocol"),
+                      ($RoleDatacenterOutsideInProbeCertificateSubject + ":AcceptXSysProbeProtocol");
+                  set-ReceiveConnector $frontendClientConnector `
+                      -Fqdn $connectorFqdn `
+                      -ServiceDiscoveryFqdn $RoleDatacenterE15ClientSmtpFqdn `
+                      -AdvertiseClientSettings $true `
+                      -TlsDomainCapabilities $clientTlsDomainCapabilities `
+                      -MaxMessageSize $RoleDatacenterConnectorMaxMessageSize `
+                      -DomainController $RoleDomainController;
+               }
+
+            </Standalone>
+          </Install>
+          <BuildToBuildUpgrade UseInstallTasks="true" />
+          <DisasterRecovery UseInstallTasks="true"/>
+          <Uninstall />
+        </ServerTaskInfo>
+
+        <!-- 
+         Add registry key containing corresponding FOPE servicetag information. This is used to communicate to FOPE dataservice in the correct
+         region when there is no tenant corresponding to the request (Example: Sysprobe message trace logs).
+        -->
+        <ServerTaskInfo Id="_ac0c8606d5fa11e1a1c5b8ac6f879216" Component="Office15:\Current\Forefront for Office Datacenter\Deployment and Configuration Management\Deployment">
+          <Install>
+            <Standalone>
+              $ExchangeLabsRegKey = 'HKLM:\SOFTWARE\Microsoft\ExchangeLabs'
+              $RegionTagRegValueName = 'RegionTag'
+              New-ItemProperty -path "$ExchangeLabsRegKey" -Name $RegionTagRegValueName -Value $RoleDatacenterRegionTag -Force
+              Write-ExchangeSetupLog -Info "Wrote registry key: $ExchangeLabsRegKey\$RegionTagRegValueName."
+
+              $FfoDataServiceHostSuffixRegValueName = 'FfoDataServiceHostSuffix'
+              New-ItemProperty -path "$ExchangeLabsRegKey" -Name $FfoDataServiceHostSuffixRegValueName -Value $RoleDatacenterFfoDataServiceHostSuffix -Force
+              Write-ExchangeSetupLog -Info "Wrote registry key: $ExchangeLabsRegKey\$FfoDataServiceHostSuffixRegValueName."
+            </Standalone>
+          </Install>
+          <BuildToBuildUpgrade UseInstallTasks="true" />
+          <DisasterRecovery />
+          <Uninstall />
+      </ServerTaskInfo>
+
+      <!-- Install/uninstall "Connection Validation Agent Installation" preserve state on upgrade -->
+      <ServerTaskInfo Id="_d73e6a6cfa75a0378edccaa51984acd3" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup" ExcludeInDatacenterDedicated="true">
+        <Install DescriptionId="SetupProgressInstallingConnectionValidationAgent">
+          <Standalone>
+
+            $agentName = "Connection Validation Agent";
+            $agentFactory = "Microsoft.Exchange.Transport.Agent.ConnectionValidator.ConnectionValidationAgentFactory";
+            $agentAssembly = ($RoleInstallPath + "TransportRoles\agents\ConnectionValidation\Microsoft.Exchange.Transport.Agent.ConnectionValidation.dll");
+            $agent = get-transportagent -Identity:$agentName -TransportService FrontEnd;
+
+            if ($agent)
+            {
+               uninstall-transportagent -Identity:$agentName -TransportService FrontEnd;
+            };
+
+            install-TransportAgent -Name:$agentName -TransportAgentFactory:$agentFactory -AssemblyPath:$agentAssembly -TransportService FrontEnd;
+            if ($agent.enabled -or ! $agent)
+            {
+              enable-transportagent -Identity:$agentName -TransportService FrontEnd;
+            }
+
+          </Standalone>
+        </Install>
+        <BuildToBuildUpgrade UseInstallTasks="true" />
+        <DisasterRecovery UseInstallTasks="true" />
+        <Uninstall DescriptionId="SetupProgressRemovingConnectionValidationAgent">
+          <Standalone>
+            $agentName = "Connection Validation Agent";
+            $agent = get-transportagent -Identity:$agentName -TransportService FrontEnd;
+            if ($agent) {
+            uninstall-transportagent -Identity:$agentName -TransportService FrontEnd;
+            };
+          </Standalone>
+        </Uninstall>
+      </ServerTaskInfo>
+    
+      <!-- Install/uninstall "System Probe Drop Smtp Agent" preserve state on upgrade -->
+      <ServerTaskInfo Id="_754f1d1067aa491d8b11d8e854146586" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+        <Install DescriptionId="SetupProgressInstallingSystemProbeDropSmtpAgents">
+          <Standalone>
+            $agentName = "System Probe Drop Smtp Agent";
+            $agentFactory = "Microsoft.Exchange.Transport.Agent.SystemProbeDrop.SystemProbeDropSmtpAgentFactory";
+            $agentAssembly = ($RoleInstallPath + "TransportRoles\agents\SystemProbeDrop\Microsoft.Exchange.Transport.Agent.SystemProbeDrop.dll");
+            $agent = get-transportagent -Identity:$agentName;
+            if ($agent) 
+            {
+                uninstall-transportagent -Identity:$agentName;
+            };
+            install-TransportAgent -Name:$agentName -TransportAgentFactory:$agentFactory -AssemblyPath:$agentAssembly;
+            if ($agent.enabled -or ! $agent) 
+            { 
+                enable-transportagent -Identity:$agentName 
+            };
+          </Standalone>
+        </Install>
+        <BuildToBuildUpgrade UseInstallTasks="true" />
+        <DisasterRecovery UseInstallTasks="true" />
+        <Uninstall DescriptionId="SetupProgressInstallingSystemProbeDropSmtpAgents">
+          <Standalone>
+            $agentName = "System Probe Drop Smtp Agent";
+            $agent = get-transportagent -Identity:$agentName;
+            if ($agent) 
+            {
+                uninstall-transportagent -Identity:$agentName;
+            };
+          </Standalone>
+        </Uninstall>
+      </ServerTaskInfo>
+    
+   </ServerTasks>
+</SetupComponentInfo>

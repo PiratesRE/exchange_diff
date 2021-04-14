@@ -1,0 +1,160 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{09CD9476-CD82-489E-B9E2-84B47CA14124}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Microsoft.Exchange.EseRepl</RootNamespace>
+    <AssemblyName>Microsoft.Exchange.EseRepl</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Exchange.Cluster.Common" />
+    <Reference Include="Microsoft.Exchange.EseRepl.Common" />
+    <Reference Include="Microsoft.Practices.Unity" />
+    <Reference Include="ReplayCrimsonMsg" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AbandonAsyncBase.cs" />
+    <Compile Include="BlockModeCompressedDataMsg.cs" />
+    <Compile Include="BufDeserializer.cs" />
+    <Compile Include="CheckSummer.cs" />
+    <Compile Include="CoconetConfig.cs" />
+    <Compile Include="CompressionConfig.cs" />
+    <Compile Include="ConfigStore.cs" />
+    <Compile Include="CorruptLogDetectedException.cs" />
+    <Compile Include="DagNetChooser.cs" />
+    <Compile Include="DagNetConfig.cs" />
+    <Compile Include="DagNetEnvironment.cs" />
+    <Compile Include="DagNetRoute.cs" />
+    <Compile Include="DagNetwork.cs" />
+    <Compile Include="DagNode.cs" />
+    <Compile Include="Dependencies.cs" />
+    <Compile Include="EnterBlockModeMsg.cs" />
+    <Compile Include="FileIOonSourceException.cs" />
+    <Compile Include="GranularLogDataMsg.cs" />
+    <Compile Include="INetworkChannelRequest.cs" />
+    <Compile Include="IPool.cs" />
+    <Compile Include="IPoolableObject.cs" />
+    <Compile Include="ISimpleBufferPool.cs" />
+    <Compile Include="ITcpConnector.cs" />
+    <Compile Include="LocDescriptionAttribute.cs" />
+    <Compile Include="NetworkCancelledException.cs" />
+    <Compile Include="NetworkChannel.cs" />
+    <Compile Include="NetworkChannelCallback.cs" />
+    <Compile Include="NetworkChannelMessage.cs" />
+    <Compile Include="NetworkChannelMessageHeader.cs" />
+    <Compile Include="NetworkChannelPacket.cs" />
+    <Compile Include="NetworkCommunicationException.cs" />
+    <Compile Include="NetworkCorruptDataException.cs" />
+    <Compile Include="NetworkCorruptDataGenericException.cs" />
+    <Compile Include="NetworkDataOverflowGenericException.cs" />
+    <Compile Include="NetworkEndOfDataException.cs" />
+    <Compile Include="NetworkNameException.cs" />
+    <Compile Include="NetworkNotUsableException.cs" />
+    <Compile Include="NetworkOption.cs" />
+    <Compile Include="NetworkPackagingLayer.cs" />
+    <Compile Include="NetworkPath.cs" />
+    <Compile Include="NetworkRemoteException.cs" />
+    <Compile Include="NetworkRemoteExceptionUnknown.cs" />
+    <Compile Include="NetworkTimeoutException.cs" />
+    <Compile Include="NetworkTransportException.cs" />
+    <Compile Include="NetworkUnexpectedMessageException.cs" />
+    <Compile Include="Parameters.cs" />
+    <Compile Include="PassiveStatusMsg.cs" />
+    <Compile Include="PingMessage.cs" />
+    <Compile Include="Pool.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ReadDatabaseCallback.cs" />
+    <Compile Include="SerializationUtil.cs" />
+    <Compile Include="SimpleBuffer.cs" />
+    <Compile Include="SimpleBufferPool.cs" />
+    <Compile Include="SocketStream.cs" />
+    <Compile Include="SocketStreamAsyncArgs.cs" />
+    <Compile Include="SocketStreamAsyncArgsPool.cs" />
+    <Compile Include="SourceDatabaseNotFoundException.cs" />
+    <Compile Include="SourceLogBreakStallsPassiveException.cs" />
+    <Compile Include="Strings.cs" />
+    <Compile Include="TcpChannel.cs" />
+    <Compile Include="TcpClientChannel.cs" />
+    <Compile Include="TcpConnector.cs" />
+    <Compile Include="Xpress.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Strings.resources" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.Exchange.Cluster.Common.Extensions\Microsoft.Exchange.Cluster.Common.Extensions.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140EA}</Project>
+      <Name>Microsoft.Exchange.Cluster.Common.Extensions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Compression\Microsoft.Exchange.Compression.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140F6}</Project>
+      <Name>Microsoft.Exchange.Compression</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Core.Strings\Microsoft.Exchange.Core.Strings.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14103}</Project>
+      <Name>Microsoft.Exchange.Core.Strings</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Common\Microsoft.Exchange.Data.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140D3}</Project>
+      <Name>Microsoft.Exchange.Data.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data\Microsoft.Exchange.Data.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14106}</Project>
+      <Name>Microsoft.Exchange.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Diagnostics\Microsoft.Exchange.Diagnostics.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14113}</Project>
+      <Name>Microsoft.Exchange.Diagnostics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.EseRepl.Configuration\Microsoft.Exchange.EseRepl.Configuration.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14123}</Project>
+      <Name>Microsoft.Exchange.EseRepl.Configuration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Net\Microsoft.Exchange.Net.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14178}</Project>
+      <Name>Microsoft.Exchange.Net</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Isam.Esent.Interop\Microsoft.Isam.Esent.Interop.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141E8}</Project>
+      <Name>Microsoft.Isam.Esent.Interop</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\mscorlib\mscorlib.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141F1}</Project>
+      <Name>mscorlib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

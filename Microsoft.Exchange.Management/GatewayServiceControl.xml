@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo Name="Gateway Service Control Configuration" DescriptionId="SetupComponentStartingGatewayServices">
+
+  <ServerTasks>
+
+	<!-- After a clean install or Build-to-Build Upgrade, we must start the services -->
+    <!-- We do all the exchange service starts in the post-setup bucket for install. Except the services which are necessary for setup to complete.
+      This is done so that we dont error out setup if any of the services fail to start.-->
+  <!-- Stop MSExchangeServiceHost service -->
+  <ServerTaskInfo Id="_b3103f6197f244e4ac2c4fa1699099e2" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+    <Install/>
+    <BuildToBuildUpgrade />
+    <DisasterRecovery UseInstallTasks="true" />
+    <Uninstall DescriptionId="SetupProgressStoppingServiceHostService">
+      <Standalone>stop-SetupService -ServiceName MSExchangeServiceHost</Standalone>
+    </Uninstall>
+  </ServerTaskInfo>
+
+  <!-- Stop Anti-spam Update service -->
+	<ServerTaskInfo Id="_3ba35ae382bb437cb6d61f271b195965" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+	  <Install/>
+	  <BuildToBuildUpgrade />
+	  <DisasterRecovery UseInstallTasks="true" />
+	  <Uninstall>
+		<Standalone>stop-SetupService -ServiceName MSExchangeAntispamUpdate</Standalone>
+	  </Uninstall>
+	</ServerTaskInfo>
+
+	<!-- Start/stop Edge Sync service -->
+	<ServerTaskInfo Id="_b91f9f1372b74c71aa0edba666f82bb2" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+	  <Install/>
+	  <BuildToBuildUpgrade />
+	  <DisasterRecovery />
+	  <Uninstall DescriptionId="SetupProgressStartingCredentialService">
+		<Standalone>stop-SetupService -ServiceName MSExchangeEdgeCredential</Standalone>
+	  </Uninstall>
+	</ServerTaskInfo>
+
+	<!-- Start/Stop Edge Transport service -->
+    <ServerTaskInfo Id="_68844eb62f6042f1ac01d14e736c086e" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install Weight="5" DescriptionId="SetupProgressStartEdgeTransportService" IsFatal="false">
+        <Standalone>
+          if ($RoleStartTransportService)
+          {
+            start-SetupService -ServiceName MSExchangeTransport
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade />
+      <DisasterRecovery UseInstallTasks="true"/>
+	    <Uninstall Weight="5" DescriptionId="SetupProgressStopEdgeTransportService">
+		    <Standalone>stop-SetupService -ServiceName MSExchangeTransport</Standalone>
+	    </Uninstall>
+	</ServerTaskInfo>
+  </ServerTasks>
+</SetupComponentInfo>

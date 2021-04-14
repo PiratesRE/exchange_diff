@@ -1,0 +1,106 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{09CD9476-CD82-489E-B9E2-84B47CA141A0}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Microsoft.Exchange.Server.Storage.LazyIndexing</RootNamespace>
+    <AssemblyName>Microsoft.Exchange.Server.Storage.LazyIndexing</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CategorizationInfo.cs" />
+    <Compile Include="ColumnMappingBlob.cs" />
+    <Compile Include="ColumnMappingBlobHeaderTableFunction.cs" />
+    <Compile Include="ColumnMappingBlobTableFunction.cs" />
+    <Compile Include="ConditionalIndexMappingBlob.cs" />
+    <Compile Include="ConditionalIndexMappingBlobTableFunction.cs" />
+    <Compile Include="DatabaseSchema.cs" />
+    <Compile Include="GenerateDataAccessOperatorCallback.cs" />
+    <Compile Include="GetColumnValueBagsEnumeratorDelegate.cs" />
+    <Compile Include="Globals.cs" />
+    <Compile Include="IndexDefinitionBlob.cs" />
+    <Compile Include="IndexDefinitionBlobHeaderTableFunction.cs" />
+    <Compile Include="IndexDefinitionBlobTableFunction.cs" />
+    <Compile Include="IndexExplosionTableFunctionTableFunction.cs" />
+    <Compile Include="IndexingContext.cs" />
+    <Compile Include="LogicalIndex.cs" />
+    <Compile Include="LogicalIndexCache.cs" />
+    <Compile Include="LogicalIndexComponentBase.cs" />
+    <Compile Include="LogicalIndexLockName.cs" />
+    <Compile Include="LogicalIndexType.cs" />
+    <Compile Include="LogicalIndexVersionHistory.cs" />
+    <Compile Include="PhysicalIndex.cs" />
+    <Compile Include="PhysicalIndexCache.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="PseudoIndexControlTable.cs" />
+    <Compile Include="PseudoIndexDefinitionTable.cs" />
+    <Compile Include="PseudoIndexMaintenanceTable.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.Exchange.Diagnostics\Microsoft.Exchange.Diagnostics.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14113}</Project>
+      <Name>Microsoft.Exchange.Diagnostics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Net\Microsoft.Exchange.Net.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14178}</Project>
+      <Name>Microsoft.Exchange.Net</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Server.Storage.Common\Microsoft.Exchange.Server.Storage.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1419A}</Project>
+      <Name>Microsoft.Exchange.Server.Storage.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Server.Storage.PhysicalAccess\Microsoft.Exchange.Server.Storage.PhysicalAccess.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141A4}</Project>
+      <Name>Microsoft.Exchange.Server.Storage.PhysicalAccess</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Server.Storage.PropertyDefinitions\Microsoft.Exchange.Server.Storage.PropertyDefinitions.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141A5}</Project>
+      <Name>Microsoft.Exchange.Server.Storage.PropertyDefinitions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Server.Storage.PropertyTag\Microsoft.Exchange.Server.Storage.PropertyTag.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141A6}</Project>
+      <Name>Microsoft.Exchange.Server.Storage.PropertyTag</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Server.Storage.StoreCommonServices\Microsoft.Exchange.Server.Storage.StoreCommonServices.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141A8}</Project>
+      <Name>Microsoft.Exchange.Server.Storage.StoreCommonServices</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\mscorlib\mscorlib.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141F1}</Project>
+      <Name>mscorlib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

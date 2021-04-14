@@ -1,0 +1,107 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{09CD9476-CD82-489E-B9E2-84B47CA1415D}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Microsoft.Exchange.Management.Edge.SystemManager</RootNamespace>
+    <AssemblyName>Microsoft.Exchange.Management.Edge.SystemManager</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.ManagementConsole" />
+    <Reference Include="Microsoft.ManagementGUI" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BulkActionControl.cs" />
+    <Compile Include="MessagePropertyPage.cs" />
+    <Compile Include="MessagesTaskCommandAction.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="QueuesTaskCommandAction.cs" />
+    <Compile Include="QueueViewerDataSource.cs" />
+    <Compile Include="QueueViewerMessagesResultPane.cs" />
+    <Compile Include="QueueViewerNode.cs" />
+    <Compile Include="QueueViewerOptions.cs" />
+    <Compile Include="QueueViewerOptionsSchema.cs" />
+    <Compile Include="QueueViewerPropertyPage.cs" />
+    <Compile Include="QueueViewerQueuesResultPane.cs" />
+    <Compile Include="QueueViewerResultPane.cs" />
+    <Compile Include="QueueViewerResultPaneBase.cs" />
+    <Compile Include="QueueViewerSettings.cs" />
+    <Compile Include="QueueViewerSnapIn.cs" />
+    <Compile Include="QueueViewerSnapInInstaller.cs" />
+    <Compile Include="QueueViewerTaskCommandAction.cs" />
+    <Compile Include="RecipientsInfoPropertyPage.cs" />
+    <Compile Include="RefreshCategories.cs" />
+    <Compile Include="RemoveQueueMessagesTaskCommandAction.cs" />
+    <Compile Include="SelectionHelpTopics.cs" />
+    <Compile Include="ShowQueueViewerMessagePropertiesCommandAction.cs" />
+    <Compile Include="ViewQueueMessagesCommandAction.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.Exchange.Configuration.ObjectModel\Microsoft.Exchange.Configuration.ObjectModel.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140FC}</Project>
+      <Name>Microsoft.Exchange.Configuration.ObjectModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Common\Microsoft.Exchange.Data.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140D3}</Project>
+      <Name>Microsoft.Exchange.Data.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Directory\Microsoft.Exchange.Data.Directory.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14105}</Project>
+      <Name>Microsoft.Exchange.Data.Directory</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data\Microsoft.Exchange.Data.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14106}</Project>
+      <Name>Microsoft.Exchange.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Management.SystemManager\Microsoft.Exchange.Management.SystemManager.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14165}</Project>
+      <Name>Microsoft.Exchange.Management.SystemManager</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.ManagementGUI\Microsoft.Exchange.ManagementGUI.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14167}</Project>
+      <Name>Microsoft.Exchange.ManagementGUI</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Management\Microsoft.Exchange.Management.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1415C}</Project>
+      <Name>Microsoft.Exchange.Management</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\mscorlib\mscorlib.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141F1}</Project>
+      <Name>mscorlib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

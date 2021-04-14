@@ -1,0 +1,1455 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo Name="Mailbox Configuration" DescriptionId="SetupComponentConfiguringMailbox">
+
+  <ServerTasks>
+
+    <!-- Set Mailbox role (CN=<server name>,CN=Servers,CN=Exchange Administrative Group ...) -->
+    <!-- Property changed : msExchCurrentServerRoles (This is a flag which indicates server roles)-->
+    <ServerTaskInfo Id="_034a5c82f84f4d6496ca36d741be9ae0" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>set-ExchangeServerRole -Identity $RoleFqdnOrName -IsMailboxServer:$true -DomainController $RoleDomainController</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery />
+      <Uninstall>
+        <Standalone>set-ExchangeServerRole -Identity $RoleFqdnOrName -IsMailboxServer:$false -DomainController $RoleDomainController</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Set the ELC Audit log path -->
+    <ServerTaskInfo Id="_808bb72f59924970aca18aa325f20b94" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <!-- [REVIEW] Task is non fatal. Component XML guidelines discourages having non-fatal tasks in setup -->
+      <Install IsFatal="false">
+        <Standalone>
+          $mailboxServer = get-mailboxserver -Identity $RoleFqdnOrName;
+
+          if ($mailboxServer.LogPathForManagedFolders -eq $null)
+          {
+          set-mailboxserver -Identity $RoleFqdnOrName -LogPathForManagedFolders ($RoleInstallPath + "\Logging\Managed Folder Assistant")
+          };
+
+          if ($mailboxServer.LogFileSizeLimitForManagedFolders -eq "unlimited")
+          {
+          set-mailboxserver -Identity $RoleFqdnOrName -LogFileSizeLimitForManagedFolders 10485760
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall>
+        <Standalone>
+          set-mailboxserver -Identity $RoleFqdnOrName `
+          -RetentionLogForManagedFoldersEnabled:$false `
+          -JournalingLogForManagedFoldersEnabled:$false `
+          -FolderLogForManagedFoldersEnabled:$false
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+    <!-- Set the calendar repair assistant log path. Set Logdirectory size limit to 500MB -->
+    <ServerTaskInfo Id="_92d3c8f5abe64c7aa11edb6ce2a9246a" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <!-- [REVIEW] Task is non fatal. Component XML guidelines discourages having non-fatal tasks in setup -->
+      <Install IsFatal="false">
+        <Standalone>
+          $mailboxServer = get-mailboxserver -Identity $RoleFqdnOrName;
+          if ($mailboxServer.CalendarRepairLogPath -eq $null)
+          {
+          set-mailboxserver -Identity $RoleFqdnOrName -CalendarRepairLogPath ($RoleInstallPath + "\Logging\Calendar Repair Assistant")
+          };
+
+          if ($mailboxServer.CalendarRepairLogDirectorySizeLimit -eq "unlimited")
+          {
+          set-mailboxserver -Identity $RoleFqdnOrName -CalendarRepairLogDirectorySizeLimit 524288000
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Set Sharing Policy Default Work Cycle Configuration -->
+    <ServerTaskInfo Id="_c327bfe778e14c218d1525d7da38ba6e" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          $mailboxServer = Get-MailboxServer -Identity $RoleFqdnOrName;
+          if ($mailboxServer.SharingPolicyWorkCycle -eq $null)
+          {
+            Set-MailboxServer -Identity $RoleFqdnOrName -SharingPolicyWorkCycle "1.00:00:00"
+          }
+          if ($mailboxServer.SharingPolicyWorkCycleCheckpoint -eq $null)
+          {
+            Set-MailboxServer -Identity $RoleFqdnOrName -SharingPolicyWorkCycleCheckpoint "1.00:00:00"
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall>
+            <Standalone>
+          Set-MailboxServer -Identity $RoleFqdnOrName -SharingPolicyWorkCycle $null
+          Set-MailboxServer -Identity $RoleFqdnOrName -SharingPolicyWorkCycleCheckpoint $null
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Set Public Folder Assistant Default Work Cycle Configuration -->
+    <ServerTaskInfo Id="_386F5935F5A94C5E9220AFD59D98A547" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          $mailboxServer = Get-MailboxServer -Identity $RoleFqdnOrName;
+          if ($mailboxServer.PublicFolderWorkCycle -eq $null)
+          {
+            Set-MailboxServer -Identity $RoleFqdnOrName -PublicFolderWorkCycle "1.00:00:00"
+          }
+          if ($mailboxServer.PublicFolderWorkCycleCheckpoint -eq $null)
+          {
+            Set-MailboxServer -Identity $RoleFqdnOrName -PublicFolderWorkCycleCheckpoint "1.00:00:00"
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall>
+        <Standalone>
+          Set-MailboxServer -Identity $RoleFqdnOrName -PublicFolderWorkCycle $null
+          Set-MailboxServer -Identity $RoleFqdnOrName -PublicFolderWorkCycleCheckpoint $null
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Set Site Mailbox Assistant Default Work Cycle Configuration -->
+    <ServerTaskInfo Id="_256eecae01cb40d09598a6dd5a032526" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          $mailboxServer = Get-MailboxServer -Identity $RoleFqdnOrName;
+          if ($mailboxServer.SiteMailboxWorkCycle -eq $null)
+          {
+            Set-MailboxServer -Identity $RoleFqdnOrName -SiteMailboxWorkCycle "0.06:00:00"
+          }
+          if ($mailboxServer.SiteMailboxWorkCycleCheckpoint -eq $null)
+          {
+            Set-MailboxServer -Identity $RoleFqdnOrName -SiteMailboxWorkCycleCheckpoint "0.06:00:00"
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall>
+        <Standalone>
+          Set-MailboxServer -Identity $RoleFqdnOrName -SiteMailboxWorkCycle $null
+          Set-MailboxServer -Identity $RoleFqdnOrName -SiteMailboxWorkCycleCheckpoint $null
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Set Sharing Sync Default Work Cycle Configuration -->
+    <ServerTaskInfo Id="_F75EEFC06758440BB61202994CD4D1A9" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          $mailboxServer = Get-MailboxServer -Identity $RoleFqdnOrName;
+          if ($mailboxServer.SharingSyncWorkCycle -eq $null)
+          {
+            Set-MailboxServer -Identity $RoleFqdnOrName -SharingSyncWorkCycle "03:00:00"
+          }
+          if ($mailboxServer.SharingSyncWorkCycleCheckpoint -eq $null)
+          {
+            Set-MailboxServer -Identity $RoleFqdnOrName -SharingSyncWorkCycleCheckpoint "03:00:00"
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall>
+            <Standalone>
+          Set-MailboxServer -Identity $RoleFqdnOrName -SharingSyncWorkCycle $null
+          Set-MailboxServer -Identity $RoleFqdnOrName -SharingSyncWorkCycleCheckpoint $null
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Set Managed Folder Default Work Cycle Configuration -->
+    <ServerTaskInfo Id="_32A6009CE7564049BC653A319878F235" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+         $mailboxServer = Get-MailboxServer -Identity $RoleFqdnOrName;
+         if ($RoleIsDatacenter -eq $true)
+         {
+          if ($mailboxServer.ManagedFolderWorkCycle -eq $null)
+          {
+            Set-MailboxServer -Identity $RoleFqdnOrName -ManagedFolderWorkCycle "1.00:00:00"
+          }
+         }
+         else
+         {
+          if ($mailboxServer.ManagedFolderWorkCycle -eq $null)
+          {
+            Set-MailboxServer -Identity $RoleFqdnOrName -ManagedFolderWorkCycle "1.00:00:00"
+          }
+         }
+
+         if ($mailboxServer.ManagedFolderWorkCycleCheckpoint -eq $null)
+         {
+            Set-MailboxServer -Identity $RoleFqdnOrName -ManagedFolderWorkCycleCheckpoint "1.00:00:00"
+         }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall>
+            <Standalone>
+          Set-MailboxServer -Identity $RoleFqdnOrName -ManagedFolderWorkCycle $null
+          Set-MailboxServer -Identity $RoleFqdnOrName -ManagedFolderWorkCycleCheckpoint $null
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Set Top N Default Work Cycle Configuration -->
+    <ServerTaskInfo Id="_0164A3FDB79D4A0AA7C7D9F9FC1F91F9" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+         $mailboxServer = Get-MailboxServer -Identity $RoleFqdnOrName;
+         if ($RoleIsDatacenter -eq $true)
+         {
+          if ($mailboxServer.TopNWorkCycle -eq $null)
+          {
+            Set-MailboxServer -Identity $RoleFqdnOrName -TopNWorkCycle "30.00:00:00"
+          }
+         }
+         else
+         {
+          if ($mailboxServer.TopNWorkCycle -eq $null)
+          {
+            Set-MailboxServer -Identity $RoleFqdnOrName -TopNWorkCycle "7.00:00:00"
+          }
+         }
+
+         if ($mailboxServer.TopNWorkCycleCheckpoint -eq $null)
+         {
+            Set-MailboxServer -Identity $RoleFqdnOrName -TopNWorkCycleCheckpoint "1.00:00:00"
+         }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall>
+            <Standalone>
+          Set-MailboxServer -Identity $RoleFqdnOrName -TopNWorkCycle $null
+          Set-MailboxServer -Identity $RoleFqdnOrName -TopNWorkCycleCheckpoint $null
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Set UM Reporting Default Work Cycle Configuration -->
+    <ServerTaskInfo Id="_C3DCA3A3CCCF459B83ACF17AE157D381" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          $mailboxServer = Get-MailboxServer -Identity $RoleFqdnOrName;
+          if ($mailboxServer.UMReportingSyncWorkCycle -eq $null)
+          {
+            Set-MailboxServer -Identity $RoleFqdnOrName -UMReportingWorkCycle "1.00:00:00"
+          }
+          if ($mailboxServer.UMReportingWorkCycleCheckpoint -eq $null)
+          {
+            Set-MailboxServer -Identity $RoleFqdnOrName -UMReportingWorkCycleCheckpoint "1.00:00:00"
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall>
+            <Standalone>
+          Set-MailboxServer -Identity $RoleFqdnOrName -UMReportingWorkCycle $null
+          Set-MailboxServer -Identity $RoleFqdnOrName -UMReportingWorkCycleCheckpoint $null
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+  <!-- Set Inference Training Default Work Cycle Configuration -->
+  <ServerTaskInfo Id="_D7026E7D56214582B7850646A5610C13" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+    <Install>
+      <Standalone>
+            if ($RoleIsDatacenter -eq $true)
+            {
+                $mailboxServer = Get-MailboxServer -Identity $RoleFqdnOrName;
+                if ($mailboxServer.InferenceTrainingWorkCycle -eq $null)
+                {
+                    Set-MailboxServer -Identity $RoleFqdnOrName -InferenceTrainingWorkCycle "1.00:00:00"
+                }
+                if ($mailboxServer.InferenceTrainingWorkCycleCheckpoint -eq $null)
+                {
+                    Set-MailboxServer -Identity $RoleFqdnOrName -InferenceTrainingWorkCycleCheckpoint "1.00:00:00"
+                }
+            }
+            else
+            {
+                Set-MailboxServer -Identity $RoleFqdnOrName -InferenceTrainingWorkCycle $null
+                Set-MailboxServer -Identity $RoleFqdnOrName -InferenceTrainingWorkCycleCheckpoint $null
+            }
+      </Standalone>
+    </Install>
+    <BuildToBuildUpgrade UseInstallTasks="true"/>
+    <DisasterRecovery UseInstallTasks="true"/>
+    <Uninstall>
+      <Standalone>
+        Set-MailboxServer -Identity $RoleFqdnOrName -InferenceTrainingWorkCycle $null
+        Set-MailboxServer -Identity $RoleFqdnOrName -InferenceTrainingWorkCycleCheckpoint $null
+      </Standalone>
+    </Uninstall>
+  </ServerTaskInfo>
+
+    <!-- Set DirectoryProcessor Default Work Cycle Configuration -->
+    <ServerTaskInfo Id="_5766d7629d194e8691ddbf6a7806d95f" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          $mailboxServer = Get-MailboxServer -Identity $RoleFqdnOrName;
+          if ($mailboxServer.DirectoryProcessorWorkCycle -eq $null)
+          {
+            Set-MailboxServer -Identity $RoleFqdnOrName -DirectoryProcessorWorkCycle "1.00:00:00"
+          }
+          if ($mailboxServer.DirectoryProcessorWorkCycleCheckpoint -eq $null)
+          {
+            Set-MailboxServer -Identity $RoleFqdnOrName -DirectoryProcessorWorkCycleCheckpoint "1.00:00:00"
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall>
+         <Standalone>
+          Set-MailboxServer -Identity $RoleFqdnOrName -DirectoryProcessorWorkCycle $null
+          Set-MailboxServer -Identity $RoleFqdnOrName -DirectoryProcessorWorkCycleCheckpoint $null
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Set OAB Generator Default Work Cycle Configuration -->
+    <ServerTaskInfo Id="_f08523ca38d64523b805290057c68c44" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          $mailboxServer = Get-MailboxServer -Identity $RoleFqdnOrName;
+          if ($mailboxServer.OABGeneratorWorkCycle -eq $null)
+          {
+            Set-MailboxServer -Identity $RoleFqdnOrName -OABGeneratorWorkCycle "08:00:00"
+          }
+          if ($mailboxServer.OABGeneratorWorkCycleCheckpoint -eq $null)
+          {
+            Set-MailboxServer -Identity $RoleFqdnOrName -OABGeneratorWorkCycleCheckpoint "01:00:00"
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall>
+         <Standalone>
+          Set-MailboxServer -Identity $RoleFqdnOrName -OABGeneratorWorkCycle $null
+          Set-MailboxServer -Identity $RoleFqdnOrName -OABGeneratorWorkCycleCheckpoint $null
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Set InferenceDataCollectionAssistant Default Work Cycle Configuration -->
+    <ServerTaskInfo Id="_A3E97EEF5DD34C328BC101A8D3E95B99" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          if ($RoleIsDatacenter -eq $true)
+          {
+            $mailboxServer = Get-MailboxServer -Identity $RoleFqdnOrName;
+
+            if ($mailboxServer.InferenceDataCollectionWorkCycle -eq $null)
+            {
+              Set-MailboxServer -Identity $RoleFqdnOrName -InferenceDataCollectionWorkCycle "7.00:00:00"
+            }
+            
+            if ($mailboxServer.InferenceDataCollectionWorkCycleCheckpoint -eq $null)
+            {
+              Set-MailboxServer -Identity $RoleFqdnOrName -InferenceDataCollectionWorkCycleCheckpoint "7.00:00:00"
+            }
+          }
+          else
+          {
+            Set-MailboxServer -Identity $RoleFqdnOrName -InferenceDataCollectionWorkCycle $null
+            Set-MailboxServer -Identity $RoleFqdnOrName -InferenceDataCollectionWorkCycleCheckpoint $null
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall>
+        <Standalone>
+          Set-MailboxServer -Identity $RoleFqdnOrName -InferenceDataCollectionWorkCycle $null
+          Set-MailboxServer -Identity $RoleFqdnOrName -InferenceDataCollectionWorkCycleCheckpoint $null
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Set PeopleRelevanceAssistant Default Work Cycle Configuration -->
+    <ServerTaskInfo Id="_D2D500AF31F14D5D98BCE435B86B6332" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+            $mailboxServer = Get-MailboxServer -Identity $RoleFqdnOrName;
+            if ($mailboxServer.PeopleRelevanceWorkCycle -eq $null)
+            {
+            Set-MailboxServer -Identity $RoleFqdnOrName -PeopleRelevanceWorkCycle "1.00:00:00"
+            }
+            if ($mailboxServer.PeopleRelevanceWorkCycleCheckpoint -eq $null)
+            {
+            Set-MailboxServer -Identity $RoleFqdnOrName -PeopleRelevanceWorkCycleCheckpoint "1.00:00:00"
+            }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall>
+        <Standalone>
+          Set-MailboxServer -Identity $RoleFqdnOrName -PeopleRelevanceWorkCycle $null
+          Set-MailboxServer -Identity $RoleFqdnOrName -PeopleRelevanceWorkCycleCheckpoint $null
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Set SharePointSignalStoreAssistant Default Work Cycle Configuration -->
+    <ServerTaskInfo Id="_8C4E7C25-5A66-44DC-B795-A8A2DEE86281" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+            $mailboxServer = Get-MailboxServer -Identity $RoleFqdnOrName;
+            if ($mailboxServer.SharePointSignalStoreWorkCycle -eq $null)
+            {
+            Set-MailboxServer -Identity $RoleFqdnOrName -SharePointSignalStoreWorkCycle "14.00:00:00"
+            }
+            if ($mailboxServer.SharePointSignalStoreWorkCycleCheckpoint -eq $null)
+            {
+            Set-MailboxServer -Identity $RoleFqdnOrName -SharePointSignalStoreWorkCycleCheckpoint "0.06:00:00"
+            }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall>
+        <Standalone>
+          Set-MailboxServer -Identity $RoleFqdnOrName -SharePointSignalStoreWorkCycle $null
+          Set-MailboxServer -Identity $RoleFqdnOrName -SharePointSignalStoreWorkCycleCheckpoint $null
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Set Mailbox Processor Assistant Default Work Cycle Configuration -->
+    <ServerTaskInfo Id="_824D6EFC2D9A476CBF8754BDC398BFD6" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          $mailboxServer = Get-MailboxServer -Identity $RoleFqdnOrName;
+          if ($RoleIsDatacenter -eq $true)
+          {
+            if ($mailboxServer.MailboxProcessorWorkCycle -eq $null)
+            {
+              Set-MailboxServer -Identity $RoleFqdnOrName -MailboxProcessorWorkCycle "04:00:00"
+            }
+          }
+          else
+          {
+            if ($mailboxServer.MailboxProcessorWorkCycle -eq $null)
+            {
+              Set-MailboxServer -Identity $RoleFqdnOrName -MailboxProcessorWorkCycle "1.00:00:00"
+            }
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall>
+        <Standalone>
+          Set-MailboxServer -Identity $RoleFqdnOrName -MailboxProcessorWorkCycle $null
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+    
+    <!-- Set Store DS Maintenance Assistant Default Work Cycle Configuration -->
+    <ServerTaskInfo Id="_927F606F717B494BB39374D968A980CD" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+            if ($mailboxServer.StoreDsMaintenanceWorkCycle -eq $null)
+            {
+              Set-MailboxServer -Identity $RoleFqdnOrName -StoreDsMaintenanceWorkCycle "00:15:00"
+            }
+            if ($mailboxServer.StoreDsMaintenanceWorkCycleCheckpoint -eq $null)
+            {
+              Set-MailboxServer -Identity $RoleFqdnOrName -StoreDsMaintenanceWorkCycleCheckpoint "00:05:00"
+            }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall>
+        <Standalone>
+            Set-MailboxServer -Identity $RoleFqdnOrName -StoreDsMaintenanceWorkCycle $null
+            Set-MailboxServer -Identity $RoleFqdnOrName -StoreDsMaintenanceWorkCycleCheckpoint $null
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Set StoreIntegrityCheck Assistant Default Work Cycle Configuration -->
+    <ServerTaskInfo Id="_9FA3E8CC281A40118EA7DCD2FBAD95EF" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+            if ($mailboxServer.StoreIntegrityCheckWorkCycle -eq $null)
+            {
+              Set-MailboxServer -Identity $RoleFqdnOrName -StoreIntegrityCheckWorkCycle "00:15:00"
+            }
+            if ($mailboxServer.StoreIntegrityCheckWorkCycleCheckpoint -eq $null)
+            {
+              Set-MailboxServer -Identity $RoleFqdnOrName -StoreIntegrityCheckWorkCycleCheckpoint "00:05:00"
+            }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall>
+        <Standalone>
+            Set-MailboxServer -Identity $RoleFqdnOrName -StoreIntegrityCheckWorkCycle $null
+            Set-MailboxServer -Identity $RoleFqdnOrName -StoreIntegrityCheckWorkCycleCheckpoint $null
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+    
+    <!-- Set StoreMaintenance Assistant Default Work Cycle Configuration -->
+    <ServerTaskInfo Id="_5ACF81752B1B4DE1A7E6EA651B6DFEF6" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+            if ($mailboxServer.StoreMaintenanceWorkCycle -eq $null)
+            {
+              Set-MailboxServer -Identity $RoleFqdnOrName -StoreMaintenanceWorkCycle "00:15:00"
+            }
+            if ($mailboxServer.StoreMaintenanceWorkCycleCheckpoint -eq $null)
+            {
+              Set-MailboxServer -Identity $RoleFqdnOrName -StoreMaintenanceWorkCycleCheckpoint "00:05:00"
+            }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall>
+        <Standalone>
+            Set-MailboxServer -Identity $RoleFqdnOrName -StoreMaintenanceWorkCycle $null
+            Set-MailboxServer -Identity $RoleFqdnOrName -StoreMaintenanceWorkCycleCheckpoint $null
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+    
+    <!-- Set StoreScheduledIntegrityCheck Assistant Default Work Cycle Configuration -->
+    <ServerTaskInfo Id="_C413877C4C994446A7F429695CEE0EA8" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+            if ($mailboxServer.StoreScheduledIntegrityCheckWorkCycle -eq $null)
+            {
+              Set-MailboxServer -Identity $RoleFqdnOrName -StoreScheduledIntegrityCheckWorkCycle "00:15:00"
+            }
+            if ($mailboxServer.StoreScheduledIntegrityCheckWorkCycleCheckpoint -eq $null)
+            {
+              Set-MailboxServer -Identity $RoleFqdnOrName -StoreScheduledIntegrityCheckWorkCycleCheckpoint "00:05:00"
+            }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall>
+        <Standalone>
+            Set-MailboxServer -Identity $RoleFqdnOrName -StoreScheduledIntegrityCheckWorkCycle $null
+            Set-MailboxServer -Identity $RoleFqdnOrName -StoreScheduledIntegrityCheckWorkCycleCheckpoint $null
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+	
+    <!-- Set DarTaskStoreTimeBased Assistant Default Work Cycle Configuration -->
+    <ServerTaskInfo Id="_6DD70590A7C647E7A5671AC5BA2958C5" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+            if ($mailboxServer.DarTaskStoreTimeBasedAssistantWorkCycle -eq $null)
+            {
+              Set-MailboxServer -Identity $RoleFqdnOrName -DarTaskStoreTimeBasedAssistantWorkCycle "00:30:00"
+            }
+            if ($mailboxServer.DarTaskStoreTimeBasedAssistantWorkCycleCheckpoint -eq $null)
+            {
+              Set-MailboxServer -Identity $RoleFqdnOrName -DarTaskStoreTimeBasedAssistantWorkCycleCheckpoint "00:30:00"
+            }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall>
+        <Standalone>
+            Set-MailboxServer -Identity $RoleFqdnOrName -DarTaskStoreTimeBasedAssistantWorkCycle $null
+            Set-MailboxServer -Identity $RoleFqdnOrName -DarTaskStoreTimeBasedAssistantWorkCycleCheckpoint $null
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+    
+    <!-- Set StoreUrgentMaintenance Assistant Default Work Cycle Configuration -->
+    <ServerTaskInfo Id="_EFB820E60D924166AA52765F39501CA1" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+            if ($mailboxServer.StoreUrgentMaintenanceWorkCycle -eq $null)
+            {
+              Set-MailboxServer -Identity $RoleFqdnOrName -StoreUrgentMaintenanceWorkCycle "00:15:00"
+            }
+            if ($mailboxServer.StoreUrgentMaintenanceWorkCycleCheckpoint -eq $null)
+            {
+              Set-MailboxServer -Identity $RoleFqdnOrName -StoreUrgentMaintenanceWorkCycleCheckpoint "00:05:00"
+            }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall>
+        <Standalone>
+            Set-MailboxServer -Identity $RoleFqdnOrName -StoreUrgentMaintenanceWorkCycle $null
+            Set-MailboxServer -Identity $RoleFqdnOrName -StoreUrgentMaintenanceWorkCycleCheckpoint $null
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+    
+    <!-- Set JunkEmailOptionsCommitterAssistant Assistant Default Work Cycle Configuration -->
+    <ServerTaskInfo Id="_D0F8B82E38214664A0EDA951337327B4" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+            if ($mailboxServer.JunkEmailOptionsCommitterWorkCycle -eq $null)
+            {
+              Set-MailboxServer -Identity $RoleFqdnOrName -JunkEmailOptionsCommitterWorkCycle "00:15:00"
+            }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall>
+        <Standalone>
+            Set-MailboxServer -Identity $RoleFqdnOrName -JunkEmailOptionsCommitterWorkCycle $null
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Set ProbeTimeBasedAssistant Default Work Cycle Configuration -->
+    <ServerTaskInfo Id="_17ED7F4983CF42D3A5AB4B25E06DFD24" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+            if ($mailboxServer.ProbeTimeBasedAssistantWorkCycle -eq $null)
+            {
+              Set-MailboxServer -Identity $RoleFqdnOrName -ProbeTimeBasedAssistantWorkCycle "00:15:00"
+            }
+            if ($mailboxServer.ProbeTimeBasedAssistantWorkCycleCheckpoint -eq $null)
+            {
+              Set-MailboxServer -Identity $RoleFqdnOrName -ProbeTimeBasedAssistantWorkCycleCheckpoint "00:05:00"
+            }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall>
+        <Standalone>
+            Set-MailboxServer -Identity $RoleFqdnOrName -ProbeTimeBasedAssistantWorkCycle $null
+            Set-MailboxServer -Identity $RoleFqdnOrName -ProbeTimeBasedAssistantWorkCycleCheckpoint $null
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+    
+        <!-- Set SearchIndexRepairTimeBasedAssistant Default Work Cycle Configuration -->
+    <ServerTaskInfo Id="_9BBDFABD00484B51ACAB34E55A6FDC4B" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+            if ($mailboxServer.SearchIndexRepairTimeBasedAssistantWorkCycle -eq $null)
+            {
+              Set-MailboxServer -Identity $RoleFqdnOrName -SearchIndexRepairTimeBasedAssistantWorkCycle "30.00:00:00"
+            }
+            if ($mailboxServer.SearchIndexRepairTimeBasedAssistantWorkCycleCheckpoint -eq $null)
+            {
+              Set-MailboxServer -Identity $RoleFqdnOrName -SearchIndexRepairTimeBasedAssistantWorkCycleCheckpoint "1.00:00:00"
+            }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall>
+        <Standalone>
+            Set-MailboxServer -Identity $RoleFqdnOrName -SearchIndexRepairTimeBasedAssistantWorkCycle $null
+            Set-MailboxServer -Identity $RoleFqdnOrName -SearchIndexRepairTimeBasedAssistantWorkCycleCheckpoint $null
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Set Mailbox Association Replication Default Work Cycle Configuration -->
+    <ServerTaskInfo Id="_057a655b75a946d9a1577e40b7025cf1" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          $mailboxServer = Get-MailboxServer -Identity $RoleFqdnOrName;
+          if ($mailboxServer.MailboxAssociationReplicationWorkCycle -eq $null)
+          {
+          Set-MailboxServer -Identity $RoleFqdnOrName -MailboxAssociationReplicationWorkCycle "1.00:00:00"
+          }
+          if ($mailboxServer.MailboxAssociationReplicationWorkCycleCheckpoint -eq $null)
+          {
+          Set-MailboxServer -Identity $RoleFqdnOrName -MailboxAssociationReplicationWorkCycleCheckpoint "1.00:00:00"
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall>
+        <Standalone>
+          Set-MailboxServer -Identity $RoleFqdnOrName -MailboxAssociationReplicationWorkCycle $null
+          Set-MailboxServer -Identity $RoleFqdnOrName -MailboxAssociationReplicationWorkCycleCheckpoint $null
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Set Group Mailbox Default Work Cycle Configuration -->
+    <ServerTaskInfo Id="_20254618E32F4334A5F4743D2A2A5701" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          $mailboxServer = Get-MailboxServer -Identity $RoleFqdnOrName;
+          if ($mailboxServer.GroupMailboxWorkCycle -eq $null)
+          {
+          Set-MailboxServer -Identity $RoleFqdnOrName -GroupMailboxWorkCycle "1.00:00:00"
+          }
+          if ($mailboxServer.GroupMailboxWorkCycleCheckpoint -eq $null -or 
+              $mailboxServer.GroupMailboxWorkCycleCheckpoint.ToString() -ne "0.04:00:00")
+          {
+          Set-MailboxServer -Identity $RoleFqdnOrName -GroupMailboxWorkCycleCheckpoint "0.04:00:00"
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall>
+        <Standalone>
+          Set-MailboxServer -Identity $RoleFqdnOrName -GroupMailboxWorkCycle $null
+          Set-MailboxServer -Identity $RoleFqdnOrName -GroupMailboxWorkCycleCheckpoint $null
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Set People-centric Triage Default Work Cycle Configuration -->
+    <ServerTaskInfo Id="_2495a193fcaf4370bb0badd21329bbce" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          $mailboxServer = Get-MailboxServer -Identity $RoleFqdnOrName;
+          if ($mailboxServer.PeopleCentricTriageWorkCycle -eq $null)
+          {
+          Set-MailboxServer -Identity $RoleFqdnOrName -PeopleCentricTriageWorkCycle "1.00:00:00"
+          }
+          if ($mailboxServer.PeopleCentricTriageWorkCycleCheckpoint -eq $null)
+          {
+          Set-MailboxServer -Identity $RoleFqdnOrName -PeopleCentricTriageWorkCycleCheckpoint "12:00:00"
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall>
+        <Standalone>
+          Set-MailboxServer -Identity $RoleFqdnOrName -PeopleCentricTriageWorkCycle $null
+          Set-MailboxServer -Identity $RoleFqdnOrName -PeopleCentricTriageWorkCycleCheckpoint $null
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Uninstall: remove information store -->
+    <ServerTaskInfo Id="_a7da5980bc5048049a0f0028842a47f4" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install />
+      <BuildToBuildUpgrade />
+      <DisasterRecovery />
+      <Uninstall>
+        <Standalone>
+          $Server = get-ExchangeServer $RoleFqdnOrName;
+          if ($Server)
+          {
+          $InformationStoreId = $Server.Identity.GetChildId("InformationStore")
+          }
+          if ($InformationStoreId)
+          {
+          uninstall-InformationStore $InformationStoreId
+          }
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Uninstall: remove mailbox database -->
+    <ServerTaskInfo Id="_8d2e7405b35148b7b8468de2c06fd55f" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install />
+      <BuildToBuildUpgrade />
+      <DisasterRecovery />
+      <Uninstall DescriptionId="SetupProgressRemovingMailboxDatabase">
+        <Standalone>get-MailboxDatabase -server $RoleFqdnOrName | remove-MailboxDatabase</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Stop HTTPFilter service -->
+    <ServerTaskInfo Id="_1d067f827ecc40c6b18c1605f6a7868c" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressStoppingHTTPFilterService">
+        <Standalone>
+        $a = get-wmiobject win32_operatingsystem;
+        if( ([int]($a.version.split(".")[0])) -lt 6   )
+        {
+            stop-SetupService -ServiceName HTTPFilter
+        }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Create mailbox database -->
+    <!-- If the Datacenter or DatacenterDedicated switch is present, then RoleDatacenterExcludeDefaultMailboxDatabase cannot be null  -->
+    <!-- so we can be sure that every DatacenterConfig file defines it and the Default MDB is not going to be  -->
+    <!-- used by accident to provision users. -->
+    <ServerTaskInfo Id="_61cf7fc80dac4973a39d3a0c960fe7c3" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressCreatingNewMailboxDatabase">
+    <Standalone>
+      $random = new-object System.Random;
+      $ExcludeMdbAtCreation = $false;
+
+      if (($RoleDatacenterExcludeDefaultMailboxDatabase -eq $null) -and (($RoleIsDatacenter -eq $true) -or ($RoleIsDatacenterDedicated -eq $true)))
+      {
+        write-exchangesetuplog -error "Parameter ExcludeDefaultMailboxDatabase should be defined on the DatacenterConfig file."
+      }
+      else
+      {
+        if ($RoleDatacenterExcludeDefaultMailboxDatabase -ne $null)
+        {
+          $ExcludeMdbAtCreation = $RoleDatacenterExcludeDefaultMailboxDatabase;
+        }
+
+        for ($i = 0; $i -lt 3; $i++)
+        {
+          if (-not $RoleMdbName)
+          {
+            $NameCandidate = $RoleMailboxDatabaseName + " " + $random.Next().ToString("0000000000");
+          }
+          else
+          {
+            $NameCandidate = $RoleMdbName;
+          }
+
+          if ($NameCandidate.Length -gt 64 )
+          {
+            $NameCandidate = $NameCandidate.Substring(0, 64);
+          }
+
+          # Store removes default databases during deployment. But in a broken deployment may occasionaly leave a default database behind which trips monitoring checks.
+          if (($RoleIsDatacenter -eq $true) -or ($RoleIsDatacenterDedicated -eq $true))
+          {
+            $mbxmdb = new-mailboxdatabase -Name $NameCandidate -Server:$RoleFqdnOrName -DomainController:$RoleDomainController -ErrorAction:SilentlyContinue -EdbFilePath:$RoleDbFilePath -LogFolderPath:$RoleLogFolderPath -IsExcludedFromProvisioning:$ExcludeMdbAtCreation -AutoDagExcludeFromMonitoring:$true;
+          }
+          else
+          {          
+            $mbxmdb = new-mailboxdatabase -Name $NameCandidate -Server:$RoleFqdnOrName -DomainController:$RoleDomainController -ErrorAction:SilentlyContinue -EdbFilePath:$RoleDbFilePath -LogFolderPath:$RoleLogFolderPath -IsExcludedFromProvisioning:$ExcludeMdbAtCreation;          
+          }
+
+          if ($mbxmdb -ne $null)
+          {
+            break;
+          }
+        }
+      }
+    </Standalone>
+      </Install>
+      <BuildToBuildUpgrade />
+      <DisasterRecovery />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Create HTTP container -->
+    <ServerTaskInfo Id="_5c8c4e34611d498db228d6bb4c9d5741" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>new-HttpContainer -DomainController $RoleDomainController</Standalone>
+      </Install>
+      <BuildToBuildUpgrade />
+      <DisasterRecovery />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Allow machine accounts to authenticate off-machine as themselves with NTLM, instead of Anonymous. -->
+    <!-- This is now the default in Windows 7. -->
+    <!-- 133278. Add-DatabaseAvailabilityGroupServer fails to complete in Remote PowerShell -->
+    <ServerTaskInfo Id="_4379b1b23b2b4c6cbae9060992f09f4b" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+            set-itemproperty -path HKLM:\system\CurrentControlSet\Control\Lsa -Name "UseMachineId" -Value 1 -type:dword;
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Remove the legacy SystemMailbox users objects under Meso container -->
+    <ServerTaskInfo Id="_8da5691d09cc4b11aeb9110174961ed7" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install />
+      <BuildToBuildUpgrade DescriptionId="SetupProgressRemovingLegacySystemMailboxUsers">
+        <Standalone>Get-mailboxDatabase -server $RoleFqdnOrName | foreach { $name= "SystemMailbox{$($_.GUID)}"; get-mailbox -filter { Name -eq $name } } | where { $_.DistinguishedName.Contains("Microsoft Exchange System Objects") } | remove-mailbox</Standalone>
+      </BuildToBuildUpgrade>
+      <DisasterRecovery />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Add firewall rule for MSexchangeRepl High Availability Web Service -->
+    <ServerTaskInfo Id="_1c94433deb70477989e47765c9cad60d" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          Add-FirewallException -FirewallRule (New-Object Microsoft.Exchange.Security.WindowsFirewall.MSExchangeHighAvailabilityWebServiceFirewallRule)
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>remove-firewallexception -FirewallRule (New-Object Microsoft.Exchange.Security.WindowsFirewall.MSExchangeHighAvailabilityWebServiceFirewallRule)</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+    
+    <!-- Add global firewall rule for MSExchangeDagMgmt Monitoring Web Service -->
+    <ServerTaskInfo Id="_2F2BA16A55734AC4BF260898FA24A80F" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          Add-FirewallException -FirewallRule (New-Object Microsoft.Exchange.Security.WindowsFirewall.MSExchangeDagMgmtWcfServiceByPortFirewallRule)
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>remove-firewallexception -FirewallRule (New-Object Microsoft.Exchange.Security.WindowsFirewall.MSExchangeDagMgmtWcfServiceByPortFirewallRule)</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+    
+    <!-- Add firewall rule for MSExchangeDagMgmt Monitoring Web Service -->
+    <ServerTaskInfo Id="_8F7FCD2F74D04DD2B99AB218965DD7DA" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          Add-FirewallException -FirewallRule (New-Object Microsoft.Exchange.Security.WindowsFirewall.MSExchangeDagMgmtWcfServiceFirewallRule)
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>remove-firewallexception -FirewallRule (New-Object Microsoft.Exchange.Security.WindowsFirewall.MSExchangeDagMgmtWcfServiceFirewallRule)</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>    
+    
+    <!-- Add firewall rule for MSexchangeIS RPC -->
+    <ServerTaskInfo Id="_345dd833c42d4f6ab74a1b2c088a7387" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          Add-FirewallException -FirewallRule (New-Object Microsoft.Exchange.Security.WindowsFirewall.MSExchangeISServiceRPCFirewallRule)
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>remove-firewallexception -FirewallRule (New-Object Microsoft.Exchange.Security.WindowsFirewall.MSExchangeISServiceRPCFirewallRule)</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <ServerTaskInfo Id="_3fbc547e4787463da84434e1d31bdedb" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          Add-FirewallException -FirewallRule (New-Object Microsoft.Exchange.Security.WindowsFirewall.MSExchangeISServiceRPCEPMapFirewallRule)
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>remove-firewallexception -FirewallRule (New-Object Microsoft.Exchange.Security.WindowsFirewall.MSExchangeISServiceRPCEPMapFirewallRule)</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <ServerTaskInfo Id="_0001028610f74f6289bc8f584e0a6c8a" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          Add-FirewallException -FirewallRule (New-Object Microsoft.Exchange.Security.WindowsFirewall.MSExchangeISWorkerRPCFirewallRule)
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>remove-firewallexception -FirewallRule (New-Object Microsoft.Exchange.Security.WindowsFirewall.MSExchangeISWorkerRPCFirewallRule)</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <ServerTaskInfo Id="_f16f17ffa2c84e8e92d7c9585dab70a0" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          Add-FirewallException -FirewallRule (New-Object Microsoft.Exchange.Security.WindowsFirewall.MSExchangeISWorkerRPCEPMapFirewallRule)
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>remove-firewallexception -FirewallRule (New-Object Microsoft.Exchange.Security.WindowsFirewall.MSExchangeISWorkerRPCEPMapFirewallRule)</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Add WMI Exception for Windows firewall-->
+    <!-- Bug#123974 -Some maibox tasks need WMI to be added/removed to the windows firewall exception list in LH.
+            This code needs to be removed once we do the workitem 21917 in E14.-->
+    <ServerTaskInfo Id="_853a8397ce5b4a70bba4fee2c755f056" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>  
+        <Standalone>
+        netsh advfirewall firewall set rule group="windows management instrumentation (wmi)" new enable=yes    
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>        
+        <Standalone>
+        netsh advfirewall firewall set rule group="windows management instrumentation (wmi)" new enable=no    
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Add Firewall Exception for MSExchangeMigration (E14:171257)-->
+    <ServerTaskInfo Id="_5ce0a17f2d0143289e8a45989a285d56" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>  
+        <Standalone>
+            Add-FirewallException -FirewallRule (New-Object Microsoft.Exchange.Security.WindowsFirewall.MSExchangeMigrationRPCFirewallRule);
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall DescriptionId="SetupProgressDisableMigrationRPCFirewallRule">        
+        <Standalone>
+          Remove-FirewallException -FirewallRule (New-Object Microsoft.Exchange.Security.WindowsFirewall.MSExchangeMigrationRPCFirewallRule);
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>  
+    <ServerTaskInfo Id="_f6741ffb9bb44195958d1e0cc30adb9d" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>  
+        <Standalone>
+            Add-FirewallException -FirewallRule (New-Object Microsoft.Exchange.Security.WindowsFirewall.MSExchangeMigrationRPCEPMapperFirewallRule);
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall DescriptionId="SetupProgressDisableMigrationRPCFirewallRule">        
+        <Standalone>
+          Remove-FirewallException -FirewallRule (New-Object Microsoft.Exchange.Security.WindowsFirewall.MSExchangeMigrationRPCEPMapperFirewallRule);
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>  
+
+    <!-- Used for the search service to reseed the database -->
+    <!-- The following servertasks implement these rules -->
+    <ServerTaskInfo Id="_92f6f03ed372415ebcf7043553cf7c7f" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressFastSearchSeedingPortRule">
+        <Standalone>
+          Add-FirewallException -FirewallRule (New-Object Microsoft.Exchange.Security.WindowsFirewall.FastSearchSeedingPortFirewallRule);
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall DescriptionId="SetupProgressDisableFastSearchSeedingPortRule">
+        <Standalone>
+          Remove-FirewallException -FirewallRule (New-Object Microsoft.Exchange.Security.WindowsFirewall.FastSearchSeedingPortFirewallRule);
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- [OM: 52673] Add firewall rule for CAS to MBX proxy -->
+    <ServerTaskInfo Id="_FCCBCAA0AA2A46B1BD875043B6DA2CC8" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          Add-FirewallException -FirewallRule (New-Object Microsoft.Exchange.Security.WindowsFirewall.MSExchangeCASToMBXProxyPortFirewallRule)
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>
+          Remove-FirewallException -FirewallRule (New-Object Microsoft.Exchange.Security.WindowsFirewall.MSExchangeCASToMBXProxyPortFirewallRule)
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Add global firewall rule for mailbox -->
+    <ServerTaskInfo Id="_58b464c1bae549ccae2072e694175085" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+           Add-FirewallException -FirewallRule (New-Object Microsoft.Exchange.Security.WindowsFirewall.MSExchangeMbxByPort)
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>remove-firewallexception -FirewallRule (New-Object Microsoft.Exchange.Security.WindowsFirewall.MSExchangeMbxByPort)</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+
+    <!-- Add Windows Server Backup for Exchange Plugin-->
+    <ServerTaskInfo Id="_05b48d0df742416f87cbe69d27751979" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressWsbPlugin">
+        <Standalone>
+          if ([Environment]::OSVersion.Version.Major -ge 6)
+          {
+              $WsbBinPath = '\"' + (join-path "$RoleInstallPath" "bin\wsbexchange.exe") + '\"';
+              $reg= join-path (join-path $env:SystemRoot system32) reg.exe;
+              $servicecmd = join-path (join-path $env:SystemRoot system32) sc.exe;
+
+              if ((get-service wsbexchange* | where {$_.name -eq "wsbexchange"}))
+              {
+                    if ((get-service wsbexchange).Status -eq "Running")
+                    {
+                        Start-SetupProcess -Name:"$servicecmd" -Args:"stop wsbexchange";
+                    }
+                    Start-SetupProcess -Name:"$servicecmd" -Args:"delete wsbexchange";
+              }
+
+              Start-SetupProcess -Name:"$reg" -Args:"add `"HKCR\CLSID\{D8A2E312-3B17-4293-B71E-CD72A7C04BF3}`" /t REG_SZ /d  `"CExchangeHelper Class`" /f";
+              Start-SetupProcess -Name:"$reg" -Args:"add `"HKCR\CLSID\{D8A2E312-3B17-4293-B71E-CD72A7C04BF3}`" /v AppId /t REG_SZ /d `"{D8A2E312-3B17-4293-B71E-CD72A7C04BF3}`" /f";
+              Start-SetupProcess -Name:"$reg" -Args:"add `"HKCR\CLSID\{D8A2E312-3B17-4293-B71E-CD72A7C04BF3}\LocalServer32`" /t REG_SZ /d `"$WsbBinPath`" /f";
+
+              Start-SetupProcess -Name:"$reg" -Args:"add `"HKCR\APPID\{D8A2E312-3B17-4293-B71E-CD72A7C04BF3}`" /t REG_SZ /d `"CExchangeHelper Class`" /f";
+              Start-SetupProcess -Name:"$reg" -Args:"add `"HKCR\APPID\{D8A2E312-3B17-4293-B71E-CD72A7C04BF3}`" /v LocalService /t REG_SZ /d `"wsbexchange`" /f";
+              Start-SetupProcess -Name:"$reg" -Args:"add `"HKCR\APPID\{D8A2E312-3B17-4293-B71E-CD72A7C04BF3}`" /v LaunchPermission /t REG_BINARY /d `"010004806000000070000000000000001400000002004c0003000000000014001f000000010100000000000512000000000018001f000000010200000000000520000000200200000000180003000000010200000000000520000000270200000102000000000005200000002002000001020000000000052000000020020000`" /f";
+              Start-SetupProcess -Name:"$reg" -Args:"add `"HKCR\APPID\wsbexchange.exe`" /v AppId /t REG_SZ /d `"{D8A2E312-3B17-4293-B71E-CD72A7C04BF3}`" /f";
+
+              Start-SetupProcess -Name:"$reg" -Args:"add `"HKLM\Software\Microsoft\windows nt\currentversion\WindowsServerBackup\Application Support\{76fe1ac4-15f7-4bcd-987e-8e1acb462fb7}`"  /v `"Application Identifier`" /t REG_SZ /d Exchange /f";
+              Start-SetupProcess -Name:"$reg" -Args:"add `"HKLM\Software\Microsoft\windows nt\currentversion\WindowsServerBackup\Application Support\{76fe1ac4-15f7-4bcd-987e-8e1acb462fb7}`" /v CLSID /t REG_SZ /d `"{D8A2E312-3B17-4293-B71E-CD72A7C04BF3}`" /f";
+
+              Start-SetupProcess -Name:"$reg" -Args:"add `"HKLM\Software\Microsoft\windows nt\currentversion\WSBAppExchangeHelper`" /v AutoMarkDbRecoverable /t REG_DWORD /d 1 /f";
+              Start-SetupProcess -Name:"$reg" -Args:"add `"HKLM\Software\Microsoft\windows nt\currentversion\WSBAppExchangeHelper`" /v AutoMountOnPITRecovery /t REG_DWORD /d 1 /f";
+              Start-SetupProcess -Name:"$servicecmd" -Args:"create wsbexchange binpath= `"$WsbBinPath`" type= own start= demand error= ignore obj= LocalSystem DisplayName= `"Microsoft Exchange Server Extension for Windows Server Backup`"";
+              Start-SetupProcess -Name:"$servicecmd" -Args:"description wsbexchange `"Enables Windows Server Backup users to back up and recover application data for Microsoft Exchange Server.`"";
+         }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall DescriptionId="SetupProgressRemoveWsb">
+        <Standalone>
+          if ([Environment]::OSVersion.Version.Major -ge 6)
+          {
+              if ((get-service wsbexchange* | where {$_.name -eq "wsbexchange"}))
+              {
+                $reg = join-path (join-path $env:SystemRoot system32) reg.exe;
+                $servicecmd = join-path (join-path $env:SystemRoot system32) sc.exe;
+                if ((get-service wsbexchange).Status -eq "Running")
+                {
+                    Start-SetupProcess -Name:"$servicecmd" -Args:"stop wsbexchange";
+                }
+                Start-SetupProcess -Name:"$servicecmd" -Args:"delete wsbexchange";
+                Start-SetupProcess -Name:"$reg" -Args:"delete `"HKCR\CLSID\{D8A2E312-3B17-4293-B71E-CD72A7C04BF3}`" /f";
+                Start-SetupProcess -Name:"$reg" -Args:"delete `"HKCR\APPID\{D8A2E312-3B17-4293-B71E-CD72A7C04BF3}`" /f";
+                Start-SetupProcess -Name:"$reg" -Args:"delete `"HKCR\APPID\wsbexchange.exe`" /f";
+                Start-SetupProcess -Name:"$reg" -Args:"delete `"HKLM\Software\Microsoft\windows nt\currentversion\WindowsServerBackup\Application Support\{76fe1ac4-15f7-4bcd-987e-8e1acb462fb7}`" /f"; 
+                Start-SetupProcess -Name:"$reg" -Args:"delete `"HKLM\Software\Microsoft\windows nt\currentversion\WSBAppExchangeHelper`" /f";
+             }
+         }
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+    
+    <!-- Register Crimson log manifest for all Troubleshooters -->
+    <ServerTaskInfo Id="_13A8A6B7DE0A4fe3BEB5CB1D86105DA3" Component="EXCHANGE14:\Current\Release\PIM Storage\Content Indexing">
+      <!-- [REVIEW] Task is non fatal. Component XML guidelines discourages having non-fatal tasks in setup. Once bug#2278014 gets fixed this task should be makde fatal again -->
+      <Install IsFatal="false">
+        <Standalone>
+          $wevtutil= join-path (join-path $env:SystemRoot system32) wevtutil.exe;
+          $manifestPath = [System.IO.Path]::Combine($RoleInstallPath, "Scripts\TSCrimsonManifest.man");
+          Start-SetupProcess -Name:"$wevtutil" -Args:"im `"$manifestPath`" "
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>
+          $wevtutil= join-path (join-path $env:SystemRoot system32) wevtutil.exe;
+          $manifestPath = [System.IO.Path]::Combine($RoleInstallPath, "Scripts\TSCrimsonManifest.man");
+          Start-SetupProcess -Name:"$wevtutil" -Args:"um `"$manifestPath`" "
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Configure Resource Health registry flags -->
+    <ServerTaskInfo Id="_3c58f5083a1c48e8bfa17992c12fb7be" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          Install-ResourceHealthActiveFlags
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall/>
+    </ServerTaskInfo>
+
+    <!-- Precompile submission service binaries -->
+    <ServerTaskInfo Id="_16B4163D2B694347A27EF2A02DF7B7F5" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install Weight="5" DescriptionId="SetupProgressPrecompilingBinaries" IsFatal="false">
+        <Standalone>
+          $fullPath = [System.IO.Path]::Combine($RoleInstallPath, "bin\MSExchangeSubmission.exe");
+          precompile-ManagedBinary -BinaryName  $fullPath;
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall Weight="5" DescriptionId="SetupProgressPrecompilingBinaries" IsFatal="false">
+        <Standalone>
+          $fullPath = [System.IO.Path]::Combine($RoleInstallPath, "bin\MSExchangeSubmission.exe");
+          precompile-ManagedBinary -BinaryName  $fullPath -Action uninstall;
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <ServerTaskInfo Id="_a90f411e379c43f0b19155adc525c1ee" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          if (!(get-service MSExchangeSubmission* | where {$_.name -eq "MSExchangeSubmission"}))
+          {
+            Install-SubmissionService
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>Uninstall-SubmissionService</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- E14 82092: In the appconfig file, set -->
+    <!-- Code Access Security (CAS) policy to skip publisher (certificate) validation.-->
+    <ServerTaskInfo Id="_5c47db4c23554ee4bd5601dfecfe7983" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          $file = 'MSExchangeSubmission.exe.config';
+          $fullPath = [System.IO.Path]::Combine([System.IO.Path]::Combine($RoleInstallPath, "bin"), $file);
+          if (!([System.IO.File]::Exists($fullPath))) { rename-item ($fullPath + ".template") $file; }
+          set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/runtime/generatePublisherEvidence -Attribute:enabled -NewValue:false
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Precompile delivery service binaries -->
+    <ServerTaskInfo Id="_C412656E3D724088BF95C82F0C252B78" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install Weight="5" DescriptionId="SetupProgressPrecompilingBinaries" IsFatal="false">
+        <Standalone>
+          $fullPath = [System.IO.Path]::Combine($RoleInstallPath, "bin\MSExchangeDelivery.exe");
+          precompile-ManagedBinary -BinaryName  $fullPath;
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall Weight="5" DescriptionId="SetupProgressPrecompilingBinaries" IsFatal="false">
+        <Standalone>
+          $fullPath = [System.IO.Path]::Combine($RoleInstallPath, "bin\MSExchangeDelivery.exe");
+          precompile-ManagedBinary -BinaryName  $fullPath -Action uninstall;
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <ServerTaskInfo Id="_6FE65CE2A2B94195AE1C63DD5333F93F" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          if (!(get-service MSExchangeDelivery* | where {$_.name -eq "MSExchangeDelivery"}))
+          {
+          Install-DeliveryService
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>Uninstall-DeliveryService</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+    
+    <!-- E14 82092: In the appconfig file, set -->
+    <!-- Code Access Security (CAS) policy to skip publisher (certificate) validation.-->
+    <ServerTaskInfo Id="_6A6FDA42AB9F4867934BBA023627D788" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          $file = 'MSExchangeDelivery.exe.config';
+          $fullPath = [System.IO.Path]::Combine([System.IO.Path]::Combine($RoleInstallPath, "bin"), $file);
+          if (!([System.IO.File]::Exists($fullPath))) { rename-item ($fullPath + ".template") $file; }
+          set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/runtime/generatePublisherEvidence -Attribute:enabled -NewValue:false
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Setup Mailbox Service -->
+    <ServerTaskInfo Id="_B3A856371145485782CB8430A0A9C7A3" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+            set-mailboxtransportservice `
+                        -Identity $RoleNetBiosName `
+                        -ReceiveProtocolLogPath ($RoleInstallPath + "\TransportRoles\Logs\Mailbox\ProtocolLog\SmtpReceive") `
+                        -SendProtocolLogPath ($RoleInstallPath + "\TransportRoles\Logs\Mailbox\ProtocolLog\SmtpSend") `
+                        -ConnectivityLogPath ($RoleInstallPath + "\TransportRoles\Logs\Mailbox\Connectivity") `
+                        -PipelineTracingPath ($RoleInstallPath + "\TransportRoles\Logs\Mailbox\PipelineTracing") `
+                        -MailboxDeliveryAgentLogPath ($RoleInstallPath + "\TransportRoles\Logs\Mailbox\AgentLog\Delivery") `
+                        -MailboxSubmissionAgentLogPath ($RoleInstallPath + "\TransportRoles\Logs\Mailbox\AgentLog\Submission") `
+                        -MailboxDeliveryThrottlingLogPath ($RoleInstallPath + "\TransportRoles\Logs\Throttling\Delivery") `
+                        -ReceiveProtocolLogMaxDirectorySize 250MB `
+                        -ReceiveProtocolLogMaxFileSize 10MB `
+                        -SendProtocolLogMaxDirectorySize 250MB `
+                        -SendProtocolLogMaxFileSize 10MB `
+                        -ConnectivityLogMaxDirectorySize 1000MB `
+                        -ConnectivityLogMaxFileSize 10MB `
+                        -MailboxDeliveryAgentLogMaxDirectorySize 250MB `
+                        -MailboxDeliveryAgentLogMaxFileSize 10MB `
+                        -MailboxDeliveryAgentLogEnabled $true `
+                        -MailboxDeliveryThrottlingLogEnabled $true `
+                        -MailboxSubmissionAgentLogMaxDirectorySize 250MB `
+                        -MailboxSubmissionAgentLogMaxFileSize 10MB `
+                        -MailboxSubmissionAgentLogEnabled $true `
+                        -DomainController $RoleDomainController;
+
+            # Set the MSExchange Assistants event polling interval to 100ms. (The default is 1 second.)
+            $keyPath = "HKLM:\System\CurrentControlSet\Services\Microsoft Exchange Mailbox Transport Submission\Parameters";
+            if (!(Get-Item $keyPath -ErrorAction SilentlyContinue)) { New-Item $keyPath -Force }
+            set-itemproperty -path $keyPath -Name "EventPollingIntervalMSec" -Value 100 -Type DWORD -Force;
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="false"/>
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Install/remove Transport Sync Manager service -->
+    <ServerTaskInfo Id="_dd5dadbcbedb46c0a1f3085fa30dfbbe" Component="EXCHANGE14:\Current\Release\Transport\Sync\Manager">
+      <Install>
+        <Standalone>
+          # Office15:2363408.  Do NOT install Transport Sync Manager service in Enterprise.
+          # This service may optionally be installed for dogfood purposes.
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="false" />
+      <DisasterRecovery UseInstallTasks="false" />
+      <Uninstall>
+        <Standalone>uninstall-TransportSyncManagerService</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Start/stop Transport Sync Manager service -->
+    <ServerTaskInfo Id="_f4e538ac1ea149c0acd32653da2d0705" Component="EXCHANGE14:\Current\Release\Transport\Sync\Manager">
+      <Install DescriptionId="SetupProgressStartingTransportSyncManagerService">
+        <Standalone>
+          # Office15:2363408.  Do NOT start Transport Sync Manager service in Enterprise.
+          # This service may be started manually.
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="false" />
+      <DisasterRecovery UseInstallTasks="false" />
+      <Uninstall DescriptionId="SetupProgressStoppingTransportSyncManagerService">
+        <Standalone>stop-SetupService -ServiceName MSExchangeTransportSyncManagerSvc</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Increase both MaxFieldLength and MaxRequestBytes to 65536 to allow large HTTP header. -->
+    <ServerTaskInfo Id="_5D0B225E0D8B4EB38A0FE25FBB7B1980" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+            $keyPath = "HKLM:\System\CurrentControlSet\Services\HTTP\Parameters";
+            if (!(Get-Item $keyPath -ErrorAction SilentlyContinue)) { New-Item $keyPath -Force }
+            set-itemproperty -path $keyPath -Name "MaxFieldLength" -Value 65536 -Type DWORD -Force;
+            set-itemproperty -path $keyPath -Name "MaxRequestBytes" -Value 65536 -Type DWORD -Force;
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Update MSExchangeDelivery to use the server garbage collector by default. -->
+    <ServerTaskInfo Id="_C3087A6C746B4A98A38553929864DFDC" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          $file = 'MSExchangeDelivery.exe.config';
+          $fullPath = [System.IO.Path]::Combine([System.IO.Path]::Combine($RoleInstallPath, "bin"), $file);
+          if (!([System.IO.File]::Exists($fullPath))) { rename-item ($fullPath + ".template") $file; }
+          set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/runtime/gcServer -Attribute:enabled -NewValue:false
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Update MSExchangeSubmission to use the workstation garbage collector in b2b upgrade scenario. -->
+    <!-- The install path is redundant as the msexchangesubmission.exe.config already has this set to false, but to be safe, its left as-is. -->
+    <ServerTaskInfo Id="_3AC51CB014DC435A90A0F008689816BA" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          $file = 'MSExchangeSubmission.exe.config';
+          $fullPath = [System.IO.Path]::Combine([System.IO.Path]::Combine($RoleInstallPath, "bin"), $file);
+          if (!([System.IO.File]::Exists($fullPath))) { rename-item ($fullPath + ".template") $file; }
+          set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/runtime/gcServer -Attribute:enabled -NewValue:false
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Set CalendarRepair Default Work Cycle Configuration -->
+    <ServerTaskInfo Id="_E7D61199468E491890B460849C52B3DE" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          $mailboxServer = Get-MailboxServer -Identity $RoleFqdnOrName;
+          if ($mailboxServer.CalendarRepairWorkCycle -eq $null)
+          {
+          Set-MailboxServer -Identity $RoleFqdnOrName -CalendarRepairMode RepairAndValidate -CalendarRepairWorkCycle "1.00:00:00" -CalendarRepairWorkCycleCheckpoint "1.00:00:00"
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall>
+        <Standalone>
+          Set-MailboxServer -Identity $RoleFqdnOrName -CalendarRepairWorkCycle $null -CalendarRepairWorkCycleCheckpoint $null
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+    
+    <!-- Add global firewall rule for MSExchangeDelivery -->
+    <ServerTaskInfo Id="_D60B201F89BB4326A57B873A5E2D7381" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          Add-FirewallException -FirewallRule (New-Object Microsoft.Exchange.Security.WindowsFirewall.MSExchangeDeliveryNumberedPortFirewallRule)
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>
+          Remove-FirewallException -FirewallRule (New-Object Microsoft.Exchange.Security.WindowsFirewall.MSExchangeDeliveryNumberedPortFirewallRule)
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <ServerTaskInfo Id="_DACD0A7CD29D42FAB9208A62762F00DD" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>
+          if($RoleIsDatacenter -ne $true -And $RoleIsPartnerHosted -ne $true)
+          {
+             $mailboxAddressPath = Join-Path $RoleInstallPath "Mailbox\address";
+             
+             $sid = new-object System.Security.Principal.SecurityIdentifier("S-1-5-11");
+             $user = $sid.Translate([System.Security.Principal.NTAccount]);
+             $name = $user.Value;
+             
+             if([String]::IsNullOrEmpty($name) -eq $false)
+             {
+                Start-SetupProcess -Name "net.exe" -args "share address=`"$mailboxAddressPath`" /grant:`"$name,read`""
+             }
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+  </ServerTasks>
+</SetupComponentInfo>

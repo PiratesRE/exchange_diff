@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo IsDatacenterOnly="true" IsDatacenterDedicatedOnly="true" Name="Datacenter All Roles PreSetup">
+
+  <ServerTasks>
+
+    <!-- Add registry value for Watson reporting. -->
+    <ServerTaskInfo Id="_51207ccaf650437594ee6aab9c6626ed" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <!-- Note that lab name is not available for internal test machines. -->
+        <Standalone>
+          if ($RoleDatacenterWatsonLabName)
+          {
+            Set-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\ExchangeServer\v15 -Name LabName -Value $RoleDatacenterWatsonLabName
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Set the Error Reporting Disabled registry key -->
+    <ServerTaskInfo Id="_A2DB275CFC304F4296C38A31DA55E910" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          $watsonReportingDisabled = $RoleDatacenterWatsonDisabled;
+          Write-ExchangeSetupLog -Info "Setting WER Disabled Regkey to $watsonReportingDisabled"
+          $keyPaths = "HKLM:\Software\Microsoft\Windows\Windows Error Reporting\", "HKLM:\Software\Wow6432Node\Microsoft\Windows\Windows Error Reporting\";
+          foreach ($keyPath in $keyPaths)
+          {
+            new-item $keyPath -force;
+            new-itemproperty -path $keyPath -name "Disabled" -value $watsonReportingDisabled -force;
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- OM:954263: Workaround the negotiate issue by setting a registry value to restore the SSL/TSL order. -->
+    <ServerTaskInfo Id="_9f7a6c16f1aa4e3594c12df79bd51a54" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          Set-ItemProperty -Name DisableStrongCrypto -path HKLM:SOFTWARE\Microsoft\.NETFramework -Value 1
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+  </ServerTasks>
+
+</SetupComponentInfo>

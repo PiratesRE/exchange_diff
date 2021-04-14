@@ -1,0 +1,304 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="TextMessagingHostingData" xmlns="" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="NotPublic" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections />
+        <Tables />
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:simpleType name="CapacityValue">
+    <xs:restriction base="xs:int">
+      <xs:minInclusive value="1"/>
+      <xs:maxInclusive value="500"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="TextMessagingHostingData" msdata:IsDataSet="true" msdata:Locale="" msprop:Generator_UserDSName="TextMessagingHostingData" msprop:Generator_DataSetName="TextMessagingHostingData">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Regions" msprop:Generator_UserTableName="Regions" msprop:Generator_RowDeletedName="RegionsRowDeleted" msprop:Generator_RowChangedName="RegionsRowChanged" msprop:Generator_RowClassName="RegionsRow" msprop:Generator_RowChangingName="RegionsRowChanging" msprop:Generator_RowEvArgName="RegionsRowChangeEvent" msprop:Generator_RowEvHandlerName="RegionsRowChangeEventHandler" msprop:Generator_TableClassName="RegionsDataTable" msprop:Generator_TableVarName="tableRegions" msprop:Generator_RowDeletingName="RegionsRowDeleting" msprop:Generator_TablePropName="Regions" minOccurs="0">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Region" msprop:Generator_UserTableName="Region" msprop:Generator_RowDeletedName="RegionRowDeleted" msprop:Generator_RowChangedName="RegionRowChanged" msprop:Generator_RowClassName="RegionRow" msprop:Generator_RowChangingName="RegionRowChanging" msprop:Generator_RowEvArgName="RegionRowChangeEvent" msprop:Generator_RowEvHandlerName="RegionRowChangeEventHandler" msprop:Generator_TableClassName="RegionDataTable" msprop:Generator_TableVarName="tableRegion" msprop:Generator_RowDeletingName="RegionRowDeleting" msprop:Generator_TablePropName="Region" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="CountryCode" msprop:Generator_UserColumnName="CountryCode" msprop:Generator_ColumnPropNameInRow="CountryCode" msprop:Generator_ColumnVarNameInTable="columnCountryCode" msprop:Generator_ColumnPropNameInTable="CountryCodeColumn" type="xs:string" msdata:Ordinal="0" />
+                    <xs:element name="PhoneNumberExample" msprop:Generator_UserColumnName="PhoneNumberExample" msprop:Generator_ColumnPropNameInRow="PhoneNumberExample" msprop:Generator_ColumnVarNameInTable="columnPhoneNumberExample" msprop:Generator_ColumnPropNameInTable="PhoneNumberExampleColumn" type="xs:string" minOccurs="0" msdata:Ordinal="1" />
+                  </xs:sequence>
+                  <xs:attribute name="Iso2" msprop:Generator_UserColumnName="Iso2" msprop:Generator_ColumnPropNameInRow="Iso2" msprop:Generator_ColumnVarNameInTable="columnIso2" msprop:Generator_ColumnPropNameInTable="Iso2Column" use="required">
+                    <xs:simpleType>
+                      <xs:restriction base="xs:string">
+                        <xs:pattern value="[a-zA-Z][a-zA-Z]"/>
+                      </xs:restriction>
+                    </xs:simpleType>
+                  </xs:attribute>
+                  <xs:attribute name="Regions_Id" msprop:Generator_UserColumnName="Regions_Id" msprop:Generator_ColumnPropNameInRow="Regions_Id" msprop:Generator_ColumnVarNameInTable="columnRegions_Id" msprop:Generator_ColumnPropNameInTable="Regions_IdColumn" type="xs:int" use="prohibited" />
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+            <xs:attribute name="Regions_Id" msdata:AutoIncrement="true" msprop:Generator_UserColumnName="Regions_Id" msprop:Generator_ColumnPropNameInRow="Regions_Id" msprop:Generator_ColumnVarNameInTable="columnRegions_Id" msprop:Generator_ColumnPropNameInTable="Regions_IdColumn" type="xs:int" msdata:AllowDBNull="false" use="prohibited" />
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Carriers" msprop:Generator_UserTableName="Carriers" msprop:Generator_RowDeletedName="CarriersRowDeleted" msprop:Generator_RowChangedName="CarriersRowChanged" msprop:Generator_RowClassName="CarriersRow" msprop:Generator_RowChangingName="CarriersRowChanging" msprop:Generator_RowEvArgName="CarriersRowChangeEvent" msprop:Generator_RowEvHandlerName="CarriersRowChangeEventHandler" msprop:Generator_TableClassName="CarriersDataTable" msprop:Generator_TableVarName="tableCarriers" msprop:Generator_RowDeletingName="CarriersRowDeleting" msprop:Generator_TablePropName="Carriers" minOccurs="0">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Carrier" msprop:Generator_UserTableName="Carrier" msprop:Generator_RowDeletedName="CarrierRowDeleted" msprop:Generator_RowChangedName="CarrierRowChanged" msprop:Generator_RowClassName="CarrierRow" msprop:Generator_RowChangingName="CarrierRowChanging" msprop:Generator_RowEvArgName="CarrierRowChangeEvent" msprop:Generator_RowEvHandlerName="CarrierRowChangeEventHandler" msprop:Generator_TableClassName="CarrierDataTable" msprop:Generator_TableVarName="tableCarrier" msprop:Generator_RowDeletingName="CarrierRowDeleting" msprop:Generator_TablePropName="Carrier" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="LocalizedInfo" msprop:Generator_UserTableName="LocalizedInfo" msprop:Generator_RowDeletedName="LocalizedInfoRowDeleted" msprop:Generator_RowChangedName="LocalizedInfoRowChanged" msprop:Generator_RowClassName="LocalizedInfoRow" msprop:Generator_RowChangingName="LocalizedInfoRowChanging" msprop:Generator_RowEvArgName="LocalizedInfoRowChangeEvent" msprop:Generator_RowEvHandlerName="LocalizedInfoRowChangeEventHandler" msprop:Generator_TableClassName="LocalizedInfoDataTable" msprop:Generator_TableVarName="tableLocalizedInfo" msprop:Generator_RowDeletingName="LocalizedInfoRowDeleting" msprop:Generator_TablePropName="LocalizedInfo" minOccurs="0" maxOccurs="unbounded">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="DisplayName" msprop:Generator_UserColumnName="DisplayName" msprop:Generator_ColumnPropNameInRow="DisplayName" msprop:Generator_ColumnVarNameInTable="columnDisplayName" msprop:Generator_ColumnPropNameInTable="DisplayNameColumn" type="xs:string" minOccurs="0" msdata:Ordinal="0" />
+                        </xs:sequence>
+                        <xs:attribute name="Culture" msprop:Generator_UserColumnName="Culture" msprop:Generator_ColumnPropNameInRow="Culture" msprop:Generator_ColumnVarNameInTable="columnCulture" msprop:Generator_ColumnPropNameInTable="CultureColumn" type="xs:string" use="required" />
+                        <xs:attribute name="CarrierIdentity" msprop:Generator_UserColumnName="CarrierIdentity" msprop:Generator_ColumnPropNameInRow="CarrierIdentity" msprop:Generator_ColumnVarNameInTable="columnCarrierIdentity" msprop:Generator_ColumnPropNameInTable="CarrierIdentityColumn" type="xs:int" msdata:AllowDBNull="false" use="prohibited" />
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                  <xs:attribute name="Identity" msprop:Generator_UserColumnName="Identity" msprop:Generator_ColumnPropNameInRow="Identity" msprop:Generator_ColumnVarNameInTable="columnIdentity" msprop:Generator_ColumnPropNameInTable="IdentityColumn" use="required">
+                    <xs:simpleType>
+                      <xs:restriction base="xs:int">
+                        <xs:minInclusive value="10000"/>
+                        <xs:maxInclusive value="99999"/>
+                      </xs:restriction>
+                    </xs:simpleType>
+                  </xs:attribute>
+                  <xs:attribute name="Carriers_Id" msprop:Generator_UserColumnName="Carriers_Id" msprop:Generator_ColumnPropNameInRow="Carriers_Id" msprop:Generator_ColumnVarNameInTable="columnCarriers_Id" msprop:Generator_ColumnPropNameInTable="Carriers_IdColumn" type="xs:int" use="prohibited" />
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+            <xs:attribute name="Carriers_Id" msdata:AutoIncrement="true" msprop:Generator_UserColumnName="Carriers_Id" msprop:Generator_ColumnPropNameInRow="Carriers_Id" msprop:Generator_ColumnVarNameInTable="columnCarriers_Id" msprop:Generator_ColumnPropNameInTable="Carriers_IdColumn" type="xs:int" msdata:AllowDBNull="false" use="prohibited" />
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Services" msprop:Generator_UserTableName="Services" msprop:Generator_RowDeletedName="ServicesRowDeleted" msprop:Generator_RowChangedName="ServicesRowChanged" msprop:Generator_RowClassName="ServicesRow" msprop:Generator_RowChangingName="ServicesRowChanging" msprop:Generator_RowEvArgName="ServicesRowChangeEvent" msprop:Generator_RowEvHandlerName="ServicesRowChangeEventHandler" msprop:Generator_TableClassName="ServicesDataTable" msprop:Generator_TableVarName="tableServices" msprop:Generator_RowDeletingName="ServicesRowDeleting" msprop:Generator_TablePropName="Services" minOccurs="0">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Service" msprop:Generator_UserTableName="Service" msprop:Generator_RowDeletedName="ServiceRowDeleted" msprop:Generator_RowChangedName="ServiceRowChanged" msprop:Generator_RowClassName="ServiceRow" msprop:Generator_RowChangingName="ServiceRowChanging" msprop:Generator_RowEvArgName="ServiceRowChangeEvent" msprop:Generator_RowEvHandlerName="ServiceRowChangeEventHandler" msprop:Generator_TableClassName="ServiceDataTable" msprop:Generator_TableVarName="tableService" msprop:Generator_RowDeletingName="ServiceRowDeleting" msprop:Generator_TablePropName="Service" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="RegionIso2" msprop:Generator_UserColumnName="RegionIso2" msprop:Generator_ColumnPropNameInRow="RegionIso2" msprop:Generator_ColumnVarNameInTable="columnRegionIso2" msprop:Generator_ColumnPropNameInTable="RegionIso2Column" type="xs:string" />
+                    <xs:element name="CarrierIdentity" msprop:Generator_UserColumnName="CarrierIdentity" msprop:Generator_ColumnPropNameInRow="CarrierIdentity" msprop:Generator_ColumnVarNameInTable="columnCarrierIdentity" msprop:Generator_ColumnPropNameInTable="CarrierIdentityColumn" type="xs:int" />
+                    <xs:element name="Type" msprop:Generator_UserColumnName="Type" msprop:Generator_ColumnPropNameInRow="Type" msprop:Generator_ColumnVarNameInTable="columnType" msprop:Generator_ColumnPropNameInTable="TypeColumn">
+                      <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                          <xs:enumeration value="VoiceCallForwarding"/>
+                          <xs:enumeration value="SmtpToSmsGateway"/>
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:element>
+                    <xs:element name="VoiceCallForwarding" msprop:Generator_UserTableName="VoiceCallForwarding" msprop:Generator_RowDeletedName="VoiceCallForwardingRowDeleted" msprop:Generator_RowChangedName="VoiceCallForwardingRowChanged" msprop:Generator_RowClassName="VoiceCallForwardingRow" msprop:Generator_RowChangingName="VoiceCallForwardingRowChanging" msprop:Generator_RowEvArgName="VoiceCallForwardingRowChangeEvent" msprop:Generator_RowEvHandlerName="VoiceCallForwardingRowChangeEventHandler" msprop:Generator_TableClassName="VoiceCallForwardingDataTable" msprop:Generator_TableVarName="tableVoiceCallForwarding" msprop:Generator_RowDeletingName="VoiceCallForwardingRowDeleting" msprop:Generator_TablePropName="VoiceCallForwarding" minOccurs="0">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="Enable" msprop:Generator_UserColumnName="Enable" msprop:Generator_ColumnPropNameInRow="Enable" msprop:Generator_ColumnVarNameInTable="columnEnable" msprop:Generator_ColumnPropNameInTable="EnableColumn" type="xs:string" minOccurs="0" msdata:Ordinal="0" />
+                          <xs:element name="Disable" msprop:Generator_UserColumnName="Disable" msprop:Generator_ColumnPropNameInRow="Disable" msprop:Generator_ColumnVarNameInTable="columnDisable" msprop:Generator_ColumnPropNameInTable="DisableColumn" type="xs:string" minOccurs="0" msdata:Ordinal="1" />
+                        </xs:sequence>
+                        <xs:attribute name="Type" msprop:Generator_UserColumnName="Type" msprop:Generator_ColumnPropNameInRow="Type" msprop:Generator_ColumnVarNameInTable="columnType" msprop:Generator_ColumnPropNameInTable="TypeColumn">
+                          <xs:simpleType>
+                            <xs:restriction base="xs:string">
+                              <xs:enumeration value="Conditional"/>
+                              <xs:enumeration value="Busy"/>
+                              <xs:enumeration value="NoAnswer"/>
+                              <xs:enumeration value="OutOfReach"/>
+                            </xs:restriction>
+                          </xs:simpleType>
+                        </xs:attribute>
+                        <xs:attribute name="RegionIso2" msprop:Generator_UserColumnName="RegionIso2" msprop:Generator_ColumnPropNameInRow="RegionIso2" msprop:Generator_ColumnVarNameInTable="columnRegionIso2" msprop:Generator_ColumnPropNameInTable="RegionIso2Column" type="xs:string" msdata:AllowDBNull="false" use="prohibited" />
+                        <xs:attribute name="CarrierIdentity" msprop:Generator_UserColumnName="CarrierIdentity" msprop:Generator_ColumnPropNameInRow="CarrierIdentity" msprop:Generator_ColumnVarNameInTable="columnCarrierIdentity" msprop:Generator_ColumnPropNameInTable="CarrierIdentityColumn" type="xs:int" msdata:AllowDBNull="false" use="prohibited" />
+                        <xs:attribute name="ServiceType" msprop:Generator_UserColumnName="ServiceType" msprop:Generator_ColumnPropNameInRow="ServiceType" msprop:Generator_ColumnVarNameInTable="columnServiceType" msprop:Generator_ColumnPropNameInTable="ServiceTypeColumn" type="xs:string" msdata:AllowDBNull="false" use="prohibited" />
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="SmtpToSmsGateway" msprop:Generator_UserTableName="SmtpToSmsGateway" msprop:Generator_RowDeletedName="SmtpToSmsGatewayRowDeleted" msprop:Generator_RowChangedName="SmtpToSmsGatewayRowChanged" msprop:Generator_RowClassName="SmtpToSmsGatewayRow" msprop:Generator_RowChangingName="SmtpToSmsGatewayRowChanging" msprop:Generator_RowEvArgName="SmtpToSmsGatewayRowChangeEvent" msprop:Generator_RowEvHandlerName="SmtpToSmsGatewayRowChangeEventHandler" msprop:Generator_TableClassName="SmtpToSmsGatewayDataTable" msprop:Generator_TableVarName="tableSmtpToSmsGateway" msprop:Generator_RowDeletingName="SmtpToSmsGatewayRowDeleting" msprop:Generator_TablePropName="SmtpToSmsGateway" minOccurs="0">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="RecipientAddressing" msprop:Generator_UserTableName="RecipientAddressing" msprop:Generator_RowDeletedName="RecipientAddressingRowDeleted" msprop:Generator_RowChangedName="RecipientAddressingRowChanged" msprop:Generator_RowClassName="RecipientAddressingRow" msprop:Generator_RowChangingName="RecipientAddressingRowChanging" msprop:Generator_RowEvArgName="RecipientAddressingRowChangeEvent" msprop:Generator_RowEvHandlerName="RecipientAddressingRowChangeEventHandler" msprop:Generator_TableClassName="RecipientAddressingDataTable" msprop:Generator_TableVarName="tableRecipientAddressing" msprop:Generator_RowDeletingName="RecipientAddressingRowDeleting" msprop:Generator_TablePropName="RecipientAddressing" minOccurs="0">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="SmtpAddress" msprop:Generator_UserColumnName="SmtpAddress" msprop:Generator_ColumnPropNameInRow="SmtpAddress" msprop:Generator_ColumnVarNameInTable="columnSmtpAddress" msprop:Generator_ColumnPropNameInTable="SmtpAddressColumn" minOccurs="0" msdata:Ordinal="1">
+                                  <xs:simpleType>
+                                    <xs:restriction base="xs:string">
+                                      <xs:maxLength value="1000" />
+                                    </xs:restriction>
+                                  </xs:simpleType>
+                                </xs:element>
+                              </xs:sequence>
+                              <xs:attribute name="RegionIso2" msprop:Generator_UserColumnName="RegionIso2" msprop:Generator_ColumnPropNameInRow="RegionIso2" msprop:Generator_ColumnVarNameInTable="columnRegionIso2" msprop:Generator_ColumnPropNameInTable="RegionIso2Column" type="xs:string" msdata:AllowDBNull="false" use="prohibited" />
+                              <xs:attribute name="CarrierIdentity" msprop:Generator_UserColumnName="CarrierIdentity" msprop:Generator_ColumnPropNameInRow="CarrierIdentity" msprop:Generator_ColumnVarNameInTable="columnCarrierIdentity" msprop:Generator_ColumnPropNameInTable="CarrierIdentityColumn" type="xs:int" msdata:AllowDBNull="false" use="prohibited" />
+                              <xs:attribute name="ServiceType" msprop:Generator_UserColumnName="ServiceType" msprop:Generator_ColumnPropNameInRow="ServiceType" msprop:Generator_ColumnVarNameInTable="columnServiceType" msprop:Generator_ColumnPropNameInTable="ServiceTypeColumn" type="xs:string" msdata:AllowDBNull="false" use="prohibited" />
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element name="MessageRendering" msprop:Generator_UserTableName="MessageRendering" msprop:Generator_RowDeletedName="MessageRenderingRowDeleted" msprop:Generator_RowChangedName="MessageRenderingRowChanged" msprop:Generator_RowClassName="MessageRenderingRow" msprop:Generator_RowChangingName="MessageRenderingRowChanging" msprop:Generator_RowEvArgName="MessageRenderingRowChangeEvent" msprop:Generator_RowEvHandlerName="MessageRenderingRowChangeEventHandler" msprop:Generator_TableClassName="MessageRenderingDataTable" msprop:Generator_TableVarName="tableMessageRendering" msprop:Generator_RowDeletingName="MessageRenderingRowDeleting" msprop:Generator_TablePropName="MessageRendering" minOccurs="0">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="Capacity" nillable="true" msprop:Generator_UserTableName="Capacity" msprop:Generator_RowDeletedName="CapacityRowDeleted" msprop:Generator_RowChangedName="CapacityRowChanged" msprop:Generator_RowClassName="CapacityRow" msprop:Generator_RowChangingName="CapacityRowChanging" msprop:Generator_RowEvArgName="CapacityRowChangeEvent" msprop:Generator_RowEvHandlerName="CapacityRowChangeEventHandler" msprop:Generator_TableClassName="CapacityDataTable" msprop:Generator_TableVarName="tableCapacity" msprop:Generator_RowDeletingName="CapacityRowDeleting" msprop:Generator_TablePropName="Capacity" minOccurs="0" maxOccurs="unbounded">
+                                  <xs:complexType>
+                                    <xs:simpleContent msprop:Generator_UserColumnName="Capacity_Value" msprop:Generator_ColumnPropNameInRow="Capacity_Value" msprop:Generator_ColumnVarNameInTable="columnCapacity_Value" msprop:Generator_ColumnPropNameInTable="Capacity_ValueColumn" msdata:ColumnName="Capacity_Value" msdata:Ordinal="1">
+                                      <xs:extension base="CapacityValue">
+                                        <xs:attribute name="CodingScheme" msprop:Generator_UserColumnName="CodingScheme" msprop:Generator_ColumnPropNameInRow="CodingScheme" msprop:Generator_ColumnVarNameInTable="columnCodingScheme" msprop:Generator_ColumnPropNameInTable="CodingSchemeColumn" use="required">
+                                          <xs:simpleType>
+                                            <xs:restriction base="xs:string">
+                                              <xs:enumeration value="GsmDefault"/>
+                                              <xs:enumeration value="Unicode"/>
+                                              <xs:enumeration value="UsAscii"/>
+                                              <xs:enumeration value="Ia5"/>
+                                              <xs:enumeration value="Iso_8859_1"/>
+                                              <xs:enumeration value="Iso_8859_8"/>
+                                              <xs:enumeration value="ShiftJis"/>
+                                              <xs:enumeration value="EucKr"/>
+                                            </xs:restriction>
+                                          </xs:simpleType>
+                                        </xs:attribute>
+                                        <xs:attribute name="RegionIso2" msprop:Generator_UserColumnName="RegionIso2" msprop:Generator_ColumnPropNameInRow="RegionIso2" msprop:Generator_ColumnVarNameInTable="columnRegionIso2" msprop:Generator_ColumnPropNameInTable="RegionIso2Column" type="xs:string" msdata:AllowDBNull="false" use="prohibited" />
+                                        <xs:attribute name="CarrierIdentity" msprop:Generator_UserColumnName="CarrierIdentity" msprop:Generator_ColumnPropNameInRow="CarrierIdentity" msprop:Generator_ColumnVarNameInTable="columnCarrierIdentity" msprop:Generator_ColumnPropNameInTable="CarrierIdentityColumn" type="xs:int" msdata:AllowDBNull="false" use="prohibited" />
+                                        <xs:attribute name="ServiceType" msprop:Generator_UserColumnName="ServiceType" msprop:Generator_ColumnPropNameInRow="ServiceType" msprop:Generator_ColumnVarNameInTable="columnServiceType" msprop:Generator_ColumnPropNameInTable="ServiceTypeColumn" type="xs:string" msdata:AllowDBNull="false" use="prohibited" />
+                                      </xs:extension>
+                                    </xs:simpleContent>
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                              <xs:attribute name="Container" msprop:Generator_UserColumnName="Container" msprop:Generator_ColumnPropNameInRow="Container" msprop:Generator_ColumnVarNameInTable="columnContainer" msprop:Generator_ColumnPropNameInTable="ContainerColumn">
+                                <xs:simpleType>
+                                  <xs:restriction base="xs:string">
+                                    <xs:enumeration value="Body"/>
+                                    <xs:enumeration value="Subject"/>
+                                  </xs:restriction>
+                                </xs:simpleType>
+                              </xs:attribute>
+                              <xs:attribute name="RegionIso2" msprop:Generator_UserColumnName="RegionIso2" msprop:Generator_ColumnPropNameInRow="RegionIso2" msprop:Generator_ColumnVarNameInTable="columnRegionIso2" msprop:Generator_ColumnPropNameInTable="RegionIso2Column" type="xs:string" msdata:AllowDBNull="false" use="prohibited" />
+                              <xs:attribute name="CarrierIdentity" msprop:Generator_UserColumnName="CarrierIdentity" msprop:Generator_ColumnPropNameInRow="CarrierIdentity" msprop:Generator_ColumnVarNameInTable="columnCarrierIdentity" msprop:Generator_ColumnPropNameInTable="CarrierIdentityColumn" type="xs:int" msdata:AllowDBNull="false" use="prohibited" />
+                              <xs:attribute name="ServiceType" msprop:Generator_UserColumnName="ServiceType" msprop:Generator_ColumnPropNameInRow="ServiceType" msprop:Generator_ColumnVarNameInTable="columnServiceType" msprop:Generator_ColumnPropNameInTable="ServiceTypeColumn" type="xs:string" msdata:AllowDBNull="false" use="prohibited" />
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                        <xs:attribute name="RegionIso2" msprop:Generator_UserColumnName="RegionIso2" msprop:Generator_ColumnPropNameInRow="RegionIso2" msprop:Generator_ColumnVarNameInTable="columnRegionIso2" msprop:Generator_ColumnPropNameInTable="RegionIso2Column" type="xs:string" msdata:AllowDBNull="false" use="prohibited" />
+                        <xs:attribute name="CarrierIdentity" msprop:Generator_UserColumnName="CarrierIdentity" msprop:Generator_ColumnPropNameInRow="CarrierIdentity" msprop:Generator_ColumnVarNameInTable="columnCarrierIdentity" msprop:Generator_ColumnPropNameInTable="CarrierIdentityColumn" type="xs:int" msdata:AllowDBNull="false" use="prohibited" />
+                        <xs:attribute name="ServiceType" msprop:Generator_UserColumnName="ServiceType" msprop:Generator_ColumnPropNameInRow="ServiceType" msprop:Generator_ColumnVarNameInTable="columnServiceType" msprop:Generator_ColumnPropNameInTable="ServiceTypeColumn" type="xs:string" msdata:AllowDBNull="false" use="prohibited" />
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                  <xs:attribute name="Services_Id" msprop:Generator_UserColumnName="Services_Id" msprop:Generator_ColumnPropNameInRow="Services_Id" msprop:Generator_ColumnVarNameInTable="columnServices_Id" msprop:Generator_ColumnPropNameInTable="Services_IdColumn" type="xs:int" use="prohibited" />
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+            <xs:attribute name="Services_Id" msdata:AutoIncrement="true" msprop:Generator_UserColumnName="Services_Id" msprop:Generator_ColumnPropNameInRow="Services_Id" msprop:Generator_ColumnVarNameInTable="columnServices_Id" msprop:Generator_ColumnPropNameInTable="Services_IdColumn" type="xs:int" msdata:AllowDBNull="false" use="prohibited" />
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+    <xs:unique name="RegionKey1" msdata:PrimaryKey="true">
+      <xs:selector xpath=".//Region" />
+      <xs:field xpath="@Iso2" />
+    </xs:unique>
+    <xs:unique name="Constraint1" msdata:PrimaryKey="true">
+      <xs:selector xpath=".//Regions" />
+      <xs:field xpath="@Regions_Id" />
+    </xs:unique>
+    <xs:unique name="LocalizedInfoKey1" msdata:PrimaryKey="true">
+      <xs:selector xpath=".//LocalizedInfo" />
+      <xs:field xpath="@Culture" />
+      <xs:field xpath="@CarrierIdentity" />
+    </xs:unique>
+    <xs:unique name="CarrierKey1" msdata:PrimaryKey="true">
+      <xs:selector xpath=".//Carrier" />
+      <xs:field xpath="@Identity" />
+    </xs:unique>
+    <xs:unique name="Carriers_Constraint1" msdata:ConstraintName="Constraint1" msdata:PrimaryKey="true">
+      <xs:selector xpath=".//Carriers" />
+      <xs:field xpath="@Carriers_Id" />
+    </xs:unique>
+    <xs:unique name="VoiceCallForwardingKey1" msdata:PrimaryKey="true">
+      <xs:selector xpath=".//VoiceCallForwarding" />
+      <xs:field xpath="@RegionIso2" />
+      <xs:field xpath="@CarrierIdentity" />
+      <xs:field xpath="@ServiceType" />
+    </xs:unique>
+    <xs:unique name="RecipientAddressingKey1" msdata:PrimaryKey="true">
+      <xs:selector xpath=".//RecipientAddressing" />
+      <xs:field xpath="@RegionIso2" />
+      <xs:field xpath="@CarrierIdentity" />
+      <xs:field xpath="@ServiceType" />
+    </xs:unique>
+    <xs:unique name="CapacityKey1" msdata:PrimaryKey="true">
+      <xs:selector xpath=".//Capacity" />
+      <xs:field xpath="@RegionIso2" />
+      <xs:field xpath="@CarrierIdentity" />
+      <xs:field xpath="@ServiceType" />
+      <xs:field xpath="@CodingScheme" />
+    </xs:unique>
+    <xs:unique name="MessageRenderingKey1" msdata:PrimaryKey="true">
+      <xs:selector xpath=".//MessageRendering" />
+      <xs:field xpath="@RegionIso2" />
+      <xs:field xpath="@CarrierIdentity" />
+      <xs:field xpath="@ServiceType" />
+    </xs:unique>
+    <xs:unique name="SmtpToSmsGatewayKey1" msdata:PrimaryKey="true">
+      <xs:selector xpath=".//SmtpToSmsGateway" />
+      <xs:field xpath="@RegionIso2" />
+      <xs:field xpath="@CarrierIdentity" />
+      <xs:field xpath="@ServiceType" />
+    </xs:unique>
+    <xs:unique name="ServiceKey1" msdata:PrimaryKey="true">
+      <xs:selector xpath=".//Service" />
+      <xs:field xpath="RegionIso2" />
+      <xs:field xpath="CarrierIdentity" />
+      <xs:field xpath="Type" />
+    </xs:unique>
+    <xs:unique name="ServicesKey1" msdata:PrimaryKey="true">
+      <xs:selector xpath=".//Services" />
+      <xs:field xpath="@Services_Id" />
+    </xs:unique>
+    <xs:keyref name="FK_Services_Service" refer="ServicesKey1" msdata:IsNested="true" msprop:rel_Generator_UserRelationName="FK_Services_Service" msprop:rel_Generator_RelationVarName="relationFK_Services_Service" msprop:rel_Generator_UserChildTable="Service" msprop:rel_Generator_UserParentTable="Services" msprop:rel_Generator_ParentPropName="ServicesRow" msprop:rel_Generator_ChildPropName="GetServiceRows" msdata:AcceptRejectRule="Cascade">
+      <xs:selector xpath=".//Service" />
+      <xs:field xpath="@Services_Id" />
+    </xs:keyref>
+    <xs:keyref name="FK_Service_SmtpToSmsGateway" refer="ServiceKey1" msdata:IsNested="true" msprop:rel_Generator_UserRelationName="FK_Service_SmtpToSmsGateway" msprop:rel_Generator_RelationVarName="relationFK_Service_SmtpToSmsGateway" msprop:rel_Generator_UserChildTable="SmtpToSmsGateway" msprop:rel_Generator_UserParentTable="Service" msprop:rel_Generator_ParentPropName="ServiceRowParent" msprop:rel_Generator_ChildPropName="GetSmtpToSmsGatewayRows" msdata:AcceptRejectRule="Cascade">
+      <xs:selector xpath=".//SmtpToSmsGateway" />
+      <xs:field xpath="@RegionIso2" />
+      <xs:field xpath="@CarrierIdentity" />
+      <xs:field xpath="@ServiceType" />
+    </xs:keyref>
+    <xs:keyref name="FK_SmtpToSmsGateway_MessageRendering" refer="SmtpToSmsGatewayKey1" msdata:IsNested="true" msprop:rel_Generator_UserRelationName="FK_SmtpToSmsGateway_MessageRendering" msprop:rel_Generator_RelationVarName="relationFK_SmtpToSmsGateway_MessageRendering" msprop:rel_Generator_UserChildTable="MessageRendering" msprop:rel_Generator_UserParentTable="SmtpToSmsGateway" msprop:rel_Generator_ParentPropName="SmtpToSmsGatewayRowParent" msprop:rel_Generator_ChildPropName="GetMessageRenderingRows" msdata:AcceptRejectRule="Cascade">
+      <xs:selector xpath=".//MessageRendering" />
+      <xs:field xpath="@RegionIso2" />
+      <xs:field xpath="@CarrierIdentity" />
+      <xs:field xpath="@ServiceType" />
+    </xs:keyref>
+    <xs:keyref name="FK_MessageRendering_Capacity" refer="MessageRenderingKey1" msdata:IsNested="true" msprop:rel_Generator_UserRelationName="FK_MessageRendering_Capacity" msprop:rel_Generator_RelationVarName="relationFK_MessageRendering_Capacity" msprop:rel_Generator_UserChildTable="Capacity" msprop:rel_Generator_UserParentTable="MessageRendering" msprop:rel_Generator_ParentPropName="MessageRenderingRowParent" msprop:rel_Generator_ChildPropName="GetCapacityRows" msdata:AcceptRejectRule="Cascade">
+      <xs:selector xpath=".//Capacity" />
+      <xs:field xpath="@RegionIso2" />
+      <xs:field xpath="@CarrierIdentity" />
+      <xs:field xpath="@ServiceType" />
+    </xs:keyref>
+    <xs:keyref name="FK_SmtpToSmsGateway_RecipientAddressing" refer="SmtpToSmsGatewayKey1" msdata:IsNested="true" msprop:rel_Generator_UserRelationName="FK_SmtpToSmsGateway_RecipientAddressing" msprop:rel_Generator_RelationVarName="relationFK_SmtpToSmsGateway_RecipientAddressing" msprop:rel_Generator_UserChildTable="RecipientAddressing" msprop:rel_Generator_UserParentTable="SmtpToSmsGateway" msprop:rel_Generator_ParentPropName="SmtpToSmsGatewayRowParent" msprop:rel_Generator_ChildPropName="GetRecipientAddressingRows" msdata:AcceptRejectRule="Cascade">
+      <xs:selector xpath=".//RecipientAddressing" />
+      <xs:field xpath="@RegionIso2" />
+      <xs:field xpath="@CarrierIdentity" />
+      <xs:field xpath="@ServiceType" />
+    </xs:keyref>
+    <xs:keyref name="FK_Service_VoiceCallForwarding" refer="ServiceKey1" msdata:IsNested="true" msprop:rel_Generator_UserRelationName="FK_Service_VoiceCallForwarding" msprop:rel_Generator_RelationVarName="relationFK_Service_VoiceCallForwarding" msprop:rel_Generator_UserChildTable="VoiceCallForwarding" msprop:rel_Generator_UserParentTable="Service" msprop:rel_Generator_ParentPropName="ServiceRowParent" msprop:rel_Generator_ChildPropName="GetVoiceCallForwardingRows" msdata:AcceptRejectRule="Cascade">
+      <xs:selector xpath=".//VoiceCallForwarding" />
+      <xs:field xpath="@RegionIso2" />
+      <xs:field xpath="@CarrierIdentity" />
+      <xs:field xpath="@ServiceType" />
+    </xs:keyref>
+    <xs:keyref name="Carriers_Carrier" refer="Carriers_Constraint1" msdata:IsNested="true" msprop:rel_Generator_UserRelationName="Carriers_Carrier" msprop:rel_Generator_RelationVarName="relationCarriers_Carrier" msprop:rel_Generator_UserChildTable="Carrier" msprop:rel_Generator_UserParentTable="Carriers" msprop:rel_Generator_ParentPropName="CarriersRow" msprop:rel_Generator_ChildPropName="GetCarrierRows" msdata:AcceptRejectRule="Cascade">
+      <xs:selector xpath=".//Carrier" />
+      <xs:field xpath="@Carriers_Id" />
+    </xs:keyref>
+    <xs:keyref name="Carrier_LocalizedInfo" refer="CarrierKey1" msdata:IsNested="true" msprop:rel_Generator_UserRelationName="Carrier_LocalizedInfo" msprop:rel_Generator_RelationVarName="relationCarrier_LocalizedInfo" msprop:rel_Generator_UserChildTable="LocalizedInfo" msprop:rel_Generator_UserParentTable="Carrier" msprop:rel_Generator_ParentPropName="CarrierRow" msprop:rel_Generator_ChildPropName="GetLocalizedInfoRows" msdata:AcceptRejectRule="Cascade">
+      <xs:selector xpath=".//LocalizedInfo" />
+      <xs:field xpath="@CarrierIdentity" />
+    </xs:keyref>
+    <xs:keyref name="Regions_Region" refer="Constraint1" msdata:IsNested="true" msprop:rel_Generator_UserRelationName="Regions_Region" msprop:rel_Generator_RelationVarName="relationRegions_Region" msprop:rel_Generator_UserChildTable="Region" msprop:rel_Generator_UserParentTable="Regions" msprop:rel_Generator_ParentPropName="RegionsRow" msprop:rel_Generator_ChildPropName="GetRegionRows" msdata:AcceptRejectRule="Cascade">
+      <xs:selector xpath=".//Region" />
+      <xs:field xpath="@Regions_Id" />
+    </xs:keyref>
+  </xs:element>
+  <xs:annotation>
+    <xs:appinfo>
+      <msdata:Relationship name="FK_Carrier_Service" msdata:parent="Carrier" msdata:child="Service" msdata:parentkey="Identity" msdata:childkey="CarrierIdentity" msprop:Generator_UserRelationName="FK_Carrier_Service" msprop:Generator_RelationVarName="relationFK_Carrier_Service" msprop:Generator_UserChildTable="Service" msprop:Generator_UserParentTable="Carrier" msprop:Generator_ParentPropName="CarrierRow" msprop:Generator_ChildPropName="GetServiceRows" />
+      <msdata:Relationship name="FK_Region_Service" msdata:parent="Region" msdata:child="Service" msdata:parentkey="Iso2" msdata:childkey="RegionIso2" msprop:Generator_UserRelationName="FK_Region_Service" msprop:Generator_RelationVarName="relationFK_Region_Service" msprop:Generator_UserChildTable="Service" msprop:Generator_UserParentTable="Region" msprop:Generator_ParentPropName="RegionRow" msprop:Generator_ChildPropName="GetServiceRows" />
+    </xs:appinfo>
+  </xs:annotation>
+</xs:schema>

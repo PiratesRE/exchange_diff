@@ -1,0 +1,155 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{09CD9476-CD82-489E-B9E2-84B47CA141EE}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Microsoft.Office.Datacenter.Monitoring.ActiveMonitoring.Recovery</RootNamespace>
+    <AssemblyName>Microsoft.Office.Datacenter.Monitoring.ActiveMonitoring.Recovery</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="ManagedAvailabilityCrimsonMsg" />
+    <Reference Include="Microsoft.Practices.Unity" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.ServiceProcess" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ArbitrationExceptionCommon.cs" />
+    <Compile Include="ArbitrationMaximumAllowedConcurrentNotSatisfiedException.cs" />
+    <Compile Include="ArbitrationMinimumRequiredReadyNotSatisfiedException.cs" />
+    <Compile Include="ArbitrationQuotaCalculationFailedException.cs" />
+    <Compile Include="AttributeHelper.cs" />
+    <Compile Include="BugcheckSimulator.cs" />
+    <Compile Include="CommonDumpParameters.cs" />
+    <Compile Include="CoordinatedRecoveryAction.cs" />
+    <Compile Include="Dependencies.cs" />
+    <Compile Include="DistributedAction.cs" />
+    <Compile Include="DistributedThrottlingRejectedOperationException.cs" />
+    <Compile Include="DumpFreeSpaceRequirementNotSatisfiedException.cs" />
+    <Compile Include="DumpMode.cs" />
+    <Compile Include="FixedThrottleEntry.cs" />
+    <Compile Include="GlobalTunables.cs" />
+    <Compile Include="GroupThrottlingRejectedOperationException.cs" />
+    <Compile Include="GroupThrottlingResult.cs" />
+    <Compile Include="ILamRpc.cs" />
+    <Compile Include="IThrottleHelper.cs" />
+    <Compile Include="LamRpc.cs" />
+    <Compile Include="LocalThrottlingRejectedOperationException.cs" />
+    <Compile Include="LocalThrottlingResult.cs" />
+    <Compile Include="OverrideThrottleEntry.cs" />
+    <Compile Include="PersistedGlobalActionEntry.cs" />
+    <Compile Include="ProcessDumpHelper.cs" />
+    <Compile Include="ProcessHelper.cs" />
+    <Compile Include="ProcessKillMode.cs" />
+    <Compile Include="ProcessNativeMethods.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RecoveryActionEntry.cs" />
+    <Compile Include="RecoveryActionExceptionCommon.cs" />
+    <Compile Include="RecoveryActionHelper.cs" />
+    <Compile Include="RecoveryActionId.cs" />
+    <Compile Include="RecoveryActionResult.cs" />
+    <Compile Include="RecoveryActionRunner.cs" />
+    <Compile Include="RecoveryActionsRepository.cs" />
+    <Compile Include="RecoveryActionState.cs" />
+    <Compile Include="RecoveryActionThrottlingMode.cs" />
+    <Compile Include="RegistryHelper.cs" />
+    <Compile Include="ResourceAvailabilityStatus.cs" />
+    <Compile Include="ResponderCategory.cs" />
+    <Compile Include="RestartServiceResponder.cs" />
+    <Compile Include="RpcConfiguration.cs" />
+    <Compile Include="RpcGetRecoveryActionQuotaInfoImpl.cs" />
+    <Compile Include="RpcGetRecoveryActionStatusImpl.cs" />
+    <Compile Include="RpcGetThrottlingStatisticsImpl.cs" />
+    <Compile Include="RpcSetThrottlingInProgressImpl.cs" />
+    <Compile Include="RpcSetWorkerProcessInfoImpl.cs" />
+    <Compile Include="RpcUpdateRecoveryActionEntryImpl.cs" />
+    <Compile Include="ServiceHelper.cs" />
+    <Compile Include="StringsRecovery.cs" />
+    <Compile Include="ThrottleDescriptionEntry.cs" />
+    <Compile Include="ThrottleEntryType.cs" />
+    <Compile Include="ThrottleGroupCache.cs" />
+    <Compile Include="ThrottleParameters.cs" />
+    <Compile Include="ThrottleSettingsBase.cs" />
+    <Compile Include="ThrottlingInProgressException.cs" />
+    <Compile Include="ThrottlingOverlapException.cs" />
+    <Compile Include="ThrottlingProgressRepository.cs" />
+    <Compile Include="ThrottlingProgressTracker.cs" />
+    <Compile Include="ThrottlingRejectedOperationException.cs" />
+    <Compile Include="ToolhelpSnapshotSafeHandle.cs" />
+    <Compile Include="Utilities.cs" />
+    <Compile Include="WmiHelper.cs" />
+    <Compile Include="WorkerProcessRepository.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="StringsRecovery.resources" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Common\Microsoft.Exchange.Data.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140D3}</Project>
+      <Name>Microsoft.Exchange.Data.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Storage\Microsoft.Exchange.Data.Storage.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1410F}</Project>
+      <Name>Microsoft.Exchange.Data.Storage</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Diagnostics\Microsoft.Exchange.Diagnostics.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14113}</Project>
+      <Name>Microsoft.Exchange.Diagnostics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Net\Microsoft.Exchange.Net.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14178}</Project>
+      <Name>Microsoft.Exchange.Net</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Rpc\Microsoft.Exchange.Rpc.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14188}</Project>
+      <Name>Microsoft.Exchange.Rpc</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Office.Datacenter.ActiveMonitoringLocal\Microsoft.Office.Datacenter.ActiveMonitoringLocal.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141ED}</Project>
+      <Name>Microsoft.Office.Datacenter.ActiveMonitoringLocal</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Office.Datacenter.WorkerTaskFrameworkInternalProvi\Microsoft.Office.Datacenter.WorkerTaskFrameworkInternalProvi.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141EF}</Project>
+      <Name>Microsoft.Office.Datacenter.WorkerTaskFrameworkInternalProvider</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\mscorlib\mscorlib.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141F1}</Project>
+      <Name>mscorlib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

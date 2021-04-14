@@ -1,0 +1,96 @@
+<?xml version='1.0' encoding='utf-8'?>
+<OperatorGraph dslVersion='1.0.0.0' name='[FlowNamePlaceHolder]' xmlns='http://schemas.microsoft.com/ceres/studio/2009/10/flow'>
+    <Operators>
+        <Operator name='FlowInput' type='Microsoft.Ceres.Evaluation.Operators.Core.Input'>
+            <Targets>
+                <Target breakpointEnabled='false'>
+                    <operatorMoniker name='/[FlowNamePlaceHolder]/ParseFql' />
+                </Target>
+            </Targets>
+            <Properties>
+                <Property name="usePushAsOutputMode" value="True" />
+                <Property name='inputName' value='Input' />
+                <Property name='useDisk' value='False' />
+                <Property name='sortedPrefix' value='0' />
+            </Properties>
+            <OutputSchema>
+                <Field name='Query' type='String' />
+                <Field name='TenantId' type='Guid' />
+                <Field name='CorrelationId' type='Guid' />
+                <Field name='TrimHits' type='Int32' />
+                <Field name='TrimOffset' type='Int32' />
+                <Field name='SortSpec' type='String' />
+                <Field name='ExtraFields' type='List&lt;String&gt;' />
+                <Field name="Timeout" type="Int32" canBeNull="false" />
+            </OutputSchema>
+        </Operator>
+        <Operator name='ParseFql' type='Mapper'>
+            <Targets>
+                <Target>
+                    <operatorMoniker name='/[FlowNamePlaceHolder]/IndexLookup' />
+                </Target>
+            </Targets>
+            <Properties>
+                <Property name='adaptableType' value='False' />
+            </Properties>
+            <OutputSchema>
+                <Field name='QueryTree' type='TreeNode' expression='ParseFql(Query)' />
+                <Field name='TenantId' type='Guid' />
+                <Field name='CorrelationId' type='Guid' />
+                <Field name='TrimHits' type='Int32' />
+                <Field name='TrimOffset' type='Int32' />
+                <Field name='SortSpec' type='String' />
+                <Field name='ExtraFields' type='List&lt;String&gt;' />
+                <Field name="Timeout" type="Int32" canBeNull="false" />
+            </OutputSchema>
+        </Operator>
+        <Operator name='IndexLookup' type='MarsLookup'>
+            <Targets>
+                <Target>
+                    <operatorMoniker name='/[FlowNamePlaceHolder]/GetMetadataOutput' />
+                </Target>
+                <Target>
+                    <operatorMoniker name='/[FlowNamePlaceHolder]/HitsOutput' />
+                </Target>
+            </Targets>
+            <Properties>
+                <Property name='indexSystemName' value='[IndexSystemNamePlaceHolder]' />
+                <Property name='queryTreeFieldName' value='QueryTree' />
+                <Property name='claimSetFieldName' value='ClaimSet' />
+                <Property name="tenantIdFieldName" value="TenantId" />
+                <Property name="correlationIdFieldName" value="CorrelationId" />
+                <Property name='trimHitsFieldName' value='TrimHits' />
+                <Property name='trimOffsetFieldName' value='TrimOffset' />
+                <Property name='metadataOutputFieldName' value='Metadata' />
+                <Property name='queryRecordOutputLabel' value='GetMetadataOutput' />
+                <Property name='resultOutputLabel' value='HitsOutput' />
+                <Property name='sortFieldName' value='SortSpec' />
+                <Property name='extraFieldsFieldName' value='&quot;ExtraFields&quot;' />
+                <Property name="timeoutFieldname" value="&quot;Timeout&quot;" />
+            </Properties>
+        </Operator>
+        <Operator name='HitsOutput' type='Microsoft.Ceres.Evaluation.Operators.Core.Output'>
+            <Properties>
+                <Property name='outputName' value='Hits' />
+            </Properties>
+        </Operator>
+        <Operator name='GetMetadataOutput' type='Mapper'>
+            <Targets>
+                <Target>
+                    <operatorMoniker name='/[FlowNamePlaceHolder]/MetadataOutput' />
+                </Target>
+            </Targets>
+            <Properties>
+                <Property name='adaptableType' value='False' />
+            </Properties>
+            <OutputSchema>
+                <Field name='Metadata' type='Bucket' />
+            </OutputSchema>
+        </Operator>
+        <Operator name='MetadataOutput' type='Microsoft.Ceres.Evaluation.Operators.Core.Output'>
+            <Properties>
+                <Property name='outputName' value='Metadata' />
+            </Properties>
+        </Operator>
+    </Operators>
+</OperatorGraph>

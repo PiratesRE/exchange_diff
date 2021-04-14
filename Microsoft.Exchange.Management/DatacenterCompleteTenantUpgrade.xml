@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo IsDatacenterOnly="true" IsPartnerHostedOnly="true" Name="Complete Organization Upgrade Component" DescriptionId="DatacenterCompleteTenantUpgrade">
+  <OrgTasks>
+    
+    <!-- Load the setup snapin. This is specifically for Unistall section as the sequence of tasks is reversed. -->
+    <OrgTaskInfo Id="_75485cf9c9154c3aaeb6714db49c952f" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install />
+      <BuildToBuildUpgrade>
+        <Tenant>
+          add-PSSnapin -Name Microsoft.Exchange.Management.PowerShell.Setup -ErrorAction SilentlyContinue;
+        </Tenant>
+      </BuildToBuildUpgrade>
+      <Uninstall />
+    </OrgTaskInfo>
+
+    <!-- 
+        Clearing RBAC coexistence data
+    -->
+    <OrgTaskInfo Id="_78e72fcef52949d2a9a760864515c03a" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Tenant>
+          if (!$AdvancedHydrateableObjectsSharedEnabled)
+          {
+              Clear-RbacCoexistenceData -Organization $RoleOrganizationHierarchicalPath -DomainController $RoleDomainController;
+          }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <Uninstall />
+    </OrgTaskInfo>
+
+    <!-- 
+        Clearing RBAC invalid known data.
+    -->
+    <OrgTaskInfo Id="_379e4cfad3db46dc8966633f7d72bd0f" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Tenant>
+          if (!$AdvancedHydrateableObjectsSharedEnabled)
+          {
+            Get-ManagementRoleAssignment -Organization $RoleOrganizationHierarchicalPath -DomainController $RoleDomainController |
+              Where{ $_.Role -eq $null -or $_.User -eq $null } |
+              Remove-ManagementRoleAssignment -DomainController $RoleDomainController -Confirm:$false -Force;
+          }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <Uninstall />
+    </OrgTaskInfo>
+    
+    <!-- 
+        Clearing Mailbox Plan coexistence data - for each mailbox plan with IsDefaultForPreviousVersion flag set, reset this flag;
+        exclude $null object in the pipeline
+    -->
+    <OrgTaskInfo Id="_3437365d5e6a4300b3daf0c7432fb491" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Tenant>
+          get-mailboxplan -organization $RoleOrganizationHierarchicalPath -DomainController $RoleDomainController |
+            ?{$_} |
+            ?{$_.IsDefaultForPreviousVersion} |
+            set-mailboxplan -IsDefaultForPreviousVersion:$false -DomainController $RoleDomainController;
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <Uninstall />
+    </OrgTaskInfo>
+
+    <!-- Clean up outdated default throttling policy. -->
+    <OrgTaskInfo Id="DefaultThrottlingPolicyCleanup" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install />
+      <BuildToBuildUpgrade>
+        <Global />
+        <Tenant>
+          Get-ThrottlingPolicy -Explicit -ThrottlingPolicyScope Regular -Organization $RoleOrganizationHierarchicalPath -DomainController $RoleDomainController | ? {$_.IsLegacyDefault} | Remove-ThrottlingPolicy -Force -Confirm:$false -DomainController $RoleDomainController
+        </Tenant>
+      </BuildToBuildUpgrade>
+      <Uninstall />
+    </OrgTaskInfo>
+
+    <!-- 
+        Sets the GLS flag to mark this tenant as Exchange15
+    -->
+    <OrgTaskInfo Id="_5f7ac00472394a5da07813ca5e47ea53" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Tenant />
+      </Install>
+      <BuildToBuildUpgrade>
+        <Tenant>
+          if (!$PilotEnabled -and !$CreateSharedConfiguration)
+          {
+            Set-ManagementEndpointHook -ExternalDirectoryOrganizationId:$RoleTenantExternalDirectoryOrganizationId -TenantFlag "Exchange15";
+          }
+        </Tenant>
+      </BuildToBuildUpgrade>
+      <Uninstall />
+    </OrgTaskInfo>
+
+    <!-- 
+       Make sure that non ConfigOnly service plan changes are applied. Needed when start-organizationupgrade with -ConfigOnly is used
+    -->
+    <OrgTaskInfo Id="_9567624f8b854136a9f3870061305f1c" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Tenant />
+      </Install>
+      <BuildToBuildUpgrade>
+        <Tenant>
+          Update-ServicePlan $RoleOrganizationHierarchicalPath -Confirm:$false -Offerid: $TargetOfferId -ProgramId: $TargetProgramId -DomainController $RoleDomainController -IncludeUserUpdatePhase
+        </Tenant>
+      </BuildToBuildUpgrade>
+      <Uninstall />
+    </OrgTaskInfo>
+
+    <!-- 
+        Sets MailboxRelease values to indicate upgrade no longer in flight
+    -->
+    <OrgTaskInfo Id="_1a1a998b810d4c779dbc7041d2c53da2" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Tenant />
+      </Install>
+      <BuildToBuildUpgrade>
+        <Tenant>
+          $currentMailboxRelease = [Microsoft.Exchange.Data.Directory.SystemConfiguration.ExchangeConfigurationUnit]::CurrentMailboxRelease;
+          Set-Organization $RoleOrganizationHierarchicalPath -MailboxRelease:$currentMailboxRelease -PilotMailboxRelease:None -PreviousMailboxRelease:None -DomainController $RoleDomainController;
+        </Tenant>
+      </BuildToBuildUpgrade>
+      <Uninstall />
+    </OrgTaskInfo>
+    
+    <!-- 
+        Sets the organization upgrade status as NOT UPGRADING
+    -->
+    <OrgTaskInfo Id="_a548f82b5d014be7a5360c00514ff4b3" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Tenant />
+      </Install>
+      <BuildToBuildUpgrade>
+        <Tenant>
+          Set-OrganizationFlags $RoleOrganizationHierarchicalPath -IsUpgradingOrganization:$false -DomainController $RoleDomainController;
+        </Tenant>
+      </BuildToBuildUpgrade>
+      <Uninstall />
+    </OrgTaskInfo>
+    
+  </OrgTasks>
+</SetupComponentInfo>

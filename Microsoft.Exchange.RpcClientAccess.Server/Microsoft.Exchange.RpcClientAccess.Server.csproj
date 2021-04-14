@@ -1,0 +1,204 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{09CD9476-CD82-489E-B9E2-84B47CA1418E}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Microsoft.Exchange.RpcClientAccess</RootNamespace>
+    <AssemblyName>Microsoft.Exchange.RpcClientAccess.Server</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Exchange.Common.IL" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="PerformanceCounters\RpcClientAccessPerformanceCounters.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Server\AccessDeniedException.cs" />
+    <Compile Include="Server\AuthContextDecompressor.cs" />
+    <Compile Include="Server\CallFailedException.cs" />
+    <Compile Include="Server\CheckExchangeRpcServiceResponsive.cs" />
+    <Compile Include="Server\ClearDispatchTask.cs" />
+    <Compile Include="Server\ClientVersionException.cs" />
+    <Compile Include="Server\ConnectDispatchTask.cs" />
+    <Compile Include="Server\Connection.cs" />
+    <Compile Include="Server\ConnectionInfo.cs" />
+    <Compile Include="Server\ConnectionList.cs" />
+    <Compile Include="Server\ConnectionRegistrationException.cs" />
+    <Compile Include="Server\DatabaseInfo.cs" />
+    <Compile Include="Server\DatabaseInfoCache.cs" />
+    <Compile Include="Server\DisconnectDispatchTask.cs" />
+    <Compile Include="Server\DispatchOptions.cs" />
+    <Compile Include="Server\DispatchPool.cs" />
+    <Compile Include="Server\DispatchTask.cs" />
+    <Compile Include="Server\DummyDispatchTask.cs" />
+    <Compile Include="Server\ExchangeAsyncDispatch.cs" />
+    <Compile Include="Server\ExchangeDispatch.cs" />
+    <Compile Include="Server\ExchangeDispatchTask.cs" />
+    <Compile Include="Server\ExecuteDispatchTask.cs" />
+    <Compile Include="Server\ExecuteRequestFlag.cs" />
+    <Compile Include="Server\IExchangeDispatch.cs" />
+    <Compile Include="Server\InvalidParameterException.cs" />
+    <Compile Include="Server\IRcaPerformanceCounters.cs" />
+    <Compile Include="Server\IRpcDispatch.cs" />
+    <Compile Include="Server\IRpcHttpConnectionRegistrationPerformanceCounters.cs" />
+    <Compile Include="Server\IUser.cs" />
+    <Compile Include="Server\IXtcPerformanceCounters.cs" />
+    <Compile Include="Server\LCID.cs" />
+    <Compile Include="Server\LoginFailureException.cs" />
+    <Compile Include="Server\LoginPermException.cs" />
+    <Compile Include="Server\MailboxRights.cs" />
+    <Compile Include="Server\NotFoundException.cs" />
+    <Compile Include="Server\NotificationConnectDispatchTask.cs" />
+    <Compile Include="Server\NotificationWaitDispatchTask.cs" />
+    <Compile Include="Server\NullPerformanceCounter.cs" />
+    <Compile Include="Server\NullRcaPerformanceCounters.cs" />
+    <Compile Include="Server\NullRpcHttpConnectionRegistrationPerformanceCounters.cs" />
+    <Compile Include="Server\NullXtcPerformanceCounters.cs" />
+    <Compile Include="Server\PerformanceCounterProcessor.cs" />
+    <Compile Include="Server\RcaPerformanceCounters.cs" />
+    <Compile Include="Server\RegisterDispatchTask.cs" />
+    <Compile Include="Server\RegisterPushNotificationDispatchTask.cs" />
+    <Compile Include="Server\RpcAsynchronousServer.cs" />
+    <Compile Include="Server\RpcClientAccessPerformanceCountersWrapper.cs" />
+    <Compile Include="Server\RpcClientAccessService.cs" />
+    <Compile Include="Server\RpcDispatch.cs" />
+    <Compile Include="Server\RpcFailureProcessor.cs" />
+    <Compile Include="Server\RpcHttpConnectionProperties.cs" />
+    <Compile Include="Server\RpcHttpConnectionRegistration.cs" />
+    <Compile Include="Server\RpcHttpConnectionRegistrationAsyncDispatch.cs" />
+    <Compile Include="Server\RpcHttpConnectionRegistrationAsyncServer.cs" />
+    <Compile Include="Server\RpcHttpConnectionRegistrationCacheEntry.cs" />
+    <Compile Include="Server\RpcHttpConnectionRegistrationDispatch.cs" />
+    <Compile Include="Server\RpcHttpConnectionRegistrationDispatchTask.cs" />
+    <Compile Include="Server\RpcHttpConnectionRegistrationPerformanceCounters.cs" />
+    <Compile Include="Server\RpcProcessingTimeProcessor.cs" />
+    <Compile Include="Server\RpcServer.cs" />
+    <Compile Include="Server\SingleDirectoryObjectCache.cs" />
+    <Compile Include="Server\UnknownUserException.cs" />
+    <Compile Include="Server\UnregisterDispatchTask.cs" />
+    <Compile Include="Server\UnregisterPushNotificationDispatchTask.cs" />
+    <Compile Include="Server\UserManager.cs" />
+    <Compile Include="Server\WatsonOnUnhandledExceptionDispatch.cs" />
+    <Compile Include="Server\WebServiceAuthorizationManager.cs" />
+    <Compile Include="Server\WebServiceCall.cs" />
+    <Compile Include="Server\WebServiceCallState.cs" />
+    <Compile Include="Server\WebServiceCallStateConnect.cs" />
+    <Compile Include="Server\WebServiceCallStateDisconnect.cs" />
+    <Compile Include="Server\WebServiceCallStateExecute.cs" />
+    <Compile Include="Server\WebServiceClientBinding.cs" />
+    <Compile Include="Server\WebServiceEndPoint.cs" />
+    <Compile Include="Server\WebServiceServerException.cs" />
+    <Compile Include="Server\WebServiceServerSession.cs" />
+    <Compile Include="Server\WebServiceServerSessionProvider.cs" />
+    <Compile Include="Server\WebServiceUserInformation.cs" />
+    <Compile Include="Server\XtcPerformanceCounters.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.Exchange.Common\Microsoft.Exchange.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140F0}</Project>
+      <Name>Microsoft.Exchange.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Common\Microsoft.Exchange.Data.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140D3}</Project>
+      <Name>Microsoft.Exchange.Data.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Directory\Microsoft.Exchange.Data.Directory.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14105}</Project>
+      <Name>Microsoft.Exchange.Data.Directory</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Storage\Microsoft.Exchange.Data.Storage.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1410F}</Project>
+      <Name>Microsoft.Exchange.Data.Storage</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data\Microsoft.Exchange.Data.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14106}</Project>
+      <Name>Microsoft.Exchange.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Diagnostics\Microsoft.Exchange.Diagnostics.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14113}</Project>
+      <Name>Microsoft.Exchange.Diagnostics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Net\Microsoft.Exchange.Net.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14178}</Project>
+      <Name>Microsoft.Exchange.Net</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.RpcClientAccess.ExMonHandler\Microsoft.Exchange.RpcClientAccess.ExMonHandler.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1418A}</Project>
+      <Name>Microsoft.Exchange.RpcClientAccess.ExMonHandler</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.RpcClientAccess.Handler\Microsoft.Exchange.RpcClientAccess.Handler.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1418B}</Project>
+      <Name>Microsoft.Exchange.RpcClientAccess.Handler</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.RpcClientAccess.Parser\Microsoft.Exchange.RpcClientAccess.Parser.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1418D}</Project>
+      <Name>Microsoft.Exchange.RpcClientAccess.Parser</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.RpcClientAccess\Microsoft.Exchange.RpcClientAccess.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14189}</Project>
+      <Name>Microsoft.Exchange.RpcClientAccess</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Rpc\Microsoft.Exchange.Rpc.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14188}</Project>
+      <Name>Microsoft.Exchange.Rpc</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Rules.Common\Microsoft.Exchange.Rules.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14191}</Project>
+      <Name>Microsoft.Exchange.Rules.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Security\Microsoft.Exchange.Security.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14198}</Project>
+      <Name>Microsoft.Exchange.Security</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.StoreProvider\Microsoft.Exchange.StoreProvider.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141B9}</Project>
+      <Name>Microsoft.Exchange.StoreProvider</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.VariantConfiguration\Microsoft.Exchange.VariantConfiguration.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141E0}</Project>
+      <Name>Microsoft.Exchange.VariantConfiguration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.WorkloadManagement\Microsoft.Exchange.WorkloadManagement.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141E1}</Project>
+      <Name>Microsoft.Exchange.WorkloadManagement</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\mscorlib\mscorlib.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141F1}</Project>
+      <Name>mscorlib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

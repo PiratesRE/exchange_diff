@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo Name="File Distribution Service Configuration" DescriptionId="FileDistributionServiceComponentDescription">
+
+  <ServerTasks>
+
+    <!-- Install/remove File distribution service -->
+    <ServerTaskInfo Id="_659b38f67e0240199f57f0c851fe7a2b" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install />
+      <BuildToBuildUpgrade>
+        <Standalone>uninstall-FileDistributionService</Standalone>
+      </BuildToBuildUpgrade>
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall DescriptionId="UninstallingMSExchangeFDS">
+        <Standalone>uninstall-FileDistributionService</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+  </ServerTasks>
+
+</SetupComponentInfo>

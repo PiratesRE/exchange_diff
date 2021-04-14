@@ -1,0 +1,131 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{09CD9476-CD82-489E-B9E2-84B47CA141D1}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Microsoft.Exchange.Transport</RootNamespace>
+    <AssemblyName>Microsoft.Exchange.Transport.Scheduler</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ResourceThrottling\ResourceLevelMediator.cs" />
+    <Compile Include="ResourceThrottling\ResourceLevelMediatorDiagnosticsData.cs" />
+    <Compile Include="ResourceThrottling\ResourceObserverOperation.cs" />
+    <Compile Include="Scheduler\ProcessingScheduler.cs" />
+    <Compile Include="Scheduler\Processing\AsyncAutoResetEvent.cs" />
+    <Compile Include="Scheduler\Processing\AsyncQueueLogWriter.cs" />
+    <Compile Include="Scheduler\Processing\ConcurrentQueueFactory.cs" />
+    <Compile Include="Scheduler\Processing\ConcurrentQueueWrapper.cs" />
+    <Compile Include="Scheduler\Processing\IMessageProcessor.cs" />
+    <Compile Include="Scheduler\Processing\InMemorySchedulerMetering.cs" />
+    <Compile Include="Scheduler\Processing\IQueueFactory.cs" />
+    <Compile Include="Scheduler\Processing\IQueueLogProvider.cs" />
+    <Compile Include="Scheduler\Processing\IQueueLogWriter.cs" />
+    <Compile Include="Scheduler\Processing\ISchedulerCommand.cs" />
+    <Compile Include="Scheduler\Processing\ISchedulerDiagnostics.cs" />
+    <Compile Include="Scheduler\Processing\ISchedulerMetering.cs" />
+    <Compile Include="Scheduler\Processing\ISchedulerQueue.cs" />
+    <Compile Include="Scheduler\Processing\ISchedulerThrottler.cs" />
+    <Compile Include="Scheduler\Processing\IScopedQueuesManager.cs" />
+    <Compile Include="Scheduler\Processing\IThrottlingPolicy.cs" />
+    <Compile Include="Scheduler\Processing\JobDispatcher.cs" />
+    <Compile Include="Scheduler\Processing\JobInfo.cs" />
+    <Compile Include="Scheduler\Processing\JobManager.cs" />
+    <Compile Include="Scheduler\Processing\LoggingQueueWrapper.cs" />
+    <Compile Include="Scheduler\Processing\MemoryUsagePolicy.cs" />
+    <Compile Include="Scheduler\Processing\MeteringData.cs" />
+    <Compile Include="Scheduler\Processing\NoOpMetering.cs" />
+    <Compile Include="Scheduler\Processing\NoOpQueueLogWriter.cs" />
+    <Compile Include="Scheduler\Processing\NoOpThrottler.cs" />
+    <Compile Include="Scheduler\Processing\OutstandingJobsPolicy.cs" />
+    <Compile Include="Scheduler\Processing\PolicyBasedThrottler.cs" />
+    <Compile Include="Scheduler\Processing\PolicyDecision.cs" />
+    <Compile Include="Scheduler\Processing\PriorityDistributedQueue.cs" />
+    <Compile Include="Scheduler\Processing\PriorityQueueFactory.cs" />
+    <Compile Include="Scheduler\Processing\PriorityScope.cs" />
+    <Compile Include="Scheduler\Processing\ProcessingTicksPolicy.cs" />
+    <Compile Include="Scheduler\Processing\QueueLog.cs" />
+    <Compile Include="Scheduler\Processing\QueueLogInfo.cs" />
+    <Compile Include="Scheduler\Processing\RefreshableComponent.cs" />
+    <Compile Include="Scheduler\Processing\SchedulerDiagnostics.cs" />
+    <Compile Include="Scheduler\Processing\SchedulerPerfCounters.cs" />
+    <Compile Include="Scheduler\Processing\SchedulerPerfCountersInstance.cs" />
+    <Compile Include="Scheduler\Processing\ScopedQueue.cs" />
+    <Compile Include="Scheduler\Processing\ScopedQueueLog.cs" />
+    <Compile Include="Scheduler\Processing\ScopedQueuesManager.cs" />
+    <Compile Include="Scheduler\Processing\ShutdownCommand.cs" />
+    <Compile Include="Scheduler\Processing\TenantScope.cs" />
+    <Compile Include="Scheduler\Processing\UsageData.cs" />
+    <Compile Include="Scheduler\SchedulerDiagnosticPublisher.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Metering.Contracts\Microsoft.Exchange.Data.Metering.Contracts.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1410B}</Project>
+      <Name>Microsoft.Exchange.Data.Metering.Contracts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Metering\Microsoft.Exchange.Data.Metering.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1410C}</Project>
+      <Name>Microsoft.Exchange.Data.Metering</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Transport\Microsoft.Exchange.Data.Transport.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140D5}</Project>
+      <Name>Microsoft.Exchange.Data.Transport</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Diagnostics\Microsoft.Exchange.Diagnostics.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14113}</Project>
+      <Name>Microsoft.Exchange.Diagnostics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Net\Microsoft.Exchange.Net.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14178}</Project>
+      <Name>Microsoft.Exchange.Net</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Transport.Common\Microsoft.Exchange.Transport.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141CC}</Project>
+      <Name>Microsoft.Exchange.Transport.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Transport.Scheduler.Contracts\Microsoft.Exchange.Transport.Scheduler.Contracts.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141D0}</Project>
+      <Name>Microsoft.Exchange.Transport.Scheduler.Contracts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\mscorlib\mscorlib.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141F1}</Project>
+      <Name>mscorlib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

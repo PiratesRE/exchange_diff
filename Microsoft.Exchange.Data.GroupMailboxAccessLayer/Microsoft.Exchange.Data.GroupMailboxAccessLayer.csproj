@@ -1,0 +1,220 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{09CD9476-CD82-489E-B9E2-84B47CA14107}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Microsoft.Exchange</RootNamespace>
+    <AssemblyName>Microsoft.Exchange.Data.GroupMailboxAccessLayer</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Exchange.Common.IL" />
+    <Reference Include="Microsoft.Office.Server.Directory" />
+    <Reference Include="Microsoft.SharePoint.Client" />
+    <Reference Include="Microsoft.SharePoint.Client.Runtime" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.DirectoryServices" />
+    <Reference Include="System.DirectoryServices.Protocols" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Data\GroupMailbox\BaseAssociationAdaptor.cs" />
+    <Compile Include="Data\GroupMailbox\BaseGroupMessageComposer.cs" />
+    <Compile Include="Data\GroupMailbox\Common\ExceededMaxSubscribersException.cs" />
+    <Compile Include="Data\GroupMailbox\Common\Extensions.cs" />
+    <Compile Include="Data\GroupMailbox\Common\GroupMailboxAccessLayerHelper.cs" />
+    <Compile Include="Data\GroupMailbox\Common\GroupMailboxFailedToAddExternalUserException.cs" />
+    <Compile Include="Data\GroupMailbox\Common\GroupMailboxFailedToConfigureMailboxException.cs" />
+    <Compile Include="Data\GroupMailbox\Common\InitialsImageGenerator.cs" />
+    <Compile Include="Data\GroupMailbox\Common\LocDescriptionAttribute.cs" />
+    <Compile Include="Data\GroupMailbox\Common\NotAMemberException.cs" />
+    <Compile Include="Data\GroupMailbox\Common\Strings.cs" />
+    <Compile Include="Data\GroupMailbox\Common\WelcomeMessageBodyWriter.cs" />
+    <Compile Include="Data\GroupMailbox\ConfigureGroupMailbox.cs" />
+    <Compile Include="Data\GroupMailbox\Consistency\IReplicationAssistantInvoker.cs" />
+    <Compile Include="Data\GroupMailbox\Consistency\ReplicationAssistantInvoker.cs" />
+    <Compile Include="Data\GroupMailbox\EmailNotificationHandler.cs" />
+    <Compile Include="Data\GroupMailbox\EwsAssociationDataConverter.cs" />
+    <Compile Include="Data\GroupMailbox\GetAssociationCommand.cs" />
+    <Compile Include="Data\GroupMailbox\GetEscalatedAssociations.cs" />
+    <Compile Include="Data\GroupMailbox\GetMemberAssociation.cs" />
+    <Compile Include="Data\GroupMailbox\GetMembershipAssociations.cs" />
+    <Compile Include="Data\GroupMailbox\GetMembershipChangedAfterAssociations.cs" />
+    <Compile Include="Data\GroupMailbox\GetPinAssociations.cs" />
+    <Compile Include="Data\GroupMailbox\GroupAssociationAdaptor.cs" />
+    <Compile Include="Data\GroupMailbox\GroupJoinRequestMessage.cs" />
+    <Compile Include="Data\GroupMailbox\GroupJoinRequestMessageBodyBuilder.cs" />
+    <Compile Include="Data\GroupMailbox\GroupJoinRequestMessageComposer.cs" />
+    <Compile Include="Data\GroupMailbox\GroupMailbox.cs" />
+    <Compile Include="Data\GroupMailbox\GroupMailboxAccessLayer.cs" />
+    <Compile Include="Data\GroupMailbox\GroupMailboxBuilder.cs" />
+    <Compile Include="Data\GroupMailbox\GroupMailboxConfigurationAction.cs" />
+    <Compile Include="Data\GroupMailbox\GroupMailboxConfigurationActionStopwatch.cs" />
+    <Compile Include="Data\GroupMailbox\GroupMailboxConfigurationReport.cs" />
+    <Compile Include="Data\GroupMailbox\GroupMailboxDefaultPhotoUploader.cs" />
+    <Compile Include="Data\GroupMailbox\GroupMailboxExchangeResourcesPublisher.cs" />
+    <Compile Include="Data\GroupMailbox\GroupMailboxMembershipUpdater.cs" />
+    <Compile Include="Data\GroupMailbox\GroupMailboxPermissionHandler.cs" />
+    <Compile Include="Data\GroupMailbox\GroupWarmingMessageComposer.cs" />
+    <Compile Include="Data\GroupMailbox\IAssociationAdaptor.cs" />
+    <Compile Include="Data\GroupMailbox\IAssociationReplicator.cs" />
+    <Compile Include="Data\GroupMailbox\IEmailNotificationHandler.cs" />
+    <Compile Include="Data\GroupMailbox\IGroupAssociationAdaptor.cs" />
+    <Compile Include="Data\GroupMailbox\ILocatableMailbox.cs" />
+    <Compile Include="Data\GroupMailbox\ImageAttachment.cs" />
+    <Compile Include="Data\GroupMailbox\IMailboxBuilder.cs" />
+    <Compile Include="Data\GroupMailbox\IMessageComposer.cs" />
+    <Compile Include="Data\GroupMailbox\IMessageComposerBuilder.cs" />
+    <Compile Include="Data\GroupMailbox\InProcessAssociationReplicator.cs" />
+    <Compile Include="Data\GroupMailbox\IUserAssociationAdaptor.cs" />
+    <Compile Include="Data\GroupMailbox\LatencyStatistics.cs" />
+    <Compile Include="Data\GroupMailbox\MailboxAssociation.cs" />
+    <Compile Include="Data\GroupMailbox\MailboxAssociationEwsBinding.cs" />
+    <Compile Include="Data\GroupMailbox\MailboxAssociationFromStore.cs" />
+    <Compile Include="Data\GroupMailbox\MailboxCollectionBuilder.cs" />
+    <Compile Include="Data\GroupMailbox\MailboxLocatorEqualityComparer.cs" />
+    <Compile Include="Data\GroupMailbox\PermissionEntry.cs" />
+    <Compile Include="Data\GroupMailbox\PriorityReplicator.cs" />
+    <Compile Include="Data\GroupMailbox\QueuedInProcessAssociationReplicator.cs" />
+    <Compile Include="Data\GroupMailbox\ReplicatorEnabledAssociationEnumerator.cs" />
+    <Compile Include="Data\GroupMailbox\RpcAssociationReplicator.cs" />
+    <Compile Include="Data\GroupMailbox\RpcAssociationReplicatorRunNowParameters.cs" />
+    <Compile Include="Data\GroupMailbox\SetEscalate.cs" />
+    <Compile Include="Data\GroupMailbox\SetGroupPinState.cs" />
+    <Compile Include="Data\GroupMailbox\SetLastVisitedDate.cs" />
+    <Compile Include="Data\GroupMailbox\SetUserMembershipState.cs" />
+    <Compile Include="Data\GroupMailbox\UnifiedGroupADAccessLayer.cs" />
+    <Compile Include="Data\GroupMailbox\UnifiedGroupParticipant.cs" />
+    <Compile Include="Data\GroupMailbox\UnseenDataUserAssociationAdaptor.cs" />
+    <Compile Include="Data\GroupMailbox\UpdateAssociationCommand.cs" />
+    <Compile Include="Data\GroupMailbox\UserAssociationAdaptor.cs" />
+    <Compile Include="Data\GroupMailbox\UserMailbox.cs" />
+    <Compile Include="Data\GroupMailbox\UserMailboxBuilder.cs" />
+    <Compile Include="Data\GroupMailbox\WelcomeMessageBodyBuilder.cs" />
+    <Compile Include="Data\GroupMailbox\WelcomeMessageBodyData.cs" />
+    <Compile Include="Data\GroupMailbox\WelcomeToGroupMessageComposer.cs" />
+    <Compile Include="Data\GroupMailbox\WelcomeToGroupMessageTemplate.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UnifiedGroups\AADClientFactory.cs" />
+    <Compile Include="UnifiedGroups\AADClientTestHooks.cs" />
+    <Compile Include="UnifiedGroups\FederatedDirectoryLogConfiguration.cs" />
+    <Compile Include="UnifiedGroups\FederatedDirectoryLogger.cs" />
+    <Compile Include="UnifiedGroups\FederatedDirectoryLogSchema.cs" />
+    <Compile Include="UnifiedGroups\Relation.cs" />
+    <Compile Include="UnifiedGroups\SchemaDictionary.2.cs" />
+    <Compile Include="UnifiedGroups\SchemaDictionary.cs" />
+    <Compile Include="UnifiedGroups\SchemaObject.cs" />
+    <Compile Include="UnifiedGroups\SharePointNotification.cs" />
+    <Compile Include="UnifiedGroups\SharePointUrl.cs" />
+    <Compile Include="UnifiedGroups\SharePointUrlResolver.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="blank.gif" />
+    <EmbeddedResource Include="calendar_icon.png" />
+    <EmbeddedResource Include="conversation_icon.png" />
+    <EmbeddedResource Include="Data\GroupMailbox\Common\Strings.resources" />
+    <EmbeddedResource Include="document_icon.png" />
+    <EmbeddedResource Include="group_join_request_message_template.thtm" />
+    <EmbeddedResource Include="welcome_arrow.png" />
+    <EmbeddedResource Include="welcome_arrow_flipped.png" />
+    <EmbeddedResource Include="welcome_conversations_icon.png" />
+    <EmbeddedResource Include="welcome_files_icon.png" />
+    <EmbeddedResource Include="welcome_O365_icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.Exchange.Common\Microsoft.Exchange.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140F0}</Project>
+      <Name>Microsoft.Exchange.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Compliance\Microsoft.Exchange.Compliance.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140F2}</Project>
+      <Name>Microsoft.Exchange.Compliance</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.ApplicationLogic\Microsoft.Exchange.Data.ApplicationLogic.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14104}</Project>
+      <Name>Microsoft.Exchange.Data.ApplicationLogic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Common\Microsoft.Exchange.Data.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140D3}</Project>
+      <Name>Microsoft.Exchange.Data.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Directory\Microsoft.Exchange.Data.Directory.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14105}</Project>
+      <Name>Microsoft.Exchange.Data.Directory</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Storage.ClientStrings\Microsoft.Exchange.Data.Storage.ClientStrings.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1410E}</Project>
+      <Name>Microsoft.Exchange.Data.Storage.ClientStrings</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Storage\Microsoft.Exchange.Data.Storage.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1410F}</Project>
+      <Name>Microsoft.Exchange.Data.Storage</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data\Microsoft.Exchange.Data.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14106}</Project>
+      <Name>Microsoft.Exchange.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Diagnostics\Microsoft.Exchange.Diagnostics.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14113}</Project>
+      <Name>Microsoft.Exchange.Diagnostics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Net\Microsoft.Exchange.Net.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14178}</Project>
+      <Name>Microsoft.Exchange.Net</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Rpc\Microsoft.Exchange.Rpc.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14188}</Project>
+      <Name>Microsoft.Exchange.Rpc</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Security\Microsoft.Exchange.Security.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14198}</Project>
+      <Name>Microsoft.Exchange.Security</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.StoreProvider\Microsoft.Exchange.StoreProvider.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141B9}</Project>
+      <Name>Microsoft.Exchange.StoreProvider</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.VariantConfiguration\Microsoft.Exchange.VariantConfiguration.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141E0}</Project>
+      <Name>Microsoft.Exchange.VariantConfiguration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\mscorlib\mscorlib.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141F1}</Project>
+      <Name>mscorlib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

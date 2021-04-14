@@ -1,0 +1,567 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo IsDatacenterOnly="true" IsDatacenterDedicatedOnly="true" Name="HubTransport ExO only component" DatacenterMode="ExO">
+
+  <ServerTasks>
+
+    <!-- Configuring Delta Sync Client Certificate. We don't want this cert to be the InternalTransportCertificate. So we just configure for NetworkServicesAllowed  -->
+    <ServerTaskInfo Id="_ca05b93852fd4f8f97aedc8c34ac13c3" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup" ExcludeInDatacenterDedicated="true">
+      <Install>
+        <Standalone>Install-ExchangeCertificate -Thumbprint $RoleDatacenterDeltaSyncClientCertificateThumbprint -Services NONE -NetworkServiceAllowed</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Configure EdgeSync for datacenter (settings apply to both MSERV and EHF sync) -->
+    <!-- E14 151112: We need the lock duration to be longer than a single LDAP update timeout so we don't run out of lock during a single update. -->
+    <ServerTaskInfo Id="_a5a219ec57f243af97552b2dbd33764e" Component="EXCHANGE14:\Current\Release\Transport\Internet\Edge" ExcludeInDatacenterDedicated="true">
+      <Install>
+        <Standalone>
+            Write-ExchangeSetupLog -Info "Configuring EdgeSync for datacenter";
+
+            $LocalSite = Get-LocalADSite;
+            if ($LocalSite -eq $null)
+            {
+                Write-ExchangeSetupLog -Error "Failed to determine local AD site";
+            }
+            else
+            {
+                Write-ExchangeSetupLog -Info "Local Site is '$LocalSite.Name'";
+     
+                $logPath = "$RoleDatacenterTransportRoleLogRoot\EdgeSync";
+                $LocalSiteEdgeSyncConfig = Get-EdgeSyncServiceConfig -Site:$LocalSite.Identity;
+                if ($LocalSiteEdgeSyncConfig -eq $null)
+                {
+                    Write-ExchangeSetupLog -Info "EdgeSync Service config not present in local site; creating one";
+                    New-EdgeSyncServiceConfig -Site:$LocalSite.Identity -RecipientSyncInterval:0:0:15 -OptionDuration:0:6:0 -FailoverDCInterval:0:5:0 -LogEnabled:$true -LogPath:$logPath -LogLevel:Medium -LogMaxFileSize 10485760 -LogMaxDirectorySize:15728640000;
+                }
+                else
+                {
+                    Write-ExchangeSetupLog -Info "EdgeSync Service config present; updating it";
+                    $LocalSiteEdgeSyncConfig | Set-EdgeSyncServiceConfig -RecipientSyncInterval:0:0:15 -OptionDuration:0:6:0 -FailoverDCInterval:0:5:0 -LogEnabled:$true -LogPath:$logPath -LogLevel:Medium -LogMaxFileSize 10485760 -LogMaxDirectorySize:15728640000;
+                };
+            };
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Configure EdgeSync to hotmail mserve integration -->
+    <ServerTaskInfo Id="_081b47decc9548949d0a356ddca4c3db" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup" ExcludeInDatacenterDedicated="true">
+      <Install>
+        <!-- This task will set proper EdgeSync config file on local server to enable sync to Hotmail Mserve-->
+        <Standalone>
+          if ($RoleDatacenterWindowsLiveIdInstance -ine 'Gallatin')
+          {
+              ."$RoleBinPath\..\Scripts\enable-edgesyncmservconfig.ps1" `
+                  -MserveDefaultPartnerId:$RoleDatacenterMserveDefaultPartnerId `
+                  -PrimaryLeaseLocation:$RoleDatacenterMservePrimaryLeaseDirectory `
+                  -BackupLeaseLocation:$RoleDatacenterMserveBackupLeaseDirectory ;
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Configure EdgeSync for EHF integration -->
+    <ServerTaskInfo Id="_d077c7de329b42bba4c895372c994f00" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup" ExcludeInDatacenterDedicated="true">
+      <Install>
+        <!-- This script configures EdgeSync EHF connector -->
+        <Standalone>
+          if ([string]::IsNullOrEmpty($RoleDatacenterEhfProvisioningPassword))
+          {
+              Write-ExchangeSetupLog -Info "Retrieving EHF provisioning password from Registry";
+              $RoleDatacenterEhfProvisioningPassword = (Get-ItemProperty HKLM:\SOFTWARE\Microsoft\ExchangeLabs).EhfProvisioningPassword;
+
+              if ([string]::IsNullOrEmpty($RoleDatacenterEhfProvisioningPassword))
+              {
+                  Write-ExchangeSetupLog -Info "EHF provisioning password not specified in Registry";
+              }
+          }
+
+          if ([string]::IsNullOrEmpty($RoleDatacenterEhfProvisioningUserName) -or [string]::IsNullOrEmpty($RoleDatacenterEhfProvisioningPassword))
+          {
+              Write-ExchangeSetupLog -Info "Configuring non-secure EdgeSync EHF connector";
+              $ehfCredential = $null;
+          }
+          else
+          {
+              Write-ExchangeSetupLog -Info "Configuring secure EdgeSync EHF connector";
+              $securePassword = (ConvertTo-SecureString -String $RoleDatacenterEhfProvisioningPassword -AsPlainText -Force);
+              $ehfCredential = new-object System.Management.Automation.PSCredential $RoleDatacenterEhfProvisioningUserName, $securePassword;
+          };
+
+          $RoleDatacenterEhfProvisioningPassword = $null;
+
+          &amp; "$RoleBinPath\..\Scripts\Configure-EdgeSyncEhfConnector.ps1" `
+              -ResellerId:$RoleDatacenterEhfResellerId `
+              -ProvisioningUrl:$RoleDatacenterEhfProvisioningUrl `
+              -AuthenticationCredential:$ehfCredential `
+              -PrimaryLeaseLocation:$RoleDatacenterMservePrimaryLeaseDirectory `
+              -BackupLeaseLocation:$RoleDatacenterMserveBackupLeaseDirectory;
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall />
+    </ServerTaskInfo>
+
+      <!-- Enabling Transport Sync. -->
+      <ServerTaskInfo Id="_98d7ee8782264d3f891bf54d98f55357" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup" ExcludeInDatacenterDedicated="true">
+          <Install>
+              <Standalone>
+		  $notGallatin = ($RoleDatacenterWindowsLiveIdInstance -ine 'Gallatin');
+
+                  Write-ExchangeSetupLog -Info "Enabling Transport Sync.";
+                  Set-TransportService `
+                  -Identity $RoleNetBiosName `
+                  -TransportSyncEnabled $true `
+                  -TransportSyncPopEnabled $true `
+                  -WindowsLiveHotmailTransportSyncEnabled $notGallatin `
+                  -TransportSyncExchangeEnabled $true `
+                  -TransportSyncImapEnabled $true `
+                  -TransportSyncFacebookEnabled $notGallatin `
+                  -TransportSyncLinkedInEnabled $true `
+                  -TransportSyncAccountsPoisonDetectionEnabled $true `
+                  -TransportSyncLogEnabled $RoleDatacenterTransportSyncLogEnabled `
+                  -TransportSyncLogLoggingLevel $RoleDatacenterTransportSyncLogLoggingLevel `
+                  -TransportSyncLogFilePath "$RoleDatacenterTransportRoleLogRoot\SyncLog\Hub" `
+                  -TransportSyncHubHealthLogEnabled $true `
+                  -TransportSyncHubHealthLogFilePath "$RoleDatacenterTransportRoleLogRoot\SyncHealth\Hub" `
+                  -DeltaSyncClientCertificateThumbprint $RoleDatacenterDeltaSyncClientCertificateThumbprint
+              </Standalone>
+          </Install>
+          <BuildToBuildUpgrade UseInstallTasks="true"/>
+          <DisasterRecovery UseInstallTasks="true"/>
+          <Uninstall />
+      </ServerTaskInfo>
+
+      <!-- Adds the FopeInboundSummaryUrl value to ClientAccess\PowerShell\web.config -->
+      <ServerTaskInfo Id="_289124A1390F4675BBDD2F80D4072FE0" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+          <Install>
+              <Standalone>
+                  if($RoleDatacenterFopeInboundSummaryUrl -ne $null)
+                  {
+                      $fullPath = [System.IO.Path]::Combine($RoleInstallPath, "ClientAccess\PowerShell\web.config");
+
+                      Write-ExchangeSetupLog -Info "Setting the FopeInboundSummaryUrl to $RoleDatacenterFopeInboundSummaryUrl. Web.ConfigPath = $fullPath";
+
+                      Set-AppConfigValue -Element "configuration/appSettings" -ConfigFileFullPath $fullPath -AppSettingKey FopeInboundSummaryUrl -NewValue $RoleDatacenterFopeInboundSummaryUrl;
+                  }
+              </Standalone>
+          </Install>
+          <BuildToBuildUpgrade UseInstallTasks="true" />
+          <DisasterRecovery UseInstallTasks="true" />
+          <Uninstall />
+      </ServerTaskInfo>
+
+    <!-- Configure Hub Transport Role for FFO integration -->
+    <ServerTaskInfo Id="_33f594d5800b42c2b8a092714cae2aca" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup" ExcludeInDatacenterDedicated="true">
+      <Install>
+        <!-- The line that loads the ps1 is not added as a separate task because in case the configuration task fails
+        the task that loads the script will not be executed when setup is re-run (because setup doesn't re-run a succeeded task).
+        Even though this causes duplication its better than having setup fail because of this. -->
+        <Standalone>
+          ."$RoleBinPath\..\Scripts\Enable-DataCenterTransportConfig.ps1" `
+          -TargetEnvironment:$RoleDatacenterWindowsLiveIdEnvironment `
+          -ClientSmtpFqdn:$RoleDatacenterClientSmtpFqdn `
+          -ReceiveMSITCrossPremisesTMCMail:$RoleDatacenterReceiveMSITCrossPremisesTMCMail `
+          -ConnectorMaxMessageSize:$RoleDatacenterConnectorMaxMessageSize `
+          -ReceiveConnectorConnectionTimeout:$RoleDatacenterReceiveConnectorConnectionTimeout;
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Configure Hub Transport Role for FFO integration -->
+    <ServerTaskInfo Id="_EFDFC0616B0346A6B5B29D903A70087D" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup"  ExcludeInDatacenterDedicated="true">
+      <Install>
+        <!-- The line that loads the ps1 is not added as a separate task because in case the configuration task fails
+        the task that loads the script will not be executed when setup is re-run (because setup doesn't re-run a succeeded task).
+        Even though this causes duplication its better than having setup fail because of this. -->
+        <Standalone>
+          . "$RoleBinPath\..\Datacenter\SendConnectorLibrary.ps1"
+          Ensure-AllConnectors `
+            -Fqdn $RoleDatacenterFopeFrontendConnectorFqdn `
+            -VoltageSmartHosts $RoleDatacenterVoltageSmartHosts `
+            -FfoQuarantineStoreType $RoleDatacenterFfoQuarantineStoreType `
+            -FfoQuarantineSmartHostsPri $RoleDatacenterFfoQuarantineSmartHostsPri `
+            -FfoQuarantineSmartHostsSec $RoleDatacenterFfoQuarantineSmartHostsSec `
+            -FfoQuarantineSmartHostsService $RoleDatacenterFfoQuarantineSmartHostsService `
+            -RegionTag $RoleDatacenterRegionTag `
+            -MaxMessageSize $RoleDatacenterConnectorMaxMessageSize `
+            -CertificateName $RoleDatacenterSendConnectorCertificateName `
+            -FfoQuarantineCertificateName $RoleDatacenterFfoQuarantineCertificateName;
+          Join-AllConnectors `
+            -MachineName ([String][System.Environment]::MachineName) `
+            -RegionTag $RoleDatacenterRegionTag `
+            -FfoQuarantineStoreType $RoleDatacenterFfoQuarantineStoreType `
+            -DomainController $DomainControllerName;
+
+          $fullPath = "$RoleBinPath\EdgeTransport.exe.config";
+          Set-AppConfigValue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'EnableConnectionCache' -NewValue:$RoleDatacenterEnableHubSmtpConnectionCache;
+          Set-AppConfigValue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'MessageRetryIntervalProgressiveBackoffEnabled' -NewValue:$RoleDatacenterMessageRetryIntervalProgressiveBackoffEnabled;
+
+	  if (-not [String]::IsNullorEmpty($RoleDatacenterExoHubToFfoFESmtpCertificateFqdn))
+          {
+              set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'OutboundProxyExternalCertificateSubject' -NewValue:$RoleDatacenterExoHubToFfoFESmtpCertificateFqdn;
+          }
+          else
+          {
+              Write-ExchangeSetupLog -Info "RoleDatacenterExoHubToFfoFESmtpCertificateFqdn is empty";
+          }
+
+          if (-not [String]::IsNullOrEmpty($RoleDatacenterReceiveConnectorConnectionTimeout))          
+          { 
+            set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'ConnectionTimeoutForNonOutboundProxy' -NewValue:$RoleDatacenterReceiveConnectorConnectionTimeout;
+            set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'ConnectionTimeoutForOutboundProxy' -NewValue:$RoleDatacenterReceiveConnectorConnectionTimeout;
+          }
+
+          set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'UseAdditionalTenantDataFromXATTR' -NewValue:false;
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall />
+    </ServerTaskInfo>
+    
+    <!-- Update edgetransport config. -->
+    <ServerTaskInfo Id="_CB9DCEF04B424639A137F48C8FA9F377" Component="OFFICE15:\Current\Exchange\Datacenter\Deployment">
+      <Install>
+        <Standalone>
+          $fullPath = "$RoleBinPath\EdgeTransport.exe.config";
+          set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'EnableOpenDomainRouting' -NewValue:$true;
+          set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'EnableVersionBasedRouting' -NewValue:$false;
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Uninstall Content Filter agent if it is present -->
+    <ServerTaskInfo Id="_4173e383c3f74759a1e4fd356c9fee3f" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <!-- 
+        Summary
+          1. Checks whether the agent is already installed (i.e. build-to-build upgrade).
+            1.1. if yes, uninstalls it.
+        -->
+        <Standalone>
+          $agentName = "Content Filter Agent";
+          $agent = Get-TransportAgent -Identity:$agentName;
+          if ($agent)
+          {
+          Uninstall-TransportAgent -Identity:$agentName;
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Install PhishingDetection Agent -->
+    <ServerTaskInfo Id="_4FE0114394FC4FAAA9BDD5A860BED733" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <!-- This will install the PhishingDetection Routing agent.  This agent is responsible for 
+        check if emails contain any Url that is considered Phishing. -->
+        <Standalone>
+          $agentName = "PhishingDetection Agent";
+          $agentFactory = "Microsoft.Exchange.Transport.Agent.PhishingDetection.PhishingDetectionAgentFactory";
+          $agentAssembly = ($RoleInstallPath + "TransportRoles\agents\PhishingDetectionAgent\Microsoft.Exchange.Transport.Agent.PhishingDetection.dll");
+          $agent = get-transportagent -Identity:$agentName;
+          if ($agent) {
+          uninstall-transportagent -Identity:$agentName;
+          };
+          install-TransportAgent -Name:$agentName -TransportAgentFactory:$agentFactory -AssemblyPath:$agentAssembly;
+          <!-- if ($agent.enabled -or ! $agent) { enable-transportagent -Identity:$agentName }; -->
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Install Open Domain Routing agent -->
+    <ServerTaskInfo Id="_1b3a3bb94b8e4ec8b6ee0f00f166e44a" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <!-- This will install the Open Domain Routing agent.  This agent is responsible for 
+        routing mails between mailboxes in the same tenant through the internet when appropriate. -->
+        <Standalone>
+          $agentName = "Open Domain Routing Agent";
+          $agentFactory = "Microsoft.Exchange.Transport.Agent.OpenDomainRouting.OpenDomainRoutingAgentFactory";
+          $agentAssembly = ($RoleInstallPath + "TransportRoles\agents\OpenDomainRouting\Microsoft.Exchange.Transport.Agent.OpenDomainRouting.dll");
+          $agent = get-transportagent -Identity:$agentName;
+          if ($agent) {
+          uninstall-transportagent -Identity:$agentName;
+          };
+          install-TransportAgent -Name:$agentName -TransportAgentFactory:$agentFactory -AssemblyPath:$agentAssembly;
+          if ($agent.enabled -or ! $agent) { enable-transportagent -Identity:$agentName };
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Install SendAs Routing Agent -->
+    <ServerTaskInfo Id="_4d37e6befb094357b1391ad34c633ee8" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <!-- This will install the SendAs Routing Agent.  This agent is responsible for sending messages as 
+	subscriptions or routing them to the DAV delivery agent. -->
+        <Standalone>
+          $agentName = "SendAs Routing Agent";
+          $agentFactory = "Microsoft.Exchange.Transport.Sync.SendAs.SendAsRoutingAgentFactory";
+          $agentAssembly = ($RoleInstallPath + "TransportRoles\agents\TransportSync\Microsoft.Exchange.Transport.Sync.Agents.dll");
+          $agent = get-transportagent -Identity:$agentName;
+          if ($agent) {
+          uninstall-transportagent -Identity:$agentName;
+          };
+          install-TransportAgent -Name:$agentName -TransportAgentFactory:$agentFactory -AssemblyPath:$agentAssembly;
+          if ($agent.enabled -or ! $agent) { enable-transportagent -Identity:$agentName };
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Install EHF Outbound Routing Agent -->
+    <ServerTaskInfo Id="_b35a7ac486e64fd99b866c5f92e3c5f1" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <!-- This will install the EHF Outbound Routing Agent.  This agent is responsible for sending messages to internet via
+        EHF for tenant having RouteOutboundViaEhfEnabled set. -->
+        <Standalone>
+          $agentName = "EHF Outbound Routing Agent";
+          $agentFactory = "Microsoft.Exchange.Transport.Agent.EhfOutboundRouting.EhfOutboundRoutingAgentFactory";
+          $agentAssembly = ($RoleInstallPath + "TransportRoles\agents\EhfOutboundRouting\Microsoft.Exchange.Transport.Agent.EhfOutboundRouting.dll");
+          $agent = get-transportagent -Identity:$agentName;
+          if ($agent) {
+          uninstall-transportagent -Identity:$agentName;
+          };
+          install-TransportAgent -Name:$agentName -TransportAgentFactory:$agentFactory -AssemblyPath:$agentAssembly;
+          if ($agent.enabled -or ! $agent) { enable-transportagent -Identity:$agentName };
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall />
+    </ServerTaskInfo>
+    
+    <!-- Install/uninstall "Tenant Outbound Connector Agent" preserve state on upgrade -->
+    <ServerTaskInfo Id="_d73e6a6cfa7540378edccaa51984acd2" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup" ExcludeInDatacenterDedicated="true">
+      <Install DescriptionId="SetupProgressInstallingTenantOutboundConnectorAgent">
+        <Standalone>
+            $agentName = "Tenant Outbound Connector Agent";
+            $agentFactory = "Microsoft.Exchange.Hygiene.TenantAttribution.TenantOutboundConnectorAgentFactory";
+            $agentAssembly = ($RoleInstallPath + "TransportRoles\agents\Hygiene\Microsoft.Exchange.Hygiene.TenantAttribution.TenantOutboundConnectorAgent.dll");
+            $agent = get-transportagent -Identity:$agentName;
+            if ($agent) {
+            uninstall-transportagent -Identity:$agentName;
+            };
+            install-TransportAgent -Name:$agentName -TransportAgentFactory:$agentFactory -AssemblyPath:$agentAssembly;
+            if ($agent.enabled -or ! $agent) { enable-transportagent -Identity:$agentName };
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall DescriptionId="SetupProgressRemovingTenantOutboundConnectorAgent">
+        <Standalone>
+          $agentName = "Tenant Outbound Connector Agent";
+          $agent = get-transportagent -Identity:$agentName;
+          if ($agent) {
+          uninstall-transportagent -Identity:$agentName;
+          };
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install the AddressBookPolicyRouting Agent -->
+    <ServerTaskInfo Id="_1582E9463BE947D680A79097FE12D685" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <!-- This will install the Address Book Policy Routing agent.  This agent is responsible for 
+        routing messages based on address book policies so that recipients are scoped correctly -->
+        <Standalone>
+          $agentName = "Address Book Policy Routing Agent";
+          $agentFactory = "Microsoft.Exchange.Transport.Agent.AddressBookPolicyRoutingAgent.AddressBookPolicyRoutingAgentFactory";
+          $agentAssembly = ($RoleInstallPath + "TransportRoles\agents\AddressBookPolicyRoutingAgent\Microsoft.Exchange.Transport.Agent.AddressBookPolicyRoutingAgent.dll");
+          $agent = get-transportagent -Identity:$agentName;
+          if ($agent)
+          {
+              uninstall-transportagent -Identity:$agentName;
+          };
+          install-TransportAgent -Name:$agentName -TransportAgentFactory:$agentFactory -AssemblyPath:$agentAssembly;
+          if ($agent.enabled -or ! $agent) 
+          { 
+              enable-transportagent -Identity:$agentName
+          };
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall />
+    </ServerTaskInfo>
+    
+    <!-- Install the Exchange Online Encryption Agent -->
+    <ServerTaskInfo Id="_34E3A9363A0345F2BCC3BDDA8CCF488B" Component="OfficeMain:\IP\Transport and Data Loss Prevention\Encryption\E4E\" ExcludeInDatacenterDedicated="true">
+      <Install>
+        <!-- This will install the Exchange Online Encryption agent.  This agent is responsible for 
+        encrypting messages when the EncryptMessage transport rule is triggered. -->
+        <Standalone>
+          $agentName = "Exchange Online Encryption Agent";
+          $agentFactory = "Microsoft.Exchange.MessagingPolicies.RmSvcAgent.E4eEncryptionAgentFactory";
+          $agentAssembly = ($RoleInstallPath + "TransportRoles\agents\RmSvc\Microsoft.Exchange.MessagingPolicies.RmSvcAgent.dll");
+          $agent = get-transportagent -Identity:$agentName;
+          if ($agent)
+          {
+              uninstall-transportagent -Identity:$agentName;
+          };
+          install-TransportAgent -Name:$agentName -TransportAgentFactory:$agentFactory -AssemblyPath:$agentAssembly;
+          if ($agent.enabled -or ! $agent) 
+          { 
+              enable-transportagent -Identity:$agentName
+          };
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>
+          $agentName = "Exchange Online Encryption Agent";
+          $agent = get-transportagent -Identity:$agentName;
+          if ($agent) 
+          {
+              uninstall-transportagent -Identity:$agentName;
+          };
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install the Exchange Online Decryption Agent -->
+    <ServerTaskInfo Id="_0F5948913B8842E59AFF1C82023C2B9B" Component="OfficeMain:\IP\Transport and Data Loss Prevention\Encryption\E4E\" ExcludeInDatacenterDedicated="true">
+      <Install>
+        <!-- This will install the Exchange Online Decryption agent.  This agent is responsible for 
+        decrypting messages when the DecryptMessage transport rule is triggered -->
+        <Standalone>
+          $agentName = "Exchange Online Decryption Agent";
+          $agentFactory = "Microsoft.Exchange.MessagingPolicies.RmSvcAgent.E4eDecryptionAgentFactory";
+          $agentAssembly = ($RoleInstallPath + "TransportRoles\agents\RmSvc\Microsoft.Exchange.MessagingPolicies.RmSvcAgent.dll");
+          $agent = get-transportagent -Identity:$agentName;
+          if ($agent)
+          {
+              uninstall-transportagent -Identity:$agentName;
+          };
+          install-TransportAgent -Name:$agentName -TransportAgentFactory:$agentFactory -AssemblyPath:$agentAssembly;
+          set-TransportAgent -Identity:$agentName -Priority:1
+          if ($agent.enabled -or ! $agent) 
+          { 
+              enable-transportagent -Identity:$agentName
+          };
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>
+          $agentName = "Exchange Online Decryption Agent";
+          $agent = get-transportagent -Identity:$agentName;
+          if ($agent) 
+          {
+              uninstall-transportagent -Identity:$agentName;
+          };
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- 
+     Add registry key containing corresponding FOPE regiontag information. This is used to communicate to FOPE dataservice in the correct
+     region when there is no tenant corresponding to the request (Example: Sysprobe message trace logs).
+     Add registry key for MessageTracing Combo log path.
+    -->
+    <ServerTaskInfo Id="_678f5b8ad5f911e1a1c5b8ac6f879216" Component="Office15:\Current\Forefront for Office Datacenter\Deployment and Configuration Management\Deployment">
+      <Install>
+        <Standalone>
+            $ExchangeLabsRegKey = 'HKLM:\SOFTWARE\Microsoft\ExchangeLabs'
+            $RegionTagRegValueName = 'RegionTag'
+            New-ItemProperty -path "$ExchangeLabsRegKey" -Name $RegionTagRegValueName -Value $RoleDatacenterRegionTag -Force
+            Write-ExchangeSetupLog -Info "Wrote registry key: $ExchangeLabsRegKey\$RegionTagRegValueName."
+
+            $FfoDataServiceHostSuffixRegValueName = 'FfoDataServiceHostSuffix'
+            New-ItemProperty -path "$ExchangeLabsRegKey" -Name $FfoDataServiceHostSuffixRegValueName -Value $RoleDatacenterFfoDataServiceHostSuffix -Force
+            Write-ExchangeSetupLog -Info "Wrote registry key: $ExchangeLabsRegKey\$FfoDataServiceHostSuffixRegValueName."
+
+            [string]$ExoMessageTraceComboLogPathRoot = "D:\ExoMessageTraceLogs"
+            New-ItemProperty -path "$ExchangeLabsRegKey" -Name 'ExoMessageTraceLogPath' -Value $ExoMessageTraceComboLogPathRoot -Force
+            New-Item -Path (Join-Path -path $ExoMessageTraceComboLogPathRoot -childPath "MSGTRACECOMBO") -Type Directory -Force
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!--create message tracing service log directory -->
+    <ServerTaskInfo Id="_b8a76ff6fcda4fc2a95301dcf747d490" Component="Office15:\Current\Forefront for Office Datacenter\Deployment and Configuration Management\Deployment">
+      <Install>
+        <Standalone>
+          [string]$MessageTracingServiceLogsRoot = "D:\MessageTracingServiceLogs"
+          New-Item -Path $MessageTracingServiceLogsRoot -Type Directory -Force
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery />
+      <Uninstall />
+    </ServerTaskInfo>
+ 
+    <!-- Setup Transport Server -->
+    <ServerTaskInfo Id="_17FFC0DABF8343DA8199D6E4C740DFD6" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          set-transportservice `
+            -Identity $RoleFqdnOrName `
+            -RoutingTableLogMaxDirectorySize 500MB `
+            -DomainController $RoleDomainController
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <DisasterRecovery />
+      <Uninstall />
+    </ServerTaskInfo>   
+    
+    <!-- Start transport service. This step was added by change 569622 and it is not clear why it is needed. -->
+    <ServerTaskInfo Id="_DB9A91A609E74dad9720C681D281EABE" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+        <Install>
+            <Standalone>
+                Start-SetupService -ServiceName MSExchangeTransport
+            </Standalone>
+        </Install>
+        <BuildToBuildUpgrade UseInstallTasks="true"/>
+        <DisasterRecovery UseInstallTasks="true"/>
+        <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Stop Antimalware Service - MSExchangeAntimalwareSvc -->
+    <ServerTaskInfo Id="_80397559940442FA939ABD52916C59D2" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>
+          $serviceName = "MSExchangeAntimalwareSvc"
+          Stop-SetupService -ServiceName $serviceName
+          Set-Service $serviceName -StartupType Disabled
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall />
+    </ServerTaskInfo>
+
+  </ServerTasks>
+
+</SetupComponentInfo>

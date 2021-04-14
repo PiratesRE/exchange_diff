@@ -1,0 +1,550 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo Name="Client Access Perf Counters" DescriptionId="ClientAccessPerfCountersComponentDescription">
+
+    <ServerTasks>
+
+        <!-- Install/remove Owa Install Single Counters -->
+        <ServerTaskInfo Id="_deb99c54869843b68426390615283ab7" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install IsFatal="false">
+                <Standalone>new-PerfCounters -DefinitionFileName OwaInstallSingleCounters.xml</Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true" />
+            <DisasterRecovery UseInstallTasks="true" />
+            <Uninstall IsFatal="false">
+                <Standalone>remove-PerfCounters -DefinitionFileName OwaInstallSingleCounters.xml</Standalone>
+            </Uninstall>
+        </ServerTaskInfo>
+
+        <!-- Install/remove ECP Counters -->
+        <ServerTaskInfo Id="_ca78563ec1f1468982d1a2e59c6001bd" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install IsFatal="false">
+                <Standalone>new-PerfCounters -DefinitionFileName EcpPerfCounters.xml</Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true" />
+            <DisasterRecovery UseInstallTasks="true" />
+            <Uninstall IsFatal="false">
+                <Standalone>remove-PerfCounters -DefinitionFileName EcpPerfCounters.xml</Standalone>
+            </Uninstall>
+        </ServerTaskInfo>
+
+        <!-- Install/remove Reporting web service Counters -->
+        <ServerTaskInfo Id="_e69a559428fb42029ca3261e795b216d" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install IsFatal="false">
+                <Standalone>new-PerfCounters -DefinitionFileName RwsPerfCounters.xml</Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true" />
+            <DisasterRecovery UseInstallTasks="true" />
+            <Uninstall IsFatal="false">
+                <Standalone>remove-PerfCounters -DefinitionFileName RwsPerfCounters.xml</Standalone>
+            </Uninstall>
+        </ServerTaskInfo>
+
+        <!-- Install/remove Infoworker Availability Performance Counters -->
+        <ServerTaskInfo Id="_c335490f948a4b16b5e2d2ce5f1eb9e7" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install IsFatal="false">
+                <Standalone>new-PerfCounters -DefinitionFileName InfoworkerAvailabilityPerformanceCounters.xml</Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true" />
+            <DisasterRecovery UseInstallTasks="true" />
+            <Uninstall IsFatal="false">
+                <Standalone>remove-PerfCounters -DefinitionFileName InfoworkerAvailabilityPerformanceCounters.xml</Standalone>
+            </Uninstall>
+        </ServerTaskInfo>
+
+        <!-- Install/remove Infoworker Sharing Performance Counters -->
+        <ServerTaskInfo Id="_5af856aa00ae485ca206c5cdd13e9128" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install IsFatal="false">
+                <Standalone>new-PerfCounters -DefinitionFileName InfoworkerSharingPerformanceCounters.xml</Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true" />
+            <DisasterRecovery UseInstallTasks="true" />
+            <Uninstall IsFatal="false">
+                <Standalone>remove-PerfCounters -DefinitionFileName InfoworkerSharingPerformanceCounters.xml</Standalone>
+            </Uninstall>
+        </ServerTaskInfo>
+
+        <!-- Install/remove throttling perf counters -->
+        <ServerTaskInfo Id="_86121d1b951e43fb934f1f1d573362eb" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install IsFatal="false">
+                <Standalone>new-PerfCounters -DefinitionFileName ThrottlingPerformanceCounters.xml</Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true" />
+            <DisasterRecovery UseInstallTasks="true" />
+            <Uninstall IsFatal="false">
+                <Standalone>remove-PerfCounters -DefinitionFileName ThrottlingPerformanceCounters.xml</Standalone>
+            </Uninstall>
+        </ServerTaskInfo>
+
+        <!-- Install/remove middle-tier store perf counters -->
+        <ServerTaskInfo Id="_ea5896b92c494834b1a93c4620fcaef4" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install IsFatal="false">
+                <Standalone>new-PerfCounters -DefinitionFileName MiddleTierStoragePerformanceCounters.xml</Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true" />
+            <DisasterRecovery UseInstallTasks="true" />
+            <Uninstall IsFatal="false">
+                <Standalone>remove-PerfCounters -DefinitionFileName MiddleTierStoragePerformanceCounters.xml</Standalone>
+            </Uninstall>
+        </ServerTaskInfo>
+
+        <!-- Install/remove Active Manager Client Counters -->
+        <ServerTaskInfo Id="_dab6f03bdf5141efb7b017c3009fb9e6" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install IsFatal="false">
+                <Standalone>new-PerfCounters -DefinitionFileName ActiveManagerClientPerfmon.xml</Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true" />
+            <DisasterRecovery UseInstallTasks="true" />
+            <Uninstall IsFatal="false">
+                <Standalone>remove-PerfCounters -DefinitionFileName ActiveManagerClientPerfmon.xml</Standalone>
+            </Uninstall>
+        </ServerTaskInfo>
+
+        <!-- Install/remove Rms perf counters -->
+        <ServerTaskInfo Id="_5471455db0ef4610bf68fe7ad9417e19" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install IsFatal="false">
+                <Standalone>new-PerfCounters -DefinitionFileName RmsPerfCounters.xml</Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true" />
+            <DisasterRecovery UseInstallTasks="true" />
+            <Uninstall IsFatal="false">
+                <Standalone>remove-PerfCounters -DefinitionFileName RmsPerfCounters.xml</Standalone>
+            </Uninstall>
+        </ServerTaskInfo>
+
+        <!-- Install/remove Infoworker MailTips Performance Counters -->
+        <ServerTaskInfo Id="_81ad52cb2950483196b52371b4d992c8" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install IsFatal="false">
+                <Standalone>new-PerfCounters -DefinitionFileName InfoworkerMailTipsPerformanceCounters.xml</Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true" />
+            <DisasterRecovery UseInstallTasks="true" />
+            <Uninstall IsFatal="false">
+                <Standalone>remove-PerfCounters -DefinitionFileName InfoworkerMailTipsPerformanceCounters.xml</Standalone>
+            </Uninstall>
+        </ServerTaskInfo>
+
+        <!-- Install/remove Infoworker UserPhotos Performance Counters -->
+        <ServerTaskInfo Id="_072bf6737f1c42a0a8847ce35cf8a0c7" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install IsFatal="false">
+                <Standalone>new-PerfCounters -DefinitionFileName InfoworkerUserPhotosPerformanceCounters.xml</Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true" />
+            <DisasterRecovery UseInstallTasks="true" />
+            <Uninstall IsFatal="false">
+                <Standalone>remove-PerfCounters -DefinitionFileName InfoworkerUserPhotosPerformanceCounters.xml</Standalone>
+            </Uninstall>
+        </ServerTaskInfo>
+
+        <!-- Install/remove Air Sync Counters -->
+        <ServerTaskInfo Id="_50b64611f7444bb49d50e00c206d2c13" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install IsFatal="false">
+                <Standalone>new-PerfCounters -DefinitionFileName AirSyncCounters.xml</Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true" />
+            <DisasterRecovery UseInstallTasks="true" />
+            <Uninstall IsFatal="false">
+                <Standalone>remove-PerfCounters -DefinitionFileName AirSyncCounters.xml</Standalone>
+            </Uninstall>
+        </ServerTaskInfo>
+
+        <!-- Install/remove Client Access Rules Counters -->
+        <ServerTaskInfo Id="_f2620ff8c3754396a8ea7d77257e2895" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install IsFatal="false">
+                <Standalone>new-PerfCounters -DefinitionFileName ClientAccessRulesPerformanceCounters.xml</Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true" />
+            <DisasterRecovery UseInstallTasks="true" />
+            <Uninstall IsFatal="false">
+                <Standalone>remove-PerfCounters -DefinitionFileName ClientAccessRulesPerformanceCounters.xml</Standalone>
+            </Uninstall>
+        </ServerTaskInfo>
+
+        <!-- Install/remove Imap4 Counters -->
+        <ServerTaskInfo Id="_4ef0f16c017840a583ace9f062300207" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install IsFatal="false">
+                <Standalone>new-PerfCounters -DefinitionFileName Imap4Counters.xml</Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true" />
+            <DisasterRecovery UseInstallTasks="true" />
+            <Uninstall IsFatal="false">
+                <Standalone>remove-PerfCounters -DefinitionFileName Imap4Counters.xml</Standalone>
+            </Uninstall>
+        </ServerTaskInfo>
+
+        <!-- Install/remove Pop3 Counters -->
+        <ServerTaskInfo Id="_135fb06dadd9403a83ceebb290638efe" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install IsFatal="false">
+                <Standalone>new-PerfCounters -DefinitionFileName Pop3Counters.xml</Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true" />
+            <DisasterRecovery UseInstallTasks="true" />
+            <Uninstall IsFatal="false">
+                <Standalone>remove-PerfCounters -DefinitionFileName Pop3Counters.xml</Standalone>
+            </Uninstall>
+        </ServerTaskInfo>
+
+        <!-- Install/remove Web Service Counters -->
+        <ServerTaskInfo Id="_312e8d44e92b45e0809f9d3d5dc2cfc0" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install IsFatal="false">
+                <Standalone>new-PerfCounters -DefinitionFileName WsPerformanceCounters.xml</Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true" />
+            <DisasterRecovery UseInstallTasks="true" />
+            <Uninstall IsFatal="false">
+                <Standalone>remove-PerfCounters -DefinitionFileName WsPerformanceCounters.xml</Standalone>
+            </Uninstall>
+        </ServerTaskInfo>
+
+        <!-- Install/remove UM Web Service Counters -->
+        <ServerTaskInfo Id="_3c333497697041cb854190ec31c17b18" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install IsFatal="false">
+                <Standalone>new-PerfCounters -DefinitionFileName UMClientAccessCounters.xml</Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true" />
+            <DisasterRecovery UseInstallTasks="true" />
+            <Uninstall IsFatal="false">
+                <Standalone>remove-PerfCounters -DefinitionFileName UMClientAccessCounters.xml</Standalone>
+            </Uninstall>
+        </ServerTaskInfo>
+
+        <!-- Install/remove Autodiscover Counters -->
+        <ServerTaskInfo Id="_ba015b97cc0b4beba7b25b6cb297fcac" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install IsFatal="false">
+                <Standalone>new-PerfCounters -DefinitionFileName AutodiscoverPerformanceCounters.xml</Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true" />
+            <DisasterRecovery UseInstallTasks="true" />
+            <Uninstall IsFatal="false">
+                <Standalone>remove-PerfCounters -DefinitionFileName AutodiscoverPerformanceCounters.xml</Standalone>
+            </Uninstall>
+        </ServerTaskInfo>
+
+        <!-- Install/remove OAuth Counters -->
+        <ServerTaskInfo Id="_3daffea50d5a4318aab4aa737e508146" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install IsFatal="false">
+                <Standalone>new-PerfCounters -DefinitionFileName OAuthCounters.xml</Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true" />
+            <DisasterRecovery UseInstallTasks="true" />
+            <Uninstall IsFatal="false">
+                <Standalone>remove-PerfCounters -DefinitionFileName OAuthCounters.xml</Standalone>
+            </Uninstall>
+        </ServerTaskInfo>
+
+        <!-- Install/remove Message Tracking Center Counters -->
+        <ServerTaskInfo Id="_c71073d7f1ab4c119af83efb513b3a9d" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install IsFatal="false">
+                <Standalone>new-PerfCounters -DefinitionFileName InfoWorkerMessageTrackingPerformanceCounters.xml</Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true" />
+            <DisasterRecovery UseInstallTasks="true" />
+            <Uninstall IsFatal="false">
+                <Standalone>remove-PerfCounters -DefinitionFileName InfoWorkerMessageTrackingPerformanceCounters.xml</Standalone>
+            </Uninstall>
+        </ServerTaskInfo>
+
+        <!-- Install/remove RPC Client Access Service Counters -->
+        <ServerTaskInfo Id="_abdaf0bf21f4473b88819ee85cada219" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install IsFatal="false">
+                <Standalone>new-PerfCounters -DefinitionFileName RpcClientAccessPerformanceCounters.xml</Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true" />
+            <DisasterRecovery UseInstallTasks="true" />
+            <Uninstall IsFatal="false">
+                <Standalone>remove-PerfCounters -DefinitionFileName RpcClientAccessPerformanceCounters.xml</Standalone>
+            </Uninstall>
+        </ServerTaskInfo>
+
+        <!-- Install/remove RPC Client Access Service Server Performance Counters -->
+        <ServerTaskInfo Id="_9f160f3e42984edfa25b62424ebc05b5" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install IsFatal="false">
+                <Standalone>new-PerfCounters -DefinitionFileName RpcClientAccessServerPerformanceCounters.xml</Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true" />
+            <DisasterRecovery UseInstallTasks="true" />
+            <Uninstall IsFatal="false">
+                <Standalone>remove-PerfCounters -DefinitionFileName RpcClientAccessServerPerformanceCounters.xml</Standalone>
+            </Uninstall>
+        </ServerTaskInfo>
+
+        <!-- Install/remove Address Book Service Counters -->
+        <ServerTaskInfo Id="_e55cb179521a4dacbeaa588c6948cf14" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install IsFatal="false">
+                <Standalone>new-PerfCounters -DefinitionFileName AddressBookServicePerformanceCounters.xml</Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true" />
+            <DisasterRecovery UseInstallTasks="true" />
+            <Uninstall IsFatal="false">
+                <Standalone>remove-PerfCounters -DefinitionFileName AddressBookServicePerformanceCounters.xml</Standalone>
+            </Uninstall>
+        </ServerTaskInfo>
+
+        <!-- Install/remove RPC Entry Points Performance Counters -->
+        <ServerTaskInfo Id="_064a7856cf7c4b0399c85cf4f3bc2f1c" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+          <Install IsFatal="false">
+            <Standalone>new-PerfCounters -DefinitionFileName RpcEntryPointsPerformanceCounters.xml</Standalone>
+          </Install>
+          <BuildToBuildUpgrade UseInstallTasks="true" />
+          <DisasterRecovery UseInstallTasks="true" />
+          <Uninstall IsFatal="false">
+            <Standalone>remove-PerfCounters -DefinitionFileName RpcEntryPointsPerformanceCounters.xml</Standalone>
+          </Uninstall>
+        </ServerTaskInfo>
+
+        <!-- Install/remove MapiHttp Emsmdb Performance Counters -->
+        <ServerTaskInfo Id="_42325F33-A961-41FE-B6B5-5CFB3AA9820A" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install IsFatal="false">
+                <Standalone>new-PerfCounters -DefinitionFileName MapiHttpEmsmdbPerformanceCounters.xml</Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true" />
+            <DisasterRecovery UseInstallTasks="true" />
+            <Uninstall IsFatal="false">
+                <Standalone>remove-PerfCounters -DefinitionFileName MapiHttpEmsmdbPerformanceCounters.xml</Standalone>
+            </Uninstall>
+        </ServerTaskInfo>
+
+        <!-- Install/remove MapiHttp Nspi Performance Counters -->
+        <ServerTaskInfo Id="_4C04D747-3B5C-400A-980F-45504324EF42" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install IsFatal="false">
+                <Standalone>new-PerfCounters -DefinitionFileName MapiHttpNspiPerformanceCounters.xml</Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true" />
+            <DisasterRecovery UseInstallTasks="true" />
+            <Uninstall IsFatal="false">
+                <Standalone>remove-PerfCounters -DefinitionFileName MapiHttpNspiPerformanceCounters.xml</Standalone>
+            </Uninstall>
+        </ServerTaskInfo>
+
+        <!-- Install/remove Throttling Service Client perf counters -->
+        <ServerTaskInfo Id="_5ab36fffacd04975bb1bc681a214bf71" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install IsFatal="false">
+                <Standalone>new-PerfCounters -DefinitionFileName ThrottlingServiceClientPerformanceCounters.xml</Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true" />
+            <DisasterRecovery UseInstallTasks="true" />
+            <Uninstall IsFatal="false">
+                <Standalone>remove-PerfCounters -DefinitionFileName ThrottlingServiceClientPerformanceCounters.xml</Standalone>
+            </Uninstall>
+        </ServerTaskInfo>
+
+        <!-- Install/remove MailboxReplicationService perf counters -->
+        <ServerTaskInfo Id="_6ca23933132d44b39d6586cb3f9f8f21" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install IsFatal="false">
+                <Standalone>new-PerfCounters -DefinitionFileName MSExchMailboxReplicationServicePerformanceCounters.xml</Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true" />
+            <DisasterRecovery UseInstallTasks="true" />
+            <Uninstall IsFatal="false">
+                <Standalone>remove-PerfCounters -DefinitionFileName MSExchMailboxReplicationServicePerformanceCounters.xml</Standalone>
+            </Uninstall>
+        </ServerTaskInfo>
+
+        <!-- Install/remove MailboxReplicationService per-mdb perf counters -->
+        <ServerTaskInfo Id="_6602c41b35254405bed412fab7d527fe" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install IsFatal="false">
+                <!-- 
+        Specify non-default FileMappingSize for this category: it can have a very large number of instances: 
+        each E14 MDB in AD site has its own instance.
+        The default FileMappingSize value is 131072 (0x20000), which fits about 39 instances of this category.
+        We want to be able to fit more by default, so we are setting the FileMappingSize to 2097152 (0x200000)
+        which should fit 16 times more instances.
+        -->
+                <Standalone>new-PerfCounters -DefinitionFileName MSExchMailboxReplicationServicePerMdbPerformanceCounters.xml -FileMappingSize 2097152</Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true" />
+            <DisasterRecovery UseInstallTasks="true" />
+            <Uninstall IsFatal="false">
+                <Standalone>remove-PerfCounters -DefinitionFileName MSExchMailboxReplicationServicePerMdbPerformanceCounters.xml</Standalone>
+            </Uninstall>
+        </ServerTaskInfo>
+
+		        <!-- Install/remove Load Balancing Service perf counters -->
+        <ServerTaskInfo Id="_74e45a45ea8c449092a10929ae24ba4b" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install IsFatal="false">
+                <Standalone>new-PerfCounters -DefinitionFileName MlbPerformanceCounters.xml</Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true" />
+            <DisasterRecovery UseInstallTasks="true" />
+            <Uninstall IsFatal="false">
+                <Standalone>remove-PerfCounters -DefinitionFileName MlbPerformanceCounters.xml</Standalone>
+            </Uninstall>
+        </ServerTaskInfo>
+
+		        <!-- Install/remove Load Balancing Service multi-instance perf counters -->
+        <ServerTaskInfo Id="_a3bcb686add64cf296c8616d387d0323" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install IsFatal="false">
+                <!-- 
+        Specify non-default FileMappingSize for this category: it can have a very large number of instances: 
+        each E14 MDB in AD site has its own instance.
+        The default FileMappingSize value is 131072 (0x20000), which fits about 39 instances of this category.
+        We want to be able to fit more by default, so we are setting the FileMappingSize to 2097152 (0x200000)
+        which should fit 16 times more instances.
+        -->
+                <Standalone>new-PerfCounters -DefinitionFileName MlbMultiInstancePerformanceCounters.xml -FileMappingSize 2097152</Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true" />
+            <DisasterRecovery UseInstallTasks="true" />
+            <Uninstall IsFatal="false">
+                <Standalone>remove-PerfCounters -DefinitionFileName MlbMultiInstancePerformanceCounters.xml</Standalone>
+            </Uninstall>
+        </ServerTaskInfo>
+
+        <!-- Install/remove Provisioning Perf Counters -->
+        <ServerTaskInfo Id="_c00c15c4ef6f479b9f5deb852d8eda7d" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install IsFatal="false">
+                <Standalone>new-PerfCounters -DefinitionFileName ProvisioningPerfCounters.xml</Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true" />
+            <DisasterRecovery UseInstallTasks="true" />
+            <Uninstall IsFatal="false">
+                <Standalone>remove-PerfCounters -DefinitionFileName ProvisioningPerfCounters.xml</Standalone>
+            </Uninstall>
+        </ServerTaskInfo>
+
+        <!-- Install/remove galsync Perf Counters -->
+        <ServerTaskInfo Id="_fe1a2a7c828f4b57abc2e50dc09baddf" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install IsFatal="false">
+                <Standalone>new-PerfCounters -DefinitionFileName GalsyncPerfCounters.xml</Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true" />
+            <DisasterRecovery UseInstallTasks="true" />
+            <Uninstall IsFatal="false">
+                <Standalone>remove-PerfCounters -DefinitionFileName GalsyncPerfCounters.xml</Standalone>
+            </Uninstall>
+        </ServerTaskInfo>
+
+        <!-- Install/remove Back Sync perf counters -->
+        <ServerTaskInfo Id="_35D14CB8B01949818832943A391D77B9" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install IsFatal="false">
+                <Standalone>new-PerfCounters -DefinitionFileName BackSyncPerfCounters.xml</Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true" />
+            <DisasterRecovery UseInstallTasks="true" />
+            <Uninstall IsFatal="false">
+                <Standalone>remove-PerfCounters -DefinitionFileName BackSyncPerfCounters.xml</Standalone>
+            </Uninstall>
+        </ServerTaskInfo>
+
+        <!-- Install/remove Admin Audit perf counters -->
+        <ServerTaskInfo Id="_e69599d235234effb6d2740f3c52f7e1" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install IsFatal="false">
+                <Standalone>new-PerfCounters -DefinitionFileName AdminAuditPerfCounters.xml</Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true" />
+            <DisasterRecovery UseInstallTasks="true" />
+            <Uninstall IsFatal="false">
+                <Standalone>remove-PerfCounters -DefinitionFileName AdminAuditPerfCounters.xml</Standalone>
+            </Uninstall>
+        </ServerTaskInfo>
+
+        <!-- Install/remove Discovery Search Preview Perf counters -->
+        <ServerTaskInfo Id="_09bd11b57f6445e890391a507262cf32" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install IsFatal="false">
+                <Standalone>new-PerfCounters -DefinitionFileName InfoworkerMultiMailboxSearchPerformanceCounters.xml</Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true" />
+            <DisasterRecovery UseInstallTasks="true" />
+            <Uninstall IsFatal="false">
+                <Standalone>remove-PerfCounters -DefinitionFileName InfoworkerMultiMailboxSearchPerformanceCounters.xml</Standalone>
+            </Uninstall>
+        </ServerTaskInfo>
+
+        <!-- Install/remove Provisioning Cache perf counters -->
+        <ServerTaskInfo Id="_324687361E1C473A834C22A66104679f" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install IsFatal="false">
+                <Standalone>new-PerfCounters -DefinitionFileName ProvisioningCachePerformanceCounters.xml</Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true" />
+            <DisasterRecovery UseInstallTasks="true" />
+            <Uninstall IsFatal="false">
+                <Standalone>remove-PerfCounters -DefinitionFileName ProvisioningCachePerformanceCounters.xml</Standalone>
+            </Uninstall>
+        </ServerTaskInfo>
+
+        <!-- Install/remove OAB Request Handler Perf counters -->
+        <ServerTaskInfo Id="_98C36FFEC7944065889DB24067CFD3EE" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install IsFatal="false">
+                <Standalone>new-PerfCounters -DefinitionFileName OABRequestHandlerPerformanceCounters.xml</Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true" />
+            <DisasterRecovery UseInstallTasks="true" />
+            <Uninstall IsFatal="false">
+                <Standalone>remove-PerfCounters -DefinitionFileName OABRequestHandlerPerformanceCounters.xml</Standalone>
+            </Uninstall>
+        </ServerTaskInfo>
+
+        <!-- Install/remove DlpPolicyTips Performance Counters -->
+        <ServerTaskInfo Id="_1F5A7B68C95B42568E02FAA15A05EF17" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install IsFatal="false">
+                <Standalone>new-PerfCounters -DefinitionFileName DlpPolicyTipsPerformanceCounters.xml</Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true" />
+            <DisasterRecovery UseInstallTasks="true" />
+            <Uninstall IsFatal="false">
+                <Standalone>remove-PerfCounters -DefinitionFileName DlpPolicyTipsPerformanceCounters.xml</Standalone>
+            </Uninstall>
+        </ServerTaskInfo>
+
+        <!-- Install/remove ConfigurationCache Performance Counters -->
+        <ServerTaskInfo Id="_995DEA7A1AC5467C89939F5F8CE5F2AF" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install IsFatal="false">
+                <Standalone>new-PerfCounters -DefinitionFileName ConfigurationCachePerformanceCounters.xml</Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true" />
+            <DisasterRecovery UseInstallTasks="true" />
+            <Uninstall IsFatal="false">
+                <Standalone>remove-PerfCounters -DefinitionFileName ConfigurationCachePerformanceCounters.xml</Standalone>
+            </Uninstall>
+        </ServerTaskInfo>
+
+        <!-- Install/remove Routing Update Module perf counters -->
+        <ServerTaskInfo Id="_64878c3a0c544c95a2ee38fa6c3db182" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install IsFatal="false">
+                <Standalone>new-PerfCounters -DefinitionFileName RoutingUpdateModuleCounters.xml</Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true" />
+            <DisasterRecovery UseInstallTasks="true" />
+            <Uninstall IsFatal="false">
+                <Standalone>remove-PerfCounters -DefinitionFileName RoutingUpdateModuleCounters.xml</Standalone>
+            </Uninstall>
+        </ServerTaskInfo>
+
+        <!-- Install/remove HxService Perf counters -->
+        <ServerTaskInfo Id="_AF120757-D075-41F6-86B9-A691E9006BB1" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install IsFatal="false">
+                <Standalone>new-PerfCounters -DefinitionFileName HxServicePerfCounters.xml</Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true" />
+            <DisasterRecovery UseInstallTasks="true" />
+            <Uninstall IsFatal="false">
+                <Standalone>remove-PerfCounters -DefinitionFileName HxServicePerfCounters.xml</Standalone>
+            </Uninstall>
+        </ServerTaskInfo>
+
+        <!-- Install/remove HxService service commands Perf counters -->
+        <ServerTaskInfo Id="_101F6136-4329-4D38-88AB-48CEBC40C2FA" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install IsFatal="false">
+                <Standalone>new-PerfCounters -DefinitionFileName HxServiceCommandsPerfCounters.xml</Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true" />
+            <DisasterRecovery UseInstallTasks="true" />
+            <Uninstall IsFatal="false">
+                <Standalone>remove-PerfCounters -DefinitionFileName HxServiceCommandsPerfCounters.xml</Standalone>
+            </Uninstall>
+        </ServerTaskInfo>
+
+        <!-- Install/remove FBL Counters -->
+        <ServerTaskInfo Id="_327ab93bda884fdc9de4ff2e302e65c5" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+          <Install IsFatal="false">
+            <Standalone>new-PerfCounters -DefinitionFileName FBLPerfCounters.xml</Standalone>
+          </Install>
+          <BuildToBuildUpgrade UseInstallTasks="true" />
+          <DisasterRecovery UseInstallTasks="true" />
+          <Uninstall IsFatal="false">
+            <Standalone>remove-PerfCounters -DefinitionFileName FBLPerfCounters.xml</Standalone>
+          </Uninstall>
+        </ServerTaskInfo>
+    </ServerTasks>
+
+</SetupComponentInfo>
+

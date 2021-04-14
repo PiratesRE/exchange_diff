@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo Name="Exchange 2003 Registry Configuration" DescriptionId="LegacyRegistryMarkersComponentDescription">
+
+  <ServerTasks>
+
+    <!-- Install/remove registry values used by Exchange 2003 components -->
+    <ServerTaskInfo Id="_7d6dadc1069b42ac93eadd1143c04a1a" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>set-ExsetdataRegistryMarkers</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>remove-ExsetdataRegistryMarkers</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+  </ServerTasks>
+
+</SetupComponentInfo>
+

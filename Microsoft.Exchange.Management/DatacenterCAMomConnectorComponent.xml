@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo IsDatacenterOnly="true" Name="Exchange Central Admin Mom Connector Component" IsDatacenterDedicatedOnly="true">
+
+    <ServerTasks>
+    <!-- Installs/Uninstalls the CA MOM Connector service. -->
+		<!-- CA Mom Connector service runs with the same account as Central Admin service.-->
+    <ServerTaskInfo Id="_464c058ee85447458ef4d845d6dabcc0" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Monitoring">
+      <Install>
+        <Standalone>
+        if (!(get-service MSExchangeCAMOMConnector* | where {$_.name -eq "MSExchangeCAMOMConnector"}))
+        {
+            install-momconnectorservice;
+        }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade>
+      <Standalone>
+        if ((get-service MSExchangeCAMOMConnector* | where {$_.name -eq "MSExchangeCAMOMConnector"}))
+        {
+            uninstall-momconnectorservice;
+        }
+
+        install-momconnectorservice;
+      </Standalone>
+      </BuildToBuildUpgrade>
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>
+          uninstall-momconnectorservice
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+  </ServerTasks>
+</SetupComponentInfo>
+

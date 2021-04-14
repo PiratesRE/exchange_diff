@@ -1,0 +1,567 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{09CD9476-CD82-489E-B9E2-84B47CA14166}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Microsoft</RootNamespace>
+    <AssemblyName>Microsoft.Exchange.Management.Transport</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Exchange.PswsClient" />
+    <Reference Include="Microsoft.IdentityModel" />
+    <Reference Include="Microsoft.IdentityModel.Extensions" />
+    <Reference Include="Microsoft.Office.Client.Policy" />
+    <Reference Include="Microsoft.Online.SharePoint.Client.Tenant" />
+    <Reference Include="Microsoft.SharePoint.Client" />
+    <Reference Include="Microsoft.SharePoint.Client.Runtime" />
+    <Reference Include="Microsoft.SharePoint.Client.Search" />
+    <Reference Include="System" />
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.DirectoryServices" />
+    <Reference Include="System.IdentityModel" />
+    <Reference Include="System.Management.Automation" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Exchange\Management\AgentLog\AgentLogEntry.cs" />
+    <Compile Include="Exchange\Management\AgentLog\GetAgentLog.cs" />
+    <Compile Include="Exchange\Management\AgentTasks\AgentBaseTask.cs" />
+    <Compile Include="Exchange\Management\AgentTasks\DisableTransportAgent.cs" />
+    <Compile Include="Exchange\Management\AgentTasks\EnableTransportAgent.cs" />
+    <Compile Include="Exchange\Management\AgentTasks\GetTransportAgent.cs" />
+    <Compile Include="Exchange\Management\AgentTasks\GetTransportPipeline.cs" />
+    <Compile Include="Exchange\Management\AgentTasks\InstallTransportAgent.cs" />
+    <Compile Include="Exchange\Management\AgentTasks\SetTransportAgent.cs" />
+    <Compile Include="Exchange\Management\AgentTasks\TransportAgent.cs" />
+    <Compile Include="Exchange\Management\AgentTasks\TransportAgentObjectId.cs" />
+    <Compile Include="Exchange\Management\AgentTasks\TransportAgentSchema.cs" />
+    <Compile Include="Exchange\Management\AgentTasks\TransportEvent.cs" />
+    <Compile Include="Exchange\Management\AgentTasks\TransportEventSchema.cs" />
+    <Compile Include="Exchange\Management\AgentTasks\UninstallTransportAgent.cs" />
+    <Compile Include="Exchange\Management\DataClassification\GetDataClassificationConfig.cs" />
+    <Compile Include="Exchange\Management\DataClassification\InstallDataClassificationConfig.cs" />
+    <Compile Include="Exchange\Management\DataClassification\SetDataClassificationConfig.cs" />
+    <Compile Include="Exchange\Management\Dsn\GetSystemMessage.cs" />
+    <Compile Include="Exchange\Management\Dsn\NewSystemMessage.cs" />
+    <Compile Include="Exchange\Management\Dsn\RemoveSystemMessage.cs" />
+    <Compile Include="Exchange\Management\Dsn\SetSystemMessage.cs" />
+    <Compile Include="Exchange\Management\EdgeSync\DomainSyncRecord.cs" />
+    <Compile Include="Exchange\Management\EdgeSync\EhfCompanyRecord.cs" />
+    <Compile Include="Exchange\Management\EdgeSync\EhfSyncDiffRecord.cs" />
+    <Compile Include="Exchange\Management\EdgeSync\EhfSyncObjectType.cs" />
+    <Compile Include="Exchange\Management\EdgeSync\ExchangeTenantRecord.cs" />
+    <Compile Include="Exchange\Management\EdgeSync\GetEdgeSyncEhfConnector.cs" />
+    <Compile Include="Exchange\Management\EdgeSync\GetEdgeSyncMservConnector.cs" />
+    <Compile Include="Exchange\Management\EdgeSync\GetEdgeSyncServiceConfig.cs" />
+    <Compile Include="Exchange\Management\EdgeSync\GetLocalADSite.cs" />
+    <Compile Include="Exchange\Management\EdgeSync\NewEdgeSyncEhfConnector.cs" />
+    <Compile Include="Exchange\Management\EdgeSync\NewEdgeSyncMservConnector.cs" />
+    <Compile Include="Exchange\Management\EdgeSync\NewEdgeSyncServiceConfig.cs" />
+    <Compile Include="Exchange\Management\EdgeSync\RemoveEdgeSyncEhfConnector.cs" />
+    <Compile Include="Exchange\Management\EdgeSync\RemoveEdgeSyncMservConnector.cs" />
+    <Compile Include="Exchange\Management\EdgeSync\SetEdgeSyncEhfConnector.cs" />
+    <Compile Include="Exchange\Management\EdgeSync\SetEdgeSyncMservConnector.cs" />
+    <Compile Include="Exchange\Management\EdgeSync\SetEdgeSyncServiceConfig.cs" />
+    <Compile Include="Exchange\Management\EdgeSync\SyncNowTask.cs" />
+    <Compile Include="Exchange\Management\EdgeSync\TestEdgeSyncBase.cs" />
+    <Compile Include="Exchange\Management\EdgeSync\TestEdgeSyncEhf.cs" />
+    <Compile Include="Exchange\Management\EdgeSync\TestEdgeSynchronization.cs" />
+    <Compile Include="Exchange\Management\EdgeSync\TestEdgeSyncMserv.cs" />
+    <Compile Include="Exchange\Management\EdgeSync\Utils.cs" />
+    <Compile Include="Exchange\Management\FfoQuarantine\GetQuarantineMessage.cs" />
+    <Compile Include="Exchange\Management\FfoQuarantine\GetQuarantineMessageHeader.cs" />
+    <Compile Include="Exchange\Management\FfoQuarantine\QuarantineMessage.cs" />
+    <Compile Include="Exchange\Management\FfoQuarantine\QuarantineMessageDirection.cs" />
+    <Compile Include="Exchange\Management\FfoQuarantine\QuarantineMessageDirectionEnum.cs" />
+    <Compile Include="Exchange\Management\FfoQuarantine\QuarantineMessageHeader.cs" />
+    <Compile Include="Exchange\Management\FfoQuarantine\QuarantineMessageType.cs" />
+    <Compile Include="Exchange\Management\FfoQuarantine\QuarantineMessageTypeEnum.cs" />
+    <Compile Include="Exchange\Management\FfoQuarantine\ReleaseQuarantineMessage.cs" />
+    <Compile Include="Exchange\Management\MailboxTransportSubmission\MapiProbe\DeleteMapiMailDefinition.cs" />
+    <Compile Include="Exchange\Management\MailboxTransportSubmission\MapiProbe\DeletionResult.cs" />
+    <Compile Include="Exchange\Management\MailboxTransportSubmission\MapiProbe\IMapiMessageSubmitter.cs" />
+    <Compile Include="Exchange\Management\MailboxTransportSubmission\MapiProbe\MapiMessageSubmitter.cs" />
+    <Compile Include="Exchange\Management\MailboxTransportSubmission\MapiProbe\MapiSubmitMonitoringSystemProbeFactory.cs" />
+    <Compile Include="Exchange\Management\MailboxTransportSubmission\MapiProbe\MapiSubmitSystemProbe.cs" />
+    <Compile Include="Exchange\Management\MailboxTransportSubmission\MapiProbe\MapiSubmitSystemProbeFactory.cs" />
+    <Compile Include="Exchange\Management\MailboxTransportSubmission\MapiProbe\MapiSubmitSystemProbeHandler.cs" />
+    <Compile Include="Exchange\Management\MailboxTransportSubmission\MapiProbe\SendMapiMailDefinition.cs" />
+    <Compile Include="Exchange\Management\MessagingPolicies\AddressRewrite\AddressRewriteEntryIdParameter.cs" />
+    <Compile Include="Exchange\Management\MessagingPolicies\AddressRewrite\GetAddressRewriteEntry.cs" />
+    <Compile Include="Exchange\Management\MessagingPolicies\AddressRewrite\NewAddressRewriteEntry.cs" />
+    <Compile Include="Exchange\Management\MessagingPolicies\AddressRewrite\RemoveAddressRewriteEntry.cs" />
+    <Compile Include="Exchange\Management\MessagingPolicies\AddressRewrite\SetAddressRewriteEntry.cs" />
+    <Compile Include="Exchange\Management\MessagingPolicies\AddressRewrite\Utils.cs" />
+    <Compile Include="Exchange\Management\MessagingPolicies\AttachFilter\AddAttachmentFilterEntry.cs" />
+    <Compile Include="Exchange\Management\MessagingPolicies\AttachFilter\AFilterUtils.cs" />
+    <Compile Include="Exchange\Management\MessagingPolicies\AttachFilter\GetAttachmentFilterEntry.cs" />
+    <Compile Include="Exchange\Management\MessagingPolicies\AttachFilter\GetAttachmentFilterListConfig.cs" />
+    <Compile Include="Exchange\Management\MessagingPolicies\AttachFilter\RemoveAttachmentFilterEntry.cs" />
+    <Compile Include="Exchange\Management\MessagingPolicies\AttachFilter\SetAttachmentFilteringConfigDefaults.cs" />
+    <Compile Include="Exchange\Management\MessagingPolicies\AttachFilter\SetAttachmentFilterListConfig.cs" />
+    <Compile Include="Exchange\Management\PerimeterConfig\DCPerimeterConfig.cs" />
+    <Compile Include="Exchange\Management\PerimeterConfig\DCPerimeterConfigTask.cs" />
+    <Compile Include="Exchange\Management\PerimeterConfig\GetDCPerimeterConfig.cs" />
+    <Compile Include="Exchange\Management\PerimeterConfig\GetPerimeterConfig.cs" />
+    <Compile Include="Exchange\Management\PerimeterConfig\SetDCPerimeterConfig.cs" />
+    <Compile Include="Exchange\Management\PerimeterConfig\SetPerimeterConfig.cs" />
+    <Compile Include="Exchange\Management\PolicyNudges\GetPolicyTipConfig.cs" />
+    <Compile Include="Exchange\Management\PolicyNudges\NewPolicyTipConfig.cs" />
+    <Compile Include="Exchange\Management\PolicyNudges\PolicyTipConfigIdParameter.cs" />
+    <Compile Include="Exchange\Management\PolicyNudges\RemovePolicyTipConfig.cs" />
+    <Compile Include="Exchange\Management\PolicyNudges\SetPolicyTipConfig.cs" />
+    <Compile Include="Exchange\Management\QueueDigest\DagGroupOfServersKey.cs" />
+    <Compile Include="Exchange\Management\QueueDigest\GetQueueDigest.cs" />
+    <Compile Include="Exchange\Management\QueueDigest\GetQueueDigestAdapter.cs" />
+    <Compile Include="Exchange\Management\QueueDigest\GetQueueDigestCmdletAdapter.cs" />
+    <Compile Include="Exchange\Management\QueueDigest\GetQueueDigestImpl.cs" />
+    <Compile Include="Exchange\Management\QueueDigest\GetQueueDigestMtrtImpl.cs" />
+    <Compile Include="Exchange\Management\QueueDigest\GetQueueDigestWebServiceImpl.cs" />
+    <Compile Include="Exchange\Management\QueueDigest\GroupOfServersKey.cs" />
+    <Compile Include="Exchange\Management\QueueDigest\SiteGroupOfServersKey.cs" />
+    <Compile Include="Exchange\Management\QueueViewerTasks\ErrorMapper.cs" />
+    <Compile Include="Exchange\Management\QueueViewerTasks\ExportMessage.cs" />
+    <Compile Include="Exchange\Management\QueueViewerTasks\FreezeMessage.cs" />
+    <Compile Include="Exchange\Management\QueueViewerTasks\FreezeQueue.cs" />
+    <Compile Include="Exchange\Management\QueueViewerTasks\GetMessageInfo.cs" />
+    <Compile Include="Exchange\Management\QueueViewerTasks\GetQueueInfo.cs" />
+    <Compile Include="Exchange\Management\QueueViewerTasks\MessageAction.cs" />
+    <Compile Include="Exchange\Management\QueueViewerTasks\MessageActionWithFilter.cs" />
+    <Compile Include="Exchange\Management\QueueViewerTasks\MessageActionWithIdentity.cs" />
+    <Compile Include="Exchange\Management\QueueViewerTasks\QueueAction.cs" />
+    <Compile Include="Exchange\Management\QueueViewerTasks\RedirectMessage.cs" />
+    <Compile Include="Exchange\Management\QueueViewerTasks\RemoveMessage.cs" />
+    <Compile Include="Exchange\Management\QueueViewerTasks\RetryQueue.cs" />
+    <Compile Include="Exchange\Management\QueueViewerTasks\RpcPagedGetObjectTask.cs" />
+    <Compile Include="Exchange\Management\QueueViewerTasks\SetMessage.cs" />
+    <Compile Include="Exchange\Management\QueueViewerTasks\UnfreezeMessage.cs" />
+    <Compile Include="Exchange\Management\QueueViewerTasks\UnfreezeQueue.cs" />
+    <Compile Include="Exchange\Management\ResubmitRequest\GetResubmitRequest.cs" />
+    <Compile Include="Exchange\Management\ResubmitRequest\NewResubmitRequest.cs" />
+    <Compile Include="Exchange\Management\ResubmitRequest\RemoveResubmitRequest.cs" />
+    <Compile Include="Exchange\Management\ResubmitRequest\ResubmitRequestDataProvider.cs" />
+    <Compile Include="Exchange\Management\ResubmitRequest\SetResubmitRequest.cs" />
+    <Compile Include="Exchange\Management\SecureMail\GetMessageClassification.cs" />
+    <Compile Include="Exchange\Management\SecureMail\InstallSystemMessageClassification.cs" />
+    <Compile Include="Exchange\Management\SecureMail\NewMessageClassification.cs" />
+    <Compile Include="Exchange\Management\SecureMail\RemoveClassification.cs" />
+    <Compile Include="Exchange\Management\SecureMail\SetMessageClassification.cs" />
+    <Compile Include="Exchange\Management\Supervision\GetSupervisionPolicy.cs" />
+    <Compile Include="Exchange\Management\Supervision\SetSupervisionPolicy.cs" />
+    <Compile Include="Exchange\Management\Supervision\SupervisionPolicy.cs" />
+    <Compile Include="Exchange\Management\Supervision\SupervisionPolicyId.cs" />
+    <Compile Include="Exchange\Management\Supervision\SupervisionPolicyPropertyBag.cs" />
+    <Compile Include="Exchange\Management\Supervision\SupervisionPolicySchema.cs" />
+    <Compile Include="Exchange\Management\Supervision\SupervisionTransportRule.cs" />
+    <Compile Include="Exchange\Management\SystemConfigurationTasks\InstallPerimeterConfigContainer.cs" />
+    <Compile Include="Exchange\Management\Tracking\BulkRecipientLookupCache.cs" />
+    <Compile Include="Exchange\Management\Tracking\Constants.cs" />
+    <Compile Include="Exchange\Management\Tracking\DeliveryStatusParameterSet.cs" />
+    <Compile Include="Exchange\Management\Tracking\EventSources.cs" />
+    <Compile Include="Exchange\Management\Tracking\GetMessageTrackingReport.cs" />
+    <Compile Include="Exchange\Management\Tracking\MessageTrackingConfigurableObject.cs" />
+    <Compile Include="Exchange\Management\Tracking\MessageTrackingReport.cs" />
+    <Compile Include="Exchange\Management\Tracking\MessageTrackingReportId.cs" />
+    <Compile Include="Exchange\Management\Tracking\MessageTrackingReportSchema.cs" />
+    <Compile Include="Exchange\Management\Tracking\MessageTrackingSearchResult.cs" />
+    <Compile Include="Exchange\Management\Tracking\MessageTrackingSharedResultSchema.cs" />
+    <Compile Include="Exchange\Management\Tracking\RecipientTrackingEvent.cs" />
+    <Compile Include="Exchange\Management\Tracking\RecipientTrackingEventSchema.cs" />
+    <Compile Include="Exchange\Management\Tracking\SearchDirection.cs" />
+    <Compile Include="Exchange\Management\Tracking\SearchMessageTrackingReport.cs" />
+    <Compile Include="Exchange\Management\Tracking\SupportedMessageClasses.cs" />
+    <Compile Include="Exchange\Management\Tracking\TraceLevel.cs" />
+    <Compile Include="Exchange\Management\Tracking\TrackingLocalizedException.cs" />
+    <Compile Include="Exchange\Management\Tracking\TrackingStringsLocDescriptionAttribute.cs" />
+    <Compile Include="Exchange\Management\Tracking\Utils.cs" />
+    <Compile Include="Exchange\Management\Tracking\_DeliveryStatus.cs" />
+    <Compile Include="Exchange\Management\TransportConfig\GetTransportConfig.cs" />
+    <Compile Include="Exchange\Management\TransportConfig\SetTransportConfig.cs" />
+    <Compile Include="Exchange\Management\TransportLogSearchTasks\ComponentLatencyParser.cs" />
+    <Compile Include="Exchange\Management\TransportLogSearchTasks\GetMessageTrackingLog.cs" />
+    <Compile Include="Exchange\Management\TransportLogSearchTasks\LatencyComponent.cs" />
+    <Compile Include="Exchange\Management\TransportLogSearchTasks\LogSearchTask.cs" />
+    <Compile Include="Exchange\Management\TransportLogSearchTasks\MessageLatencyType.cs" />
+    <Compile Include="Exchange\Management\TransportLogSearchTasks\MessageTrackingEvent.cs" />
+    <Compile Include="Exchange\Management\TransportLogSearchTasks\MessageTrackingLatency.cs" />
+    <Compile Include="Exchange\Management\TransportProcessingQuota\GetTransportProcessingQuotaConfig.cs" />
+    <Compile Include="Exchange\Management\TransportProcessingQuota\GetTransportProcessingQuotaDigest.cs" />
+    <Compile Include="Exchange\Management\TransportProcessingQuota\RemoveTransportProcessingQuotaOverride.cs" />
+    <Compile Include="Exchange\Management\TransportProcessingQuota\SetTransportProcessingQuotaConfig.cs" />
+    <Compile Include="Exchange\Management\TransportProcessingQuota\SetTransportProcessingQuotaOverride.cs" />
+    <Compile Include="Exchange\Management\TransportProcessingQuota\ThrottlingSource.cs" />
+    <Compile Include="Exchange\Management\TransportProcessingQuota\TransportProcessingQuotaBaseTask.cs" />
+    <Compile Include="Exchange\Management\TransportProcessingQuota\TransportProcessingQuotaDigest.cs" />
+    <Compile Include="Exchange\Management\Transport\AddRemoveExBindingsOverlappedException.cs" />
+    <Compile Include="Exchange\Management\Transport\AddRemoveSpBindingsOverlappedException.cs" />
+    <Compile Include="Exchange\Management\Transport\BindingCannotCombineAllWithIndividualBindingsException.cs" />
+    <Compile Include="Exchange\Management\Transport\BindingCountExceedsLimitException.cs" />
+    <Compile Include="Exchange\Management\Transport\CompliancePolicyAlreadyExistsException.cs" />
+    <Compile Include="Exchange\Management\Transport\CompliancePolicyCountExceedsLimitException.cs" />
+    <Compile Include="Exchange\Management\Transport\CompliancePolicySyncNotificationClientException.cs" />
+    <Compile Include="Exchange\Management\Transport\ComplianceRuleAlreadyExistsException.cs" />
+    <Compile Include="Exchange\Management\Transport\DeviceConditionalAccessRuleAlreadyExistsException.cs" />
+    <Compile Include="Exchange\Management\Transport\DeviceConfigurationRuleAlreadyExistsException.cs" />
+    <Compile Include="Exchange\Management\Transport\DeviceTenantRuleAlreadyExistsException.cs" />
+    <Compile Include="Exchange\Management\Transport\ErrorCannotCreateRuleUnderPendingDeletionPolicyException.cs" />
+    <Compile Include="Exchange\Management\Transport\ErrorCannotRemovePendingDeletionPolicyException.cs" />
+    <Compile Include="Exchange\Management\Transport\ErrorCannotRemovePendingDeletionRuleException.cs" />
+    <Compile Include="Exchange\Management\Transport\ErrorCommonComplianceRuleIsDeletedException.cs" />
+    <Compile Include="Exchange\Management\Transport\ErrorCompliancePolicyHasNoObjectsToRetryException.cs" />
+    <Compile Include="Exchange\Management\Transport\ErrorCompliancePolicyIsDeletedException.cs" />
+    <Compile Include="Exchange\Management\Transport\ErrorCreateSiteTimeOutException.cs" />
+    <Compile Include="Exchange\Management\Transport\ErrorInvalidPolicyCenterSiteOwnerException.cs" />
+    <Compile Include="Exchange\Management\Transport\ErrorOnlyAllowInEopException.cs" />
+    <Compile Include="Exchange\Management\Transport\ErrorPolicyNotFoundException.cs" />
+    <Compile Include="Exchange\Management\Transport\ErrorPolicyNotUniqueException.cs" />
+    <Compile Include="Exchange\Management\Transport\ErrorRuleNotFoundException.cs" />
+    <Compile Include="Exchange\Management\Transport\ExBindingWithoutExWorkloadException.cs" />
+    <Compile Include="Exchange\Management\Transport\ExCannotContainWideScopeBindingsException.cs" />
+    <Compile Include="Exchange\Management\Transport\ExValidatorException.cs" />
+    <Compile Include="Exchange\Management\Transport\ForestWideOrganizationException.cs" />
+    <Compile Include="Exchange\Management\Transport\InvalidAccessScopeIsPredicateException.cs" />
+    <Compile Include="Exchange\Management\Transport\InvalidCompliancePolicyBindingException.cs" />
+    <Compile Include="Exchange\Management\Transport\InvalidCompliancePolicyExBindingException.cs" />
+    <Compile Include="Exchange\Management\Transport\InvalidCompliancePolicySpBindingException.cs" />
+    <Compile Include="Exchange\Management\Transport\InvalidCompliancePolicyWorkloadException.cs" />
+    <Compile Include="Exchange\Management\Transport\InvalidComplianceRuleActionException.cs" />
+    <Compile Include="Exchange\Management\Transport\InvalidComplianceRulePredicateException.cs" />
+    <Compile Include="Exchange\Management\Transport\InvalidConfigurationObjectTypeException.cs" />
+    <Compile Include="Exchange\Management\Transport\InvalidContentContainsSensitiveInformationException.cs" />
+    <Compile Include="Exchange\Management\Transport\InvalidContentContentPropertyContainsWordsException.cs" />
+    <Compile Include="Exchange\Management\Transport\InvalidContentDateFromAndContentDateToPredicateException.cs" />
+    <Compile Include="Exchange\Management\Transport\InvalidDeltaSyncAndFullSyncTypeException.cs" />
+    <Compile Include="Exchange\Management\Transport\InvalidHoldContentActionException.cs" />
+    <Compile Include="Exchange\Management\Transport\InvalidObjectSyncTypeException.cs" />
+    <Compile Include="Exchange\Management\Transport\InvalidSensitiveInformationParameterNameException.cs" />
+    <Compile Include="Exchange\Management\Transport\MulipleComplianceRulesFoundInPolicyException.cs" />
+    <Compile Include="Exchange\Management\Transport\MulipleExBindingObjectDetectedException.cs" />
+    <Compile Include="Exchange\Management\Transport\MulipleSpBindingObjectDetectedException.cs" />
+    <Compile Include="Exchange\Management\Transport\MultipleObjectTypeForObjectLevelSyncException.cs" />
+    <Compile Include="Exchange\Management\Transport\PolicyAndIdentityParameterUsedTogetherException.cs" />
+    <Compile Include="Exchange\Management\Transport\RuleContainsNoActionsException.cs" />
+    <Compile Include="Exchange\Management\Transport\RulesInPolicyIsTooAdvancedToModifyException.cs" />
+    <Compile Include="Exchange\Management\Transport\SensitiveInformationCmdletException.cs" />
+    <Compile Include="Exchange\Management\Transport\SensitiveInformationDoesNotContainIdException.cs" />
+    <Compile Include="Exchange\Management\Transport\SensitiveInformationNotFoundException.cs" />
+    <Compile Include="Exchange\Management\Transport\SpBindingWithoutSpWorkloadException.cs" />
+    <Compile Include="Exchange\Management\Transport\SpCsomCallException.cs" />
+    <Compile Include="Exchange\Management\Transport\SpIdentityFormatException.cs" />
+    <Compile Include="Exchange\Management\Transport\SpValidatorException.cs" />
+    <Compile Include="Exchange\Management\Transport\Strings.cs" />
+    <Compile Include="Exchange\Management\Transport\TaskObjectIsTooAdvancedException.cs" />
+    <Compile Include="Exchange\Management\Transport\TaskPolicyIsTooAdvancedToModifyException.cs" />
+    <Compile Include="Exchange\Management\Transport\TaskRuleIsTooAdvancedToModifyException.cs" />
+    <Compile Include="Exchange\Management\Transport\TroubleshootingCmdletException.cs" />
+    <Compile Include="Exchange\Management\Transport\UnexpectedConditionOrActionDetectedException.cs" />
+    <Compile Include="Office\CompliancePolicy\PolicyConfiguration\AutoUpdateStatusEntry.cs" />
+    <Compile Include="Office\CompliancePolicy\PolicyConfiguration\CAAutoUpdateStatusEntry.cs" />
+    <Compile Include="Office\CompliancePolicy\PolicyConfiguration\CAFirewallStatusEntry.cs" />
+    <Compile Include="Office\CompliancePolicy\PolicyConfiguration\CARatingAppsEntry.cs" />
+    <Compile Include="Office\CompliancePolicy\PolicyConfiguration\CARatingMovieEntry.cs" />
+    <Compile Include="Office\CompliancePolicy\PolicyConfiguration\CARatingRegionEntry.cs" />
+    <Compile Include="Office\CompliancePolicy\PolicyConfiguration\CARatingTvShowEntry.cs" />
+    <Compile Include="Office\CompliancePolicy\PolicyConfiguration\CAUserAccountControlStatusEntry.cs" />
+    <Compile Include="Office\CompliancePolicy\PolicyConfiguration\FirewallStatusEntry.cs" />
+    <Compile Include="Office\CompliancePolicy\PolicyConfiguration\PolicyResourceScope.cs" />
+    <Compile Include="Office\CompliancePolicy\PolicyConfiguration\RatingAppsEntry.cs" />
+    <Compile Include="Office\CompliancePolicy\PolicyConfiguration\RatingMovieEntry.cs" />
+    <Compile Include="Office\CompliancePolicy\PolicyConfiguration\RatingRegionEntry.cs" />
+    <Compile Include="Office\CompliancePolicy\PolicyConfiguration\RatingTvShowEntry.cs" />
+    <Compile Include="Office\CompliancePolicy\PolicyConfiguration\UserAccountControlStatusEntry.cs" />
+    <Compile Include="Office\CompliancePolicy\Tasks\AggregatedNotificationClients.cs" />
+    <Compile Include="Office\CompliancePolicy\Tasks\AuditConfig.cs" />
+    <Compile Include="Office\CompliancePolicy\Tasks\AuditConfigurationPolicy.cs" />
+    <Compile Include="Office\CompliancePolicy\Tasks\AuditConfigurationPolicySchema.cs" />
+    <Compile Include="Office\CompliancePolicy\Tasks\AuditConfigUtility.cs" />
+    <Compile Include="Office\CompliancePolicy\Tasks\AuditSwitchStatus.cs" />
+    <Compile Include="Office\CompliancePolicy\Tasks\ChangeNotificationData.cs" />
+    <Compile Include="Office\CompliancePolicy\Tasks\CompliancePolicySyncNotificationClient.cs" />
+    <Compile Include="Office\CompliancePolicy\Tasks\ComplianceRuleIdParameter.cs" />
+    <Compile Include="Office\CompliancePolicy\Tasks\DeviceConditionalAccessPolicy.cs" />
+    <Compile Include="Office\CompliancePolicy\Tasks\DeviceConditionalAccessRule.cs" />
+    <Compile Include="Office\CompliancePolicy\Tasks\DeviceConfigurationRule.cs" />
+    <Compile Include="Office\CompliancePolicy\Tasks\DevicePolicy.cs" />
+    <Compile Include="Office\CompliancePolicy\Tasks\DevicePolicyUtility.cs" />
+    <Compile Include="Office\CompliancePolicy\Tasks\DeviceRuleBase.cs" />
+    <Compile Include="Office\CompliancePolicy\Tasks\DeviceTenantPolicy.cs" />
+    <Compile Include="Office\CompliancePolicy\Tasks\DeviceTenantRule.cs" />
+    <Compile Include="Office\CompliancePolicy\Tasks\ExCompliancePolicySyncNotificationClient.cs" />
+    <Compile Include="Office\CompliancePolicy\Tasks\GetAuditConfig.cs" />
+    <Compile Include="Office\CompliancePolicy\Tasks\GetAuditConfigurationPolicy.cs" />
+    <Compile Include="Office\CompliancePolicy\Tasks\GetAuditConfigurationRule.cs" />
+    <Compile Include="Office\CompliancePolicy\Tasks\GetCompliancePolicyBase.cs" />
+    <Compile Include="Office\CompliancePolicy\Tasks\GetCompliancePolicySyncNotification.cs" />
+    <Compile Include="Office\CompliancePolicy\Tasks\GetComplianceRuleBase.cs" />
+    <Compile Include="Office\CompliancePolicy\Tasks\GetDeviceConditionalAccessPolicy.cs" />
+    <Compile Include="Office\CompliancePolicy\Tasks\GetDeviceConditionalAccessRule.cs" />
+    <Compile Include="Office\CompliancePolicy\Tasks\GetDeviceConfigurationPolicy.cs" />
+    <Compile Include="Office\CompliancePolicy\Tasks\GetDeviceConfigurationRule.cs" />
+    <Compile Include="Office\CompliancePolicy\Tasks\GetDevicePolicy.cs" />
+    <Compile Include="Office\CompliancePolicy\Tasks\GetDevicePolicyBase.cs" />
+    <Compile Include="Office\CompliancePolicy\Tasks\GetDeviceRuleBase.cs" />
+    <Compile Include="Office\CompliancePolicy\Tasks\GetDeviceTenantPolicy.cs" />
+    <Compile Include="Office\CompliancePolicy\Tasks\GetDeviceTenantRule.cs" />
+    <Compile Include="Office\CompliancePolicy\Tasks\GetDlpCompliancePolicy.cs" />
+    <Compile Include="Office\CompliancePolicy\Tasks\GetDlpComplianceRule.cs" />
+    <Compile Include="Office\CompliancePolicy\Tasks\GetDlpSensitiveInformationType.cs" />
+    <Compile Include="Office\CompliancePolicy\Tasks\GetHoldCompliancePolicy.cs" />
+    <Compile Include="Office\CompliancePolicy\Tasks\GetHoldComplianceRule.cs" />
+    <Compile Include="Office\CompliancePolicy\Tasks\InstallUnifiedCompliancePrerequisite.cs" />
+    <Compile Include="Office\CompliancePolicy\Tasks\IntuneCompliancePolicySyncNotificationClient.cs" />
+    <Compile Include="Office\CompliancePolicy\Tasks\NewAuditConfigurationPolicy.cs" />
+    <Compile Include="Office\CompliancePolicy\Tasks\NewAuditConfigurationRule.cs" />
+    <Compile Include="Office\CompliancePolicy\Tasks\NewCompliancePolicyBase.cs" />
+    <Compile Include="Office\CompliancePolicy\Tasks\NewCompliancePolicySyncNotification.cs" />
+    <Compile Include="Office\CompliancePolicy\Tasks\NewComplianceRuleBase.cs" />
+    <Compile Include="Office\CompliancePolicy\Tasks\NewDeviceConditionalAccessPolicy.cs" />
+    <Compile Include="Office\CompliancePolicy\Tasks\NewDeviceConditionalAccessRule.cs" />
+    <Compile Include="Office\CompliancePolicy\Tasks\NewDeviceConfigurationPolicy.cs" />
+    <Compile Include="Office\CompliancePolicy\Tasks\NewDeviceConfigurationRule.cs" />
+    <Compile Include="Office\CompliancePolicy\Tasks\NewDevicePolicyBase.cs" />
+    <Compile Include="Office\CompliancePolicy\Tasks\NewDeviceRuleBase.cs" />
+    <Compile Include="Office\CompliancePolicy\Tasks\NewDeviceTenantPolicy.cs" />
+    <Compile Include="Office\CompliancePolicy\Tasks\NewDeviceTenantRule.cs" />
+    <Compile Include="Office\CompliancePolicy\Tasks\NewDlpCompliancePolicy.cs" />
+    <Compile Include="Office\CompliancePolicy\Tasks\NewDlpComplianceRule.cs" />
+    <Compile Include="Office\CompliancePolicy\Tasks\NewHoldCompliancePolicy.cs" />
+    <Compile Include="Office\CompliancePolicy\Tasks\NewHoldComplianceRule.cs" />
+    <Compile Include="Office\CompliancePolicy\Tasks\PolicyDistributionErrorDetails.cs" />
+    <Compile Include="Office\CompliancePolicy\Tasks\PolicyDistributionResultSeverity.cs" />
+    <Compile Include="Office\CompliancePolicy\Tasks\PolicyIdParameter.cs" />
+    <Compile Include="Office\CompliancePolicy\Tasks\PolicySettingStatusHelpers.cs" />
+    <Compile Include="Office\CompliancePolicy\Tasks\PsAccessScopeIsPredicate.cs" />
+    <Compile Include="Office\CompliancePolicy\Tasks\PsBlockAccessAction.cs" />
+    <Compile Include="Office\CompliancePolicy\Tasks\PsCompliancePolicyBase.cs" />
+    <Compile Include="Office\CompliancePolicy\Tasks\PsCompliancePolicyBaseSchema.cs" />
+    <Compile Include="Office\CompliancePolicy\Tasks\PsComplianceRuleActionBase.cs" />
+    <Compile Include="Office\CompliancePolicy\Tasks\PsComplianceRuleBase.cs" />
+    <Compile Include="Office\CompliancePolicy\Tasks\PsComplianceRuleBaseSchema.cs" />
+    <Compile Include="Office\CompliancePolicy\Tasks\PsComplianceRulePredicateBase.cs" />
+    <Compile Include="Office\CompliancePolicy\Tasks\PsContainsWordsPredicate.cs" />
+    <Compile Include="Office\CompliancePolicy\Tasks\PsContentContainsSensitiveInformationPredicate.cs" />
+    <Compile Include="Office\CompliancePolicy\Tasks\PsContentDateFromPredicate.cs" />
+    <Compile Include="Office\CompliancePolicy\Tasks\PsContentDateToPredicate.cs" />
+    <Compile Include="Office\CompliancePolicy\Tasks\PsContentMatchQueryPredicate.cs" />
+    <Compile Include="Office\CompliancePolicy\Tasks\PsContentPropertyContainsWordsPredicate.cs" />
+    <Compile Include="Office\CompliancePolicy\Tasks\PsDlpCompliancePolicy.cs" />
+    <Compile Include="Office\CompliancePolicy\Tasks\PsDlpComplianceRule.cs" />
+    <Compile Include="Office\CompliancePolicy\Tasks\PsDlpComplianceRuleSchema.cs" />
+    <Compile Include="Office\CompliancePolicy\Tasks\PsDlpSensitiveInformationType.cs" />
+    <Compile Include="Office\CompliancePolicy\Tasks\PsHoldCompliancePolicy.cs" />
+    <Compile Include="Office\CompliancePolicy\Tasks\PsHoldContentAction.cs" />
+    <Compile Include="Office\CompliancePolicy\Tasks\PsHoldRule.cs" />
+    <Compile Include="Office\CompliancePolicy\Tasks\PsHoldRuleSchema.cs" />
+    <Compile Include="Office\CompliancePolicy\Tasks\PsSinglePropertyPredicate.cs" />
+    <Compile Include="Office\CompliancePolicy\Tasks\PsUnifiedPolicyNotification.cs" />
+    <Compile Include="Office\CompliancePolicy\Tasks\RemoveAuditConfigurationPolicy.cs" />
+    <Compile Include="Office\CompliancePolicy\Tasks\RemoveAuditConfigurationRule.cs" />
+    <Compile Include="Office\CompliancePolicy\Tasks\RemoveCompliancePolicyBase.cs" />
+    <Compile Include="Office\CompliancePolicy\Tasks\RemoveCompliancePolicySyncNotification.cs" />
+    <Compile Include="Office\CompliancePolicy\Tasks\RemoveComplianceRuleBase.cs" />
+    <Compile Include="Office\CompliancePolicy\Tasks\RemoveDeviceConditionalAccessPolicy.cs" />
+    <Compile Include="Office\CompliancePolicy\Tasks\RemoveDeviceConditionalAccessRule.cs" />
+    <Compile Include="Office\CompliancePolicy\Tasks\RemoveDeviceConfigurationPolicy.cs" />
+    <Compile Include="Office\CompliancePolicy\Tasks\RemoveDeviceConfigurationRule.cs" />
+    <Compile Include="Office\CompliancePolicy\Tasks\RemoveDevicePolicyBase.cs" />
+    <Compile Include="Office\CompliancePolicy\Tasks\RemoveDeviceRuleBase.cs" />
+    <Compile Include="Office\CompliancePolicy\Tasks\RemoveDeviceTenantPolicy.cs" />
+    <Compile Include="Office\CompliancePolicy\Tasks\RemoveDeviceTenantRule.cs" />
+    <Compile Include="Office\CompliancePolicy\Tasks\RemoveDlpCompliancePolicy.cs" />
+    <Compile Include="Office\CompliancePolicy\Tasks\RemoveDlpComplianceRule.cs" />
+    <Compile Include="Office\CompliancePolicy\Tasks\RemoveHoldCompliancePolicy.cs" />
+    <Compile Include="Office\CompliancePolicy\Tasks\RemoveHoldComplianceRule.cs" />
+    <Compile Include="Office\CompliancePolicy\Tasks\SetAuditConfig.cs" />
+    <Compile Include="Office\CompliancePolicy\Tasks\SetAuditConfigurationRule.cs" />
+    <Compile Include="Office\CompliancePolicy\Tasks\SetCompliancePolicyBase.cs" />
+    <Compile Include="Office\CompliancePolicy\Tasks\SetComplianceRuleBase.cs" />
+    <Compile Include="Office\CompliancePolicy\Tasks\SetDeviceConditionalAccessPolicy.cs" />
+    <Compile Include="Office\CompliancePolicy\Tasks\SetDeviceConditionalAccessRule.cs" />
+    <Compile Include="Office\CompliancePolicy\Tasks\SetDeviceConfigurationPolicy.cs" />
+    <Compile Include="Office\CompliancePolicy\Tasks\SetDeviceConfigurationRule.cs" />
+    <Compile Include="Office\CompliancePolicy\Tasks\SetDevicePolicyBase.cs" />
+    <Compile Include="Office\CompliancePolicy\Tasks\SetDeviceRuleBase.cs" />
+    <Compile Include="Office\CompliancePolicy\Tasks\SetDeviceTenantPolicy.cs" />
+    <Compile Include="Office\CompliancePolicy\Tasks\SetDeviceTenantRule.cs" />
+    <Compile Include="Office\CompliancePolicy\Tasks\SetDlpCompliancePolicy.cs" />
+    <Compile Include="Office\CompliancePolicy\Tasks\SetDlpComplianceRule.cs" />
+    <Compile Include="Office\CompliancePolicy\Tasks\SetHoldCompliancePolicy.cs" />
+    <Compile Include="Office\CompliancePolicy\Tasks\SetHoldComplianceRule.cs" />
+    <Compile Include="Office\CompliancePolicy\Tasks\SpCompliancePolicySyncNotificationClient.cs" />
+    <Compile Include="Office\CompliancePolicy\Tasks\SpPolicyCenterSite.cs" />
+    <Compile Include="Office\CompliancePolicy\Tasks\StartUnifiedPolicySynchronization.cs" />
+    <Compile Include="Office\CompliancePolicy\Tasks\StartUnifiedPolicySyncParameterSet.cs" />
+    <Compile Include="Office\CompliancePolicy\Tasks\SyncSvcEndPointType.cs" />
+    <Compile Include="Office\CompliancePolicy\Tasks\UnifiedCompliancePrerequisite.cs" />
+    <Compile Include="Office\CompliancePolicy\Tasks\UnifiedPolicyConfiguration.cs" />
+    <Compile Include="Office\CompliancePolicy\Tasks\Utils.cs" />
+    <Compile Include="Office\CompliancePolicy\Validators\ExchangeValidator.cs" />
+    <Compile Include="Office\CompliancePolicy\Validators\ISharepointCsomProvider.cs" />
+    <Compile Include="Office\CompliancePolicy\Validators\SharepointCsomProvider.cs" />
+    <Compile Include="Office\CompliancePolicy\Validators\SharepointSelectProperties.cs" />
+    <Compile Include="Office\CompliancePolicy\Validators\SharepointSource.cs" />
+    <Compile Include="Office\CompliancePolicy\Validators\SharepointValidationResult.cs" />
+    <Compile Include="Office\CompliancePolicy\Validators\SharepointValidator.cs" />
+    <Compile Include="Office\CompliancePolicy\Validators\SourceValidator.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Exchange\Management\Transport\Strings.resources" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.Exchange.Common\Microsoft.Exchange.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140F0}</Project>
+      <Name>Microsoft.Exchange.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Configuration.ObjectModel\Microsoft.Exchange.Configuration.ObjectModel.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140FC}</Project>
+      <Name>Microsoft.Exchange.Configuration.ObjectModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Core.Strings\Microsoft.Exchange.Core.Strings.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14103}</Project>
+      <Name>Microsoft.Exchange.Core.Strings</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.ApplicationLogic\Microsoft.Exchange.Data.ApplicationLogic.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14104}</Project>
+      <Name>Microsoft.Exchange.Data.ApplicationLogic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Common\Microsoft.Exchange.Data.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140D3}</Project>
+      <Name>Microsoft.Exchange.Data.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Directory\Microsoft.Exchange.Data.Directory.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14105}</Project>
+      <Name>Microsoft.Exchange.Data.Directory</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Mapi\Microsoft.Exchange.Data.Mapi.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1410A}</Project>
+      <Name>Microsoft.Exchange.Data.Mapi</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Storage\Microsoft.Exchange.Data.Storage.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1410F}</Project>
+      <Name>Microsoft.Exchange.Data.Storage</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Transport\Microsoft.Exchange.Data.Transport.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140D5}</Project>
+      <Name>Microsoft.Exchange.Data.Transport</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data\Microsoft.Exchange.Data.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14106}</Project>
+      <Name>Microsoft.Exchange.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Diagnostics\Microsoft.Exchange.Diagnostics.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14113}</Project>
+      <Name>Microsoft.Exchange.Diagnostics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.EdgeSync.Common\Microsoft.Exchange.EdgeSync.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14119}</Project>
+      <Name>Microsoft.Exchange.EdgeSync.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.EdgeSync.DatacenterProviders\Microsoft.Exchange.EdgeSync.DatacenterProviders.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1411A}</Project>
+      <Name>Microsoft.Exchange.EdgeSync.DatacenterProviders</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Extensibility.Internal\Microsoft.Exchange.Extensibility.Internal.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14126}</Project>
+      <Name>Microsoft.Exchange.Extensibility.Internal</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.InfoWorker.Common\Microsoft.Exchange.InfoWorker.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1413C}</Project>
+      <Name>Microsoft.Exchange.InfoWorker.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Management\Microsoft.Exchange.Management.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1415C}</Project>
+      <Name>Microsoft.Exchange.Management</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.MessageSecurity\Microsoft.Exchange.MessageSecurity.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1416A}</Project>
+      <Name>Microsoft.Exchange.MessageSecurity</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.MessagingPolicies.Rules\Microsoft.Exchange.MessagingPolicies.Rules.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14170}</Project>
+      <Name>Microsoft.Exchange.MessagingPolicies.Rules</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Net\Microsoft.Exchange.Net.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14178}</Project>
+      <Name>Microsoft.Exchange.Net</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Rpc\Microsoft.Exchange.Rpc.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14188}</Project>
+      <Name>Microsoft.Exchange.Rpc</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Rules.Common\Microsoft.Exchange.Rules.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14191}</Project>
+      <Name>Microsoft.Exchange.Rules.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Security\Microsoft.Exchange.Security.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14198}</Project>
+      <Name>Microsoft.Exchange.Security</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Transport.Logging.Search\Microsoft.Exchange.Transport.Logging.Search.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141CE}</Project>
+      <Name>Microsoft.Exchange.Transport.Logging.Search</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Transport.LoggingCommon\Microsoft.Exchange.Transport.LoggingCommon.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141CF}</Project>
+      <Name>Microsoft.Exchange.Transport.LoggingCommon</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Transport\Microsoft.Exchange.Transport.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141CD}</Project>
+      <Name>Microsoft.Exchange.Transport</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.UM.UMCommon\Microsoft.Exchange.UM.UMCommon.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141DB}</Project>
+      <Name>Microsoft.Exchange.UM.UMCommon</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.VariantConfiguration\Microsoft.Exchange.VariantConfiguration.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141E0}</Project>
+      <Name>Microsoft.Exchange.VariantConfiguration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Office.CompliancePolicy.Platform\Microsoft.Office.CompliancePolicy.Platform.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141EA}</Project>
+      <Name>Microsoft.Office.CompliancePolicy.Platform</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Office.Datacenter.ActiveMonitoringLocal\Microsoft.Office.Datacenter.ActiveMonitoringLocal.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141ED}</Project>
+      <Name>Microsoft.Office.Datacenter.ActiveMonitoringLocal</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\mscorlib\mscorlib.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141F1}</Project>
+      <Name>mscorlib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

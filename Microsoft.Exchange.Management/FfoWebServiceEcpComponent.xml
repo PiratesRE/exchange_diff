@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo Name="FFO ECP" DescriptionId="FfoWebServiceEcpComponentDescription">
+
+  <ServerTasks>
+
+    <!-- Create ECP virtual directory -->
+    <ServerTaskInfo Id="_9b61914c88354a1ca625560e0a59451c" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          $InternalEcpUrl="https://" + $RoleFqdnOrName + "/ecp";
+          $ExternalEcpUrl = $null;
+          if ($RoleExternalCASServerDomain -ne $null)
+          {
+          $ExternalEcpUrl = "https://" + $RoleExternalCASServerDomain + "/ecp";
+          }
+          if (-not (get-EcpVirtualDirectory -server $RoleFqdnOrName -DomainController $RoleDomainController -ErrorAction SilentlyContinue))
+          {
+              new-EcpVirtualDirectory -Role Mailbox -WebSiteName "Default Web Site" -DomainController $RoleDomainController -InternalUrl $InternalEcpUrl -ExternalUrl $ExternalEcpUrl;
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery />
+      <Uninstall>
+        <Standalone>
+          get-EcpVirtualDirectory -server $RoleFqdnOrName -DomainController $RoleDomainController | remove-EcpVirtualDirectory -DomainController $RoleDomainController;
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Set install path in app config "ClientAccess/Ecp" -->
+    <ServerTaskInfo Id="_6e10b3045b254fecb67cab783b203c66" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>set-InstallPathInAppConfig -ConfigFileRelativePath "ClientAccess\ecp\" -ConfigFileName web.config</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Precompile the ECP virtual directory -->
+    <ServerTaskInfo Id="_2c8fea5dec1b407b8e653c90dcd339ff" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          [Reflection.Assembly]::LoadWithPartialName('System.Web');
+          . (join-path ([System.Web.HttpRuntime]::AspInstallDirectory) aspnet_compiler.exe) -v /ecp -c -errorstack
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery />
+      <Uninstall />
+    </ServerTaskInfo>
+
+  </ServerTasks>
+
+</SetupComponentInfo>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo Name="Gateway MidFileCopy" DescriptionId="SetupComponentMidFileCopyGateway">
+
+  <ServerTasks>
+
+    <ServerTaskInfo Id="_f0de4dc73d88437f914eaf6cabb6a37f" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install />
+
+      <!-- 
+        Rename Gateway to EdgeTransport
+      
+        The Gateway role was renamed to Edge transport.  To ensure that the updated code can
+        find the registry entries created by the older code, the registry key is renamed here.
+        
+        Requires permissions to the local registry hive
+      -->
+      <BuildToBuildUpgrade>
+        <Standalone>
+		      if(test-path 'HKLM:\SOFTWARE\Microsoft\ExchangeServer\v15\GatewayRole')
+		      {
+  			    move-item -path 'HKLM:\SOFTWARE\Microsoft\ExchangeServer\v15\GatewayRole' -destination 'HKLM:\SOFTWARE\Microsoft\ExchangeServer\v15\EdgeTransportRole';
+		      }
+		    </Standalone>
+      </BuildToBuildUpgrade>
+
+      <DisasterRecovery />
+      <Uninstall />
+    </ServerTaskInfo>
+
+  </ServerTasks>
+
+</SetupComponentInfo>
+

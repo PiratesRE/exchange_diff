@@ -1,0 +1,286 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{09CD9476-CD82-489E-B9E2-84B47CA14170}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Microsoft.Exchange.MessagingPolicies</RootNamespace>
+    <AssemblyName>Microsoft.Exchange.MessagingPolicies.Rules</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Filtering" />
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.DirectoryServices" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="InvalidDataClassificationException.cs" />
+    <Compile Include="InvalidFilteringServiceResultException.cs" />
+    <Compile Include="InvalidPriorityException.cs" />
+    <Compile Include="InvalidTransportRuleEventSourceTypeException.cs" />
+    <Compile Include="JournalingTargetDGEmptyException.cs" />
+    <Compile Include="JournalingTargetDGNotFoundException.cs" />
+    <Compile Include="LocDescriptionAttribute.cs" />
+    <Compile Include="MessagingPoliciesEventLogConstants.cs" />
+    <Compile Include="MPConstants.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RuleCollectionNotInAdException.cs" />
+    <Compile Include="RuleNotInAdException.cs" />
+    <Compile Include="Rules\AddCcRecipient.cs" />
+    <Compile Include="Rules\AddCcRecipientSmtpOnly.cs" />
+    <Compile Include="Rules\AddEnvelopeRecipient.cs" />
+    <Compile Include="Rules\AddHeader.cs" />
+    <Compile Include="Rules\AddManagerAsRecipientType.cs" />
+    <Compile Include="Rules\AddRecipientAction.cs" />
+    <Compile Include="Rules\AddRecipientAndDisplayNameAction.cs" />
+    <Compile Include="Rules\AddToRecipient.cs" />
+    <Compile Include="Rules\AddToRecipientSmtpOnly.cs" />
+    <Compile Include="Rules\ADJournalRuleStorageManager.cs" />
+    <Compile Include="Rules\ADRuleStorageManager.cs" />
+    <Compile Include="Rules\ApplyDisclaimer.cs" />
+    <Compile Include="Rules\ApplyDisclaimerWithSeparator.cs" />
+    <Compile Include="Rules\ApplyDisclaimerWithSeparatorAndReadingOrder.cs" />
+    <Compile Include="Rules\ApplyHtmlDisclaimer.cs" />
+    <Compile Include="Rules\ApplyOME.cs" />
+    <Compile Include="Rules\AttachmentContainsWordsPredicate.cs" />
+    <Compile Include="Rules\AttachmentInfo.cs" />
+    <Compile Include="Rules\AttachmentIsPasswordProtectedPredicate.cs" />
+    <Compile Include="Rules\AttachmentIsUnsupportedPredicate.cs" />
+    <Compile Include="Rules\AttachmentMatcher.cs" />
+    <Compile Include="Rules\AttachmentMatchesPatternsPredicate.cs" />
+    <Compile Include="Rules\AttachmentMatchesRegexPredicate.cs" />
+    <Compile Include="Rules\AttachmentProcessingLimitExceededPredicate.cs" />
+    <Compile Include="Rules\AttachmentPropertyContainsPredicate.cs" />
+    <Compile Include="Rules\AuditSeverityLevel.cs" />
+    <Compile Include="Rules\AuditSeverityLevelAction.cs" />
+    <Compile Include="Rules\BaseTransportRulesEvaluationContext.cs" />
+    <Compile Include="Rules\BodyProperty.cs" />
+    <Compile Include="Rules\ContainsDataClassificationPredicate.cs" />
+    <Compile Include="Rules\DataClassification.cs" />
+    <Compile Include="Rules\DataClassificationMatchLocation.cs" />
+    <Compile Include="Rules\DataClassificationSourceInfo.cs" />
+    <Compile Include="Rules\DataClassificationsRetrievedHandler.cs" />
+    <Compile Include="Rules\DeleteMessage.cs" />
+    <Compile Include="Rules\DisclaimerEntry.cs" />
+    <Compile Include="Rules\Disconnect.cs" />
+    <Compile Include="Rules\DiscoveredDataClassification.cs" />
+    <Compile Include="Rules\DomainIsPredicate.cs" />
+    <Compile Include="Rules\EventType.cs" />
+    <Compile Include="Rules\ExactUserComparer.cs" />
+    <Compile Include="Rules\ExecutionStatus.cs" />
+    <Compile Include="Rules\ExtendedProperty.cs" />
+    <Compile Include="Rules\FilteringServiceFactory.cs" />
+    <Compile Include="Rules\FilteringServiceFailureException.cs" />
+    <Compile Include="Rules\FilteringServiceInvoker.cs" />
+    <Compile Include="Rules\FilteringServiceInvokerFactory.cs" />
+    <Compile Include="Rules\FilteringServiceInvokerRequest.cs" />
+    <Compile Include="Rules\FilteringServiceTimeoutException.cs" />
+    <Compile Include="Rules\FipsFilteringServiceInvoker.cs" />
+    <Compile Include="Rules\FipsResultParser.cs" />
+    <Compile Include="Rules\GccType.cs" />
+    <Compile Include="Rules\GenerateIncidentReport.cs" />
+    <Compile Include="Rules\GenerateNotification.cs" />
+    <Compile Include="Rules\Halt.cs" />
+    <Compile Include="Rules\HasSenderOverridePredicate.cs" />
+    <Compile Include="Rules\HeaderProperty.cs" />
+    <Compile Include="Rules\HeaderValueAction.cs" />
+    <Compile Include="Rules\HtmlDisclaimerEntry.cs" />
+    <Compile Include="Rules\IncidentReport.cs" />
+    <Compile Include="Rules\IncidentReportContent.cs" />
+    <Compile Include="Rules\IncidentReportGenerator.cs" />
+    <Compile Include="Rules\IncidentReportOriginalMail.cs" />
+    <Compile Include="Rules\IpMatchPredicate.cs" />
+    <Compile Include="Rules\IsExternalPartnerPredicate.cs" />
+    <Compile Include="Rules\IsInternalPredicate.cs" />
+    <Compile Include="Rules\IsMemberOfPredicate.cs" />
+    <Compile Include="Rules\IsMessageTypePredicate.cs" />
+    <Compile Include="Rules\IsPartnerPredicate.cs" />
+    <Compile Include="Rules\IsSameUserPredicate.cs" />
+    <Compile Include="Rules\Journal.cs" />
+    <Compile Include="Rules\JournalAndReconcile.cs" />
+    <Compile Include="Rules\JournalBase.cs" />
+    <Compile Include="Rules\JournalConfigSchema.cs" />
+    <Compile Include="Rules\JournalingRule.cs" />
+    <Compile Include="Rules\JournalingRuleConstants.cs" />
+    <Compile Include="Rules\JournalingRuleParser.cs" />
+    <Compile Include="Rules\JournalingRuleSerializer.cs" />
+    <Compile Include="Rules\LogEvent.cs" />
+    <Compile Include="Rules\MailMessage.cs" />
+    <Compile Include="Rules\MembershipChecker.cs" />
+    <Compile Include="Rules\MessageBodies.cs" />
+    <Compile Include="Rules\MessageProperty.cs" />
+    <Compile Include="Rules\ModerateMessageByManager.cs" />
+    <Compile Include="Rules\ModerateMessageByUser.cs" />
+    <Compile Include="Rules\NullFilteringServiceInvoker.cs" />
+    <Compile Include="Rules\PrependSubject.cs" />
+    <Compile Include="Rules\Quarantine.cs" />
+    <Compile Include="Rules\RecipientState.cs" />
+    <Compile Include="Rules\RedirectMessage.cs" />
+    <Compile Include="Rules\RejectMessage.cs" />
+    <Compile Include="Rules\RemoveHeader.cs" />
+    <Compile Include="Rules\RemoveOME.cs" />
+    <Compile Include="Rules\RightsProtectMessage.cs" />
+    <Compile Include="Rules\RouteMessageOutboundConnector.cs" />
+    <Compile Include="Rules\RouteMessageOutboundRequireTls.cs" />
+    <Compile Include="Rules\RoutingActionUtils.cs" />
+    <Compile Include="Rules\RuleAuditProvider.cs" />
+    <Compile Include="Rules\RuleBifurcationInfo.cs" />
+    <Compile Include="Rules\RuleHealthMonitor.cs" />
+    <Compile Include="Rules\RulesCounters.cs" />
+    <Compile Include="Rules\RulesCountersInstance.cs" />
+    <Compile Include="Rules\RulesScanTimeout.cs" />
+    <Compile Include="Rules\RulesTrackingLog.cs" />
+    <Compile Include="Rules\SenderAddressLocation.cs" />
+    <Compile Include="Rules\SenderAttributeContainsPredicate.cs" />
+    <Compile Include="Rules\SenderAttributeMatchesPredicate.cs" />
+    <Compile Include="Rules\SenderAttributeMatchesRegexPredicate.cs" />
+    <Compile Include="Rules\SenderNotify.cs" />
+    <Compile Include="Rules\SetExtendedPropertyString.cs" />
+    <Compile Include="Rules\SetHeader.cs" />
+    <Compile Include="Rules\SetHeaderUniqueValue.cs" />
+    <Compile Include="Rules\SetPriority.cs" />
+    <Compile Include="Rules\SetSubject.cs" />
+    <Compile Include="Rules\TargetDataClassification.cs" />
+    <Compile Include="Rules\TransportAction.cs" />
+    <Compile Include="Rules\TransportActionType.cs" />
+    <Compile Include="Rules\TransportFilteringServiceInvokerRequest.cs" />
+    <Compile Include="Rules\TransportRule.cs" />
+    <Compile Include="Rules\TransportRuleCollection.cs" />
+    <Compile Include="Rules\TransportRuleConstants.cs" />
+    <Compile Include="Rules\TransportRuleData.cs" />
+    <Compile Include="Rules\TransportRuleException.cs" />
+    <Compile Include="Rules\TransportRuleHandle.cs" />
+    <Compile Include="Rules\TransportRuleParser.cs" />
+    <Compile Include="Rules\TransportRulePermanentException.cs" />
+    <Compile Include="Rules\TransportRulesAgentCostComponents.cs" />
+    <Compile Include="Rules\TransportRulesCostMonitor.cs" />
+    <Compile Include="Rules\TransportRuleSerializer.cs" />
+    <Compile Include="Rules\TransportRulesErrorHandler.cs" />
+    <Compile Include="Rules\TransportRulesEvaluationContext.cs" />
+    <Compile Include="Rules\TransportRulesEvaluator.cs" />
+    <Compile Include="Rules\TransportRulesLoopChecker.cs" />
+    <Compile Include="Rules\TransportRulesPerTenantSettings.cs" />
+    <Compile Include="Rules\TransportRulesTracer.cs" />
+    <Compile Include="Rules\TransportRuleTimeoutException.cs" />
+    <Compile Include="Rules\TransportRuleTransientException.cs" />
+    <Compile Include="Rules\TransportUtils.cs" />
+    <Compile Include="Rules\UnifiedContentServiceInvoker.cs" />
+    <Compile Include="Rules\UserComparer.cs" />
+    <Compile Include="TransportRulesStrings.cs" />
+    <Compile Include="UnableToUpdateRuleInAdException.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TransportRulesStrings.resources" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.Exchange.Common\Microsoft.Exchange.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140F0}</Project>
+      <Name>Microsoft.Exchange.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Core.Strings\Microsoft.Exchange.Core.Strings.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14103}</Project>
+      <Name>Microsoft.Exchange.Core.Strings</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Common\Microsoft.Exchange.Data.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140D3}</Project>
+      <Name>Microsoft.Exchange.Data.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Directory\Microsoft.Exchange.Data.Directory.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14105}</Project>
+      <Name>Microsoft.Exchange.Data.Directory</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Storage\Microsoft.Exchange.Data.Storage.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1410F}</Project>
+      <Name>Microsoft.Exchange.Data.Storage</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Transport\Microsoft.Exchange.Data.Transport.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140D5}</Project>
+      <Name>Microsoft.Exchange.Data.Transport</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data\Microsoft.Exchange.Data.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14106}</Project>
+      <Name>Microsoft.Exchange.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Diagnostics\Microsoft.Exchange.Diagnostics.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14113}</Project>
+      <Name>Microsoft.Exchange.Diagnostics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Extensibility.Internal\Microsoft.Exchange.Extensibility.Internal.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14126}</Project>
+      <Name>Microsoft.Exchange.Extensibility.Internal</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Net\Microsoft.Exchange.Net.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14178}</Project>
+      <Name>Microsoft.Exchange.Net</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Rules.Common\Microsoft.Exchange.Rules.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14191}</Project>
+      <Name>Microsoft.Exchange.Rules.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.TextProcessing\Microsoft.Exchange.TextProcessing.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141BB}</Project>
+      <Name>Microsoft.Exchange.TextProcessing</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Transport.Agent.AntiSpam.Common\Microsoft.Exchange.Transport.Agent.AntiSpam.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141BD}</Project>
+      <Name>Microsoft.Exchange.Transport.Agent.AntiSpam.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Transport.LoggingCommon\Microsoft.Exchange.Transport.LoggingCommon.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141CF}</Project>
+      <Name>Microsoft.Exchange.Transport.LoggingCommon</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Transport\Microsoft.Exchange.Transport.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141CD}</Project>
+      <Name>Microsoft.Exchange.Transport</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.VariantConfiguration\Microsoft.Exchange.VariantConfiguration.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141E0}</Project>
+      <Name>Microsoft.Exchange.VariantConfiguration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Filtering.Exchange\Microsoft.Filtering.Exchange.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141E2}</Project>
+      <Name>Microsoft.Filtering.Exchange</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Office.Datacenter.ActiveMonitoringLocal\Microsoft.Office.Datacenter.ActiveMonitoringLocal.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141ED}</Project>
+      <Name>Microsoft.Office.Datacenter.ActiveMonitoringLocal</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\mscorlib\mscorlib.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141F1}</Project>
+      <Name>mscorlib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

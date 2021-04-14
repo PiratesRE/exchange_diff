@@ -1,0 +1,157 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{09CD9476-CD82-489E-B9E2-84B47CA1413D}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Microsoft.Exchange.Infoworker.MeetingValidator</RootNamespace>
+    <AssemblyName>Microsoft.Exchange.InfoWorker.MeetingValidator</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AttendeeExtractor.cs" />
+    <Compile Include="AttendeeOnListCheck.cs" />
+    <Compile Include="CalendarExternalParticipant.cs" />
+    <Compile Include="CalendarInstance.cs" />
+    <Compile Include="CalendarInstanceContext.cs" />
+    <Compile Include="CalendarItemConverter.cs" />
+    <Compile Include="CalendarItemFields.cs" />
+    <Compile Include="CalendarLocalItem.cs" />
+    <Compile Include="CalendarLocalParticipant.cs" />
+    <Compile Include="CalendarParticipant.cs" />
+    <Compile Include="CalendarQuery.cs" />
+    <Compile Include="CalendarQueryPropOrder.cs" />
+    <Compile Include="CalendarRemoteItem.cs" />
+    <Compile Include="CalendarRemoteParticipant.cs" />
+    <Compile Include="CalendarRemoteParticipant2.cs" />
+    <Compile Include="CalendarRepairPolicy.cs" />
+    <Compile Include="CalendarValidationContext.cs" />
+    <Compile Include="CalendarValidator.cs" />
+    <Compile Include="CanValidateOwnerCheck.cs" />
+    <Compile Include="CheckStatusType.cs" />
+    <Compile Include="Configuration.cs" />
+    <Compile Include="ConsistencyCheckBase.cs" />
+    <Compile Include="ConsistencyCheckChain.cs" />
+    <Compile Include="ConsistencyCheckFactory.cs" />
+    <Compile Include="ConsistencyCheckResult.cs" />
+    <Compile Include="ConsistencyCheckType.cs" />
+    <Compile Include="CorrectResponseCheck.cs" />
+    <Compile Include="Globals.cs" />
+    <Compile Include="Inconsistency.cs" />
+    <Compile Include="InvalidDateRangeException.cs" />
+    <Compile Include="MailboxUserNotFoundException.cs" />
+    <Compile Include="MeetingCancellationCheck.cs" />
+    <Compile Include="MeetingComparer.cs" />
+    <Compile Include="MeetingComparisonResult.cs" />
+    <Compile Include="MeetingData.cs" />
+    <Compile Include="MeetingExistenceCheck.cs" />
+    <Compile Include="MeetingExistenceConsistencyCheckResult.cs" />
+    <Compile Include="MeetingPropertiesMatchCheck.cs" />
+    <Compile Include="MeetingValidationResult.cs" />
+    <Compile Include="MeetingValidatorEwsBinding.cs" />
+    <Compile Include="MissingItemInconsistency.cs" />
+    <Compile Include="ObjectNotInitializedException.cs" />
+    <Compile Include="PrimaryConsistencyCheckChain.cs" />
+    <Compile Include="PrimaryConsistencyCheckResult.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="PropertyInconsistency.cs" />
+    <Compile Include="RecurrenceBlobsConsistentCheck.cs" />
+    <Compile Include="RecurrenceFixupType.cs" />
+    <Compile Include="RecurrenceInconsistency.cs" />
+    <Compile Include="RecurrenceInconsistencyType.cs" />
+    <Compile Include="RecurrencesMatchCheck.cs" />
+    <Compile Include="RepairSteps.cs" />
+    <Compile Include="ResponseInconsistency.cs" />
+    <Compile Include="RoleType.cs" />
+    <Compile Include="RumFactory.cs" />
+    <Compile Include="SaveResults.cs" />
+    <Compile Include="SessionManager.cs" />
+    <Compile Include="SeverityType.cs" />
+    <Compile Include="TimeFieldToRepair.cs" />
+    <Compile Include="TimeZoneConsistentCheck.cs" />
+    <Compile Include="TimeZoneProperty.cs" />
+    <Compile Include="UserObject.cs" />
+    <Compile Include="ValidateStoreObjectCheck.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.Exchange.Assistants\Microsoft.Exchange.Assistants.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140DD}</Project>
+      <Name>Microsoft.Exchange.Assistants</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Common\Microsoft.Exchange.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140F0}</Project>
+      <Name>Microsoft.Exchange.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.ApplicationLogic\Microsoft.Exchange.Data.ApplicationLogic.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14104}</Project>
+      <Name>Microsoft.Exchange.Data.ApplicationLogic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Common\Microsoft.Exchange.Data.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140D3}</Project>
+      <Name>Microsoft.Exchange.Data.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Directory\Microsoft.Exchange.Data.Directory.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14105}</Project>
+      <Name>Microsoft.Exchange.Data.Directory</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Storage\Microsoft.Exchange.Data.Storage.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1410F}</Project>
+      <Name>Microsoft.Exchange.Data.Storage</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data\Microsoft.Exchange.Data.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14106}</Project>
+      <Name>Microsoft.Exchange.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Diagnostics\Microsoft.Exchange.Diagnostics.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14113}</Project>
+      <Name>Microsoft.Exchange.Diagnostics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.InfoWorker.Common\Microsoft.Exchange.InfoWorker.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1413C}</Project>
+      <Name>Microsoft.Exchange.InfoWorker.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Net\Microsoft.Exchange.Net.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14178}</Project>
+      <Name>Microsoft.Exchange.Net</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\mscorlib\mscorlib.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141F1}</Project>
+      <Name>mscorlib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo Name="FrontendTransport Prereq Configuration">
+<!-- For now, this is a copy of BridgeheadPreConfig -->
+  <ServerTasks>
+    <ServerTaskInfo Id="InstallWindowsComponents" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          if($RoleInstallWindowsComponents)
+          {
+            # Install any Windows Roles or Features required for the Hub Transport role
+            &amp; $RoleBinPath\InstallWindowsComponent.ps1 -ShortNameForRole "Internal-HUB" -ADToolsNeeded $RoleADToolsNeeded
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall/>
+    </ServerTaskInfo>
+  </ServerTasks>
+</SetupComponentInfo>
+

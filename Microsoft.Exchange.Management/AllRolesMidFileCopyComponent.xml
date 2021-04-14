@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo Name="All Roles MidFileCopy" DescriptionId="SetupComponentMidFileCopyAllRoles">
+
+    <ServerTasks>
+
+        <ServerTaskInfo Id="_a246d37d6b1140b8a32d2564949752be" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install />
+
+            <BuildToBuildUpgrade>
+                <!--# Forcefully remove the management binary if it exists.-->
+                <!-- The dll would be in use, so we first copy the file to a temp file and then do a Pinvoke call to Win32 API function MoveFileEx. -->
+                <!-- MoveFileEx(string srcfile,string $null,MoveFileFlag MOVEFILE_DELAY_UNTIL_REBOOT) in kernel32.dll is the Win32 API call we make to ensure that the dll gets removed on reboot.-->
+                <!-- This is a workaround for some binaries being marked as permanent in MSI. -->
+                <Standalone>
+                  $setupRegKeyPath = "HKLM:\Software\Microsoft\ExchangeServer\v15\setup"
+                  if (-not (Test-Path $setupRegKeyPath))
+                  {
+                      # During upgrade, setup key may not exist during mid-file copy stage since older MSI might have been uninstalled
+                      # So, we read the reg key from backed up path.
+                      $setupRegKeyPath = "HKLM:\Software\Microsoft\ExchangeServer\v15\setup-save"
+                  }
+                  $RoleInstallPath = (Get-ItemProperty $setupRegKeyPath).MsiInstallPath
+            	  if ($RoleInstallPath -ne $null)
+            	  {
+                    Get-ChildItem $RoleInstallPath -Recurse -Include "*.dll","*.exe" |
+                    %{$_.FullName} |
+                    %{
+                        $originalPath = $_;
+                        $pathToDelete = "$originalPath.$([Guid]::NewGuid())";
+
+                        Move-Item  $originalPath $pathToDelete -Force -ErrorAction SilentlyContinue;
+                        if (Test-Path $originalPath) {$pathToDelete = $originalPath}
+
+                        $domain = [AppDomain]::CurrentDomain;
+                        $name = New-Object Reflection.AssemblyName 'DynamicAssembly';
+                        $assembly = $domain.DefineDynamicAssembly($name, 'Run');
+                        $module = $assembly.DefineDynamicModule('DynamicModule');
+                        $type = $module.DefineType('DynamicType');
+
+                        [Type[]]$parameterTypes = [string], [string], [int64];
+                        $method = $type.DefineMethod("MoveFileEx", 'Public,Static,PinvokeImpl', [bool], $parameterTypes) ;
+
+                        $ctor = [Runtime.InteropServices.DllImportAttribute].GetConstructor([string]);
+                        $attr = New-Object Reflection.Emit.CustomAttributeBuilder $ctor, 'kernel32';
+                        $method.SetCustomAttribute($attr) ;
+                        $realType = $type.CreateType() ;
+                        [object[]]$args = [string]$pathToDelete, $null, [int64]4;
+                        $realType.InvokeMember('MoveFileEx', 'Public,Static,InvokeMethod', $null,$null, $args) ;
+                    }
+                  }
+                </Standalone>
+            </BuildToBuildUpgrade>
+
+            <DisasterRecovery />
+            <Uninstall />
+        </ServerTaskInfo>
+
+        <ServerTaskInfo Id="_af0f15afe35c4e7cba121e546f405214" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install />
+
+            <!-- Only upgrade mode is used by the binding tasks-->
+            <BuildToBuildUpgrade>
+                <Standalone>
+                    &amp; $RoleBinPath\ServiceControl.ps1 EnableServices Critical
+                </Standalone>
+            </BuildToBuildUpgrade>
+
+            <DisasterRecovery />
+            <Uninstall />
+        </ServerTaskInfo>
+
+    </ServerTasks>
+
+</SetupComponentInfo>
+
+
+

@@ -1,0 +1,166 @@
+<?xml version='1.0' encoding='utf-8'?>
+<OperatorGraph dslVersion='1.0.0.0' name='[FlowNamePlaceHolder]' xmlns='http://schemas.microsoft.com/ceres/studio/2009/10/flow'>
+  <Operators>
+    <Operator name='FlowInput' type='Microsoft.Ceres.Evaluation.Operators.Core.Input'>
+      <Targets>
+        <Target breakpointEnabled='false'>
+          <operatorMoniker name='ParseFql' />
+        </Target>
+      </Targets>
+      <Properties>
+        <Property name="usePushAsOutputMode" value="True" />
+        <Property name='inputName' value='Input' />
+        <Property name='useDisk' value='False' />
+        <Property name='sortedPrefix' value='0' />
+      </Properties>
+      <OutputSchema>
+        <Field name='Query' type='String' />
+        <Field name='RefinementFilters' type='List&lt;String&gt;' />
+        <Field name='TenantId' type='Guid' />
+        <Field name='CorrelationId' type='Guid' />
+        <Field name='TrimHits' type='Int32' />
+        <Field name='TrimOffset' type='Int32' />
+        <Field name='SortSpec' type='String' />
+        <Field name='CollapseSpec' type='String' />
+        <Field name='CachePreWarmingMode' type='Int32' canBeNull='true'/>
+        <Field name='Refiners' type='List&lt;String&gt;' />
+        <Field name='ExtraFields' type='List&lt;String&gt;' />
+        <Field name='Language' type='String' canBeNull='false' />
+        <Field name="Timeout" type="Int32" canBeNull="false" />
+      </OutputSchema>
+    </Operator>
+    <Operator name='ParseFql' type='Microsoft.Ceres.ContentEngine.Operators.BuiltIn.Mapper'>
+      <Targets>
+        <Target>
+          <operatorMoniker name='DrillDown' />
+        </Target>
+      </Targets>
+      <Properties>
+        <Property name='adaptableType' value='False' />
+      </Properties>
+      <OutputSchema>
+        <Field name='QueryTree' type='TreeNode' canBeNull='false' expression='ParseFql(Query)' />
+        <Field name='RefinementFilters' type='List&lt;String&gt;' />
+        <Field name='TenantId' type='Guid' canBeNull='false' />
+        <Field name='CorrelationId' type='Guid' canBeNull='false' />
+        <Field name='TrimHits' type='Int32' canBeNull='true' />
+        <Field name='TrimOffset' type='Int32' canBeNull='true' />
+        <Field name='SortSpec' type='String' canBeNull='true' />
+        <Field name='CachePreWarmingMode' type='Int32' canBeNull='true'/>
+        <Field name='CollapseSpec' type='String' canBeNull='true' />
+        <Field name='Refiners' type='List&lt;String&gt;' />
+        <Field name='ExtraFields' type='List&lt;String&gt;' />
+        <Field name='Language' type='String' canBeNull='false' />
+        <Field name="Timeout" type="Int32" canBeNull="false" />
+      </OutputSchema>
+    </Operator>
+    <Operator name='DrillDown' type='Microsoft.Ceres.InteractionEngine.Operators.BuiltIn.DrillDown'>
+      <Targets>
+        <Target>
+          <operatorMoniker name='StringToToken' />
+        </Target>
+      </Targets>
+      <Properties>
+        <Property name='queryTreeField' value='&quot;QueryTree&quot;' />
+        <Property name="refinementFiltersField" value="&quot;RefinementFilters&quot;"/>
+      </Properties>
+    </Operator>
+    <Operator name='StringToToken' type='Microsoft.Ceres.ContentEngine.NlpOperators.StringToToken'>
+      <Targets>
+        <Target>
+          <operatorMoniker name='WordBreaker' />
+        </Target>
+      </Targets>
+      <Properties>
+        <Property name='queryTreeFieldName' value='&quot;QueryTree&quot;' />
+        <Property name="scopesProvider" value="&quot;Schema&quot;"/>
+        <Property name="schemaProviderArguments" value="{&quot;ScopeFilter&quot;=&quot;NoWordBreaker&quot;,&quot;TenantIdFieldName&quot;=&quot;TenantId&quot;}" />
+        <Property name='useWildcard' value='true' />
+      </Properties>
+    </Operator>
+    <Operator name='WordBreaker' type='Microsoft.Ceres.ContentEngine.NlpOperators.WordBreaker'>
+      <Targets>
+        <Target>
+          <operatorMoniker name='QueryIndexTokenizer' />
+        </Target>
+      </Targets>
+      <Properties>
+        <Property name='languageField' value='&quot;Language&quot;' />
+        <Property name='inputField' value='&quot;QueryTree&quot;' />
+        <Property name="annotateNGramsForTokenSegments" value="False" />
+      </Properties>
+    </Operator>
+    <Operator name='QueryIndexTokenizer' type='Microsoft.Ceres.ContentEngine.NlpOperators.QueryIndexTokenizer'>
+      <Targets>
+        <Target>
+          <operatorMoniker name='IndexLookup' />
+        </Target>
+      </Targets>
+      <Properties>
+        <Property name='languageField' value='&quot;Language&quot;' />
+        <Property name='queryTreeFieldName' value='&quot;QueryTree&quot;' />
+        <Property name="processScopes" value="True" />
+      </Properties>
+    </Operator>
+    <Operator name='IndexLookup' type='MarsLookup'>
+      <Targets>
+        <Target>
+          <operatorMoniker name='GetMetadataOutput' />
+        </Target>
+        <Target>
+          <operatorMoniker name='HitsOutput' />
+        </Target>
+        <Target>
+          <operatorMoniker name='RefinersOutput' />
+        </Target>
+      </Targets>
+      <Properties>
+        <Property name='indexSystemName' value='[IndexSystemNamePlaceHolder]' />
+        <Property name='queryTreeFieldName' value='QueryTree' />
+        <Property name='claimSetFieldName' value='ClaimSet' />
+        <Property name='trimHitsFieldName' value='TrimHits' />
+        <Property name='trimOffsetFieldName' value='TrimOffset' />
+        <Property name="tenantIdFieldName" value="TenantId" />
+        <Property name="correlationIdFieldName" value="CorrelationId" />
+        <Property name='metadataOutputFieldName' value='Metadata' />
+        <Property name='queryRecordOutputLabel' value='GetMetadataOutput' />
+        <Property name='resultOutputLabel' value='HitsOutput' />
+        <Property name='sortFieldName' value='SortSpec' />
+        <Property name='collapseSpecificationFieldName' value='CollapseSpec' />
+        <Property name='extraFieldsFieldName' value='&quot;ExtraFields&quot;' />
+        <Property name="extraRefinersFieldName" value="&quot;Refiners&quot;" />
+        <Property name='refinerOutputLabel' value='RefinersOutput' />
+        <Property name="timeoutFieldname" value="&quot;Timeout&quot;" />
+        <Property name="cachePreWarmingFieldName" value="CachePreWarmingMode" />
+      </Properties>
+    </Operator>
+    <Operator name='HitsOutput' type='Microsoft.Ceres.Evaluation.Operators.Core.Output'>
+      <Properties>
+        <Property name='outputName' value='Hits' />
+      </Properties>
+    </Operator>
+    <Operator name='RefinersOutput' type='Microsoft.Ceres.Evaluation.Operators.Core.Output'>
+      <Properties>
+        <Property name='outputName' value='Refiners' />
+      </Properties>
+    </Operator>
+    <Operator name='GetMetadataOutput' type='Microsoft.Ceres.ContentEngine.Operators.BuiltIn.Mapper'>
+      <Targets>
+        <Target>
+          <operatorMoniker name='MetadataOutput' />
+        </Target>
+      </Targets>
+      <Properties>
+        <Property name='adaptableType' value='False' />
+      </Properties>
+      <OutputSchema>
+        <Field name='Metadata' type='Bucket' />
+      </OutputSchema>
+    </Operator>
+    <Operator name='MetadataOutput' type='Microsoft.Ceres.Evaluation.Operators.Core.Output'>
+      <Properties>
+        <Property name='outputName' value='Metadata' />
+      </Properties>
+    </Operator>
+  </Operators>
+</OperatorGraph>

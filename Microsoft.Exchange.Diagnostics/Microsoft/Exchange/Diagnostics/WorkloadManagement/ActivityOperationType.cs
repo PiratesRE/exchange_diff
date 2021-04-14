@@ -1,0 +1,54 @@
+﻿using System;
+
+namespace Microsoft.Exchange.Diagnostics.WorkloadManagement
+{
+	internal enum ActivityOperationType
+	{
+		[DisplayName("ADR")]
+		ADRead,
+		[DisplayName("ADS")]
+		ADSearch,
+		[DisplayName("ADW")]
+		ADWrite,
+		[DisplayName("MB")]
+		MailboxCall,
+		[DisplayName("ST")]
+		StoreCall,
+		[DisplayName("STCPU")]
+		StoreCpu,
+		[DisplayName("RpcA")]
+		ExRpcAdmin,
+		[DisplayName("UserD")]
+		UserDelay,
+		[DisplayName("ResD")]
+		ResourceDelay,
+		[DisplayName("OBudg")]
+		OverBudget,
+		[DisplayName("QTime")]
+		QueueTime,
+		[DisplayName("ResB")]
+		ResourceBlocked,
+		[DisplayName("CCpu")]
+		CustomCpu,
+		[DisplayName("MBLB")]
+		MailboxLogBytes,
+		[DisplayName("MBMC")]
+		MailboxMessagesCreated,
+		[DisplayName("BudgUse")]
+		BudgetUsed,
+		[DisplayName("RPC")]
+		RpcCount,
+		[DisplayName("RPC")]
+		RpcLatency,
+		[DisplayName("ROP")]
+		Rop,
+		[DisplayName("MAPI")]
+		MapiCount,
+		[DisplayName("MAPI")]
+		MapiLatency,
+		[DisplayName("ATE")]
+		ADObjToExchObjLatency,
+		[DisplayName("CorrelationID")]
+		CorrelationId
+	}
+}

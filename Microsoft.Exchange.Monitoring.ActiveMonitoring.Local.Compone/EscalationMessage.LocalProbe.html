@@ -1,0 +1,47 @@
+﻿<hr/>
+
+<hr/>
+<b>Context Information:</b> <br/>
+Outlook Session Cookie: {MapiProbe.OutlookSessionCookie}<br/>
+Legacy DN: {MapiProbe.UserLegacyDN}<br/>
+RPC Proxy Url: {MapiProbe.RequestUrl}<br/>
+Auth Type Used: {MapiProbe.AuthType}<br/>
+<br/>
+<b>{MapiProbe.FirstFailedTaskName}</b> step of <b>{Probe.ResultName}</b> has failed against <b>{MapiProbe.RespondingHttpServer}</b> proxying to <b>{MapiProbe.RespondingRpcProxyServer}</b> for {MapiProbe.MonitoringAccount} .
+<hr/>
+Outline:<br/>
+<b>{MapiProbe.ExecutionOutline}</b>
+<br/>
+Likely root cause: <b>{MapiProbe.RootCause}</b><br/>
+ActivityContext: <b>{MapiProbe.ActivityContext}</b><br/>
+Error Details: <pre>{MapiProbe.ErrorDetails}</pre><br/>
+Exception: <pre>{Probe.Exception}</pre><br/>
+Log: <pre>{MapiProbe.VerboseLog}</pre><br/>
+<hr/>
+Troubleshoot using <a href="http://exweb/14/Teams/Mailbox/mts/_layouts/OneNote.aspx?id=%2f14%2fTeams%2fMailbox%2fmts%2fMapi%20in%20the%20MidTier%20Workspace%2fBook%20of%20RCA&wd=target%28Exchange%20Support%20Shell%29">
+Exchange Support Shell (ESS)</a>.<br/>
+<ol>
+<li>Run <a href="\\redmond\exchange\Build\E15\LATEST\release\datacenterops\all\retail\amd64\C3\ExchangeSupportShell\Installers\ESS.Internal.CLR45.exe">ESS</a> on your Corp box
+<li>Rdp <pre>{MapiProbe.RespondingHttpServer}</pre> to connect to a relevant debug server.
+<li>Copy-paste ESS to the debug server and open it
+<li>Run <pre>
+Analyze-RcaAlert `
+    -HealthSet {Probe.ServiceName} `
+    -ResultName {Probe.ResultName} `
+    -Start   &#39;{Monitor.FirstAlertObservedTime}&#39; `
+    -AlertingServer {MapiProbe.RespondingHttpServer} `
+    -Mailbox &#39;{MapiProbe.MonitoringAccount}&#39; `
+    -UserLegacyDN &#39;{MapiProbe.UserLegacyDN}&#39; `
+    -OutlookSessionCookie &#39;{MapiProbe.OutlookSessionCookie}&#39;
+    </pre><br/>
+    to get a list of commands to check the LAM probes
+</ol>
+<hr/>
+Useful Links<br/>
+<ul>
+<li><a href="http://exweb/14/Teams/Mailbox/mts/_layouts/OneNote.aspx?id=%2f14%2fTeams%2fMailbox%2fmts%2fMapi%20in%20the%20MidTier%20Workspace%2fBook%20of%20RCA&">MoMT On-Call Wiki</a>
+<li><a href="https://msft.spoppe.com/teams/exchange/dc/oncall/_layouts/OneNote.aspx?id=%2fteams%2fexchange%2fdc%2foncall%2fSiteAssets%2foncall%20Notebook&">Exchange On-Call WiKi</a>
+<li><a href="{MapiProbe.OspUrl}">Outside-In results</a>
+<li><a href="http://exweb/14/Teams/Mailbox/mts/_layouts/OneNote.aspx?d=O9f37bba86068429f9a83dabf242fbf9fm3ada3fd1dd7f4e268a73ab64ebd81dd7m08de3a43e309479eac570b967acc2717m&wd=target%28%2FOn-call%2FHowTo%20Links.one%7Caa902403-bd28-42ae-91b2-72908bda8807%2FHowTo%3A%20Access%20the%20MoMT%20On%20Call%20BattleCards%7C42036d18-174e-4d5a-8461-894f1485de65%2F%29">HowTo: Access the OnCall Battlecards</a>
+</ul>
+<hr/>

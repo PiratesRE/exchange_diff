@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo Name="Mailbox Service Control (First)" DescriptionId="SetupComponentStoppingMailboxServices">
+
+  <ServerTasks>
+
+    <!-- On a clean install, most of these services won't exist.                   -->
+    <!-- On a Build-to-Build Upgrade, they should have already been stopped before -->
+    <!-- the MSI was run; but it won't hurt to be sure here.                       -->
+
+	<!-- W3SVC service control-->
+    <ServerTaskInfo Id="_167fb929baeb427a822117b41a371b4d" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install />
+      <BuildToBuildUpgrade DescriptionId="SetupProgressStoppingW3SVCService">
+		<!-- Stop W3SVC service (on build-to-build upgrade only) -->
+        <Standalone>stop-SetupService -ServiceName W3SVC</Standalone>
+      </BuildToBuildUpgrade>
+      <DisasterRecovery />
+	  <Uninstall DescriptionId="SetupProgressStartingW3SVCService">
+		<Standalone>
+		  <!-- start W3SVC service if the server has installed client access role-->
+		  $a=Get-ExchangeServer -Identity $RoleFqdnOrName;
+		  if ($a.IsClientAccessServer)
+		  {
+		    start-SetupService -ServiceName W3SVC
+		  }
+		</Standalone>
+	  </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Stop HTTPFilter service (on build-to-build upgrade only) -->
+    <ServerTaskInfo Id="_74a36da1731942c6a80133ed7e647aff" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install />
+	  <BuildToBuildUpgrade DescriptionId="SetupProgressStoppingHTTPFilterService">
+        <Standalone>
+          $a = get-wmiobject win32_operatingsystem;
+          if( ([int]($a.version.split(".")[0])) -lt 6   )
+          {
+	        stop-SetupService -ServiceName HTTPFilter
+	   }
+	 </Standalone>
+      </BuildToBuildUpgrade>
+      <DisasterRecovery />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Stop MSExchangeMGMT service (on build-to-build upgrade only) -->
+    <ServerTaskInfo Id="_8ce8c863fb764a199c3289d0c12880f9" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install />
+	  <BuildToBuildUpgrade DescriptionId="SetupProgressStoppingExchangeMGMTService">
+		<Standalone>
+          if( get-service | where { $_.Name -ieq "MSExchangeMGMT" } )
+          {
+            stop-SetupService -ServiceName MSExchangeMGMT
+          }
+        </Standalone>
+      </BuildToBuildUpgrade>
+      <DisasterRecovery />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Remove MSExchangeMGMT service (on build-to-build upgrade only) -->
+    <ServerTaskInfo Id="_5eb106c5c68842b5b104ad5cf83f4fec" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install />
+	  <BuildToBuildUpgrade>
+        <Standalone>uninstall-MSExchangeMGMTService</Standalone>
+      </BuildToBuildUpgrade>
+      <DisasterRecovery />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Stop MSExchangeIS service (on build-to-build upgrade only) -->
+    <ServerTaskInfo Id="_014e499aa9dd41a58d2eab2b878f2439" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install />
+      <BuildToBuildUpgrade DescriptionId="SetupProgressStoppingInformationStoreService">
+        <Standalone>stop-SetupService -ServiceName MSExchangeIS -MaximumWaitTime "unlimited"</Standalone>
+      </BuildToBuildUpgrade>
+      <DisasterRecovery />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Stop MSExchangeSA service (on build-to-build upgrade only) -->
+    <ServerTaskInfo Id="_da537cbf8baf4f2f9e70da51a0e6962e" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install />
+	  <BuildToBuildUpgrade DescriptionId="SetupProgressStoppingSystemAttendantService">
+        <Standalone>stop-SetupService -ServiceName MSExchangeSA</Standalone>
+      </BuildToBuildUpgrade>
+      <DisasterRecovery />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Stop IISAdmin service (on build-to-build upgrade only) -->
+    <ServerTaskInfo Id="_62bf64cb272e4d4da881d69ed77ba04b" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install />
+      <BuildToBuildUpgrade DescriptionId="SetupProgressStoppingIISAdminService">
+        <Standalone>stop-SetupService -ServiceName IISAdmin</Standalone>
+      </BuildToBuildUpgrade>
+      <DisasterRecovery />
+      <Uninstall />
+    </ServerTaskInfo>
+
+  </ServerTasks>
+
+</SetupComponentInfo>

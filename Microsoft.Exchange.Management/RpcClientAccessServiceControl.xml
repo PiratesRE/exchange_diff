@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo Name="RPC Client Access Service Control" DescriptionId="RpcClientAccessServiceControlComponentDescription">
+
+  <ServerTasks>
+    
+	<!-- Stop MSExchangeRPC service -->
+	<ServerTaskInfo Id="_4b4248cce65c4ccaa92fe5f938f2aedc" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+	  <Install/>
+	  <BuildToBuildUpgrade />
+	  <DisasterRecovery UseInstallTasks="true" />
+	  <Uninstall DescriptionId="SetupProgressStoppingRpcClientAccessService">
+		<Standalone>stop-SetupService -ServiceName MSExchangeRPC</Standalone>
+	  </Uninstall>
+	</ServerTaskInfo>
+
+  </ServerTasks>
+
+</SetupComponentInfo>

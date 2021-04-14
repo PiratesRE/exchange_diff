@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo Name="Unified Messaging PostSetup" DescriptionId="SetupComponentPostSetupUnifiedMessaging">
+
+  <ServerTasks>
+
+    <!-- Start the UM service during installation and stop the MSS service during uninstall -->
+    <!-- Stop the MSS service during uninstall -->
+    <ServerTaskInfo Id="_aad30faed84e4408a65c9bc96ff2dbe6" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressStartingUMService" IsFatal="false">
+        <Standalone>start-SetupService -ServiceName MSExchangeUM</Standalone>
+      </Install>
+      <BuildToBuildUpgrade/>
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall/>
+    </ServerTaskInfo>    
+
+	
+  </ServerTasks>
+
+</SetupComponentInfo>
+

@@ -1,0 +1,215 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{09CD9476-CD82-489E-B9E2-84B47CA1411F}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Microsoft.Exchange.Entities.Common</RootNamespace>
+    <AssemblyName>Microsoft.Exchange.Entities.Common</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DataContractSerializerProject\EntityXmlTextWriter.cs" />
+    <Compile Include="Microsoft\Exchange\Entities\DataProviders\AttachmentDataProvider.cs" />
+    <Compile Include="Microsoft\Exchange\Entities\DataProviders\ConflictResolution.cs" />
+    <Compile Include="Microsoft\Exchange\Entities\DataProviders\DataProvider.cs" />
+    <Compile Include="Microsoft\Exchange\Entities\DataProviders\InvalidRequestException.cs" />
+    <Compile Include="Microsoft\Exchange\Entities\DataProviders\IrmUtils.cs" />
+    <Compile Include="Microsoft\Exchange\Entities\DataProviders\IrresolvableConflictException.cs" />
+    <Compile Include="Microsoft\Exchange\Entities\DataProviders\StorageDataProvider.cs" />
+    <Compile Include="Microsoft\Exchange\Entities\DataProviders\StorageFolderDataProvider.cs" />
+    <Compile Include="Microsoft\Exchange\Entities\DataProviders\StorageItemDataProvider.cs" />
+    <Compile Include="Microsoft\Exchange\Entities\DataProviders\StorageObjectDataProvider.cs" />
+    <Compile Include="Microsoft\Exchange\Entities\DataProviders\Strings.cs" />
+    <Compile Include="Microsoft\Exchange\Entities\DateTimeHelper.cs" />
+    <Compile Include="Microsoft\Exchange\Entities\Diagnostics\EntitiesDiagnosticsOptions.cs" />
+    <Compile Include="Microsoft\Exchange\Entities\Diagnostics\EntitiesMetadata.cs" />
+    <Compile Include="Microsoft\Exchange\Entities\Diagnostics\EntityLogger.cs" />
+    <Compile Include="Microsoft\Exchange\Entities\EntitySets\AttachmentCommands\CreateAttachment.cs" />
+    <Compile Include="Microsoft\Exchange\Entities\EntitySets\AttachmentCommands\DeleteAttachment.cs" />
+    <Compile Include="Microsoft\Exchange\Entities\EntitySets\AttachmentCommands\FindAttachments.cs" />
+    <Compile Include="Microsoft\Exchange\Entities\EntitySets\AttachmentCommands\ReadAttachment.cs" />
+    <Compile Include="Microsoft\Exchange\Entities\EntitySets\AttachmentCommands\UpdateAttachment.cs" />
+    <Compile Include="Microsoft\Exchange\Entities\EntitySets\Attachments.cs" />
+    <Compile Include="Microsoft\Exchange\Entities\EntitySets\Commands\Command.cs" />
+    <Compile Include="Microsoft\Exchange\Entities\EntitySets\Commands\CreateEntityCommand.cs" />
+    <Compile Include="Microsoft\Exchange\Entities\EntitySets\Commands\DeleteEntityCommand.cs" />
+    <Compile Include="Microsoft\Exchange\Entities\EntitySets\Commands\EntityCommand.cs" />
+    <Compile Include="Microsoft\Exchange\Entities\EntitySets\Commands\FindEntitiesCommand.cs" />
+    <Compile Include="Microsoft\Exchange\Entities\EntitySets\Commands\FindStorageEntitiesCommand.cs" />
+    <Compile Include="Microsoft\Exchange\Entities\EntitySets\Commands\ICreateEntityCommand.cs" />
+    <Compile Include="Microsoft\Exchange\Entities\EntitySets\Commands\IDeleteEntityCommand.cs" />
+    <Compile Include="Microsoft\Exchange\Entities\EntitySets\Commands\IEntityCommand.cs" />
+    <Compile Include="Microsoft\Exchange\Entities\EntitySets\Commands\IFindEntitiesCommand.cs" />
+    <Compile Include="Microsoft\Exchange\Entities\EntitySets\Commands\IKeyedEntityCommand.cs" />
+    <Compile Include="Microsoft\Exchange\Entities\EntitySets\Commands\IReadEntityCommand.cs" />
+    <Compile Include="Microsoft\Exchange\Entities\EntitySets\Commands\IUpdateEntityCommand.cs" />
+    <Compile Include="Microsoft\Exchange\Entities\EntitySets\Commands\KeyedEntityCommand.cs" />
+    <Compile Include="Microsoft\Exchange\Entities\EntitySets\Commands\ReadEntityCommand.cs" />
+    <Compile Include="Microsoft\Exchange\Entities\EntitySets\Commands\UpdateEntityCommand.cs" />
+    <Compile Include="Microsoft\Exchange\Entities\EntitySets\Commands\UpdateStorageEntityCommand.cs" />
+    <Compile Include="Microsoft\Exchange\Entities\EntitySets\EntityCommandFactory.cs" />
+    <Compile Include="Microsoft\Exchange\Entities\EntitySets\EntityReference.cs" />
+    <Compile Include="Microsoft\Exchange\Entities\EntitySets\EntitySet.cs" />
+    <Compile Include="Microsoft\Exchange\Entities\EntitySets\IEntityCommandFactory.cs" />
+    <Compile Include="Microsoft\Exchange\Entities\EntitySets\IPropertyDefinitionMap.cs" />
+    <Compile Include="Microsoft\Exchange\Entities\EntitySets\IStorageEntitySetScope.cs" />
+    <Compile Include="Microsoft\Exchange\Entities\EntitySets\ItemReference.cs" />
+    <Compile Include="Microsoft\Exchange\Entities\EntitySets\Linq\EntitySetQueryProvider.cs" />
+    <Compile Include="Microsoft\Exchange\Entities\EntitySets\Linq\ExpressionVisitors\EntityQueryOptionsBuilder.cs" />
+    <Compile Include="Microsoft\Exchange\Entities\EntitySets\Linq\ExpressionVisitors\EntityQueryOptionsVisitor.cs" />
+    <Compile Include="Microsoft\Exchange\Entities\EntitySets\Linq\ExpressionVisitors\ExpressionExtensions.cs" />
+    <Compile Include="Microsoft\Exchange\Entities\EntitySets\Linq\ExpressionVisitors\ExpressionNormalizer.cs" />
+    <Compile Include="Microsoft\Exchange\Entities\EntitySets\Linq\ExpressionVisitors\FilterAnalyzer.cs" />
+    <Compile Include="Microsoft\Exchange\Entities\EntitySets\Linq\ExpressionVisitors\LamdbaExpressionFinder.cs" />
+    <Compile Include="Microsoft\Exchange\Entities\EntitySets\Linq\ExpressionVisitors\QueryableMethods.cs" />
+    <Compile Include="Microsoft\Exchange\Entities\EntitySets\Linq\ExpressionVisitors\QueryFilterBuilder.cs" />
+    <Compile Include="Microsoft\Exchange\Entities\EntitySets\Linq\ExpressionVisitors\ReduceToConstantVisitor.cs" />
+    <Compile Include="Microsoft\Exchange\Entities\EntitySets\Linq\ExpressionVisitors\StringMethods.cs" />
+    <Compile Include="Microsoft\Exchange\Entities\EntitySets\Linq\ExpressionVisitors\TypeExtensions.cs" />
+    <Compile Include="Microsoft\Exchange\Entities\EntitySets\Linq\ExtensionMethods\EntityQueryOptionsExtensions.cs" />
+    <Compile Include="Microsoft\Exchange\Entities\EntitySets\Linq\ExtensionMethods\ExpressionTypeExtensions.cs" />
+    <Compile Include="Microsoft\Exchange\Entities\EntitySets\Linq\ExtensionMethods\OrderByClauseExtensions.cs" />
+    <Compile Include="Microsoft\Exchange\Entities\EntitySets\Linq\ExtensionMethods\PropertyDefinitionExtensions.cs" />
+    <Compile Include="Microsoft\Exchange\Entities\EntitySets\Linq\ExtensionMethods\PropertyValueExtensions.cs" />
+    <Compile Include="Microsoft\Exchange\Entities\EntitySets\Linq\Query.cs" />
+    <Compile Include="Microsoft\Exchange\Entities\EntitySets\Linq\QueryProvider.cs" />
+    <Compile Include="Microsoft\Exchange\Entities\EntitySets\Linq\RootQueryProvider.cs" />
+    <Compile Include="Microsoft\Exchange\Entities\EntitySets\StorageEntityReference.cs" />
+    <Compile Include="Microsoft\Exchange\Entities\EntitySets\StorageEntitySet.2.cs" />
+    <Compile Include="Microsoft\Exchange\Entities\EntitySets\StorageEntitySet.cs" />
+    <Compile Include="Microsoft\Exchange\Entities\EntitySets\StorageEntitySetScope.cs" />
+    <Compile Include="Microsoft\Exchange\Entities\EntitySets\Strings.cs" />
+    <Compile Include="Microsoft\Exchange\Entities\EntitySets\UnsupportedEstimatedTotalCountException.cs" />
+    <Compile Include="Microsoft\Exchange\Entities\EntitySets\UnsupportedExpressionException.cs" />
+    <Compile Include="Microsoft\Exchange\Entities\ExceptionHelper.cs" />
+    <Compile Include="Microsoft\Exchange\Entities\LoggingConstants.cs" />
+    <Compile Include="Microsoft\Exchange\Entities\Serialization\EntitySerializer.cs" />
+    <Compile Include="Microsoft\Exchange\Entities\TypeConversion\Converters\AttachmentConverter.cs" />
+    <Compile Include="Microsoft\Exchange\Entities\TypeConversion\Converters\BodyConverter.cs" />
+    <Compile Include="Microsoft\Exchange\Entities\TypeConversion\Converters\ConvertValue.cs" />
+    <Compile Include="Microsoft\Exchange\Entities\TypeConversion\Converters\HtmlBodyCallback.cs" />
+    <Compile Include="Microsoft\Exchange\Entities\TypeConversion\Converters\HtmlUpdateBodyCallback.cs" />
+    <Compile Include="Microsoft\Exchange\Entities\TypeConversion\Converters\IConverter.cs" />
+    <Compile Include="Microsoft\Exchange\Entities\TypeConversion\Converters\IdConverter.cs" />
+    <Compile Include="Microsoft\Exchange\Entities\TypeConversion\Converters\ImportanceConverter.cs" />
+    <Compile Include="Microsoft\Exchange\Entities\TypeConversion\Converters\PassThruConverter.cs" />
+    <Compile Include="Microsoft\Exchange\Entities\TypeConversion\Converters\SensitivityConverter.cs" />
+    <Compile Include="Microsoft\Exchange\Entities\TypeConversion\Converters\SimpleMappingConverter.cs" />
+    <Compile Include="Microsoft\Exchange\Entities\TypeConversion\IPropertyValueCollectionTranslationRule.cs" />
+    <Compile Include="Microsoft\Exchange\Entities\TypeConversion\IStorageTranslationRule.cs" />
+    <Compile Include="Microsoft\Exchange\Entities\TypeConversion\ITranslationRule.cs" />
+    <Compile Include="Microsoft\Exchange\Entities\TypeConversion\OfTypeTranslationRule.cs" />
+    <Compile Include="Microsoft\Exchange\Entities\TypeConversion\PropertyAccessors\DefaultStoragePropertyAccessor.cs" />
+    <Compile Include="Microsoft\Exchange\Entities\TypeConversion\PropertyAccessors\DefaultStoreObjectPropertyAccessor.cs" />
+    <Compile Include="Microsoft\Exchange\Entities\TypeConversion\PropertyAccessors\DelegatedStoragePropertyAccessor.cs" />
+    <Compile Include="Microsoft\Exchange\Entities\TypeConversion\PropertyAccessors\IStoragePropertyAccessor.cs" />
+    <Compile Include="Microsoft\Exchange\Entities\TypeConversion\PropertyAccessors\StorageAccessors\AttachmentAccessors.cs" />
+    <Compile Include="Microsoft\Exchange\Entities\TypeConversion\PropertyAccessors\StorageAccessors\ItemAccessors.cs" />
+    <Compile Include="Microsoft\Exchange\Entities\TypeConversion\PropertyAccessors\StorageAccessors\StoreObjectAccessors.cs" />
+    <Compile Include="Microsoft\Exchange\Entities\TypeConversion\PropertyAccessors\StorageBodyPropertyAccessor.cs" />
+    <Compile Include="Microsoft\Exchange\Entities\TypeConversion\PropertyAccessors\StoragePropertyAccessor.cs" />
+    <Compile Include="Microsoft\Exchange\Entities\TypeConversion\PropertyTranslationRules\AttachmentTranslationRule.cs" />
+    <Compile Include="Microsoft\Exchange\Entities\TypeConversion\PropertyTranslationRules\DelegatedTranslationRule.cs" />
+    <Compile Include="Microsoft\Exchange\Entities\TypeConversion\PropertyTranslationRules\EmbededItemTranslationRule.cs" />
+    <Compile Include="Microsoft\Exchange\Entities\TypeConversion\PropertyTranslationRules\PassThruPropertyTranslationRule.cs" />
+    <Compile Include="Microsoft\Exchange\Entities\TypeConversion\PropertyTranslationRules\PropertyTranslationRule.cs" />
+    <Compile Include="Microsoft\Exchange\Entities\TypeConversion\PropertyTranslationRules\StorageIdTranslationRule.cs" />
+    <Compile Include="Microsoft\Exchange\Entities\TypeConversion\PropertyTranslationRules\StorageTimeZoneSensitiveTimeTranslationRule.cs" />
+    <Compile Include="Microsoft\Exchange\Entities\TypeConversion\StorageEntityFactory.cs" />
+    <Compile Include="Microsoft\Exchange\Entities\TypeConversion\TranslationRuleExtensions.cs" />
+    <Compile Include="Microsoft\Exchange\Entities\TypeConversion\TranslationStrategy.cs" />
+    <Compile Include="Microsoft\Exchange\Entities\TypeConversion\Translators\AttachmentTranslator.cs" />
+    <Compile Include="Microsoft\Exchange\Entities\TypeConversion\Translators\IGenericItemTranslator.cs" />
+    <Compile Include="Microsoft\Exchange\Entities\TypeConversion\Translators\IStorageTranslator.cs" />
+    <Compile Include="Microsoft\Exchange\Entities\TypeConversion\Translators\ItemTranslator.cs" />
+    <Compile Include="Microsoft\Exchange\Entities\TypeConversion\Translators\StorageEntityTranslator.cs" />
+    <Compile Include="Microsoft\Exchange\Entities\TypeConversion\Translators\StorageTranslator.cs" />
+    <Compile Include="Microsoft\Exchange\Entities\VoidResult.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Microsoft\Exchange\Entities\DataProviders\Strings.resources" />
+    <EmbeddedResource Include="Microsoft\Exchange\Entities\EntitySets\Strings.resources" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.Exchange.Common\Microsoft.Exchange.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140F0}</Project>
+      <Name>Microsoft.Exchange.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Common\Microsoft.Exchange.Data.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140D3}</Project>
+      <Name>Microsoft.Exchange.Data.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Directory\Microsoft.Exchange.Data.Directory.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14105}</Project>
+      <Name>Microsoft.Exchange.Data.Directory</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Storage\Microsoft.Exchange.Data.Storage.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1410F}</Project>
+      <Name>Microsoft.Exchange.Data.Storage</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Transport\Microsoft.Exchange.Data.Transport.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140D5}</Project>
+      <Name>Microsoft.Exchange.Data.Transport</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data\Microsoft.Exchange.Data.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14106}</Project>
+      <Name>Microsoft.Exchange.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Diagnostics\Microsoft.Exchange.Diagnostics.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14113}</Project>
+      <Name>Microsoft.Exchange.Diagnostics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Entities.DataModel\Microsoft.Exchange.Entities.DataModel.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14120}</Project>
+      <Name>Microsoft.Exchange.Entities.DataModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Net\Microsoft.Exchange.Net.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14178}</Project>
+      <Name>Microsoft.Exchange.Net</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.StoreProvider\Microsoft.Exchange.StoreProvider.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141B9}</Project>
+      <Name>Microsoft.Exchange.StoreProvider</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\mscorlib\mscorlib.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141F1}</Project>
+      <Name>mscorlib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

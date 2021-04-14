@@ -1,0 +1,163 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{09CD9476-CD82-489E-B9E2-84B47CA14185}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Microsoft.Exchange.PushNotifications</RootNamespace>
+    <AssemblyName>Microsoft.Exchange.PushNotifications</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Exchange.PushNotifications.CrimsonEvents" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.ServiceModel.Web" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AzureAppConfigData.cs" />
+    <Compile Include="AzureAppConfigRequestInfo.cs" />
+    <Compile Include="AzureAppConfigResponseInfo.cs" />
+    <Compile Include="AzureChallengeRequestInfo.cs" />
+    <Compile Include="AzureDeviceRegistrationInfo.cs" />
+    <Compile Include="AzureHubDefinition.cs" />
+    <Compile Include="BackgroundSyncType.cs" />
+    <Compile Include="BasicDataContract.cs" />
+    <Compile Include="BasicMulticastNotification.cs" />
+    <Compile Include="BasicNotification.cs" />
+    <Compile Include="BasicNotificationRecipient.cs" />
+    <Compile Include="Client\AzureAppConfigDataServiceProxy.cs" />
+    <Compile Include="Client\AzureChallengeRequestServiceProxy.cs" />
+    <Compile Include="Client\AzureDeviceRegistrationServiceProxy.cs" />
+    <Compile Include="Client\AzureHubCreationServiceProxy.cs" />
+    <Compile Include="Client\LocalUserNotificationPublisherServiceProxy.cs" />
+    <Compile Include="Client\OnPremPublisherServiceProxy.cs" />
+    <Compile Include="Client\OutlookPublisherServiceProxy.cs" />
+    <Compile Include="Client\PublisherServiceProxy.cs" />
+    <Compile Include="Client\PushNotificationEndpointNotFoundException.cs" />
+    <Compile Include="Client\PushNotificationProxyRequest.cs" />
+    <Compile Include="Client\PushNotificationsProxyPool.cs" />
+    <Compile Include="Client\PushNotificationsProxyPoolFactory.cs" />
+    <Compile Include="Constants.cs" />
+    <Compile Include="Extensions\Extensions.cs" />
+    <Compile Include="IAzureAppConfigDataServiceContract.cs" />
+    <Compile Include="IAzureChallengeRequestServiceContract.cs" />
+    <Compile Include="IAzureDeviceRegistrationServiceContract.cs" />
+    <Compile Include="IAzureHubCreationServiceContract.cs" />
+    <Compile Include="ILocalUserNotificationPublisherServiceContract.cs" />
+    <Compile Include="InvalidNotificationException.cs" />
+    <Compile Include="InvalidUserNotificationException.cs" />
+    <Compile Include="IOnPremPublisherServiceContract.cs" />
+    <Compile Include="IOutlookPublisherServiceContract.cs" />
+    <Compile Include="IPublisherServiceContract.cs" />
+    <Compile Include="IRemoteUserNotificationPublisherServiceContract.cs" />
+    <Compile Include="LocalUserNotification.cs" />
+    <Compile Include="LocalUserNotificationBatch.cs" />
+    <Compile Include="LocalUserNotificationFragment.cs" />
+    <Compile Include="LocalUserNotificationPayload.cs" />
+    <Compile Include="LocDescriptionAttribute.cs" />
+    <Compile Include="MailboxNotification.cs" />
+    <Compile Include="MailboxNotificationBatch.cs" />
+    <Compile Include="MailboxNotificationFragment.cs" />
+    <Compile Include="MailboxNotificationPayload.cs" />
+    <Compile Include="MailboxNotificationRecipient.cs" />
+    <Compile Include="MulticastNotification.cs" />
+    <Compile Include="MulticastNotificationFragment.cs" />
+    <Compile Include="Notification.cs" />
+    <Compile Include="NotificationTracker.cs" />
+    <Compile Include="OutlookNotification.cs" />
+    <Compile Include="OutlookNotificationBatch.cs" />
+    <Compile Include="OutlookNotificationFragment.cs" />
+    <Compile Include="OutlookNotificationPayload.cs" />
+    <Compile Include="OutlookNotificationRecipient.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="PushNotificationFault.cs" />
+    <Compile Include="PushNotificationPermanentException.cs" />
+    <Compile Include="PushNotificationServerException.cs" />
+    <Compile Include="PushNotificationsLogHelper.cs" />
+    <Compile Include="PushNotificationsMonitoring.cs" />
+    <Compile Include="PushNotificationTransientException.cs" />
+    <Compile Include="RemoteUserNotification.cs" />
+    <Compile Include="RemoteUserNotificationFragment.cs" />
+    <Compile Include="RemoteUserNotificationPayload.cs" />
+    <Compile Include="Strings.cs" />
+    <Compile Include="UserNotification.cs" />
+    <Compile Include="UserNotificationFragment.cs" />
+    <Compile Include="UserNotificationPayload.cs" />
+    <Compile Include="UserNotificationRecipient.cs" />
+    <Compile Include="Utils\BaseNotificationBatchManager.cs" />
+    <Compile Include="Utils\ErrorTracker.cs" />
+    <Compile Include="Utils\FifoCache.cs" />
+    <Compile Include="Utils\FifoDictionaryCache.cs" />
+    <Compile Include="Utils\PropertyReader.cs" />
+    <Compile Include="Utils\PushNotificationDisposable.cs" />
+    <Compile Include="WellKnownWorkloadId.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Strings.resources" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.Exchange.Common\Microsoft.Exchange.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140F0}</Project>
+      <Name>Microsoft.Exchange.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Common\Microsoft.Exchange.Data.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140D3}</Project>
+      <Name>Microsoft.Exchange.Data.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Directory\Microsoft.Exchange.Data.Directory.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14105}</Project>
+      <Name>Microsoft.Exchange.Data.Directory</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Diagnostics\Microsoft.Exchange.Diagnostics.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14113}</Project>
+      <Name>Microsoft.Exchange.Diagnostics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Net\Microsoft.Exchange.Net.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14178}</Project>
+      <Name>Microsoft.Exchange.Net</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Security\Microsoft.Exchange.Security.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14198}</Project>
+      <Name>Microsoft.Exchange.Security</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Office.Datacenter.ActiveMonitoringLocal\Microsoft.Office.Datacenter.ActiveMonitoringLocal.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141ED}</Project>
+      <Name>Microsoft.Office.Datacenter.ActiveMonitoringLocal</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\mscorlib\mscorlib.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141F1}</Project>
+      <Name>mscorlib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

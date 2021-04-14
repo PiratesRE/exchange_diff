@@ -1,0 +1,859 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{09CD9476-CD82-489E-B9E2-84B47CA1413C}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Microsoft.Exchange</RootNamespace>
+    <AssemblyName>Microsoft.Exchange.InfoWorker.Common</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60DC8134-EBA5-43B8-BCC9-BB4BC16C2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Exchange.Search.OperatorSchema" />
+    <Reference Include="Microsoft.Exchange.WebServices" />
+    <Reference Include="System" />
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.DirectoryServices" />
+    <Reference Include="System.IdentityModel" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="InfoWorker\Common\ACRTraceString.cs" />
+    <Compile Include="InfoWorker\Common\Availability\AddressSpaceNotFoundException.cs" />
+    <Compile Include="InfoWorker\Common\Availability\Application.cs" />
+    <Compile Include="InfoWorker\Common\Availability\ASTraceConfiguration.cs" />
+    <Compile Include="InfoWorker\Common\Availability\ASTraceFilter.cs" />
+    <Compile Include="InfoWorker\Common\Availability\AsyncRequest.cs" />
+    <Compile Include="InfoWorker\Common\Availability\AsyncRequestWithQueryList.cs" />
+    <Compile Include="InfoWorker\Common\Availability\AsyncTask.cs" />
+    <Compile Include="InfoWorker\Common\Availability\AsyncTaskParallel.cs" />
+    <Compile Include="InfoWorker\Common\Availability\AsyncTaskSequence.cs" />
+    <Compile Include="InfoWorker\Common\Availability\AsyncTaskWithChildTasks.cs" />
+    <Compile Include="InfoWorker\Common\Availability\AsyncWebRequest.cs" />
+    <Compile Include="InfoWorker\Common\Availability\AttendeeKind.cs" />
+    <Compile Include="InfoWorker\Common\Availability\AuthenticatorType.cs" />
+    <Compile Include="InfoWorker\Common\Availability\AutoDiscoverAuthenticator.cs" />
+    <Compile Include="InfoWorker\Common\Availability\AutoDiscoverDnsReader.cs" />
+    <Compile Include="InfoWorker\Common\Availability\AutoDiscoverFailedException.cs" />
+    <Compile Include="InfoWorker\Common\Availability\AutoDiscoverInvalidUserException.cs" />
+    <Compile Include="InfoWorker\Common\Availability\AutoDiscoverQuery.cs" />
+    <Compile Include="InfoWorker\Common\Availability\AutoDiscoverQueryExternal.cs" />
+    <Compile Include="InfoWorker\Common\Availability\AutoDiscoverQueryExternalByOAuth.cs" />
+    <Compile Include="InfoWorker\Common\Availability\AutoDiscoverQueryInternal.cs" />
+    <Compile Include="InfoWorker\Common\Availability\AutoDiscoverQueryItem.cs" />
+    <Compile Include="InfoWorker\Common\Availability\AutoDiscoverRequest.cs" />
+    <Compile Include="InfoWorker\Common\Availability\AutoDiscoverRequestByDomain.cs" />
+    <Compile Include="InfoWorker\Common\Availability\AutoDiscoverRequestByUser.cs" />
+    <Compile Include="InfoWorker\Common\Availability\AutoDiscoverRequestOperation.cs" />
+    <Compile Include="InfoWorker\Common\Availability\AutoDiscoverRequestResult.cs" />
+    <Compile Include="InfoWorker\Common\Availability\AutoDiscoverRequestXmlByUser.cs" />
+    <Compile Include="InfoWorker\Common\Availability\AutoDiscoverResult.cs" />
+    <Compile Include="InfoWorker\Common\Availability\AutodiscoverType.cs" />
+    <Compile Include="InfoWorker\Common\Availability\AutodiscoverUrlSource.cs" />
+    <Compile Include="InfoWorker\Common\Availability\AutodiscoverVersionBucket.cs" />
+    <Compile Include="InfoWorker\Common\Availability\AvailabilityException.cs" />
+    <Compile Include="InfoWorker\Common\Availability\AvailabilityInvalidParameterException.cs" />
+    <Compile Include="InfoWorker\Common\Availability\AvailabilityQuery.cs" />
+    <Compile Include="InfoWorker\Common\Availability\AvailabilityQueryResult.cs" />
+    <Compile Include="InfoWorker\Common\Availability\BaseQuery.cs" />
+    <Compile Include="InfoWorker\Common\Availability\BaseQueryResult.cs" />
+    <Compile Include="InfoWorker\Common\Availability\BaseRequestDispatcher.cs" />
+    <Compile Include="InfoWorker\Common\Availability\BusyType.cs" />
+    <Compile Include="InfoWorker\Common\Availability\CalendarEvent.cs" />
+    <Compile Include="InfoWorker\Common\Availability\CalendarEventDetails.cs" />
+    <Compile Include="InfoWorker\Common\Availability\CalendarQuery.cs" />
+    <Compile Include="InfoWorker\Common\Availability\CertificateErrorHandler.cs" />
+    <Compile Include="InfoWorker\Common\Availability\ClientContext.cs" />
+    <Compile Include="InfoWorker\Common\Availability\ClientDisconnectedException.cs" />
+    <Compile Include="InfoWorker\Common\Availability\ClientStatisticsReporter.cs" />
+    <Compile Include="InfoWorker\Common\Availability\Configuration.cs" />
+    <Compile Include="InfoWorker\Common\Availability\ConfigurationReader.cs" />
+    <Compile Include="InfoWorker\Common\Availability\CreateAutoDiscoverRequestDelegate.cs" />
+    <Compile Include="InfoWorker\Common\Availability\DaysOfWeek.cs" />
+    <Compile Include="InfoWorker\Common\Availability\DispatcherWithAutoDiscoverResults.cs" />
+    <Compile Include="InfoWorker\Common\Availability\DomainSoapAutoDiscoverRequest.cs" />
+    <Compile Include="InfoWorker\Common\Availability\DummyApplication.cs" />
+    <Compile Include="InfoWorker\Common\Availability\Duration.cs" />
+    <Compile Include="InfoWorker\Common\Availability\E14orHigherProxyServerNotFound.cs" />
+    <Compile Include="InfoWorker\Common\Availability\EmailAddress.cs" />
+    <Compile Include="InfoWorker\Common\Availability\ErrorConstants.cs" />
+    <Compile Include="InfoWorker\Common\Availability\ErrorHandler.cs" />
+    <Compile Include="InfoWorker\Common\Availability\ErrorMessages.cs" />
+    <Compile Include="InfoWorker\Common\Availability\ExceptionDefaults.cs" />
+    <Compile Include="InfoWorker\Common\Availability\ExceptionFactory.cs" />
+    <Compile Include="InfoWorker\Common\Availability\ExternalAuthenticationRequest.cs" />
+    <Compile Include="InfoWorker\Common\Availability\ExternalByOAuthProxyWebRequest.cs" />
+    <Compile Include="InfoWorker\Common\Availability\ExternalByOAuthProxyWebRequestWithAutoDiscover.cs" />
+    <Compile Include="InfoWorker\Common\Availability\ExternalClientContext.cs" />
+    <Compile Include="InfoWorker\Common\Availability\ExternalProxyWebRequest.cs" />
+    <Compile Include="InfoWorker\Common\Availability\ExternalProxyWebRequestWithAutoDiscover.cs" />
+    <Compile Include="InfoWorker\Common\Availability\FaultInjection.cs" />
+    <Compile Include="InfoWorker\Common\Availability\FreeBusyApplication.cs" />
+    <Compile Include="InfoWorker\Common\Availability\FreeBusyDLLimitReachedException.cs" />
+    <Compile Include="InfoWorker\Common\Availability\FreeBusyPermission.cs" />
+    <Compile Include="InfoWorker\Common\Availability\FreeBusyPermissionLevel.cs" />
+    <Compile Include="InfoWorker\Common\Availability\FreeBusyQuery.cs" />
+    <Compile Include="InfoWorker\Common\Availability\FreeBusyQueryResult.cs" />
+    <Compile Include="InfoWorker\Common\Availability\FreeBusyRecipientQuery.cs" />
+    <Compile Include="InfoWorker\Common\Availability\FreeBusyViewOptions.cs" />
+    <Compile Include="InfoWorker\Common\Availability\FreeBusyViewType.cs" />
+    <Compile Include="InfoWorker\Common\Availability\GetFolderAndProxyRequest.cs" />
+    <Compile Include="InfoWorker\Common\Availability\GetFolderAndProxyRequestWithAutoDiscover.cs" />
+    <Compile Include="InfoWorker\Common\Availability\GetFolderRequest.cs" />
+    <Compile Include="InfoWorker\Common\Availability\GetFolderRequestProcessingException.cs" />
+    <Compile Include="InfoWorker\Common\Availability\GroupSid.cs" />
+    <Compile Include="InfoWorker\Common\Availability\IdentityArrayEmptyException.cs" />
+    <Compile Include="InfoWorker\Common\Availability\IdentityArrayTooBigException.cs" />
+    <Compile Include="InfoWorker\Common\Availability\IndividualMailboxLimitReachedException.cs" />
+    <Compile Include="InfoWorker\Common\Availability\InternalCalendarQuery.cs" />
+    <Compile Include="InfoWorker\Common\Availability\InternalClientContext.cs" />
+    <Compile Include="InfoWorker\Common\Availability\InvalidAuthorizationContextException.cs" />
+    <Compile Include="InfoWorker\Common\Availability\InvalidClientSecurityContextException.cs" />
+    <Compile Include="InfoWorker\Common\Availability\InvalidCrossForestCredentialsException.cs" />
+    <Compile Include="InfoWorker\Common\Availability\InvalidFreeBusyViewTypeException.cs" />
+    <Compile Include="InfoWorker\Common\Availability\InvalidMergedFreeBusyIntervalException.cs" />
+    <Compile Include="InfoWorker\Common\Availability\InvalidOrganizationRelationshipForRequestDispatcherException.cs" />
+    <Compile Include="InfoWorker\Common\Availability\InvalidSmtpAddressException.cs" />
+    <Compile Include="InfoWorker\Common\Availability\InvalidTimeIntervalException.cs" />
+    <Compile Include="InfoWorker\Common\Availability\LimitedThreadPool.cs" />
+    <Compile Include="InfoWorker\Common\Availability\LocalQuery.cs" />
+    <Compile Include="InfoWorker\Common\Availability\LocalRequest.cs" />
+    <Compile Include="InfoWorker\Common\Availability\MailboxData.cs" />
+    <Compile Include="InfoWorker\Common\Availability\MailboxFailoverException.cs" />
+    <Compile Include="InfoWorker\Common\Availability\MailboxLogonFailedException.cs" />
+    <Compile Include="InfoWorker\Common\Availability\MailRecipientNotFoundException.cs" />
+    <Compile Include="InfoWorker\Common\Availability\MailTipsRecipientQuery.cs" />
+    <Compile Include="InfoWorker\Common\Availability\MergedFreeBusy.cs" />
+    <Compile Include="InfoWorker\Common\Availability\MissingArgumentException.cs" />
+    <Compile Include="InfoWorker\Common\Availability\NoCalendarException.cs" />
+    <Compile Include="InfoWorker\Common\Availability\NoFreeBusyAccessException.cs" />
+    <Compile Include="InfoWorker\Common\Availability\NotDefaultCalendarException.cs" />
+    <Compile Include="InfoWorker\Common\Availability\OAuthCredentialsFactory.cs" />
+    <Compile Include="InfoWorker\Common\Availability\OrganizationalClientContext.cs" />
+    <Compile Include="InfoWorker\Common\Availability\PerformanceCounters.cs" />
+    <Compile Include="InfoWorker\Common\Availability\PersonalClientContext.cs" />
+    <Compile Include="InfoWorker\Common\Availability\ProxyAuthenticator.cs" />
+    <Compile Include="InfoWorker\Common\Availability\ProxyNoResultException.cs" />
+    <Compile Include="InfoWorker\Common\Availability\ProxyNotAllowedForPersonalRelationship.cs" />
+    <Compile Include="InfoWorker\Common\Availability\ProxyQueryFailureException.cs" />
+    <Compile Include="InfoWorker\Common\Availability\ProxyRequestNotAllowedException.cs" />
+    <Compile Include="InfoWorker\Common\Availability\ProxyRequestType.cs" />
+    <Compile Include="InfoWorker\Common\Availability\ProxyServerWithMinimumRequiredVersionNotFound.cs" />
+    <Compile Include="InfoWorker\Common\Availability\ProxyWebRequest.cs" />
+    <Compile Include="InfoWorker\Common\Availability\ProxyWebRequestProcessingException.cs" />
+    <Compile Include="InfoWorker\Common\Availability\ProxyWebRequestWithAutoDiscover.cs" />
+    <Compile Include="InfoWorker\Common\Availability\Proxy\ArrayOfResponseMessagesType.cs" />
+    <Compile Include="InfoWorker\Common\Availability\Proxy\ArrayOfTrackingPropertiesType.cs" />
+    <Compile Include="InfoWorker\Common\Availability\Proxy\BaseEmailAddressType.cs" />
+    <Compile Include="InfoWorker\Common\Availability\Proxy\BaseRequestType.cs" />
+    <Compile Include="InfoWorker\Common\Availability\Proxy\BaseResponseMessageType.cs" />
+    <Compile Include="InfoWorker\Common\Availability\Proxy\EmailAddress.cs" />
+    <Compile Include="InfoWorker\Common\Availability\Proxy\EmailAddressType.cs" />
+    <Compile Include="InfoWorker\Common\Availability\Proxy\ExchangeVersionType.cs" />
+    <Compile Include="InfoWorker\Common\Availability\Proxy\FindMessageTrackingReportRequestType.cs" />
+    <Compile Include="InfoWorker\Common\Availability\Proxy\FindMessageTrackingReportResponseMessageType.cs" />
+    <Compile Include="InfoWorker\Common\Availability\Proxy\FindMessageTrackingSearchResultType.cs" />
+    <Compile Include="InfoWorker\Common\Availability\Proxy\FreeBusyResponse.cs" />
+    <Compile Include="InfoWorker\Common\Availability\Proxy\FreeBusyView.cs" />
+    <Compile Include="InfoWorker\Common\Availability\Proxy\GetMailTipsCompletedEventArgs.cs" />
+    <Compile Include="InfoWorker\Common\Availability\Proxy\GetMailTipsCompletedEventHandler.cs" />
+    <Compile Include="InfoWorker\Common\Availability\Proxy\GetMailTipsResponseMessageType.cs" />
+    <Compile Include="InfoWorker\Common\Availability\Proxy\GetMailTipsType.cs" />
+    <Compile Include="InfoWorker\Common\Availability\Proxy\GetMessageTrackingReportRequestType.cs" />
+    <Compile Include="InfoWorker\Common\Availability\Proxy\GetMessageTrackingReportResponseMessageType.cs" />
+    <Compile Include="InfoWorker\Common\Availability\Proxy\GetUserAvailabilityRequest.cs" />
+    <Compile Include="InfoWorker\Common\Availability\Proxy\GetUserAvailabilityResponse.cs" />
+    <Compile Include="InfoWorker\Common\Availability\Proxy\GetUserPhotoRequestType.cs" />
+    <Compile Include="InfoWorker\Common\Availability\Proxy\GetUserPhotoResponseMessageType.cs" />
+    <Compile Include="InfoWorker\Common\Availability\Proxy\IService.cs" />
+    <Compile Include="InfoWorker\Common\Availability\Proxy\ItemsChoiceType3.cs" />
+    <Compile Include="InfoWorker\Common\Availability\Proxy\MailTips.cs" />
+    <Compile Include="InfoWorker\Common\Availability\Proxy\MailTipsResponseMessageType.cs" />
+    <Compile Include="InfoWorker\Common\Availability\Proxy\MailTipTypes.cs" />
+    <Compile Include="InfoWorker\Common\Availability\Proxy\MessageTrackingReportTemplateType.cs" />
+    <Compile Include="InfoWorker\Common\Availability\Proxy\MessageTrackingReportType.cs" />
+    <Compile Include="InfoWorker\Common\Availability\Proxy\OutOfOfficeMailTip.cs" />
+    <Compile Include="InfoWorker\Common\Availability\Proxy\Path.cs" />
+    <Compile Include="InfoWorker\Common\Availability\Proxy\RecipientTrackingEventType.cs" />
+    <Compile Include="InfoWorker\Common\Availability\Proxy\ReplyBody.cs" />
+    <Compile Include="InfoWorker\Common\Availability\Proxy\RequestServerVersion.cs" />
+    <Compile Include="InfoWorker\Common\Availability\Proxy\ResponseClassType.cs" />
+    <Compile Include="InfoWorker\Common\Availability\Proxy\ResponseCodeType.cs" />
+    <Compile Include="InfoWorker\Common\Availability\Proxy\ResponseMessage.cs" />
+    <Compile Include="InfoWorker\Common\Availability\Proxy\ResponseMessageType.cs" />
+    <Compile Include="InfoWorker\Common\Availability\Proxy\ResponseMessageTypeMessageXml.cs" />
+    <Compile Include="InfoWorker\Common\Availability\Proxy\RestService.cs" />
+    <Compile Include="InfoWorker\Common\Availability\Proxy\Service.cs" />
+    <Compile Include="InfoWorker\Common\Availability\Proxy\SuggestionsResponse.cs" />
+    <Compile Include="InfoWorker\Common\Availability\Proxy\TimeZoneContext.cs" />
+    <Compile Include="InfoWorker\Common\Availability\Proxy\TrackingPropertyType.cs" />
+    <Compile Include="InfoWorker\Common\Availability\Proxy\UserPhotoSize.cs" />
+    <Compile Include="InfoWorker\Common\Availability\Query.cs" />
+    <Compile Include="InfoWorker\Common\Availability\QueryGenerator.cs" />
+    <Compile Include="InfoWorker\Common\Availability\QueryList.cs" />
+    <Compile Include="InfoWorker\Common\Availability\QueryLogData.cs" />
+    <Compile Include="InfoWorker\Common\Availability\QueryPropertyIndexes.cs" />
+    <Compile Include="InfoWorker\Common\Availability\QueryType.cs" />
+    <Compile Include="InfoWorker\Common\Availability\RecipientData.cs" />
+    <Compile Include="InfoWorker\Common\Availability\RecipientQuery.cs" />
+    <Compile Include="InfoWorker\Common\Availability\RecipientQueryResults.cs" />
+    <Compile Include="InfoWorker\Common\Availability\RemoteServiceUriCache.cs" />
+    <Compile Include="InfoWorker\Common\Availability\RequestDispatcher.cs" />
+    <Compile Include="InfoWorker\Common\Availability\RequestLogger.cs" />
+    <Compile Include="InfoWorker\Common\Availability\RequestStatistics.cs" />
+    <Compile Include="InfoWorker\Common\Availability\RequestStatisticsForAD.cs" />
+    <Compile Include="InfoWorker\Common\Availability\RequestStatisticsForMapi.cs" />
+    <Compile Include="InfoWorker\Common\Availability\RequestStatisticsForThread.cs" />
+    <Compile Include="InfoWorker\Common\Availability\RequestStatisticsType.cs" />
+    <Compile Include="InfoWorker\Common\Availability\RequestStreamTooBigException.cs" />
+    <Compile Include="InfoWorker\Common\Availability\RequestType.cs" />
+    <Compile Include="InfoWorker\Common\Availability\RequestTypeHeader.cs" />
+    <Compile Include="InfoWorker\Common\Availability\ResultSetTooBigException.cs" />
+    <Compile Include="InfoWorker\Common\Availability\ScpSearch.cs" />
+    <Compile Include="InfoWorker\Common\Availability\SerializableTimeZone.cs" />
+    <Compile Include="InfoWorker\Common\Availability\SerializableTimeZoneTime.cs" />
+    <Compile Include="InfoWorker\Common\Availability\SerializedSecurityContext.cs" />
+    <Compile Include="InfoWorker\Common\Availability\ServiceDiscoveryFailedException.cs" />
+    <Compile Include="InfoWorker\Common\Availability\SharingInformation.cs" />
+    <Compile Include="InfoWorker\Common\Availability\SharingReader.cs" />
+    <Compile Include="InfoWorker\Common\Availability\SoapAutoDiscoverRequest.cs" />
+    <Compile Include="InfoWorker\Common\Availability\SubscriptionLoader.cs" />
+    <Compile Include="InfoWorker\Common\Availability\SuggestionsViewOptions.cs" />
+    <Compile Include="InfoWorker\Common\Availability\TargetForestConfiguration.cs" />
+    <Compile Include="InfoWorker\Common\Availability\TargetForestConfigurationCache.cs" />
+    <Compile Include="InfoWorker\Common\Availability\TargetServerVersion.cs" />
+    <Compile Include="InfoWorker\Common\Availability\TaskCompleteCallback.cs" />
+    <Compile Include="InfoWorker\Common\Availability\TaskState.cs" />
+    <Compile Include="InfoWorker\Common\Availability\Testability.cs" />
+    <Compile Include="InfoWorker\Common\Availability\ThreadContext.cs" />
+    <Compile Include="InfoWorker\Common\Availability\ThreadCounter.cs" />
+    <Compile Include="InfoWorker\Common\Availability\TimeIntervalTooBigException.cs" />
+    <Compile Include="InfoWorker\Common\Availability\TimeoutExpiredException.cs" />
+    <Compile Include="InfoWorker\Common\Availability\UriSource.cs" />
+    <Compile Include="InfoWorker\Common\Availability\UserAgent.cs" />
+    <Compile Include="InfoWorker\Common\Availability\UserPhotoRecipientQuery.cs" />
+    <Compile Include="InfoWorker\Common\Availability\UserSoapAutoDiscoverRequest.cs" />
+    <Compile Include="InfoWorker\Common\Availability\VersionedWebServiceUri.cs" />
+    <Compile Include="InfoWorker\Common\Availability\WebServiceUri.cs" />
+    <Compile Include="InfoWorker\Common\Availability\Win32InteropException.cs" />
+    <Compile Include="InfoWorker\Common\Availability\WorkingHours.cs" />
+    <Compile Include="InfoWorker\Common\Availability\WorkingPeriod.cs" />
+    <Compile Include="InfoWorker\Common\ByteArray.cs" />
+    <Compile Include="InfoWorker\Common\DateTimeExtensionMethods.cs" />
+    <Compile Include="InfoWorker\Common\ELC\AdFolderData.cs" />
+    <Compile Include="InfoWorker\Common\ELC\AdFolderReader.cs" />
+    <Compile Include="InfoWorker\Common\ELC\AdPolicyReader.cs" />
+    <Compile Include="InfoWorker\Common\ELC\AdReader.cs" />
+    <Compile Include="InfoWorker\Common\ELC\AdTagData.cs" />
+    <Compile Include="InfoWorker\Common\ELC\AdTagReader.cs" />
+    <Compile Include="InfoWorker\Common\ELC\CompositeProperty.cs" />
+    <Compile Include="InfoWorker\Common\ELC\ContentSetting.cs" />
+    <Compile Include="InfoWorker\Common\ELC\ELCDefaultFolderNotFoundException.cs" />
+    <Compile Include="InfoWorker\Common\ELC\ELCDuplicateFolderNamesArgumentException.cs" />
+    <Compile Include="InfoWorker\Common\ELC\ELCFolderSyncException.cs" />
+    <Compile Include="InfoWorker\Common\ELC\ElcMailboxHelper.cs" />
+    <Compile Include="InfoWorker\Common\ELC\ELCNoMatchingOrgFoldersException.cs" />
+    <Compile Include="InfoWorker\Common\ELC\ELCOrgFolderCreationException.cs" />
+    <Compile Include="InfoWorker\Common\ELC\ELCOrgFolderExistsException.cs" />
+    <Compile Include="InfoWorker\Common\ELC\ElcParameters.cs" />
+    <Compile Include="InfoWorker\Common\ELC\ELCPartialCompletionException.cs" />
+    <Compile Include="InfoWorker\Common\ELC\ElcPolicySettings.cs" />
+    <Compile Include="InfoWorker\Common\ELC\ELCRootFailureException.cs" />
+    <Compile Include="InfoWorker\Common\ELC\ELCUnknownDefaultFolderException.cs" />
+    <Compile Include="InfoWorker\Common\ELC\FolderPathIndices.cs" />
+    <Compile Include="InfoWorker\Common\ELC\Globals.cs" />
+    <Compile Include="InfoWorker\Common\ELC\IWShutdownException.cs" />
+    <Compile Include="InfoWorker\Common\ELC\MailboxFolderData.cs" />
+    <Compile Include="InfoWorker\Common\ELC\MrmFaiFormatter.cs" />
+    <Compile Include="InfoWorker\Common\ELC\NoPolicyException.cs" />
+    <Compile Include="InfoWorker\Common\ELC\OptInFolders.cs" />
+    <Compile Include="InfoWorker\Common\ELC\ProvisionedFolderCreator.cs" />
+    <Compile Include="InfoWorker\Common\ELC\ProvisionedFolderReader.cs" />
+    <Compile Include="InfoWorker\Common\ELC\RetentionHoldData.cs" />
+    <Compile Include="InfoWorker\Common\ELC\RetentionTag.cs" />
+    <Compile Include="InfoWorker\Common\ELC\RetentionTagHelper.cs" />
+    <Compile Include="InfoWorker\Common\ELC\SearchFolderManager.cs" />
+    <Compile Include="InfoWorker\Common\ELC\StoreTagData.cs" />
+    <Compile Include="InfoWorker\Common\ELC\UpgradeStatus.cs" />
+    <Compile Include="InfoWorker\Common\EnumTypeMap.cs" />
+    <Compile Include="InfoWorker\Common\EnumUtil.cs" />
+    <Compile Include="InfoWorker\Common\ExternalIdentityToken.cs" />
+    <Compile Include="InfoWorker\Common\Globals.cs" />
+    <Compile Include="InfoWorker\Common\InvalidParameterException.cs" />
+    <Compile Include="InfoWorker\Common\IWPermanentException.cs" />
+    <Compile Include="InfoWorker\Common\IWTransientException.cs" />
+    <Compile Include="InfoWorker\Common\JsonInfoWorkerNamespaces.cs" />
+    <Compile Include="InfoWorker\Common\JunkEmailOptions\Globals.cs" />
+    <Compile Include="InfoWorker\Common\LocDescriptionAttribute.cs" />
+    <Compile Include="InfoWorker\Common\MailTips\ErrorEwsResponseException.cs" />
+    <Compile Include="InfoWorker\Common\MailTips\GenerationStoppedException.cs" />
+    <Compile Include="InfoWorker\Common\MailTips\GetMailTipsQuery.cs" />
+    <Compile Include="InfoWorker\Common\MailTips\GroupMetricsDataStore.cs" />
+    <Compile Include="InfoWorker\Common\MailTips\MailTips.cs" />
+    <Compile Include="InfoWorker\Common\MailTips\MailTipsApplication.cs" />
+    <Compile Include="InfoWorker\Common\MailTips\MailTipsLocalQuery.cs" />
+    <Compile Include="InfoWorker\Common\MailTips\MailTipsPerfCounters.cs" />
+    <Compile Include="InfoWorker\Common\MailTips\MailTipsPermission.cs" />
+    <Compile Include="InfoWorker\Common\MailTips\MailTipsPerRequesterPermissionMap.cs" />
+    <Compile Include="InfoWorker\Common\MailTips\MailTipsQuery.cs" />
+    <Compile Include="InfoWorker\Common\MailTips\MailTipsQueryResult.cs" />
+    <Compile Include="InfoWorker\Common\MailTips\MailTipsUtility.cs" />
+    <Compile Include="InfoWorker\Common\MailTips\MailTipTypes.cs" />
+    <Compile Include="InfoWorker\Common\MailTips\NoEwsResponseException.cs" />
+    <Compile Include="InfoWorker\Common\MailTips\NoMailTipsInEwsResponseMessageException.cs" />
+    <Compile Include="InfoWorker\Common\MailTips\PerfCounterHelper.cs" />
+    <Compile Include="InfoWorker\Common\MailTips\PerRecipientMailTipsUsage.cs" />
+    <Compile Include="InfoWorker\Common\MailTips\QueryGenerationNotRequiredException.cs" />
+    <Compile Include="InfoWorker\Common\MailTips\ScopeTypes.cs" />
+    <Compile Include="InfoWorker\Common\MailTips\SenderNotFoundException.cs" />
+    <Compile Include="InfoWorker\Common\MailTips\SenderNotUniqueException.cs" />
+    <Compile Include="InfoWorker\Common\MailTips\Utility.cs" />
+    <Compile Include="InfoWorker\Common\MeetingSuggestions\AttendeeConflictData.cs" />
+    <Compile Include="InfoWorker\Common\MeetingSuggestions\AttendeeData.cs" />
+    <Compile Include="InfoWorker\Common\MeetingSuggestions\AttendeeWorkHours.cs" />
+    <Compile Include="InfoWorker\Common\MeetingSuggestions\ConfigOptions.cs" />
+    <Compile Include="InfoWorker\Common\MeetingSuggestions\DurationTooLargeException.cs" />
+    <Compile Include="InfoWorker\Common\MeetingSuggestions\DurationTooSmallException.cs" />
+    <Compile Include="InfoWorker\Common\MeetingSuggestions\ErrorConstants.cs" />
+    <Compile Include="InfoWorker\Common\MeetingSuggestions\GroupAttendeeConflictData.cs" />
+    <Compile Include="InfoWorker\Common\MeetingSuggestions\IndividualAttendeeConflictData.cs" />
+    <Compile Include="InfoWorker\Common\MeetingSuggestions\InvalidTimeIntervalException.cs" />
+    <Compile Include="InfoWorker\Common\MeetingSuggestions\MeetingAttendeeType.cs" />
+    <Compile Include="InfoWorker\Common\MeetingSuggestions\MeetingFrequencyEnum.cs" />
+    <Compile Include="InfoWorker\Common\MeetingSuggestions\MeetingSuggester.cs" />
+    <Compile Include="InfoWorker\Common\MeetingSuggestions\Suggestion.cs" />
+    <Compile Include="InfoWorker\Common\MeetingSuggestions\SuggestionDayResult.cs" />
+    <Compile Include="InfoWorker\Common\MeetingSuggestions\SuggestionQuality.cs" />
+    <Compile Include="InfoWorker\Common\MeetingSuggestions\TooBigGroupAttendeeConflictData.cs" />
+    <Compile Include="InfoWorker\Common\MeetingSuggestions\UnknownAttendeeConflictData.cs" />
+    <Compile Include="InfoWorker\Common\MessageClass.cs" />
+    <Compile Include="InfoWorker\Common\MessageTracking\ADAuthenticationTrackingAuthority.cs" />
+    <Compile Include="InfoWorker\Common\MessageTracking\ClientProxyEWS.cs" />
+    <Compile Include="InfoWorker\Common\MessageTracking\ClientProxyRD.cs" />
+    <Compile Include="InfoWorker\Common\MessageTracking\CommonDiagnosticsLogTracer.cs" />
+    <Compile Include="InfoWorker\Common\MessageTracking\Constants.cs" />
+    <Compile Include="InfoWorker\Common\MessageTracking\CurrentSiteTrackingAuthority.cs" />
+    <Compile Include="InfoWorker\Common\MessageTracking\DatabaseAvailabilityGroupCache.cs" />
+    <Compile Include="InfoWorker\Common\MessageTracking\DeliveryStatus.cs" />
+    <Compile Include="InfoWorker\Common\MessageTracking\DiagnosticsContext.cs" />
+    <Compile Include="InfoWorker\Common\MessageTracking\DirectoryContext.cs" />
+    <Compile Include="InfoWorker\Common\MessageTracking\DomainOrgMailboxCache.cs" />
+    <Compile Include="InfoWorker\Common\MessageTracking\ErrorCode.cs" />
+    <Compile Include="InfoWorker\Common\MessageTracking\ErrorCodeInformationAttribute.cs" />
+    <Compile Include="InfoWorker\Common\MessageTracking\EventDescription.cs" />
+    <Compile Include="InfoWorker\Common\MessageTracking\EventDescriptionInformation.cs" />
+    <Compile Include="InfoWorker\Common\MessageTracking\EventSources.cs" />
+    <Compile Include="InfoWorker\Common\MessageTracking\EventTree.cs" />
+    <Compile Include="InfoWorker\Common\MessageTracking\EventType.cs" />
+    <Compile Include="InfoWorker\Common\MessageTracking\EventTypeParser.cs" />
+    <Compile Include="InfoWorker\Common\MessageTracking\ExtendedPropertyNames.cs" />
+    <Compile Include="InfoWorker\Common\MessageTracking\FindMessageTrackingApplication.cs" />
+    <Compile Include="InfoWorker\Common\MessageTracking\FindMessageTrackingBaseQuery.cs" />
+    <Compile Include="InfoWorker\Common\MessageTracking\FindMessageTrackingBaseQueryResult.cs" />
+    <Compile Include="InfoWorker\Common\MessageTracking\FindMessageTrackingQuery.cs" />
+    <Compile Include="InfoWorker\Common\MessageTracking\FindMessageTrackingQueryResult.cs" />
+    <Compile Include="InfoWorker\Common\MessageTracking\FindMessageTrackingReportRequestTypeWrapper.cs" />
+    <Compile Include="InfoWorker\Common\MessageTracking\FindParameters.cs" />
+    <Compile Include="InfoWorker\Common\MessageTracking\GetMessageTrackingApplication.cs" />
+    <Compile Include="InfoWorker\Common\MessageTracking\GetMessageTrackingBaseQuery.cs" />
+    <Compile Include="InfoWorker\Common\MessageTracking\GetMessageTrackingBaseQueryResult.cs" />
+    <Compile Include="InfoWorker\Common\MessageTracking\GetMessageTrackingQuery.cs" />
+    <Compile Include="InfoWorker\Common\MessageTracking\GetMessageTrackingQueryResult.cs" />
+    <Compile Include="InfoWorker\Common\MessageTracking\GetMessageTrackingReportImpl.cs" />
+    <Compile Include="InfoWorker\Common\MessageTracking\GetMessageTrackingReportRequestTypeWrapper.cs" />
+    <Compile Include="InfoWorker\Common\MessageTracking\IClientProxy.cs" />
+    <Compile Include="InfoWorker\Common\MessageTracking\ILogReader.cs" />
+    <Compile Include="InfoWorker\Common\MessageTracking\InfoWorkerMessageTrackingPerformanceCounters.cs" />
+    <Compile Include="InfoWorker\Common\MessageTracking\InternalGetMessageTrackingReportResponse.cs" />
+    <Compile Include="InfoWorker\Common\MessageTracking\IWebServiceBinding.cs" />
+    <Compile Include="InfoWorker\Common\MessageTracking\LazyLookupTimeoutCacheWithDiagnostics.cs" />
+    <Compile Include="InfoWorker\Common\MessageTracking\LegacyExchangeServerTrackingAuthority.cs" />
+    <Compile Include="InfoWorker\Common\MessageTracking\LogCache.cs" />
+    <Compile Include="InfoWorker\Common\MessageTracking\LogDataAnalyzer.cs" />
+    <Compile Include="InfoWorker\Common\MessageTracking\MailboxDatabaseConfigCache.cs" />
+    <Compile Include="InfoWorker\Common\MessageTracking\MailItemTracker.cs" />
+    <Compile Include="InfoWorker\Common\MessageTracking\MessageConverter.cs" />
+    <Compile Include="InfoWorker\Common\MessageTracking\MessageTrackingApplication.cs" />
+    <Compile Include="InfoWorker\Common\MessageTracking\MessageTrackingDetailLevel.cs" />
+    <Compile Include="InfoWorker\Common\MessageTracking\MessageTrackingLogEntry.cs" />
+    <Compile Include="InfoWorker\Common\MessageTracking\MessageTrackingLogRow.cs" />
+    <Compile Include="InfoWorker\Common\MessageTracking\MessageTrackingReport.cs" />
+    <Compile Include="InfoWorker\Common\MessageTracking\MessageTrackingReportId.cs" />
+    <Compile Include="InfoWorker\Common\MessageTracking\MessageTrackingSearchResult.cs" />
+    <Compile Include="InfoWorker\Common\MessageTracking\MimeRecipientType.cs" />
+    <Compile Include="InfoWorker\Common\MessageTracking\MtrSchemaVersion.cs" />
+    <Compile Include="InfoWorker\Common\MessageTracking\Node.cs" />
+    <Compile Include="InfoWorker\Common\MessageTracking\Options.cs" />
+    <Compile Include="InfoWorker\Common\MessageTracking\OrganizationConfigCache.cs" />
+    <Compile Include="InfoWorker\Common\MessageTracking\Parse.cs" />
+    <Compile Include="InfoWorker\Common\MessageTracking\PerfCounterData.cs" />
+    <Compile Include="InfoWorker\Common\MessageTracking\ProxyAddressCollectionComparer.cs" />
+    <Compile Include="InfoWorker\Common\MessageTracking\QueryMethod.cs" />
+    <Compile Include="InfoWorker\Common\MessageTracking\QueueClient.cs" />
+    <Compile Include="InfoWorker\Common\MessageTracking\RecipientEventData.cs" />
+    <Compile Include="InfoWorker\Common\MessageTracking\RecipientTrackingEvent.cs" />
+    <Compile Include="InfoWorker\Common\MessageTracking\ReferralEvaluator.cs" />
+    <Compile Include="InfoWorker\Common\MessageTracking\ReferralQueue.cs" />
+    <Compile Include="InfoWorker\Common\MessageTracking\ReferralTree.cs" />
+    <Compile Include="InfoWorker\Common\MessageTracking\RemoteForestTrackingAuthority.cs" />
+    <Compile Include="InfoWorker\Common\MessageTracking\RemoteOrgTrackingAuthority.cs" />
+    <Compile Include="InfoWorker\Common\MessageTracking\RemoteSiteInCurrentOrgTrackingAuthority.cs" />
+    <Compile Include="InfoWorker\Common\MessageTracking\RemoteTrustedOrgTrackingAuthority.cs" />
+    <Compile Include="InfoWorker\Common\MessageTracking\ReportConstraints.cs" />
+    <Compile Include="InfoWorker\Common\MessageTracking\ReportTemplate.cs" />
+    <Compile Include="InfoWorker\Common\MessageTracking\RequiredProperty.cs" />
+    <Compile Include="InfoWorker\Common\MessageTracking\RequiredPropertySet.cs" />
+    <Compile Include="InfoWorker\Common\MessageTracking\ResponseDetails.cs" />
+    <Compile Include="InfoWorker\Common\MessageTracking\RpcLogReader.cs" />
+    <Compile Include="InfoWorker\Common\MessageTracking\RpcReason.cs" />
+    <Compile Include="InfoWorker\Common\MessageTracking\SearchMessageTrackingReportImpl.cs" />
+    <Compile Include="InfoWorker\Common\MessageTracking\SearchScope.cs" />
+    <Compile Include="InfoWorker\Common\MessageTracking\ServerCache.cs" />
+    <Compile Include="InfoWorker\Common\MessageTracking\ServerInfo.cs" />
+    <Compile Include="InfoWorker\Common\MessageTracking\ServerStatus.cs" />
+    <Compile Include="InfoWorker\Common\MessageTracking\SiteConfigCache.cs" />
+    <Compile Include="InfoWorker\Common\MessageTracking\SlidingWindowResultCounter.cs" />
+    <Compile Include="InfoWorker\Common\MessageTracking\SourceContext.cs" />
+    <Compile Include="InfoWorker\Common\MessageTracking\TraceWrapper.cs" />
+    <Compile Include="InfoWorker\Common\MessageTracking\TrackedUser.cs" />
+    <Compile Include="InfoWorker\Common\MessageTracking\TrackedUserCreationException.cs" />
+    <Compile Include="InfoWorker\Common\MessageTracking\TrackingAuthority.cs" />
+    <Compile Include="InfoWorker\Common\MessageTracking\TrackingAuthorityKind.cs" />
+    <Compile Include="InfoWorker\Common\MessageTracking\TrackingAuthorityKindInformation.cs" />
+    <Compile Include="InfoWorker\Common\MessageTracking\TrackingBaseException.cs" />
+    <Compile Include="InfoWorker\Common\MessageTracking\TrackingContext.cs" />
+    <Compile Include="InfoWorker\Common\MessageTracking\TrackingDiscovery.cs" />
+    <Compile Include="InfoWorker\Common\MessageTracking\TrackingError.cs" />
+    <Compile Include="InfoWorker\Common\MessageTracking\TrackingErrorCollection.cs" />
+    <Compile Include="InfoWorker\Common\MessageTracking\TrackingEventBudget.cs" />
+    <Compile Include="InfoWorker\Common\MessageTracking\TrackingExtendedProperties.cs" />
+    <Compile Include="InfoWorker\Common\MessageTracking\TrackingFatalException.cs" />
+    <Compile Include="InfoWorker\Common\MessageTracking\TrackingLogPrefix.cs" />
+    <Compile Include="InfoWorker\Common\MessageTracking\TrackingSearch.cs" />
+    <Compile Include="InfoWorker\Common\MessageTracking\TrackingTransientException.cs" />
+    <Compile Include="InfoWorker\Common\MessageTracking\TransportServerConfigCache.cs" />
+    <Compile Include="InfoWorker\Common\MessageTracking\TreeManager.cs" />
+    <Compile Include="InfoWorker\Common\MessageTracking\TryEnqueueNextHopDelegate.cs" />
+    <Compile Include="InfoWorker\Common\MessageTracking\UndefinedTrackingAuthority.cs" />
+    <Compile Include="InfoWorker\Common\MessageTracking\VersionConverter.cs" />
+    <Compile Include="InfoWorker\Common\MessageTracking\WebServiceBinding.cs" />
+    <Compile Include="InfoWorker\Common\MessageTracking\WebServiceTrackingAuthority.cs" />
+    <Compile Include="InfoWorker\Common\MessageTracking\WSAdditionalRecords.cs" />
+    <Compile Include="InfoWorker\Common\MessageTracking\WSGetParameters.cs" />
+    <Compile Include="InfoWorker\Common\MessageTracking\WSGetResult.cs" />
+    <Compile Include="InfoWorker\Common\MfnLog.cs" />
+    <Compile Include="InfoWorker\Common\MultiMailboxSearch\AggregatedMailboxSearchGroup.cs" />
+    <Compile Include="InfoWorker\Common\MultiMailboxSearch\AggregatedMailboxSearchTask.cs" />
+    <Compile Include="InfoWorker\Common\MultiMailboxSearch\AggregatedSearchTaskResult.cs" />
+    <Compile Include="InfoWorker\Common\MultiMailboxSearch\AsyncResult.cs" />
+    <Compile Include="InfoWorker\Common\MultiMailboxSearch\CallerInfo.cs" />
+    <Compile Include="InfoWorker\Common\MultiMailboxSearch\CertificateValidation.cs" />
+    <Compile Include="InfoWorker\Common\MultiMailboxSearch\DiscoveryEwsClient.cs" />
+    <Compile Include="InfoWorker\Common\MultiMailboxSearch\DiscoveryKeywordStatsSearchTimedOut.cs" />
+    <Compile Include="InfoWorker\Common\MultiMailboxSearch\DiscoverySearchAbortedException.cs" />
+    <Compile Include="InfoWorker\Common\MultiMailboxSearch\DiscoverySearchAccessDenied.cs" />
+    <Compile Include="InfoWorker\Common\MultiMailboxSearch\DiscoverySearchCIFailure.cs" />
+    <Compile Include="InfoWorker\Common\MultiMailboxSearch\DiscoverySearchFailed.cs" />
+    <Compile Include="InfoWorker\Common\MultiMailboxSearch\DiscoverySearchInvalidKeywordStatsRequest.cs" />
+    <Compile Include="InfoWorker\Common\MultiMailboxSearch\DiscoverySearchInvalidPagination.cs" />
+    <Compile Include="InfoWorker\Common\MultiMailboxSearch\DiscoverySearchInvalidQuery.cs" />
+    <Compile Include="InfoWorker\Common\MultiMailboxSearch\DiscoverySearchInvalidSearchRequest.cs" />
+    <Compile Include="InfoWorker\Common\MultiMailboxSearch\DiscoverySearchInvalidSortSpecification.cs" />
+    <Compile Include="InfoWorker\Common\MultiMailboxSearch\DiscoverySearchMaxSearchesExceeded.cs" />
+    <Compile Include="InfoWorker\Common\MultiMailboxSearch\DiscoverySearchNonFullTextPaginationProperty.cs" />
+    <Compile Include="InfoWorker\Common\MultiMailboxSearch\DiscoverySearchNonFullTextQuery.cs" />
+    <Compile Include="InfoWorker\Common\MultiMailboxSearch\DiscoverySearchPermanentException.cs" />
+    <Compile Include="InfoWorker\Common\MultiMailboxSearch\DiscoverySearchTaskCancelled.cs" />
+    <Compile Include="InfoWorker\Common\MultiMailboxSearch\DiscoverySearchTimedOut.cs" />
+    <Compile Include="InfoWorker\Common\MultiMailboxSearch\EwsEndpointDiscovery.cs" />
+    <Compile Include="InfoWorker\Common\MultiMailboxSearch\ExtendedPropertyInfo.cs" />
+    <Compile Include="InfoWorker\Common\MultiMailboxSearch\Factory.cs" />
+    <Compile Include="InfoWorker\Common\MultiMailboxSearch\FailedToConvertSearchCriteriaToRestrictionException.cs" />
+    <Compile Include="InfoWorker\Common\MultiMailboxSearch\FailedToFetchPreviewItems.cs" />
+    <Compile Include="InfoWorker\Common\MultiMailboxSearch\GroupId.cs" />
+    <Compile Include="InfoWorker\Common\MultiMailboxSearch\GroupType.cs" />
+    <Compile Include="InfoWorker\Common\MultiMailboxSearch\IAutodiscoveryClient.cs" />
+    <Compile Include="InfoWorker\Common\MultiMailboxSearch\IEwsClient.cs" />
+    <Compile Include="InfoWorker\Common\MultiMailboxSearch\IEwsEndpointDiscovery.cs" />
+    <Compile Include="InfoWorker\Common\MultiMailboxSearch\IKeywordHit.cs" />
+    <Compile Include="InfoWorker\Common\MultiMailboxSearch\IMailboxInfoList.cs" />
+    <Compile Include="InfoWorker\Common\MultiMailboxSearch\IMultiMailboxSearchFactory.cs" />
+    <Compile Include="InfoWorker\Common\MultiMailboxSearch\INonIndexableDiscoveryEwsClient.cs" />
+    <Compile Include="InfoWorker\Common\MultiMailboxSearch\IProtocolLog.cs" />
+    <Compile Include="InfoWorker\Common\MultiMailboxSearch\IRefinerResult.cs" />
+    <Compile Include="InfoWorker\Common\MultiMailboxSearch\ISearchMailboxTask.cs" />
+    <Compile Include="InfoWorker\Common\MultiMailboxSearch\ISearchResult.cs" />
+    <Compile Include="InfoWorker\Common\MultiMailboxSearch\ISearchRpcClient.cs" />
+    <Compile Include="InfoWorker\Common\MultiMailboxSearch\ISearchTaskResult.cs" />
+    <Compile Include="InfoWorker\Common\MultiMailboxSearch\ItemIndexError.cs" />
+    <Compile Include="InfoWorker\Common\MultiMailboxSearch\KeywordHit.cs" />
+    <Compile Include="InfoWorker\Common\MultiMailboxSearch\LinkUtils.cs" />
+    <Compile Include="InfoWorker\Common\MultiMailboxSearch\MailboxInfo.cs" />
+    <Compile Include="InfoWorker\Common\MultiMailboxSearch\MailboxInfoList.cs" />
+    <Compile Include="InfoWorker\Common\MultiMailboxSearch\MailboxSearchGroup.cs" />
+    <Compile Include="InfoWorker\Common\MultiMailboxSearch\MailboxSessionCache.cs" />
+    <Compile Include="InfoWorker\Common\MultiMailboxSearch\MailboxStatistics.cs" />
+    <Compile Include="InfoWorker\Common\MultiMailboxSearch\MailboxStatsComparer.cs" />
+    <Compile Include="InfoWorker\Common\MultiMailboxSearch\MailboxType.cs" />
+    <Compile Include="InfoWorker\Common\MultiMailboxSearch\MultiMailboxSearch.cs" />
+    <Compile Include="InfoWorker\Common\MultiMailboxSearch\MultiMailboxSearchClient.cs" />
+    <Compile Include="InfoWorker\Common\MultiMailboxSearch\MultiMailboxSearchException.cs" />
+    <Compile Include="InfoWorker\Common\MultiMailboxSearch\NestedFanoutException.cs" />
+    <Compile Include="InfoWorker\Common\MultiMailboxSearch\NonIndexableDiscoveryEwsClient.cs" />
+    <Compile Include="InfoWorker\Common\MultiMailboxSearch\NonIndexableItem.cs" />
+    <Compile Include="InfoWorker\Common\MultiMailboxSearch\NonIndexableItemDetailsProvider.cs" />
+    <Compile Include="InfoWorker\Common\MultiMailboxSearch\NonIndexableItemPagingInfo.cs" />
+    <Compile Include="InfoWorker\Common\MultiMailboxSearch\NonIndexableItemProvider.cs" />
+    <Compile Include="InfoWorker\Common\MultiMailboxSearch\NonIndexableItemStatisticsInfo.cs" />
+    <Compile Include="InfoWorker\Common\MultiMailboxSearch\NonIndexableItemStatisticsProvider.cs" />
+    <Compile Include="InfoWorker\Common\MultiMailboxSearch\PageDirection.cs" />
+    <Compile Include="InfoWorker\Common\MultiMailboxSearch\PaginationQueryFilter.cs" />
+    <Compile Include="InfoWorker\Common\MultiMailboxSearch\PagingInfo.cs" />
+    <Compile Include="InfoWorker\Common\MultiMailboxSearch\PerformanceCounters.cs" />
+    <Compile Include="InfoWorker\Common\MultiMailboxSearch\PreviewItem.cs" />
+    <Compile Include="InfoWorker\Common\MultiMailboxSearch\PreviewItemBaseShape.cs" />
+    <Compile Include="InfoWorker\Common\MultiMailboxSearch\PreviewItemComparer.cs" />
+    <Compile Include="InfoWorker\Common\MultiMailboxSearch\ProtocolLog.cs" />
+    <Compile Include="InfoWorker\Common\MultiMailboxSearch\ReferenceItem.cs" />
+    <Compile Include="InfoWorker\Common\MultiMailboxSearch\RefinerResult.cs" />
+    <Compile Include="InfoWorker\Common\MultiMailboxSearch\ResultAggregator.cs" />
+    <Compile Include="InfoWorker\Common\MultiMailboxSearch\SearchCompletedCallback.cs" />
+    <Compile Include="InfoWorker\Common\MultiMailboxSearch\SearchCriteria.cs" />
+    <Compile Include="InfoWorker\Common\MultiMailboxSearch\SearchFolderQueryFailedException.cs" />
+    <Compile Include="InfoWorker\Common\MultiMailboxSearch\SearchMailboxNotFound.cs" />
+    <Compile Include="InfoWorker\Common\MultiMailboxSearch\SearchMailboxResult.cs" />
+    <Compile Include="InfoWorker\Common\MultiMailboxSearch\SearchMailboxTaskCancelledException.cs" />
+    <Compile Include="InfoWorker\Common\MultiMailboxSearch\SearchMailboxTaskException.cs" />
+    <Compile Include="InfoWorker\Common\MultiMailboxSearch\SearchMailboxTaskTimeoutException.cs" />
+    <Compile Include="InfoWorker\Common\MultiMailboxSearch\SearchNonFullTextSortSpecification.cs" />
+    <Compile Include="InfoWorker\Common\MultiMailboxSearch\SearchPopulationFailedException.cs" />
+    <Compile Include="InfoWorker\Common\MultiMailboxSearch\SearchQueryEmptyException.cs" />
+    <Compile Include="InfoWorker\Common\MultiMailboxSearch\SearchServerFailedException.cs" />
+    <Compile Include="InfoWorker\Common\MultiMailboxSearch\SearchTransientException.cs" />
+    <Compile Include="InfoWorker\Common\MultiMailboxSearch\SearchType.cs" />
+    <Compile Include="InfoWorker\Common\MultiMailboxSearch\SearchUserNotFoundException.cs" />
+    <Compile Include="InfoWorker\Common\MultiMailboxSearch\SortedResultPage.cs" />
+    <Compile Include="InfoWorker\Common\MultiMailboxSearch\TooManyKeywordsException.cs" />
+    <Compile Include="InfoWorker\Common\MultiMailboxSearch\UserSettingAutodiscovery.cs" />
+    <Compile Include="InfoWorker\Common\MultiMailboxSearch\Util.cs" />
+    <Compile Include="InfoWorker\Common\MultiMailboxSearch\WebServiceMailboxSearchGroup.cs" />
+    <Compile Include="InfoWorker\Common\MultiMailboxSearch\WebServiceProxyInvalidResponseException.cs" />
+    <Compile Include="InfoWorker\Common\OOF\ConditionComparer.cs" />
+    <Compile Include="InfoWorker\Common\OOF\ExternalAudience.cs" />
+    <Compile Include="InfoWorker\Common\OOF\InvalidScheduledOofDuration.cs" />
+    <Compile Include="InfoWorker\Common\OOF\InvalidUserOofSettings.cs" />
+    <Compile Include="InfoWorker\Common\OOF\InvalidUserOofSettingsXmlDocument.cs" />
+    <Compile Include="InfoWorker\Common\OOF\MailStorageNotFoundException.cs" />
+    <Compile Include="InfoWorker\Common\OOF\OofHistory.cs" />
+    <Compile Include="InfoWorker\Common\OOF\OofReplyType.cs" />
+    <Compile Include="InfoWorker\Common\OOF\OofRulesSaveException.cs" />
+    <Compile Include="InfoWorker\Common\OOF\OofState.cs" />
+    <Compile Include="InfoWorker\Common\OOF\OofStateHandler.cs" />
+    <Compile Include="InfoWorker\Common\OOF\ReplyBody.cs" />
+    <Compile Include="InfoWorker\Common\OOF\ReplyBodySerializer.cs" />
+    <Compile Include="InfoWorker\Common\OOF\ReplyTemplate.cs" />
+    <Compile Include="InfoWorker\Common\OOF\RuleConditionFactory.cs" />
+    <Compile Include="InfoWorker\Common\OOF\RuleGenerator.cs" />
+    <Compile Include="InfoWorker\Common\OOF\RuleManager.cs" />
+    <Compile Include="InfoWorker\Common\OOF\UserContacts.cs" />
+    <Compile Include="InfoWorker\Common\OOF\UserOofSettings.cs" />
+    <Compile Include="InfoWorker\Common\OOF\UserOofSettingsSerializer.cs" />
+    <Compile Include="InfoWorker\Common\OOF\UserOofSettingsSerializerSerializer.cs" />
+    <Compile Include="InfoWorker\Common\OOF\UserOofSettingsStorage.cs" />
+    <Compile Include="InfoWorker\Common\OOF\XmlSerializationReaderUserOofSettingsSerializer.cs" />
+    <Compile Include="InfoWorker\Common\OOF\XmlSerializationWriterUserOofSettingsSerializer.cs" />
+    <Compile Include="InfoWorker\Common\OOF\XmlSerializer1.cs" />
+    <Compile Include="InfoWorker\Common\OOF\XmlSerializerContract.cs" />
+    <Compile Include="InfoWorker\Common\OrganizationConfiguration\CachedOrganizationConfiguration.cs" />
+    <Compile Include="InfoWorker\Common\OrganizationConfiguration\DomainType.cs" />
+    <Compile Include="InfoWorker\Common\OrganizationConfiguration\GroupConfiguration.cs" />
+    <Compile Include="InfoWorker\Common\OrganizationConfiguration\GroupsConfiguration.cs" />
+    <Compile Include="InfoWorker\Common\OrganizationConfiguration\MailTipsConfiguration.cs" />
+    <Compile Include="InfoWorker\Common\OrganizationConfiguration\OrganizationDomains.cs" />
+    <Compile Include="InfoWorker\Common\OrganizationConfiguration\PerTenantAcceptedDomainCollection.cs" />
+    <Compile Include="InfoWorker\Common\OrganizationConfiguration\PerTenantClassificationDefinitionCollection.cs" />
+    <Compile Include="InfoWorker\Common\OrganizationConfiguration\PerTenantConfigurationLoader.cs" />
+    <Compile Include="InfoWorker\Common\OrganizationConfiguration\PerTenantOrganizationConfiguration.cs" />
+    <Compile Include="InfoWorker\Common\OrganizationConfiguration\PerTenantPolicyNudgeRulesCollection.cs" />
+    <Compile Include="InfoWorker\Common\OrganizationConfiguration\PerTenantProtectionRulesCollection.cs" />
+    <Compile Include="InfoWorker\Common\OrganizationConfiguration\PerTenantRemoteDomainCollection.cs" />
+    <Compile Include="InfoWorker\Common\OrganizationConfiguration\PerTenantSmimeSettings.cs" />
+    <Compile Include="InfoWorker\Common\OrganizationConfiguration\PerTenantTransportSettings.cs" />
+    <Compile Include="InfoWorker\Common\Pair.cs" />
+    <Compile Include="InfoWorker\Common\PhotoRetrievalFailedIOException.cs" />
+    <Compile Include="InfoWorker\Common\PhotoRetrievalFailedUnauthorizedAccessException.cs" />
+    <Compile Include="InfoWorker\Common\PhotoRetrievalFailedWin32Exception.cs" />
+    <Compile Include="InfoWorker\Common\PostconditionAttribute.cs" />
+    <Compile Include="InfoWorker\Common\PreconditionAttribute.cs" />
+    <Compile Include="InfoWorker\Common\Quad.cs" />
+    <Compile Include="InfoWorker\Common\QueryResultEnumerator.2.cs" />
+    <Compile Include="InfoWorker\Common\QueryResultEnumerator.3.cs" />
+    <Compile Include="InfoWorker\Common\QueryResultEnumerator.4.cs" />
+    <Compile Include="InfoWorker\Common\QueryResultEnumerator.5.cs" />
+    <Compile Include="InfoWorker\Common\QueryResultEnumerator.cs" />
+    <Compile Include="InfoWorker\Common\QueryResultEnumeratorBase.cs" />
+    <Compile Include="InfoWorker\Common\QueryResultExtensions.cs" />
+    <Compile Include="InfoWorker\Common\SearchService\MailboxSearchClient.cs" />
+    <Compile Include="InfoWorker\Common\SearchService\SearchDisabledException.cs" />
+    <Compile Include="InfoWorker\Common\SearchService\SearchObjectNotFoundException.cs" />
+    <Compile Include="InfoWorker\Common\SearchService\SearchOverBudgetException.cs" />
+    <Compile Include="InfoWorker\Common\SearchService\SearchServerException.cs" />
+    <Compile Include="InfoWorker\Common\SearchService\SearchTooManyKeywordsException.cs" />
+    <Compile Include="InfoWorker\Common\SearchService\SearchTooManyMailboxesException.cs" />
+    <Compile Include="InfoWorker\Common\Search\BackoffAbortedException.cs" />
+    <Compile Include="InfoWorker\Common\Search\CopySearchMailboxAction.cs" />
+    <Compile Include="InfoWorker\Common\Search\DeleteSearchMailboxAction.cs" />
+    <Compile Include="InfoWorker\Common\Search\EDiscoverySearchVerdict.cs" />
+    <Compile Include="InfoWorker\Common\Search\ExtensionHelper.cs" />
+    <Compile Include="InfoWorker\Common\Search\FolderNode.cs" />
+    <Compile Include="InfoWorker\Common\Search\Globals.cs" />
+    <Compile Include="InfoWorker\Common\Search\LogSearchMailboxAction.cs" />
+    <Compile Include="InfoWorker\Common\Search\MailboxState.cs" />
+    <Compile Include="InfoWorker\Common\Search\Referenced.cs" />
+    <Compile Include="InfoWorker\Common\Search\RequestLogBodyEvent.cs" />
+    <Compile Include="InfoWorker\Common\Search\ResponseThrottler.cs" />
+    <Compile Include="InfoWorker\Common\Search\SearchCommunicator.cs" />
+    <Compile Include="InfoWorker\Common\Search\SearchExceptionEvent.cs" />
+    <Compile Include="InfoWorker\Common\Search\SearchFolderTimeoutException.cs" />
+    <Compile Include="InfoWorker\Common\Search\SearchLoggingEvent.cs" />
+    <Compile Include="InfoWorker\Common\Search\SearchMailboxAction.cs" />
+    <Compile Include="InfoWorker\Common\Search\SearchMailboxCriteria.cs" />
+    <Compile Include="InfoWorker\Common\Search\SearchMailboxException.cs" />
+    <Compile Include="InfoWorker\Common\Search\SearchMailboxExecuter.cs" />
+    <Compile Include="InfoWorker\Common\Search\SearchMailboxResult.cs" />
+    <Compile Include="InfoWorker\Common\Search\SearchMailboxWorker.cs" />
+    <Compile Include="InfoWorker\Common\Search\SearchProgressEvent.cs" />
+    <Compile Include="InfoWorker\Common\Search\SearchQueryEmptyException.cs" />
+    <Compile Include="InfoWorker\Common\Search\SearchResultProcessor.cs" />
+    <Compile Include="InfoWorker\Common\Search\SearchUser.cs" />
+    <Compile Include="InfoWorker\Common\Search\SearchUtils.cs" />
+    <Compile Include="InfoWorker\Common\Search\StreamLogItem.cs" />
+    <Compile Include="InfoWorker\Common\Sharing\ADUserMisconfigureException.cs" />
+    <Compile Include="InfoWorker\Common\Sharing\ADUserNotFoundException.cs" />
+    <Compile Include="InfoWorker\Common\Sharing\AppointmentTranslator.cs" />
+    <Compile Include="InfoWorker\Common\Sharing\AutodiscoverException.cs" />
+    <Compile Include="InfoWorker\Common\Sharing\AutodiscoverFailedException.cs" />
+    <Compile Include="InfoWorker\Common\Sharing\BatchSynchronizationFailedException.cs" />
+    <Compile Include="InfoWorker\Common\Sharing\CalendarItemSynchronizer.cs" />
+    <Compile Include="InfoWorker\Common\Sharing\Changes.cs" />
+    <Compile Include="InfoWorker\Common\Sharing\ContactItemSynchronizer.cs" />
+    <Compile Include="InfoWorker\Common\Sharing\DefaultItemSynchronizer.cs" />
+    <Compile Include="InfoWorker\Common\Sharing\ExchangeService.cs" />
+    <Compile Include="InfoWorker\Common\Sharing\FailedCommunicationException.cs" />
+    <Compile Include="InfoWorker\Common\Sharing\InternetCalendarLog.cs" />
+    <Compile Include="InfoWorker\Common\Sharing\InvalidAppointmentException.cs" />
+    <Compile Include="InfoWorker\Common\Sharing\InvalidContactException.cs" />
+    <Compile Include="InfoWorker\Common\Sharing\ItemChange.cs" />
+    <Compile Include="InfoWorker\Common\Sharing\ItemChangeType.cs" />
+    <Compile Include="InfoWorker\Common\Sharing\ItemSynchronizer.cs" />
+    <Compile Include="InfoWorker\Common\Sharing\LevelOfDetails.cs" />
+    <Compile Include="InfoWorker\Common\Sharing\LocalFolder.cs" />
+    <Compile Include="InfoWorker\Common\Sharing\PendingSynchronizationException.cs" />
+    <Compile Include="InfoWorker\Common\Sharing\PerformanceCounters.cs" />
+    <Compile Include="InfoWorker\Common\Sharing\SharingEngine.cs" />
+    <Compile Include="InfoWorker\Common\Sharing\SharingFolderNotFoundException.cs" />
+    <Compile Include="InfoWorker\Common\Sharing\SharingKeyHandler.cs" />
+    <Compile Include="InfoWorker\Common\Sharing\SharingLevelOfDetails.cs" />
+    <Compile Include="InfoWorker\Common\Sharing\SharingLog.cs" />
+    <Compile Include="InfoWorker\Common\Sharing\SharingSecurityHeader.cs" />
+    <Compile Include="InfoWorker\Common\Sharing\SharingSynchronizationException.cs" />
+    <Compile Include="InfoWorker\Common\Sharing\SubscriptionNotFoundException.cs" />
+    <Compile Include="InfoWorker\Common\Sharing\Tracker.cs" />
+    <Compile Include="InfoWorker\Common\Sharing\UnexpectedRemoteDataException.cs" />
+    <Compile Include="InfoWorker\Common\Strings.cs" />
+    <Compile Include="InfoWorker\Common\TextUtil.cs" />
+    <Compile Include="InfoWorker\Common\TopN\SafeSerialization.cs" />
+    <Compile Include="InfoWorker\Common\TopN\TextBreaker.cs" />
+    <Compile Include="InfoWorker\Common\TopN\TopNConfiguration.cs" />
+    <Compile Include="InfoWorker\Common\TopN\TopNWords.cs" />
+    <Compile Include="InfoWorker\Common\TopN\WordFilter.cs" />
+    <Compile Include="InfoWorker\Common\TraceContext.cs" />
+    <Compile Include="InfoWorker\Common\Triplet.cs" />
+    <Compile Include="InfoWorker\Common\UserPhotos\GetUserPhotoQuery.cs" />
+    <Compile Include="InfoWorker\Common\UserPhotos\RemoteForestPhotoHandler.cs" />
+    <Compile Include="InfoWorker\Common\UserPhotos\RemoteForestPhotoRetrievalPipeline.cs" />
+    <Compile Include="InfoWorker\Common\UserPhotos\RemoteForestPhotoRetrievalPipelineUsingAvailabilityServiceFa.cs" />
+    <Compile Include="InfoWorker\Common\UserPhotos\UserPhotoApplication.cs" />
+    <Compile Include="InfoWorker\Common\UserPhotos\UserPhotoLocalQuery.cs" />
+    <Compile Include="InfoWorker\Common\UserPhotos\UserPhotoQuery.cs" />
+    <Compile Include="InfoWorker\Common\UserPhotos\UserPhotoQueryResult.cs" />
+    <Compile Include="InfoWorker\Common\UserPhotos\UserPhotosPerfCounters.cs" />
+    <Compile Include="InfoWorker\Common\Utils.cs" />
+    <Compile Include="InfoWorker\EventLog\InfoWorkerEventLogConstants.cs" />
+    <Compile Include="MessagingPolicies\Rules\Classification\ClassificationConstants.cs" />
+    <Compile Include="MessagingPolicies\Rules\Classification\ClassificationParser.cs" />
+    <Compile Include="MessagingPolicies\Rules\Classification\ClassificationRulePackage.cs" />
+    <Compile Include="MessagingPolicies\Rules\IVersionedItem.cs" />
+    <Compile Include="MessagingPolicies\Rules\OutlookProtection\AllInternalPredicate.cs" />
+    <Compile Include="MessagingPolicies\Rules\OutlookProtection\OutlookProtectionRule.cs" />
+    <Compile Include="MessagingPolicies\Rules\OutlookProtection\OutlookProtectionRuleConstants.cs" />
+    <Compile Include="MessagingPolicies\Rules\OutlookProtection\OutlookProtectionRuleParser.cs" />
+    <Compile Include="MessagingPolicies\Rules\OutlookProtection\OutlookProtectionRuleSerializer.cs" />
+    <Compile Include="MessagingPolicies\Rules\OutlookProtection\RecipientIsPredicate.cs" />
+    <Compile Include="MessagingPolicies\Rules\OutlookProtection\RightsProtectMessageAction.cs" />
+    <Compile Include="MessagingPolicies\Rules\OutlookProtection\StringProperty.cs" />
+    <Compile Include="MessagingPolicies\Rules\PolicyNudges\ETRToPNRTranslator.cs" />
+    <Compile Include="MessagingPolicies\Rules\PolicyNudges\Extentions.cs" />
+    <Compile Include="MessagingPolicies\Rules\PolicyNudges\PolicyNudgeRule.cs" />
+    <Compile Include="MessagingPolicies\Rules\PolicyNudges\PolicyNudgeRuleConstants.cs" />
+    <Compile Include="MessagingPolicies\Rules\PolicyNudges\PolicyNudgeRuleParser.cs" />
+    <Compile Include="MessagingPolicies\Rules\PolicyNudges\PolicyTipMessage.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\Common\TimeZoneDefinition.cs" />
+    <Compile Include="Services\Common\TimeZoneDefinitionAdaptor.cs" />
+    <Compile Include="Services\Common\TimeZoneException.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="InfoWorker\Common\Strings.resources" />
+    <EmbeddedResource Include="LogMailTemplate.htm" />
+    <EmbeddedResource Include="SimpleLogMailTemplate.htm" />
+    <EmbeddedResource Include="StatusMailTemplate.htm" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.Exchange.Common\Microsoft.Exchange.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140F0}</Project>
+      <Name>Microsoft.Exchange.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Compliance\Microsoft.Exchange.Compliance.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140F2}</Project>
+      <Name>Microsoft.Exchange.Compliance</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Configuration.ObjectModel\Microsoft.Exchange.Configuration.ObjectModel.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140FC}</Project>
+      <Name>Microsoft.Exchange.Configuration.ObjectModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.ApplicationLogic\Microsoft.Exchange.Data.ApplicationLogic.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14104}</Project>
+      <Name>Microsoft.Exchange.Data.ApplicationLogic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Common\Microsoft.Exchange.Data.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140D3}</Project>
+      <Name>Microsoft.Exchange.Data.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Directory\Microsoft.Exchange.Data.Directory.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14105}</Project>
+      <Name>Microsoft.Exchange.Data.Directory</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Storage.ClientStrings\Microsoft.Exchange.Data.Storage.ClientStrings.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1410E}</Project>
+      <Name>Microsoft.Exchange.Data.Storage.ClientStrings</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Storage\Microsoft.Exchange.Data.Storage.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1410F}</Project>
+      <Name>Microsoft.Exchange.Data.Storage</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Transport\Microsoft.Exchange.Data.Transport.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140D5}</Project>
+      <Name>Microsoft.Exchange.Data.Transport</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data\Microsoft.Exchange.Data.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14106}</Project>
+      <Name>Microsoft.Exchange.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Diagnostics\Microsoft.Exchange.Diagnostics.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14113}</Project>
+      <Name>Microsoft.Exchange.Diagnostics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Extensibility.Internal\Microsoft.Exchange.Extensibility.Internal.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14126}</Project>
+      <Name>Microsoft.Exchange.Extensibility.Internal</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Net\Microsoft.Exchange.Net.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14178}</Project>
+      <Name>Microsoft.Exchange.Net</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Rpc\Microsoft.Exchange.Rpc.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14188}</Project>
+      <Name>Microsoft.Exchange.Rpc</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Rules.Common\Microsoft.Exchange.Rules.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14191}</Project>
+      <Name>Microsoft.Exchange.Rules.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Search.Core\Microsoft.Exchange.Search.Core.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14193}</Project>
+      <Name>Microsoft.Exchange.Search.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Search.Engine\Microsoft.Exchange.Search.Engine.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14194}</Project>
+      <Name>Microsoft.Exchange.Search.Engine</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Search.Fast\Microsoft.Exchange.Search.Fast.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14195}</Project>
+      <Name>Microsoft.Exchange.Search.Fast</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Search.Mdb\Microsoft.Exchange.Search.Mdb.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14196}</Project>
+      <Name>Microsoft.Exchange.Search.Mdb</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Security\Microsoft.Exchange.Security.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14198}</Project>
+      <Name>Microsoft.Exchange.Security</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.StoreProvider\Microsoft.Exchange.StoreProvider.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141B9}</Project>
+      <Name>Microsoft.Exchange.StoreProvider</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Transport.Logging.Search\Microsoft.Exchange.Transport.Logging.Search.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141CE}</Project>
+      <Name>Microsoft.Exchange.Transport.Logging.Search</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Transport.LoggingCommon\Microsoft.Exchange.Transport.LoggingCommon.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141CF}</Project>
+      <Name>Microsoft.Exchange.Transport.LoggingCommon</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.VariantConfiguration\Microsoft.Exchange.VariantConfiguration.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141E0}</Project>
+      <Name>Microsoft.Exchange.VariantConfiguration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Office.Datacenter.ActiveMonitoringLocal\Microsoft.Office.Datacenter.ActiveMonitoringLocal.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141ED}</Project>
+      <Name>Microsoft.Office.Datacenter.ActiveMonitoringLocal</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\mscorlib\mscorlib.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141F1}</Project>
+      <Name>mscorlib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\mscorlib\mscorlib.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141F1}</Project>
+      <Name>mscorlib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

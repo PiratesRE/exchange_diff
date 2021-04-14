@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo Name="Bridgehead PostSetup" DescriptionId="SetupComponentPostSetupBridgehead">
+  <ServerTasks>
+	<!-- After a clean install, we must start the services -->
+	<!-- Start Anti-spam Update service -->
+	<ServerTaskInfo Id="_7b839b49c73d47c4a6a8c10ff341f4fd" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+	  <Install IsFatal="false">
+		<Standalone>start-SetupService -ServiceName MSExchangeAntispamUpdate</Standalone>
+	  </Install>
+	  <BuildToBuildUpgrade/>
+	  <DisasterRecovery UseInstallTasks="true" />
+	  <Uninstall/>
+	</ServerTaskInfo>
+
+    <!-- Start Edge Sync service -->
+    <ServerTaskInfo Id="_19e9b841bedd44c6bb1798348083cb56" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressStartingEdgeSyncService" IsFatal="false">
+       	<Standalone>
+            if (($RoleIsDatacenter -eq $false) -and ($RoleIsDatacenterDedicated -eq $false))
+            {
+                start-SetupService -ServiceName MSExchangeEdgeSync;
+            }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall/>
+    </ServerTaskInfo>
+
+    <!-- Start Transport Log Search service -->
+    <ServerTaskInfo Id="_ff530e0758f64349a983fd6bf790d576" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressStartingTransportLogSearchService" IsFatal="false">
+        <Standalone>start-SetupService -ServiceName MSExchangeTransportLogSearch</Standalone>
+      </Install>
+      <BuildToBuildUpgrade />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall/>
+    </ServerTaskInfo>    
+
+  </ServerTasks>
+</SetupComponentInfo>

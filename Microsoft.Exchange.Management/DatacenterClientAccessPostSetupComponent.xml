@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo IsDatacenterOnly="true" IsDatacenterDedicatedOnly="true" Name="Datacenter Client Access PostSetup">
+
+  <ServerTasks>
+
+    <ServerTaskInfo Id="_2e003e1ced8f4949a9060ce797b9ac75" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install />
+      <BuildToBuildUpgrade />
+      <DisasterRecovery />
+      <Uninstall />
+    </ServerTaskInfo>
+	
+    <!-- Start MSExchangeProtectedServiceHost service -->
+    <ServerTaskInfo Id="_68C59750421C4bbfB6E311D311DEA8F1" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install Weight="4" DescriptionId="SetupProgressStartingProtectedServiceHostService" IsFatal="false">
+        <Standalone>
+          stop-SetupService -ServiceName MSExchangeProtectedServiceHost;
+          start-SetupService -ServiceName MSExchangeProtectedServiceHost
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall/>
+    </ServerTaskInfo>
+
+  </ServerTasks>
+
+</SetupComponentInfo>
+

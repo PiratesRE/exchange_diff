@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo Name="FFO Datacenter Client Access Configuration" DescriptionId="FfoWebServicePreConfigComponentDescription">
+
+  <ServerTasks>
+
+    <!-- 
+      See http://support.microsoft.com/kb/896861 for details on this setting.
+      Disables NTLM loopback check that prevents NTLM authentication from 
+      succeeding against a local server if an FQDN was used to address it.
+    -->
+    <ServerTaskInfo Id="_178a10624c88445093855c4ede7e9b9c" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          . "$RoleInstallPath\Scripts\ConfigureNetworkProtocolParameters.ps1"; 
+          Set-NtlmLoopbackCheck $false
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery />
+      <Uninstall/>
+    </ServerTaskInfo>
+
+    <!-- Install/uninstall CA IIS web service extensions -->
+    <ServerTaskInfo Id="_14a6761e144e428b93c62249acc814fe" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>install-ClientAccessIisWebServiceExtensions</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery />
+      <Uninstall>
+        <Standalone>uninstall-ClientAccessIisWebServiceExtensions</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Restart Microsoft.Exchange.ServiceHost to flush CLR assemblies-->
+    <ServerTaskInfo Id="_28fdfe8bec984e809cdeef6d4d59bf4e" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+        if (get-service MSExchangeServiceHost* | where {$_.name -eq "MSExchangeServiceHost"})
+        {
+            restart-service MSExchangeServiceHost
+        }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery />
+      <Uninstall/>
+    </ServerTaskInfo>
+
+    <!-- Restart Microsoft.Exchange.ProtectedServiceHost to flush CLR assemblies-->
+    <ServerTaskInfo Id="_7816256880dc4be0baf5b005b2af8cd3" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+        if (get-service MSExchangeProtectedServiceHost* | where {$_.name -eq "MSExchangeProtectedServiceHost"})
+        {
+            restart-service MSExchangeProtectedServiceHost
+        }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery />
+      <Uninstall/>
+    </ServerTaskInfo>
+
+    <!-- Set FFO Web Service role -->
+    <ServerTaskInfo Id="_e95499b43bd1484dbc03098fb1b4e592" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>set-ExchangeServerFfoRole -Identity $RoleFqdnOrName -ServerRole:FfoWebService -DomainController $RoleDomainController</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery />
+      <!-- We don't deprovision the server during uninstall and so no need to unset its role either -->
+      <Uninstall/>
+    </ServerTaskInfo>
+    
+
+    <!-- Configure Resource Health registry flags -->
+    <ServerTaskInfo Id="_023036e43f004bda9f4f4e0b1e0d233f" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          Install-ResourceHealthActiveFlags
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery />
+      <Uninstall/>
+    </ServerTaskInfo>
+
+    <!-- ClientAccessExchangeCertificate -->
+    <ServerTaskInfo Id="_fb5e9028e669404d94dba90aace8c2f9" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          Install-ExchangeCertificate -services "IIS" -DomainController $RoleDomainController
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery />
+      <Uninstall/>
+    </ServerTaskInfo>
+
+    <!-- Create HTTP container -->
+    <ServerTaskInfo Id="_3dd3ae9b426f4adc9ce8d972c723f5fd" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>new-HttpContainer -DomainController $RoleDomainController</Standalone>
+      </Install>
+      <BuildToBuildUpgrade />
+      <DisasterRecovery />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Install/remove ECP Counters -->
+    <ServerTaskInfo Id="_ca78563ec1f1468982d1a2e59c6001bd" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>new-PerfCounters -DefinitionFileName EcpPerfCounters.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-PerfCounters -DefinitionFileName EcpPerfCounters.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/remove Reporting web service Counters -->
+    <ServerTaskInfo Id="_e69a559428fb42029ca3261e795b216d" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>new-PerfCounters -DefinitionFileName RwsPerfCounters.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-PerfCounters -DefinitionFileName RwsPerfCounters.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/remove throttling perf counters -->
+    <ServerTaskInfo Id="_86121d1b951e43fb934f1f1d573362eb" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>new-PerfCounters -DefinitionFileName ThrottlingPerformanceCounters.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-PerfCounters -DefinitionFileName ThrottlingPerformanceCounters.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/remove ResourceHealth perf counters -->
+    <ServerTaskInfo Id="_InstallResourceHealthPerfCounters" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <!-- 
+        Specify non-default FileMappingSize for this category: it can have a very large number of instances: 
+        each E14 MDB/Client Component pair has its own instance.
+        The default FileMappingSize value is 131072 (0x20000), which fits about 191 instances of this category.
+        We want to be able to fit more by default, so we are setting the FileMappingSize to 5 Meg
+        which should fit 40 times more instances (7640 instances)
+        -->
+
+        <Standalone>new-PerfCounters -DefinitionFileName ResourceHealthPerformanceCounters.xml -FileMappingSize 5242880</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-PerfCounters -DefinitionFileName ResourceHealthPerformanceCounters.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/remove middle-tier store perf counters -->
+    <ServerTaskInfo Id="_ea5896b92c494834b1a93c4620fcaef4" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>new-PerfCounters -DefinitionFileName MiddleTierStoragePerformanceCounters.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-PerfCounters -DefinitionFileName MiddleTierStoragePerformanceCounters.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/remove store resource usage perf counters -->
+    <ServerTaskInfo Id="_9C885F67B3A84c399560E810E072371F" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>new-PerfCounters -DefinitionFileName StoreResourceUsagePerformanceCounters.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-PerfCounters -DefinitionFileName StoreResourceUsagePerformanceCounters.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/remove Active Manager Client Counters -->
+    <ServerTaskInfo Id="_dab6f03bdf5141efb7b017c3009fb9e6" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>new-PerfCounters -DefinitionFileName ActiveManagerClientPerfmon.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-PerfCounters -DefinitionFileName ActiveManagerClientPerfmon.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/remove Rms perf counters -->
+    <ServerTaskInfo Id="_5471455db0ef4610bf68fe7ad9417e19" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>new-PerfCounters -DefinitionFileName RmsPerfCounters.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-PerfCounters -DefinitionFileName RmsPerfCounters.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/remove Throttling Service Client perf counters -->
+    <ServerTaskInfo Id="_5ab36fffacd04975bb1bc681a214bf71" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>new-PerfCounters -DefinitionFileName ThrottlingServiceClientPerformanceCounters.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-PerfCounters -DefinitionFileName ThrottlingServiceClientPerformanceCounters.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/remove Admin Audit perf counters -->
+    <ServerTaskInfo Id="_e69599d235234effb6d2740f3c52f7e1" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>new-PerfCounters -DefinitionFileName AdminAuditPerfCounters.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-PerfCounters -DefinitionFileName AdminAuditPerfCounters.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+  </ServerTasks>
+</SetupComponentInfo>
+

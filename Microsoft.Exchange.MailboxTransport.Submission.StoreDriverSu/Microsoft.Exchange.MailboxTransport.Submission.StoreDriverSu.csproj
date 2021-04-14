@@ -1,0 +1,196 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{09CD9476-CD82-489E-B9E2-84B47CA14155}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Microsoft.Exchange.MailboxTransport.Submission.StoreDriverSubmission</RootNamespace>
+    <AssemblyName>Microsoft.Exchange.MailboxTransport.Submission.StoreDriverSubmission</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ADStoreProvider.cs" />
+    <Compile Include="Agents\ApprovalSubmitterAgent.cs" />
+    <Compile Include="Agents\ApprovalSubmitterAgentFactory.cs" />
+    <Compile Include="Agents\MfnSubmitter.cs" />
+    <Compile Include="Agents\MfnSubmitterAgent.cs" />
+    <Compile Include="Agents\MfnSubmitterAgentFactory.cs" />
+    <Compile Include="Agents\ModeratedTransportHandling.cs" />
+    <Compile Include="Agents\ParkedItemSubmitterAgent.cs" />
+    <Compile Include="Agents\ParkedItemSubmitterAgentFactory.cs" />
+    <Compile Include="AppConfig.cs" />
+    <Compile Include="DavCommand.cs" />
+    <Compile Include="DavHeader.cs" />
+    <Compile Include="FailFast.cs" />
+    <Compile Include="HResult.cs" />
+    <Compile Include="IAppConfiguration.cs" />
+    <Compile Include="ICrashRepository.cs" />
+    <Compile Include="IOutProvider.cs" />
+    <Compile Include="IStoreProvider.cs" />
+    <Compile Include="ISubmissionConfiguration.cs" />
+    <Compile Include="ISubmissionProvider.cs" />
+    <Compile Include="MailFromCommand.cs" />
+    <Compile Include="MailItemSubmitter.cs" />
+    <Compile Include="MailItemType.cs" />
+    <Compile Include="MailSubmissionResult.cs" />
+    <Compile Include="MapiSubmissionInfo.cs" />
+    <Compile Include="MapiSubmissionItem.cs" />
+    <Compile Include="MSExchangeStoreDriverSubmission.cs" />
+    <Compile Include="MSExchangeStoreDriverSubmissionAgent.cs" />
+    <Compile Include="MSExchangeStoreDriverSubmissionAgentInstance.cs" />
+    <Compile Include="MSExchangeStoreDriverSubmissionDatabase.cs" />
+    <Compile Include="MSExchangeStoreDriverSubmissionDatabaseInstance.cs" />
+    <Compile Include="MSExchangeStoreDriverSubmissionEventLogConstants.cs" />
+    <Compile Include="OutProvider.cs" />
+    <Compile Include="PickupFolder.cs" />
+    <Compile Include="PickupFolderOutProvider.cs" />
+    <Compile Include="PoisonDataComparer.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="QuarantineHandler.cs" />
+    <Compile Include="QuarantineInfoContext.cs" />
+    <Compile Include="RcptToCommand.cs" />
+    <Compile Include="RegistryCrashRepository.cs" />
+    <Compile Include="ResourceEventCounterCrashInfo.cs" />
+    <Compile Include="SenderRateTracker.cs" />
+    <Compile Include="SMTPOutProvider.cs" />
+    <Compile Include="StoreDriverSubmission.cs" />
+    <Compile Include="StoreDriverSubmissionAgentPerfCounters.cs" />
+    <Compile Include="StoreDriverSubmissionDatabasePerfCounters.cs" />
+    <Compile Include="StoreDriverSubmissionEventArgsImpl.cs" />
+    <Compile Include="StoreDriverSubmissionEventSourceImpl.cs" />
+    <Compile Include="StoreDriverSubmissionRetiredException.cs" />
+    <Compile Include="StoreDriverSubmissionUtils.cs" />
+    <Compile Include="StoreProvider.cs" />
+    <Compile Include="Strings.cs" />
+    <Compile Include="SubmissionConfiguration.cs" />
+    <Compile Include="SubmissionConnection.cs" />
+    <Compile Include="SubmissionConnectionPool.cs" />
+    <Compile Include="SubmissionConnectionWrapper.cs" />
+    <Compile Include="SubmissionDatabaseThreadMap.cs" />
+    <Compile Include="SubmissionInfo.cs" />
+    <Compile Include="SubmissionItem.cs" />
+    <Compile Include="SubmissionPoisonContext.cs" />
+    <Compile Include="SubmissionPoisonHandler.cs" />
+    <Compile Include="SubmissionReadOnlyMailItem.cs" />
+    <Compile Include="SubmissionsInProgress.cs" />
+    <Compile Include="SubmissionThreadLimiter.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Strings.resources" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.Exchange.Configuration.ObjectModel\Microsoft.Exchange.Configuration.ObjectModel.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140FC}</Project>
+      <Name>Microsoft.Exchange.Configuration.ObjectModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.ApplicationLogic\Microsoft.Exchange.Data.ApplicationLogic.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14104}</Project>
+      <Name>Microsoft.Exchange.Data.ApplicationLogic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Common\Microsoft.Exchange.Data.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140D3}</Project>
+      <Name>Microsoft.Exchange.Data.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Directory\Microsoft.Exchange.Data.Directory.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14105}</Project>
+      <Name>Microsoft.Exchange.Data.Directory</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Storage\Microsoft.Exchange.Data.Storage.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1410F}</Project>
+      <Name>Microsoft.Exchange.Data.Storage</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Transport\Microsoft.Exchange.Data.Transport.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140D5}</Project>
+      <Name>Microsoft.Exchange.Data.Transport</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data\Microsoft.Exchange.Data.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14106}</Project>
+      <Name>Microsoft.Exchange.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Diagnostics\Microsoft.Exchange.Diagnostics.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14113}</Project>
+      <Name>Microsoft.Exchange.Diagnostics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Extensibility.Internal\Microsoft.Exchange.Extensibility.Internal.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14126}</Project>
+      <Name>Microsoft.Exchange.Extensibility.Internal</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.InfoWorker.Common\Microsoft.Exchange.InfoWorker.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1413C}</Project>
+      <Name>Microsoft.Exchange.InfoWorker.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.MailboxTransport.StoreDriverCommon\Microsoft.Exchange.MailboxTransport.StoreDriverCommon.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14153}</Project>
+      <Name>Microsoft.Exchange.MailboxTransport.StoreDriverCommon</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.MessageSecurity\Microsoft.Exchange.MessageSecurity.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1416A}</Project>
+      <Name>Microsoft.Exchange.MessageSecurity</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Net\Microsoft.Exchange.Net.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14178}</Project>
+      <Name>Microsoft.Exchange.Net</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.StoreProvider\Microsoft.Exchange.StoreProvider.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141B9}</Project>
+      <Name>Microsoft.Exchange.StoreProvider</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Transport.Sync.Common\Microsoft.Exchange.Transport.Sync.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141D5}</Project>
+      <Name>Microsoft.Exchange.Transport.Sync.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Transport\Microsoft.Exchange.Transport.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141CD}</Project>
+      <Name>Microsoft.Exchange.Transport</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.VariantConfiguration\Microsoft.Exchange.VariantConfiguration.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141E0}</Project>
+      <Name>Microsoft.Exchange.VariantConfiguration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Office.Datacenter.ActiveMonitoringLocal\Microsoft.Office.Datacenter.ActiveMonitoringLocal.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141ED}</Project>
+      <Name>Microsoft.Office.Datacenter.ActiveMonitoringLocal</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\mscorlib\mscorlib.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141F1}</Project>
+      <Name>mscorlib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

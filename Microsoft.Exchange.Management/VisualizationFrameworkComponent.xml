@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo IsDatacenterOnly="true" Name="Visualization Framework install tasks" DescriptionId="VisualizationFrameworkComponentDescription">
+
+  <ServerTasks>
+
+    <!-- Install/remove Reporting datacenter perf counters -->
+    <ServerTaskInfo Id="_4ca4cbb22cbd479dbd40d36bfaf455dc" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>
+          new-perfcounters -DefinitionFileName ReportingPerfCounters.xml;
+          new-perfcounters -DefinitionFileName ReportingPerfCountersPerComponent.xml;
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>
+          remove-PerfCounters -DefinitionFileName ReportingPerfCounters.xml;
+          remove-PerfCounters -DefinitionFileName ReportingPerfCountersPerComponent.xml;
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+  </ServerTasks>
+
+</SetupComponentInfo>
+

@@ -1,0 +1,222 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{09CD9476-CD82-489E-B9E2-84B47CA1419A}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Microsoft.Exchange.Server.Storage.Common</RootNamespace>
+    <AssemblyName>Microsoft.Exchange.Server.Storage.Common</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Exchange.Common.IL" />
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AddressInfo.cs" />
+    <Compile Include="Breadcrumb.cs" />
+    <Compile Include="BreadcrumbKind.cs" />
+    <Compile Include="BufferTooSmall.cs" />
+    <Compile Include="CachePerformanceCounters.cs" />
+    <Compile Include="ColumnNotFoundException.cs" />
+    <Compile Include="CompletionNotificationTask.cs" />
+    <Compile Include="ComponentVersion.cs" />
+    <Compile Include="ConcurrentLookAside.cs" />
+    <Compile Include="ConfigurationSchema.2.cs" />
+    <Compile Include="ConfigurationSchema.cs" />
+    <Compile Include="CrashOnLIDException.cs" />
+    <Compile Include="CultureHelper.cs" />
+    <Compile Include="DatabaseInfo.cs" />
+    <Compile Include="DatabaseOptions.cs" />
+    <Compile Include="DefaultSettings.cs" />
+    <Compile Include="DeterministicTime.cs" />
+    <Compile Include="DiagnosticQueryException.cs" />
+    <Compile Include="DisposableBase.cs" />
+    <Compile Include="DisposableImpl.cs" />
+    <Compile Include="DuplicateColumnException.cs" />
+    <Compile Include="DuplicateKeyException.cs" />
+    <Compile Include="ErrorCode.cs" />
+    <Compile Include="ErrorCodeValue.cs" />
+    <Compile Include="ErrorHelper.cs" />
+    <Compile Include="EtwBinaryLogger.cs" />
+    <Compile Include="EtwLoggerDefinition.cs" />
+    <Compile Include="EventWaitHandleEx.cs" />
+    <Compile Include="EvictionPolicy.cs" />
+    <Compile Include="ExtendedTypeCode.cs" />
+    <Compile Include="ExtensionMethods\ExtensionMethods.cs" />
+    <Compile Include="ExtensionMethods\Linq\Enumerable.cs" />
+    <Compile Include="ExtensionMethods\Linq\LinqNamespaceExtensionMethods.cs" />
+    <Compile Include="FatalDatabaseException.cs" />
+    <Compile Include="FaultInjection.cs" />
+    <Compile Include="Globals.cs" />
+    <Compile Include="IBinaryLogger.cs" />
+    <Compile Include="ICachePerformanceCounters.cs" />
+    <Compile Include="IDisposableImpl.cs" />
+    <Compile Include="IExecutionContext.cs" />
+    <Compile Include="IExecutionDiagnostics.cs" />
+    <Compile Include="IExecutionTrackingData.cs" />
+    <Compile Include="IHasCustomToStringImplementation.cs" />
+    <Compile Include="ILockName.cs" />
+    <Compile Include="ILockStatistics.cs" />
+    <Compile Include="ILoggerFactory.cs" />
+    <Compile Include="ILogTransactionInformation.cs" />
+    <Compile Include="IntervalAlignedRecurringTask.cs" />
+    <Compile Include="InvalidSerializedFormatException.cs" />
+    <Compile Include="IOperationExecutionTrackable.cs" />
+    <Compile Include="IOperationExecutionTrackingKey.cs" />
+    <Compile Include="IPerIdentityTracing.cs" />
+    <Compile Include="IStoreQueryTargetBase.cs" />
+    <Compile Include="IStoreSimpleQueryTarget.cs" />
+    <Compile Include="KeyQueue.cs" />
+    <Compile Include="KeyTimeQueue.cs" />
+    <Compile Include="LargeValue.cs" />
+    <Compile Include="LimitedCounter.cs" />
+    <Compile Include="LocalHost.cs" />
+    <Compile Include="LockFreeDictionary.cs" />
+    <Compile Include="LockManager.cs" />
+    <Compile Include="LockName.2.cs" />
+    <Compile Include="LockName.cs" />
+    <Compile Include="LoggerManager.cs" />
+    <Compile Include="LoggerType.cs" />
+    <Compile Include="LRU2ExpirationPolicy.cs" />
+    <Compile Include="LRU2WithTimeToLiveExpirationPolicy.cs" />
+    <Compile Include="MailboxInfo.cs" />
+    <Compile Include="MailboxShape.cs" />
+    <Compile Include="MessageClasses.cs" />
+    <Compile Include="MessageClassHelper.cs" />
+    <Compile Include="MSExchangeISEventLogConstants.cs" />
+    <Compile Include="MultiKeyCache.cs" />
+    <Compile Include="NonFatalDatabaseException.cs" />
+    <Compile Include="NullExecutionContext.cs" />
+    <Compile Include="NullExecutionDiagnostics.cs" />
+    <Compile Include="NullTrackableOperation.cs" />
+    <Compile Include="ParameterOverflow.cs" />
+    <Compile Include="ParseSerialize.cs" />
+    <Compile Include="PersistentAvlTree.cs" />
+    <Compile Include="PerUserTracing.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="QueryableAttribute.cs" />
+    <Compile Include="QuotaInfo.cs" />
+    <Compile Include="QuotaStyle.cs" />
+    <Compile Include="QuotaType.cs" />
+    <Compile Include="ReadOnceConfigurationSchema.cs" />
+    <Compile Include="RecurringTask.cs" />
+    <Compile Include="RegistryKeys.cs" />
+    <Compile Include="SecurityHelper.cs" />
+    <Compile Include="SerializedValue.cs" />
+    <Compile Include="ServerEditionType.cs" />
+    <Compile Include="ServerInfo.cs" />
+    <Compile Include="SimpleTimeToLiveExpirationPolicy.cs" />
+    <Compile Include="SingleExecutionTask.cs" />
+    <Compile Include="SingleKeyCache.cs" />
+    <Compile Include="SpecificTimeTask.cs" />
+    <Compile Include="Statistics.cs" />
+    <Compile Include="StopwatchStamp.cs" />
+    <Compile Include="StoreConfigContext.cs" />
+    <Compile Include="StoreConfigProvider.cs" />
+    <Compile Include="StoreConfigSchema.cs" />
+    <Compile Include="StoreEnvironment.cs" />
+    <Compile Include="StoreException.cs" />
+    <Compile Include="StoreOperationCanceledException.cs" />
+    <Compile Include="Task.2.cs" />
+    <Compile Include="Task.cs" />
+    <Compile Include="TaskExecutionDiagnosticsProxy.cs" />
+    <Compile Include="TaskFlags.cs" />
+    <Compile Include="TaskList.cs" />
+    <Compile Include="TempStream.cs" />
+    <Compile Include="TenantHint.cs" />
+    <Compile Include="TestCaseId.cs" />
+    <Compile Include="ThreadManager.cs" />
+    <Compile Include="TimingContext.cs" />
+    <Compile Include="ToStringHelper.cs" />
+    <Compile Include="TraceBuffer.cs" />
+    <Compile Include="TraceContentBuilder.cs" />
+    <Compile Include="TraceRecord.cs" />
+    <Compile Include="TypedMultiKeyCache.cs" />
+    <Compile Include="Unlimited.cs" />
+    <Compile Include="UnlimitedBytes.cs" />
+    <Compile Include="UnlimitedItems.cs" />
+    <Compile Include="ValueArrayEqualityComparer.cs" />
+    <Compile Include="ValueEqualityComparer.cs" />
+    <Compile Include="ValueHelper.cs" />
+    <Compile Include="ValueReference.cs" />
+    <Compile Include="ValueTypeHelper.cs" />
+    <Compile Include="Visibility.cs" />
+    <Compile Include="VisibilityHelper.cs" />
+    <Compile Include="WatsonOnUnhandledException.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.Exchange.Common\Microsoft.Exchange.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140F0}</Project>
+      <Name>Microsoft.Exchange.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Common\Microsoft.Exchange.Data.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140D3}</Project>
+      <Name>Microsoft.Exchange.Data.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data\Microsoft.Exchange.Data.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14106}</Project>
+      <Name>Microsoft.Exchange.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Diagnostics\Microsoft.Exchange.Diagnostics.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14113}</Project>
+      <Name>Microsoft.Exchange.Diagnostics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Extensibility.Internal\Microsoft.Exchange.Extensibility.Internal.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14126}</Project>
+      <Name>Microsoft.Exchange.Extensibility.Internal</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Net\Microsoft.Exchange.Net.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14178}</Project>
+      <Name>Microsoft.Exchange.Net</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.RpcClientAccess.Parser\Microsoft.Exchange.RpcClientAccess.Parser.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1418D}</Project>
+      <Name>Microsoft.Exchange.RpcClientAccess.Parser</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Rpc\Microsoft.Exchange.Rpc.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14188}</Project>
+      <Name>Microsoft.Exchange.Rpc</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.TextProcessing\Microsoft.Exchange.TextProcessing.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141BB}</Project>
+      <Name>Microsoft.Exchange.TextProcessing</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\mscorlib\mscorlib.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141F1}</Project>
+      <Name>mscorlib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

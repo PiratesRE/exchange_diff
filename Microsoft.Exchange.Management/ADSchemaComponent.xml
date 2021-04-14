@@ -1,0 +1,824 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo Name="Active Directory Schema" DescriptionId="SetupComponentADSchema">
+
+  <OrgTasks>
+    <!-- Import schema file (1/100) -->
+
+    <OrgTaskInfo Id="_64bd6943575045fa880b92893321a2d5" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressSchemaFile">
+        <Global>install-ExchangeSchema -LdapFileName ($roleInstallPath + "Setup\Data\"+$RoleSchemaPrefix + "schema0.ldf")</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+    <!-- Import schema file (2/100) -->
+    <OrgTaskInfo Id="_21d006dc32c34cafb2822c771b8ecb95" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressSchemaFile">
+        <Global>install-ExchangeSchema -LdapFileName ($roleInstallPath + "Setup\Data\"+$RoleSchemaPrefix + "schema1.ldf")</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+    <!-- Import schema file (3/100) -->
+    <OrgTaskInfo Id="_249b836e4cf94a5a9fe0852bc7430819" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressSchemaFile">
+        <Global>install-ExchangeSchema -LdapFileName ($roleInstallPath + "Setup\Data\"+$RoleSchemaPrefix + "schema2.ldf")</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+    <!-- Import schema file (4/100) -->
+    <OrgTaskInfo Id="_a8be8ab995fe45208f738ab1f2902c9a" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressSchemaFile">
+        <Global>install-ExchangeSchema -LdapFileName ($roleInstallPath + "Setup\Data\"+$RoleSchemaPrefix + "schema3.ldf")</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+    <!-- Import schema file (5/100) -->
+    <OrgTaskInfo Id="_1c8feedcb143407b9aedb7f1c5c35b3d" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressSchemaFile">
+        <Global>install-ExchangeSchema -LdapFileName ($roleInstallPath + "Setup\Data\"+$RoleSchemaPrefix + "schema4.ldf")</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+    <!-- Import schema file (6/100) -->
+    <OrgTaskInfo Id="_ee7e30ea703b43dcb006085e1205ce95" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressSchemaFile">
+        <Global>install-ExchangeSchema -LdapFileName ($roleInstallPath + "Setup\Data\"+$RoleSchemaPrefix + "schema5.ldf")</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+    <!-- Import schema file (7/100) -->
+    <OrgTaskInfo Id="_b34685bfe45d45b2a0cb986899634d6a" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressSchemaFile">
+        <Global>install-ExchangeSchema -LdapFileName ($roleInstallPath + "Setup\Data\"+$RoleSchemaPrefix + "schema6.ldf")</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+    <!-- Import schema file (8/100) -->
+    <OrgTaskInfo Id="_bd3a8579c4c24813a6767694c12e256b" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressSchemaFile">
+        <Global>install-ExchangeSchema -LdapFileName ($roleInstallPath + "Setup\Data\"+$RoleSchemaPrefix + "schema7.ldf")</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+    <!-- Import schema file (9/100) -->
+    <OrgTaskInfo Id="_40ad7b9f8eae439c8022850ab8d331ed" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressSchemaFile">
+        <Global>install-ExchangeSchema -LdapFileName ($roleInstallPath + "Setup\Data\"+$RoleSchemaPrefix + "schema8.ldf")</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+    <!-- Import schema file (10/100) -->
+    <OrgTaskInfo Id="_3d1a848026634af6867dd3b3e0f37d76" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressSchemaFile">
+        <Global>install-ExchangeSchema -LdapFileName ($roleInstallPath + "Setup\Data\"+$RoleSchemaPrefix + "schema9.ldf")</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+    <!-- Import schema file (11/100) -->
+    <OrgTaskInfo Id="_77b5a98c57cc49fcb5639d7dcc47e1dc" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressSchemaFile">
+        <Global>install-ExchangeSchema -LdapFileName ($roleInstallPath + "Setup\Data\"+$RoleSchemaPrefix + "schema10.ldf")</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+    <!-- Import schema file (12/100) -->
+    <OrgTaskInfo Id="_13d09d1e08774e58a0ca0764329ff5e7" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressSchemaFile">
+        <Global>install-ExchangeSchema -LdapFileName ($roleInstallPath + "Setup\Data\"+$RoleSchemaPrefix + "schema11.ldf")</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+    <!-- Import schema file (13/100) -->
+    <OrgTaskInfo Id="_2d13844124ba4574912b669a48083a7c" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressSchemaFile">
+        <Global>install-ExchangeSchema -LdapFileName ($roleInstallPath + "Setup\Data\"+$RoleSchemaPrefix + "schema12.ldf")</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+    <!-- Import schema file (14/100) -->
+    <OrgTaskInfo Id="_c6e2b195d96c45d58e2a0aa94fc7c379" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressSchemaFile">
+        <Global>install-ExchangeSchema -LdapFileName ($roleInstallPath + "Setup\Data\"+$RoleSchemaPrefix + "schema13.ldf")</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+    <!-- Import schema file (15/100) -->
+    <OrgTaskInfo Id="_b9c492217c9b48ff8f7bcaee320a7b18" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressSchemaFile">
+        <Global>install-ExchangeSchema -LdapFileName ($roleInstallPath + "Setup\Data\"+$RoleSchemaPrefix + "schema14.ldf")</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+    <!-- Import schema file (16/100) -->
+    <OrgTaskInfo Id="_db62e0f4f66d4dcbadfae3a9d93589b5" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressSchemaFile">
+        <Global>install-ExchangeSchema -LdapFileName ($roleInstallPath + "Setup\Data\"+$RoleSchemaPrefix + "schema15.ldf")</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+    <!-- Import schema file (17/100) -->
+    <OrgTaskInfo Id="_369d2d5884974830a4482de1fe8d665e" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressSchemaFile">
+        <Global>install-ExchangeSchema -LdapFileName ($roleInstallPath + "Setup\Data\"+$RoleSchemaPrefix + "schema16.ldf")</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+    <!-- Import schema file (18/100) -->
+    <OrgTaskInfo Id="_2902937e00294a3186355b1de73fc6b2" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressSchemaFile">
+        <Global>install-ExchangeSchema -LdapFileName ($roleInstallPath + "Setup\Data\"+$RoleSchemaPrefix + "schema17.ldf")</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+    <!-- Import schema file (19/100) -->
+    <OrgTaskInfo Id="_7748a149919f485c98e7f04ff668d524" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressSchemaFile">
+        <Global>install-ExchangeSchema -LdapFileName ($roleInstallPath + "Setup\Data\"+$RoleSchemaPrefix + "schema18.ldf")</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+    <!-- Import schema file (20/100) -->
+    <OrgTaskInfo Id="_bd927eed2cfb4d2fa09f01519a0f0a04" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressSchemaFile">
+        <Global>install-ExchangeSchema -LdapFileName ($roleInstallPath + "Setup\Data\"+$RoleSchemaPrefix + "schema19.ldf")</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+    <!-- Import schema file (21/100) -->
+    <OrgTaskInfo Id="_365852dc3a3a44618dfda496a0ce320b" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressSchemaFile">
+        <Global>install-ExchangeSchema -LdapFileName ($roleInstallPath + "Setup\Data\"+$RoleSchemaPrefix + "schema20.ldf")</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+    <!-- Import schema file (22/100) -->
+    <OrgTaskInfo Id="_c0d2e137a3f04300accabfc6c1fb9b79" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressSchemaFile">
+        <Global>install-ExchangeSchema -LdapFileName ($roleInstallPath + "Setup\Data\"+$RoleSchemaPrefix + "schema21.ldf")</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+    <!-- Import schema file (23/100) -->
+    <OrgTaskInfo Id="_4834291732c04113905e1f59354536e1" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressSchemaFile">
+        <Global>install-ExchangeSchema -LdapFileName ($roleInstallPath + "Setup\Data\"+$RoleSchemaPrefix + "schema22.ldf")</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+    <!-- Import schema file (24/100) -->
+    <OrgTaskInfo Id="_43304587dca84a22824066f1c6af54c8" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressSchemaFile">
+        <Global>install-ExchangeSchema -LdapFileName ($roleInstallPath + "Setup\Data\"+$RoleSchemaPrefix + "schema23.ldf")</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+    <!-- Import schema file (25/100) -->
+    <OrgTaskInfo Id="_4506fd05486d45ecbf52b8dfe3ea3dcd" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressSchemaFile">
+        <Global>install-ExchangeSchema -LdapFileName ($roleInstallPath + "Setup\Data\"+$RoleSchemaPrefix + "schema24.ldf")</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+    <!-- Import schema file (26/100) -->
+    <OrgTaskInfo Id="_7de7921b83c0469088b7dbec38265f34" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressSchemaFile">
+        <Global>install-ExchangeSchema -LdapFileName ($roleInstallPath + "Setup\Data\"+$RoleSchemaPrefix + "schema25.ldf")</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+    <!-- Import schema file (27/100) -->
+    <OrgTaskInfo Id="_7c8188109b5d4376849dba8d19c76aa8" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressSchemaFile">
+        <Global>install-ExchangeSchema -LdapFileName ($roleInstallPath + "Setup\Data\"+$RoleSchemaPrefix + "schema26.ldf")</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+    <!-- Import schema file (28/100) -->
+    <OrgTaskInfo Id="_b946f25be3824093850cf6229cea6acf" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressSchemaFile">
+        <Global>install-ExchangeSchema -LdapFileName ($roleInstallPath + "Setup\Data\"+$RoleSchemaPrefix + "schema27.ldf")</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+    <!-- Import schema file (29/100) -->
+    <OrgTaskInfo Id="_b1cd6f16397a42b3887936c91adb7160" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressSchemaFile">
+        <Global>install-ExchangeSchema -LdapFileName ($roleInstallPath + "Setup\Data\"+$RoleSchemaPrefix + "schema28.ldf")</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+    <!-- Import schema file (30/100) -->
+    <OrgTaskInfo Id="_1f8cf989c20f4adbb2769e990dd6d6fd" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressSchemaFile">
+        <Global>install-ExchangeSchema -LdapFileName ($roleInstallPath + "Setup\Data\"+$RoleSchemaPrefix + "schema29.ldf")</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+    <!-- Import schema file (31/100) -->
+    <OrgTaskInfo Id="_48f9d93c024945ad84191beef4f9a9b4" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressSchemaFile">
+        <Global>install-ExchangeSchema -LdapFileName ($roleInstallPath + "Setup\Data\"+$RoleSchemaPrefix + "schema30.ldf")</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+    <!-- Import schema file (32/100) -->
+    <OrgTaskInfo Id="_c353576ca87e4edf8a2b1a781894a734" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressSchemaFile">
+        <Global>install-ExchangeSchema -LdapFileName ($roleInstallPath + "Setup\Data\"+$RoleSchemaPrefix + "schema31.ldf")</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+    <!-- Import schema file (33/100) -->
+    <OrgTaskInfo Id="_68d9109142294d86a16f2271b0b4cfc7" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressSchemaFile">
+        <Global>install-ExchangeSchema -LdapFileName ($roleInstallPath + "Setup\Data\"+$RoleSchemaPrefix + "schema32.ldf")</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+    <!-- Import schema file (34/100) -->
+    <OrgTaskInfo Id="_b61d429697c940e78b11bf48d9b791ef" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressSchemaFile">
+        <Global>install-ExchangeSchema -LdapFileName ($roleInstallPath + "Setup\Data\"+$RoleSchemaPrefix + "schema33.ldf")</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+    <!-- Import schema file (35/100) -->
+    <OrgTaskInfo Id="_89c304ae18fd411d9d0c1e262af9e9e1" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressSchemaFile">
+        <Global>install-ExchangeSchema -LdapFileName ($roleInstallPath + "Setup\Data\"+$RoleSchemaPrefix + "schema34.ldf")</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+    <!-- Import schema file (36/100) -->
+    <OrgTaskInfo Id="_9e2e160388424dabb785fb38e5cc7fdb" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressSchemaFile">
+        <Global>install-ExchangeSchema -LdapFileName ($roleInstallPath + "Setup\Data\"+$RoleSchemaPrefix + "schema35.ldf")</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+    <!-- Import schema file (37/100) -->
+    <OrgTaskInfo Id="_c335a4ecc980445bbfb2f7663794b2fd" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressSchemaFile">
+        <Global>install-ExchangeSchema -LdapFileName ($roleInstallPath + "Setup\Data\"+$RoleSchemaPrefix + "schema36.ldf")</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+    <!-- Import schema file (38/100) -->
+    <OrgTaskInfo Id="_885b6acd1e1b4e2088d617d5e01e9e4e" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressSchemaFile">
+        <Global>install-ExchangeSchema -LdapFileName ($roleInstallPath + "Setup\Data\"+$RoleSchemaPrefix + "schema37.ldf")</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+    <!-- Import schema file (39/100) -->
+    <OrgTaskInfo Id="_81803cfb7f4640919f5b059b0dc51c2f" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressSchemaFile">
+        <Global>install-ExchangeSchema -LdapFileName ($roleInstallPath + "Setup\Data\"+$RoleSchemaPrefix + "schema38.ldf")</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+    <!-- Import schema file (40/100) -->
+    <OrgTaskInfo Id="_4957765b8e224ab5bb8751128c72a7f2" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressSchemaFile">
+        <Global>install-ExchangeSchema -LdapFileName ($roleInstallPath + "Setup\Data\"+$RoleSchemaPrefix + "schema39.ldf")</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+    <!-- Import schema file (41/100) -->
+    <OrgTaskInfo Id="_d0966ab6c9054f8fa4b28ace737b7dee" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressSchemaFile">
+        <Global>install-ExchangeSchema -LdapFileName ($roleInstallPath + "Setup\Data\"+$RoleSchemaPrefix + "schema40.ldf")</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+    <!-- Import schema file (42/100) -->
+    <OrgTaskInfo Id="_6e515be2ce974d50b7823c51a9a964c5" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressSchemaFile">
+        <Global>install-ExchangeSchema -LdapFileName ($roleInstallPath + "Setup\Data\"+$RoleSchemaPrefix + "schema41.ldf")</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+    <!-- Import schema file (43/100) -->
+    <OrgTaskInfo Id="_2adbeb3a4f8d4508b98422fa13ca7bf5" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressSchemaFile">
+        <Global>install-ExchangeSchema -LdapFileName ($roleInstallPath + "Setup\Data\"+$RoleSchemaPrefix + "schema42.ldf")</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+    <!-- Import schema file (44/100) -->
+    <OrgTaskInfo Id="_f4d5ea95b74444948d4e8dba16f19784" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressSchemaFile">
+        <Global>install-ExchangeSchema -LdapFileName ($roleInstallPath + "Setup\Data\"+$RoleSchemaPrefix + "schema43.ldf")</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+    <!-- Import schema file (45/100) -->
+    <OrgTaskInfo Id="_ad8c4d6b4de34c39a9537d3e3699fe72" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressSchemaFile">
+        <Global>install-ExchangeSchema -LdapFileName ($roleInstallPath + "Setup\Data\"+$RoleSchemaPrefix + "schema44.ldf")</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+    <!-- Import schema file (46/100) -->
+    <OrgTaskInfo Id="_88d99d2f5f4f4e16a0937b4d50178a66" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressSchemaFile">
+        <Global>install-ExchangeSchema -LdapFileName ($roleInstallPath + "Setup\Data\"+$RoleSchemaPrefix + "schema45.ldf")</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+    <!-- Import schema file (47/100) -->
+    <OrgTaskInfo Id="_5f634ac4f0a04c6ba6c196ede615212c" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressSchemaFile">
+        <Global>install-ExchangeSchema -LdapFileName ($roleInstallPath + "Setup\Data\"+$RoleSchemaPrefix + "schema46.ldf")</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+    <!-- Import schema file (48/100) -->
+    <OrgTaskInfo Id="_a89416635007489f8d48f7d10a894f3a" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressSchemaFile">
+        <Global>install-ExchangeSchema -LdapFileName ($roleInstallPath + "Setup\Data\"+$RoleSchemaPrefix + "schema47.ldf")</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+    <!-- Import schema file (49/100) -->
+    <OrgTaskInfo Id="_728a2195b1d548a385d714a2256ec4b4" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressSchemaFile">
+        <Global>install-ExchangeSchema -LdapFileName ($roleInstallPath + "Setup\Data\"+$RoleSchemaPrefix + "schema48.ldf")</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+    <!-- Import schema file (50/100) -->
+    <OrgTaskInfo Id="_e3611828aee14036a87755fe8d5884a4" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressSchemaFile">
+        <Global>install-ExchangeSchema -LdapFileName ($roleInstallPath + "Setup\Data\"+$RoleSchemaPrefix + "schema49.ldf")</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+    <!-- Import schema file (51/100) -->
+    <OrgTaskInfo Id="_8d6b91071f7b4a1cbb84fb05ca0a5a0c" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressSchemaFile">
+        <Global>install-ExchangeSchema -LdapFileName ($roleInstallPath + "Setup\Data\"+$RoleSchemaPrefix + "schema50.ldf")</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+    <!-- Import schema file (52/100) -->
+    <OrgTaskInfo Id="_63e64b2c65064630bb362c1f3caa5bdf" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressSchemaFile">
+        <Global>install-ExchangeSchema -LdapFileName ($roleInstallPath + "Setup\Data\"+$RoleSchemaPrefix + "schema51.ldf")</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+    <!-- Import schema file (53/100) -->
+    <OrgTaskInfo Id="_01280562a1494364acdc6d5d1b854ab7" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressSchemaFile">
+        <Global>install-ExchangeSchema -LdapFileName ($roleInstallPath + "Setup\Data\"+$RoleSchemaPrefix + "schema52.ldf")</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+    <!-- Import schema file (54/100) -->
+    <OrgTaskInfo Id="_fd0cba12f7224e24b2d3c30b635ba804" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressSchemaFile">
+        <Global>install-ExchangeSchema -LdapFileName ($roleInstallPath + "Setup\Data\"+$RoleSchemaPrefix + "schema53.ldf")</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+    <!-- Import schema file (55/100) -->
+    <OrgTaskInfo Id="_6596be45fd624867a08b05901d8721f6" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressSchemaFile">
+        <Global>install-ExchangeSchema -LdapFileName ($roleInstallPath + "Setup\Data\"+$RoleSchemaPrefix + "schema54.ldf")</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+    <!-- Import schema file (56/100) -->
+    <OrgTaskInfo Id="_8a408561767147a2ac6e644bc22d8c23" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressSchemaFile">
+        <Global>install-ExchangeSchema -LdapFileName ($roleInstallPath + "Setup\Data\"+$RoleSchemaPrefix + "schema55.ldf")</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+    <!-- Import schema file (57/100) -->
+    <OrgTaskInfo Id="_e6a5282564894faca4f0b3879808b442" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressSchemaFile">
+        <Global>install-ExchangeSchema -LdapFileName ($roleInstallPath + "Setup\Data\"+$RoleSchemaPrefix + "schema56.ldf")</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+    <!-- Import schema file (58/100) -->
+    <OrgTaskInfo Id="_348c5acfdbe64065b8705c6254531791" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressSchemaFile">
+        <Global>install-ExchangeSchema -LdapFileName ($roleInstallPath + "Setup\Data\"+$RoleSchemaPrefix + "schema57.ldf")</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+    <!-- Import schema file (59/100) -->
+    <OrgTaskInfo Id="_fc5f842a2dfc40368901642c92cfec28" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressSchemaFile">
+        <Global>install-ExchangeSchema -LdapFileName ($roleInstallPath + "Setup\Data\"+$RoleSchemaPrefix + "schema58.ldf")</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+    <!-- Import schema file (60/100) -->
+    <OrgTaskInfo Id="_f4463e2665dc4407b807dd137a300199" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressSchemaFile">
+        <Global>install-ExchangeSchema -LdapFileName ($roleInstallPath + "Setup\Data\"+$RoleSchemaPrefix + "schema59.ldf")</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+    <!-- Import schema file (61/100) -->
+    <OrgTaskInfo Id="_959a593249474a428a74f29511f72b64" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressSchemaFile">
+        <Global>install-ExchangeSchema -LdapFileName ($roleInstallPath + "Setup\Data\"+$RoleSchemaPrefix + "schema60.ldf")</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+    <!-- Import schema file (62/100) -->
+    <OrgTaskInfo Id="_5ed0f53651934456ba3b3d214393b84c" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressSchemaFile">
+        <Global>install-ExchangeSchema -LdapFileName ($roleInstallPath + "Setup\Data\"+$RoleSchemaPrefix + "schema61.ldf")</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+    <!-- Import schema file (63/100) -->
+    <OrgTaskInfo Id="_2c8b913fe17545db88f33462f7167452" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressSchemaFile">
+        <Global>install-ExchangeSchema -LdapFileName ($roleInstallPath + "Setup\Data\"+$RoleSchemaPrefix + "schema62.ldf")</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+    <!-- Import schema file (64/100) -->
+    <OrgTaskInfo Id="_b6f10aa3cb4f42a0bfc9ff3aadefd6c2" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressSchemaFile">
+        <Global>install-ExchangeSchema -LdapFileName ($roleInstallPath + "Setup\Data\"+$RoleSchemaPrefix + "schema63.ldf")</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+    <!-- Import schema file (65/100) -->
+    <OrgTaskInfo Id="_6eae9df87c9848fb8c04653ea7fc835a" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressSchemaFile">
+        <Global>install-ExchangeSchema -LdapFileName ($roleInstallPath + "Setup\Data\"+$RoleSchemaPrefix + "schema64.ldf")</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+    <!-- Import schema file (66/100) -->
+    <OrgTaskInfo Id="_5254516e03ed48e3b4af608dd7175110" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressSchemaFile">
+        <Global>install-ExchangeSchema -LdapFileName ($roleInstallPath + "Setup\Data\"+$RoleSchemaPrefix + "schema65.ldf")</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+    <!-- Import schema file (67/100) -->
+    <OrgTaskInfo Id="_e254260f9d7441238b3d425bb50566d7" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressSchemaFile">
+        <Global>install-ExchangeSchema -LdapFileName ($roleInstallPath + "Setup\Data\"+$RoleSchemaPrefix + "schema66.ldf")</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+    <!-- Import schema file (68/100) -->
+    <OrgTaskInfo Id="_0d2247dd3ef94a2292bb7b7c6462ddc5" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressSchemaFile">
+        <Global>install-ExchangeSchema -LdapFileName ($roleInstallPath + "Setup\Data\"+$RoleSchemaPrefix + "schema67.ldf")</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+    <!-- Import schema file (69/100) -->
+    <OrgTaskInfo Id="_206009e4cbee499c900caaa997137210" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressSchemaFile">
+        <Global>install-ExchangeSchema -LdapFileName ($roleInstallPath + "Setup\Data\"+$RoleSchemaPrefix + "schema68.ldf")</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+    <!-- Import schema file (70/100) -->
+    <OrgTaskInfo Id="_67e9accaa4db4db0913851b835c118e2" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressSchemaFile">
+        <Global>install-ExchangeSchema -LdapFileName ($roleInstallPath + "Setup\Data\"+$RoleSchemaPrefix + "schema69.ldf")</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+    <!-- Import schema file (71/100) -->
+    <OrgTaskInfo Id="_237c4a2e32da4f0cae0fa81c779f78b1" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressSchemaFile">
+        <Global>install-ExchangeSchema -LdapFileName ($roleInstallPath + "Setup\Data\"+$RoleSchemaPrefix + "schema70.ldf")</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+    <!-- Import schema file (72/100) -->
+    <OrgTaskInfo Id="_b5a2ad8d1fa046b2988d6c958aa713d1" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressSchemaFile">
+        <Global>install-ExchangeSchema -LdapFileName ($roleInstallPath + "Setup\Data\"+$RoleSchemaPrefix + "schema71.ldf")</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+    <!-- Import schema file (73/100) -->
+    <OrgTaskInfo Id="_eda70c87750c4cafacec6b93a4ae313b" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressSchemaFile">
+        <Global>install-ExchangeSchema -LdapFileName ($roleInstallPath + "Setup\Data\"+$RoleSchemaPrefix + "schema72.ldf")</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+    <!-- Import schema file (74/100) -->
+    <OrgTaskInfo Id="_4ce7f493078b4207b0ca8193c318e727" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressSchemaFile">
+        <Global>install-ExchangeSchema -LdapFileName ($roleInstallPath + "Setup\Data\"+$RoleSchemaPrefix + "schema73.ldf")</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+    <!-- Import schema file (75/100) -->
+    <OrgTaskInfo Id="_081bd07879ee46e68093bc5b337dcba5" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressSchemaFile">
+        <Global>install-ExchangeSchema -LdapFileName ($roleInstallPath + "Setup\Data\"+$RoleSchemaPrefix + "schema74.ldf")</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+    <!-- Import schema file (76/100) -->
+    <OrgTaskInfo Id="_36e5f8bfe25b44f1b07c24bbb4abb21a" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressSchemaFile">
+        <Global>install-ExchangeSchema -LdapFileName ($roleInstallPath + "Setup\Data\"+$RoleSchemaPrefix + "schema75.ldf")</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+    <!-- Import schema file (77/100) -->
+    <OrgTaskInfo Id="_e66863bbf3c844b7809a7438640a1824" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressSchemaFile">
+        <Global>install-ExchangeSchema -LdapFileName ($roleInstallPath + "Setup\Data\"+$RoleSchemaPrefix + "schema76.ldf")</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+    <!-- Import schema file (78/100) -->
+    <OrgTaskInfo Id="_c7d6b4948c2844febe27a292a43a5afa" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressSchemaFile">
+        <Global>install-ExchangeSchema -LdapFileName ($roleInstallPath + "Setup\Data\"+$RoleSchemaPrefix + "schema77.ldf")</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+    <!-- Import schema file (79/100) -->
+    <OrgTaskInfo Id="_ef04e9692aa647e6874ea949c90a68b4" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressSchemaFile">
+        <Global>install-ExchangeSchema -LdapFileName ($roleInstallPath + "Setup\Data\"+$RoleSchemaPrefix + "schema78.ldf")</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+    <!-- Import schema file (80/100) -->
+    <OrgTaskInfo Id="_570eb02f4deb48e692d26dad9b0dbce1" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressSchemaFile">
+        <Global>install-ExchangeSchema -LdapFileName ($roleInstallPath + "Setup\Data\"+$RoleSchemaPrefix + "schema79.ldf")</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+    <!-- Import schema file (81/100) -->
+    <OrgTaskInfo Id="_f5739a161f954a38b6c398d83738bb16" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressSchemaFile">
+        <Global>install-ExchangeSchema -LdapFileName ($roleInstallPath + "Setup\Data\"+$RoleSchemaPrefix + "schema80.ldf")</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+    <!-- Import schema file (82/100) -->
+    <OrgTaskInfo Id="_e716cc0383b64e6abba84560bf15304a" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressSchemaFile">
+        <Global>install-ExchangeSchema -LdapFileName ($roleInstallPath + "Setup\Data\"+$RoleSchemaPrefix + "schema81.ldf")</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+    <!-- Import schema file (83/100) -->
+    <OrgTaskInfo Id="_1a8d968a792b43eab6816498b30a9271" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressSchemaFile">
+        <Global>install-ExchangeSchema -LdapFileName ($roleInstallPath + "Setup\Data\"+$RoleSchemaPrefix + "schema82.ldf")</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+    <!-- Import schema file (84/100) -->
+    <OrgTaskInfo Id="_78ed17a75eec4ce3ad8d2f75d3a9cf6d" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressSchemaFile">
+        <Global>install-ExchangeSchema -LdapFileName ($roleInstallPath + "Setup\Data\"+$RoleSchemaPrefix + "schema83.ldf")</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+    <!-- Import schema file (85/100) -->
+    <OrgTaskInfo Id="_518a6e84c7554e4bb66f70677e4a616d" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressSchemaFile">
+        <Global>install-ExchangeSchema -LdapFileName ($roleInstallPath + "Setup\Data\"+$RoleSchemaPrefix + "schema84.ldf")</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+    <!-- Import schema file (86/100) -->
+    <OrgTaskInfo Id="_3e94bd532ac944e38e12a78c56d23834" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressSchemaFile">
+        <Global>install-ExchangeSchema -LdapFileName ($roleInstallPath + "Setup\Data\"+$RoleSchemaPrefix + "schema85.ldf")</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+    <!-- Import schema file (87/100) -->
+    <OrgTaskInfo Id="_a25f94c7d9144f92b4a7833264977d95" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressSchemaFile">
+        <Global>install-ExchangeSchema -LdapFileName ($roleInstallPath + "Setup\Data\"+$RoleSchemaPrefix + "schema86.ldf")</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+    <!-- Import schema file (88/100) -->
+    <OrgTaskInfo Id="_5d01bcf60e164d01ad512b564cfa2abf" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressSchemaFile">
+        <Global>install-ExchangeSchema -LdapFileName ($roleInstallPath + "Setup\Data\"+$RoleSchemaPrefix + "schema87.ldf")</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+    <!-- Import schema file (89/100) -->
+    <OrgTaskInfo Id="_726e13e92b6f4f13ad2047fd764b77bd" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressSchemaFile">
+        <Global>install-ExchangeSchema -LdapFileName ($roleInstallPath + "Setup\Data\"+$RoleSchemaPrefix + "schema88.ldf")</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+    <!-- Import schema file (90/100) -->
+    <OrgTaskInfo Id="_513701d2ac07427b8c1c93688c026d8e" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressSchemaFile">
+        <Global>install-ExchangeSchema -LdapFileName ($roleInstallPath + "Setup\Data\"+$RoleSchemaPrefix + "schema89.ldf")</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+    <!-- Import schema file (91/100) -->
+    <OrgTaskInfo Id="_da128aabcf02476f9abb921b6ebc97ad" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressSchemaFile">
+        <Global>install-ExchangeSchema -LdapFileName ($roleInstallPath + "Setup\Data\"+$RoleSchemaPrefix + "schema90.ldf")</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+    <!-- Import schema file (92/100) -->
+    <OrgTaskInfo Id="_550dc72a8b8c4b4383bfb071f19d0caf" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressSchemaFile">
+        <Global>install-ExchangeSchema -LdapFileName ($roleInstallPath + "Setup\Data\"+$RoleSchemaPrefix + "schema91.ldf")</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+    <!-- Import schema file (93/100) -->
+    <OrgTaskInfo Id="_8ab390bcd9f0411a9127f76b14e89f1c" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressSchemaFile">
+        <Global>install-ExchangeSchema -LdapFileName ($roleInstallPath + "Setup\Data\"+$RoleSchemaPrefix + "schema92.ldf")</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+    <!-- Import schema file (94/100) -->
+    <OrgTaskInfo Id="_3434e1100df947eea3a9e4f61a81b9df" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressSchemaFile">
+        <Global>install-ExchangeSchema -LdapFileName ($roleInstallPath + "Setup\Data\"+$RoleSchemaPrefix + "schema93.ldf")</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+    <!-- Import schema file (95/100) -->
+    <OrgTaskInfo Id="_42b50bc9110c4c8985799dd0c175516c" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressSchemaFile">
+        <Global>install-ExchangeSchema -LdapFileName ($roleInstallPath + "Setup\Data\"+$RoleSchemaPrefix + "schema94.ldf")</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+    <!-- Import schema file (96/100) -->
+    <OrgTaskInfo Id="_81e4396518c44381819257a8118689c6" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressSchemaFile">
+        <Global>install-ExchangeSchema -LdapFileName ($roleInstallPath + "Setup\Data\"+$RoleSchemaPrefix + "schema95.ldf")</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+    <!-- Import schema file (97/100) -->
+    <OrgTaskInfo Id="_6f90ab5e601e4fbd94ae836fdbd43398" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressSchemaFile">
+        <Global>install-ExchangeSchema -LdapFileName ($roleInstallPath + "Setup\Data\"+$RoleSchemaPrefix + "schema96.ldf")</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+    <!-- Import schema file (98/100) -->
+    <OrgTaskInfo Id="_80dc5aa0abe34dc6b6bae64b42dd7ffb" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressSchemaFile">
+        <Global>install-ExchangeSchema -LdapFileName ($roleInstallPath + "Setup\Data\"+$RoleSchemaPrefix + "schema97.ldf")</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+    <!-- Import schema file (99/100) -->
+    <OrgTaskInfo Id="_e259fb247eca4de7aabbe78aa7af0aa5" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressSchemaFile">
+        <Global>install-ExchangeSchema -LdapFileName ($roleInstallPath + "Setup\Data\"+$RoleSchemaPrefix + "schema98.ldf")</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+
+    <!-- Import schema file (100/100) -->
+    <OrgTaskInfo Id="_6066569179aa4a709f7fd906dbe6ce52" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressSchemaFile">
+        <Global>install-ExchangeSchema -LdapFileName ($roleInstallPath + "Setup\Data\"+$RoleSchemaPrefix + "schema99.ldf")</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+
+    <!-- Holds current schemaversion as rangeUpper attribute on ms-Exch-Schema-Version-Pt -->
+    
+    <!-- This file is always installed last when schema is upgraded. Component teams can  -->
+    <!-- insert pre-checkin schema changes at top of file to do smoke and private testing. -->
+    <!-- Also used for one-off changes that the schema tool can't support. -->
+
+    <OrgTaskInfo Id="_1bc0dd47543b4b9fa397652ce2671d0d" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressSchemaFile">
+        <Global>install-ExchangeSchema -LdapFileName ($roleInstallPath + "Setup\Data\" + "SchemaVersion.ldf")</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+
+
+  </OrgTasks>
+</SetupComponentInfo>

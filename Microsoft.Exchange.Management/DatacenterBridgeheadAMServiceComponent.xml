@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo IsDatacenterOnly="true" IsDatacenterDedicatedOnly="true" Name="Datacenter Bridgehead AMService component">
+
+  <ServerTasks>
+
+    <!-- Install/uninstall Antimalware V2 service -->
+    <ServerTaskInfo Id="_6219e61e77ba4da8a029db766ec55515" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          if (!(get-service MSExchangeAntimalwareSvc* | where {$_.name -eq "MSExchangeAntimalwareSvc"}))
+          {
+              install-AntimalwareService
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>uninstall-AntimalwareService</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <ServerTaskInfo Id="_17166C1832C94866A01F4EC978495D2B" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          # Set the dynamic components of service configuration
+          $FipsEnginesPath = [System.IO.Path]::Combine($RoleInstallPath, "FIP-FS\Data\Engines\amd64");
+          $FullConfigPath = [System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.AntiMalware.Service.exe.config");
+          Set-AppConfigValue -ConfigFileFullPath:"$FullConfigPath" -Element "configuration/EngineUpdateConfigSection" -Attribute "EnginesPath" -NewValue $FipsEnginesPath;
+
+          # Set the dynamic components of malware scanner configuration
+          $MemoryTracingConfigPath = [System.IO.Path]::Combine($RoleBinPath, "AM_MS_EnabledInMemoryTraces.config");
+          $FullConfigPath = [System.IO.Path]::Combine($RoleBinPath, "Microsoft.Exchange.AntiMalware.MalwareScanner.exe.config");
+          Set-AppConfigValue -ConfigFileFullPath:"$FullConfigPath" -Element "configuration/appSettings" -AppSettingKey "ExInMemoryTraceConfiguration" -NewValue $MemoryTracingConfigPath;
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+    
+    <!-- install perf counters -->
+    <ServerTaskInfo Id="_44682C48-B0CD-413F-ACEB-24C63983A2A9" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="true">
+        <Standalone>
+          new-perfcounters -DefinitionFileName AntiMalwareSvcEnginePerfCounters.xml
+          new-perfcounters -DefinitionFileName AntiMalwareSvcPerfCounters.xml
+          new-perfcounters -DefinitionFileName MalwareScannerPerfCounters.xml
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>
+          remove-PerfCounters -DefinitionFileName AntiMalwareSvcEnginePerfCounters.xml
+          remove-PerfCounters -DefinitionFileName AntiMalwareSvcPerfCounters.xml
+          remove-PerfCounters -DefinitionFileName MalwareScannerPerfCounters.xml
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+  </ServerTasks>
+
+</SetupComponentInfo>
+

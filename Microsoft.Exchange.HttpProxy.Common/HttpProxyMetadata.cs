@@ -1,0 +1,52 @@
+﻿using System;
+
+namespace Microsoft.Exchange.HttpProxy
+{
+	internal enum HttpProxyMetadata
+	{
+		AnchorMailbox,
+		RoutingType,
+		RoutingHint,
+		BackEndCookie,
+		HandlerToModuleSwitchingLatency,
+		Protocol,
+		ProxyAction,
+		CalculateTargetBackendLatency,
+		ModuleToHandlerSwitchingLatency,
+		KerberosAuthHeaderLatency,
+		HandlerCompletionLatency,
+		RequestHandlerLatency,
+		TargetServer,
+		TargetServerVersion,
+		TotalProxyingLatency,
+		TotalRequestTime,
+		TargetOutstandingRequests,
+		AuthModulePerfContext,
+		ServerLocatorLatency,
+		ServerLocatorHost,
+		ProtocolAction,
+		UrlHost,
+		UrlStem,
+		UrlQuery,
+		BackEndStatus,
+		GlsLatencyBreakup,
+		TotalGlsLatency,
+		AccountForestLatencyBreakup,
+		TotalAccountForestLatency,
+		ResourceForestLatencyBreakup,
+		TotalResourceForestLatency,
+		SharedCacheLatencyBreakup,
+		TotalSharedCacheLatency,
+		ClientRequestStreamingLatency,
+		BackendRequestInitLatency,
+		BackendRequestStreamingLatency,
+		BackendProcessingLatency,
+		BackendResponseInitLatency,
+		BackendResponseStreamingLatency,
+		ClientResponseStreamingLatency,
+		CoreLatency,
+		RoutingLatency,
+		HttpProxyOverhead,
+		RouteRefresherLatency
+	}
+}

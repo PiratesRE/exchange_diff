@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo Name="InfoWorker Configuration" DescriptionId="SetupComponentConfiguringInfoWorker">
+
+  <ServerTasks>
+
+    <!-- remove the old assistants service (i.e. MSExchangeMA) -->
+    <ServerTaskInfo Id="_4520a28998504d8ea40a8a3fd5e63cac" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install />
+	  <BuildToBuildUpgrade>
+        <Standalone>uninstall-OldAssistantsService</Standalone>
+      </BuildToBuildUpgrade>
+      <DisasterRecovery />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Set install path in app config "bin/MSExchangeMailboxAssistants.exe.config" -->
+    <!-- Remove old app config file if it exists -->
+    <!-- Preserve some application settings and set them to the new .config file -->
+    <!-- E14 82092: In the appconfig file for Assistants service, set Code Access Security (CAS) policy to skip publisher (certificate) validation.-->
+    <ServerTaskInfo Id="_56f474e2164f4fc2ab414508d2512c65" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          $file = 'MSExchangeMailboxAssistants.exe.config';
+          $template = $file + '.template';
+          $relPath = 'bin';
+          $fullPath = [System.IO.Path]::Combine($RoleInstallPath, $relPath);
+          $fullFilePath = [System.IO.Path]::Combine($fullPath, $file);
+          
+          Set-InstallPathInAppConfig -ConfigFileRelativePath $relPath -ConfigFileName $template;
+          Preserve-AppSettings -RoleInstallPath $fullPath -ConfigFileName $file;
+          set-appconfigvalue -ConfigFileFullPath:$fullFilePath -Element:configuration/runtime/generatePublisherEvidence -Attribute:enabled -NewValue:false
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Precompile mailbox assistants service binaries -->
+    <!-- We do a synchronous ngen call here to ngen the binaries -->
+    <!-- This call is to ensure that ngening of the necessary binaries have already completed -->
+    <!-- When a new file is added to precompile-ManagedBinary list, make sure to add it to customactions.wxi to sync install and uninstall the binary -->
+    <ServerTaskInfo Id="_305b032ed8374e27b386361502a9d172" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install Weight="5" DescriptionId="SetupProgressPrecompilingBinaries" IsFatal="false">
+        <Standalone>
+          $fullPath = [System.IO.Path]::Combine($RoleInstallPath, "bin\msexchangemailboxassistants.exe");
+          precompile-ManagedBinary -BinaryName  $fullPath;
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall Weight="5" DescriptionId="SetupProgressPrecompilingBinaries" IsFatal="false">
+        <Standalone>
+          $fullPath = [System.IO.Path]::Combine($RoleInstallPath, "bin\msexchangemailboxassistants.exe");
+          precompile-ManagedBinary -BinaryName  $fullPath -Action uninstall;
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/remove Assistants service -->
+    <ServerTaskInfo Id="_9691668c0d7446d8b94a3e61778e2a06" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+	  <Install>
+        <Standalone>
+        if (!(get-service MSExchangeMailboxAssistants* | where {$_.name -eq "MSExchangeMailboxAssistants"}))
+        {
+            install-AssistantsService
+        }
+        else
+        {
+            update-ServiceExecutable -ServiceName:MSExchangeMailboxAssistants -executable:MSExchangeMailboxAssistants.exe
+        }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+	  <Uninstall>
+        <Standalone>uninstall-AssistantsService</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+  </ServerTasks>
+</SetupComponentInfo>
+

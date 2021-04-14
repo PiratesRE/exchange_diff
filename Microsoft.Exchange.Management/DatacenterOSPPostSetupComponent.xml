@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo IsDatacenterOnly="true" IsDatacenterDedicatedOnly="true" Name="Datacenter OSP PostSetup">
+
+  <ServerTasks>
+
+    <ServerTaskInfo Id="_4edbef67ec2f4465ae044f89e8e4bd3d" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+	 <Standalone>          
+              Write-ExchangeSetupLog -Info "Creating OSTune TCPIP settings";
+              Set-ItemProperty "Registry::HKLM\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters" -Name MaxUserPort -Value 60000 -Type DWORD -Force            
+              Set-ItemProperty "Registry::HKLM\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters" -Name TcpTimedWaitDelay -Value 60 -Type DWORD -Force
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade/>
+      <DisasterRecovery />
+      <Uninstall />
+    </ServerTaskInfo>
+
+  </ServerTasks>
+
+</SetupComponentInfo>
+

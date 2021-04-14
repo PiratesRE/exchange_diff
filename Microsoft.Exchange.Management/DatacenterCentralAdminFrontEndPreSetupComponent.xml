@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo IsDatacenterOnly="true" Name="Exchange Central Admin FrontEnd Pre Setup Component">
+    <ServerTasks>
+
+    <ServerTaskInfo Id="InstallWindowsComponents" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          if($RoleInstallWindowsComponents)
+          {
+            # Install any Windows Roles or Features required for the Client Access role
+            &amp; $RoleBinPath\InstallWindowsComponent.ps1 -ShortNameForRole "Internal-CAS" -ADToolsNeeded $RoleADToolsNeeded
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall/>
+    </ServerTaskInfo>
+
+    <ServerTaskInfo Id="StartIISAdmin" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          if (Get-Service IISAdmin* | ?{$_.Name -eq 'IISAdmin'})
+          {
+            Set-Service IISAdmin -StartupType Automatic
+            Start-SetupService -ServiceName IISAdmin
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall/>
+    </ServerTaskInfo>
+
+    <ServerTaskInfo Id="StartEventSystem" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          if (Get-Service EventSystem* | ?{$_.Name -eq 'EventSystem'})
+          {
+            Set-Service EventSystem -StartupType Automatic
+            Start-SetupService -ServiceName EventSystem
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>
+          if (Get-Service EventSystem* | ?{$_.Name -eq 'EventSystem'})
+          {
+            Set-Service EventSystem -StartupType Automatic
+            Start-SetupService -ServiceName EventSystem
+          }
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+  </ServerTasks>
+</SetupComponentInfo>
+

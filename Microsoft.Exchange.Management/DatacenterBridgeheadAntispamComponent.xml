@@ -1,0 +1,351 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo IsDatacenterOnly="true" IsDatacenterDedicatedOnly="false" Name="AntiSpam Spam Filter Configuration">
+
+  <ServerTasks>
+
+    <!-- Install/uninstall "Spam Analysis Agent" preserve state on upgrade -->
+    <!-- - step 1: clean up previous agent -->
+    <!-- - step 2: install agent -->
+    <ServerTaskInfo Id="_304A54A3C88D4F9BA304DEEFF8706EE9" Component="Office15:\Current\Forefront for Office Datacenter\Deployment and Configuration Management\Deployment">
+      <Install DescriptionId="SetupProgressInstallingDefaultSpamAnalysisAgent">
+        <Standalone>
+          $agentName = "Spam Analysis Agent";
+          $agentFactory = "Microsoft.Forefront.AntiSpam.SpamAnalysis.SmtpReceiveAgent.SpamAnalysisAgentFactory";
+          $agentAssembly = ($RoleInstallPath + "TransportRoles\agents\Hygiene\Microsoft.Forefront.AntiSpam.SpamAnalysis.SmtpReceiveAgent.dll");
+          $agent = get-transportagent -Identity:$agentName;
+          if ($agent) {
+            uninstall-transportagent -Identity:$agentName;
+          };
+          install-TransportAgent -Name:$agentName -TransportAgentFactory:$agentFactory -AssemblyPath:$agentAssembly;
+          if ($agent.enabled -or !$agent) { enable-transportagent -Identity:$agentName };
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall DescriptionId="SetupProgressRemovingDefaultSpamAnalysisAgent">
+        <Standalone>
+          $agentName = "Spam Analysis Agent";
+          $agent = get-transportagent -Identity:$agentName;
+          if ($agent) {
+             uninstall-transportagent -Identity:$agentName;
+          };
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+  
+    <!-- Install/uninstall "Protocol Filter Agent" preserve state on upgrade -->
+    <!-- - step 1: clean up previous agent -->
+    <!-- - step 2: install agent -->
+    <ServerTaskInfo Id="_9DB78879E0D043C09D2007E3014AC219" Component="Office15:\Current\Forefront for Office Datacenter\Deployment and Configuration Management\Deployment">
+      <Install DescriptionId="SetupProgressInstallingDefaultProtocolFilterAgent">
+        <Standalone>
+          $agentName = "Protocol Filter Agent";
+          $agentFactory = "Microsoft.Exchange.Hygiene.ProtocolFilterAgent.ProtocolFilterAgentFactory";
+          $agentAssembly = ($RoleInstallPath + "TransportRoles\agents\Hygiene\Microsoft.Exchange.Hygiene.ProtocolFilterAgent.dll");
+          $agent = get-transportagent -Identity:$agentName;
+          if ($agent) {
+            uninstall-transportagent -Identity:$agentName;
+          };
+          install-TransportAgent -Name:$agentName -TransportAgentFactory:$agentFactory -AssemblyPath:$agentAssembly;
+          if ($agent.enabled -or !$agent) { enable-transportagent -Identity:$agentName };
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall DescriptionId="SetupProgressRemovingDefaultProtocolFilterAgent">
+        <Standalone>
+          $agentName = "Protocol Filter Agent";
+          $agent = get-transportagent -Identity:$agentName;
+          if ($agent) {
+             uninstall-transportagent -Identity:$agentName;
+          };
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Uninstall Content Filter agent if it is present -->
+    <ServerTaskInfo Id="_F81D44CDA05441359767E3012FBC9970" Component="Office15:\Current\Forefront for Office Datacenter\Deployment and Configuration Management\Deployment">
+      <Install>
+        <Standalone>
+          $agentName = "Content Filter Agent";
+          $agent = Get-TransportAgent -Identity:$agentName;
+          if ($agent) {
+             Uninstall-TransportAgent -Identity:$agentName;
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Install/uninstall "Hosted Content Filter Agent" preserve state on upgrade -->
+    <!-- - step 1: clean up previous agent -->
+    <!-- - step 2: install agent -->
+    <ServerTaskInfo Id="_4B797A1885EE430D82D626E393F4919C" Component="Office15:\Current\Forefront for Office Datacenter\Deployment and Configuration Management\Deployment">
+      <Install DescriptionId="SetupProgressInstallingDefaultContentFilterAgent">
+        <Standalone>
+          $agentName = "DC Content Filter Agent";
+          $agentFactory = "Microsoft.Exchange.Hygiene.ContentFilterAgent.ContentFilterAgentFactory";
+          $agentAssembly = ($RoleInstallPath + "TransportRoles\agents\Hygiene\Microsoft.Exchange.Hygiene.ContentFilterAgent.dll");
+          $agent = get-transportagent -Identity:$agentName;
+          if ($agent) {
+            uninstall-transportagent -Identity:$agentName;
+          };
+          install-TransportAgent -Name:$agentName -TransportAgentFactory:$agentFactory -AssemblyPath:$agentAssembly;
+
+          if ($agent.enabled -or !$agent) { enable-transportagent -Identity:$agentName };
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall DescriptionId="SetupProgressRemovingDefaultContentFilterAgent">
+        <Standalone>
+          $agentName = "DC Content Filter Agent";
+          $agent = get-transportagent -Identity:$agentName;
+          if ($agent) {
+             uninstall-transportagent -Identity:$agentName;
+          };
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/uninstall "Spam Filter Agent" preserve state on upgrade -->
+    <!-- - step 1: clean up previous agent -->
+    <!-- - step 2: install agent -->
+    <ServerTaskInfo Id="_60c239dc56d448af84546235fa14b2f1" Component="Office15:\Current\Forefront for Office Datacenter\Deployment and Configuration Management\Deployment">
+      <Install DescriptionId="SetupProgressInstallingDefaultSpamFilterAgent">
+        <Standalone>
+          $agentName = "Spam Filter Agent";
+          $agentFactory = "Microsoft.Forefront.AntiSpam.SpamFilter.SpamFilterAgentFactory";
+          $agentAssembly = ($RoleInstallPath + "TransportRoles\agents\Hygiene\Microsoft.Forefront.AntiSpam.SpamFilter.dll");
+          $agent = get-transportagent -Identity:$agentName;
+          if ($agent) {
+            uninstall-transportagent -Identity:$agentName;
+          };
+          install-TransportAgent -Name:$agentName -TransportAgentFactory:$agentFactory -AssemblyPath:$agentAssembly;
+          if ($agent.enabled -or !$agent) { enable-transportagent -Identity:$agentName };
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall DescriptionId="SetupProgressRemovingDefaultSpamFilterAgent">
+        <Standalone>
+          $agentName = "Spam Filter Agent";
+          $agent = get-transportagent -Identity:$agentName;
+          if ($agent) {
+             uninstall-transportagent -Identity:$agentName;
+          };
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo> 
+
+    <!-- Install/uninstall Spam Filter perf counters -->
+    <!-- This requires local administrator permission -->
+    <ServerTaskInfo Id="_D7DCA52EA00E4D849D60DE0ED49F8424" Component="Office15:\Current\Forefront for Office Datacenter\Deployment and Configuration Management\Deployment">
+      <Install IsFatal="false">
+        <Standalone>new-perfcounters -DefinitionFileName SpamFilterAgentPerfCounters.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-perfcounters -DefinitionFileName SpamFilterAgentPerfCounters.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/uninstall Sender Authentication perf counters -->
+    <!-- This requires local administrator permission -->
+    <ServerTaskInfo Id="_51C6A1FD7E26468EB68176EE0AD60C75" Component="Office15:\Current\Forefront for Office Datacenter\Deployment and Configuration Management\Deployment">
+      <Install IsFatal="false">
+        <Standalone>new-perfcounters -DefinitionFileName SenderAuthenticationPerfCounters.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-perfcounters -DefinitionFileName SenderAuthenticationPerfCounters.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+    
+    <!-- Install/uninstall Backscatter protection perf counters -->
+    <!-- This requires local administrator permission -->
+    <ServerTaskInfo Id="_CD97BCFF16F149E2A4C65EADDF07B2B8" Component="Office15:\Current\Forefront for Office Datacenter\Deployment and Configuration Management\Deployment">
+      <Install IsFatal="false">
+        <Standalone>new-perfcounters -DefinitionFileName BackscatterProtectionPerfCounters.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-perfcounters -DefinitionFileName BackscatterProtectionPerfCounters.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/uninstall UriScan perf counters -->
+    <!-- This requires local administrator permission -->
+    <ServerTaskInfo Id="_07913D38851946E6BD56472900DC40B5" Component="Office15:\Current\Forefront for Office Datacenter\Deployment and Configuration Management\Deployment">
+      <Install IsFatal="false">
+        <Standalone>new-perfcounters -DefinitionFileName UriScanPerfCounters.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-perfcounters -DefinitionFileName UriScanPerfCounters.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/uninstall SpamClassifier perf counters -->
+    <!-- This requires local administrator permission -->
+    <ServerTaskInfo Id="_037AFD7CD3B9496C91B98E55E47C1D4A" Component="Office15:\Current\Forefront for Office Datacenter\Deployment and Configuration Management\Deployment">
+      <Install IsFatal="false">
+        <Standalone>new-perfcounters -DefinitionFileName SpamClassifierPerfCounters.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-perfcounters -DefinitionFileName SpamClassifierPerfCounters.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/uninstall IPList perf counters -->
+    <!-- This requires local administrator permission -->
+    <ServerTaskInfo Id="_A74A119DEC2443D9B87679021E1F5F89" Component="Office15:\Current\Forefront for Office Datacenter\Deployment and Configuration Management\Deployment">
+      <Install IsFatal="false">
+        <Standalone>new-perfcounters -DefinitionFileName IPListPerfCounters.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-perfcounters -DefinitionFileName IPListPerfCounters.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/uninstall DnsChecks perf counters -->
+    <!-- This requires local administrator permission -->
+    <ServerTaskInfo Id="_30FA4532AAD542C68C02976A8DE98686" Component="Office15:\Current\Forefront for Office Datacenter\Deployment and Configuration Management\Deployment">
+      <Install IsFatal="false">
+        <Standalone>new-perfcounters -DefinitionFileName DnsChecksPerfCounters.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-perfcounters -DefinitionFileName DnsChecksPerfCounters.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>  
+
+    <!-- Install/uninstall DnsTasks perf counters -->
+    <!-- This requires local administrator permission -->
+    <ServerTaskInfo Id="_6B98631081DB46C9822D5236BB21A70A" Component="Office15:\Current\Forefront for Office Datacenter\Deployment and Configuration Management\Deployment">
+      <Install IsFatal="false">
+        <Standalone>new-perfcounters -DefinitionFileName DnsTasksPerfCounters.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-perfcounters -DefinitionFileName DnsTasksPerfCounters.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/uninstall Spam Analysis perf counters -->
+    <!-- This requires local administrator permission -->
+    <ServerTaskInfo Id="_F0ED8FB4A25440A3AD7F3555503D642B" Component="Office15:\Current\Forefront for Office Datacenter\Deployment and Configuration Management\Deployment">
+      <Install IsFatal="false">
+        <Standalone>new-perfcounters -DefinitionFileName SpamAnalysisAgentPerfCounters.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-perfcounters -DefinitionFileName SpamAnalysisAgentPerfCounters.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/uninstall Dkim perf counters -->
+    <!-- This requires local administrator permission -->
+    <ServerTaskInfo Id="_475BE67C1D4047EBBBA988BECD474E87" Component="Office15:\Current\Forefront for Office Datacenter\Deployment and Configuration Management\Deployment">
+      <Install IsFatal="false">
+        <Standalone>new-perfcounters -DefinitionFileName DkimPerfCounters.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-perfcounters -DefinitionFileName DkimPerfCounters.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/uninstall OnPremDNSBL perf counters -->
+    <!-- This requires local administrator permission -->
+    <ServerTaskInfo Id="_3B1AE86C54CC42498733E9633478B183" Component="Office15:\Current\Forefront for Office Datacenter\Deployment and Configuration Management\Deployment">
+      <Install IsFatal="false">
+        <Standalone>new-perfcounters -DefinitionFileName OnPremDNSBLPerfCounters.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-perfcounters -DefinitionFileName OnPremDNSBLPerfCounters.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/uninstall Dmarc perf counters -->
+    <!-- This requires local administrator permission -->
+    <ServerTaskInfo Id="_758D2971832A43148FAFEB88E43206F3" Component="Office15:\Current\Forefront for Office Datacenter\Deployment and Configuration Management\Deployment">
+      <Install IsFatal="false">
+        <Standalone>new-perfcounters -DefinitionFileName DmarcPerfCounters.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-perfcounters -DefinitionFileName DmarcPerfCounters.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/uninstall Protocol Filter Agent perf counters -->
+    <!-- This requires local administrator permission -->
+    <ServerTaskInfo Id="_AFD7FC7A76E24B3DAA1F640C930DC8BA" Component="Office15:\Current\Forefront for Office Datacenter\Deployment and Configuration Management\Deployment">
+      <Install IsFatal="false">
+        <Standalone>new-perfcounters -DefinitionFileName ProtocolFilterAgentPerfCounters.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-perfcounters -DefinitionFileName ProtocolFilterAgentPerfCounters.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/uninstall Content Filter Agent perf counters -->
+    <!-- This requires local administrator permission -->
+    <ServerTaskInfo Id="_D86F730AB01A42118B2D4E842B7F6C39" Component="Office15:\Current\Forefront for Office Datacenter\Deployment and Configuration Management\Deployment">
+      <Install IsFatal="false">
+        <Standalone>new-perfcounters -DefinitionFileName ContentFilterAgentPerfCounters.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-perfcounters -DefinitionFileName ContentFilterAgentPerfCounters.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/uninstall AgentFramework Update Event perf counters -->
+    <!-- This requires local administrator permission -->
+    <ServerTaskInfo Id="_0EABBC8FA8D749A4BE2C3400EDB063B2" Component="Office15:\Current\Forefront for Office Datacenter\Deployment and Configuration Management\Deployment">
+      <Install IsFatal="false">
+        <Standalone>new-perfcounters -DefinitionFileName AgentUpdateEventPerfCounters.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-perfcounters -DefinitionFileName AgentUpdateEventPerfCounters.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/uninstall AgentFramework Scan Agent Event perf counters -->
+    <!-- This requires local administrator permission -->
+    <ServerTaskInfo Id="_590D5D84D6E24934A6CD7FEF1F2BA620" Component="Office15:\Current\Forefront for Office Datacenter\Deployment and Configuration Management\Deployment">
+      <Install IsFatal="false">
+        <Standalone>new-perfcounters -DefinitionFileName ScanAgentEventPerfCounters.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-perfcounters -DefinitionFileName ScanAgentEventPerfCounters.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>  
+  </ServerTasks>
+</SetupComponentInfo>

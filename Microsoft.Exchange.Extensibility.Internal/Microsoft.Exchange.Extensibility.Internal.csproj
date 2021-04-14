@@ -1,0 +1,225 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{09CD9476-CD82-489E-B9E2-84B47CA14126}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Microsoft.Exchange</RootNamespace>
+    <AssemblyName>Microsoft.Exchange.Extensibility.Internal</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CtsResources\InternalStrings.cs" />
+    <Compile Include="CtsResources\MExRuntimeStrings.cs" />
+    <Compile Include="CtsResources\MsgStorageStrings.cs" />
+    <Compile Include="Data\Internal\Asn1Reader.cs" />
+    <Compile Include="Data\Internal\BitString.cs" />
+    <Compile Include="Data\Internal\BufferParser.cs" />
+    <Compile Include="Data\Internal\EncodingType.cs" />
+    <Compile Include="Data\Internal\OID.cs" />
+    <Compile Include="Data\Internal\Streams.cs" />
+    <Compile Include="Data\Internal\TagClass.cs" />
+    <Compile Include="Data\Mime\Internal\CreateFixedStream.cs" />
+    <Compile Include="Data\Mime\Internal\EightToSevenBitConverter.cs" />
+    <Compile Include="Data\Mime\Internal\EmailMessageHelpers.cs" />
+    <Compile Include="Data\Mime\Internal\HeaderParseOption.cs" />
+    <Compile Include="Data\Mime\Internal\IMimeHandler.cs" />
+    <Compile Include="Data\Mime\Internal\MimeAppleTranscoder.cs" />
+    <Compile Include="Data\Mime\Internal\MimeCacheMap.cs" />
+    <Compile Include="Data\Mime\Internal\MimeConstant.cs" />
+    <Compile Include="Data\Mime\Internal\MimeInternalHelpers.cs" />
+    <Compile Include="Data\Mime\Internal\MimePushParser.cs" />
+    <Compile Include="Data\Mime\Internal\PartContentParseOption.cs" />
+    <Compile Include="Data\Mime\Internal\PartParseOption.cs" />
+    <Compile Include="Data\Mime\Internal\ReOpenFixedStream.cs" />
+    <Compile Include="Data\Mime\Internal\Serialized.cs" />
+    <Compile Include="Data\MsgStorage\Internal\ComStorage.cs" />
+    <Compile Include="Data\MsgStorage\Internal\ComStream.cs" />
+    <Compile Include="Data\MsgStorage\Internal\Interop.cs" />
+    <Compile Include="Data\MsgStorage\Internal\LockBytesOnStream.cs" />
+    <Compile Include="Data\MsgStorage\Internal\MsgStorageErrorCode.cs" />
+    <Compile Include="Data\MsgStorage\Internal\MsgStorageException.cs" />
+    <Compile Include="Data\MsgStorage\Internal\MsgStorageNotFoundException.cs" />
+    <Compile Include="Data\MsgStorage\Internal\MsgStoragePropertyData.cs" />
+    <Compile Include="Data\MsgStorage\Internal\MsgStoragePropertyPrefix.cs" />
+    <Compile Include="Data\MsgStorage\Internal\MsgStoragePropertyReader.cs" />
+    <Compile Include="Data\MsgStorage\Internal\MsgStoragePropertyTypeRule.cs" />
+    <Compile Include="Data\MsgStorage\Internal\MsgStorageReader.cs" />
+    <Compile Include="Data\MsgStorage\Internal\MsgStorageRulesTable.cs" />
+    <Compile Include="Data\MsgStorage\Internal\MsgStorageWriter.cs" />
+    <Compile Include="Data\MsgStorage\Internal\MsgStorageWriteStream.cs" />
+    <Compile Include="Data\MsgStorage\Internal\MsgSubStorageReader.cs" />
+    <Compile Include="Data\MsgStorage\Internal\MsgSubStorageType.cs" />
+    <Compile Include="Data\MsgStorage\Internal\MsgSubStorageWriter.cs" />
+    <Compile Include="Data\MsgStorage\Internal\NamedPropertyList.cs" />
+    <Compile Include="Data\MsgStorage\Internal\TnefNameIdWrapper.cs" />
+    <Compile Include="Data\MsgStorage\Internal\Util.cs" />
+    <Compile Include="Data\TextConverters\BodyDiffer.cs" />
+    <Compile Include="Data\TextConverters\BodyFragmentInfo.cs" />
+    <Compile Include="Data\TextConverters\BodyTagInfo.cs" />
+    <Compile Include="Data\TextConverters\ConversationBodyScanner.cs" />
+    <Compile Include="Data\TextConverters\FragmentInfo.cs" />
+    <Compile Include="Data\TextConverters\HtmlConversationBodyScanner.cs" />
+    <Compile Include="Data\TextConverters\HtmlToHtmlSafe.cs" />
+    <Compile Include="Data\TextConverters\Internal\ImageRenderingCallback.cs" />
+    <Compile Include="Data\TextConverters\Internal\TextConvertersInternalHelpers.cs" />
+    <Compile Include="Data\TextConverters\RtfConversationBodyScanner.cs" />
+    <Compile Include="Data\TextConverters\TextConversationBodyScanner.cs" />
+    <Compile Include="Data\Transport\Internal\MExRuntime\AgentInfo.cs" />
+    <Compile Include="Data\Transport\Internal\MExRuntime\AgentInvokeEndHandler.cs" />
+    <Compile Include="Data\Transport\Internal\MExRuntime\AgentInvokeResumedHandler.cs" />
+    <Compile Include="Data\Transport\Internal\MExRuntime\AgentInvokeReturnsHandler.cs" />
+    <Compile Include="Data\Transport\Internal\MExRuntime\AgentInvokeScheduledHandler.cs" />
+    <Compile Include="Data\Transport\Internal\MExRuntime\AgentInvokeStartHandler.cs" />
+    <Compile Include="Data\Transport\Internal\MExRuntime\AgentRecord.cs" />
+    <Compile Include="Data\Transport\Internal\MExRuntime\AgentSubscription.cs" />
+    <Compile Include="Data\Transport\Internal\MExRuntime\Constants.cs" />
+    <Compile Include="Data\Transport\Internal\MExRuntime\Dispatcher.cs" />
+    <Compile Include="Data\Transport\Internal\MExRuntime\ExecutionMonitor.cs" />
+    <Compile Include="Data\Transport\Internal\MExRuntime\FactoryInitializer.cs" />
+    <Compile Include="Data\Transport\Internal\MExRuntime\FactoryTable.cs" />
+    <Compile Include="Data\Transport\Internal\MExRuntime\IDispatcher.cs" />
+    <Compile Include="Data\Transport\Internal\MExRuntime\IMExRuntime.cs" />
+    <Compile Include="Data\Transport\Internal\MExRuntime\IMExSession.cs" />
+    <Compile Include="Data\Transport\Internal\MExRuntime\IRuntimeSettings.cs" />
+    <Compile Include="Data\Transport\Internal\MExRuntime\MapFileStream.cs" />
+    <Compile Include="Data\Transport\Internal\MExRuntime\MemoryMappedFile.cs" />
+    <Compile Include="Data\Transport\Internal\MExRuntime\MExAsyncResult.cs" />
+    <Compile Include="Data\Transport\Internal\MExRuntime\MExConfiguration.cs" />
+    <Compile Include="Data\Transport\Internal\MExRuntime\MExCounters.cs" />
+    <Compile Include="Data\Transport\Internal\MExRuntime\MExCountersInstance.cs" />
+    <Compile Include="Data\Transport\Internal\MExRuntime\MExDiagnostics.cs" />
+    <Compile Include="Data\Transport\Internal\MExRuntime\MExPerfCounters.cs" />
+    <Compile Include="Data\Transport\Internal\MExRuntime\MExRuntime.cs" />
+    <Compile Include="Data\Transport\Internal\MExRuntime\MExSession.cs" />
+    <Compile Include="Data\Transport\Internal\MExRuntime\MonitoringOptions.cs" />
+    <Compile Include="Data\Transport\Internal\MExRuntime\RuntimeSettings.cs" />
+    <Compile Include="Extensibility\EventLog\EdgeExtensibilityEventLogConstants.cs" />
+    <Compile Include="Extensibility\Internal\ApprovalInformation.cs" />
+    <Compile Include="Extensibility\Internal\CreateAndSubmitApprovalInitiationForTransportRulesDelegate.cs" />
+    <Compile Include="Extensibility\Internal\DsnDefaultMessages.cs" />
+    <Compile Include="Extensibility\Internal\DsnFlags.cs" />
+    <Compile Include="Extensibility\Internal\DsnHumanReadableWriter.cs" />
+    <Compile Include="Extensibility\Internal\DsnParameters.cs" />
+    <Compile Include="Extensibility\Internal\DsnParamItem.cs" />
+    <Compile Include="Extensibility\Internal\DsnParamText.cs" />
+    <Compile Include="Extensibility\Internal\DsnRecipientInfo.cs" />
+    <Compile Include="Extensibility\Internal\DsnShortMessages.cs" />
+    <Compile Include="Extensibility\Internal\DsnVariantConfiguration.cs" />
+    <Compile Include="Extensibility\Internal\EnsureSecurityAttributesDelegate.cs" />
+    <Compile Include="Extensibility\Internal\HistoryType.cs" />
+    <Compile Include="Extensibility\Internal\ICategorizerComponentFacade.cs" />
+    <Compile Include="Extensibility\Internal\IHistoryFacade.cs" />
+    <Compile Include="Extensibility\Internal\IHistoryRecordFacade.cs" />
+    <Compile Include="Extensibility\Internal\IMailRecipientCollectionFacade.cs" />
+    <Compile Include="Extensibility\Internal\IMailRecipientFacade.cs" />
+    <Compile Include="Extensibility\Internal\IMailRecipientWrapperFacade.cs" />
+    <Compile Include="Extensibility\Internal\IShadowRedundancyComponent.cs" />
+    <Compile Include="Extensibility\Internal\IShadowRedundancyManagerFacade.cs" />
+    <Compile Include="Extensibility\Internal\ITransportMailItemFacade.cs" />
+    <Compile Include="Extensibility\Internal\ITransportMailItemWrapperFacade.cs" />
+    <Compile Include="Extensibility\Internal\ITransportSettingsFacade.cs" />
+    <Compile Include="Extensibility\Internal\LastError.cs" />
+    <Compile Include="Extensibility\Internal\LegacyJournalReportType.cs" />
+    <Compile Include="Extensibility\Internal\MessagingPoliciesUtils.cs" />
+    <Compile Include="Extensibility\Internal\NewMailItemDelegate.cs" />
+    <Compile Include="Extensibility\Internal\ProcessTransportRole.cs" />
+    <Compile Include="Extensibility\Internal\QuotaInformation.cs" />
+    <Compile Include="Extensibility\Internal\QuotaLocalizedTexts.cs" />
+    <Compile Include="Extensibility\Internal\QuotaMessageType.cs" />
+    <Compile Include="Extensibility\Internal\QuotaType.cs" />
+    <Compile Include="Extensibility\Internal\ReadHistoryFromMailItemByAgentDelegate.cs" />
+    <Compile Include="Extensibility\Internal\ReadHistoryFromRecipientByAgentDelegate.cs" />
+    <Compile Include="Extensibility\Internal\RecipientP2Type.cs" />
+    <Compile Include="Extensibility\Internal\SystemProbeUtilities.cs" />
+    <Compile Include="Extensibility\Internal\TrackReceiveByAgentDelegate.cs" />
+    <Compile Include="Extensibility\Internal\TrackRecipientAddByAgentDelegate.cs" />
+    <Compile Include="Extensibility\Internal\TransportConstant.cs" />
+    <Compile Include="Extensibility\Internal\TransportFacades.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="CtsResources\InternalStrings.resources" />
+    <EmbeddedResource Include="CtsResources\MExRuntimeStrings.resources" />
+    <EmbeddedResource Include="CtsResources\MsgStorageStrings.resources" />
+    <EmbeddedResource Include="internalAgents.config" />
+    <EmbeddedResource Include="InternalMExRuntimeConfig.xsd" />
+    <EmbeddedResource Include="MessageHeaders.xml" />
+    <EmbeddedResource Include="MExRuntimeConfig.xsd" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.Exchange.Common\Microsoft.Exchange.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140F0}</Project>
+      <Name>Microsoft.Exchange.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Compliance\Microsoft.Exchange.Compliance.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140F2}</Project>
+      <Name>Microsoft.Exchange.Compliance</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Core.Strings\Microsoft.Exchange.Core.Strings.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14103}</Project>
+      <Name>Microsoft.Exchange.Core.Strings</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Common\Microsoft.Exchange.Data.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140D3}</Project>
+      <Name>Microsoft.Exchange.Data.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Transport\Microsoft.Exchange.Data.Transport.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140D5}</Project>
+      <Name>Microsoft.Exchange.Data.Transport</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Diagnostics\Microsoft.Exchange.Diagnostics.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14113}</Project>
+      <Name>Microsoft.Exchange.Diagnostics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Net\Microsoft.Exchange.Net.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14178}</Project>
+      <Name>Microsoft.Exchange.Net</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.VariantConfiguration\Microsoft.Exchange.VariantConfiguration.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141E0}</Project>
+      <Name>Microsoft.Exchange.VariantConfiguration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\mscorlib\mscorlib.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141F1}</Project>
+      <Name>mscorlib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

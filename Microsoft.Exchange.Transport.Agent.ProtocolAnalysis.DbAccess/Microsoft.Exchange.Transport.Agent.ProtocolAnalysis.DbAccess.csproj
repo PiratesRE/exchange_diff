@@ -1,0 +1,114 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{09CD9476-CD82-489E-B9E2-84B47CA141C6}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Microsoft.Exchange.Transport.Agent.ProtocolAnalysis.DbAccess</RootNamespace>
+    <AssemblyName>Microsoft.Exchange.Transport.Agent.ProtocolAnalysis.DbAccess</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CMD5.cs" />
+    <Compile Include="ConfigChangedEventArgs.cs" />
+    <Compile Include="ConfigurationAccess.cs" />
+    <Compile Include="ConfigurationDataRowData.cs" />
+    <Compile Include="ConfigurationDataTable.cs" />
+    <Compile Include="Database.cs" />
+    <Compile Include="DataRowAccessBase.cs" />
+    <Compile Include="DbAccessServices.cs" />
+    <Compile Include="DbStrings.cs" />
+    <Compile Include="HandleConfigChange.cs" />
+    <Compile Include="NextMessage.cs" />
+    <Compile Include="OPDetectionResult.cs" />
+    <Compile Include="OpenProxyStatusCodes.cs" />
+    <Compile Include="OpenProxyStatusRowData.cs" />
+    <Compile Include="OpenProxyStatusTable.cs" />
+    <Compile Include="PrimaryKeyAttribute.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ProtocolAnalysisRowData.cs" />
+    <Compile Include="ProtocolAnalysisTable.cs" />
+    <Compile Include="PurgingScanner.cs" />
+    <Compile Include="RowBaseScanner.cs" />
+    <Compile Include="SenderDBObject.cs" />
+    <Compile Include="SenderReputationRowData.cs" />
+    <Compile Include="SenderReputationTable.cs" />
+    <Compile Include="StsUtil.cs" />
+    <Compile Include="WorkItemData.cs" />
+    <Compile Include="WorkItemPriority.cs" />
+    <Compile Include="WorkItemType.cs" />
+    <Compile Include="WorkQueue.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="DbStrings.resources" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.Exchange.Configuration.ObjectModel\Microsoft.Exchange.Configuration.ObjectModel.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140FC}</Project>
+      <Name>Microsoft.Exchange.Configuration.ObjectModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Common\Microsoft.Exchange.Data.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140D3}</Project>
+      <Name>Microsoft.Exchange.Data.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Directory\Microsoft.Exchange.Data.Directory.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14105}</Project>
+      <Name>Microsoft.Exchange.Data.Directory</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Transport\Microsoft.Exchange.Data.Transport.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140D5}</Project>
+      <Name>Microsoft.Exchange.Data.Transport</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Diagnostics\Microsoft.Exchange.Diagnostics.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14113}</Project>
+      <Name>Microsoft.Exchange.Diagnostics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Transport.Agent.AntiSpam.Common\Microsoft.Exchange.Transport.Agent.AntiSpam.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141BD}</Project>
+      <Name>Microsoft.Exchange.Transport.Agent.AntiSpam.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Transport\Microsoft.Exchange.Transport.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141CD}</Project>
+      <Name>Microsoft.Exchange.Transport</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Isam.Esent.Interop\Microsoft.Isam.Esent.Interop.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141E8}</Project>
+      <Name>Microsoft.Isam.Esent.Interop</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\mscorlib\mscorlib.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141F1}</Project>
+      <Name>mscorlib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

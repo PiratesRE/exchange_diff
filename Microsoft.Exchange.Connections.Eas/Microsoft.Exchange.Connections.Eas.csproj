@@ -1,0 +1,277 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{09CD9476-CD82-489E-B9E2-84B47CA14100}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Microsoft.Exchange.Connections.Eas</RootNamespace>
+    <AssemblyName>Microsoft.Exchange.Connections.Eas</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Exchange.WebServices" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Commands\AllowableEasCommandHttpStatus.cs" />
+    <Compile Include="Commands\AutodiscoverHttpStatus.cs" />
+    <Compile Include="Commands\Autodiscover\AutodiscoverCommand.cs" />
+    <Compile Include="Commands\Autodiscover\AutodiscoverEndpoint.cs" />
+    <Compile Include="Commands\Autodiscover\AutodiscoverOption.cs" />
+    <Compile Include="Commands\Autodiscover\AutodiscoverRequest.cs" />
+    <Compile Include="Commands\Autodiscover\AutodiscoverResponse.cs" />
+    <Compile Include="Commands\Autodiscover\AutodiscoverStatus.cs" />
+    <Compile Include="Commands\Autodiscover\AutodiscoverStep.cs" />
+    <Compile Include="Commands\Autodiscover\IExecuteStep.cs" />
+    <Compile Include="Commands\Autodiscover\Step.cs" />
+    <Compile Include="Commands\Autodiscover\StepContext.cs" />
+    <Compile Include="Commands\Autodiscover\TryAddingAutodiscoverPrefix.cs" />
+    <Compile Include="Commands\Autodiscover\TryDnsLookupOfSrvRecord.cs" />
+    <Compile Include="Commands\Autodiscover\TryExistingEndpoint.cs" />
+    <Compile Include="Commands\Autodiscover\TryRemovingDomainPrefix.cs" />
+    <Compile Include="Commands\Autodiscover\TrySmtpAddress.cs" />
+    <Compile Include="Commands\Autodiscover\TryUnauthenticatedGet.cs" />
+    <Compile Include="Commands\Command.cs" />
+    <Compile Include="Commands\Connect\ConnectCommand.cs" />
+    <Compile Include="Commands\Connect\ConnectRequest.cs" />
+    <Compile Include="Commands\Connect\ConnectResponse.cs" />
+    <Compile Include="Commands\Connect\ConnectStatus.cs" />
+    <Compile Include="Commands\Disconnect\DisconnectCommand.cs" />
+    <Compile Include="Commands\Disconnect\DisconnectRequest.cs" />
+    <Compile Include="Commands\Disconnect\DisconnectResponse.cs" />
+    <Compile Include="Commands\Disconnect\DisconnectStatus.cs" />
+    <Compile Include="Commands\EasCommand.cs" />
+    <Compile Include="Commands\EasCommonStatus.cs" />
+    <Compile Include="Commands\EasFolderType.cs" />
+    <Compile Include="Commands\EasPseudoCommand.cs" />
+    <Compile Include="Commands\EasServerCommand.cs" />
+    <Compile Include="Commands\EasServerResponseExtensions.cs" />
+    <Compile Include="Commands\FolderCreate\FolderCreateCommand.cs" />
+    <Compile Include="Commands\FolderCreate\FolderCreateRequest.cs" />
+    <Compile Include="Commands\FolderCreate\FolderCreateResponse.cs" />
+    <Compile Include="Commands\FolderCreate\FolderCreateStatus.cs" />
+    <Compile Include="Commands\FolderDelete\FolderDeleteCommand.cs" />
+    <Compile Include="Commands\FolderDelete\FolderDeleteRequest.cs" />
+    <Compile Include="Commands\FolderDelete\FolderDeleteResponse.cs" />
+    <Compile Include="Commands\FolderDelete\FolderDeleteStatus.cs" />
+    <Compile Include="Commands\FolderSync\FolderSyncCommand.cs" />
+    <Compile Include="Commands\FolderSync\FolderSyncRequest.cs" />
+    <Compile Include="Commands\FolderSync\FolderSyncResponse.cs" />
+    <Compile Include="Commands\FolderSync\FolderSyncStatus.cs" />
+    <Compile Include="Commands\FolderUpdate\FolderUpdateCommand.cs" />
+    <Compile Include="Commands\FolderUpdate\FolderUpdateRequest.cs" />
+    <Compile Include="Commands\FolderUpdate\FolderUpdateResponse.cs" />
+    <Compile Include="Commands\FolderUpdate\FolderUpdateStatus.cs" />
+    <Compile Include="Commands\GetItemEstimate\GetItemEstimateCommand.cs" />
+    <Compile Include="Commands\GetItemEstimate\GetItemEstimateRequest.cs" />
+    <Compile Include="Commands\GetItemEstimate\GetItemEstimateResponse.cs" />
+    <Compile Include="Commands\GetItemEstimate\GetItemEstimateStatus.cs" />
+    <Compile Include="Commands\HttpStatus.cs" />
+    <Compile Include="Commands\HttpWebRequestExtensions.cs" />
+    <Compile Include="Commands\IEasServerResponse.cs" />
+    <Compile Include="Commands\IHaveAnHttpStatus.cs" />
+    <Compile Include="Commands\ItemOperations\ItemOperationsCommand.cs" />
+    <Compile Include="Commands\ItemOperations\ItemOperationsRequest.cs" />
+    <Compile Include="Commands\ItemOperations\ItemOperationsResponse.cs" />
+    <Compile Include="Commands\ItemOperations\ItemOperationsStatus.cs" />
+    <Compile Include="Commands\MoveItems\MoveItemsCommand.cs" />
+    <Compile Include="Commands\MoveItems\MoveItemsRequest.cs" />
+    <Compile Include="Commands\MoveItems\MoveItemsResponse.cs" />
+    <Compile Include="Commands\MoveItems\MoveItemsStatus.cs" />
+    <Compile Include="Commands\Options\OptionsCommand.cs" />
+    <Compile Include="Commands\Options\OptionsRequest.cs" />
+    <Compile Include="Commands\Options\OptionsResponse.cs" />
+    <Compile Include="Commands\Options\OptionsStatus.cs" />
+    <Compile Include="Commands\SendMail\SendMailCommand.cs" />
+    <Compile Include="Commands\SendMail\SendMailRequest.cs" />
+    <Compile Include="Commands\SendMail\SendMailResponse.cs" />
+    <Compile Include="Commands\SendMail\SendMailStatus.cs" />
+    <Compile Include="Commands\Settings\SettingsCommand.cs" />
+    <Compile Include="Commands\Settings\SettingsRequest.cs" />
+    <Compile Include="Commands\Settings\SettingsResponse.cs" />
+    <Compile Include="Commands\Settings\SettingsStatus.cs" />
+    <Compile Include="Commands\Sync\SyncCommand.cs" />
+    <Compile Include="Commands\Sync\SyncRequest.cs" />
+    <Compile Include="Commands\Sync\SyncResponse.cs" />
+    <Compile Include="Commands\Sync\SyncStatus.cs" />
+    <Compile Include="Commands\WlasSystemCategoryId.cs" />
+    <Compile Include="EasAuthenticationParameters.cs" />
+    <Compile Include="EasConnection.cs" />
+    <Compile Include="EasConnectionParameters.cs" />
+    <Compile Include="EasConnectionSettings.cs" />
+    <Compile Include="EasConstants.cs" />
+    <Compile Include="EasDeviceParameters.cs" />
+    <Compile Include="EasEndpointSettings.cs" />
+    <Compile Include="EasExtensionCapabilities.cs" />
+    <Compile Include="EasExtensionsVersion1.cs" />
+    <Compile Include="EasProtocolVersion.cs" />
+    <Compile Include="EasServerCapabilities.cs" />
+    <Compile Include="External\Streams.cs" />
+    <Compile Include="IEasConnection.cs" />
+    <Compile Include="Model\Common\AirSyncBase\BodyType.cs" />
+    <Compile Include="Model\Common\AirSyncBase\ConflictResolution.cs" />
+    <Compile Include="Model\Common\AirSyncBase\MimeSupport.cs" />
+    <Compile Include="Model\Common\AirSyncBase\MimeTruncationType.cs" />
+    <Compile Include="Model\Common\AirSyncBase\SyncFilterType.cs" />
+    <Compile Include="Model\Common\Email\Category.cs" />
+    <Compile Include="Model\Common\Email\Flag.cs" />
+    <Compile Include="Model\Common\WindowsLive\CategoryId.cs" />
+    <Compile Include="Model\Extensions\EmailRead.cs" />
+    <Compile Include="Model\Extensions\FlagStatus.cs" />
+    <Compile Include="Model\Extensions\ModelExtensions.cs" />
+    <Compile Include="Model\Request\AirSyncBase\Attachment.cs" />
+    <Compile Include="Model\Request\AirSyncBase\Attachments.cs" />
+    <Compile Include="Model\Request\AirSyncBase\Body.cs" />
+    <Compile Include="Model\Request\AirSyncBase\BodyPreference.cs" />
+    <Compile Include="Model\Request\AirSync\AddCommand.cs" />
+    <Compile Include="Model\Request\AirSync\ApplicationData.cs" />
+    <Compile Include="Model\Request\AirSync\ChangeCommand.cs" />
+    <Compile Include="Model\Request\AirSync\Collection.cs" />
+    <Compile Include="Model\Request\AirSync\Command.cs" />
+    <Compile Include="Model\Request\AirSync\DeleteCommand.cs" />
+    <Compile Include="Model\Request\AirSync\FetchCommand.cs" />
+    <Compile Include="Model\Request\AirSync\Options.cs" />
+    <Compile Include="Model\Request\AirSync\Sync.cs" />
+    <Compile Include="Model\Request\Autodiscover\Request.cs" />
+    <Compile Include="Model\Request\Calendar\Attendee.cs" />
+    <Compile Include="Model\Request\Calendar\Exception.cs" />
+    <Compile Include="Model\Request\Calendar\ICalendarData.cs" />
+    <Compile Include="Model\Request\Calendar\Recurrence.cs" />
+    <Compile Include="Model\Request\ComposeMail\SendMail.cs" />
+    <Compile Include="Model\Request\FolderHierarchy\FolderCreate.cs" />
+    <Compile Include="Model\Request\FolderHierarchy\FolderDelete.cs" />
+    <Compile Include="Model\Request\FolderHierarchy\FolderSync.cs" />
+    <Compile Include="Model\Request\FolderHierarchy\FolderUpdate.cs" />
+    <Compile Include="Model\Request\GetItemEstimate\Collection.cs" />
+    <Compile Include="Model\Request\GetItemEstimate\GetItemEstimate.cs" />
+    <Compile Include="Model\Request\ItemOperations\Fetch.cs" />
+    <Compile Include="Model\Request\ItemOperations\ItemOperations.cs" />
+    <Compile Include="Model\Request\ItemOperations\Options.cs" />
+    <Compile Include="Model\Request\ItemOperations\Schema.cs" />
+    <Compile Include="Model\Request\ItemOperations\Store.cs" />
+    <Compile Include="Model\Request\Move\Move.cs" />
+    <Compile Include="Model\Request\Move\MoveItems.cs" />
+    <Compile Include="Model\Request\Settings\Settings.cs" />
+    <Compile Include="Model\Request\Settings\UserInformation.cs" />
+    <Compile Include="Model\Response\AirSyncBase\Attachment.cs" />
+    <Compile Include="Model\Response\AirSyncBase\Attachments.cs" />
+    <Compile Include="Model\Response\AirSyncBase\Body.cs" />
+    <Compile Include="Model\Response\AirSyncBase\BodyPart.cs" />
+    <Compile Include="Model\Response\AirSyncBase\BodyPartPreference.cs" />
+    <Compile Include="Model\Response\AirSyncBase\BodyPreference.cs" />
+    <Compile Include="Model\Response\AirSync\AddCommand.cs" />
+    <Compile Include="Model\Response\AirSync\AddResponse.cs" />
+    <Compile Include="Model\Response\AirSync\ApplicationData.cs" />
+    <Compile Include="Model\Response\AirSync\ChangeCommand.cs" />
+    <Compile Include="Model\Response\AirSync\ChangeResponse.cs" />
+    <Compile Include="Model\Response\AirSync\Collection.cs" />
+    <Compile Include="Model\Response\AirSync\Command.cs" />
+    <Compile Include="Model\Response\AirSync\Commands.cs" />
+    <Compile Include="Model\Response\AirSync\DeleteCommand.cs" />
+    <Compile Include="Model\Response\AirSync\EmptyTag.cs" />
+    <Compile Include="Model\Response\AirSync\FetchResponse.cs" />
+    <Compile Include="Model\Response\AirSync\Responses.cs" />
+    <Compile Include="Model\Response\AirSync\SoftDeleteCommand.cs" />
+    <Compile Include="Model\Response\AirSync\Sync.cs" />
+    <Compile Include="Model\Response\Autodiscover\Action.cs" />
+    <Compile Include="Model\Response\Autodiscover\ActionError.cs" />
+    <Compile Include="Model\Response\Autodiscover\Error.cs" />
+    <Compile Include="Model\Response\Autodiscover\Response.cs" />
+    <Compile Include="Model\Response\Autodiscover\Server.cs" />
+    <Compile Include="Model\Response\Autodiscover\ServerType.cs" />
+    <Compile Include="Model\Response\Autodiscover\Settings.cs" />
+    <Compile Include="Model\Response\Autodiscover\User.cs" />
+    <Compile Include="Model\Response\Calendar\Attendee.cs" />
+    <Compile Include="Model\Response\Calendar\Exception.cs" />
+    <Compile Include="Model\Response\Calendar\Recurrence.cs" />
+    <Compile Include="Model\Response\ComposeMail\SendMail.cs" />
+    <Compile Include="Model\Response\FolderHierarchy\Add.cs" />
+    <Compile Include="Model\Response\FolderHierarchy\Changes.cs" />
+    <Compile Include="Model\Response\FolderHierarchy\Delete.cs" />
+    <Compile Include="Model\Response\FolderHierarchy\FolderCreate.cs" />
+    <Compile Include="Model\Response\FolderHierarchy\FolderDelete.cs" />
+    <Compile Include="Model\Response\FolderHierarchy\FolderSync.cs" />
+    <Compile Include="Model\Response\FolderHierarchy\FolderUpdate.cs" />
+    <Compile Include="Model\Response\FolderHierarchy\Update.cs" />
+    <Compile Include="Model\Response\GetItemEstimate\Collection.cs" />
+    <Compile Include="Model\Response\GetItemEstimate\GetItemEstimate.cs" />
+    <Compile Include="Model\Response\GetItemEstimate\Response.cs" />
+    <Compile Include="Model\Response\ItemOperations\Fetch.cs" />
+    <Compile Include="Model\Response\ItemOperations\ItemOperations.cs" />
+    <Compile Include="Model\Response\ItemOperations\Properties.cs" />
+    <Compile Include="Model\Response\ItemOperations\Response.cs" />
+    <Compile Include="Model\Response\Move\MoveItems.cs" />
+    <Compile Include="Model\Response\Move\Response.cs" />
+    <Compile Include="Model\Response\Settings\Settings.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WBXml\EasString.cs" />
+    <Compile Include="WBXml\EasStringArrays.cs" />
+    <Compile Include="WBXml\StreamAccessor.cs" />
+    <Compile Include="WBXml\WBXmlBase.cs" />
+    <Compile Include="WBXml\WBxmlBlobNode.cs" />
+    <Compile Include="WBXml\WBXmlControlCodes.cs" />
+    <Compile Include="WBXml\WBXmlReader.cs" />
+    <Compile Include="WBXml\WBXmlSchema.cs" />
+    <Compile Include="WBXml\WBXmlSchema30.cs" />
+    <Compile Include="WBXml\WBXmlSecureStringNode.cs" />
+    <Compile Include="WBXml\WBXmlStreamHelper.cs" />
+    <Compile Include="WBXml\WBXmlSubStream.cs" />
+    <Compile Include="WBXml\WBXmlWriter.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.Exchange.Common\Microsoft.Exchange.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140F0}</Project>
+      <Name>Microsoft.Exchange.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Connections.Common\Microsoft.Exchange.Connections.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140FF}</Project>
+      <Name>Microsoft.Exchange.Connections.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Common\Microsoft.Exchange.Data.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140D3}</Project>
+      <Name>Microsoft.Exchange.Data.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Diagnostics\Microsoft.Exchange.Diagnostics.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14113}</Project>
+      <Name>Microsoft.Exchange.Diagnostics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Net\Microsoft.Exchange.Net.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14178}</Project>
+      <Name>Microsoft.Exchange.Net</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\mscorlib\mscorlib.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141F1}</Project>
+      <Name>mscorlib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

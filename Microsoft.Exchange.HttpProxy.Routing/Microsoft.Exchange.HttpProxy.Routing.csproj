@@ -1,0 +1,157 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{09CD9476-CD82-489E-B9E2-84B47CA14132}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Microsoft.Exchange.HttpProxy.Routing</RootNamespace>
+    <AssemblyName>Microsoft.Exchange.HttpProxy.Routing</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="IRoutingDestination.cs" />
+    <Compile Include="IRoutingDiagnostics.cs" />
+    <Compile Include="IRoutingEntry.cs" />
+    <Compile Include="IRoutingKey.cs" />
+    <Compile Include="IRoutingLookup.cs" />
+    <Compile Include="IRoutingLookupFactory.cs" />
+    <Compile Include="IServerVersionLookup.cs" />
+    <Compile Include="NullRoutingDiagnostics.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Providers\ActiveCopiesCacheProvider.cs" />
+    <Compile Include="Providers\ActiveDirectoryUserProvider.cs" />
+    <Compile Include="Providers\DatabaseLocationProviderException.cs" />
+    <Compile Include="Providers\IDatabaseLocationProvider.cs" />
+    <Compile Include="Providers\ISharedCache.cs" />
+    <Compile Include="Providers\IUserProvider.cs" />
+    <Compile Include="Providers\MailboxServerLocatorServiceProvider.cs" />
+    <Compile Include="Providers\SharedCacheException.cs" />
+    <Compile Include="Providers\User.cs" />
+    <Compile Include="Providers\UserProviderException.cs" />
+    <Compile Include="RequestDetailsLogger.cs" />
+    <Compile Include="RoutingDestinations\DatabaseGuidRoutingDestination.cs" />
+    <Compile Include="RoutingDestinations\ErrorRoutingDestination.cs" />
+    <Compile Include="RoutingDestinations\RoutingDestinationBase.cs" />
+    <Compile Include="RoutingDestinations\ServerRoutingDestination.cs" />
+    <Compile Include="RoutingDestinations\UnknownRoutingDestination.cs" />
+    <Compile Include="RoutingEntries\DatabaseGuidRoutingEntry.cs" />
+    <Compile Include="RoutingEntries\FailedDatabaseGuidRoutingEntry.cs" />
+    <Compile Include="RoutingEntries\FailedMailboxRoutingEntry.cs" />
+    <Compile Include="RoutingEntries\FailedServerRoutingEntry.cs" />
+    <Compile Include="RoutingEntries\GenericRoutingEntry.cs" />
+    <Compile Include="RoutingEntries\MailboxRoutingEntry.cs" />
+    <Compile Include="RoutingEntries\RoutingEntryBase.cs" />
+    <Compile Include="RoutingEntries\ServerRoutingEntry.cs" />
+    <Compile Include="RoutingEntries\SuccessfulDatabaseGuidRoutingEntry.cs" />
+    <Compile Include="RoutingEntries\SuccessfulMailboxRoutingEntry.cs" />
+    <Compile Include="RoutingEntries\SuccessfulServerRoutingEntry.cs" />
+    <Compile Include="RoutingEntryLookupFactory.cs" />
+    <Compile Include="RoutingExtensions.cs" />
+    <Compile Include="RoutingItemType.cs" />
+    <Compile Include="RoutingKeys\ArchiveSmtpRoutingKey.cs" />
+    <Compile Include="RoutingKeys\DatabaseGuidRoutingKey.cs" />
+    <Compile Include="RoutingKeys\ExternalDirectoryObjectIdRoutingKey.cs" />
+    <Compile Include="RoutingKeys\LiveIdMemberNameRoutingKey.cs" />
+    <Compile Include="RoutingKeys\MailboxGuidRoutingKey.cs" />
+    <Compile Include="RoutingKeys\RoutingKeyBase.cs" />
+    <Compile Include="RoutingKeys\ServerRoutingKey.cs" />
+    <Compile Include="RoutingKeys\SmtpRoutingKey.cs" />
+    <Compile Include="RoutingKeys\UnknownRoutingKey.cs" />
+    <Compile Include="RoutingLookups\AnchorMailboxSharedCacheLookup.cs" />
+    <Compile Include="RoutingLookups\ArchiveSmtpRoutingLookup.cs" />
+    <Compile Include="RoutingLookups\ArchiveSmtpSharedCacheLookup.cs" />
+    <Compile Include="RoutingLookups\DatabaseGuidRoutingLookup.cs" />
+    <Compile Include="RoutingLookups\DatabaseGuidSharedCacheLookup.cs" />
+    <Compile Include="RoutingLookups\ExternalDirectoryObjectIdRoutingLookup.cs" />
+    <Compile Include="RoutingLookups\ExternalDirectoryObjectIdSharedCacheLookup.cs" />
+    <Compile Include="RoutingLookups\LiveIdMemberNameRoutingLookup.cs" />
+    <Compile Include="RoutingLookups\LiveIdMemberNameSharedCacheLookup.cs" />
+    <Compile Include="RoutingLookups\MailboxGuidRoutingLookup.cs" />
+    <Compile Include="RoutingLookups\MailboxGuidSharedCacheLookup.cs" />
+    <Compile Include="RoutingLookups\MailboxRoutingLookupBase.cs" />
+    <Compile Include="RoutingLookups\ServerRoutingLookup.cs" />
+    <Compile Include="RoutingLookups\SmtpRoutingLookup.cs" />
+    <Compile Include="RoutingLookups\SmtpSharedCacheLookup.cs" />
+    <Compile Include="RoutingUpdateConstants.cs" />
+    <Compile Include="RoutingUpdateDiagnostics.cs" />
+    <Compile Include="RoutingUpdateModule.cs" />
+    <Compile Include="RoutingUpdateModuleMetadata.cs" />
+    <Compile Include="Serialization\RoutingEntryHeaderSerializer.cs" />
+    <Compile Include="SharedCacheLookupFactory.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.ApplicationLogic\Microsoft.Exchange.Data.ApplicationLogic.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14104}</Project>
+      <Name>Microsoft.Exchange.Data.ApplicationLogic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Directory\Microsoft.Exchange.Data.Directory.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14105}</Project>
+      <Name>Microsoft.Exchange.Data.Directory</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Storage\Microsoft.Exchange.Data.Storage.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1410F}</Project>
+      <Name>Microsoft.Exchange.Data.Storage</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data\Microsoft.Exchange.Data.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14106}</Project>
+      <Name>Microsoft.Exchange.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Diagnostics\Microsoft.Exchange.Diagnostics.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14113}</Project>
+      <Name>Microsoft.Exchange.Diagnostics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.HttpProxy.Common\Microsoft.Exchange.HttpProxy.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1412D}</Project>
+      <Name>Microsoft.Exchange.HttpProxy.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Net\Microsoft.Exchange.Net.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14178}</Project>
+      <Name>Microsoft.Exchange.Net</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.SharedCache.Client\Microsoft.Exchange.SharedCache.Client.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141B5}</Project>
+      <Name>Microsoft.Exchange.SharedCache.Client</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.VariantConfiguration\Microsoft.Exchange.VariantConfiguration.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141E0}</Project>
+      <Name>Microsoft.Exchange.VariantConfiguration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\mscorlib\mscorlib.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141F1}</Project>
+      <Name>mscorlib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

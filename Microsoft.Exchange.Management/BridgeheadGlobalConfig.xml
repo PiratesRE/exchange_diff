@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="us-ascii" ?>
+<SetupComponentInfo Name="Bridgehead Global AD Configuration" DescriptionId="SetupComponentBridgeheadGlobalConfig">
+
+  <OrgTasks>
+
+    <!-- Setup Rule collections - Transport (CN=Transport,CN=Transport Settings,... ) -->
+    <ServicePlanTaskInfo FeatureName="TransportRulesCollectionsEnabled">
+      <Install DescriptionId="SetupProgressCreateTransportRuleCollection">
+        <Global>
+          install-RuleCollection -Name:"Transport" -DomainController $RoleDomainController;
+          install-RuleCollection -Name:"TransportVersioned" -DomainController $RoleDomainController;
+        </Global>
+        <Tenant>
+          if(($ServicePlanSettings.Organization.TransportRulesCollectionsEnabled -or $RoleIsPartnerHosted) -and !$CreateSharedConfiguration)
+          {
+              install-RuleCollection -Name:"TransportVersioned" -DomainController $RoleDomainController -Organization $RoleOrganizationHierarchicalPath;
+          }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </ServicePlanTaskInfo>
+
+    <!-- Setup Rule collections - Journaling  (CN=Journaling,CN=Transport Settings,... )-->
+    <ServicePlanTaskInfo FeatureName="TransportRulesCollectionsEnabled">
+      <Install DescriptionId="SetupProgressCreateJournalingRuleCollection">
+        <Global>
+          install-RuleCollection -Name:"Journaling" -DomainController $RoleDomainController;
+          install-RuleCollection -Name:"JournalingVersioned" -DomainController $RoleDomainController;
+        </Global>
+        <Tenant>
+          if(($ServicePlanSettings.Organization.TransportRulesCollectionsEnabled -or $RoleIsPartnerHosted) -and !$CreateSharedConfiguration)
+          {
+              install-RuleCollection -Name:"JournalingVersioned" -DomainController $RoleDomainController -Organization $RoleOrganizationHierarchicalPath;
+          }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </ServicePlanTaskInfo>
+
+    <!-- Setup Rule collections - Outlook Protection Rules  (CN=OutlookProtectionRules,CN=Transport Settings,... )-->
+    <ServicePlanTaskInfo FeatureName="TransportRulesCollectionsEnabled">
+      <Install DescriptionId="SetupProgressCreateOutlookProtectionRulesContainer">
+        <Global>install-RuleCollection -Name:"OutlookProtectionRules" -DomainController $RoleDomainController;</Global>
+        <Tenant>
+          if(($ServicePlanSettings.Organization.TransportRulesCollectionsEnabled -or $RoleIsPartnerHosted) -and !$CreateSharedConfiguration)
+          {
+              install-RuleCollection -Name:"OutlookProtectionRules" -DomainController $RoleDomainController -Organization $RoleOrganizationHierarchicalPath;
+          }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </ServicePlanTaskInfo>
+
+    <!-- Setup Rule collections - Classification Definitions  (CN=ClassificationDefinitions,CN=Transport Settings,... )-->
+    <ServicePlanTaskInfo FeatureName="TransportRulesCollectionsEnabled">
+      <Install DescriptionId="SetupProgressCreateClassificationDefinitionsContainer">
+        <Global>
+          install-RuleCollection -Name:"ClassificationDefinitions" -DomainController $RoleDomainController;
+          New-ClassificationRuleCollection -InstallDefaultCollection
+        </Global>
+        <Tenant>
+          if(($ServicePlanSettings.Organization.DataLossPreventionEnabled -or $RoleIsPartnerHosted) -and !$CreateSharedConfiguration)
+          {
+              install-RuleCollection -Name:"ClassificationDefinitions" -DomainController $RoleDomainController -Organization $RoleOrganizationHierarchicalPath;
+          }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </ServicePlanTaskInfo>
+    
+    <!-- Setup DLP Rule collections - Transport (CN=Transport,CN=Transport Settings,CN=Rules,... ) -->
+    <ServicePlanTaskInfo FeatureName="TransportRulesCollectionsEnabled">
+      <Install DescriptionId="SetupProgressCreateTransportRuleCollection">
+        <Global>
+          install-OutOfBoxDlpPolicyCollection -DomainController $RoleDomainController;
+          install-DlpPolicyCollection -Name:"InstalledMailflowPoliciesRtm" -DomainController $RoleDomainController;
+        </Global>
+        <Tenant>
+          if(($ServicePlanSettings.Organization.DataLossPreventionEnabled -or $RoleIsPartnerHosted) -and !$CreateSharedConfiguration)
+          {
+              install-DlpPolicyCollection -Name:"InstalledMailflowPoliciesRtm" -DomainController $RoleDomainController -Organization $RoleOrganizationHierarchicalPath;
+          }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </ServicePlanTaskInfo>
+
+    <!-- Creates singleton config objects for control point config (CN=ControlPoint Config,CN=TransportSettings,CN=<Org Name>... ) -->
+    <ServicePlanTaskInfo FeatureName="CommonHydrateableObjectsSharedEnabled">
+      <Install DescriptionId="SetupProgressConfigureControlPointConfig">
+        <Global>
+          Install-IRMConfiguration -Name:"Transport Settings","ControlPoint Config" -DomainController $RoleDomainController;
+        </Global>
+        <!-- RoleIsDatacenter is always true.  Incorporate the Set-IRMConfiguration call into the install cmdlet -->
+        <Tenant>
+          if(!$CommonHydrateableObjectsSharedEnabled)
+          {
+              Install-IRMConfiguration -Name:"Transport Settings","ControlPoint Config" -DomainController $RoleDomainController -Organization $RoleOrganizationHierarchicalPath;
+          }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade>
+        <Global>
+          Install-IRMConfiguration -Name:"Transport Settings","ControlPoint Config" -DomainController $RoleDomainController;
+        </Global>
+        <!-- This object is now created on demand.  If we're build-to-build upgrading, then this object will be created by this build - on demand. -->
+      </BuildToBuildUpgrade>
+      <Uninstall />
+    </ServicePlanTaskInfo>
+
+    <!-- Import RMS Settings -->
+    <OrgTaskInfo Id="_38692754B00146C182969B51D10DA64C" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="ImportRmsTrustedPublishingDomain">
+        <Tenant>
+          if ($RMSOnlineConfig -ne $null -and $RMSOnlineKeys -ne $null)
+          {
+            Import-RMSTrustedPublishingDomain -Name NotUsed -RMSOnlineConfig $RMSOnlineConfig -RMSOnlineKeys $RmsOnlineKeys -Organization $RoleOrganizationHierarchicalPath
+          }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade />
+      <Uninstall />
+    </OrgTaskInfo>
+
+    <!-- Setup PolicyTipMessageConfig collection - PolicyTipMessageConfigs (CN=PolicyTipMessageConfigs,CN=Rules,CN=Transport Settings,... ) -->
+    <ServicePlanTaskInfo FeatureName="TransportRulesCollectionsEnabled">
+      <Install DescriptionId="SetupProgressCreatePolicyTipMessageConfigsContainer">
+        <Global>
+          install-Container @("Transport Settings", "Rules", "PolicyTipMessageConfigs") -DomainController $RoleDomainController
+        </Global>
+        <!-- Powershell will create this container in the "hosted" case, it's needed in the onprem case for AD Change notifications, in the DC case these are polled. -->
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </ServicePlanTaskInfo>
+
+    <!-- Create UceContentFilter config. object at CN=UCE Content Filter,CN=Message Delivery,CN=Global Settings,... -->
+    <OrgTaskInfo Id="_1968db11cae5489983bbbcf4b9a9c4a6" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressCreateUceContentFilterObject">
+        <Global>Install-UceContentFilterConfig -DomainController $RoleDomainController;</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+
+    <!-- Update Transport Shadow Redundancy defaults -->
+    <OrgTaskInfo Id="_CD30A17A255D404fA8620F4A265EF7AA" Component="EXCHANGE14:\Current\Release\Transport\Platform">
+      <Install>
+        <Global>
+          # Set the heartbeat retry count as per E14:321784
+          $tc=Get-TransportConfig -DomainController $RoleDomainController;
+          if ($tc.ShadowHeartbeatRetryCount -eq 3 -and $tc.ShadowHeartbeatTimeoutInterval -eq "00:05:00")
+          {
+              Set-TransportConfig -DomainController $RoleDomainController -ShadowHeartbeatRetryCount 12 -ShadowHeartbeatTimeoutInterval "00:15:00";
+          }
+          
+          Set-TransportConfig -RejectMessageOnShadowFailure ($RoleDatacenterRejectOnShadowFailure -eq $true)
+
+          if($RoleDatacenterFfoEnvironment -eq "True")
+          {
+              # Set the safety net hold period for the FFO environment to a smaller value as there are no mailboxes 
+              # in this environment that will be requesting resubmits.
+              Set-TransportConfig -DomainController $RoleDomainController -SafetyNetHoldTime 00:10:00;
+          }
+          elseif ($RoleIsDatacenter -ne $true)
+          {
+              # Set the safety net hold period for the Enterprise environment
+              Set-TransportConfig -DomainController $RoleDomainController -SafetyNetHoldTime 2.00:00:00;
+          }
+        </Global>
+      </Install>
+      <BuildToBuildUpgrade>
+        <Global>
+          $tc=Get-TransportConfig -DomainController $RoleDomainController;
+          if ($tc.ShadowHeartbeatRetryCount -eq 3 -and $tc.ShadowHeartbeatTimeoutInterval -eq "00:05:00")
+          {
+              Set-TransportConfig -DomainController $RoleDomainController -ShadowHeartbeatRetryCount 12 -ShadowHeartbeatTimeoutInterval "00:15:00";
+          }
+          
+          Set-TransportConfig -RejectMessageOnShadowFailure ($RoleDatacenterRejectOnShadowFailure -eq $true)
+
+          if($RoleDatacenterFfoEnvironment -eq "True")
+          {
+              # Set the safety net hold period for the FFO environment to a smaller value as there are no mailboxes 
+              # in this environment that will be requesting resubmits.
+              Set-TransportConfig -DomainController $RoleDomainController -SafetyNetHoldTime 00:10:00;
+          }
+        </Global>
+      </BuildToBuildUpgrade>
+      <Uninstall />
+    </OrgTaskInfo>
+
+  </OrgTasks>
+
+</SetupComponentInfo>

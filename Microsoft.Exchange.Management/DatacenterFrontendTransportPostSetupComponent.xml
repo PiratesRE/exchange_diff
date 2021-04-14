@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo IsDatacenterOnly="true" IsDatacenterDedicatedOnly="true" Name="Datacenter FrontendTransport PostSetup">
+
+  <ServerTasks>
+    
+  </ServerTasks>
+
+</SetupComponentInfo>
+

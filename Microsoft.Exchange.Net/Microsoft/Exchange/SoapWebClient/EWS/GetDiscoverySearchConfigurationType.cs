@@ -1,0 +1,28 @@
+﻿using System;
+using System.CodeDom.Compiler;
+using System.ComponentModel;
+using System.Diagnostics;
+using System.Xml.Serialization;
+
+namespace Microsoft.Exchange.SoapWebClient.EWS
+{
+	[DebuggerStepThrough]
+	[XmlType(Namespace = "http://schemas.microsoft.com/exchange/services/2006/messages")]
+	[GeneratedCode("wsdl", "4.0.30319.17627")]
+	[DesignerCategory("code")]
+	[Serializable]
+	public class GetDiscoverySearchConfigurationType : BaseRequestType
+	{
+		public string SearchId;
+
+		public bool ExpandGroupMembership;
+
+		[XmlIgnore]
+		public bool ExpandGroupMembershipSpecified;
+
+		public bool InPlaceHoldConfigurationOnly;
+
+		[XmlIgnore]
+		public bool InPlaceHoldConfigurationOnlySpecified;
+	}
+}

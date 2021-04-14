@@ -1,0 +1,358 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{09CD9476-CD82-489E-B9E2-84B47CA141D5}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Microsoft.Exchange.Transport.Sync.Common</RootNamespace>
+    <AssemblyName>Microsoft.Exchange.Transport.Sync.Common</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AccessTokenNullOrEmptyException.cs" />
+    <Compile Include="CommonLoggingHelper.cs" />
+    <Compile Include="CompressedSyncStateSizeExceededException.cs" />
+    <Compile Include="ConnectionClosedException.cs" />
+    <Compile Include="ConnectionDownloadedLimitExceededException.cs" />
+    <Compile Include="ContactCsvFileContainsNoKnownColumnsException.cs" />
+    <Compile Include="ContactCsvFileEmptyException.cs" />
+    <Compile Include="ContactCsvFileTooLargeException.cs" />
+    <Compile Include="CorruptSubscriptionException.cs" />
+    <Compile Include="DataOutOfSyncException.cs" />
+    <Compile Include="DeltaSyncServerException.cs" />
+    <Compile Include="DeltaSyncServiceEndpointsLoadException.cs" />
+    <Compile Include="EcpUtilities.cs" />
+    <Compile Include="EmailGenerationUtilities.cs" />
+    <Compile Include="EventNotificationHelper.cs" />
+    <Compile Include="Exceptions\EventLogEntry.cs" />
+    <Compile Include="Exceptions\ImportContactsException.cs" />
+    <Compile Include="Exceptions\IOperationLevelForItemException.cs" />
+    <Compile Include="Exceptions\ISyncException.cs" />
+    <Compile Include="Exceptions\NonPromotableTransientException.cs" />
+    <Compile Include="Exceptions\PermanentOperationLevelForItemsException.cs" />
+    <Compile Include="Exceptions\ReportTransportSyncWatsonException.cs" />
+    <Compile Include="Exceptions\SyncPermanentException.cs" />
+    <Compile Include="Exceptions\SyncTransientException.cs" />
+    <Compile Include="ExceptionUtilities.cs" />
+    <Compile Include="ExSmtpClient\SmtpClientTransportSyncDebugOutput.cs" />
+    <Compile Include="FacebookNonPromotableTransientException.cs" />
+    <Compile Include="FailedCreateAggregationSubscriptionException.cs" />
+    <Compile Include="FailedDeleteAggregationSubscriptionException.cs" />
+    <Compile Include="FailedDeletePeopleConnectSubscriptionException.cs" />
+    <Compile Include="FailedSetAggregationSubscriptionException.cs" />
+    <Compile Include="FailedToGenerateVerificationEmailException.cs" />
+    <Compile Include="FaultInjectionUtil.cs" />
+    <Compile Include="HttpResponseStreamNullException.cs" />
+    <Compile Include="IMAPAuthenticationException.cs" />
+    <Compile Include="IMAPException.cs" />
+    <Compile Include="IMAPGmailNotSupportedException.cs" />
+    <Compile Include="IMAPInvalidItemException.cs" />
+    <Compile Include="IMAPInvalidServerException.cs" />
+    <Compile Include="IMAPUnsupportedVersionException.cs" />
+    <Compile Include="ImportContacts\CsvImportContact.cs" />
+    <Compile Include="ImportContacts\ImportContactBase.cs" />
+    <Compile Include="ImportContacts\ImportContactObject.cs" />
+    <Compile Include="ImportContacts\ImportContactProperties.cs" />
+    <Compile Include="ImportContacts\ImportContactsCsvSchema.cs" />
+    <Compile Include="ImportContacts\ImportContactXsoMapper.cs" />
+    <Compile Include="ImportContacts\OutlookCsvImportContact.cs" />
+    <Compile Include="ImportContacts\OutlookCsvLanguage.cs" />
+    <Compile Include="ImportContacts\OutlookCsvLanguageSelect.cs" />
+    <Compile Include="InternalErrorSavingContactException.cs" />
+    <Compile Include="Interop\CMultiLanguage.cs" />
+    <Compile Include="Interop\DetectEncodingInfo.cs" />
+    <Compile Include="Interop\IMultiLanguage2.cs" />
+    <Compile Include="Interop\MLDETECTCP.cs" />
+    <Compile Include="InvalidCsvFileFormatException.cs" />
+    <Compile Include="InvalidServerResponseException.cs" />
+    <Compile Include="InvalidSyncEngineStateException.cs" />
+    <Compile Include="KeyedPair.cs" />
+    <Compile Include="LinkedInNonPromotableTransientException.cs" />
+    <Compile Include="Logging\DiagnosticsLogSyncLogImplementation.cs" />
+    <Compile Include="Logging\GlobalSyncLogSession.cs" />
+    <Compile Include="Logging\InMemorySyncLogImplementation.cs" />
+    <Compile Include="Logging\ISyncLogImplementation.cs" />
+    <Compile Include="Logging\SyncLog.cs" />
+    <Compile Include="Logging\SyncLogBlackBox.cs" />
+    <Compile Include="Logging\SyncLogConfiguration.cs" />
+    <Compile Include="Logging\SyncLogSession.cs" />
+    <Compile Include="Logging\TSLID.cs" />
+    <Compile Include="Logging\WatsonReporter.cs" />
+    <Compile Include="MailboxFailureException.cs" />
+    <Compile Include="MailboxOverQuotaException.cs" />
+    <Compile Include="MailboxPermanentErrorSavingContactException.cs" />
+    <Compile Include="MailboxTransientExceptionSavingContactException.cs" />
+    <Compile Include="MessageDecompressionFailedException.cs" />
+    <Compile Include="MessageIdGenerationTransientException.cs" />
+    <Compile Include="MessageSizeLimitExceededException.cs" />
+    <Compile Include="MissingServerResponseException.cs" />
+    <Compile Include="MTOMParsingFailedException.cs" />
+    <Compile Include="MultipleNativeItemsHaveSameCloudIdException.cs" />
+    <Compile Include="NestedFoldersNotAllowedException.cs" />
+    <Compile Include="Pair.cs" />
+    <Compile Include="PartnerAuthenticationException.cs" />
+    <Compile Include="PoisonousRemoteServerException.cs" />
+    <Compile Include="Pop3AuthErrorException.cs" />
+    <Compile Include="Pop3BrokenResponseException.cs" />
+    <Compile Include="Pop3CannotConnectToServerException.cs" />
+    <Compile Include="Pop3CapabilitiesNotSupportedException.cs" />
+    <Compile Include="Pop3DisabledResponseException.cs" />
+    <Compile Include="Pop3ErrorResponseException.cs" />
+    <Compile Include="Pop3LeaveOnServerNotPossibleException.cs" />
+    <Compile Include="Pop3MirroredAccountNotPossibleException.cs" />
+    <Compile Include="Pop3NonCompliantServerException.cs" />
+    <Compile Include="Pop3PermErrorResponseException.cs" />
+    <Compile Include="Pop3TransientInUseAuthErrorException.cs" />
+    <Compile Include="Pop3TransientLoginDelayedAuthErrorException.cs" />
+    <Compile Include="Pop3TransientSystemAuthErrorException.cs" />
+    <Compile Include="Pop3UnknownResponseException.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\IProperty.cs" />
+    <Compile Include="Properties\IReadableProperty.cs" />
+    <Compile Include="Properties\IWriteableProperty.cs" />
+    <Compile Include="Properties\XSO\IXSOProperty.cs" />
+    <Compile Include="Properties\XSO\IXSOPropertyManager.cs" />
+    <Compile Include="Properties\XSO\XSOProperty.cs" />
+    <Compile Include="Properties\XSO\XSOPropertyBase.cs" />
+    <Compile Include="Properties\XSO\XSOPropertyManager.cs" />
+    <Compile Include="QueuedDictionary.cs" />
+    <Compile Include="QuotaExceededSavingContactException.cs" />
+    <Compile Include="RedundantAccountSubscriptionException.cs" />
+    <Compile Include="RedundantPimSubscriptionException.cs" />
+    <Compile Include="RemoteServerIsBackedOffException.cs" />
+    <Compile Include="RemoteServerTooSlowException.cs" />
+    <Compile Include="RequestContentException.cs" />
+    <Compile Include="RequestFormatException.cs" />
+    <Compile Include="Rpc\Cache\CacheValidationError.cs" />
+    <Compile Include="Rpc\Cache\SubscriptionCacheAction.cs" />
+    <Compile Include="Rpc\Cache\SubscriptionCacheObject.cs" />
+    <Compile Include="Rpc\Cache\SubscriptionCacheObjectState.cs" />
+    <Compile Include="Rpc\Cache\TestUserCachePropTag.cs" />
+    <Compile Include="Rpc\Cache\TestUserCacheResult.cs" />
+    <Compile Include="Rpc\Completion\SubscriptionCompletionPropTag.cs" />
+    <Compile Include="Rpc\Completion\SubscriptionCompletionResult.cs" />
+    <Compile Include="Rpc\Completion\SubscriptionCompletionStatus.cs" />
+    <Compile Include="Rpc\Notification\SubscriptionNotificationPropTag.cs" />
+    <Compile Include="Rpc\Notification\SubscriptionNotificationResult.cs" />
+    <Compile Include="Rpc\Notification\SubscriptionNotificationRpcMethodCode.cs" />
+    <Compile Include="Rpc\RpcHelper.cs" />
+    <Compile Include="Rpc\Submission\SubscriptionSubmissionPropTag.cs" />
+    <Compile Include="Rpc\Submission\SubscriptionSubmissionResult.cs" />
+    <Compile Include="SendAsDefaults\SendAsDefaultsManager.cs" />
+    <Compile Include="SendAsVerification\DelayedEmailSender.cs" />
+    <Compile Include="SendAsVerification\EmailSender.cs" />
+    <Compile Include="SendAsVerification\IEmailSender.cs" />
+    <Compile Include="SendAsVerification\SendAsVerificationEmail.cs" />
+    <Compile Include="SendAsVerification\SendAsVerificationExchangeRecipientLookup.cs" />
+    <Compile Include="SendAsVerification\SendAsVerificationUrlGenerator.cs" />
+    <Compile Include="SettingsViolationException.cs" />
+    <Compile Include="SkippedItemUtilities.cs" />
+    <Compile Include="SocketFactory.cs" />
+    <Compile Include="StoreRestartedException.cs" />
+    <Compile Include="Strings.cs" />
+    <Compile Include="SubscriptionInconsistentException.cs" />
+    <Compile Include="SubscriptionInvalidPasswordException.cs" />
+    <Compile Include="SubscriptionInvalidVersionException.cs" />
+    <Compile Include="SubscriptionNameAlreadyExistsException.cs" />
+    <Compile Include="SubscriptionNumberExceedLimitException.cs" />
+    <Compile Include="SubscriptionSyncException.cs" />
+    <Compile Include="SubscriptionUpdatePermanentException.cs" />
+    <Compile Include="SubscriptionUpdateTransientException.cs" />
+    <Compile Include="Subscription\ABDiscoveryManager.cs" />
+    <Compile Include="Subscription\AggregationStatus.cs" />
+    <Compile Include="Subscription\AggregationSubscription.cs" />
+    <Compile Include="Subscription\AggregationSubscriptionFlags.cs" />
+    <Compile Include="Subscription\AggregationSubscriptionIdentity.cs" />
+    <Compile Include="Subscription\AggregationSubscriptionType.cs" />
+    <Compile Include="Subscription\Connect\ConnectState.cs" />
+    <Compile Include="Subscription\Connect\ConnectSubscription.cs" />
+    <Compile Include="Subscription\Connect\ConnectSubscriptionCleanup.cs" />
+    <Compile Include="Subscription\Connect\ConnectSubscriptionProxy.cs" />
+    <Compile Include="Subscription\Connect\ConnectSubscriptionsEnumerator.cs" />
+    <Compile Include="Subscription\Connect\IConnectSubscription.cs" />
+    <Compile Include="Subscription\Connect\IConnectSubscriptionCleanup.cs" />
+    <Compile Include="Subscription\Connect\IRemoveConnectSubscription.cs" />
+    <Compile Include="Subscription\Connect\RemoveFacebookSubscription.cs" />
+    <Compile Include="Subscription\Connect\RemoveLinkedInSubscription.cs" />
+    <Compile Include="Subscription\DeltaSync\DeltaSyncAccountStatus.cs" />
+    <Compile Include="Subscription\DeltaSync\DeltaSyncAggregationFlags.cs" />
+    <Compile Include="Subscription\DeltaSync\DeltaSyncAggregationSubscription.cs" />
+    <Compile Include="Subscription\DeltaSync\HotmailSubscriptionProxy.cs" />
+    <Compile Include="Subscription\DetailedAggregationStatus.cs" />
+    <Compile Include="Subscription\FolderSupport.cs" />
+    <Compile Include="Subscription\Imap\IMAPAggregationFlags.cs" />
+    <Compile Include="Subscription\Imap\IMAPAggregationSubscription.cs" />
+    <Compile Include="Subscription\Imap\IMAPSubscriptionProxy.cs" />
+    <Compile Include="Subscription\Imap\IMAPSubscriptionValidator.cs" />
+    <Compile Include="Subscription\ISubscriptionManager.cs" />
+    <Compile Include="Subscription\ISyncWorkerData.cs" />
+    <Compile Include="Subscription\ItemSupport.cs" />
+    <Compile Include="Subscription\MailboxTableSubscriptionPropertyHelper.cs" />
+    <Compile Include="Subscription\Pim\AggregationSubscriptionConstraints.cs" />
+    <Compile Include="Subscription\Pim\AggregationType.cs" />
+    <Compile Include="Subscription\Pim\ExchangeMailboxOpenType.cs" />
+    <Compile Include="Subscription\Pim\PimAggregationSubscription.cs" />
+    <Compile Include="Subscription\Pim\PimSubscriptionProxy.cs" />
+    <Compile Include="Subscription\Pim\PimSubscriptionValidator.cs" />
+    <Compile Include="Subscription\Pim\SubscriptionProxyPropertyDefinition.cs" />
+    <Compile Include="Subscription\Pim\WindowsLiveServiceAggregationSubscription.cs" />
+    <Compile Include="Subscription\Pim\WindowsLiveSubscriptionProxy.cs" />
+    <Compile Include="Subscription\Pop\AuthenticationMechanism.cs" />
+    <Compile Include="Subscription\Pop\PopAggregationFlags.cs" />
+    <Compile Include="Subscription\Pop\PopAggregationSubscription.cs" />
+    <Compile Include="Subscription\Pop\PopSubscriptionProxy.cs" />
+    <Compile Include="Subscription\Pop\PopSubscriptionValidator.cs" />
+    <Compile Include="Subscription\Pop\SecurityMechanism.cs" />
+    <Compile Include="Subscription\SendAsError.cs" />
+    <Compile Include="Subscription\SendAsManager.cs" />
+    <Compile Include="Subscription\SendAsState.cs" />
+    <Compile Include="Subscription\SendAsSubscriptionsAndPeopleConnectResult.cs" />
+    <Compile Include="Subscription\SerializedSubscription.cs" />
+    <Compile Include="Subscription\SubscriptionCreationType.cs" />
+    <Compile Include="Subscription\SubscriptionEvents.cs" />
+    <Compile Include="Subscription\SubscriptionMailboxSession.cs" />
+    <Compile Include="Subscription\SubscriptionManager.cs" />
+    <Compile Include="Subscription\SubscriptionMessageHelper.cs" />
+    <Compile Include="Subscription\SubscriptionNotificationClient.cs" />
+    <Compile Include="Subscription\SubscriptionStateTransitionHelper.cs" />
+    <Compile Include="Subscription\SubscriptionUpgrader.cs" />
+    <Compile Include="Subscription\SyncPhase.cs" />
+    <Compile Include="Subscription\SyncQuirks.cs" />
+    <Compile Include="Subscription\VerificationEmailState.cs" />
+    <Compile Include="SyncConflictException.cs" />
+    <Compile Include="SyncEngineSyncStorageProviderCreationException.cs" />
+    <Compile Include="SyncHealthLog\ISyncHealthLog.cs" />
+    <Compile Include="SyncHealthLog\SyncHealthEventsStrings.cs" />
+    <Compile Include="SyncHealthLog\SyncHealthLog.cs" />
+    <Compile Include="SyncHealthLog\SyncHealthLogConfiguration.cs" />
+    <Compile Include="SyncPoisonItemFoundException.cs" />
+    <Compile Include="SyncPropertyValidationException.cs" />
+    <Compile Include="SyncStateSizeExceededException.cs" />
+    <Compile Include="SyncTooSlowException.cs" />
+    <Compile Include="SyncUnhandledException.cs" />
+    <Compile Include="SyncUtilities.cs" />
+    <Compile Include="TlsFailureException.cs" />
+    <Compile Include="TooManyFoldersException.cs" />
+    <Compile Include="TransportSyncCommonEventLogConstants.cs" />
+    <Compile Include="TransportSyncNotificationEvent.cs" />
+    <Compile Include="UncompressedSyncStateSizeExceededException.cs" />
+    <Compile Include="UnexpectedContentTypeException.cs" />
+    <Compile Include="UnknownDeltaSyncException.cs" />
+    <Compile Include="UnresolveableFolderNameException.cs" />
+    <Compile Include="UserAccessException.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Strings.resources" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.DKM.Proxy\Microsoft.DKM.Proxy.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140D7}</Project>
+      <Name>Microsoft.DKM.Proxy</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Common\Microsoft.Exchange.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140F0}</Project>
+      <Name>Microsoft.Exchange.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Configuration.ObjectModel\Microsoft.Exchange.Configuration.ObjectModel.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140FC}</Project>
+      <Name>Microsoft.Exchange.Configuration.ObjectModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Core.Strings\Microsoft.Exchange.Core.Strings.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14103}</Project>
+      <Name>Microsoft.Exchange.Core.Strings</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.ApplicationLogic\Microsoft.Exchange.Data.ApplicationLogic.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14104}</Project>
+      <Name>Microsoft.Exchange.Data.ApplicationLogic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Common\Microsoft.Exchange.Data.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140D3}</Project>
+      <Name>Microsoft.Exchange.Data.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Directory\Microsoft.Exchange.Data.Directory.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14105}</Project>
+      <Name>Microsoft.Exchange.Data.Directory</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Storage\Microsoft.Exchange.Data.Storage.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1410F}</Project>
+      <Name>Microsoft.Exchange.Data.Storage</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data\Microsoft.Exchange.Data.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14106}</Project>
+      <Name>Microsoft.Exchange.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Diagnostics\Microsoft.Exchange.Diagnostics.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14113}</Project>
+      <Name>Microsoft.Exchange.Diagnostics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Extensibility.Internal\Microsoft.Exchange.Extensibility.Internal.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14126}</Project>
+      <Name>Microsoft.Exchange.Extensibility.Internal</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.MailboxReplicationService.Common\Microsoft.Exchange.MailboxReplicationService.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14147}</Project>
+      <Name>Microsoft.Exchange.MailboxReplicationService.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Net\Microsoft.Exchange.Net.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14178}</Project>
+      <Name>Microsoft.Exchange.Net</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Rpc\Microsoft.Exchange.Rpc.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14188}</Project>
+      <Name>Microsoft.Exchange.Rpc</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.StoreProvider\Microsoft.Exchange.StoreProvider.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141B9}</Project>
+      <Name>Microsoft.Exchange.StoreProvider</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Transport\Microsoft.Exchange.Transport.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141CD}</Project>
+      <Name>Microsoft.Exchange.Transport</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.VariantConfiguration\Microsoft.Exchange.VariantConfiguration.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141E0}</Project>
+      <Name>Microsoft.Exchange.VariantConfiguration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Office.Datacenter.ActiveMonitoringLocal\Microsoft.Office.Datacenter.ActiveMonitoringLocal.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141ED}</Project>
+      <Name>Microsoft.Office.Datacenter.ActiveMonitoringLocal</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\mscorlib\mscorlib.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141F1}</Project>
+      <Name>mscorlib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

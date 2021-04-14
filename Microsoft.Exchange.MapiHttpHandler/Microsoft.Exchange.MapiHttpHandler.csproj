@@ -1,0 +1,191 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{09CD9476-CD82-489E-B9E2-84B47CA14169}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Microsoft.Exchange.MapiHttp</RootNamespace>
+    <AssemblyName>Microsoft.Exchange.MapiHttpHandler</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AsyncOperation.cs" />
+    <Compile Include="AsyncOperationCookieFlags.cs" />
+    <Compile Include="AsyncOperationInfo.cs" />
+    <Compile Include="AsyncOperationTracker.cs" />
+    <Compile Include="ConnectParams.cs" />
+    <Compile Include="DelayTimer.cs" />
+    <Compile Include="DictionaryBasedOperationFactory.cs" />
+    <Compile Include="DisconnectParams.cs" />
+    <Compile Include="EmsmdbAsyncOperation.cs" />
+    <Compile Include="EmsmdbConnectAsyncOperation.cs" />
+    <Compile Include="EmsmdbDisconnectAsyncOperation.cs" />
+    <Compile Include="EmsmdbDummyAsyncOperation.cs" />
+    <Compile Include="EmsmdbExecuteAsyncOperation.cs" />
+    <Compile Include="EmsmdbHttpHandler.cs" />
+    <Compile Include="EmsmdbLegacyConnectAsyncOperation.cs" />
+    <Compile Include="EmsmdbLegacyDisconnectAsyncOperation.cs" />
+    <Compile Include="EmsmdbLegacyExecuteAsyncOperation.cs" />
+    <Compile Include="EmsmdbLegacyNotificationWaitAsyncOperation.cs" />
+    <Compile Include="EmsmdbNotificationWaitAsyncOperation.cs" />
+    <Compile Include="EmsmdbPerformanceCountersWrapper.cs" />
+    <Compile Include="EmsmdbSecurityContextAsyncOperation.cs" />
+    <Compile Include="ExecuteParams.cs" />
+    <Compile Include="ExtensionMethods.cs" />
+    <Compile Include="HttpApplicationBase.cs" />
+    <Compile Include="HttpApplicationWrapper.cs" />
+    <Compile Include="HttpContextExtensionMethods.cs" />
+    <Compile Include="HttpContextLoggingExtensionMethods.cs" />
+    <Compile Include="IAsyncOperationFactory.cs" />
+    <Compile Include="MapiHttpApplication.cs" />
+    <Compile Include="MapiHttpBackendRehydrationModule.cs" />
+    <Compile Include="MapiHttpClientBinding.cs" />
+    <Compile Include="MapiHttpContextWrapper.cs" />
+    <Compile Include="MapiHttpDatabaseValidationModule.cs" />
+    <Compile Include="MapiHttpDispatchedCallResult.cs" />
+    <Compile Include="MapiHttpHandler.cs" />
+    <Compile Include="MapiHttpLoggingModule.cs" />
+    <Compile Include="MapiHttpModule.cs" />
+    <Compile Include="MapiHttpRequestState.cs" />
+    <Compile Include="MapiHttpStatusPage.cs" />
+    <Compile Include="NotificationWaitParams.cs" />
+    <Compile Include="NspiAsyncOperation.cs" />
+    <Compile Include="NspiBindAsyncOperation.cs" />
+    <Compile Include="NspiCompareDNTsAsyncOperation.cs" />
+    <Compile Include="NspiDNToEphAsyncOperation.cs" />
+    <Compile Include="NspiGetMatchesAsyncOperation.cs" />
+    <Compile Include="NspiGetPropListAsyncOperation.cs" />
+    <Compile Include="NspiGetPropsAsyncOperation.cs" />
+    <Compile Include="NspiGetSpecialTableAsyncOperation.cs" />
+    <Compile Include="NspiGetTemplateInfoAsyncOperation.cs" />
+    <Compile Include="NspiHttpHandler.cs" />
+    <Compile Include="NspiModLinkAttAsyncOperation.cs" />
+    <Compile Include="NspiModPropsAsyncOperation.cs" />
+    <Compile Include="NspiPerformanceCountersWrapper.cs" />
+    <Compile Include="NspiQueryColumnsAsyncOperation.cs" />
+    <Compile Include="NspiQueryRowsAsyncOperation.cs" />
+    <Compile Include="NspiResolveNamesAsyncOperation.cs" />
+    <Compile Include="NspiResortRestrictionAsyncOperation.cs" />
+    <Compile Include="NspiSecurityContextAsyncOperation.cs" />
+    <Compile Include="NspiSeekEntriesAsyncOperation.cs" />
+    <Compile Include="NspiUnbindAsyncOperation.cs" />
+    <Compile Include="NspiUpdateStatAsyncOperation.cs" />
+    <Compile Include="PerformanceCounters\EmsmdbPerformanceCounters.cs" />
+    <Compile Include="PerformanceCounters\NspiPerformanceCounters.cs" />
+    <Compile Include="PingAsyncOperation.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RfriAsyncOperation.cs" />
+    <Compile Include="RfriGetAddressBookUrlAsyncOperation.cs" />
+    <Compile Include="RfriGetMailboxUrlAsyncOperation.cs" />
+    <Compile Include="RfriSecurityContextAsyncOperation.cs" />
+    <Compile Include="SessionContext.cs" />
+    <Compile Include="SessionContextActivity.cs" />
+    <Compile Include="SessionContextIdentifier.cs" />
+    <Compile Include="SessionContextInfo.cs" />
+    <Compile Include="SessionContextManager.cs" />
+    <Compile Include="SessionRundownReason.cs" />
+    <Compile Include="UserContext.cs" />
+    <Compile Include="UserContextActivity.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.Exchange.AddressBook.Service\Microsoft.Exchange.AddressBook.Service.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140D8}</Project>
+      <Name>Microsoft.Exchange.AddressBook.Service</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.ApplicationLogic\Microsoft.Exchange.Data.ApplicationLogic.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14104}</Project>
+      <Name>Microsoft.Exchange.Data.ApplicationLogic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Directory\Microsoft.Exchange.Data.Directory.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14105}</Project>
+      <Name>Microsoft.Exchange.Data.Directory</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data\Microsoft.Exchange.Data.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14106}</Project>
+      <Name>Microsoft.Exchange.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Diagnostics\Microsoft.Exchange.Diagnostics.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14113}</Project>
+      <Name>Microsoft.Exchange.Diagnostics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.MapiHttpClient\Microsoft.Exchange.MapiHttpClient.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14168}</Project>
+      <Name>Microsoft.Exchange.MapiHttpClient</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Net\Microsoft.Exchange.Net.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14178}</Project>
+      <Name>Microsoft.Exchange.Net</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.RpcClientAccess.ExMonHandler\Microsoft.Exchange.RpcClientAccess.ExMonHandler.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1418A}</Project>
+      <Name>Microsoft.Exchange.RpcClientAccess.ExMonHandler</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.RpcClientAccess.Handler\Microsoft.Exchange.RpcClientAccess.Handler.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1418B}</Project>
+      <Name>Microsoft.Exchange.RpcClientAccess.Handler</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.RpcClientAccess.Parser\Microsoft.Exchange.RpcClientAccess.Parser.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1418D}</Project>
+      <Name>Microsoft.Exchange.RpcClientAccess.Parser</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.RpcClientAccess.Server\Microsoft.Exchange.RpcClientAccess.Server.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1418E}</Project>
+      <Name>Microsoft.Exchange.RpcClientAccess.Server</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.RpcClientAccess\Microsoft.Exchange.RpcClientAccess.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14189}</Project>
+      <Name>Microsoft.Exchange.RpcClientAccess</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Rpc\Microsoft.Exchange.Rpc.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14188}</Project>
+      <Name>Microsoft.Exchange.Rpc</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Security\Microsoft.Exchange.Security.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14198}</Project>
+      <Name>Microsoft.Exchange.Security</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.WorkloadManagement\Microsoft.Exchange.WorkloadManagement.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141E1}</Project>
+      <Name>Microsoft.Exchange.WorkloadManagement</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\mscorlib\mscorlib.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141F1}</Project>
+      <Name>mscorlib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

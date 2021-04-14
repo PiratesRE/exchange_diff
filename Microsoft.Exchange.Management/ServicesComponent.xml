@@ -1,0 +1,312 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo Name="Client Access Services Configuration" DescriptionId="ServicesComponentDescription">
+
+  <ServerTasks>
+
+    <!-- Create/remove Autodiscover virtual directory -->
+    <ServerTaskInfo Id="_a8409d9e1e024948a9cf2805368de7dd" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          new-AutodiscoverVirtualDirectory -Role Mailbox -WebSiteName "Exchange Back End" -DomainController $RoleDomainController -WSSecurityAuthentication:$true -BasicAuthentication:$false -WindowsAuthentication:$true;
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade>
+        <!-- In the odd case that there is no autoD vdir on upgrade, let's create one-->
+        <!-- If it's already there, B2B could have dropped a new web.config, so update the auth settings -->
+        <Standalone>
+          Update-AutodiscoverVirtualDirectoryVersion -DomainController $RoleDomainController;
+          $BEVdirIdentity = $RoleNetBIOSName + "\Autodiscover (Exchange Back End)";
+          $be = get-AutodiscoverVirtualDirectory -ShowMailboxVirtualDirectories -Identity $BEVdirIdentity -DomainController $RoleDomainController -ErrorAction SilentlyContinue;
+          if ($be -eq $null)
+          {
+           new-AutodiscoverVirtualDirectory -Role Mailbox -WebSiteName "Exchange Back End" -DomainController $RoleDomainController -WSSecurityAuthentication:$true -BasicAuthentication:$false -WindowsAuthentication:$true;
+          }
+          else
+          {
+            $be | set-AutodiscoverVirtualDirectory -windowsAuthentication:$be.WindowsAuthentication -WSSecurityAuthentication:$be.WSSecurityAuthentication -BasicAuthentication:$be.BasicAuthentication
+          }
+          . "$RoleInstallPath\Scripts\Update-AppPoolManagedFrameworkVersion.ps1" -AppPoolName:"MSExchangeAutodiscoverAppPool" -Version:"v4.0";
+        </Standalone>
+      </BuildToBuildUpgrade>
+      <DisasterRecovery>
+        <Standalone>
+          $BEVdirIdentity = $RoleNetBIOSName + "\Autodiscover (Exchange Back End)";
+          get-AutodiscoverVirtualDirectory -ShowMailboxVirtualDirectories -Identity $BEVdirIdentity -DomainController $RoleDomainController | remove-AutodiscoverVirtualDirectory -DomainController $RoleDomainController;
+          new-AutodiscoverVirtualDirectory -Role Mailbox -WebSiteName "Exchange Back End" -DomainController $RoleDomainController -WSSecurityAuthentication:$true -BasicAuthentication:$false -WindowsAuthentication:$true;
+        </Standalone>
+      </DisasterRecovery>
+      <Uninstall>
+        <Standalone>
+          get-AutodiscoverVirtualDirectory -ShowMailboxVirtualDirectories -Server $RoleFqdnOrName -DomainController $RoleDomainController | remove-AutodiscoverVirtualDirectory -DomainController $RoleDomainController;
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Create Outlook provider config -->
+    <ServerTaskInfo Id="_2dda68bb530e49b989d64e8489933149" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>new-OutlookProvider -Name:"EXCH" -DomainController $RoleDomainController</Standalone>
+      </Install>
+      <BuildToBuildUpgrade />
+      <DisasterRecovery />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <ServerTaskInfo Id="_4531e68ec4ba47d7a5f8c85f54a98ccb" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>new-OutlookProvider -Name:"EXPR" -DomainController $RoleDomainController</Standalone>
+      </Install>
+      <BuildToBuildUpgrade />
+      <DisasterRecovery />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <ServerTaskInfo Id="_bac57148d2f24001adb257796d1e18dd" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>new-OutlookProvider -Name:"WEB" -DomainController $RoleDomainController</Standalone>
+      </Install>
+      <BuildToBuildUpgrade />
+      <DisasterRecovery />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Create/remove Mobile Sync virtual directory -->
+    <ServerTaskInfo Id="_98bb14bb96bc43babb98f8d36183263e" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          new-ActiveSyncVirtualDirectory -Role Mailbox -DomainController $RoleDomainController -WebSiteName "Exchange Back End";
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade>
+        <Standalone>
+          $BEVdirIdentity = $RoleNetBIOSName + "\Microsoft-Server-ActiveSync (Exchange Back End)";
+
+          $be = get-ActiveSyncVirtualDirectory -ShowMailboxVirtualDirectories -Identity $BEVdirIdentity -DomainController $RoleDomainController -ErrorAction SilentlyContinue;
+
+          if ($be -eq $null)
+          {
+             new-ActiveSyncVirtualDirectory -Role Mailbox -DomainController $RoleDomainController -WebSiteName "Exchange Back End";
+          }
+          else
+          {
+             update-ActiveSyncVirtualDirectory $be -DomainController $RoleDomainController -InstallIsapiFilter $false
+          }
+          . "$RoleInstallPath\Scripts\Update-AppPoolManagedFrameworkVersion.ps1" -AppPoolName:"MSExchangeSyncAppPool" -Version:"v4.0";
+        </Standalone>
+      </BuildToBuildUpgrade>
+      <DisasterRecovery>
+        <Standalone>
+          $BEVdirIdentity = $RoleNetBIOSName + "\Microsoft-Server-ActiveSync (Exchange Back End)";
+          get-ActiveSyncVirtualDirectory -ShowMailboxVirtualDirectories -Identity $BEVdirIdentity -DomainController $RoleDomainController | remove-ActiveSyncVirtualDirectory -DomainController $RoleDomainController
+          new-ActiveSyncVirtualDirectory -Role Mailbox -DomainController $RoleDomainController -WebSiteName "Exchange Back End";
+        </Standalone>
+      </DisasterRecovery>
+      <Uninstall>
+        <Standalone>get-ActiveSyncVirtualDirectory -ShowMailboxVirtualDirectories -server $RoleFqdnOrName -DomainController $RoleDomainController | remove-ActiveSyncVirtualDirectory -DomainController $RoleDomainController</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Configure external URL for Mobile Sync virtual directory-->
+    <ServerTaskInfo Id="_84a204b0e27747ccb33aa45dc322234f" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>
+          $ExternalActivesyncUrl = $null;
+          if ($RoleExternalCASServerDomain -ne $null)
+          {
+            $ExternalActivesyncUrl = "https://" + $RoleExternalCASServerDomain + "/Microsoft-Server-ActiveSync";
+            Get-ActiveSyncVirtualDirectory -Server:$RoleFqdnOrName -DomainController $RoleDomainController | Set-ActiveSyncVirtualDirectory -ExternalUrl $ExternalActivesyncUrl;
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall/>
+    </ServerTaskInfo>
+
+    <!-- Set install path in app config "ClientAccess/sync" -->
+    <ServerTaskInfo Id="_d38ac523f5a042ac810c074c7b03c874" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>set-InstallPathInAppConfig -ConfigFileRelativePath "ClientAccess\sync\" -ConfigFileName web.config</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Set install path in app config "ClientAccess/exchweb/ews" -->
+    <ServerTaskInfo Id="_2256d86e825f44b1a244667adbdc00be" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>set-InstallPathInAppConfig -ConfigFileRelativePath "ClientAccess\exchweb\ews\" -ConfigFileName web.config</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- New default policy -->
+    <!-- Logic:
+      - Get the default policy
+          - If no policy is assigned as default
+              - Check if there is a policy named as "Default"
+                  - If there is not a policy named "Default"
+                     - Create a default policy named "Default"
+                  - Otherwise, set the existing "Default" policy as the default policy
+    -->
+    <ServerTaskInfo Id="_3827892f74db4a71b3b570b9c967ac2d" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          $defaultPolicy = Get-MobileDeviceMailboxPolicy | where {$_.IsDefault -eq $true};
+
+          if($defaultPolicy -eq $null)
+          {
+              $policyDefault = Get-MobileDeviceMailboxPolicy | where {$_.Identity -eq "Default"};
+
+              if($policyDefault -eq $null)
+              {
+                New-MobileDeviceMailboxPolicy "Default" -IsDefault:$true -AllowNonProvisionableDevices:$true -Confirm:$false;
+              }
+              else
+              {
+                Set-MobileDeviceMailboxPolicy -Identity:$policyDefault.Identity -IsDefault:$true -Confirm:$false;
+              }
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+    
+    <!-- ActiveSync Organization Settings -->
+    <ServerTaskInfo Id="_533f2eb5881742bda97ebe77501d7729" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+            $activeSyncOrganizationSettings = Get-ActiveSyncOrganizationSettings -DomainController $RoleDomainController;
+             
+            if($activeSyncOrganizationSettings -eq $null)
+            {             
+              New-ActiveSyncOrganizationSettings -DomainController $RoleDomainController;
+            }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Install ActiveSync Device Class Container -->
+    <ServerTaskInfo Id="_FCD8B44D82B9483191548C4A4A049D33" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>         
+            <!-- Create the container for DeviceClass nodes.  If it already exists, this task will succeed with noop. -->
+            Install-ActiveSyncDeviceClassContainer -DomainController $RoleDomainController;
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Install availability config -->
+    <ServerTaskInfo Id="_86301018d6f8442c90f71474e03bdd7b" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>install-AvailabilityConfig -DomainController $RoleDomainController</Standalone>
+      </Install>
+      <BuildToBuildUpgrade />
+      <DisasterRecovery />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Update the legacyImpersonationPolicy setting in aspnet.config file (for Availability Service)-->
+    <ServerTaskInfo Id="_ad501a77590e40b690367fc6f8b453ea" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>Update-AspnetConfig</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Create/remove Web Services virtual directory -->
+    <ServerTaskInfo Id="_ca981854eaa74c1ca684178d9ea52fff" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          $BackEndPort=":444";
+          $urlToUse="https://" + $RoleFqdnOrName + $BackEndPort + "/ews/exchange.asmx";
+          new-WebServicesVirtualDirectory -Role Mailbox -WebSiteName "Exchange Back End" -windowsAuthentication:$true -WSSecurityAuthentication:$true -BasicAuthentication:$false -InternalNLBBypassUrl $urlToUse -DomainController $RoleDomainController -Force -GzipLevel High;
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade>
+        <!-- Update the InternalNLBBypassURL reset windows auth  (DCR 118894)-->
+        <!-- In the odd case that there is no EWS vdir on upgrade, let's create one-->
+        <!-- If it's already there, B2B could have dropped a new web.config, so update the auth settings -->
+        <Standalone>
+          update-WebServicesVirtualDirectoryVersion -DomainController $RoleDomainController;
+          $BEVdirIdentity = $RoleNetBIOSName + "\EWS (Exchange Back End)";
+          $be = get-WebServicesVirtualDirectory -ShowMailboxVirtualDirectories -Identity $BEVdirIdentity -DomainController $RoleDomainController -ErrorAction SilentlyContinue;
+          if ($be -eq $null)
+          {
+            $BackEndPort=":444";
+            $urlToUse = "https://" + $RoleFqdnOrName + $BackEndPort + "/ews/exchange.asmx";
+            new-WebServicesVirtualDirectory -Role Mailbox -WebSiteName "Exchange Back End" -windowsAuthentication:$true -WSSecurityAuthentication:$true -BasicAuthentication:$false -InternalNLBBypassUrl $urlToUse -DomainController $RoleDomainController -Force -GzipLevel High;
+          }
+          else
+          {
+            $be | set-WebServicesVirtualDirectory -windowsAuthentication:$be.WindowsAuthentication -WSSecurityAuthentication:$be.WSSecurityAuthentication -BasicAuthentication:$be.BasicAuthentication
+          }
+          . "$RoleInstallPath\Scripts\Update-AppPoolManagedFrameworkVersion.ps1" -AppPoolName:"MSExchangeServicesAppPool" -Version:"v4.0";
+        </Standalone>
+      </BuildToBuildUpgrade>
+      <DisasterRecovery>
+        <Standalone>
+          $BEVdirIdentity = $RoleNetBIOSName + "\EWS (Exchange Back End)";
+          $BackEndPort=":444";
+          $urlToUse = "https://" + $RoleFqdnOrName + "/ews/exchange.asmx";
+          get-WebServicesVirtualDirectory -ShowMailboxVirtualDirectories -Identity $BEVdirIdentity -DomainController $RoleDomainController | remove-WebServicesVirtualDirectory -DomainController $RoleDomainController;
+          new-WebServicesVirtualDirectory -Role Mailbox -WebSiteName "Exchange Back End" -windowsAuthentication:$true -WSSecurityAuthentication:$true -BasicAuthentication:$false  -InternalNLBBypassUrl $urlToUse -DomainController $RoleDomainController -Force -GzipLevel High;
+        </Standalone>
+      </DisasterRecovery>
+      <!-- Remove all existing Web Services virtual directories -->
+      <Uninstall>
+        <Standalone>
+          get-WebServicesVirtualDirectory	-ShowMailboxVirtualDirectories -Server $RoleFqdnOrName -DomainController $RoleDomainController | remove-WebServicesVirtualDirectory -DomainController $RoleDomainController -Force;
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Configurate external URL for Web Services virtual directory-->
+    <ServerTaskInfo Id="_a53e2684895d4a62a07601a0c28d68d7" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>
+          if ($RoleExternalCASServerDomain -ne $null)
+          {
+            $ExternalWebServicesUrl = "https://" + $RoleExternalCASServerDomain + "/ews/exchange.asmx";
+            Get-WebServicesVirtualDirectory -ShowMailboxVirtualDirectories -Server:$RoleFqdnOrName -DomainController $RoleDomainController | Set-WebServicesVirtualDirectory -ExternalUrl $ExternalWebServicesUrl;
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade/>
+      <DisasterRecovery/>
+      <Uninstall/>
+    </ServerTaskInfo>
+
+    <!-- Configure external URL for AutoDiscover virtual directory-->
+    <ServerTaskInfo Id="_40c8aff9994640a397ce26eacd15f77a" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>
+          if ($RoleExternalCASServerDomain -ne $null)
+          {
+            $ExternalAutoDiscoverUrl = "https://" + $RoleExternalCASServerDomain + "/autodiscover/autodiscover.svc";
+            Get-AutodiscoverVirtualDirectory -ShowMailboxVirtualDirectories -Server:$RoleFqdnOrName -DomainController $RoleDomainController | Set-AutodiscoverVirtualDirectory -ExternalUrl $ExternalAutoDiscoverUrl;
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade />
+      <DisasterRecovery />
+      <Uninstall />
+    </ServerTaskInfo>
+
+  </ServerTasks>
+
+</SetupComponentInfo>
+

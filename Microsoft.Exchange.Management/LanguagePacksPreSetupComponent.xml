@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo Name="LanguagePacks PreSetup" DescriptionId="SetupComponentPreSetupLanguagePacks">
+
+  <ServerTasks>
+    <!-- Need to have at least one ServerTaskInfo block, even an empty one. -->
+    <ServerTaskInfo Id="_53e0e2c999314749b60bfefa0ecdf70f" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone></Standalone>
+      </Install>
+      <BuildToBuildUpgrade/>
+      <DisasterRecovery />
+      <Uninstall />
+    </ServerTaskInfo>
+
+  </ServerTasks>
+</SetupComponentInfo>
+

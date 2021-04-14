@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo IsPartnerHostedOnly="true" Name="Partner Hosted Client Access Configuration">
+
+  <ServerTasks>
+
+    <!-- Make ServicePlanHostingRemap.csv.sample a non sample file -->
+    <!-- We deploy ServicePlanHostingRemap.csv.sample that contains only sample offers. 
+         We do not deploy it as a production file to avoid that an upgrade replace the file that was already modified with production offers.
+         We should deploy this file always with the sample extension, so in case it gets replace no harm will be done on the production file.
+         In case there is no production file we can make this file (sample) as non sample by renaming the extension.
+          -->
+    <ServerTaskInfo Id="_547e56f7ddfd4c22a5bcb84e581edbb6" Component="EXCHANGE14:\Current\Release\Transport\Hosting SKU\Setup">
+      <Install>
+        <Standalone>
+          Write-ExchangeSetupLog -Info "Checking if ServicePlanHostingRemap.csv exists.";
+          $powerShellVdirPath = Join-Path $RoleInstallPath "ClientAccess\ServicePlans";
+          if (!(Test-Path("$powerShellVdirPath\ServicePlanHostingRemap.csv")))
+          {
+            Write-ExchangeSetupLog -Info "No ServicePlanHostingRemap.csv was found, copying from ServicePlanHostingRemap.csv.sample";
+            copy-item "$powerShellVdirPath\ServicePlanHostingRemap.csv.sample" -destination "$powerShellVdirPath\ServicePlanHostingRemap.csv" -force;
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall />
+    </ServerTaskInfo>
+
+  </ServerTasks>
+</SetupComponentInfo>

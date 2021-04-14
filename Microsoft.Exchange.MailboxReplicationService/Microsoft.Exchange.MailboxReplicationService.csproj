@@ -1,0 +1,281 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{09CD9476-CD82-489E-B9E2-84B47CA14148}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Microsoft.Exchange.MailboxReplicationService</RootNamespace>
+    <AssemblyName>Microsoft.Exchange.MailboxReplicationService</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Management.Automation" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ActionUpdateGroup.cs" />
+    <Compile Include="ADInconsistencyCheck.cs" />
+    <Compile Include="AuxFolderMoveJob.cs" />
+    <Compile Include="BadItemCategory.cs" />
+    <Compile Include="BadItemClassifier.cs" />
+    <Compile Include="BadItemCounter.cs" />
+    <Compile Include="BadItemData.cs" />
+    <Compile Include="BadItemLog.cs" />
+    <Compile Include="BadItemMarker.cs" />
+    <Compile Include="BaseJob.cs" />
+    <Compile Include="BaseJobDiagnosticXml.cs" />
+    <Compile Include="ClearRehomeJob.cs" />
+    <Compile Include="ContentChangeResult.cs" />
+    <Compile Include="CopyMessagesCount.cs" />
+    <Compile Include="DestinationFolderWrapper.cs" />
+    <Compile Include="DestinationMailboxWrapper.cs" />
+    <Compile Include="EnumHierarchyFlags.cs" />
+    <Compile Include="EnumHierarchyResult.cs" />
+    <Compile Include="ExportJob.cs" />
+    <Compile Include="FailureData.cs" />
+    <Compile Include="FailureLog.cs" />
+    <Compile Include="FolderBatch.cs" />
+    <Compile Include="FolderContentsCrawler.cs" />
+    <Compile Include="FolderContentsMapper.cs" />
+    <Compile Include="FolderContentsMapperFlags.cs" />
+    <Compile Include="FolderHierarchy.cs" />
+    <Compile Include="FolderIdTranslator.cs" />
+    <Compile Include="FolderMap.cs" />
+    <Compile Include="FolderMapping.cs" />
+    <Compile Include="FolderRecDataFlags.cs" />
+    <Compile Include="FolderRecWrapper.cs" />
+    <Compile Include="FolderRecWrapperDataContext.cs" />
+    <Compile Include="FolderState.cs" />
+    <Compile Include="FolderStateSnapshot.cs" />
+    <Compile Include="FolderUpdates.cs" />
+    <Compile Include="FolderWrapper.cs" />
+    <Compile Include="GetFolderMapFlags.cs" />
+    <Compile Include="IJob.cs" />
+    <Compile Include="IJobQuarantineProvider.cs" />
+    <Compile Include="ImapFolderContentsMapper.cs" />
+    <Compile Include="ImportJob.cs" />
+    <Compile Include="IncrementalMergeJob.cs" />
+    <Compile Include="IPeriodicWorkItem.cs" />
+    <Compile Include="Job.cs" />
+    <Compile Include="JobCheck.cs" />
+    <Compile Include="JobEventArgs.cs" />
+    <Compile Include="JobPickupRec.cs" />
+    <Compile Include="JobPickupResult.cs" />
+    <Compile Include="JobQuarantineProvider.cs" />
+    <Compile Include="JobScheduler.cs" />
+    <Compile Include="JobSortFlags.cs" />
+    <Compile Include="JobSortKey.cs" />
+    <Compile Include="JobState.cs" />
+    <Compile Include="LightJobBase.cs" />
+    <Compile Include="LocalMoveJob.cs" />
+    <Compile Include="MailboxChanges.cs" />
+    <Compile Include="MailboxContentsCrawler.cs" />
+    <Compile Include="MailboxCopierBase.cs" />
+    <Compile Include="MailboxCopierFlags.cs" />
+    <Compile Include="MailboxMapiSyncState.cs" />
+    <Compile Include="MailboxMerger.cs" />
+    <Compile Include="MailboxMover.cs" />
+    <Compile Include="MailboxReplicationService.cs" />
+    <Compile Include="MailboxSizeTracker.cs" />
+    <Compile Include="MailboxSyncerJobs.cs" />
+    <Compile Include="MailboxUpdates.cs" />
+    <Compile Include="MailboxWrapper.cs" />
+    <Compile Include="MailboxWrapperFlags.cs" />
+    <Compile Include="MergeJob.cs" />
+    <Compile Include="MergeSyncContext.cs" />
+    <Compile Include="MessageRecComparer.cs" />
+    <Compile Include="MessageRecSorter.cs" />
+    <Compile Include="MessageRecType.cs" />
+    <Compile Include="MessageUpdateType.cs" />
+    <Compile Include="MoveBaseJob.cs" />
+    <Compile Include="MoveJob.cs" />
+    <Compile Include="MRSAuthorizationManager.cs" />
+    <Compile Include="MRSIssueCache.cs" />
+    <Compile Include="MRSPoisonedJobIssue.cs" />
+    <Compile Include="MRSQueue.cs" />
+    <Compile Include="MRSQueueDiagnosticInfoXML.cs" />
+    <Compile Include="MRSService.cs" />
+    <Compile Include="MrsSystemTask.cs" />
+    <Compile Include="NamedPropTranslator.cs" />
+    <Compile Include="OlcMigrationJob.cs" />
+    <Compile Include="PagedMergeJob.cs" />
+    <Compile Include="PeriodicJobExecuter.cs" />
+    <Compile Include="PeriodicWorkItem.cs" />
+    <Compile Include="PersistedSyncData.cs" />
+    <Compile Include="PostMoveCleanupStatusFlags.cs" />
+    <Compile Include="PrincipalTranslator.cs" />
+    <Compile Include="ProgressTrackerTransmitter.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="PublicFolderMailboxMigrationJob.cs" />
+    <Compile Include="PublicFolderMailboxMigrator.cs" />
+    <Compile Include="PublicFolderMap.cs" />
+    <Compile Include="PublicFolderMigrationJob.cs" />
+    <Compile Include="PublicFolderMigrationSyncContext.cs" />
+    <Compile Include="PublicFolderMigrator.cs" />
+    <Compile Include="PublicFolderMoveJob.cs" />
+    <Compile Include="PublicFolderMover.cs" />
+    <Compile Include="PublicFolderMoveSyncContext.cs" />
+    <Compile Include="QuarantinedJobs.cs" />
+    <Compile Include="QuarantineJob.cs" />
+    <Compile Include="RehomeJob.cs" />
+    <Compile Include="RemoteMoveJob.cs" />
+    <Compile Include="ReplayActionsQueue.cs" />
+    <Compile Include="ReplaySyncState.cs" />
+    <Compile Include="ReportEntryKind.cs" />
+    <Compile Include="ReservationContext.cs" />
+    <Compile Include="ReservationWrapper.cs" />
+    <Compile Include="RestoreJob.cs" />
+    <Compile Include="ResumeJob.cs" />
+    <Compile Include="SaveStateFlags.cs" />
+    <Compile Include="SessionStatisticsLog.cs" />
+    <Compile Include="SessionStatisticsLogData.cs" />
+    <Compile Include="SourceFolderWrapper.cs" />
+    <Compile Include="SourceMailboxWrapper.cs" />
+    <Compile Include="SuspendJob.cs" />
+    <Compile Include="SyncContext.cs" />
+    <Compile Include="SyncJob.cs" />
+    <Compile Include="SyncStateClearReason.cs" />
+    <Compile Include="SyncStateError.cs" />
+    <Compile Include="SyncStateFlags.cs" />
+    <Compile Include="SystemMailboxHeavyJobs.cs" />
+    <Compile Include="SystemMailboxJobs.cs" />
+    <Compile Include="SystemMailboxLightJobs.cs" />
+    <Compile Include="SystemMailboxScanJobs.cs" />
+    <Compile Include="TranslateSecurityDescriptorFlags.cs" />
+    <Compile Include="TranslatorPFProxy.cs" />
+    <Compile Include="UnthrottledWorkItem.cs" />
+    <Compile Include="UpdateRequestOnSaveType.cs" />
+    <Compile Include="WorkItem.cs" />
+    <Compile Include="WorkItemQueue.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.Exchange.Common\Microsoft.Exchange.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140F0}</Project>
+      <Name>Microsoft.Exchange.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Connections.Common\Microsoft.Exchange.Connections.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140FF}</Project>
+      <Name>Microsoft.Exchange.Connections.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Connections.Imap\Microsoft.Exchange.Connections.Imap.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14101}</Project>
+      <Name>Microsoft.Exchange.Connections.Imap</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Connections.Pop\Microsoft.Exchange.Connections.Pop.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14102}</Project>
+      <Name>Microsoft.Exchange.Connections.Pop</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.ApplicationLogic\Microsoft.Exchange.Data.ApplicationLogic.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14104}</Project>
+      <Name>Microsoft.Exchange.Data.ApplicationLogic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Common\Microsoft.Exchange.Data.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140D3}</Project>
+      <Name>Microsoft.Exchange.Data.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Directory\Microsoft.Exchange.Data.Directory.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14105}</Project>
+      <Name>Microsoft.Exchange.Data.Directory</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Storage\Microsoft.Exchange.Data.Storage.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1410F}</Project>
+      <Name>Microsoft.Exchange.Data.Storage</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data\Microsoft.Exchange.Data.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14106}</Project>
+      <Name>Microsoft.Exchange.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Diagnostics\Microsoft.Exchange.Diagnostics.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14113}</Project>
+      <Name>Microsoft.Exchange.Diagnostics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.MailboxReplicationService.Common\Microsoft.Exchange.MailboxReplicationService.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14147}</Project>
+      <Name>Microsoft.Exchange.MailboxReplicationService.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.MailboxReplicationService.EasProvider\Microsoft.Exchange.MailboxReplicationService.EasProvider.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14149}</Project>
+      <Name>Microsoft.Exchange.MailboxReplicationService.EasProvider</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.MailboxReplicationService.ImapProvider\Microsoft.Exchange.MailboxReplicationService.ImapProvider.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1414A}</Project>
+      <Name>Microsoft.Exchange.MailboxReplicationService.ImapProvider</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.MailboxReplicationService.MapiProvider\Microsoft.Exchange.MailboxReplicationService.MapiProvider.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1414B}</Project>
+      <Name>Microsoft.Exchange.MailboxReplicationService.MapiProvider</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.MailboxReplicationService.PopProvider\Microsoft.Exchange.MailboxReplicationService.PopProvider.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1414C}</Project>
+      <Name>Microsoft.Exchange.MailboxReplicationService.PopProvider</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.MailboxReplicationService.ProxyClient\Microsoft.Exchange.MailboxReplicationService.ProxyClient.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1414D}</Project>
+      <Name>Microsoft.Exchange.MailboxReplicationService.ProxyClient</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.MailboxReplicationService.PstProvider\Microsoft.Exchange.MailboxReplicationService.PstProvider.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1414F}</Project>
+      <Name>Microsoft.Exchange.MailboxReplicationService.PstProvider</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.MailboxReplicationService.RemoteProvider\Microsoft.Exchange.MailboxReplicationService.RemoteProvider.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14150}</Project>
+      <Name>Microsoft.Exchange.MailboxReplicationService.RemoteProvider</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.MailboxReplicationService.StorageProvider\Microsoft.Exchange.MailboxReplicationService.StorageProvider.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14151}</Project>
+      <Name>Microsoft.Exchange.MailboxReplicationService.StorageProvider</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Net\Microsoft.Exchange.Net.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14178}</Project>
+      <Name>Microsoft.Exchange.Net</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.StoreProvider\Microsoft.Exchange.StoreProvider.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141B9}</Project>
+      <Name>Microsoft.Exchange.StoreProvider</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.WorkloadManagement\Microsoft.Exchange.WorkloadManagement.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141E1}</Project>
+      <Name>Microsoft.Exchange.WorkloadManagement</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Office.Datacenter.ActiveMonitoringLocal\Microsoft.Office.Datacenter.ActiveMonitoringLocal.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141ED}</Project>
+      <Name>Microsoft.Office.Datacenter.ActiveMonitoringLocal</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\mscorlib\mscorlib.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141F1}</Project>
+      <Name>mscorlib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

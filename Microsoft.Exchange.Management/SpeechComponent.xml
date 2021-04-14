@@ -1,0 +1,631 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo Name="Speech engine setup" DescriptionId="SetupComponentConfiguringSpeech">
+
+  <ServerTasks>
+
+    <!-- Install ca-ES speech language packs -->
+    <ServerTaskInfo Id="_c2c075b985784599a14e8fa90dbc0403" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          Install-MsiPackage `
+            -PackagePath ([System.IO.Path]::Combine($RoleLanguagePacksPath, "Setup\ServerRoles\UnifiedMessaging\MSSpeech_SR_TELE.ca-ES.msi")) `
+            -PropertyValues ("ARPSYSTEMCOMPONENT=1 ALLUSERS=1") `
+            -LogFile ([System.IO.Path]::Combine($RoleSetupLoggingPath, "InstallSpeech-ca-ES.msilog"))
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>
+          if ((Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\ExchangeServer\v15\UnifiedMessagingRole\TeleLanguagePacks" -Name "ca-ES" -ea SilentlyContinue) -eq $null)
+          {
+            Uninstall-MsiPackage `
+              -ProductCode ([Microsoft.Exchange.Management.Deployment.UmLanguagePackUtils]::GetTeleProductCode("ca-ES")) `
+              -LogFile ([System.IO.Path]::Combine($RoleSetupLoggingPath, "UninstallSpeech-ca-ES.msilog"))
+          }
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install da-DK speech language packs -->
+    <ServerTaskInfo Id="_c2c075b985784599a14e8fa90dbc0406" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          Install-MsiPackage `
+            -PackagePath ([System.IO.Path]::Combine($RoleLanguagePacksPath, "Setup\ServerRoles\UnifiedMessaging\MSSpeech_SR_TELE.da-DK.msi")) `
+            -PropertyValues ("ARPSYSTEMCOMPONENT=1 ALLUSERS=1") `
+            -LogFile ([System.IO.Path]::Combine($RoleSetupLoggingPath, "InstallSpeech-da-DK.msilog"))
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>
+          if ((Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\ExchangeServer\v15\UnifiedMessagingRole\TeleLanguagePacks" -Name "da-DK" -ea SilentlyContinue) -eq $null)
+          {
+            Uninstall-MsiPackage `
+              -ProductCode ([Microsoft.Exchange.Management.Deployment.UmLanguagePackUtils]::GetTeleProductCode("da-DK")) `
+              -LogFile ([System.IO.Path]::Combine($RoleSetupLoggingPath, "UninstallSpeech-da-DK.msilog"))
+          }
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install de-DE speech language packs -->
+    <ServerTaskInfo Id="_c2c075b985784599a14e8fa90dbc0407" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          Install-MsiPackage `
+            -PackagePath ([System.IO.Path]::Combine($RoleLanguagePacksPath, "Setup\ServerRoles\UnifiedMessaging\MSSpeech_SR_TELE.de-DE.msi")) `
+            -PropertyValues ("ARPSYSTEMCOMPONENT=1 ALLUSERS=1") `
+            -LogFile ([System.IO.Path]::Combine($RoleSetupLoggingPath, "InstallSpeech-de-DE.msilog"))
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>
+          if ((Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\ExchangeServer\v15\UnifiedMessagingRole\TeleLanguagePacks" -Name "de-DE" -ea SilentlyContinue) -eq $null)
+          {
+            Uninstall-MsiPackage `
+              -ProductCode ([Microsoft.Exchange.Management.Deployment.UmLanguagePackUtils]::GetTeleProductCode("de-DE")) `
+              -LogFile ([System.IO.Path]::Combine($RoleSetupLoggingPath, "UninstallSpeech-de-DE.msilog"))
+          }
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install en-AU speech language packs -->
+    <ServerTaskInfo Id="_c2c075b985784599a14e8fa90dbc0c09" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          Install-MsiPackage `
+            -PackagePath ([System.IO.Path]::Combine($RoleLanguagePacksPath, "Setup\ServerRoles\UnifiedMessaging\MSSpeech_SR_TELE.en-AU.msi")) `
+            -PropertyValues ("ARPSYSTEMCOMPONENT=1 ALLUSERS=1") `
+            -LogFile ([System.IO.Path]::Combine($RoleSetupLoggingPath, "InstallSpeech-en-AU.msilog"))
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>
+          if ((Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\ExchangeServer\v15\UnifiedMessagingRole\TeleLanguagePacks" -Name "en-AU" -ea SilentlyContinue) -eq $null)
+          {
+            Uninstall-MsiPackage `
+              -ProductCode ([Microsoft.Exchange.Management.Deployment.UmLanguagePackUtils]::GetTeleProductCode("en-AU")) `
+              -LogFile ([System.IO.Path]::Combine($RoleSetupLoggingPath, "UninstallSpeech-en-AU.msilog"))
+          }
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install en-CA speech language packs -->
+    <ServerTaskInfo Id="_c2c075b985784599a14e8fa90dbc1009" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          Install-MsiPackage `
+            -PackagePath ([System.IO.Path]::Combine($RoleLanguagePacksPath, "Setup\ServerRoles\UnifiedMessaging\MSSpeech_SR_TELE.en-CA.msi")) `
+            -PropertyValues ("ARPSYSTEMCOMPONENT=1 ALLUSERS=1") `
+            -LogFile ([System.IO.Path]::Combine($RoleSetupLoggingPath, "InstallSpeech-en-CA.msilog"))
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>
+          if ((Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\ExchangeServer\v15\UnifiedMessagingRole\TeleLanguagePacks" -Name "en-CA" -ea SilentlyContinue) -eq $null)
+          {
+            Uninstall-MsiPackage `
+              -ProductCode ([Microsoft.Exchange.Management.Deployment.UmLanguagePackUtils]::GetTeleProductCode("en-CA")) `
+              -LogFile ([System.IO.Path]::Combine($RoleSetupLoggingPath, "UninstallSpeech-en-CA.msilog"))
+          }
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install en-GB speech language packs -->
+    <ServerTaskInfo Id="_c2c075b985784599a14e8fa90dbc0809" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          Install-MsiPackage `
+            -PackagePath ([System.IO.Path]::Combine($RoleLanguagePacksPath, "Setup\ServerRoles\UnifiedMessaging\MSSpeech_SR_TELE.en-GB.msi")) `
+            -PropertyValues ("ARPSYSTEMCOMPONENT=1 ALLUSERS=1") `
+            -LogFile ([System.IO.Path]::Combine($RoleSetupLoggingPath, "InstallSpeech-en-GB.msilog"))
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>
+          if ((Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\ExchangeServer\v15\UnifiedMessagingRole\TeleLanguagePacks" -Name "en-GB" -ea SilentlyContinue) -eq $null)
+          {
+            Uninstall-MsiPackage `
+              -ProductCode ([Microsoft.Exchange.Management.Deployment.UmLanguagePackUtils]::GetTeleProductCode("en-GB")) `
+              -LogFile ([System.IO.Path]::Combine($RoleSetupLoggingPath, "UninstallSpeech-en-GB.msilog"))
+          }
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install en-IN speech language packs -->
+    <ServerTaskInfo Id="_c2c075b985784599a14e8fa90dbc4009" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          Install-MsiPackage `
+            -PackagePath ([System.IO.Path]::Combine($RoleLanguagePacksPath, "Setup\ServerRoles\UnifiedMessaging\MSSpeech_SR_TELE.en-IN.msi")) `
+            -PropertyValues ("ARPSYSTEMCOMPONENT=1 ALLUSERS=1") `
+            -LogFile ([System.IO.Path]::Combine($RoleSetupLoggingPath, "InstallSpeech-en-IN.msilog"))
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>
+          if ((Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\ExchangeServer\v15\UnifiedMessagingRole\TeleLanguagePacks" -Name "en-IN" -ea SilentlyContinue) -eq $null)
+          {
+            Uninstall-MsiPackage `
+              -ProductCode ([Microsoft.Exchange.Management.Deployment.UmLanguagePackUtils]::GetTeleProductCode("en-IN")) `
+              -LogFile ([System.IO.Path]::Combine($RoleSetupLoggingPath, "UninstallSpeech-en-IN.msilog"))
+          }
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install en-US speech language packs -->
+    <ServerTaskInfo Id="_c2c075b985784599a14e8fa90dbc0409" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          Install-MsiPackage `
+            -PackagePath ([System.IO.Path]::Combine($RoleLanguagePacksPath, "Setup\ServerRoles\UnifiedMessaging\MSSpeech_SR_TELE.en-US.msi")) `
+            -PropertyValues ("ARPSYSTEMCOMPONENT=1 ALLUSERS=1") `
+            -LogFile ([System.IO.Path]::Combine($RoleSetupLoggingPath, "InstallSpeech-en-US.msilog"))
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>
+          if ((Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\ExchangeServer\v15\UnifiedMessagingRole\TeleLanguagePacks" -Name "en-US" -ea SilentlyContinue) -eq $null)
+          {
+            Uninstall-MsiPackage `
+              -ProductCode ([Microsoft.Exchange.Management.Deployment.UmLanguagePackUtils]::GetTeleProductCode("en-US")) `
+              -LogFile ([System.IO.Path]::Combine($RoleSetupLoggingPath, "UninstallSpeech-en-US.msilog"))
+          }
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install es-ES speech language packs -->
+    <ServerTaskInfo Id="_c2c075b985784599a14e8fa90dbc0c0a" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          Install-MsiPackage `
+            -PackagePath ([System.IO.Path]::Combine($RoleLanguagePacksPath, "Setup\ServerRoles\UnifiedMessaging\MSSpeech_SR_TELE.es-ES.msi")) `
+            -PropertyValues ("ARPSYSTEMCOMPONENT=1 ALLUSERS=1") `
+            -LogFile ([System.IO.Path]::Combine($RoleSetupLoggingPath, "InstallSpeech-es-ES.msilog"))
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>
+          if ((Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\ExchangeServer\v15\UnifiedMessagingRole\TeleLanguagePacks" -Name "es-ES" -ea SilentlyContinue) -eq $null)
+          {
+            Uninstall-MsiPackage `
+              -ProductCode ([Microsoft.Exchange.Management.Deployment.UmLanguagePackUtils]::GetTeleProductCode("es-ES")) `
+              -LogFile ([System.IO.Path]::Combine($RoleSetupLoggingPath, "UninstallSpeech-es-ES.msilog"))
+          }
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install es-MX speech language packs -->
+    <ServerTaskInfo Id="_c2c075b985784599a14e8fa90dbc080a" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          Install-MsiPackage `
+            -PackagePath ([System.IO.Path]::Combine($RoleLanguagePacksPath, "Setup\ServerRoles\UnifiedMessaging\MSSpeech_SR_TELE.es-MX.msi")) `
+            -PropertyValues ("ARPSYSTEMCOMPONENT=1 ALLUSERS=1") `
+            -LogFile ([System.IO.Path]::Combine($RoleSetupLoggingPath, "InstallSpeech-es-MX.msilog"))
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>
+          if ((Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\ExchangeServer\v15\UnifiedMessagingRole\TeleLanguagePacks" -Name "es-MX" -ea SilentlyContinue) -eq $null)
+          {
+            Uninstall-MsiPackage `
+              -ProductCode ([Microsoft.Exchange.Management.Deployment.UmLanguagePackUtils]::GetTeleProductCode("es-MX")) `
+              -LogFile ([System.IO.Path]::Combine($RoleSetupLoggingPath, "UninstallSpeech-es-MX.msilog"))
+          }
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install fi-FI speech language packs -->
+    <ServerTaskInfo Id="_c2c075b985784599a14e8fa90dbc040b" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          Install-MsiPackage `
+            -PackagePath ([System.IO.Path]::Combine($RoleLanguagePacksPath, "Setup\ServerRoles\UnifiedMessaging\MSSpeech_SR_TELE.fi-FI.msi")) `
+            -PropertyValues ("ARPSYSTEMCOMPONENT=1 ALLUSERS=1") `
+            -LogFile ([System.IO.Path]::Combine($RoleSetupLoggingPath, "InstallSpeech-fi-FI.msilog"))
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>
+          if ((Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\ExchangeServer\v15\UnifiedMessagingRole\TeleLanguagePacks" -Name "fi-FI" -ea SilentlyContinue) -eq $null)
+          {
+            Uninstall-MsiPackage `
+              -ProductCode ([Microsoft.Exchange.Management.Deployment.UmLanguagePackUtils]::GetTeleProductCode("fi-FI")) `
+              -LogFile ([System.IO.Path]::Combine($RoleSetupLoggingPath, "UninstallSpeech-fi-FI.msilog"))
+          }
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install fr-CA speech language packs -->
+    <ServerTaskInfo Id="_c2c075b985784599a14e8fa90dbc0c0c" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          Install-MsiPackage `
+            -PackagePath ([System.IO.Path]::Combine($RoleLanguagePacksPath, "Setup\ServerRoles\UnifiedMessaging\MSSpeech_SR_TELE.fr-CA.msi")) `
+            -PropertyValues ("ARPSYSTEMCOMPONENT=1 ALLUSERS=1") `
+            -LogFile ([System.IO.Path]::Combine($RoleSetupLoggingPath, "InstallSpeech-fr-CA.msilog"))
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>
+          if ((Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\ExchangeServer\v15\UnifiedMessagingRole\TeleLanguagePacks" -Name "fr-CA" -ea SilentlyContinue) -eq $null)
+          {
+            Uninstall-MsiPackage `
+              -ProductCode ([Microsoft.Exchange.Management.Deployment.UmLanguagePackUtils]::GetTeleProductCode("fr-CA")) `
+              -LogFile ([System.IO.Path]::Combine($RoleSetupLoggingPath, "UninstallSpeech-fr-CA.msilog"))
+          }
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install fr-FR speech language packs -->
+    <ServerTaskInfo Id="_c2c075b985784599a14e8fa90dbc040c" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          Install-MsiPackage `
+            -PackagePath ([System.IO.Path]::Combine($RoleLanguagePacksPath, "Setup\ServerRoles\UnifiedMessaging\MSSpeech_SR_TELE.fr-FR.msi")) `
+            -PropertyValues ("ARPSYSTEMCOMPONENT=1 ALLUSERS=1") `
+            -LogFile ([System.IO.Path]::Combine($RoleSetupLoggingPath, "InstallSpeech-fr-FR.msilog"))
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>
+          if ((Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\ExchangeServer\v15\UnifiedMessagingRole\TeleLanguagePacks" -Name "fr-FR" -ea SilentlyContinue) -eq $null)
+          {
+            Uninstall-MsiPackage `
+              -ProductCode ([Microsoft.Exchange.Management.Deployment.UmLanguagePackUtils]::GetTeleProductCode("fr-FR")) `
+              -LogFile ([System.IO.Path]::Combine($RoleSetupLoggingPath, "UninstallSpeech-fr-FR.msilog"))
+          }
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install it-IT speech language packs -->
+    <ServerTaskInfo Id="_c2c075b985784599a14e8fa90dbc0410" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          Install-MsiPackage `
+            -PackagePath ([System.IO.Path]::Combine($RoleLanguagePacksPath, "Setup\ServerRoles\UnifiedMessaging\MSSpeech_SR_TELE.it-IT.msi")) `
+            -PropertyValues ("ARPSYSTEMCOMPONENT=1 ALLUSERS=1") `
+            -LogFile ([System.IO.Path]::Combine($RoleSetupLoggingPath, "InstallSpeech-it-IT.msilog"))
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>
+          if ((Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\ExchangeServer\v15\UnifiedMessagingRole\TeleLanguagePacks" -Name "it-IT" -ea SilentlyContinue) -eq $null)
+          {
+            Uninstall-MsiPackage `
+              -ProductCode ([Microsoft.Exchange.Management.Deployment.UmLanguagePackUtils]::GetTeleProductCode("it-IT")) `
+              -LogFile ([System.IO.Path]::Combine($RoleSetupLoggingPath, "UninstallSpeech-it-IT.msilog"))
+          }
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install ja-JP speech language packs -->
+    <ServerTaskInfo Id="_c2c075b985784599a14e8fa90dbc0411" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          Install-MsiPackage `
+            -PackagePath ([System.IO.Path]::Combine($RoleLanguagePacksPath, "Setup\ServerRoles\UnifiedMessaging\MSSpeech_SR_TELE.ja-JP.msi")) `
+            -PropertyValues ("ARPSYSTEMCOMPONENT=1 ALLUSERS=1") `
+            -LogFile ([System.IO.Path]::Combine($RoleSetupLoggingPath, "InstallSpeech-ja-JP.msilog"))
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>
+          if ((Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\ExchangeServer\v15\UnifiedMessagingRole\TeleLanguagePacks" -Name "ja-JP" -ea SilentlyContinue) -eq $null)
+          {
+            Uninstall-MsiPackage `
+              -ProductCode ([Microsoft.Exchange.Management.Deployment.UmLanguagePackUtils]::GetTeleProductCode("ja-JP")) `
+              -LogFile ([System.IO.Path]::Combine($RoleSetupLoggingPath, "UninstallSpeech-ja-JP.msilog"))
+          }
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install ko-KR speech language packs -->
+    <ServerTaskInfo Id="_c2c075b985784599a14e8fa90dbc0412" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          Install-MsiPackage `
+            -PackagePath ([System.IO.Path]::Combine($RoleLanguagePacksPath, "Setup\ServerRoles\UnifiedMessaging\MSSpeech_SR_TELE.ko-KR.msi")) `
+            -PropertyValues ("ARPSYSTEMCOMPONENT=1 ALLUSERS=1") `
+            -LogFile ([System.IO.Path]::Combine($RoleSetupLoggingPath, "InstallSpeech-ko-KR.msilog"))
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>
+          if ((Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\ExchangeServer\v15\UnifiedMessagingRole\TeleLanguagePacks" -Name "ko-KR" -ea SilentlyContinue) -eq $null)
+          {
+            Uninstall-MsiPackage `
+              -ProductCode ([Microsoft.Exchange.Management.Deployment.UmLanguagePackUtils]::GetTeleProductCode("ko-KR")) `
+              -LogFile ([System.IO.Path]::Combine($RoleSetupLoggingPath, "UninstallSpeech-ko-KR.msilog"))
+          }
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install nb-NO speech language packs -->
+    <ServerTaskInfo Id="_c2c075b985784599a14e8fa90dbc0414" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          Install-MsiPackage `
+            -PackagePath ([System.IO.Path]::Combine($RoleLanguagePacksPath, "Setup\ServerRoles\UnifiedMessaging\MSSpeech_SR_TELE.nb-NO.msi")) `
+            -PropertyValues ("ARPSYSTEMCOMPONENT=1 ALLUSERS=1") `
+            -LogFile ([System.IO.Path]::Combine($RoleSetupLoggingPath, "InstallSpeech-nb-NO.msilog"))
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>
+          if ((Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\ExchangeServer\v15\UnifiedMessagingRole\TeleLanguagePacks" -Name "nb-NO" -ea SilentlyContinue) -eq $null)
+          {
+            Uninstall-MsiPackage `
+              -ProductCode ([Microsoft.Exchange.Management.Deployment.UmLanguagePackUtils]::GetTeleProductCode("nb-NO")) `
+              -LogFile ([System.IO.Path]::Combine($RoleSetupLoggingPath, "UninstallSpeech-nb-NO.msilog"))
+          }
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install nl-NL speech language packs -->
+    <ServerTaskInfo Id="_c2c075b985784599a14e8fa90dbc0413" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          Install-MsiPackage `
+            -PackagePath ([System.IO.Path]::Combine($RoleLanguagePacksPath, "Setup\ServerRoles\UnifiedMessaging\MSSpeech_SR_TELE.nl-NL.msi")) `
+            -PropertyValues ("ARPSYSTEMCOMPONENT=1 ALLUSERS=1") `
+            -LogFile ([System.IO.Path]::Combine($RoleSetupLoggingPath, "InstallSpeech-nl-NL.msilog"))
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>
+          if ((Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\ExchangeServer\v15\UnifiedMessagingRole\TeleLanguagePacks" -Name "nl-NL" -ea SilentlyContinue) -eq $null)
+          {
+            Uninstall-MsiPackage `
+              -ProductCode ([Microsoft.Exchange.Management.Deployment.UmLanguagePackUtils]::GetTeleProductCode("nl-NL")) `
+              -LogFile ([System.IO.Path]::Combine($RoleSetupLoggingPath, "UninstallSpeech-nl-NL.msilog"))
+          }
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install pl-PL speech language packs -->
+    <ServerTaskInfo Id="_c2c075b985784599a14e8fa90dbc0415" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          Install-MsiPackage `
+            -PackagePath ([System.IO.Path]::Combine($RoleLanguagePacksPath, "Setup\ServerRoles\UnifiedMessaging\MSSpeech_SR_TELE.pl-PL.msi")) `
+            -PropertyValues ("ARPSYSTEMCOMPONENT=1 ALLUSERS=1") `
+            -LogFile ([System.IO.Path]::Combine($RoleSetupLoggingPath, "InstallSpeech-pl-PL.msilog"))
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>
+          if ((Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\ExchangeServer\v15\UnifiedMessagingRole\TeleLanguagePacks" -Name "pl-PL" -ea SilentlyContinue) -eq $null)
+          {
+            Uninstall-MsiPackage `
+              -ProductCode ([Microsoft.Exchange.Management.Deployment.UmLanguagePackUtils]::GetTeleProductCode("pl-PL")) `
+              -LogFile ([System.IO.Path]::Combine($RoleSetupLoggingPath, "UninstallSpeech-pl-PL.msilog"))
+          }
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install pt-BR speech language packs -->
+    <ServerTaskInfo Id="_c2c075b985784599a14e8fa90dbc0416" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          Install-MsiPackage `
+            -PackagePath ([System.IO.Path]::Combine($RoleLanguagePacksPath, "Setup\ServerRoles\UnifiedMessaging\MSSpeech_SR_TELE.pt-BR.msi")) `
+            -PropertyValues ("ARPSYSTEMCOMPONENT=1 ALLUSERS=1") `
+            -LogFile ([System.IO.Path]::Combine($RoleSetupLoggingPath, "InstallSpeech-pt-BR.msilog"))
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>
+          if ((Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\ExchangeServer\v15\UnifiedMessagingRole\TeleLanguagePacks" -Name "pt-BR" -ea SilentlyContinue) -eq $null)
+          {
+            Uninstall-MsiPackage `
+              -ProductCode ([Microsoft.Exchange.Management.Deployment.UmLanguagePackUtils]::GetTeleProductCode("pt-BR")) `
+              -LogFile ([System.IO.Path]::Combine($RoleSetupLoggingPath, "UninstallSpeech-pt-BR.msilog"))
+          }
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install pt-PT speech language packs -->
+    <ServerTaskInfo Id="_c2c075b985784599a14e8fa90dbc0816" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          Install-MsiPackage `
+            -PackagePath ([System.IO.Path]::Combine($RoleLanguagePacksPath, "Setup\ServerRoles\UnifiedMessaging\MSSpeech_SR_TELE.pt-PT.msi")) `
+            -PropertyValues ("ARPSYSTEMCOMPONENT=1 ALLUSERS=1") `
+            -LogFile ([System.IO.Path]::Combine($RoleSetupLoggingPath, "InstallSpeech-pt-PT.msilog"))
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>
+          if ((Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\ExchangeServer\v15\UnifiedMessagingRole\TeleLanguagePacks" -Name "pt-PT" -ea SilentlyContinue) -eq $null)
+          {
+            Uninstall-MsiPackage `
+              -ProductCode ([Microsoft.Exchange.Management.Deployment.UmLanguagePackUtils]::GetTeleProductCode("pt-PT")) `
+              -LogFile ([System.IO.Path]::Combine($RoleSetupLoggingPath, "UninstallSpeech-pt-PT.msilog"))
+          }
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install ru-RU speech language packs -->
+    <ServerTaskInfo Id="_c2c075b985784599a14e8fa90dbc0419" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          Install-MsiPackage `
+            -PackagePath ([System.IO.Path]::Combine($RoleLanguagePacksPath, "Setup\ServerRoles\UnifiedMessaging\MSSpeech_SR_TELE.ru-RU.msi")) `
+            -PropertyValues ("ARPSYSTEMCOMPONENT=1 ALLUSERS=1") `
+            -LogFile ([System.IO.Path]::Combine($RoleSetupLoggingPath, "InstallSpeech-ru-RU.msilog"))
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>
+          if ((Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\ExchangeServer\v15\UnifiedMessagingRole\TeleLanguagePacks" -Name "ru-RU" -ea SilentlyContinue) -eq $null)
+          {
+            Uninstall-MsiPackage `
+              -ProductCode ([Microsoft.Exchange.Management.Deployment.UmLanguagePackUtils]::GetTeleProductCode("ru-RU")) `
+              -LogFile ([System.IO.Path]::Combine($RoleSetupLoggingPath, "UninstallSpeech-ru-RU.msilog"))
+          }
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install sv-SE speech language packs -->
+    <ServerTaskInfo Id="_c2c075b985784599a14e8fa90dbc041d" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          Install-MsiPackage `
+            -PackagePath ([System.IO.Path]::Combine($RoleLanguagePacksPath, "Setup\ServerRoles\UnifiedMessaging\MSSpeech_SR_TELE.sv-SE.msi")) `
+            -PropertyValues ("ARPSYSTEMCOMPONENT=1 ALLUSERS=1") `
+            -LogFile ([System.IO.Path]::Combine($RoleSetupLoggingPath, "InstallSpeech-sv-SE.msilog"))
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>
+          if ((Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\ExchangeServer\v15\UnifiedMessagingRole\TeleLanguagePacks" -Name "sv-SE" -ea SilentlyContinue) -eq $null)
+          {
+            Uninstall-MsiPackage `
+              -ProductCode ([Microsoft.Exchange.Management.Deployment.UmLanguagePackUtils]::GetTeleProductCode("sv-SE")) `
+              -LogFile ([System.IO.Path]::Combine($RoleSetupLoggingPath, "UninstallSpeech-sv-SE.msilog"))
+          }
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install zh-CN speech language packs -->
+    <ServerTaskInfo Id="_c2c075b985784599a14e8fa90dbc0804" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          Install-MsiPackage `
+            -PackagePath ([System.IO.Path]::Combine($RoleLanguagePacksPath, "Setup\ServerRoles\UnifiedMessaging\MSSpeech_SR_TELE.zh-CN.msi")) `
+            -PropertyValues ("ARPSYSTEMCOMPONENT=1 ALLUSERS=1") `
+            -LogFile ([System.IO.Path]::Combine($RoleSetupLoggingPath, "InstallSpeech-zh-CN.msilog"))
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>
+          if ((Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\ExchangeServer\v15\UnifiedMessagingRole\TeleLanguagePacks" -Name "zh-CN" -ea SilentlyContinue) -eq $null)
+          {
+            Uninstall-MsiPackage `
+              -ProductCode ([Microsoft.Exchange.Management.Deployment.UmLanguagePackUtils]::GetTeleProductCode("zh-CN")) `
+              -LogFile ([System.IO.Path]::Combine($RoleSetupLoggingPath, "UninstallSpeech-zh-CN.msilog"))
+          }
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install zh-HK speech language packs -->
+    <ServerTaskInfo Id="_c2c075b985784599a14e8fa90dbc0c04" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          Install-MsiPackage `
+            -PackagePath ([System.IO.Path]::Combine($RoleLanguagePacksPath, "Setup\ServerRoles\UnifiedMessaging\MSSpeech_SR_TELE.zh-HK.msi")) `
+            -PropertyValues ("ARPSYSTEMCOMPONENT=1 ALLUSERS=1") `
+            -LogFile ([System.IO.Path]::Combine($RoleSetupLoggingPath, "InstallSpeech-zh-HK.msilog"))
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>
+          if ((Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\ExchangeServer\v15\UnifiedMessagingRole\TeleLanguagePacks" -Name "zh-HK" -ea SilentlyContinue) -eq $null)
+          {
+            Uninstall-MsiPackage `
+              -ProductCode ([Microsoft.Exchange.Management.Deployment.UmLanguagePackUtils]::GetTeleProductCode("zh-HK")) `
+              -LogFile ([System.IO.Path]::Combine($RoleSetupLoggingPath, "UninstallSpeech-zh-HK.msilog"))
+          }
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install zh-TW speech language packs -->
+    <ServerTaskInfo Id="_c2c075b985784599a14e8fa90dbc0404" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          Install-MsiPackage `
+            -PackagePath ([System.IO.Path]::Combine($RoleLanguagePacksPath, "Setup\ServerRoles\UnifiedMessaging\MSSpeech_SR_TELE.zh-TW.msi")) `
+            -PropertyValues ("ARPSYSTEMCOMPONENT=1 ALLUSERS=1") `
+            -LogFile ([System.IO.Path]::Combine($RoleSetupLoggingPath, "InstallSpeech-zh-TW.msilog"))
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>
+          if ((Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\ExchangeServer\v15\UnifiedMessagingRole\TeleLanguagePacks" -Name "zh-TW" -ea SilentlyContinue) -eq $null)
+          {
+            Uninstall-MsiPackage `
+              -ProductCode ([Microsoft.Exchange.Management.Deployment.UmLanguagePackUtils]::GetTeleProductCode("zh-TW")) `
+              -LogFile ([System.IO.Path]::Combine($RoleSetupLoggingPath, "UninstallSpeech-zh-TW.msilog"))
+          }
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+  </ServerTasks>
+</SetupComponentInfo>

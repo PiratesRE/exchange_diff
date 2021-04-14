@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:evm="http://schemas.microsoft.com/exchange/um/2010/evm" targetNamespace="http://schemas.microsoft.com/exchange/um/2010/evm">
+	<!--Type definitions-->
+	<xs:simpleType name="zeroToUnityDoubleType">
+		<xs:restriction base="xs:double">
+			<xs:minInclusive value="0.0"/>
+			<xs:maxInclusive value="1.0"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="versionNumberType">
+		<xs:restriction base="xs:token">
+			<xs:pattern value="\d+\.\d+\.\d+\.\d+"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="recoObjectType">
+		<xs:simpleContent>
+			<xs:extension base="xs:string">
+				<xs:attribute name="ts" use="required">
+					<xs:simpleType>
+						<xs:restriction base="xs:time"/>
+					</xs:simpleType>
+				</xs:attribute>
+				<xs:attribute name="te" use="required">
+					<xs:simpleType>
+						<xs:restriction base="xs:time"/>
+					</xs:simpleType>
+				</xs:attribute>
+				<xs:attribute name="c" use="required">
+					<xs:simpleType>
+						<xs:restriction base="evm:zeroToUnityDoubleType"/>
+					</xs:simpleType>
+				</xs:attribute>
+				<xs:attribute name="nx" use="optional">
+					<xs:simpleType>
+						<xs:restriction base="xs:token"/>
+					</xs:simpleType>
+				</xs:attribute>
+				<xs:attribute name="id" use="required">
+					<xs:simpleType>
+						<xs:restriction base="xs:ID"/>
+					</xs:simpleType>
+				</xs:attribute>
+				<xs:attribute name="be" use="optional" default="1">
+					<xs:simpleType>
+						<xs:restriction base="xs:boolean"/>
+					</xs:simpleType>
+				</xs:attribute>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:simpleType name="recoResultType">
+		<xs:restriction base="xs:NCName">
+			<xs:enumeration value="skipped"/>
+			<xs:enumeration value="attempted"/>
+			<xs:enumeration value="partial"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="recoErrorType">
+		<xs:restriction base="xs:NCName">
+			<xs:enumeration value="success"/>
+			<xs:enumeration value="audioqualitypoor"/>
+			<xs:enumeration value="languagenotsupported"/>
+			<xs:enumeration value="rejected"/>
+			<xs:enumeration value="badrequest"/>
+			<xs:enumeration value="systemerror"/>
+			<xs:enumeration value="timeout"/>
+			<xs:enumeration value="messagetoolong"/>
+			<xs:enumeration value="protectedvoicemail"/>
+			<xs:enumeration value="throttled"/>
+			<xs:enumeration value="other"/>
+			<xs:enumeration value="errorreadingsettings"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="confidenceBandType">
+		<xs:restriction base="xs:NCName">
+			<xs:enumeration value="low"/>
+			<xs:enumeration value="medium"/>
+			<xs:enumeration value="high"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="breakWeightType">
+		<xs:restriction base="xs:NCName">
+			<xs:enumeration value="low"/>
+			<xs:enumeration value="medium"/>
+			<xs:enumeration value="high"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!--Element definitions-->
+	<xs:element name="Break">
+		<xs:complexType>
+			<xs:simpleContent>
+				<xs:extension base="evm:recoObjectType">
+					<xs:attribute name="wt" type="evm:breakWeightType" use="optional" default="medium"/>
+				</xs:extension>
+			</xs:simpleContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="Text">
+		<xs:complexType>
+			<xs:simpleContent>
+				<xs:extension base="evm:recoObjectType"/>
+			</xs:simpleContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="Feature">
+		<xs:complexType>
+			<xs:sequence maxOccurs="unbounded">
+				<xs:element ref="evm:Text"/>
+			</xs:sequence>
+			<xs:attribute name="class" use="required">
+				<xs:simpleType>
+					<xs:restriction base="xs:token"/>
+				</xs:simpleType>
+			</xs:attribute>
+			<xs:attribute name="reference" type="xs:token" use="optional"/>
+			<xs:attribute name="reference2" type="xs:token" use="optional"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="ErrorInformation">
+		<xs:complexType>
+			<xs:simpleContent>
+				<xs:extension base="xs:token">
+					<xs:attribute name="lang" type="xs:language" use="required"/>
+				</xs:extension>
+			</xs:simpleContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="Information">
+		<xs:complexType>
+			<xs:simpleContent>
+				<xs:extension base="xs:string">
+					<xs:attribute name="lang" type="xs:language" use="required"/>
+					<xs:attribute name="linkURL" type="xs:anyURI" use="optional" default=""/>
+					<xs:attribute name="linkText" type="xs:normalizedString" use="optional" default=""/>
+				</xs:extension>
+			</xs:simpleContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="ASR">
+		<xs:complexType>
+			<xs:choice minOccurs="0" maxOccurs="unbounded">
+				<xs:element ref="evm:ErrorInformation" minOccurs="0" maxOccurs="1"/>
+				<xs:element ref="evm:Text"/>
+				<xs:element ref="evm:Break"/>
+				<xs:element ref="evm:Feature"/>
+				<xs:element ref="evm:Information" minOccurs="0" maxOccurs="1"/>
+			</xs:choice>
+			<xs:attribute name="productID" type="xs:unsignedInt" use="optional" default="0"/>
+			<xs:attribute name="confidence" type="evm:zeroToUnityDoubleType" use="required"/>
+			<xs:attribute name="confidenceBand" type="evm:confidenceBandType" use="optional" default="medium"/>
+			<xs:attribute name="lang" type="xs:language" use="required"/>
+			<xs:attribute name="productVersion" type="evm:versionNumberType" use="optional"/>
+			<xs:attribute name="recognitionError" type="evm:recoErrorType" use="required"/>
+			<xs:attribute name="recognitionResult" type="evm:recoResultType" use="required"/>
+			<xs:attribute name="schemaVersion" type="evm:versionNumberType" use="required"/>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

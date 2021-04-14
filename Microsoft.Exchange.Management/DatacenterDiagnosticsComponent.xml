@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo IsDatacenterOnly="true" IsDatacenterDedicatedOnly="true" Name="Datacenter Diagnostics Component" DescriptionId="SetupDatacenterDiagnosticsServiceComponent">
+
+  <ServerTasks>
+
+    <ServerTaskInfo Id="_ConfigureDiagnostics" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          Write-ExchangeSetupLog -Info "Creating log folder '$RoleDatacenterDiagnosticsLogPath'"
+          New-Item $RoleDatacenterDiagnosticsLogPath -type directory -force -ea SilentlyContinue
+          <!-- The msi created the regkey already, add the LogFolderPath value -->
+          Set-ItemProperty -Path HKLM:Software\Microsoft\ExchangeServer\v15\Diagnostics -Name "LogFolderPath" -Value $RoleDatacenterDiagnosticsLogPath -ea SilentlyContinue
+
+          Write-ExchangeSetupLog -Info "Removing any existing poison files"
+          $poisonPath = Join-Path $RoleDatacenterDiagnosticsLogPath 'Poison'
+          if (Test-Path $poisonPath)
+          {
+            Remove-Item -Path $poisonPath\* -Force -Recurse
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Share EDS folder. -->
+    <ServerTaskInfo Id="_ShareEdsFolder" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Service Engineering">
+      <Install>
+        <Standalone>
+          &amp; "$RoleInstallPath\Scripts\SetExchangeShares.ps1" -InstallPath $RoleInstallPath -ForeignForestFQDN $RoleDatacenterManagementForestFQDN;
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall />
+    </ServerTaskInfo>
+
+  </ServerTasks>
+
+</SetupComponentInfo>

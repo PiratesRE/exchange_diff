@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo IsDatacenterOnly="true" Name="Datacenter Shared Cache Service Configuration" DescriptionId="SetupComponentConfiguringSharedCacheService">
+
+  <ServerTasks>
+    <!-- When a new file is added to precompile-ManagedBinary list, make sure to add it to customactions.wxi to sync install and uninstall the binary -->
+    <ServerTaskInfo Id="_f923c7847d1e82ebd5772b300b8859e5" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install Weight="5" DescriptionId="SetupProgressPrecompilingBinaries" IsFatal="false">
+        <Standalone>
+          $fullPath = [System.IO.Path]::Combine($RoleInstallPath, "bin\microsoft.exchange.sharedcache.exe");
+          precompile-ManagedBinary -BinaryName  $fullPath;
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall Weight="5" DescriptionId="SetupProgressPrecompilingBinaries" IsFatal="false">
+        <Standalone>
+          $fullPath = [System.IO.Path]::Combine($RoleInstallPath, "bin\microsoft.exchange.sharedcache.exe");
+          precompile-ManagedBinary -BinaryName  $fullPath -Action uninstall;
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Set the default path for the routing tables -->
+    <ServerTaskInfo Id="_b8b9d8d5abdcbae62cd099353be936e4" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          $config = [System.IO.Path]::Combine($RoleInstallPath, "bin\Microsoft.Exchange.SharedCache.exe.config");
+          $stringSearch= "%DatabaseFolder%";
+          $databasePath = "D:\FrontEnd\Routing";
+
+          if (Test-Path $databasePath)
+          {
+          Write-ExchangeSetupLog -Info ("Found an existing frontend routing folder in this location.");
+          }
+          else
+          {
+          New-Item -ItemType directory -Path $databasePath
+          }
+
+          (Get-Content $config) | Foreach-Object {$_ -replace $stringSearch, $databasePath} | Set-Content $config
+
+          Write-ExchangeSetupLog -Info ("Setting limited permissions on the frontend routing folder.");
+          Set-LocalPermissions -Feature:"SharedCacheDatacenter"
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Install/remove Shared Cache Service -->
+    <ServerTaskInfo Id="_263142c138327c1f1a58a0c680af4978" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          install-SharedCacheService
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>uninstall-SharedCacheService</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+  </ServerTasks>
+</SetupComponentInfo>
+

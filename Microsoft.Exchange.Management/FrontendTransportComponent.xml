@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo Name="FrontentTransport Configuration" DescriptionId="SetupComponentConfigurationFrontendTransport">
+
+  <ServerTasks>
+  
+    <!-- Add/remove firewall exception for MSExchangeFrontendTransport.exe worker process and FrontEnd Transport Rules -->
+    <ServerTaskInfo Id="_0d13b48b1c6744c8bd5ea20ab010b872" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+	<Install>
+		<Standalone>
+		    Add-FirewallException -FirewallRule (New-Object Microsoft.Exchange.Security.WindowsFirewall.MSExchangeFrontEndTransportNumberedPortsFirewallRule);
+		</Standalone>
+        </Install>
+	<BuildToBuildUpgrade UseInstallTasks="true" />
+	<DisasterRecovery UseInstallTasks="true" />
+        <Uninstall>
+		<Standalone>
+			Remove-FirewallException -FirewallRule (New-Object Microsoft.Exchange.Security.WindowsFirewall.MSExchangeFrontEndTransportNumberedPortsFirewallRule);
+		</Standalone>
+	</Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Add global firewall rule for TransportWorker -->
+    <ServerTaskInfo Id="_1D1DE81A08DB4AE6AB210B78D7E2C7E7" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+        <Install>
+		<Standalone>
+			Add-FirewallException -FirewallRule (New-Object Microsoft.Exchange.Security.WindowsFirewall.MSExchangeTransportWorkerByPortRule)
+		</Standalone>
+	</Install>
+	<BuildToBuildUpgrade UseInstallTasks="true" />
+	<DisasterRecovery UseInstallTasks="true" />
+	<Uninstall>
+		<Standalone>remove-firewallexception -FirewallRule (New-Object Microsoft.Exchange.Security.WindowsFirewall.MSExchangeTransportWorkerByPortRule)</Standalone>
+	</Uninstall>
+    </ServerTaskInfo>
+    
+    <!-- Install front end transport service -->
+    <ServerTaskInfo Id="_732e5342d5e941bf9c23ebbd280f6752" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          if (!(get-service MSExchangeFrontendTransport* | where {$_.name -eq "MSExchangeFrontendTransport"}))
+          {
+            Install-FrontendTransportService
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>Uninstall-FrontendTransportService</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Create the initial frontend receive connectors, reassigning any hub port 25 connectors to port 2525 instead-->
+    <ServerTaskInfo Id="_e7849e03945f48bdac9d1947f46097ca" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          $hubConnectors=get-receiveconnector -Server $RoleFqdnOrName -DomainController $RoleDomainController | where {$_.TransportRole -eq "HubTransport"};
+          foreach($hubConnector in $hubConnectors)
+          {
+            $bindings = $hubConnector.bindings;
+            $port25BindingFound = $false;
+            foreach($binding in $bindings)
+            {
+              if ($binding.Port -eq 25)
+              {
+                $binding.Port = 2525;
+                $port25BindingFound = $true;
+              }
+            }
+
+            if ($port25BindingFound -eq $true)
+            {
+              $stringToLog = "Reassigning port 25 binding for colocated hub receive connector: " + $hubConnector.Name + "to port 2525";
+              Write-ExchangeSetupLog -Info $stringToLog;
+              set-receiveconnector $hubConnector -bindings $bindings -DomainController $RoleDomainController;
+            }
+          }
+
+          new-receiveconnector `
+            -Name ("Default Frontend " + [String][System.Environment]::MachineName ) `
+            -TransportRole FrontendTransport `
+            -Bindings 0.0.0.0:25,[::]:25 `
+            -RemoteIPRanges 0.0.0.0-255.255.255.255,[::]-FFFF:FFFF:FFFF:FFFF:FFFF:FFFF:FFFF:FFFF `
+            -DomainSecureEnabled $true `
+            -PermissionGroups AnonymousUsers, ExchangeServers, ExchangeLegacyServers `
+            -MaxHeaderSize 128KB `
+            -MaxMessageSize 36MB `
+            -MaxRecipientsPerMessage 200 `
+            -ProtocolLoggingLevel verbose `
+            -DomainController $RoleDomainController;
+
+          new-receiveconnector `
+            -Name ("Outbound Proxy Frontend " + [String][System.Environment]::MachineName ) `
+            -TransportRole FrontendTransport `
+            -Bindings 0.0.0.0:717,:::717 `
+            -RemoteIPRanges 0.0.0.0-255.255.255.255,[::]-FFFF:FFFF:FFFF:FFFF:FFFF:FFFF:FFFF:FFFF `
+            -DomainSecureEnabled $true `
+            -PermissionGroups ExchangeServers `
+            -MaxHeaderSize 128KB `
+            -MaxMessageSize 36MB `
+            -MaxRecipientsPerMessage 200 `
+            -ProtocolLoggingLevel verbose `
+            -DomainController $RoleDomainController;
+
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade />
+      <DisasterRecovery />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Create an initial SMTP-SUBMIT Receive Connector on port 587 and remove any port 587 connector from colocated hubs-->
+    <ServerTaskInfo Id="_43331201054240f4b78241c5B4ff597a" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+        <Install>
+            <Standalone>
+                $hubConnectors=get-receiveconnector -Server $RoleFqdnOrName -DomainController $RoleDomainController | where {$_.TransportRole -eq "HubTransport"};
+                foreach($hubConnector in $hubConnectors)
+                {
+                    $bindings = $hubConnector.bindings;
+                    $port587BindingFound = $false;
+                    foreach($binding in $bindings)
+                    {
+                        if ($binding.Port -eq 587)
+                        {
+                            $port587BindingFound = $true;
+                        }
+                    }
+
+                    if ($port587BindingFound -eq $true)
+                    {
+                        $stringToLog = "Removing port 587 bound receive connector from colocated hub transport: " + $hubConnector.Name;
+                        Write-ExchangeSetupLog -Info $stringToLog;
+                        Remove-receiveconnector $hubConnector -DomainController $RoleDomainController -Confirm:$false;
+                    }
+                }
+
+                new-receiveconnector `
+                -Name ("Client Frontend " + [String][System.Environment]::MachineName ) `
+                -TransportRole FrontendTransport `
+                -Fqdn $RoleFqdnOrName `
+                -Bindings 0.0.0.0:587,[::]:587 `
+                -RemoteIPRanges 0.0.0.0-255.255.255.255,[::]:0-FFFF:FFFF:FFFF:FFFF:FFFF:FFFF:FFFF:FFFF `
+                -PermissionGroups:ExchangeUsers `
+                -DomainController $RoleDomainController `
+                -AuthMechanism:'Tls,BasicAuthRequireTls,BasicAuth,Integrated' `
+                -EnableAuthGSSAPI $true `
+                -MessageRateLimit 5 `
+                -MessageRateSource:'User'
+            </Standalone>
+        </Install>
+        <BuildToBuildUpgrade />
+        <DisasterRecovery />
+        <Uninstall />
+    </ServerTaskInfo>
+    <!-- Rename the .exe.config.template file -->
+    <ServerTaskInfo Id="_3b640c160846419c94031fa13659992e" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          $file = 'MSExchangeFrontEndTransport.exe.config';
+          $fullPath = [System.IO.Path]::Combine([System.IO.Path]::Combine($RoleInstallPath, "bin"), $file);
+          if (!([System.IO.File]::Exists($fullPath))) { copy-item ($fullPath + ".template") $fullPath; }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Remove all receive connectors for this server -->
+    <ServerTaskInfo Id="_741e4fcd-d8c8-4d34-9820-d8c273ce6ceb" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install />
+      <BuildToBuildUpgrade />
+      <DisasterRecovery />
+      <Uninstall>
+        <Standalone>
+          foreach ($a in (get-receiveconnector -server $RoleFqdnOrName -DomainController $RoleDomainController | where { $_.TransportRole -eq "FrontendTransport" }))
+          {
+            remove-receiveconnector -Identity:$a.Identity -DomainController $RoleDomainController -Confirm:$false
+          }
+
+          $hubConnectors=get-receiveconnector -Server $RoleFqdnOrName -DomainController $RoleDomainController | where {$_.TransportRole -eq "HubTransport"};
+          foreach($hubConnector in $hubConnectors)
+          {
+            $bindings = $hubConnector.bindings;
+            $port2525BindingFound = $false;
+            foreach($binding in $bindings)
+            {
+              if ($binding.Port -eq 2525)
+              {
+                $binding.Port = 25;
+                $port2525BindingFound = $true;
+              }
+            }
+
+            if ($port2525BindingFound -eq $true)
+            {
+              $stringToLog = "Reassigning port 2525 binding for colocated hub receive connector: " + $hubConnector.Name + "to port 25";
+              Write-ExchangeSetupLog -Info $stringToLog;
+              set-receiveconnector $hubConnector -bindings $bindings -DomainController $RoleDomainController;
+            }
+          }
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+    
+    <!-- Setup Frontend Transport Server -->
+    <ServerTaskInfo Id="_8c0bc5b060cb4d59a75b979b1f248699" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          $localServer = get-exchangeserver $RoleFqdnOrName -DomainController $RoleDomainController;
+          $localServerName = $localServer.Name;
+          Set-FrontendTransportService `
+          -Identity $localServerName `
+          -ReceiveProtocolLogPath ($RoleInstallPath + "\TransportRoles\Logs\FrontEnd\ProtocolLog\SmtpReceive") `
+          -SendProtocolLogPath ($RoleInstallPath + "\TransportRoles\Logs\FrontEnd\ProtocolLog\SmtpSend") `
+          -ConnectivityLogPath ($RoleInstallPath + "\TransportRoles\Logs\FrontEnd\Connectivity") `
+          -AgentLogPath ($RoleInstallPath + "\TransportRoles\Logs\FrontEnd\AgentLog") `
+          -ReceiveProtocolLogMaxDirectorySize 250MB `
+          -ReceiveProtocolLogMaxFileSize 10MB `
+          -SendProtocolLogMaxDirectorySize 250MB `
+          -SendProtocolLogMaxFileSize 10MB `
+          -DnsLogEnabled $false `
+          -DnsLogMaxAge:7.00:00:00 `
+          -DnsLogMaxDirectorySize "100MB" `
+          -DnsLogMaxFileSize "10MB" `
+          -ConnectivityLogMaxDirectorySize 1000MB `
+          -ConnectivityLogMaxFileSize 10MB `
+          -ConnectivityLogEnabled $true `
+          -AgentLogMaxDirectorySize 250MB `
+          -AgentLogMaxFileSize 10MB `
+          -AgentLogEnabled $true `
+          -IntraOrgConnectorProtocolLoggingLevel verbose `
+          -MaxConnectionRatePerMinute 72000 `
+          -MaxReceiveTlsRatePerMinute 6000 `
+          -DomainController $RoleDomainController
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade />
+      <DisasterRecovery />
+      <Uninstall />
+    </ServerTaskInfo>
+    
+  </ServerTasks>
+</SetupComponentInfo>

@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo Name="PowerShell Configuration" DescriptionId="PowerShellComponentDescription">
+
+  <ServerTasks>
+
+    <!-- Create HTTP container -->
+    <ServerTaskInfo Id="_e551dad1ab9345549d3a4736d26d665a" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>new-HttpContainer -DomainController $RoleDomainController</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Create the "back end" website -->
+    <ServerTaskInfo Id="_ff8177c8b9d94ed9982d27401596de84" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          $tpath = "$env:SystemRoot\system32\inetsrv\microsoft.web.administration.dll";
+          add-type -Path $tpath;
+          $sm = new-object Microsoft.Web.Administration.ServerManager;
+          if ($sm.Sites["Exchange Back End"] -eq $null)
+          {
+            $backEndWebSitePath = [System.IO.Path]::Combine($RoleInstallPath, "ClientAccess");
+            $s = $sm.Sites.Add("Exchange Back End","http", "*:81:", $backEndWebSitePath);
+            $s.ServerAutoStart = $true;
+            $sb =$s.Bindings;
+            $b = $sb.Add("*:444:","https");
+            $sm.CommitChanges();
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>
+          $tpath = "$env:SystemRoot\system32\inetsrv\microsoft.web.administration.dll";
+          add-type -Path $tpath;
+          $sm = new-object Microsoft.Web.Administration.ServerManager;
+          $sr = $sm.Sites["Exchange Back End"];
+          if ($sr -ne $null)
+          {
+            $s = $sm.Sites.Remove($sr);
+            $sm.CommitChanges();
+          }
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Create PowerShell virtual directory -->
+    <ServerTaskInfo Id="_0933481a46d24e77abfdf174e8240b80" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          $vdirName = "PowerShell";
+          $InternalPowerShellUrl="http://" + $RoleFqdnOrName + "/powershell";
+          new-PowerShellVirtualDirectory $vdirName -Role Mailbox -InternalUrl $InternalPowerShellUrl -DomainController $RoleDomainController -BasicAuthentication:$false -WindowsAuthentication:$false -RequireSSL:$false -WebSiteName "Default Web Site" -AppPoolId "MSExchangePowerShellFrontEndAppPool";
+          new-PowerShellVirtualDirectory $vdirName -Role Mailbox -DomainController $RoleDomainController -BasicAuthentication:$false -WindowsAuthentication:$true -RequireSSL:$true -WebSiteName "Exchange Back End" -Path ($RoleInstallPath + "ClientAccess\PowerShell-Proxy");
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade>
+        <Standalone>
+          $feVdirName = "PowerShell (Default Web Site)";
+          $beVdirName = "PowerShell (Exchange Back End)";
+          $vdirName = "PowerShell";
+          $InternalPowerShellUrl="http://" + $RoleFqdnOrName + "/powershell";
+
+          get-PowerShellVirtualDirectory -ShowMailboxVirtualDirectories -server $RoleFqdnOrName -DomainController $RoleDomainController | where { $_.Name -eq $beVdirName -or $_.Name -eq $feVdirName } | remove-PowerShellVirtualDirectory -DomainController $RoleDomainController;
+
+          new-PowerShellVirtualDirectory $vdirName -Role Mailbox -DomainController $RoleDomainController -BasicAuthentication:$false -WindowsAuthentication:$true -RequireSSL:$true -WebSiteName "Exchange Back End" -Path ($RoleInstallPath + "ClientAccess\PowerShell-Proxy");
+          new-PowerShellVirtualDirectory $vdirName -Role Mailbox -InternalUrl $InternalPowerShellUrl -DomainController $RoleDomainController -BasicAuthentication:$false -WindowsAuthentication:$false -RequireSSL:$false -WebSiteName "Default Web Site" -AppPoolId "MSExchangePowerShellFrontEndAppPool";
+        </Standalone>
+      </BuildToBuildUpgrade>
+      <DisasterRecovery>
+        <Standalone>
+          get-PowerShellVirtualDirectory -ShowMailboxVirtualDirectories -server $RoleFqdnOrName -DomainController $RoleDomainController | remove-PowerShellVirtualDirectory -DomainController $RoleDomainController -Confirm:$false;
+          $vdirName = "PowerShell";
+          $InternalPowerShellUrl="http://" + $RoleFqdnOrName + "/powershell";
+          new-PowerShellVirtualDirectory $vdirName -Role Mailbox -InternalUrl $InternalPowerShellUrl -DomainController $RoleDomainController -BasicAuthentication:$false -WindowsAuthentication:$false -RequireSSL:$false -WebSiteName "Default Web Site" -AppPoolId "MSExchangePowerShellFrontEndAppPool";
+          new-PowerShellVirtualDirectory $vdirName -Role Mailbox -DomainController $RoleDomainController -BasicAuthentication:$false -WindowsAuthentication:$true -RequireSSL:$true -WebSiteName "Exchange Back End" -Path ($RoleInstallPath + "ClientAccess\PowerShell-Proxy");
+        </Standalone>
+      </DisasterRecovery>
+      <!-- ToDo: bug O15: 2543818. This is a temp fix for the bug. Either the right fix should replace this one or this comment should be removed if this is indeed the right fix -->
+      <Uninstall IsFatal="false">
+        <Standalone>
+          get-PowerShellVirtualDirectory -ShowMailboxVirtualDirectories -server $RoleFqdnOrName -DomainController $RoleDomainController | remove-PowerShellVirtualDirectory -DomainController $RoleDomainController;
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+    
+    <!-- Remove PowerShell virtual directory for certificate authentication during B2B Upgrade-->
+    <ServerTaskInfo Id="_947c5eb684074c3fab76ec6515ce5c7f" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install />
+      <BuildToBuildUpgrade>
+        <Standalone>
+          $vdirName = "PowerShell-Cert (Default Web Site)";
+          $vdir = get-PowerShellVirtualDirectory -server $RoleFqdnOrName -DomainController $RoleDomainController | where { $_.Name -eq $vdirName };
+          if ($vdir -ne $null)
+          {
+            remove-PowerShellVirtualDirectory $vdir -DomainController $RoleDomainController;
+          }
+        </Standalone>
+      </BuildToBuildUpgrade>
+      <DisasterRecovery />
+      <Uninstall />
+    </ServerTaskInfo>
+    
+    <!-- Set install path in app config "ClientAccess/PowerShell" -->
+    <ServerTaskInfo Id="_695f1c978e9640c8b38d004221ab05a6" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>set-InstallPathInAppConfig -ConfigFileRelativePath "ClientAccess\PowerShell\" -ConfigFileName web.config</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+    
+    <!-- Set install path in app config "ClientAccess/PowerShell-Proxy" -->
+    <ServerTaskInfo Id="_f6240f672db3408bb82c2c754881a7b0" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>set-InstallPathInAppConfig -ConfigFileRelativePath "ClientAccess\PowerShell-Proxy\" -ConfigFileName web.config</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+    
+  </ServerTasks>
+
+</SetupComponentInfo>
+

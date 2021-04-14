@@ -1,0 +1,819 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{09CD9476-CD82-489E-B9E2-84B47CA140FC}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Microsoft.Exchange</RootNamespace>
+    <AssemblyName>Microsoft.Exchange.Configuration.ObjectModel</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Management.OData" />
+    <Reference Include="Microsoft.PowerShell.Commands.Utility" />
+    <Reference Include="Microsoft.PowerShell.HostingTools" />
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Configuration.Install" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.DirectoryServices" />
+    <Reference Include="System.DirectoryServices.Protocols" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Management.Automation" />
+    <Reference Include="System.ServiceProcess" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Configuration\Authorization\AliasQueryProcessor.cs" />
+    <Compile Include="Configuration\Authorization\AppPasswordLoginException.cs" />
+    <Compile Include="Configuration\Authorization\AuthenticatedUserCache.cs" />
+    <Compile Include="Configuration\Authorization\AuthorizationException.cs" />
+    <Compile Include="Configuration\Authorization\AuthZLogHelper.cs" />
+    <Compile Include="Configuration\Authorization\AuthZPluginHelper.cs" />
+    <Compile Include="Configuration\Authorization\AuthZPluginUserToken.cs" />
+    <Compile Include="Configuration\Authorization\BudgetManager.cs" />
+    <Compile Include="Configuration\Authorization\CachedValidationRuleResult.cs" />
+    <Compile Include="Configuration\Authorization\ClientRoleEntries.cs" />
+    <Compile Include="Configuration\Authorization\CmdletAccessDeniedException.cs" />
+    <Compile Include="Configuration\Authorization\CmdletBasedRunspaceConfiguration.cs" />
+    <Compile Include="Configuration\Authorization\DelegatedUserNotInOrgException.cs" />
+    <Compile Include="Configuration\Authorization\ExchangeAuthorizationPlugin.cs" />
+    <Compile Include="Configuration\Authorization\ExchangeExpiringRunspaceConfiguration.cs" />
+    <Compile Include="Configuration\Authorization\ExchangeRunspaceConfiguration.cs" />
+    <Compile Include="Configuration\Authorization\ExchangeRunspaceConfigurationSettings.cs" />
+    <Compile Include="Configuration\Authorization\ExecutingUserPropertyNotFoundException.cs" />
+    <Compile Include="Configuration\Authorization\ExpirationLimit.cs" />
+    <Compile Include="Configuration\Authorization\FilteringOnlyUserLoginException.cs" />
+    <Compile Include="Configuration\Authorization\IdentityCache.cs" />
+    <Compile Include="Configuration\Authorization\IExpiringRunspaceConfiguration.cs" />
+    <Compile Include="Configuration\Authorization\ImpersonationDeniedException.cs" />
+    <Compile Include="Configuration\Authorization\INamedQueryProcessor.cs" />
+    <Compile Include="Configuration\Authorization\InitialSessionStateBuilder.cs" />
+    <Compile Include="Configuration\Authorization\IReportProgress.cs" />
+    <Compile Include="Configuration\Authorization\NamedQueryProcessorExtension.cs" />
+    <Compile Include="Configuration\Authorization\NonMigratedUserDeniedException.cs" />
+    <Compile Include="Configuration\Authorization\NotAllowedForPartnerAccessException.cs" />
+    <Compile Include="Configuration\Authorization\PartnerApplicationRunspaceConfiguration.cs" />
+    <Compile Include="Configuration\Authorization\PowerShellThrottlingPolicyUpdater.cs" />
+    <Compile Include="Configuration\Authorization\PowerShellWebServiceExposedCmdlets.cs" />
+    <Compile Include="Configuration\Authorization\ProxySecurityContextModule.cs" />
+    <Compile Include="Configuration\Authorization\PswsAuthNModule.cs" />
+    <Compile Include="Configuration\Authorization\PswsAuthorization.cs" />
+    <Compile Include="Configuration\Authorization\PswsAuthorizationPlugin.cs" />
+    <Compile Include="Configuration\Authorization\PswsAuthZHelper.cs" />
+    <Compile Include="Configuration\Authorization\PswsAuthZUserToken.cs" />
+    <Compile Include="Configuration\Authorization\PswsBudgetManager.cs" />
+    <Compile Include="Configuration\Authorization\PswsUrlRewriteModule.cs" />
+    <Compile Include="Configuration\Authorization\RBACContext.cs" />
+    <Compile Include="Configuration\Authorization\RBACContextParserException.cs" />
+    <Compile Include="Configuration\Authorization\RBACHelper.cs" />
+    <Compile Include="Configuration\Authorization\RbacQuery.cs" />
+    <Compile Include="Configuration\Authorization\RBACValidationRulesList.cs" />
+    <Compile Include="Configuration\Authorization\RemotePowerShellNotEnabledException.cs" />
+    <Compile Include="Configuration\Authorization\RoleEntryInfo.cs" />
+    <Compile Include="Configuration\Authorization\RoleFilteringMode.cs" />
+    <Compile Include="Configuration\Authorization\RunspaceCacheValue.cs" />
+    <Compile Include="Configuration\Authorization\RwsExchangeRunspaceConfiguration.cs" />
+    <Compile Include="Configuration\Authorization\SessionStateCommandEntryWithMetadata.cs" />
+    <Compile Include="Configuration\Authorization\SnapInAliasMap.cs" />
+    <Compile Include="Configuration\Authorization\SnapinSet.cs" />
+    <Compile Include="Configuration\Authorization\UrlInValidException.cs" />
+    <Compile Include="Configuration\Authorization\UserValidationHelper.cs" />
+    <Compile Include="Configuration\Authorization\ValidationRuleFactory.cs" />
+    <Compile Include="Configuration\Authorization\WebServiceRunspaceConfiguration.cs" />
+    <Compile Include="Configuration\Authorization\WinRMAPIUserTokenHelper.cs" />
+    <Compile Include="Configuration\Authorization\WSManBudgetManager.cs" />
+    <Compile Include="Configuration\Authorization\WSManBudgetManagerBase.cs" />
+    <Compile Include="Configuration\Authorization\WSManTenantBudgetManager.cs" />
+    <Compile Include="Configuration\ClientAccessRulesHttpModule.cs" />
+    <Compile Include="Configuration\CmdletFlight.cs" />
+    <Compile Include="Configuration\CmdletProxyException.cs" />
+    <Compile Include="Configuration\Common\LocStrings\AuditingException.cs" />
+    <Compile Include="Configuration\Common\LocStrings\LocDescriptionAttribute.cs" />
+    <Compile Include="Configuration\Common\LocStrings\PostconditionAttribute.cs" />
+    <Compile Include="Configuration\Common\LocStrings\PreconditionAttribute.cs" />
+    <Compile Include="Configuration\Common\LocStrings\ReadOnlyPropertyBagException.cs" />
+    <Compile Include="Configuration\Common\LocStrings\Strings.cs" />
+    <Compile Include="Configuration\Common\PropertyBag.cs" />
+    <Compile Include="Configuration\Common\SharedStrings.cs" />
+    <Compile Include="Configuration\IClientAccessRulesAuthorizer.cs" />
+    <Compile Include="Configuration\MonadDataProvider\AcceptedDomainCreator.cs" />
+    <Compile Include="Configuration\MonadDataProvider\ActiveSyncMailboxPolicyCreator.cs" />
+    <Compile Include="Configuration\MonadDataProvider\CalendarConfigurationCreator.cs" />
+    <Compile Include="Configuration\MonadDataProvider\CASMailboxCreator.cs" />
+    <Compile Include="Configuration\MonadDataProvider\CommandExecutionException.cs" />
+    <Compile Include="Configuration\MonadDataProvider\CommandInteractionHandler.cs" />
+    <Compile Include="Configuration\MonadDataProvider\ConfigurableObjectCreator.cs" />
+    <Compile Include="Configuration\MonadDataProvider\ContactCreator.cs" />
+    <Compile Include="Configuration\MonadDataProvider\COPropertyInfo.cs" />
+    <Compile Include="Configuration\MonadDataProvider\COPropertyInfoCollection.cs" />
+    <Compile Include="Configuration\MonadDataProvider\COPropertyNames.cs" />
+    <Compile Include="Configuration\MonadDataProvider\DistributionGroupCreator.cs" />
+    <Compile Include="Configuration\MonadDataProvider\DomainContentConfigCreator.cs" />
+    <Compile Include="Configuration\MonadDataProvider\DynamicDistributionGroupCreator.cs" />
+    <Compile Include="Configuration\MonadDataProvider\EnumObject.cs" />
+    <Compile Include="Configuration\MonadDataProvider\ErrorReportEventArgs.cs" />
+    <Compile Include="Configuration\MonadDataProvider\FederatedOrganizationIdWithDomainStatusCreator.cs" />
+    <Compile Include="Configuration\MonadDataProvider\FederationTrustCreator.cs" />
+    <Compile Include="Configuration\MonadDataProvider\MailboxAcePresentationObjectCreator.cs" />
+    <Compile Include="Configuration\MonadDataProvider\MailboxCreator.cs" />
+    <Compile Include="Configuration\MonadDataProvider\MailboxStatisticsCreator.cs" />
+    <Compile Include="Configuration\MonadDataProvider\MailContactCreator.cs" />
+    <Compile Include="Configuration\MonadDataProvider\MailUserCreator.cs" />
+    <Compile Include="Configuration\MonadDataProvider\MobileMailboxPolicyCreator.cs" />
+    <Compile Include="Configuration\MonadDataProvider\MockObjectCreator.cs" />
+    <Compile Include="Configuration\MonadDataProvider\MockObjectInformation.cs" />
+    <Compile Include="Configuration\MonadDataProvider\MonadAsyncResult.cs" />
+    <Compile Include="Configuration\MonadDataProvider\MonadCommand.cs" />
+    <Compile Include="Configuration\MonadDataProvider\MonadConnection.cs" />
+    <Compile Include="Configuration\MonadDataProvider\MonadConnectionInfo.cs" />
+    <Compile Include="Configuration\MonadDataProvider\MonadDataAdapter.cs" />
+    <Compile Include="Configuration\MonadDataProvider\MonadDataAdapterInvocationException.cs" />
+    <Compile Include="Configuration\MonadDataProvider\MonadDataReader.cs" />
+    <Compile Include="Configuration\MonadDataProvider\MonadHost.cs" />
+    <Compile Include="Configuration\MonadDataProvider\MonadHostFactory.cs" />
+    <Compile Include="Configuration\MonadDataProvider\MonadMediatorPool.cs" />
+    <Compile Include="Configuration\MonadDataProvider\MonadMediatorPoolKey.cs" />
+    <Compile Include="Configuration\MonadDataProvider\MonadParameter.cs" />
+    <Compile Include="Configuration\MonadDataProvider\MonadParameterCollection.cs" />
+    <Compile Include="Configuration\MonadDataProvider\MonadPipelineProxy.cs" />
+    <Compile Include="Configuration\MonadDataProvider\MonadRemoteRunspaceFactory.cs" />
+    <Compile Include="Configuration\MonadDataProvider\MonadRunspaceCache.cs" />
+    <Compile Include="Configuration\MonadDataProvider\MonadRunspaceConfiguration.cs" />
+    <Compile Include="Configuration\MonadDataProvider\MonadRunspaceConfigurationFactory.cs" />
+    <Compile Include="Configuration\MonadDataProvider\MonadRunspaceFactory.cs" />
+    <Compile Include="Configuration\MonadDataProvider\MoveRequestStatisticsCreator.cs" />
+    <Compile Include="Configuration\MonadDataProvider\MoveRequestStatisticsPresentationObject.cs" />
+    <Compile Include="Configuration\MonadDataProvider\OpenConnection.cs" />
+    <Compile Include="Configuration\MonadDataProvider\OwaMailboxPolicyCreator.cs" />
+    <Compile Include="Configuration\MonadDataProvider\PooledConnectionOpenTimeoutException.cs" />
+    <Compile Include="Configuration\MonadDataProvider\PresentationRetentionPolicyTagCreator.cs" />
+    <Compile Include="Configuration\MonadDataProvider\ProgressReportEventArgs.cs" />
+    <Compile Include="Configuration\MonadDataProvider\RetentionPolicyCreator.cs" />
+    <Compile Include="Configuration\MonadDataProvider\RunGuidEventArgs.cs" />
+    <Compile Include="Configuration\MonadDataProvider\SharingPolicyCreator.cs" />
+    <Compile Include="Configuration\MonadDataProvider\SharingPolicyDomainCreator.cs" />
+    <Compile Include="Configuration\MonadDataProvider\StartExecutionEventArgs.cs" />
+    <Compile Include="Configuration\MonadDataProvider\SupportedVersionList.cs" />
+    <Compile Include="Configuration\MonadDataProvider\TransportConfigContainerCreator.cs" />
+    <Compile Include="Configuration\MonadDataProvider\UMAutoAttendantCreator.cs" />
+    <Compile Include="Configuration\MonadDataProvider\UMDialPlanCreator.cs" />
+    <Compile Include="Configuration\MonadDataProvider\UMIPGatewayCreator.cs" />
+    <Compile Include="Configuration\MonadDataProvider\UMMailboxCreator.cs" />
+    <Compile Include="Configuration\MonadDataProvider\UMMailboxPinCreator.cs" />
+    <Compile Include="Configuration\MonadDataProvider\UMMailboxPolicyCreator.cs" />
+    <Compile Include="Configuration\MonadDataProvider\UserCreator.cs" />
+    <Compile Include="Configuration\MonadDataProvider\VersionMismatchException.cs" />
+    <Compile Include="Configuration\MonadDataProvider\WarningReportEventArgs.cs" />
+    <Compile Include="Configuration\MonadDataProvider\WindowsGroupCreator.cs" />
+    <Compile Include="Configuration\MonadDataProvider\WorkUnit.cs" />
+    <Compile Include="Configuration\MonadDataProvider\WorkUnitCollection.cs" />
+    <Compile Include="Configuration\MonadDataProvider\WorkUnitStatus.cs" />
+    <Compile Include="Configuration\ObjectModel\AmbiguousConfigObjectException.cs" />
+    <Compile Include="Configuration\ObjectModel\BaseConfigCollection.cs" />
+    <Compile Include="Configuration\ObjectModel\CannotHaveLocalAccountException.cs" />
+    <Compile Include="Configuration\ObjectModel\CannotResolveParentException.cs" />
+    <Compile Include="Configuration\ObjectModel\CmdletErrorContext.cs" />
+    <Compile Include="Configuration\ObjectModel\ConfigObject.cs" />
+    <Compile Include="Configuration\ObjectModel\ConfigObjectCollection.cs" />
+    <Compile Include="Configuration\ObjectModel\ConfigObjectComparer.cs" />
+    <Compile Include="Configuration\ObjectModel\ConfigObjectDelegate.cs" />
+    <Compile Include="Configuration\ObjectModel\ConfigObjectNotFoundException.cs" />
+    <Compile Include="Configuration\ObjectModel\ConfigObjectReader.cs" />
+    <Compile Include="Configuration\ObjectModel\CouldNotDeterimineServiceInstanceException.cs" />
+    <Compile Include="Configuration\ObjectModel\DataSourceInfo.cs" />
+    <Compile Include="Configuration\ObjectModel\DataSourceManager.cs" />
+    <Compile Include="Configuration\ObjectModel\DataSourceManagerDelegate.cs" />
+    <Compile Include="Configuration\ObjectModel\DataSourceManagerException.cs" />
+    <Compile Include="Configuration\ObjectModel\DataSourceSession.cs" />
+    <Compile Include="Configuration\ObjectModel\EventLog\TaskEventLogConstants.cs" />
+    <Compile Include="Configuration\ObjectModel\Field.cs" />
+    <Compile Include="Configuration\ObjectModel\Global.cs" />
+    <Compile Include="Configuration\ObjectModel\MasterSchemaMappingEntry.cs" />
+    <Compile Include="Configuration\ObjectModel\NotAcceptedDomainException.cs" />
+    <Compile Include="Configuration\ObjectModel\ParsingException.cs" />
+    <Compile Include="Configuration\ObjectModel\ParsingLexingException.cs" />
+    <Compile Include="Configuration\ObjectModel\ParsingParameterRangeException.cs" />
+    <Compile Include="Configuration\ObjectModel\ParsingSyntaxException.cs" />
+    <Compile Include="Configuration\ObjectModel\PersistableClass.cs" />
+    <Compile Include="Configuration\ObjectModel\PersistableProperty.cs" />
+    <Compile Include="Configuration\ObjectModel\PropertyValueExistsException.cs" />
+    <Compile Include="Configuration\ObjectModel\ProvisioningValidationException.cs" />
+    <Compile Include="Configuration\ObjectModel\ProxyAddressExistsException.cs" />
+    <Compile Include="Configuration\ObjectModel\PswsErrorCode.cs" />
+    <Compile Include="Configuration\ObjectModel\PswsErrorHandling.cs" />
+    <Compile Include="Configuration\ObjectModel\RoleBasedStringMapping.cs" />
+    <Compile Include="Configuration\ObjectModel\SchemaManager.cs" />
+    <Compile Include="Configuration\ObjectModel\SchemaManagerCollection.cs" />
+    <Compile Include="Configuration\ObjectModel\SchemaMappingEntry.cs" />
+    <Compile Include="Configuration\ObjectModel\SchemaMappingException.cs" />
+    <Compile Include="Configuration\ObjectModel\SearchableProperty.cs" />
+    <Compile Include="Configuration\ObjectModel\SessionExpiredException.cs" />
+    <Compile Include="Configuration\ObjectModel\SipCulture.cs" />
+    <Compile Include="Configuration\ObjectModel\SipCultureInfo.cs" />
+    <Compile Include="Configuration\ObjectModel\SipCultureInfoFactory.cs" />
+    <Compile Include="Configuration\ObjectModel\SipResourceManager.cs" />
+    <Compile Include="Configuration\ObjectModel\SupportedVersionListFormatException.cs" />
+    <Compile Include="Configuration\ObjectModel\ValidationResult.cs" />
+    <Compile Include="Configuration\PswsProxyCmdletException.cs" />
+    <Compile Include="Configuration\PswsProxyException.cs" />
+    <Compile Include="Configuration\PswsProxySerializationException.cs" />
+    <Compile Include="Configuration\PswsProxy\CommandInvocation.cs" />
+    <Compile Include="Configuration\PswsProxy\ConvertToExchangeXml.cs" />
+    <Compile Include="Configuration\PswsProxy\ExecutionStatus.cs" />
+    <Compile Include="Configuration\PswsProxy\HttpWebRequestSender.cs" />
+    <Compile Include="Configuration\PswsProxy\IWebRequestSender.cs" />
+    <Compile Include="Configuration\PswsProxy\ObjectTransfer.cs" />
+    <Compile Include="Configuration\PswsProxy\PSObjectSerializer.cs" />
+    <Compile Include="Configuration\PswsProxy\ResponseCategoryInfo.cs" />
+    <Compile Include="Configuration\PswsProxy\ResponseContent.cs" />
+    <Compile Include="Configuration\PswsProxy\ResponseErrorDetail.cs" />
+    <Compile Include="Configuration\PswsProxy\ResponseErrorRecord.cs" />
+    <Compile Include="Configuration\RemotePowershellClientAccessRulesAuthorizer.cs" />
+    <Compile Include="Configuration\SQM\CmdletSqmSession.cs" />
+    <Compile Include="Configuration\SQM\SMSMessageType.cs" />
+    <Compile Include="Configuration\SQM\SMSNotificationType.cs" />
+    <Compile Include="Configuration\SQM\SMSSendingClient.cs" />
+    <Compile Include="Configuration\SQM\SmsSqmDataPointHelper.cs" />
+    <Compile Include="Configuration\SQM\SmsSqmSession.cs" />
+    <Compile Include="Configuration\SQM\SqmErrorRecord.cs" />
+    <Compile Include="Configuration\SQM\SqmModule.cs" />
+    <Compile Include="Configuration\Tasks\AcceptedDomainIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\AccountPartitionIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\ActiveSyncDeviceAccessRuleIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\ActiveSyncDeviceAutoblockThresholdIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\ActiveSyncDeviceClassIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\ActiveSyncDeviceIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\ActiveSyncOrganizationSettingsIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\ActivityContextLogFileSettings.cs" />
+    <Compile Include="Configuration\Tasks\ActivityContextLogger.cs" />
+    <Compile Include="Configuration\Tasks\AddressBookBaseIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\AddressBookMailboxPolicyIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\AddressListIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\ADIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\AdminAuditLogIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\ADObjectTaskModuleFactory.cs" />
+    <Compile Include="Configuration\Tasks\ADOrganizationalUnitIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\ADQueryPolicyIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\ADRawEntryIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\ADResourceThrottlingModule.cs" />
+    <Compile Include="Configuration\Tasks\ADSchemaObjectIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\ADServiceConnectionPointIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\AdSiteIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\AdSiteLinkIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\AliasHelper.cs" />
+    <Compile Include="Configuration\Tasks\AlternateMailboxIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\AlternateMailboxQueryFilter.cs" />
+    <Compile Include="Configuration\Tasks\AppIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\ApprovalApplicationContainerIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\ApprovalApplicationIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\AuditLogSearchIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\AuthRedirectIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\AuthServerIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\AutoReportProgressModule.cs" />
+    <Compile Include="Configuration\Tasks\AvailabilityAddressSpaceIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\AvailabilityConfigIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\BasicPostconditionAttribute.cs" />
+    <Compile Include="Configuration\Tasks\BasicPreconditionAttribute.cs" />
+    <Compile Include="Configuration\Tasks\BudgetInformation.cs" />
+    <Compile Include="Configuration\Tasks\ClientAccessArrayIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\ClientAccessRuleIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\ClientAccessServerIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\ClientAccessServerOrArrayIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\CmdletAssemblyHelper.cs" />
+    <Compile Include="Configuration\Tasks\CmdletExtensionAgentIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\CmdletHealthCountersModule.cs" />
+    <Compile Include="Configuration\Tasks\CmdletIterationEventModule.cs" />
+    <Compile Include="Configuration\Tasks\CmdletLogEntries.cs" />
+    <Compile Include="Configuration\Tasks\CmdletLogHelper.cs" />
+    <Compile Include="Configuration\Tasks\CmdletNeedsProxyException.cs" />
+    <Compile Include="Configuration\Tasks\CmdletProxy.cs" />
+    <Compile Include="Configuration\Tasks\CmdletProxyDataReader.cs" />
+    <Compile Include="Configuration\Tasks\CmdletProxyInfo.cs" />
+    <Compile Include="Configuration\Tasks\CollectCmdletLogEntriesModule.cs" />
+    <Compile Include="Configuration\Tasks\CommonParameterSets.cs" />
+    <Compile Include="Configuration\Tasks\CompoundSyncObjectIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\ComputerIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\Condition.cs" />
+    <Compile Include="Configuration\Tasks\ConditionAttribute.cs" />
+    <Compile Include="Configuration\Tasks\ConditionCollection.cs" />
+    <Compile Include="Configuration\Tasks\ConditionException.cs" />
+    <Compile Include="Configuration\Tasks\ConditionInitializationException.cs" />
+    <Compile Include="Configuration\Tasks\ConfigObjectIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\ConfigurationContext.cs" />
+    <Compile Include="Configuration\Tasks\ConfigureService.cs" />
+    <Compile Include="Configuration\Tasks\ConfirmationChoice.cs" />
+    <Compile Include="Configuration\Tasks\ConsumerMailboxIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\ContactIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\ContainerIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\ContentFilterPhraseIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\CountryListIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\CriticalFeatureHelper.cs" />
+    <Compile Include="Configuration\Tasks\DagNetworkQueryFilter.cs" />
+    <Compile Include="Configuration\Tasks\DataAccessHelper.cs" />
+    <Compile Include="Configuration\Tasks\DataAccessTask.cs" />
+    <Compile Include="Configuration\Tasks\DatabaseAvailabilityGroupConfigurationIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\DatabaseAvailabilityGroupIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\DatabaseAvailabilityGroupNetworkIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\DatabaseCopyIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\DatabaseIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\DehydrateableMailboxPolicyIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\DeliveryAgentConnectorIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\DeliveryRecipientIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\DetailsTemplateIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\DirectReferenceErrorReporter.cs" />
+    <Compile Include="Configuration\Tasks\DistributionGroupIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\DistributionGroupMemberIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\DuplicateExternalDirectoryObjectIdException.cs" />
+    <Compile Include="Configuration\Tasks\DynamicGroupIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\ECIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\EdgeSyncEhfConnectorIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\EdgeSyncMservConnectorIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\EdgeSyncServiceConfigIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\ELCContentSettingsIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\ELCFolderIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\EmailAddressPolicyIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\ErrorMissOrganizationException.cs" />
+    <Compile Include="Configuration\Tasks\EwsStoreObjectIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\ExchangeCertificateIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\ExchangePropertyContainer.cs" />
+    <Compile Include="Configuration\Tasks\ExchangeSettingsIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\ExchangeTransportServerIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\ExchangeUpgradeBucketIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\ExCmdletInvocationException.cs" />
+    <Compile Include="Configuration\Tasks\ExProgressRecord.cs" />
+    <Compile Include="Configuration\Tasks\ExtendedOrganizationalUnitIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\ExtendedRightIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\ExtendedSecurityPrincipalIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\FailedMSOSyncObjectIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\FederationTrustIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\FileSearchUtil.cs" />
+    <Compile Include="Configuration\Tasks\ForeignConnectorIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\FrontendTransportServerIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\GeneralMailboxIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\GeneralMailboxOrMailUserIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\GeneralRecipientIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\GenericEventArg.cs" />
+    <Compile Include="Configuration\Tasks\GetMailboxStoreProviderTaskBase.cs" />
+    <Compile Include="Configuration\Tasks\GetMapiObjectTask.cs" />
+    <Compile Include="Configuration\Tasks\GetMultitenancySingletonSystemConfigurationObjectTask.cs" />
+    <Compile Include="Configuration\Tasks\GetMultitenancySystemConfigurationObjectTask.cs" />
+    <Compile Include="Configuration\Tasks\GetObjectTask.2.cs" />
+    <Compile Include="Configuration\Tasks\GetObjectTask.cs" />
+    <Compile Include="Configuration\Tasks\GetObjectWithIdentityTaskBase.cs" />
+    <Compile Include="Configuration\Tasks\GetRecipientObjectTask.cs" />
+    <Compile Include="Configuration\Tasks\GetSingletonObjectTask.cs" />
+    <Compile Include="Configuration\Tasks\GetSingletonSystemConfigurationObjectTask.cs" />
+    <Compile Include="Configuration\Tasks\GetSystemConfigurationObjectTask.cs" />
+    <Compile Include="Configuration\Tasks\GetTaskBase.cs" />
+    <Compile Include="Configuration\Tasks\GetTaskBaseModuleFactory.cs" />
+    <Compile Include="Configuration\Tasks\GetTaskPiiRedactionModule.cs" />
+    <Compile Include="Configuration\Tasks\GetTaskWithIdentityModuleFactory.cs" />
+    <Compile Include="Configuration\Tasks\GetTenantADObjectWithIdentityTaskBase.cs" />
+    <Compile Include="Configuration\Tasks\GetWithIdentityTaskPiiRedactionModule.cs" />
+    <Compile Include="Configuration\Tasks\GlobalAddressListIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\Globals.cs" />
+    <Compile Include="Configuration\Tasks\GroupIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\HostedConnectionFilterPolicyIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\HostedContentFilterPolicyIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\HostedOutboundSpamFilterPolicyIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\HostedSpamFilterConfigIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\HybridConfigurationIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\ICommandShell.cs" />
+    <Compile Include="Configuration\Tasks\ICriticalFeature.cs" />
+    <Compile Include="Configuration\Tasks\IIdentityParameter.cs" />
+    <Compile Include="Configuration\Tasks\INamedIdentity.cs" />
+    <Compile Include="Configuration\Tasks\InboundConnectorIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\InboxRuleIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\InformationStoreIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\InterceptorRuleIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\IntraOrganizationConnectorIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\InvalidOperationInDehydratedContextException.cs" />
+    <Compile Include="Configuration\Tasks\IPAllowListProviderIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\IPBlockListProviderIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\IPListEntryIdentity.cs" />
+    <Compile Include="Configuration\Tasks\IReferenceErrorReporter.cs" />
+    <Compile Include="Configuration\Tasks\ISessionState.cs" />
+    <Compile Include="Configuration\Tasks\IsOutofConfigWriteScopeException.cs" />
+    <Compile Include="Configuration\Tasks\IsOutofDatabaseScopeException.cs" />
+    <Compile Include="Configuration\Tasks\ITaskEvent.cs" />
+    <Compile Include="Configuration\Tasks\ITaskIOPipeline.cs" />
+    <Compile Include="Configuration\Tasks\ITaskModule.cs" />
+    <Compile Include="Configuration\Tasks\ITaskModuleFactory.cs" />
+    <Compile Include="Configuration\Tasks\IThrottlingCallback.cs" />
+    <Compile Include="Configuration\Tasks\IThrottlingModuleInfo.cs" />
+    <Compile Include="Configuration\Tasks\IVariableDictionary.cs" />
+    <Compile Include="Configuration\Tasks\JournalingReconciliationAccountIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\LatencyTrackingModule.cs" />
+    <Compile Include="Configuration\Tasks\LegacyDatabaseIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\LegacyObjectException.cs" />
+    <Compile Include="Configuration\Tasks\LoggingModule.cs" />
+    <Compile Include="Configuration\Tasks\LogMessageDelegate.cs" />
+    <Compile Include="Configuration\Tasks\LogonableObjectIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\MailboxAuditBypassAssociationIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\MailboxFolderIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\MailboxIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\MailboxOrMailUserIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\MailboxPlanIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\MailboxPolicyIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\MailboxServerIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\MailboxStoreIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\MailboxStoreObjectIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\MailboxTransportServerIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\MailboxUserContactIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\MailContactIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\MailFlowPartnerIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\MailPublicFolderIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\MailUserIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\MailUserIdParameterBase.cs" />
+    <Compile Include="Configuration\Tasks\MailUserOrGeneralMailboxIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\MalwareFilteringServerIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\MalwareFilterPolicyIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\ManagedServiceName.cs" />
+    <Compile Include="Configuration\Tasks\ManagementObjectAlreadyExistsException.cs" />
+    <Compile Include="Configuration\Tasks\ManagementObjectAmbiguousException.cs" />
+    <Compile Include="Configuration\Tasks\ManagementObjectDuplicateException.cs" />
+    <Compile Include="Configuration\Tasks\ManagementObjectNotFoundException.cs" />
+    <Compile Include="Configuration\Tasks\ManagementScopeIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\ManageService.cs" />
+    <Compile Include="Configuration\Tasks\ManageServiceBase.cs" />
+    <Compile Include="Configuration\Tasks\MapiIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\MapiObjectActionTask.cs" />
+    <Compile Include="Configuration\Tasks\MapiTaskHelper.cs" />
+    <Compile Include="Configuration\Tasks\MessageCategoryIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\MessageClassificationIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\MobileDeviceIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\ModeratorIDParameter.cs" />
+    <Compile Include="Configuration\Tasks\MonadFilter.cs" />
+    <Compile Include="Configuration\Tasks\NativeMethods.cs" />
+    <Compile Include="Configuration\Tasks\NewADTaskBase.cs" />
+    <Compile Include="Configuration\Tasks\NewFixedNameSystemConfigurationObjectTask.cs" />
+    <Compile Include="Configuration\Tasks\NewGeneralRecipientObjectTask.cs" />
+    <Compile Include="Configuration\Tasks\NewMailboxStoreProviderTaskBase.cs" />
+    <Compile Include="Configuration\Tasks\NewMultitenancyFixedNameSystemConfigurationObjectTask.cs" />
+    <Compile Include="Configuration\Tasks\NewMultitenancySystemConfigurationObjectTask.cs" />
+    <Compile Include="Configuration\Tasks\NewObjectTask.cs" />
+    <Compile Include="Configuration\Tasks\NewRecipientObjectTask.cs" />
+    <Compile Include="Configuration\Tasks\NewRecipientObjectTaskBase.cs" />
+    <Compile Include="Configuration\Tasks\NewSystemConfigurationObjectTask.cs" />
+    <Compile Include="Configuration\Tasks\NewTaskBase.cs" />
+    <Compile Include="Configuration\Tasks\NewTenantADTaskBase.cs" />
+    <Compile Include="Configuration\Tasks\NonMailEnabledGroupIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\NonMailEnabledUserIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\NonOrgHierarchyConverter.cs" />
+    <Compile Include="Configuration\Tasks\NoServersAndOutofServerScopeException.cs" />
+    <Compile Include="Configuration\Tasks\NoServersForDatabaseException.cs" />
+    <Compile Include="Configuration\Tasks\NullInstanceIdentityParameterException.cs" />
+    <Compile Include="Configuration\Tasks\NullInstanceParameterException.cs" />
+    <Compile Include="Configuration\Tasks\ObjectActionMailboxStoreProviderTaskBase.cs" />
+    <Compile Include="Configuration\Tasks\ObjectActionTask.cs" />
+    <Compile Include="Configuration\Tasks\ObjectActionTenantADTask.cs" />
+    <Compile Include="Configuration\Tasks\ObjectExistsCondition.cs" />
+    <Compile Include="Configuration\Tasks\OfflineAddressBookIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\OMEConfigurationIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\OnPremisesOrganizationIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\OperationRequiresGroupManagerException.cs" />
+    <Compile Include="Configuration\Tasks\OptionalIdentityData.cs" />
+    <Compile Include="Configuration\Tasks\OrganizationalUnitIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\OrganizationalUnitIdParameterBase.cs" />
+    <Compile Include="Configuration\Tasks\OrganizationIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\OrganizationRelationshipIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\OutboundConnectorIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\OutlookProviderIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\PagedGetObjectTask.cs" />
+    <Compile Include="Configuration\Tasks\PagedPositionInfo.cs" />
+    <Compile Include="Configuration\Tasks\PartnerApplicationIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\PiiRedactionModuleBase.cs" />
+    <Compile Include="Configuration\Tasks\ProvisioningPolicyIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\ProxyHelper.cs" />
+    <Compile Include="Configuration\Tasks\ProxyModule.cs" />
+    <Compile Include="Configuration\Tasks\ProxyPSCommand.cs" />
+    <Compile Include="Configuration\Tasks\PSObjectWrapper.cs" />
+    <Compile Include="Configuration\Tasks\PSSessionState.cs" />
+    <Compile Include="Configuration\Tasks\PSVariables.cs" />
+    <Compile Include="Configuration\Tasks\PswsPropertyConverterModule.cs" />
+    <Compile Include="Configuration\Tasks\PublicFolderIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\PushNotificationAppIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\QUERY_SERVICE_CONFIG.cs" />
+    <Compile Include="Configuration\Tasks\QueueViewerInputObject.cs" />
+    <Compile Include="Configuration\Tasks\QueueViewerInputObjectSchema.cs" />
+    <Compile Include="Configuration\Tasks\QueueViewerInputPropertyBag.cs" />
+    <Compile Include="Configuration\Tasks\RbacModule.cs" />
+    <Compile Include="Configuration\Tasks\ReceiveConnectorIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\RecipientEnforcementProvisioningPolicyIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\RecipientIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\RecipientObjectActionTask.cs" />
+    <Compile Include="Configuration\Tasks\RecipientOrOrganizationIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\RecipientTaskHelper.cs" />
+    <Compile Include="Configuration\Tasks\RecipientTypeFilter.cs" />
+    <Compile Include="Configuration\Tasks\RecipientWithAdUserGroupIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\RecipientWithAdUserIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\RemoteAccountPolicyIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\RemoteDomainIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\RemoteMailboxIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\RemoveADTaskBase.cs" />
+    <Compile Include="Configuration\Tasks\RemovedMailboxIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\RemoveMailboxStoreProviderTaskBase.cs" />
+    <Compile Include="Configuration\Tasks\RemoveObjectTask.2.cs" />
+    <Compile Include="Configuration\Tasks\RemoveObjectTask.cs" />
+    <Compile Include="Configuration\Tasks\RemoveRecipientObjectTask.cs" />
+    <Compile Include="Configuration\Tasks\RemoveSystemConfigurationObjectTask.cs" />
+    <Compile Include="Configuration\Tasks\RemoveTaskBase.cs" />
+    <Compile Include="Configuration\Tasks\RemoveTenantADTaskBase.cs" />
+    <Compile Include="Configuration\Tasks\ReportExceptionModule.cs" />
+    <Compile Include="Configuration\Tasks\ResourceThrottlingCallback.cs" />
+    <Compile Include="Configuration\Tasks\ResubmitRequestIdentityParameter.cs" />
+    <Compile Include="Configuration\Tasks\RetentionPolicyTagIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\RmsTemplateIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\RmsTrustedPublishingDomainIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\RoleAssigneeIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\RoleAssignmentIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\RoleEntryIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\RoleGroupIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\RoleGroupMemberIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\RoleIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\RoleNotFoundException.cs" />
+    <Compile Include="Configuration\Tasks\RoleServerIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\RunspaceServerSettingsFinalizeModule.cs" />
+    <Compile Include="Configuration\Tasks\RunspaceServerSettingsInitModule.cs" />
+    <Compile Include="Configuration\Tasks\SearchObjectIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\SecurityGroupIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\SecurityPrincipalIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\SendAddressIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\SendConnectorIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\ServerBasedIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\ServerIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\ServerInfo.cs" />
+    <Compile Include="Configuration\Tasks\ServerNotAvailableException.cs" />
+    <Compile Include="Configuration\Tasks\ServerRoleFilter.cs" />
+    <Compile Include="Configuration\Tasks\ServiceAccessFlags.cs" />
+    <Compile Include="Configuration\Tasks\ServiceAction.cs" />
+    <Compile Include="Configuration\Tasks\ServiceActionType.cs" />
+    <Compile Include="Configuration\Tasks\ServiceConfigInfoLevels.cs" />
+    <Compile Include="Configuration\Tasks\ServiceControlManagerAccessFlags.cs" />
+    <Compile Include="Configuration\Tasks\ServiceFailureActions.cs" />
+    <Compile Include="Configuration\Tasks\ServiceFailureActionsFlag.cs" />
+    <Compile Include="Configuration\Tasks\ServiceInstanceIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\ServiceNotInstalledException.cs" />
+    <Compile Include="Configuration\Tasks\ServiceQueryStatus.cs" />
+    <Compile Include="Configuration\Tasks\ServiceSidActions.cs" />
+    <Compile Include="Configuration\Tasks\ServiceSidType.cs" />
+    <Compile Include="Configuration\Tasks\ServiceStartFailureException.cs" />
+    <Compile Include="Configuration\Tasks\ServiceStopFailureException.cs" />
+    <Compile Include="Configuration\Tasks\ServiceType.cs" />
+    <Compile Include="Configuration\Tasks\ServiceUninstallFailureException.cs" />
+    <Compile Include="Configuration\Tasks\SERVICE_STATUS.cs" />
+    <Compile Include="Configuration\Tasks\SERVICE_STATUS_EX.cs" />
+    <Compile Include="Configuration\Tasks\SetADTaskBase.cs" />
+    <Compile Include="Configuration\Tasks\SetErrorExecutionContextModule.cs" />
+    <Compile Include="Configuration\Tasks\SetMailboxStoreProviderTaskBase.cs" />
+    <Compile Include="Configuration\Tasks\SetMultitenancySingletonSystemConfigurationObjectTask.cs" />
+    <Compile Include="Configuration\Tasks\SetObjectTask.2.cs" />
+    <Compile Include="Configuration\Tasks\SetObjectTask.3.cs" />
+    <Compile Include="Configuration\Tasks\SetObjectTask.cs" />
+    <Compile Include="Configuration\Tasks\SetObjectTaskBase.cs" />
+    <Compile Include="Configuration\Tasks\SetObjectWithIdentityTaskBase.cs" />
+    <Compile Include="Configuration\Tasks\SetRecipientObjectTask.2.cs" />
+    <Compile Include="Configuration\Tasks\SetRecipientObjectTask.cs" />
+    <Compile Include="Configuration\Tasks\SetSingletonObjectTask.cs" />
+    <Compile Include="Configuration\Tasks\SetSingletonObjectTaskBase.cs" />
+    <Compile Include="Configuration\Tasks\SetSingletonSystemConfigurationObjectTask.cs" />
+    <Compile Include="Configuration\Tasks\SetSystemConfigurationObjectTask.2.cs" />
+    <Compile Include="Configuration\Tasks\SetSystemConfigurationObjectTask.cs" />
+    <Compile Include="Configuration\Tasks\SetTaskBase.cs" />
+    <Compile Include="Configuration\Tasks\SetTenantADTaskBase.cs" />
+    <Compile Include="Configuration\Tasks\SettingOverrideIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\SetTopologySystemConfigurationObjectTask.2.cs" />
+    <Compile Include="Configuration\Tasks\SetTopologySystemConfigurationObjectTask.cs" />
+    <Compile Include="Configuration\Tasks\SetupLoggingModule.cs" />
+    <Compile Include="Configuration\Tasks\SharedConfigurationTaskHelper.cs" />
+    <Compile Include="Configuration\Tasks\SharedConfigurationValidationException.cs" />
+    <Compile Include="Configuration\Tasks\SharedTenantConfigurationMode.cs" />
+    <Compile Include="Configuration\Tasks\SharingPolicyIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\SingletonObjectActionTask.cs" />
+    <Compile Include="Configuration\Tasks\SingletonSystemConfigurationObjectActionTask.cs" />
+    <Compile Include="Configuration\Tasks\SortOrderEntry.cs" />
+    <Compile Include="Configuration\Tasks\SortOrderFormatException.cs" />
+    <Compile Include="Configuration\Tasks\StampGroupIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\StorageGroupIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\StoreMailboxIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\SuppressingPiiData.cs" />
+    <Compile Include="Configuration\Tasks\SystemAttendantIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\SystemConfigurationObjectActionTask.cs" />
+    <Compile Include="Configuration\Tasks\SystemMessageIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\Task.cs" />
+    <Compile Include="Configuration\Tasks\TaskArgumentException.cs" />
+    <Compile Include="Configuration\Tasks\TaskContext.cs" />
+    <Compile Include="Configuration\Tasks\TaskErrorEventArg.cs" />
+    <Compile Include="Configuration\Tasks\TaskErrorInfo.cs" />
+    <Compile Include="Configuration\Tasks\TaskEvent.cs" />
+    <Compile Include="Configuration\Tasks\TaskException.cs" />
+    <Compile Include="Configuration\Tasks\TaskFaultInjectionModule.cs" />
+    <Compile Include="Configuration\Tasks\TaskHelper.cs" />
+    <Compile Include="Configuration\Tasks\TaskInvalidOperationException.cs" />
+    <Compile Include="Configuration\Tasks\TaskInvocationInfo.cs" />
+    <Compile Include="Configuration\Tasks\TaskIOPipeline.cs" />
+    <Compile Include="Configuration\Tasks\TaskIOPipelineBase.cs" />
+    <Compile Include="Configuration\Tasks\TaskLogger.cs" />
+    <Compile Include="Configuration\Tasks\TaskModuleFactory.cs" />
+    <Compile Include="Configuration\Tasks\TaskModuleKey.cs" />
+    <Compile Include="Configuration\Tasks\TaskPerformanceData.cs" />
+    <Compile Include="Configuration\Tasks\TaskStage.cs" />
+    <Compile Include="Configuration\Tasks\TaskTotalFailureException.cs" />
+    <Compile Include="Configuration\Tasks\TaskTransientException.cs" />
+    <Compile Include="Configuration\Tasks\TaskUserInfo.cs" />
+    <Compile Include="Configuration\Tasks\TaskVerboseStringHelper.cs" />
+    <Compile Include="Configuration\Tasks\TaskWin32Exception.cs" />
+    <Compile Include="Configuration\Tasks\TenantRelocationRequestIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\ThrottlingModule.cs" />
+    <Compile Include="Configuration\Tasks\ThrottlingPolicyAssociationIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\ThrottlingPolicyIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\ThrowTerminatingErrorException.cs" />
+    <Compile Include="Configuration\Tasks\TransportServerIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\UMAutoAttendantIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\UMCallAnsweringRuleIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\UMDialPlanIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\UMHuntGroupIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\UMIPGatewayIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\UMServerIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\UnifiedPolicySyncNotificationIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\UniversalSecurityGroupIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\UnmanagedServiceName.cs" />
+    <Compile Include="Configuration\Tasks\UserContactComputerIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\UserContactGroupIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\UserContactIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\UserIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\ValidateReferenceDelegate.cs" />
+    <Compile Include="Configuration\Tasks\VariableScopedOptions.cs" />
+    <Compile Include="Configuration\Tasks\VirtualDirectoryIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\WriteErrorDelegate.cs" />
+    <Compile Include="Configuration\Tasks\WriteVerboseDelegate.cs" />
+    <Compile Include="Configuration\Tasks\WriteWarningDelegate.cs" />
+    <Compile Include="Configuration\Tasks\X400AuthoritativeDomainIdParameter.cs" />
+    <Compile Include="Data\Storage\Management\AppId.cs" />
+    <Compile Include="Data\Storage\Management\InboxRuleId.cs" />
+    <Compile Include="Data\Storage\Management\OMEConfigurationId.cs" />
+    <Compile Include="Data\Storage\Management\UMCallAnsweringRuleId.cs" />
+    <Compile Include="Management\RecipientTasks\ForestWideTenantDcServerSettingsModule.cs" />
+    <Compile Include="Management\RecipientTasks\ForestWideUserDcServerSettingsModule.cs" />
+    <Compile Include="Monitoring\EventTypeEnumeration.cs" />
+    <Compile Include="Monitoring\MonitoringData.cs" />
+    <Compile Include="Monitoring\MonitoringEvent.cs" />
+    <Compile Include="Monitoring\MonitoringEventCollection.cs" />
+    <Compile Include="Monitoring\MonitoringHelper.cs" />
+    <Compile Include="Monitoring\MonitoringPerformanceCounter.cs" />
+    <Compile Include="Monitoring\MonitoringPerformanceCounterCollection.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ProvisioningMonitoring\CmdletHealthCounters.cs" />
+    <Compile Include="ProvisioningMonitoring\PerTenantCmdletHealthCounters.cs" />
+    <Compile Include="ProvisioningMonitoring\ProvisioningMonitoringConfig.cs" />
+    <Compile Include="Provisioning\ADObjectClassFactory.cs" />
+    <Compile Include="Provisioning\Agent\CmdletHandlerAttribute.cs" />
+    <Compile Include="Provisioning\Agent\IProvisioningAgent.cs" />
+    <Compile Include="Provisioning\Agent\ProvisioningAgentClassFactoryAttribute.cs" />
+    <Compile Include="Provisioning\Agent\ProvisioningAgentClassFactoryBase.cs" />
+    <Compile Include="Provisioning\CmdletExtensionAgentsGlobalConfig.cs" />
+    <Compile Include="Provisioning\LoadBalancing\ComparableEntry.cs" />
+    <Compile Include="Provisioning\LoadBalancing\LoadBalancingReport.cs" />
+    <Compile Include="Provisioning\LoadBalancing\MailboxDatabaseWithLocationInfo.cs" />
+    <Compile Include="Provisioning\LoadBalancing\PhysicalResourceLoadBalancing.cs" />
+    <Compile Include="Provisioning\ProvisioningBroker.cs" />
+    <Compile Include="Provisioning\ProvisioningBrokerException.cs" />
+    <Compile Include="Provisioning\ProvisioningException.cs" />
+    <Compile Include="Provisioning\ProvisioningHandler.cs" />
+    <Compile Include="Provisioning\ProvisioningHandlerBase.cs" />
+    <Compile Include="Provisioning\ProvisioningLayer.cs" />
+    <Compile Include="Provisioning\ProvisioningPerformanceHelper.cs" />
+    <Compile Include="Provisioning\TranslatableProvisioningException.cs" />
+    <Compile Include="Provisioning\UserScope.cs" />
+    <Compile Include="Provisioning\UserScopeFlags.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Configuration\Authorization\RbacQuery.txt" />
+    <EmbeddedResource Include="Configuration\Common\LocStrings\Strings.resources" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.Exchange.Common\Microsoft.Exchange.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140F0}</Project>
+      <Name>Microsoft.Exchange.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Compliance\Microsoft.Exchange.Compliance.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140F2}</Project>
+      <Name>Microsoft.Exchange.Compliance</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Configuration.Core\Microsoft.Exchange.Configuration.Core.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140F8}</Project>
+      <Name>Microsoft.Exchange.Configuration.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Configuration.FailFast\Microsoft.Exchange.Configuration.FailFast.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140FB}</Project>
+      <Name>Microsoft.Exchange.Configuration.FailFast</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Configuration.RedirectionModule\Microsoft.Exchange.Configuration.RedirectionModule.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140FD}</Project>
+      <Name>Microsoft.Exchange.Configuration.RedirectionModule</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.ApplicationLogic\Microsoft.Exchange.Data.ApplicationLogic.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14104}</Project>
+      <Name>Microsoft.Exchange.Data.ApplicationLogic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Common\Microsoft.Exchange.Data.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140D3}</Project>
+      <Name>Microsoft.Exchange.Data.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Directory\Microsoft.Exchange.Data.Directory.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14105}</Project>
+      <Name>Microsoft.Exchange.Data.Directory</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Mapi\Microsoft.Exchange.Data.Mapi.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1410A}</Project>
+      <Name>Microsoft.Exchange.Data.Mapi</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Providers\Microsoft.Exchange.Data.Providers.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1410D}</Project>
+      <Name>Microsoft.Exchange.Data.Providers</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Storage\Microsoft.Exchange.Data.Storage.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1410F}</Project>
+      <Name>Microsoft.Exchange.Data.Storage</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Transport\Microsoft.Exchange.Data.Transport.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140D5}</Project>
+      <Name>Microsoft.Exchange.Data.Transport</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data\Microsoft.Exchange.Data.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14106}</Project>
+      <Name>Microsoft.Exchange.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Diagnostics\Microsoft.Exchange.Diagnostics.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14113}</Project>
+      <Name>Microsoft.Exchange.Diagnostics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Net\Microsoft.Exchange.Net.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14178}</Project>
+      <Name>Microsoft.Exchange.Net</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Rpc\Microsoft.Exchange.Rpc.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14188}</Project>
+      <Name>Microsoft.Exchange.Rpc</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Rules.Common\Microsoft.Exchange.Rules.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14191}</Project>
+      <Name>Microsoft.Exchange.Rules.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Security\Microsoft.Exchange.Security.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14198}</Project>
+      <Name>Microsoft.Exchange.Security</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Sqm\Microsoft.Exchange.Sqm.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141B7}</Project>
+      <Name>Microsoft.Exchange.Sqm</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.StoreProvider\Microsoft.Exchange.StoreProvider.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141B9}</Project>
+      <Name>Microsoft.Exchange.StoreProvider</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.VariantConfiguration\Microsoft.Exchange.VariantConfiguration.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141E0}</Project>
+      <Name>Microsoft.Exchange.VariantConfiguration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.WorkloadManagement\Microsoft.Exchange.WorkloadManagement.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141E1}</Project>
+      <Name>Microsoft.Exchange.WorkloadManagement</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\mscorlib\mscorlib.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141F1}</Project>
+      <Name>mscorlib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

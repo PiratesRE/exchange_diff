@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <xsd:element name="configuration" type="configurationType" />
+
+    <xsd:complexType name="configurationType">
+        <xsd:sequence>
+            <xsd:element name="mexRuntime" type="mexRuntimeType" />
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="mexRuntimeType">
+        <xsd:sequence>
+            <xsd:element name="monitoring" type="monitoringType" />
+            <xsd:element name="agentList" type="agentListType" />
+            <xsd:element name="settings" type="settingsType" minOccurs="0"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="settingsType">
+        <xsd:sequence>
+            <xsd:element name="disposeAgents" type="xsd:boolean" minOccurs="0"/>
+        </xsd:sequence>        
+    </xsd:complexType>
+    
+    <xsd:complexType name="monitoringType">
+        <xsd:sequence>
+            <xsd:element name="agentExecution" type="agentExecutionType" />
+            <xsd:element name="messageSnapshot" type="messageSnapshotType" minOccurs="0" maxOccurs="1" />
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="agentExecutionType">
+       <xsd:attribute name="timeLimitInMilliseconds" type="xsd:int" use="required" />
+    </xsd:complexType>
+
+    <xsd:complexType name="messageSnapshotType">
+        <xsd:attribute name="enabled" type="xsd:boolean" />
+    </xsd:complexType>
+
+    <xsd:complexType name="agentListType">
+        <xsd:sequence>
+            <xsd:element name="agent" type="agentType" minOccurs="0" maxOccurs="unbounded" />
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="agentType">
+        <xsd:attribute name="name" type="id-string" use="required" />
+        <xsd:attribute name="baseType" type="non-empty-string" use="required" />
+        <xsd:attribute name="classFactory" type="non-empty-string" use="required" />
+        <xsd:attribute name="assemblyPath" type="non-empty-string" use="required" />
+        <xsd:attribute name="enabled" type="xsd:boolean" use="required" />
+   </xsd:complexType>
+
+   <xsd:simpleType name="non-empty-string">
+       <xsd:restriction base="xsd:string">
+           <xsd:minLength value="1" />
+       </xsd:restriction>
+   </xsd:simpleType>
+
+   <xsd:simpleType name="id-string">
+       <xsd:restriction base="non-empty-string">
+           <xsd:maxLength value="64" />
+       </xsd:restriction>
+   </xsd:simpleType>
+</xsd:schema>

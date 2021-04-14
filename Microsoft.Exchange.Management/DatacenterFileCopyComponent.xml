@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo IsDatacenterOnly="true" IsDatacenterDedicatedOnly="true" AlwaysExecute="true" Name="Datacenter File Copy Component">
+
+  <ServerTasks>
+
+    <!-- Creates a copy of Datacenter directory using the same structure as on a share. -->
+    <ServerTaskInfo Id="_d2682bfd90be480b87f5786a17af9bbf" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          $bin = Join-Path $RoleInstallPath $RoleDatacenterExchangePath;
+          $dest = Join-Path $bin 'Datacenter';
+          if (!(Test-Path -Path $dest))
+          {
+              New-Item -Path $bin -Name "Datacenter" -Type Directory;
+          }
+          Copy-Item -Path $RoleDatacenterPath\* -Destination $dest -Recurse -Container -Force;
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery />
+      <Uninstall />
+    </ServerTaskInfo>
+
+  </ServerTasks>
+
+</SetupComponentInfo>
+

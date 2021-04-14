@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo IsDatacenterOnly="true" IsDatacenterDedicatedOnly="true" Name="Datacenter All Roles PostSetup">
+
+  <ServerTasks>
+
+    <!-- License this Exchange server -->
+    <ServerTaskInfo Id="_259bf0741eb642129fb2b9f1db1c6d12" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <!-- OM:675129 [DC Disk Space] Reduce the PageFile Size -->
+        <!-- Note that the server needs to be rebooted for this setting to take an affect. -->
+        <Standalone>
+          if (Get-ExchangeServer | where { $_.Name -eq $env:ComputerName -and $_.Fqdn -notlike "*extest.microsoft.com" })
+          {
+            [int]$pageFileSize = 10;
+            Get-WmiObject -Class "Win32_OperatingSystem" -Namespace "root\cimv2" | foreach {$pageFileSize += $_.TotalVisibleMemorySize/1024};
+
+            # Cap PageFile to 32 GB + 10 MB
+            # Calculation in MB so divide by 1024 twice to convert from bytes up to MB, then add 10 to perserve 10MB addition
+            $pageFileSizeCap = 32GB / 1024 / 1024 + 10
+            if ($pageFileSize -gt $pageFileSizeCap)
+            {
+              $pageFileSize = $pageFileSizeCap
+            }
+
+            Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management" -Name PagingFiles -Value "$env:SystemDrive\pagefile.sys $pageFileSize $pageFileSize" -Force
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+    
+    <!-- [E14-200611] Disable Calendar COW -->
+    <ServerTaskInfo Id="_39444430a6f947639eec532719e9c98b" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <!-- E14:200611 Ensure that calendar logging is off in datacenter in R4 -->
+        <!-- Calendar logging COW is enabled by default and we disable it in service production. -->
+        <Standalone>
+
+          if ($RoleDatacenterDisableCalendarCOW)
+          {
+          [string]$CalLoggingPath = "HKLM:\SOFTWARE\Microsoft\ExchangeServer\v15\CalendarLogging";
+          [string]$CalLoggingEnabled = "Disable";
+          [int]$CalLoggingEnabledValue = 1;
+
+          if ( !(test-path $CalLoggingPath -pathType Container ) ) { new-item -path $CalLoggingPath -force }
+          if ( !(get-itemproperty -path $CalLoggingPath -name $CalLoggingEnabled -erroraction silentlycontinue ) ) { new-itemproperty -path $CalLoggingPath -name $CalLoggingEnabled -value $CalLoggingEnabledValue }
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+  </ServerTasks>
+
+</SetupComponentInfo>

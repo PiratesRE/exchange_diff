@@ -1,0 +1,51 @@
+﻿using System;
+
+namespace Microsoft.Exchange.Data.Search.AqsParser
+{
+	internal enum PropertyKeyword
+	{
+		[CIKeyword]
+		Subject,
+		[CIKeyword]
+		Body,
+		[CIKeyword]
+		Attachment,
+		[CIKeyword]
+		Sent,
+		[CIKeyword]
+		Received,
+		[CIKeyword]
+		To,
+		[CIKeyword]
+		From,
+		[CIKeyword]
+		Cc,
+		[CIKeyword]
+		Bcc,
+		[CIKeyword]
+		Participants,
+		[CIKeyword]
+		Recipients,
+		[BasicKeyword]
+		[CIKeyword]
+		Kind,
+		PolicyTag,
+		Expires,
+		HasAttachment,
+		[CIKeyword]
+		[BasicKeyword]
+		Category,
+		IsFlagged,
+		IsRead,
+		[CIKeyword]
+		Importance,
+		[BasicKeyword]
+		[CIKeyword]
+		Size,
+		[BasicKeyword]
+		[CIKeyword]
+		All,
+		[CIKeyword]
+		AttachmentNames
+	}
+}

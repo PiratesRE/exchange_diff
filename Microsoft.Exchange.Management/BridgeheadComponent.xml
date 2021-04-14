@@ -1,0 +1,1259 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo Name="Bridgehead Configuration" DescriptionId="SetupComponentConfigurationBridgehead">
+
+    <ServerTasks>
+
+        <!-- Setup Transport Server -->
+        <ServerTaskInfo Id="_cdd27cfc4ef2444e805c97948cab0d13" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install>
+                <Standalone>
+
+                  set-transportservice `
+                  -Identity $RoleFqdnOrName `
+                  -ReceiveProtocolLogPath ($RoleInstallPath + "\TransportRoles\Logs\Hub\ProtocolLog\SmtpReceive") `
+                  -SendProtocolLogPath ($RoleInstallPath + "\TransportRoles\Logs\Hub\ProtocolLog\SmtpSend") `
+                  -ConnectivityLogPath ($RoleInstallPath + "\TransportRoles\Logs\Hub\Connectivity") `
+                  -MessageTrackingLogPath ($RoleInstallPath + "\TransportRoles\Logs\MessageTracking") `
+                  -AgentLogPath ($RoleInstallPath + "\TransportRoles\Logs\Hub\AgentLog") `
+                  -ActiveUserStatisticsLogPath ($RoleInstallPath + "\TransportRoles\Logs\Hub\ActiveUsersStats") `
+                  -ServerStatisticsLogPath ($RoleInstallPath + "\TransportRoles\Logs\Hub\ServerStats") `
+                  -PipelineTracingPath ($RoleInstallPath + "\TransportRoles\Logs\Hub\PipelineTracing") `
+                  -RoutingTableLogPath ($RoleInstallPath + "\TransportRoles\Logs\Hub\Routing") `
+                  -IrmLogPath ($RoleInstallPath + "\Logging\IRMLogs") `
+                  -QueueLogPath ($RoleInstallPath + "\TransportRoles\Logs\Hub\QueueViewer") `
+                  -JournalLogEnabled $false `
+                  -JournalLogPath ($RoleInstallPath + "\TransportRoles\Logs\JournalLog") `
+                  -WlmLogPath ($RoleInstallPath + "\TransportRoles\Logs\Hub\WLM") `
+                  -MaxOutboundConnections 1000 `
+                  -MaxPerDomainOutboundConnections 20 `
+                  -ReceiveProtocolLogMaxDirectorySize 250MB `
+                  -ReceiveProtocolLogMaxFileSize 10MB `
+                  -SendProtocolLogMaxDirectorySize 250MB `
+                  -SendProtocolLogMaxFileSize 10MB `
+                  -DnsLogEnabled $false `
+                  -DnsLogMaxAge:7.00:00:00 `
+                  -DnsLogMaxDirectorySize "100MB" `
+                  -DnsLogMaxFileSize "10MB" `
+                  -MessageTrackingLogMaxDirectorySize 1000MB `
+                  -MessageTrackingLogMaxFileSize 10MB `
+                  -IrmLogMaxDirectorySize 250MB `
+                  -IrmLogMaxFileSize 10MB `
+                  -ActiveUserStatisticsLogMaxDirectorySize 250MB `
+                  -ActiveUserStatisticsLogMaxFileSize 10MB `
+                  -ServerStatisticsLogMaxDirectorySize 250MB `
+                  -ServerStatisticsLogMaxFileSize 10MB `
+                  -ConnectivityLogMaxDirectorySize 1000MB `
+                  -ConnectivityLogMaxFileSize 10MB `
+                  -ConnectivityLogEnabled $true `
+                  -AgentLogMaxDirectorySize 250MB `
+                  -AgentLogMaxFileSize 10MB `
+                  -AgentLogEnabled $true `
+                  -WlmLogMaxDirectorySize 250MB `
+                  -WlmLogMaxFileSize 10MB `
+                  -RoutingTableLogMaxDirectorySize 50MB `
+                  -PickupDirectoryPath ($RoleInstallPath + "\TransportRoles\Pickup") `
+                  -ReplayDirectoryPath ($RoleInstallPath + "\TransportRoles\Replay") `
+                  -DomainController $RoleDomainController
+
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade>
+                <Standalone>
+                    set-transportservice `
+                        -Identity $RoleFqdnOrName `
+                        -IrmLogPath ($RoleInstallPath + "\Logging\IRMLogs") `
+                        -IrmLogEnabled $true `
+                        -IrmLogMaxDirectorySize 250MB `
+                        -IrmLogMaxFileSize 10MB `
+                        -QueueLogPath ($RoleInstallPath + "\TransportRoles\Logs\Hub\QueueViewer") `
+                        -JournalLogEnabled $false `
+                        -JournalLogPath ($RoleInstallPath + "\TransportRoles\Logs\JournalLog") `
+                        -WlmLogPath ($RoleInstallPath + "\TransportRoles\Logs\Hub\WLM")
+                </Standalone>
+            </BuildToBuildUpgrade>
+            <DisasterRecovery />
+            <Uninstall />
+        </ServerTaskInfo>
+
+        <!-- Set connection retry intervals and counts specific for the bridgehead role -->
+        <ServerTaskInfo Id="_92ed912c4ebe4f0998516f47c66d2b7f" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install>
+                <Standalone>
+                    set-TransportService `
+                    -Identity $RoleFqdnOrName `
+                    -TransientFailureRetryInterval:00:05:00 `
+                    -TransientFailureRetryCount:6 `
+                    -OutboundConnectionFailureRetryInterval:00:10:00
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true" />
+            <DisasterRecovery />
+            <Uninstall />
+        </ServerTaskInfo>
+
+        <!-- Uninstall "Mobile Message Receive Agent" as a regular agent since the agent is considered internal 
+         and will be loaded by MexRunTime automatically - (see internalAgents.config) . -->
+        <ServerTaskInfo Id="_75d998fc3c9f442d9d4e0d0c864e09bc" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install>
+                <Standalone>
+                    $agentName = "Mobile Message Receive Agent";
+                    $agent = get-transportagent -Identity:$agentName;
+                    if ($agent) {
+                    uninstall-transportagent -Identity:$agentName;
+                    };
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true" />
+            <DisasterRecovery UseInstallTasks="true"/>
+            <Uninstall />
+        </ServerTaskInfo>
+
+        <!-- Uninstall "Conversations Processing Agent" as a regular agent since the agent is considered internal 
+         and will be loaded by MexRunTime automatically - (see internalAgents.config) . -->
+        <ServerTaskInfo Id="_e61e94dea9f4493aafeda4faddb77849" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install>
+                <Standalone>
+                    $agentName = "Conversations Processing Agent";
+                    $agent = get-transportagent -Identity:$agentName;
+                    if ($agent) {
+                    uninstall-transportagent -Identity:$agentName;
+                    };
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true" />
+            <DisasterRecovery UseInstallTasks="true"/>
+            <Uninstall />
+        </ServerTaskInfo>
+
+        <!-- Uninstall "Message Records Management Delivery Agent" as a regular agent since the agent is considered internal 
+         and will be loaded by MexRunTime automatically - (see internalAgents.config) . -->
+        <ServerTaskInfo Id="_207241e0e31c47d0869ca98c47a55ac3" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install>
+                <Standalone>
+                    $agentName = "Message Records Management Delivery Agent";
+                    $agent = get-transportagent -Identity:$agentName;
+                    if ($agent) {
+                    uninstall-transportagent -Identity:$agentName;
+                    };
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true" />
+            <DisasterRecovery UseInstallTasks="true" />
+            <Uninstall/>
+        </ServerTaskInfo>
+
+        <!-- Install/uninstall "Transport Rule Agent" preserve state on upgrade -->
+        <!-- - step 1: Preserve previous agent state if any -->
+        <!-- - step 2: clean up previous agent -->
+        <!-- - step 3: install agent -->
+        <!-- - step 4: enable agent (if not previously disabled) -->
+        <ServerTaskInfo Id="_3089b50aa9b74afba6552dd677fe8a2f" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install DescriptionId="SetupProgressInstallingDefaultTransportAgents">
+                <Standalone>
+                    $agentName = "Transport Rule Agent";
+                    $agentFactory = "Microsoft.Exchange.MessagingPolicies.TransportRuleAgent.TransportRuleAgentFactory";
+                    $agentAssembly = ($RoleInstallPath + "TransportRoles\agents\Rule\Microsoft.Exchange.MessagingPolicies.TransportRuleAgent.dll");
+                    $agent = get-transportagent -Identity:$agentName;
+                    if ($agent) {
+                    uninstall-transportagent -Identity:$agentName;
+                    };
+                    install-TransportAgent -Name:$agentName -TransportAgentFactory:$agentFactory -AssemblyPath:$agentAssembly;
+                    if ($agent.enabled -or ! $agent) { enable-transportagent -Identity:$agentName };
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true" />
+            <DisasterRecovery UseInstallTasks="true" />
+            <Uninstall DescriptionId="SetupProgressRemovingDefaultTransportAgents">
+                <Standalone>
+                    $agentName = "Transport Rule Agent";
+                    $agent = get-transportagent -Identity:$agentName;
+                    if ($agent) {
+                    uninstall-transportagent -Identity:$agentName;
+                    };
+                </Standalone>
+            </Uninstall>
+        </ServerTaskInfo>
+
+      <!-- Upgrade Configuration file if needed during B2B upgrade -->
+      <ServerTaskInfo Id="_9FAA17C4-73D7-4E6D-9012-6274971434D5" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+        <Install />
+        <BuildToBuildUpgrade>
+          <Standalone>
+            # Apply XML Transforms to FIPS configuration file if schema changed
+            Write-ExchangeSetupLog -Info "Applying XML Transforms to FIPS configuration";
+
+            $FipsBinPath = [System.IO.Path]::Combine($RoleInstallPath, "FIP-FS\bin");
+            [Reflection.Assembly]::LoadFile([System.IO.Path]::Combine($FipsBinPath, "FSCConfigurationServerInterfaces.dll"));
+            [Reflection.Assembly]::LoadFile([System.IO.Path]::Combine($FipsBinPath, "FSCConfigSupport.dll"));
+
+            $configServer = New-Object Microsoft.FSC.Configuration.ConfigManagerClass;
+            if(! $configServer)
+            {
+              Write-ExchangeSetupLog -Error "Configuration Server object could not be created.";
+            }
+            else
+            {
+              try
+              {
+                $configServer.Upgrade();
+                Write-ExchangeSetupLog -Info "Configuration.xml was upgraded successfully";
+              }
+              catch
+              {
+                Write-ExchangeSetupLog -Error "Upgrade of Configuration.xml was unsuccessfull, $_";
+              }
+              # Stop the process if it is still running
+              # We silently continue because if process has already exited, Stop-Process will throw error
+              # Error is non-terminating and so can be suppressed
+              Stop-Process -processname FSCConfigurationServer -Force -ErrorAction SilentlyContinue;
+            }
+          </Standalone>
+        </BuildToBuildUpgrade>
+        <DisasterRecovery />
+        <Uninstall />
+      </ServerTaskInfo>
+
+      <ServerTaskInfo Id="_CCD5CAE9-F196-49D0-AEBF-7DC67F011BA1" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+        <Install>
+          <Standalone>
+            Write-ExchangeSetupLog -Info "Setting up FIPS configuration based on Exchange Install Path";
+
+            $FipsDataPath = [System.IO.Path]::Combine($RoleInstallPath, "FIP-FS\Data");
+            $FipsEnginesPath = [System.IO.Path]::Combine($FipsDataPath, "Engines");
+            Write-ExchangeSetupLog -Info "Loading FipFs snapin";
+            Add-PsSnapin Microsoft.Forefront.Filtering.Management.PowerShell -ErrorAction SilentlyContinue;
+            Set-ConfigurationValue -XPath "/fs-conf:Configuration/fs-sys:Machine/fs-sys:Paths/fs-sys:TraceFile" -Value $FipsDataPath -Confirm:$false
+            Set-ConfigurationValue -XPath "/fs-conf:Configuration/fs-sys:Machine/fs-sys:Paths/fs-sys:Engines" -Value $FipsEnginesPath -Confirm:$false
+
+            # Copy Microsoft Engine to Engines folder during the install
+            $FipsBinPath = [System.IO.Path]::Combine($RoleInstallPath, "FIP-FS\Bin");
+            $MicrosoftEngineSourcePath = [System.IO.Path]::Combine($FipsBinPath, "Engine\Microsoft");
+            $MicrosoftEngineDestinationPath = [System.IO.Path]::Combine($FipsEnginesPath, "amd64\Microsoft");
+            $MicrosoftEngineExists = Test-Path $MicrosoftEngineDestinationPath
+            if(! $MicrosoftEngineExists)
+            {
+              Robocopy $MicrosoftEngineSourcePath $MicrosoftEngineDestinationPath /S /COPYALL
+            }
+            
+          </Standalone>
+        </Install>
+        <BuildToBuildUpgrade>
+          <Standalone>
+            Write-ExchangeSetupLog -Info "Upgrade the MSAV engine if the version on disk is older than the packaged version";
+
+            $FipsDataPath = [System.IO.Path]::Combine($RoleInstallPath, "FIP-FS\Data");
+            $FipsEnginesPath = [System.IO.Path]::Combine($FipsDataPath, "Engines");
+            $FipsMsavEnginePath = [System.IO.Path]::Combine($FipsEnginesPath, "amd64\Microsoft\Bin");
+
+            # Copy Microsoft Engine to Engines folder during the install
+            $FipsBinPath = [System.IO.Path]::Combine($RoleInstallPath, "FIP-FS\Bin");
+            $MicrosoftEngineSourcePath = [System.IO.Path]::Combine($FipsBinPath, "Engine\Microsoft");
+            $MicrosoftEngineSourceBinPath = [System.IO.Path]::Combine($MicrosoftEngineSourcePath, "Bin");
+            $MicrosoftEngineDestinationPath = [System.IO.Path]::Combine($FipsEnginesPath, "amd64\Microsoft");
+
+            $ShouldUpgradeMicrosoftEngine = $true
+
+            if(Test-Path -Path $MicrosoftEngineSourceBinPath)
+            {
+              $EngineDirectories = dir $MicrosoftEngineSourceBinPath -Recurse | Where {$_.psIsContainer -eq $true};
+    
+              if(!$EngineDirectories)
+              {
+                  Write-ExchangeSetupLog -Error "MSAV Engine Version directory is missing.";
+                  break;
+              }
+
+              $UpgradeVersion = [System.Int64]::Parse($EngineDirectories[0]);
+              Write-ExchangeSetupLog -Info "UpgradeVersion = $UpgradeVersion";
+
+              if(!(Test-Path -Path $FipsMsavEnginePath)) {New-Item $FipsMsavEnginePath -ItemType Directory}
+              Foreach ($dir in dir $FipsMsavEnginePath -Recurse | Where {$_.psIsContainer -eq $true})
+              {
+                if($UpgradeVersion -le [System.Int64]::Parse($dir))
+                {
+                  $ShouldUpgradeMicrosoftEngine = $false;
+                  break;
+                }
+              }
+
+              Write-ExchangeSetupLog -Info "Should Upgrade Microsoft Engine? $ShouldUpgradeMicrosoftEngine";
+              if($ShouldUpgradeMicrosoftEngine)
+              {
+                get-childitem $MicrosoftEngineDestinationPath -recurse | remove-item -recurse
+                Robocopy $MicrosoftEngineSourcePath $MicrosoftEngineDestinationPath /S /COPYALL
+              }
+            }
+            else
+            {
+              Write-ExchangeSetupLog -Error "Microsoft engine is not installed properly or the directory is missing.";
+            }
+          </Standalone>
+        </BuildToBuildUpgrade>
+        <DisasterRecovery UseInstallTasks="true" />
+        <Uninstall />
+      </ServerTaskInfo>
+
+        <!-- Install/uninstall "Malware Agent V2" preserve state on upgrade -->
+        <ServerTaskInfo Id="_6394D35E-EBAF-482F-98C2-426EFB4A69FB" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+          <Install DescriptionId="SetupProgressInstallingDatacenterDefaultTransportAgents">
+            <Standalone>
+              # Install the AM V2 agent only if AM v2 service is installed
+              # Fix: Remove this check after we move totally to V2
+              if ((get-service MSExchangeAntimalwareSvc* | where {$_.name -eq "MSExchangeAntimalwareSvc"}))
+              {
+                  $agentName = "Malware Agent V2";
+                  $agentFactory = "Microsoft.Exchange.Transport.Agent.MalwareV2.MalwareAgentFactory";
+                  $agentAssembly = ($RoleInstallPath + "TransportRoles\agents\AntimalwareV2\Microsoft.Exchange.Transport.Agent.MalwareV2.dll");
+                  $agent = get-transportagent -Identity:$agentName;
+                  if ($agent) 
+                  {
+                  uninstall-transportagent -Identity:$agentName;
+                  };
+                  install-TransportAgent -Name:$agentName -TransportAgentFactory:$agentFactory -AssemblyPath:$agentAssembly;
+                  if (($agent.enabled -or !$agent) -and !$RoleDisableAMFiltering) { enable-transportagent -Identity:$agentName };
+              }
+            </Standalone>
+          </Install>
+          <BuildToBuildUpgrade UseInstallTasks="true" />
+          <DisasterRecovery UseInstallTasks="true" />
+          <Uninstall DescriptionId="SetupProgressRemovingDatacenterDefaultTransportAgents">
+            <Standalone>
+              $agentName = "Malware Agent V2";
+              $agent = get-transportagent -Identity:$agentName;
+              if ($agent) {
+              uninstall-transportagent -Identity:$agentName;
+              };
+            </Standalone>
+          </Uninstall>
+        </ServerTaskInfo>
+     
+        <!-- Install/uninstall "Malware Agent V1" preserve state on upgrade -->
+        <ServerTaskInfo Id="_5FD5D4F5-B840-46F7-9389-DD7A33FA39C9" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install DescriptionId="SetupProgressInstallingDefaultTransportAgents">
+                <Standalone>
+                  $agentName = "Malware Agent";
+                  $agentFactory = "Microsoft.Exchange.Transport.Agent.Malware.MalwareAgentFactory";
+                  $agentAssembly = ($RoleInstallPath + "TransportRoles\agents\Antimalware\Microsoft.Exchange.Transport.Agent.Malware.dll");
+                  $agent = get-transportagent -Identity:$agentName;
+                  if ($agent) {
+                  uninstall-transportagent -Identity:$agentName;
+                  };
+                  install-TransportAgent -Name:$agentName -TransportAgentFactory:$agentFactory -AssemblyPath:$agentAssembly;
+                  if (($agent.enabled -or ! $agent) -and !$RoleDisableAMFiltering) { enable-transportagent -Identity:$agentName };
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true" />
+            <DisasterRecovery UseInstallTasks="true" />
+            <Uninstall DescriptionId="SetupProgressRemovingDefaultTransportAgents">
+                <Standalone>
+                    $agentName = "Malware Agent";
+                    $agent = get-transportagent -Identity:$agentName;
+                    if ($agent) {
+                    uninstall-transportagent -Identity:$agentName;
+                    };
+                </Standalone>
+            </Uninstall>
+        </ServerTaskInfo>
+ 
+        <!-- Setup "Malware Agent" - Enable/disable anti-malware agent and disable Engine updates based on user input to setup -->
+        <ServerTaskInfo Id="_114344e2402c4ab1a9d8475ed0d0e57c" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install DescriptionId="SetupProgressConfiguringDefaultTransportAgents">
+                <Standalone>
+                  if ($RoleDisableAMFiltering) {
+                  Write-ExchangeSetupLog -Info "Loading FipFs snapin and disabling engine updates";
+                  # Load FIPS snapin
+                  Add-PsSnapin Microsoft.Forefront.Filtering.Management.PowerShell -ErrorAction SilentlyContinue;
+                  # Disable engine updates
+                  Set-EngineUpdateCommonSettings -EnableUpdates $false;
+
+                  # Disable antimalware scanning both in Scan Config and System Config
+                  Set-AntivirusScanSettings -Enabled $false
+                  Set-ConfigurationValue -XPath "/fs-conf:Configuration/fs-sys:System/fs-sys:AntiMalwareSettings/fs-sys:Enabled" -Value "false" -Confirm:$false
+                  };
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true" />
+            <DisasterRecovery UseInstallTasks="true" />
+            <Uninstall />
+        </ServerTaskInfo>
+
+        <!-- uninstall "Journal Report Decryption Agent"; The agent has become an internal transport agent -->
+        <ServerTaskInfo Id="_e611019c866049059742c1e12aeaa460" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install>
+                <Standalone>
+                    $agentName = "Journal Report Decryption Agent";
+                    $agent = get-transportagent -Identity:$agentName;
+                    if ($agent) { uninstall-transportagent -Identity:$agentName; };
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true" />
+            <DisasterRecovery UseInstallTasks="true" />
+            <Uninstall/>
+        </ServerTaskInfo>
+
+        <!-- uninstall "Encryption Agent"; The agent has become an internal transport agent -->
+        <ServerTaskInfo Id="_d53f06c22b2a436799b3e01eea775afc" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install>
+                <Standalone>
+                    $agentName = "Encryption Agent";
+                    $agent = get-transportagent -Identity:$agentName;
+                    if ($agent) {
+                    uninstall-transportagent -Identity:$agentName;
+                    }
+                    else
+                    {
+                    $agent = get-transportagent -Identity:"RMS Encryption Agent";
+                    if ($agent) {
+                    uninstall-transportagent -Identity:"RMS Encryption Agent";
+                    };
+                    };
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true" />
+            <DisasterRecovery UseInstallTasks="true" />
+            <Uninstall/>
+        </ServerTaskInfo>
+
+        <!-- uninstall "RMS Decryption Agent"; The agent has become an internal transport agent -->
+        <ServerTaskInfo Id="_ee96091e2b42434594f2ae063f3c6b6e" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install>
+                <Standalone>
+                    $agentName = "RMS Decryption Agent";
+                    $agent = get-transportagent -Identity:$agentName;
+                    if ($agent) {
+                    uninstall-transportagent -Identity:$agentName;
+                    }
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true" />
+            <DisasterRecovery UseInstallTasks="true" />
+            <Uninstall/>
+        </ServerTaskInfo>
+
+        <!-- uninstall "RMS Protocol Decryption Agent"; The agent has become an internal transport agent -->
+        <ServerTaskInfo Id="_e8227b4f1bb947dc9656b9c1fd33ddeb" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install>
+                <Standalone>
+                    $agentName = "RMS Protocol Decryption Agent";
+                    $agent = get-transportagent -Identity:$agentName;
+                    if ($agent) {
+                    uninstall-transportagent -Identity:$agentName;
+                    }
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true" />
+            <DisasterRecovery UseInstallTasks="true" />
+            <Uninstall/>
+        </ServerTaskInfo>
+
+        <!-- uninstall "Journaling Agent"; The agent has become an internal transport agent -->
+        <ServerTaskInfo Id="_bae9849bbd6842ae926a2f937ca2e742" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install>
+                <Standalone>
+                    $agentName = "Journaling Agent";
+                    $agent = get-transportagent -Identity:$agentName;
+                    if ($agent) {
+                    uninstall-transportagent -Identity:$agentName;
+                    };
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true" />
+            <DisasterRecovery UseInstallTasks="true" />
+            <Uninstall/>
+        </ServerTaskInfo>
+
+        <!-- uninstall "Prelicensing Agent"; The agent has become an internal transport agent -->
+        <ServerTaskInfo Id="_4096ea0ed1ec4614bf01b6176a818ed0" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install>
+                <Standalone>
+                    $agentName = "Prelicensing Agent";
+                    $agent = get-transportagent -Identity:$agentName;
+                    if ($agent) {
+                    uninstall-transportagent -Identity:$agentName;
+                    }
+                    else
+                    {
+                    $agent = get-transportagent -Identity:"AD RMS Prelicensing Agent";
+                    if ($agent) {
+                    uninstall-transportagent -Identity:"AD RMS Prelicensing Agent";
+                    };
+                    };
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true" />
+            <DisasterRecovery UseInstallTasks="true" />
+            <Uninstall/>
+        </ServerTaskInfo>
+
+        <!-- uninstall "Decryption Agent"; The agent has become an internal transport agent -->
+        <ServerTaskInfo Id="_f687aa359aa24a2d998d4aebf93543ed" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install>
+                <Standalone>
+                    $agentName = "Decryption Agent";
+                    $agent = get-transportagent -Identity:$agentName;
+                    if ($agent) {
+                    uninstall-transportagent -Identity:$agentName;
+                    };
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true" />
+            <DisasterRecovery UseInstallTasks="true" />
+            <Uninstall/>
+        </ServerTaskInfo>
+
+        <!-- Uninstall "UM PlayOnPhone Agent" as a regular agent since the agent is considered internal 
+         and will be loaded by MexRunTime automatically - (see internalAgents.config) . -->
+        <ServerTaskInfo Id="_75dd305a3d4a45b1ac91412275016f15" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install>
+                <Standalone>
+                    $agentName = "UM PlayOnPhone Agent";
+                    $agent = get-transportagent -Identity:$agentName;
+                    if ($agent) {
+                    uninstall-transportagent -Identity:$agentName;
+                    };
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true" />
+            <DisasterRecovery UseInstallTasks="true" />
+            <Uninstall/>
+        </ServerTaskInfo>
+
+        <!-- Uninstall "UM PlayOnPhone Agent" as a regular agent since the agent is considered internal 
+         and will be loaded by MexRunTime automatically - (see internalAgents.config) . -->
+        <ServerTaskInfo Id="_11d11e0dbecb4a24a0f3a976ed2d1cab" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install>
+                <Standalone>
+                    $agentName = "UM Partner Message Agent";
+                    $agent = get-transportagent -Identity:$agentName;
+                    if ($agent) {
+                    uninstall-transportagent -Identity:$agentName;
+                    };
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true" />
+            <DisasterRecovery UseInstallTasks="true" />
+            <Uninstall/>
+        </ServerTaskInfo>
+
+        <!-- Uninstall "Content Aggregation Agent" as a regular agent since the agent is considered internal 
+         and will be loaded by MexRunTime automatically - (see internalAgents.config) . -->
+        <ServerTaskInfo Id="_f181e0be5bd6463d9d7541b70869b822" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install>
+                <Standalone>
+                    $agentName = "Content Aggregation Agent";
+                    $agentFactory = "Microsoft.Exchange.MailboxTransport.StoreDriverDelivery.Agents.ContentAggregationAgentFactory";
+                    $agentAssembly = ($RoleInstallPath + "bin\Microsoft.Exchange.MailboxTransport.StoreDriverDelivery.dll");
+                    $agent = get-transportagent -Identity:$agentName;
+                    if ($agent) {
+                    uninstall-transportagent -Identity:$agentName;
+                    };
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true" />
+            <DisasterRecovery UseInstallTasks="true" />
+            <Uninstall/>
+        </ServerTaskInfo>
+
+        <!-- Uninstall "Mailbox Rules Agent" as a regular agent since the agent is considered internal 
+         and will be loaded by MexRunTime automatically - (see internalAgents.config) . -->
+        <ServerTaskInfo Id="_209df96bccca4c27921559e972241df3" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install>
+                <Standalone>
+                    $agentName = "Mailbox Rules Agent";
+                    $agentFactory = "Microsoft.Exchange.MailboxTransport.StoreDriverDelivery.Agents.MailboxRulesAgentFactory";
+                    $agentAssembly = ($RoleInstallPath + "bin\Microsoft.Exchange.MailboxTransport.StoreDriverDelivery.dll");
+                    $agent = get-transportagent -Identity:$agentName;
+                    if ($agent) {
+                    uninstall-transportagent -Identity:$agentName;
+                    };
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true" />
+            <DisasterRecovery UseInstallTasks="true" />
+            <Uninstall/>
+        </ServerTaskInfo>
+
+        <!-- Uninstall "Message History Agent" on upgrade -->
+        <ServerTaskInfo Id="_45f329fe559e4d058fc742c5edff6c3f" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install />
+            <BuildToBuildUpgrade>
+                <Standalone>
+                    $agentName = "Message History Agent";
+                    $agent = get-transportagent -Identity:$agentName;
+                    if ($agent) {
+                    uninstall-transportagent -Identity:$agentName;
+                    };
+                </Standalone>
+            </BuildToBuildUpgrade>
+            <DisasterRecovery />
+            <Uninstall />
+        </ServerTaskInfo>
+
+        <!-- Uninstall "Meeting Message Processing Agent" as a regular agent since the agent is considered internal 
+         and will be loaded by MexRunTime automatically - (see internalAgents.config) . -->
+        <ServerTaskInfo Id="_411326c7a52145e79e7dd72ae647f196" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install>
+                <Standalone>
+                    $agentName = "Meeting Message Processing Agent";
+                    $agentFactory = "Microsoft.Exchange.MailboxTransport.StoreDriverDelivery.Agents.MeetingMessageProcessingAgentFactory";
+                    $agentAssembly = ($RoleInstallPath + "bin\Microsoft.Exchange.MailboxTransport.StoreDriverDelivery.dll");
+                    $agent = get-transportagent -Identity:$agentName;
+                    if ($agent) {
+                    uninstall-transportagent -Identity:$agentName;
+                    };
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true" />
+            <DisasterRecovery UseInstallTasks="true" />
+            <Uninstall/>
+        </ServerTaskInfo>
+
+        <!-- Uninstall "Meeting Forward Notification Agent" as a regular agent since the agent is considered internal 
+         and will be loaded by MexRunTime automatically - (see internalAgents.config) . -->
+        <ServerTaskInfo Id="_26081f1ef0a140859a6e4cd715fba8a8" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install>
+                <Standalone>
+                    $agentName = "Meeting Forward Notification Agent";
+                    $agentFactory = "Microsoft.Exchange.MailboxTransport.Submission.StoreDriverSubmission.Agents.MfnSubmitterAgentFactory";
+                    $agentAssembly = ($RoleInstallPath + "bin\Microsoft.Exchange.MailboxTransport.Submission.StoreDriverSubmission.dll");
+                    $agent = get-transportagent -Identity:$agentName;
+                    if ($agent) {
+                    uninstall-transportagent -Identity:$agentName;
+                    };
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true" />
+            <DisasterRecovery UseInstallTasks="true" />
+            <Uninstall/>
+        </ServerTaskInfo>
+
+        <!-- Uninstall "Approval Processing Agent" as a regular agent since the agent is considered internal 
+         and will be loaded by MexRunTime automatically - (see internalAgents.config) . -->
+        <ServerTaskInfo Id="_8e2130e22366409a90bc9042c517540f" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install>
+                <Standalone>
+                    $agentName = "Approval Processing Agent";
+                    $agentFactory = "Microsoft.Exchange.MailboxTransport.StoreDriverDelivery.Agents.ApprovalProcessingAgentFactory";
+                    $agentAssembly = ($RoleInstallPath + "bin\Microsoft.Exchange.MailboxTransport.StoreDriverDelivery.dll");
+                    $agent = get-transportagent -Identity:$agentName;
+                    if ($agent) {
+                    uninstall-transportagent -Identity:$agentName;
+                    };
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true" />
+            <DisasterRecovery UseInstallTasks="true" />
+            <Uninstall/>
+        </ServerTaskInfo>
+
+        <!-- Uninstall "Approval Submit Agent" as a regular agent since the agent is considered internal 
+         and will be loaded by MexRunTime automatically - (see internalAgents.config) . -->
+        <ServerTaskInfo Id="_7f9bd8cfc88a48b6870dc69aa56ac1ce" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install>
+                <Standalone>
+                    $agentName = "Approval Submit Agent";
+                    $agentFactory = "Microsoft.Exchange.MailboxTransport.Submission.StoreDriverSubmission.Agents.ApprovalSubmitterAgentFactory";
+                    $agentAssembly = ($RoleInstallPath + "bin\Microsoft.Exchange.MailboxTransport.Submission.StoreDriverSubmission.dll");
+                    $agent = get-transportagent -Identity:$agentName;
+                    if ($agent) {
+                    uninstall-transportagent -Identity:$agentName;
+                    };
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true" />
+            <DisasterRecovery UseInstallTasks="true" />
+            <Uninstall/>
+        </ServerTaskInfo>
+
+        <!-- Uninstall "Sign-up Addresses Delivery Agent" on upgrade -->
+        <ServerTaskInfo Id="_a7ccccddfdbc48da995cbf27de657d15" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install />
+            <BuildToBuildUpgrade>
+                <Standalone>
+                    $agentName = "Sign-up Addresses Delivery Agent";
+                    $agent = get-transportagent -Identity:$agentName;
+                    if ($agent) {
+                    uninstall-transportagent -Identity:$agentName;
+                    };
+                </Standalone>
+            </BuildToBuildUpgrade>
+            <DisasterRecovery />
+            <Uninstall />
+        </ServerTaskInfo>
+
+        <!-- Install/uninstall "Text Messaging Routing Agent" preserve state on upgrade -->
+        <!-- - step 1: Preserve previous agent state if any -->
+        <!-- - step 2: clean up previous agent -->
+        <!-- - step 3: install agent -->
+        <!-- - step 4: enable agent (if not previously disabled) -->
+        <ServerTaskInfo Id="_36e5c69ca285496bafec417b4f40ddc0" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install DescriptionId="SetupProgressInstallingDefaultTransportAgents">
+                <Standalone>
+                    $agentName = "Mobile Message Submission Agent";
+                    $agentFactory = "Microsoft.Exchange.TextMessaging.MobileDriver.MobileSubmissionAgentFactory";
+                    $agentAssembly = ($RoleInstallPath + "bin\Microsoft.Exchange.MobileDriver.dll");
+                    $agent = get-transportagent -Identity:$agentName;
+                    if ($agent) {
+                    uninstall-transportagent -Identity:$agentName;
+                    };
+                    $agentName = "Text Messaging Routing Agent";
+                    $agentFactory = "Microsoft.Exchange.TextMessaging.MobileDriver.TextMessagingRoutingAgentFactory";
+                    $agentAssembly = ($RoleInstallPath + "bin\Microsoft.Exchange.MobileDriver.dll");
+                    $agent = get-transportagent -Identity:$agentName;
+                    if ($agent) {
+                    uninstall-transportagent -Identity:$agentName;
+                    };
+                    install-TransportAgent -Name:$agentName -TransportAgentFactory:$agentFactory -AssemblyPath:$agentAssembly;
+                    if ($agent.enabled -or ! $agent) { enable-transportagent -Identity:$agentName };
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true" />
+            <DisasterRecovery UseInstallTasks="true" />
+            <Uninstall DescriptionId="SetupProgressInstallingDefaultTransportAgents">
+                <Standalone>
+                    $agentName = "Mobile Message Submission Agent";
+                    $agent = get-transportagent -Identity:$agentName;
+                    if ($agent) {
+                    uninstall-transportagent -Identity:$agentName;
+                    };
+                    $agentName = "Text Messaging Routing Agent";
+                    $agent = get-transportagent -Identity:$agentName;
+                    if ($agent) {
+                    uninstall-transportagent -Identity:$agentName;
+                    };
+                </Standalone>
+            </Uninstall>
+        </ServerTaskInfo>
+
+        <!-- Install/uninstall "Text Messaging Delivery Agent" preserve state on upgrade -->
+        <!-- - step 1: Preserve previous agent state if any -->
+        <!-- - step 2: clean up previous agent -->
+        <!-- - step 3: install agent -->
+        <!-- - step 4: enable agent (if not previously disabled) -->
+        <ServerTaskInfo Id="_d1104614a1a845e38e6874e5f4e10bca" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install DescriptionId="SetupProgressInstallingDefaultTransportAgents">
+                <Standalone>
+                    $agentName = "Text Messaging Delivery Agent";
+                    $agentFactory = "Microsoft.Exchange.TextMessaging.MobileDriver.TextMessagingDeliveryAgentFactory";
+                    $agentAssembly = ($RoleInstallPath + "bin\Microsoft.Exchange.MobileDriver.dll");
+                    $agent = get-transportagent -Identity:$agentName;
+                    if ($agent) {
+                    uninstall-transportagent -Identity:$agentName;
+                    };
+                    install-TransportAgent -Name:$agentName -TransportAgentFactory:$agentFactory -AssemblyPath:$agentAssembly;
+                    if ($agent.enabled -or ! $agent) { enable-transportagent -Identity:$agentName };
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true" />
+            <DisasterRecovery UseInstallTasks="true" />
+            <Uninstall DescriptionId="SetupProgressInstallingDefaultTransportAgents">
+                <Standalone>
+                    $agentName = "Text Messaging Delivery Agent";
+                    $agent = get-transportagent -Identity:$agentName;
+                    if ($agent) {
+                    uninstall-transportagent -Identity:$agentName;
+                    };
+                </Standalone>
+            </Uninstall>
+        </ServerTaskInfo>
+
+        <!-- Install/uninstall "System Probe Drop Smtp Agent" preserve state on upgrade -->
+        <ServerTaskInfo Id="_1d3992db72374df5b6df8b0468aecbd5" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install DescriptionId="SetupProgressInstallingSystemProbeDropSmtpAgents">
+                <Standalone>
+                    $agentName = "System Probe Drop Smtp Agent";
+                    $agentFactory = "Microsoft.Exchange.Transport.Agent.SystemProbeDrop.SystemProbeDropSmtpAgentFactory";
+                    $agentAssembly = ($RoleInstallPath + "TransportRoles\agents\SystemProbeDrop\Microsoft.Exchange.Transport.Agent.SystemProbeDrop.dll");
+                    $agent = get-transportagent -Identity:$agentName;
+                    if ($agent) 
+                    {
+                        uninstall-transportagent -Identity:$agentName;
+                    };
+                    install-TransportAgent -Name:$agentName -TransportAgentFactory:$agentFactory -AssemblyPath:$agentAssembly;
+                    if ($agent.enabled -or ! $agent) 
+                    { 
+                        enable-transportagent -Identity:$agentName 
+                    };
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true" />
+            <DisasterRecovery UseInstallTasks="true" />
+            <Uninstall DescriptionId="SetupProgressInstallingSystemProbeDropSmtpAgents">
+                <Standalone>
+                    $agentName = "System Probe Drop Smtp Agent";
+                    $agent = get-transportagent -Identity:$agentName;
+                    if ($agent) 
+                    {
+                        uninstall-transportagent -Identity:$agentName;
+                    };
+                </Standalone>
+            </Uninstall>
+        </ServerTaskInfo>
+        
+        <!-- Install/uninstall "System Probe Drop Routing Agent" preserve state on upgrade -->
+        <ServerTaskInfo Id="_38388ca6558544fbb349887087098579" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install DescriptionId="SetupProgressInstallingSystemProbeDropRoutingAgents">
+                <Standalone>
+                    $agentName = "System Probe Drop Routing Agent";
+                    $agentFactory = "Microsoft.Exchange.Transport.Agent.SystemProbeDrop.SystemProbeDropRoutingAgentFactory";
+                    $agentAssembly = ($RoleInstallPath + "TransportRoles\agents\SystemProbeDrop\Microsoft.Exchange.Transport.Agent.SystemProbeDrop.dll");
+                    $agent = get-transportagent -Identity:$agentName;
+                    if ($agent) 
+                    {
+                        uninstall-transportagent -Identity:$agentName;
+                    };
+                    install-TransportAgent -Name:$agentName -TransportAgentFactory:$agentFactory -AssemblyPath:$agentAssembly;
+                    if ($agent.enabled -or ! $agent) 
+                    { 
+                        enable-transportagent -Identity:$agentName 
+                    };
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true" />
+            <DisasterRecovery UseInstallTasks="true" />
+            <Uninstall DescriptionId="SetupProgressInstallingSystemProbeDropRoutingAgents">
+                <Standalone>
+                    $agentName = "System Probe Drop Routing Agent";
+                    $agent = get-transportagent -Identity:$agentName;
+                    if ($agent) 
+                    {
+                        uninstall-transportagent -Identity:$agentName;
+                    };
+                </Standalone>
+            </Uninstall>
+        </ServerTaskInfo>
+
+        <!-- Install/uninstall "Text Messaging Delivery Agent Connector" preserve state on upgrade -->
+        <!-- - step 1: check existance of connector -->
+        <!-- - step 2: create if not exists -->
+        <!-- - step 3: add current server to SourceTransportServers -->
+        <ServerTaskInfo Id="_1024c9f0a00d4ede994f76b8cbd76866" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install DescriptionId="SetupProgressInstallingDefaultTransportAgents">
+                <Standalone>
+                    $connectorName = "Text Messaging Delivery Agent Connector";
+                    $addressSpace = "MOBILE:*";
+                    $deliveryProtocol = "MOBILE";
+                    $connector = Get-DeliveryAgentConnector -Identity:$connectorName -DomainController $RoleDomainController -ErrorAction SilentlyContinue;
+                    if (! $connector) {
+                    $connector = New-DeliveryAgentConnector -AddressSpaces $addressSpace -DeliveryProtocol $deliveryProtocol -Name $connectorName -DomainController $RoleDomainController -ErrorAction SilentlyContinue;
+                    }
+                    if ($connector) {
+                    $server = get-TransportService -Identity $RoleFqdnOrName -DomainController $RoleDomainController -ErrorAction SilentlyContinue;
+                    if ($server) {
+                    if (! $connector.SourceTransportServers.Contains($server.Identity)) {
+                    $connector.SourceTransportServers += $server.Identity;
+                    Set-DeliveryAgentConnector -Identity:$connectorName -SourceTransportServers $connector.SourceTransportServers -DomainController $RoleDomainController -ErrorAction SilentlyContinue;
+                    }
+                    }
+                    }
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true" />
+            <DisasterRecovery UseInstallTasks="true" />
+            <Uninstall DescriptionId="SetupProgressInstallingDefaultTransportAgents">
+                <Standalone>
+                    $connectorName = "Text Messaging Delivery Agent Connector";
+                    $connector = Get-DeliveryAgentConnector -Identity:$connectorName -DomainController $RoleDomainController -ErrorAction SilentlyContinue;
+                    if ($connector) {
+                    $server = get-TransportService -Identity $RoleFqdnOrName -DomainController $RoleDomainController -ErrorAction SilentlyContinue;
+                    if ($server) {
+                    if ($connector.SourceTransportServers.Contains($server.Identity)) {
+                    $connector.SourceTransportServers -= $server.Identity;
+                    if (! $connector.SourceTransportServers.Count) {
+                    Remove-DeliveryAgentConnector -Identity:$connectorName -DomainController $RoleDomainController -ErrorAction SilentlyContinue;
+                    } else {
+                    Set-DeliveryAgentConnector -Identity:$connectorName -SourceTransportServers $connector.SourceTransportServers -DomainController $RoleDomainController -ErrorAction SilentlyContinue;
+                    }
+                    }
+                    }
+                    }
+                </Standalone>
+            </Uninstall>
+        </ServerTaskInfo>
+
+        <!-- Create an initial SmtpReceive Connector-->
+        <ServerTaskInfo Id="_a525250ab5a4442c868ad368c34aad21" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install>
+                <Standalone>
+                  $defaultPort = 25;
+                  $localServer = get-exchangeserver $RoleFqdnOrName -DomainController $RoleDomainController;
+
+                  if ($localServer.IsFrontendTransportServer)
+                  {
+                    Write-ExchangeSetupLog -Info "Using port 2525 for the default hub receive connector since frontend role already present.";
+                    $defaultPort = 2525;
+                  }
+
+                  $bindingString1 = '0.0.0.0:' + $defaultPort;
+                  $bindingString2 = ':::' + $defaultPort;
+                  $binding1 =  new-object Microsoft.Exchange.Data.IPBinding $bindingString1;
+                  $binding2 =  new-object Microsoft.Exchange.Data.IPBinding $bindingString2;
+
+                  new-receiveconnector `
+                  -Name ("Default " + [String][System.Environment]::MachineName ) `
+                  -MaxRecipientsPerMessage 5000 `
+                  -Fqdn $RoleFqdnOrName `
+                  -Bindings $binding1,$binding2 `
+                  -RemoteIPRanges 0.0.0.0-255.255.255.255,[::]-FFFF:FFFF:FFFF:FFFF:FFFF:FFFF:FFFF:FFFF `
+                  -DomainController $RoleDomainController `
+                  -MaxInboundConnectionPerSource Unlimited `
+                  -MaxInboundConnectionPercentagePerSource 100 `
+                  -SizeEnabled EnabledWithoutValue;
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade />
+            <DisasterRecovery />
+            <Uninstall />
+        </ServerTaskInfo>
+
+
+        <!-- Create a client proxy receive connector to receive proxy sessions from frontends-->
+        <ServerTaskInfo Id="_0f31013e6a614090b7dfdd6299fba20e" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install>
+                <Standalone>
+                    new-receiveconnector `
+                    -Name ("Client Proxy " + [String][System.Environment]::MachineName ) `
+                    -TransportRole HubTransport `
+                    -Fqdn $RoleFqdnOrName `
+                    -Bindings 0.0.0.0:465,[::]:465 `
+                    -RemoteIPRanges 0.0.0.0-255.255.255.255,[::]:0-FFFF:FFFF:FFFF:FFFF:FFFF:FFFF:FFFF:FFFF `
+                    -PermissionGroups:ExchangeUsers,ExchangeServers `
+                    -DomainController $RoleDomainController `
+                    -AuthMechanism:'Tls,BasicAuthRequireTls,BasicAuth,Integrated,ExchangeServer' `
+                    -EnableAuthGSSAPI $true `
+                    -MessageRateLimit 5 `
+                    -MessageRateSource:'User'
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade />
+            <DisasterRecovery />
+            <Uninstall />
+        </ServerTaskInfo>
+
+        <!-- Remove all hub receive connectors for this server and reassign any port 2525 front end receive connectors to port 25-->
+        <ServerTaskInfo Id="_eaa67dba40b7452c9ef81cfe47114dda" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install />
+            <BuildToBuildUpgrade />
+            <DisasterRecovery />
+            <Uninstall>
+                <Standalone>
+                    foreach ($a in (get-receiveconnector -server $RoleFqdnOrName -DomainController $RoleDomainController | where { $_.TransportRole -eq "HubTransport" }))
+                    {
+                        remove-receiveconnector -Identity:$a.Identity -DomainController $RoleDomainController -Confirm:$false;
+                    }
+                </Standalone>
+            </Uninstall>
+        </ServerTaskInfo>
+
+        <!-- uninstall old Edge Transport service -->
+        <ServerTaskInfo Id="_6ecee55e77124241af13cadad68aecbe" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install />
+            <BuildToBuildUpgrade>
+                <Standalone>uninstall-OldEdgeTransportService</Standalone>
+            </BuildToBuildUpgrade>
+            <DisasterRecovery />
+            <Uninstall />
+        </ServerTaskInfo>
+
+        <!-- Precompile transport service binaries -->
+        <!-- We do a synchronous ngen call here to ngen the binaries -->
+        <!-- This call is to ensure that ngening of the necessary binaries have already completed -->
+        <!-- When a new file is added to precompile-ManagedBinary list, make sure to add it to customactions.wxi to sync install and uninstall the binary -->
+        <ServerTaskInfo Id="_6c080540129644c1976052164ec9fd64" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install Weight="5" DescriptionId="SetupProgressPrecompilingBinaries" IsFatal="false">
+                <Standalone>
+                    $fullPath = [System.IO.Path]::Combine($RoleInstallPath, "bin\edgetransport.exe");
+                    precompile-ManagedBinary -BinaryName  $fullPath;
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true"/>
+            <DisasterRecovery UseInstallTasks="true" />
+            <Uninstall Weight="5" DescriptionId="SetupProgressPrecompilingBinaries" IsFatal="false">
+                <Standalone>
+                    $fullPath = [System.IO.Path]::Combine($RoleInstallPath, "bin\edgetransport.exe");
+                    precompile-ManagedBinary -BinaryName  $fullPath -Action uninstall;
+                </Standalone>
+            </Uninstall>
+        </ServerTaskInfo>
+
+        <ServerTaskInfo Id="_e4eae87d09b64b5c83b19d5b7879d08d" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install Weight="5" DescriptionId="SetupProgressPrecompilingBinaries" IsFatal="false">
+                <Standalone>
+                    $fullPath = [System.IO.Path]::Combine($RoleInstallPath, "bin\msexchangetransport.exe");
+                    precompile-ManagedBinary -BinaryName  $fullPath;
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true"/>
+            <DisasterRecovery UseInstallTasks="true" />
+            <Uninstall Weight="5" DescriptionId="SetupProgressPrecompilingBinaries" IsFatal="false">
+                <Standalone>
+                    $fullPath = [System.IO.Path]::Combine($RoleInstallPath, "bin\msexchangetransport.exe");
+                    precompile-ManagedBinary -BinaryName  $fullPath -Action uninstall;
+                </Standalone>
+            </Uninstall>
+        </ServerTaskInfo>
+
+        <!-- Install/uninstall FMS service -->
+        <ServerTaskInfo Id="_2C65CFFF-37F4-4518-B733-296A202BDD66" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install>
+                <Standalone>
+                    if (!(get-service FMS* | where {$_.name -eq "FMS"}))
+                    {
+                    install-FmsService -ServicesDependedOnParameter RpcSs
+                    }
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true" />
+            <DisasterRecovery UseInstallTasks="true" />
+            <Uninstall>
+                <Standalone>uninstall-FmsService</Standalone>
+            </Uninstall>
+        </ServerTaskInfo>
+
+      <!-- Install/uninstall Edge Transport service -->
+        <ServerTaskInfo Id="_6219e61e77ba4da8a029db766ec55515" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install>
+                <Standalone>
+                    if (!(get-service MSExchangeTransport* | where {$_.name -eq "MSExchangeTransport"}))
+                    {
+                      install-EdgeTransportService -ServicesDependedOnParameter MSExchangeADTopology,FMS
+                    }
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true" />
+            <DisasterRecovery UseInstallTasks="true" />
+            <Uninstall>
+                <Standalone>uninstall-EdgeTransportService</Standalone>
+            </Uninstall>
+        </ServerTaskInfo>
+
+        <!-- Add/remove firewall exception for edgetransport.exe worker process (E14:171257) -->
+        <ServerTaskInfo Id="_0d13b48b1c6744c8bd5ea20ab010b872" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install>
+                <Standalone>
+                    Add-FirewallException -FirewallRule (New-Object Microsoft.Exchange.Security.WindowsFirewall.MSExchangeTransportWorkerNumberedPortsFirewallRule);
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true" />
+            <DisasterRecovery UseInstallTasks="true" />
+            <Uninstall>
+                <Standalone>
+                    Remove-FirewallException -FirewallRule (New-Object Microsoft.Exchange.Security.WindowsFirewall.MSExchangeTransportWorkerNumberedPortsFirewallRule);
+                </Standalone>
+            </Uninstall>
+        </ServerTaskInfo>
+        <ServerTaskInfo Id="_2266bd862e5f46beb624b24b0f541ad7" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install>
+                <Standalone>
+                    Add-FirewallException -FirewallRule (New-Object Microsoft.Exchange.Security.WindowsFirewall.MSExchangeTransportWorkerRPCFirewallRule);
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true" />
+            <DisasterRecovery UseInstallTasks="true" />
+            <Uninstall>
+                <Standalone>
+                    Remove-FirewallException -FirewallRule (New-Object Microsoft.Exchange.Security.WindowsFirewall.MSExchangeTransportWorkerRPCFirewallRule);
+                </Standalone>
+            </Uninstall>
+        </ServerTaskInfo>
+        <ServerTaskInfo Id="_6ac1a43ad05e4f448ef0e2360ad09ab4" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install>
+                <Standalone>
+                    Add-FirewallException -FirewallRule (New-Object Microsoft.Exchange.Security.WindowsFirewall.MSExchangeTransportWorkerRPCEPMapperFirewallRule);
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true" />
+            <DisasterRecovery UseInstallTasks="true" />
+            <Uninstall>
+                <Standalone>
+                    Remove-FirewallException -FirewallRule (New-Object Microsoft.Exchange.Security.WindowsFirewall.MSExchangeTransportWorkerRPCEPMapperFirewallRule);
+                </Standalone>
+            </Uninstall>
+        </ServerTaskInfo>
+
+        <!-- Set ShadowRedundancyPromotionEnabled to false in EdgeTransport.exe.config.-->
+        <ServerTaskInfo Id="_b98f167c68a645f4b44288864d42435d" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install>
+                <Standalone>
+                    $file = 'edgetransport.exe.config';
+                    $fullPath = [System.IO.Path]::Combine([System.IO.Path]::Combine($RoleInstallPath, "bin"), $file);
+
+                    set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/runtime/gcServer -Attribute:enabled -NewValue:true
+                    set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'ShadowRedundancyPromotionEnabled' -NewValue:$false;
+                    set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'IsResolverEnabled' -NewValue:$true;
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true" />
+            <DisasterRecovery UseInstallTasks="true" />
+            <Uninstall />
+        </ServerTaskInfo>
+
+        <!-- Precompile edge sync service binaries -->
+        <ServerTaskInfo Id="_b86d63def97c40db9137fa59627bd26b" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install Weight="5" DescriptionId="SetupProgressPrecompilingBinaries" IsFatal="false">
+                <Standalone>
+                    $fullPath = [System.IO.Path]::Combine($RoleInstallPath, "bin\Microsoft.Exchange.EdgeSyncSvc.exe");
+                    precompile-ManagedBinary -BinaryName  $fullPath;
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true"/>
+            <DisasterRecovery UseInstallTasks="true" />
+            <Uninstall Weight="5" DescriptionId="SetupProgressPrecompilingBinaries" IsFatal="false">
+                <Standalone>
+                    $fullPath = [System.IO.Path]::Combine($RoleInstallPath, "bin\Microsoft.Exchange.EdgeSyncSvc.exe");
+                    precompile-ManagedBinary -BinaryName  $fullPath -Action uninstall;
+                </Standalone>
+            </Uninstall>
+        </ServerTaskInfo>
+
+        <!-- E14 82092: In the appconfig file for edge sync service, set Code Access Security (CAS) policy to skip publisher (certificate) validation.-->
+        <ServerTaskInfo Id="_0997ad138efb43689317514956407217" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install>
+                <Standalone>
+                    $file = 'microsoft.exchange.edgesyncsvc.exe.config';
+                    $fullPath = [System.IO.Path]::Combine([System.IO.Path]::Combine($RoleInstallPath, "bin"), $file);
+                    set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/runtime/generatePublisherEvidence -Attribute:enabled -NewValue:false
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true" />
+            <DisasterRecovery UseInstallTasks="true" />
+            <Uninstall />
+        </ServerTaskInfo>
+
+        <!-- Install/uninstall Edge Sync service -->
+        <ServerTaskInfo Id="_4d6dc56196554f3d89186c5b994d33cc" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install>
+                <Standalone>
+                    $edgeSyncSvc = get-service MSExchangeEdgeSync* | where {$_.name -eq "MSExchangeEdgeSync"};
+                    if ($RoleIsDatacenter -eq $true)
+                    {
+                        if ($edgeSyncSvc)
+                        {
+                            uninstall-EdgeSyncService;
+                        }
+                    }
+                    else
+                    {
+                        # Do Not Install Edge Sync service for dedicated SKUs
+                        if ( (!$RoleIsDatacenterDedicated) -and (!$edgeSyncSvc) )
+                        {
+                            install-EdgeSyncService;
+                        }
+                    }
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true" />
+            <DisasterRecovery UseInstallTasks="true" />
+            <Uninstall>
+                <Standalone>uninstall-EdgeSyncService</Standalone>
+            </Uninstall>
+        </ServerTaskInfo>
+
+        <!-- Precompile transport log search service binaries -->
+        <ServerTaskInfo Id="_e14f9a9d3c974ed2b24868a82b30915c" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install Weight="5" DescriptionId="SetupProgressPrecompilingBinaries" IsFatal="false">
+                <Standalone>
+                    $fullPath = [System.IO.Path]::Combine($RoleInstallPath, "bin\MSExchangeTransportLogSearch.exe");
+                    precompile-ManagedBinary -BinaryName  $fullPath;
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true"/>
+            <DisasterRecovery UseInstallTasks="true" />
+            <Uninstall Weight="5" DescriptionId="SetupProgressPrecompilingBinaries" IsFatal="false">
+                <Standalone>
+                    $fullPath = [System.IO.Path]::Combine($RoleInstallPath, "bin\MSExchangeTransportLogSearch.exe");
+                    precompile-ManagedBinary -BinaryName  $fullPath -Action uninstall;
+                </Standalone>
+            </Uninstall>
+        </ServerTaskInfo>
+
+        <!-- Install/uninstall Anti-spam Update service -->
+        <ServerTaskInfo Id="_f804b0a718a14645b4065bc778434baa" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install>
+                <Standalone>
+                    if (!(get-service MSExchangeAntispamUpdate* | where {$_.name -eq "MSExchangeAntispamUpdate"}))
+                    {
+                      install-AntispamUpdateService -ServicesDependedOnParameter MSExchangeADTopology
+                    }
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true" />
+            <DisasterRecovery UseInstallTasks="true" />
+            <Uninstall>
+                <Standalone>uninstall-AntispamUpdateService</Standalone>
+            </Uninstall>
+        </ServerTaskInfo>
+
+        <!-- Create Default Enterprise EdgeSync config -->
+        <ServerTaskInfo Id="_87bcf1c1700d403c9d57d226aa9d49e8" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install>
+                <Standalone>
+
+                    $hasExchangeServersWriteAccess = test-ExchangeServersWriteAccess -DomainController $RoleDomainController -ErrorAction SilentlyContinue;
+
+                    if ($hasExchangeServersWriteAccess)
+                    {
+                    $localSite = Get-LocalADSite;
+                    if ($localSite -eq $null)
+                    {
+                    Write-ExchangeSetupLog -Info "Local site is null";
+                    }
+                    else
+                    {
+                    $localSiteName = $localSite.Name;
+                    Write-ExchangeSetupLog -Info "Local site name is '$localSiteName'";
+
+                    $localSiteEdgeSyncConfig = Get-EdgeSyncServiceConfig -Site:$localSite.Identity;
+                    if ($localSiteEdgeSyncConfig -eq $null)
+                    {
+                    Write-ExchangeSetupLog -Info "Creating new Edgesync service config object for this site";
+                    New-EdgeSyncServiceConfig -Site:$localSite.Identity -LogMaxFileSize 10485760 -LogMaxDirectorySize 262144000;
+                    }
+                    else
+                    {
+                    Write-ExchangeSetupLog -Info "Updating existing edgesync service config DN at '$($localSiteEdgeSyncConfig.DistinguishedName)'";
+                    $localSiteEdgeSyncConfig | Set-EdgeSyncServiceConfig
+                    }
+                    }
+                    }
+                    else
+                    {
+                    write-exchangesetuplog -info "Skip creating EdgeSyncServiceConfig because of lacking permission. Run New-EdgeSyncServiceConfig under either domain or enteprise administrator account."
+                    }
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true" />
+            <DisasterRecovery UseInstallTasks="true" />
+            <Uninstall/>
+        </ServerTaskInfo>
+
+        <!-- Add global firewall rule for TransportWorker -->
+        <ServerTaskInfo Id="_ea27ecfe92d444399c41e0621c9df7ae" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+            <Install>
+                <Standalone>
+                    Add-FirewallException -FirewallRule (New-Object Microsoft.Exchange.Security.WindowsFirewall.MSExchangeTransportWorkerByPortRule)
+                </Standalone>
+            </Install>
+            <BuildToBuildUpgrade UseInstallTasks="true" />
+            <DisasterRecovery UseInstallTasks="true" />
+            <Uninstall>
+                <Standalone>remove-firewallexception -FirewallRule (New-Object Microsoft.Exchange.Security.WindowsFirewall.MSExchangeTransportWorkerByPortRule)</Standalone>
+            </Uninstall>
+        </ServerTaskInfo>
+
+        <!-- Add global firewall rule for TransportWorker -->
+        <ServerTaskInfo Id="_81c58c50174a429ea8cb0e404a50ac99" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+          <Install>
+            <Standalone>
+               Add-FirewallException -FirewallRule (New-Object Microsoft.Exchange.Security.WindowsFirewall.MSExchangeServiceHostDiagnosticsAggregationFirewallRule)
+            </Standalone>
+          </Install>
+          <BuildToBuildUpgrade UseInstallTasks="true" />
+          <DisasterRecovery UseInstallTasks="true" />
+          <Uninstall>
+            <Standalone>remove-firewallexception -FirewallRule (New-Object Microsoft.Exchange.Security.WindowsFirewall.MSExchangeServiceHostDiagnosticsAggregationFirewallRule)</Standalone>
+          </Uninstall>
+        </ServerTaskInfo>
+
+    </ServerTasks>
+</SetupComponentInfo>

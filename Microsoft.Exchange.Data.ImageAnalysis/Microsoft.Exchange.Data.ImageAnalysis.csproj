@@ -1,0 +1,147 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{09CD9476-CD82-489E-B9E2-84B47CA14109}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Microsoft</RootNamespace>
+    <AssemblyName>Microsoft.Exchange.Data.ImageAnalysis</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Exchange\Data\ImageAnalysis\IImageAnalysis.cs" />
+    <Compile Include="Exchange\Data\ImageAnalysis\ImageAnalysis.cs" />
+    <Compile Include="Exchange\Data\ImageAnalysis\ImageAnalysisFactory.cs" />
+    <Compile Include="Exchange\Data\ImageAnalysis\ImageAnalysisResult.cs" />
+    <Compile Include="Exchange\Data\ImageAnalysis\ISalientObjectAnalysis.cs" />
+    <Compile Include="Exchange\Data\ImageAnalysis\RegionRect.cs" />
+    <Compile Include="Exchange\Data\ImageAnalysis\SalientObjectAnalysisWrapper.cs" />
+    <Compile Include="Office\Story\V1\CommonMath\Box2D.cs" />
+    <Compile Include="Office\Story\V1\CommonMath\MathHelper.cs" />
+    <Compile Include="Office\Story\V1\CommonMath\Vector2.cs" />
+    <Compile Include="Office\Story\V1\GraphicsInterop\AccessFlags.cs" />
+    <Compile Include="Office\Story\V1\GraphicsInterop\CREATE_EVENT_FLAGS.cs" />
+    <Compile Include="Office\Story\V1\GraphicsInterop\GraphicsInteropNativeMethods.cs" />
+    <Compile Include="Office\Story\V1\GraphicsInterop\Misc\GenericAccess.cs" />
+    <Compile Include="Office\Story\V1\GraphicsInterop\Misc\IEnumString.cs" />
+    <Compile Include="Office\Story\V1\GraphicsInterop\Misc\IEnumUnknown.cs" />
+    <Compile Include="Office\Story\V1\GraphicsInterop\Misc\IErrorLog.cs" />
+    <Compile Include="Office\Story\V1\GraphicsInterop\Misc\IPropertyBag2.cs" />
+    <Compile Include="Office\Story\V1\GraphicsInterop\Misc\PROPBAG2.cs" />
+    <Compile Include="Office\Story\V1\GraphicsInterop\Misc\PROPID.cs" />
+    <Compile Include="Office\Story\V1\GraphicsInterop\Misc\PROPVARIANT.cs" />
+    <Compile Include="Office\Story\V1\GraphicsInterop\NullableGuid.cs" />
+    <Compile Include="Office\Story\V1\GraphicsInterop\NullableWrapper.cs" />
+    <Compile Include="Office\Story\V1\GraphicsInterop\PinHelper.cs" />
+    <Compile Include="Office\Story\V1\GraphicsInterop\StreamWrapper.cs" />
+    <Compile Include="Office\Story\V1\GraphicsInterop\WicUtility.cs" />
+    <Compile Include="Office\Story\V1\GraphicsInterop\Wic\AnonymousUnionHandle.cs" />
+    <Compile Include="Office\Story\V1\GraphicsInterop\Wic\HBITMAP.cs" />
+    <Compile Include="Office\Story\V1\GraphicsInterop\Wic\HPALETTE.cs" />
+    <Compile Include="Office\Story\V1\GraphicsInterop\Wic\IWICBitmap.cs" />
+    <Compile Include="Office\Story\V1\GraphicsInterop\Wic\IWICBitmapClipper.cs" />
+    <Compile Include="Office\Story\V1\GraphicsInterop\Wic\IWICBitmapCodecInfo.cs" />
+    <Compile Include="Office\Story\V1\GraphicsInterop\Wic\IWICBitmapDecoder.cs" />
+    <Compile Include="Office\Story\V1\GraphicsInterop\Wic\IWICBitmapDecoderInfo.cs" />
+    <Compile Include="Office\Story\V1\GraphicsInterop\Wic\IWICBitmapEncoder.cs" />
+    <Compile Include="Office\Story\V1\GraphicsInterop\Wic\IWICBitmapEncoderInfo.cs" />
+    <Compile Include="Office\Story\V1\GraphicsInterop\Wic\IWICBitmapFlipRotator.cs" />
+    <Compile Include="Office\Story\V1\GraphicsInterop\Wic\IWICBitmapFrameDecode.cs" />
+    <Compile Include="Office\Story\V1\GraphicsInterop\Wic\IWICBitmapFrameEncode.cs" />
+    <Compile Include="Office\Story\V1\GraphicsInterop\Wic\IWICBitmapLock.cs" />
+    <Compile Include="Office\Story\V1\GraphicsInterop\Wic\IWICBitmapScaler.cs" />
+    <Compile Include="Office\Story\V1\GraphicsInterop\Wic\IWICBitmapSource.cs" />
+    <Compile Include="Office\Story\V1\GraphicsInterop\Wic\IWICColorContext.cs" />
+    <Compile Include="Office\Story\V1\GraphicsInterop\Wic\IWICColorTransform.cs" />
+    <Compile Include="Office\Story\V1\GraphicsInterop\Wic\IWICComponentInfo.cs" />
+    <Compile Include="Office\Story\V1\GraphicsInterop\Wic\IWICFastMetadataEncoder.cs" />
+    <Compile Include="Office\Story\V1\GraphicsInterop\Wic\IWICFormatConverter.cs" />
+    <Compile Include="Office\Story\V1\GraphicsInterop\Wic\IWICImagingFactory.cs" />
+    <Compile Include="Office\Story\V1\GraphicsInterop\Wic\IWICMetadataQueryReader.cs" />
+    <Compile Include="Office\Story\V1\GraphicsInterop\Wic\IWICMetadataQueryWriter.cs" />
+    <Compile Include="Office\Story\V1\GraphicsInterop\Wic\IWICPalette.cs" />
+    <Compile Include="Office\Story\V1\GraphicsInterop\Wic\IWICStream.cs" />
+    <Compile Include="Office\Story\V1\GraphicsInterop\Wic\WICBitmapAlphaChannelOption.cs" />
+    <Compile Include="Office\Story\V1\GraphicsInterop\Wic\WICBitmapCreateCacheOption.cs" />
+    <Compile Include="Office\Story\V1\GraphicsInterop\Wic\WICBitmapDitherType.cs" />
+    <Compile Include="Office\Story\V1\GraphicsInterop\Wic\WICBitmapEncoderCacheOption.cs" />
+    <Compile Include="Office\Story\V1\GraphicsInterop\Wic\WICBitmapInterpolationMode.cs" />
+    <Compile Include="Office\Story\V1\GraphicsInterop\Wic\WICBitmapLockFlags.cs" />
+    <Compile Include="Office\Story\V1\GraphicsInterop\Wic\WICBitmapPaletteType.cs" />
+    <Compile Include="Office\Story\V1\GraphicsInterop\Wic\WICBitmapTransformOptions.cs" />
+    <Compile Include="Office\Story\V1\GraphicsInterop\Wic\WICColorContextType.cs" />
+    <Compile Include="Office\Story\V1\GraphicsInterop\Wic\WICComponentType.cs" />
+    <Compile Include="Office\Story\V1\GraphicsInterop\Wic\WICDecodeOptions.cs" />
+    <Compile Include="Office\Story\V1\GraphicsInterop\Wic\WicGuids.cs" />
+    <Compile Include="Office\Story\V1\GraphicsInterop\Wic\WICRect.cs" />
+    <Compile Include="Office\Story\V1\ImageAnalysis\AnalysisBase.cs" />
+    <Compile Include="Office\Story\V1\ImageAnalysis\Bin.cs" />
+    <Compile Include="Office\Story\V1\ImageAnalysis\CountStatistics.cs" />
+    <Compile Include="Office\Story\V1\ImageAnalysis\Histogram.cs" />
+    <Compile Include="Office\Story\V1\ImageAnalysis\ImageAnalysisState.cs" />
+    <Compile Include="Office\Story\V1\ImageAnalysis\ImageInfo.cs" />
+    <Compile Include="Office\Story\V1\ImageAnalysis\ImageSource.cs" />
+    <Compile Include="Office\Story\V1\ImageAnalysis\RegionScanner\ArgbImage.cs" />
+    <Compile Include="Office\Story\V1\ImageAnalysis\RegionScanner\ArgbPixel.cs" />
+    <Compile Include="Office\Story\V1\ImageAnalysis\RegionScanner\ImageBase.cs" />
+    <Compile Include="Office\Story\V1\ImageAnalysis\RegionScanner\ImageProcessor.cs" />
+    <Compile Include="Office\Story\V1\ImageAnalysis\RegionScanner\IPixel.cs" />
+    <Compile Include="Office\Story\V1\ImageAnalysis\RegionScanner\LabTile.cs" />
+    <Compile Include="Office\Story\V1\ImageAnalysis\RegionScanner\LabTiledImage.cs" />
+    <Compile Include="Office\Story\V1\ImageAnalysis\RegionScanner\RegionInfo.cs" />
+    <Compile Include="Office\Story\V1\ImageAnalysis\RegionScanner\SaliencyGrouper.cs" />
+    <Compile Include="Office\Story\V1\ImageAnalysis\RegionScanner\Tile.cs" />
+    <Compile Include="Office\Story\V1\ImageAnalysis\RegionScanner\TileCoordinate.cs" />
+    <Compile Include="Office\Story\V1\ImageAnalysis\RegionScanner\TiledImage.cs" />
+    <Compile Include="Office\Story\V1\ImageAnalysis\ReverseComparer.cs" />
+    <Compile Include="Office\Story\V1\ImageAnalysis\SalientObjectDetection\SaliencyMap.cs" />
+    <Compile Include="Office\Story\V1\ImageAnalysis\SalientObjectDetection\SalientObject.cs" />
+    <Compile Include="Office\Story\V1\ImageAnalysis\SalientObjectDetection\SalientObjectAnalysis.cs" />
+    <Compile Include="Office\Story\V1\ImageAnalysis\SalientObjectDetection\WeightedCluster.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.Exchange.Diagnostics\Microsoft.Exchange.Diagnostics.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14113}</Project>
+      <Name>Microsoft.Exchange.Diagnostics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\mscorlib\mscorlib.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141F1}</Project>
+      <Name>mscorlib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

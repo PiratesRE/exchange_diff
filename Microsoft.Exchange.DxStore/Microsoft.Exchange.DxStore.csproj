@@ -1,0 +1,196 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{09CD9476-CD82-489E-B9E2-84B47CA14118}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Microsoft.Exchange.DxStore</RootNamespace>
+    <AssemblyName>Microsoft.Exchange.DxStore</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="FUSE.Paxos" />
+    <Reference Include="FUSE.Paxos.Esent" />
+    <Reference Include="FUSE.Paxos.Network" />
+    <Reference Include="FUSE.Weld.Base" />
+    <Reference Include="ParallelExtensionsExtras" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Interactive" />
+    <Reference Include="System.Reactive" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Common\AccessClientFactory.cs" />
+    <Compile Include="Common\CachedChannelFactory.cs" />
+    <Compile Include="Common\CommonSettings.cs" />
+    <Compile Include="Common\CompressHelper.cs" />
+    <Compile Include="Common\DataStoreStats.cs" />
+    <Compile Include="Common\DxBinarySerializationUtil.cs" />
+    <Compile Include="Common\DxEventSeverity.cs" />
+    <Compile Include="Common\DxSerializationUtil.cs" />
+    <Compile Include="Common\DxStoreAccessClientException.cs" />
+    <Compile Include="Common\DxStoreAccessClientTransientException.cs" />
+    <Compile Include="Common\DxStoreAccessExceptionTranslator.cs" />
+    <Compile Include="Common\DxStoreAccessReply.cs" />
+    <Compile Include="Common\DxStoreAccessRequest.cs" />
+    <Compile Include="Common\DxStoreAccessServerTransientException.cs" />
+    <Compile Include="Common\DxStoreBatchCommand.cs" />
+    <Compile Include="Common\DxStoreBindingNotSupportedException.cs" />
+    <Compile Include="Common\DxStoreClientException.cs" />
+    <Compile Include="Common\DxStoreClientTransientException.cs" />
+    <Compile Include="Common\DxStoreCommand.cs" />
+    <Compile Include="Common\DxStoreCommandConstraintFailedException.cs" />
+    <Compile Include="Common\DxStoreConstants.cs" />
+    <Compile Include="Common\DxStoreFaultCode.cs" />
+    <Compile Include="Common\DxStoreHttpListener.cs" />
+    <Compile Include="Common\DxStoreInstanceClient.cs" />
+    <Compile Include="Common\DxStoreInstanceClientException.cs" />
+    <Compile Include="Common\DxStoreInstanceClientTransientException.cs" />
+    <Compile Include="Common\DxStoreInstanceComponentNotInitializedException.cs" />
+    <Compile Include="Common\DxStoreInstanceExceptionTranslator.cs" />
+    <Compile Include="Common\DxStoreInstanceKeyNotFoundException.cs" />
+    <Compile Include="Common\DxStoreInstanceNotReadyException.cs" />
+    <Compile Include="Common\DxStoreInstanceServerException.cs" />
+    <Compile Include="Common\DxStoreInstanceServerTransientException.cs" />
+    <Compile Include="Common\DxStoreInstanceStaleStoreException.cs" />
+    <Compile Include="Common\DxStoreManagerClient.cs" />
+    <Compile Include="Common\DxStoreManagerClientException.cs" />
+    <Compile Include="Common\DxStoreManagerClientTransientException.cs" />
+    <Compile Include="Common\DxStoreManagerExceptionTranslator.cs" />
+    <Compile Include="Common\DxStoreManagerGroupNotFoundException.cs" />
+    <Compile Include="Common\DxStoreManagerServerException.cs" />
+    <Compile Include="Common\DxStoreManagerServerTransientException.cs" />
+    <Compile Include="Common\DxStoreRegistryConfigProvider.cs" />
+    <Compile Include="Common\DxStoreReplyBase.cs" />
+    <Compile Include="Common\DxStoreRequestBase.cs" />
+    <Compile Include="Common\DxStoreSerializeException.cs" />
+    <Compile Include="Common\DxStoreServerException.cs" />
+    <Compile Include="Common\DxStoreServerFault.cs" />
+    <Compile Include="Common\DxStoreServerTransientException.cs" />
+    <Compile Include="Common\EndpointBuilder.cs" />
+    <Compile Include="Common\EventLogger.cs" />
+    <Compile Include="Common\ExtensionMethods.cs" />
+    <Compile Include="Common\HttpClient.cs" />
+    <Compile Include="Common\HttpConfiguration.cs" />
+    <Compile Include="Common\HttpReply.cs" />
+    <Compile Include="Common\HttpRequest.cs" />
+    <Compile Include="Common\HttpStoreAccessClient.cs" />
+    <Compile Include="Common\IDxStoreAccess.cs" />
+    <Compile Include="Common\IDxStoreAccessClient.cs" />
+    <Compile Include="Common\IDxStoreClient.cs" />
+    <Compile Include="Common\IDxStoreConfigProvider.cs" />
+    <Compile Include="Common\IDxStoreEventLogger.cs" />
+    <Compile Include="Common\IDxStoreInstance.cs" />
+    <Compile Include="Common\IDxStoreManager.cs" />
+    <Compile Include="Common\ILocalDataStore.cs" />
+    <Compile Include="Common\InstanceClientFactory.cs" />
+    <Compile Include="Common\InstanceGroupConfig.cs" />
+    <Compile Include="Common\InstanceGroupMemberConfig.cs" />
+    <Compile Include="Common\InstanceGroupSettings.cs" />
+    <Compile Include="Common\InstanceManagerConfig.cs" />
+    <Compile Include="Common\InstanceSnapshotInfo.cs" />
+    <Compile Include="Common\InstanceState.cs" />
+    <Compile Include="Common\InstanceStatusInfo.cs" />
+    <Compile Include="Common\IServerNameResolver.cs" />
+    <Compile Include="Common\ITopologyProvider.cs" />
+    <Compile Include="Common\JobObject.cs" />
+    <Compile Include="Common\LocDescriptionAttribute.cs" />
+    <Compile Include="Common\LogOptions.cs" />
+    <Compile Include="Common\ManagerClientFactory.cs" />
+    <Compile Include="Common\PaxosBasicInfo.cs" />
+    <Compile Include="Common\ProcessBasicInfo.cs" />
+    <Compile Include="Common\PropertyNameInfo.cs" />
+    <Compile Include="Common\PropertyValue.cs" />
+    <Compile Include="Common\ReadOptions.cs" />
+    <Compile Include="Common\ReadResult.cs" />
+    <Compile Include="Common\ReadWriteConstraints.cs" />
+    <Compile Include="Common\RegUtils.cs" />
+    <Compile Include="Common\Strings.cs" />
+    <Compile Include="Common\TopologyInfo.cs" />
+    <Compile Include="Common\Utils.cs" />
+    <Compile Include="Common\WcfExceptionTranslator.cs" />
+    <Compile Include="Common\WcfStoreAccessClient.cs" />
+    <Compile Include="Common\WcfTimeout.cs" />
+    <Compile Include="Common\WcfUtils.cs" />
+    <Compile Include="Common\WellKnownBatchCommandName.cs" />
+    <Compile Include="Common\WellKnownCommandName.cs" />
+    <Compile Include="Common\WriteOptions.cs" />
+    <Compile Include="Common\WriteResult.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Server\DxStoreAccess.cs" />
+    <Compile Include="Server\DxStoreHealthChecker.cs" />
+    <Compile Include="Server\DxStoreInstance.cs" />
+    <Compile Include="Server\DxStoreInstanceChecker.cs" />
+    <Compile Include="Server\DxStoreManager.cs" />
+    <Compile Include="Server\DxStoreStateMachine.cs" />
+    <Compile Include="Server\GroupMembersMesh.cs" />
+    <Compile Include="Server\GroupStatusCollector.cs" />
+    <Compile Include="Server\GroupStatusInfo.cs" />
+    <Compile Include="Server\InstanceContainer.cs" />
+    <Compile Include="Server\InstanceMigrationInfo.cs" />
+    <Compile Include="Server\KeyContainer.cs" />
+    <Compile Include="Server\LocalCommitAcknowledger.cs" />
+    <Compile Include="Server\LocalMemoryStore.cs" />
+    <Compile Include="Server\PeriodicPaxosTrancator.cs" />
+    <Compile Include="Server\RegistrySnapshotMaker.cs" />
+    <Compile Include="Server\SnapshotManager.cs" />
+    <Compile Include="Server\StoreState.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Microsoft.Exchange.DxStore.Strings.resources" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.Exchange.Compliance\Microsoft.Exchange.Compliance.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140F2}</Project>
+      <Name>Microsoft.Exchange.Compliance</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Common\Microsoft.Exchange.Data.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140D3}</Project>
+      <Name>Microsoft.Exchange.Data.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Diagnostics\Microsoft.Exchange.Diagnostics.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14113}</Project>
+      <Name>Microsoft.Exchange.Diagnostics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Net\Microsoft.Exchange.Net.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14178}</Project>
+      <Name>Microsoft.Exchange.Net</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\mscorlib\mscorlib.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141F1}</Project>
+      <Name>mscorlib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

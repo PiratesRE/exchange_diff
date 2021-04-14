@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="us-ascii" ?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <!-- The "SetupComponentInfoReference" type -->
+  <xsd:complexType name="SetupComponentInfoReference">
+    <xsd:sequence minOccurs="1" maxOccurs="1">
+      <xsd:element name="RelativeFileLocation" minOccurs="1" maxOccurs="1" type="xsd:string" />
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <!-- The "ArrayOfSetupComponentInfoReference" type -->
+  <xsd:complexType name="ArrayOfSetupComponentInfoReference">
+    <xsd:choice minOccurs="0" maxOccurs="unbounded">
+      <xsd:element name="SetupComponentInfoReference" type="SetupComponentInfoReference" />
+    </xsd:choice>
+  </xsd:complexType>
+
+  <!-- The root document element -->
+  <xsd:element name="ArrayOfSetupComponentInfoReference" type="ArrayOfSetupComponentInfoReference" />
+
+</xsd:schema>
+

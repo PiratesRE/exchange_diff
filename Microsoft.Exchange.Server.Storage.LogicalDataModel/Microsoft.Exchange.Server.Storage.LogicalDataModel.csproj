@@ -1,0 +1,275 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{09CD9476-CD82-489E-B9E2-84B47CA141A1}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Microsoft.Exchange.Server.Storage.LogicalDataModel</RootNamespace>
+    <AssemblyName>Microsoft.Exchange.Server.Storage.LogicalDataModel</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Attachment.cs" />
+    <Compile Include="AttachmentTable.cs" />
+    <Compile Include="AttachmentTableFunctionTableFunction.cs" />
+    <Compile Include="AttachmentViewTable.cs" />
+    <Compile Include="AutoResponseSuppress.cs" />
+    <Compile Include="BeginLongOperationNotificationEvent.cs" />
+    <Compile Include="BitmaskOperation.cs" />
+    <Compile Include="CategorisedRowAddedNotificationEvent.cs" />
+    <Compile Include="CategorisedRowDeletedNotificationEvent.cs" />
+    <Compile Include="CategorisedRowModifiedNotificationEvent.cs" />
+    <Compile Include="CategorisedViewNotificationEvent.cs" />
+    <Compile Include="ChangeType.cs" />
+    <Compile Include="ConversationItem.cs" />
+    <Compile Include="ConversationMembers.cs" />
+    <Compile Include="ConversationMembersBlob.cs" />
+    <Compile Include="ConversationMembersBlobTableFunction.cs" />
+    <Compile Include="ConversationMessageSubscription.cs" />
+    <Compile Include="ConversationMessageViewTable.cs" />
+    <Compile Include="Conversations.cs" />
+    <Compile Include="ConversationValueBag.cs" />
+    <Compile Include="ConversationViewTable.cs" />
+    <Compile Include="CorruptSearchBacklinkException.cs" />
+    <Compile Include="CorruptSearchScopeException.cs" />
+    <Compile Include="CrucialFolderId.cs" />
+    <Compile Include="DatabaseCorruptionException.cs" />
+    <Compile Include="DatabaseSchema.cs" />
+    <Compile Include="DatabaseSizeCheck.cs" />
+    <Compile Include="DeliveredTo.cs" />
+    <Compile Include="DeliveredToTable.cs" />
+    <Compile Include="DisplayType.cs" />
+    <Compile Include="DuplicateValueException.cs" />
+    <Compile Include="EmbeddedMessage.cs" />
+    <Compile Include="EndLongOperationNotificationEvent.cs" />
+    <Compile Include="EventEntry.cs" />
+    <Compile Include="EventFlags.cs" />
+    <Compile Include="EventHistory.cs" />
+    <Compile Include="EventsTable.cs" />
+    <Compile Include="EventType.cs" />
+    <Compile Include="EventWatermark.cs" />
+    <Compile Include="ExtendedEventFlags.cs" />
+    <Compile Include="FidMid.cs" />
+    <Compile Include="FidMidListSerializer.cs" />
+    <Compile Include="Folder.cs" />
+    <Compile Include="FolderAdminFlags.cs" />
+    <Compile Include="FolderAndChildrenSubscription.cs" />
+    <Compile Include="FolderChildrenSubscription.cs" />
+    <Compile Include="FolderCopiedNotificationEvent.cs" />
+    <Compile Include="FolderCreatedNotificationEvent.cs" />
+    <Compile Include="FolderDeletedNotificationEvent.cs" />
+    <Compile Include="FolderFlags.cs" />
+    <Compile Include="FolderHierarchy.cs" />
+    <Compile Include="FolderHierarchyBlob.cs" />
+    <Compile Include="FolderHierarchyBlobTableFunction.cs" />
+    <Compile Include="FolderInformationComparer.cs" />
+    <Compile Include="FolderInformationType.cs" />
+    <Compile Include="FolderModifiedNotificationEvent.cs" />
+    <Compile Include="FolderMovedNotificationEvent.cs" />
+    <Compile Include="FolderSubscription.cs" />
+    <Compile Include="FolderTable.cs" />
+    <Compile Include="FolderType.cs" />
+    <Compile Include="FolderViewTable.cs" />
+    <Compile Include="Globals.cs" />
+    <Compile Include="IcsNotificationEvent.cs" />
+    <Compile Include="IFolderInformation.cs" />
+    <Compile Include="Importance.cs" />
+    <Compile Include="InferenceLog.cs" />
+    <Compile Include="InferenceLogTable.cs" />
+    <Compile Include="InferenceLogViewTable.cs" />
+    <Compile Include="InitialMessageFinder.cs" />
+    <Compile Include="InternetEncoding.cs" />
+    <Compile Include="InTransitInfo.cs" />
+    <Compile Include="InTransitStatus.cs" />
+    <Compile Include="InvalidParameterException.cs" />
+    <Compile Include="InvalidRecipientsException.cs" />
+    <Compile Include="ISubobject.cs" />
+    <Compile Include="Item.cs" />
+    <Compile Include="LogicalContext.cs" />
+    <Compile Include="LogicalMailbox.cs" />
+    <Compile Include="LogicalModelNotificationEvent.cs" />
+    <Compile Include="MailboxCleanup.cs" />
+    <Compile Include="MailboxCreatedNotificationEvent.cs" />
+    <Compile Include="MailboxDeletedNotificationEvent.cs" />
+    <Compile Include="MailboxDisconnectedNotificationEvent.cs" />
+    <Compile Include="MailboxFoldersSubscription.cs" />
+    <Compile Include="MailboxGlobalSubscription.cs" />
+    <Compile Include="MailboxModifiedNotificationEvent.cs" />
+    <Compile Include="MailboxMoveFailedNotificationEvent.cs" />
+    <Compile Include="MailboxMoveStartedNotificationEvent.cs" />
+    <Compile Include="MailboxMoveSucceededNotificationEvent.cs" />
+    <Compile Include="MailboxNotificationEvent.cs" />
+    <Compile Include="MailboxReconnectedNotificationEvent.cs" />
+    <Compile Include="MailFlags.cs" />
+    <Compile Include="MailSubmittedNotificationEvent.cs" />
+    <Compile Include="Message.cs" />
+    <Compile Include="MessageCopiedNotificationEvent.cs" />
+    <Compile Include="MessageCreatedNotificationEvent.cs" />
+    <Compile Include="MessageDeletedNotificationEvent.cs" />
+    <Compile Include="MessageFlags.cs" />
+    <Compile Include="MessageModifiedNotificationEvent.cs" />
+    <Compile Include="MessageMovedNotificationEvent.cs" />
+    <Compile Include="MessageSubscription.cs" />
+    <Compile Include="MessageTable.cs" />
+    <Compile Include="MessageViewTable.cs" />
+    <Compile Include="ModifiedSearchFolders.cs" />
+    <Compile Include="NestedSearchChainTooDeepException.cs" />
+    <Compile Include="NewMailNotificationEvent.cs" />
+    <Compile Include="NotificationEvents.cs" />
+    <Compile Include="NotInitializedException.cs" />
+    <Compile Include="NotSupportedException.cs" />
+    <Compile Include="ObjectCopyOnWrite.cs" />
+    <Compile Include="ObjectCreatedModifiedNotificationEvent.cs" />
+    <Compile Include="ObjectMovedCopiedNotificationEvent.cs" />
+    <Compile Include="ObjectNotFoundException.cs" />
+    <Compile Include="ObjectNotificationEvent.cs" />
+    <Compile Include="ObjectType.cs" />
+    <Compile Include="OpenMessageInstance.cs" />
+    <Compile Include="OpenMessageStates.cs" />
+    <Compile Include="OriginPreferenceComparer.cs" />
+    <Compile Include="PerUser.cs" />
+    <Compile Include="PerUserTable.cs" />
+    <Compile Include="Priority.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="PropertyNotFoundException.cs" />
+    <Compile Include="PropertySchemaPopulation.cs" />
+    <Compile Include="PropertyValueHelpers.cs" />
+    <Compile Include="PropGroupChangeInfo.cs" />
+    <Compile Include="PropGroupMapping.cs" />
+    <Compile Include="Quota.cs" />
+    <Compile Include="ReceiveFolder.cs" />
+    <Compile Include="ReceiveFolder2Table.cs" />
+    <Compile Include="ReceiveFolderTable.cs" />
+    <Compile Include="Recipient.cs" />
+    <Compile Include="RecipientCollection.cs" />
+    <Compile Include="RecipientTableFunctionTableFunction.cs" />
+    <Compile Include="RecipientType.cs" />
+    <Compile Include="RelationOperator.cs" />
+    <Compile Include="ReliableEventNotificationSubscriber.cs" />
+    <Compile Include="ReliableEventPublishingSubscription.cs" />
+    <Compile Include="Restriction.cs" />
+    <Compile Include="RestrictionAND.cs" />
+    <Compile Include="RestrictionBitmask.cs" />
+    <Compile Include="RestrictionComment.cs" />
+    <Compile Include="RestrictionCompareProps.cs" />
+    <Compile Include="RestrictionCount.cs" />
+    <Compile Include="RestrictionExists.cs" />
+    <Compile Include="RestrictionFalse.cs" />
+    <Compile Include="RestrictionNEAR.cs" />
+    <Compile Include="RestrictionNOT.cs" />
+    <Compile Include="RestrictionOR.cs" />
+    <Compile Include="RestrictionProperty.cs" />
+    <Compile Include="RestrictionSize.cs" />
+    <Compile Include="RestrictionSub.cs" />
+    <Compile Include="RestrictionTextFullness.cs" />
+    <Compile Include="RestrictionTextFuzzyLevel.cs" />
+    <Compile Include="RestrictionTextProperty.cs" />
+    <Compile Include="RestrictionTrue.cs" />
+    <Compile Include="SaveMessageChangesFlags.cs" />
+    <Compile Include="SearchCompleteNotificationEvent.cs" />
+    <Compile Include="SearchEvaluationInProgressException.cs" />
+    <Compile Include="SearchFolder.cs" />
+    <Compile Include="SearchFolderScopeViolationException.cs" />
+    <Compile Include="SearchPopulationMessagesLinkedNotificationEvent.cs" />
+    <Compile Include="SearchQueue.cs" />
+    <Compile Include="SearchQueueTable.cs" />
+    <Compile Include="SearchResultsTableFunction.cs" />
+    <Compile Include="Sensitivity.cs" />
+    <Compile Include="SpecialFolders.cs" />
+    <Compile Include="SpecialFoldersCache.cs" />
+    <Compile Include="SubmissionResponsibility.cs" />
+    <Compile Include="SubmissionState.cs" />
+    <Compile Include="SubobjectCleanup.cs" />
+    <Compile Include="SubobjectCollection.cs" />
+    <Compile Include="SubobjectReferenceState.cs" />
+    <Compile Include="TimerEvent.cs" />
+    <Compile Include="TimerEventHandler.cs" />
+    <Compile Include="TombstoneTable.cs" />
+    <Compile Include="TopMessage.cs" />
+    <Compile Include="UserInformation.cs" />
+    <Compile Include="UserInfoTable.cs" />
+    <Compile Include="WatermarksTable.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.Exchange.Common\Microsoft.Exchange.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140F0}</Project>
+      <Name>Microsoft.Exchange.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Diagnostics\Microsoft.Exchange.Diagnostics.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14113}</Project>
+      <Name>Microsoft.Exchange.Diagnostics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Net\Microsoft.Exchange.Net.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14178}</Project>
+      <Name>Microsoft.Exchange.Net</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.RpcClientAccess.Parser\Microsoft.Exchange.RpcClientAccess.Parser.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1418D}</Project>
+      <Name>Microsoft.Exchange.RpcClientAccess.Parser</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Server.Storage.Common\Microsoft.Exchange.Server.Storage.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1419A}</Project>
+      <Name>Microsoft.Exchange.Server.Storage.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Server.Storage.FullTextIndex\Microsoft.Exchange.Server.Storage.FullTextIndex.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1419E}</Project>
+      <Name>Microsoft.Exchange.Server.Storage.FullTextIndex</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Server.Storage.LazyIndexing\Microsoft.Exchange.Server.Storage.LazyIndexing.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141A0}</Project>
+      <Name>Microsoft.Exchange.Server.Storage.LazyIndexing</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Server.Storage.PhysicalAccess\Microsoft.Exchange.Server.Storage.PhysicalAccess.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141A4}</Project>
+      <Name>Microsoft.Exchange.Server.Storage.PhysicalAccess</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Server.Storage.PropertyDefinitions\Microsoft.Exchange.Server.Storage.PropertyDefinitions.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141A5}</Project>
+      <Name>Microsoft.Exchange.Server.Storage.PropertyDefinitions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Server.Storage.PropertyTag\Microsoft.Exchange.Server.Storage.PropertyTag.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141A6}</Project>
+      <Name>Microsoft.Exchange.Server.Storage.PropertyTag</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Server.Storage.StoreCommonServices\Microsoft.Exchange.Server.Storage.StoreCommonServices.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141A8}</Project>
+      <Name>Microsoft.Exchange.Server.Storage.StoreCommonServices</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\mscorlib\mscorlib.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141F1}</Project>
+      <Name>mscorlib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

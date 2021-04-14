@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo Name="Bridgehead Role Setter" DescriptionId="SetupComponentRoleSetterBridgehead">
+
+  <ServerTasks>
+
+    <!-- Restart Microsoft.Exchange.ServiceHost to flush CLR assemblies-->
+    <ServerTaskInfo Id="_115c1108e99e4560bd2c03c0fec99908" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+        if (get-service MSExchangeServiceHost* | where {$_.name -eq "MSExchangeServiceHost"})
+        {
+            restart-service MSExchangeServiceHost
+        }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall/>
+    </ServerTaskInfo>
+
+    <!-- Restart Microsoft.Exchange.ProtectedServiceHost to flush CLR assemblies-->
+    <ServerTaskInfo Id="_dd9c610618d44ff9bb1635b8b946ef42" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+        if (get-service MSExchangeProtectedServiceHost* | where {$_.name -eq "MSExchangeProtectedServiceHost"})
+        {
+            restart-service MSExchangeProtectedServiceHost
+        }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall/>
+    </ServerTaskInfo>
+
+    <!-- Set Bridgehead role in the AD. Permission to access AD is required-->
+    <ServerTaskInfo Id="_ee2508bb29aa41be936a35daa983307a" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>set-ExchangeServerRole -Identity $RoleFqdnOrName -IsHubTransportServer:$true -DomainController $RoleDomainController</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery />
+      <Uninstall>
+        <Standalone>set-ExchangeServerRole -Identity $RoleFqdnOrName -IsHubTransportServer:$false -DomainController $RoleDomainController</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+  </ServerTasks>
+</SetupComponentInfo>
+
+
+

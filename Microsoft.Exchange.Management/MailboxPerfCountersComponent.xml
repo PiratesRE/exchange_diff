@@ -1,0 +1,1049 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo Name="Mailbox Perf Counters" DescriptionId="SetupComponentConfiguringMailboxPerfCounters">
+
+  <ServerTasks>
+
+    <!-- Install/remove Provisioning Service perf counters -->
+    <ServerTaskInfo Id="_326a0197c138408391e96e0dbf8c0d31" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>new-PerfCounters -DefinitionFileName ProvisioningServiceCounters.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-PerfCounters -DefinitionFileName ProvisioningServiceCounters.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/Remove Assistants Performance Counters (Per Database) -->
+    <ServerTaskInfo Id="_8e09f1bdafb742de8e9869d7985b7d60" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>New-PerfCounters -DefinitionFileName PerformanceCountersPerDatabase.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>Remove-PerfCounters -DefinitionFileName PerformanceCountersPerDatabase.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/Remove Assistants Performance Counters (Per Asssistant) -->
+    <ServerTaskInfo Id="_49be96e2716244e4a3c86c406ed4fdb1" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>New-PerfCounters -DefinitionFileName PerformanceCountersPerAssistant.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>Remove-PerfCounters -DefinitionFileName PerformanceCountersPerAssistant.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/remove InfoWorker Assistants perf counters -->
+    <ServerTaskInfo Id="_eb93ce65d15a499dbdd562371f5f4b14" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>new-PerfCounters -DefinitionFileName CalendarAssistantPerformanceCounters.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-PerfCounters -DefinitionFileName CalendarAssistantPerformanceCounters.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/remove Calendar Notifications Assistant perf counters -->
+    <ServerTaskInfo Id="_447e481fc3c74707b47c6835c25f0053" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>new-PerfCounters -DefinitionFileName CalendarNotificationAssistantPerformanceCounters.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-PerfCounters -DefinitionFileName CalendarNotificationAssistantPerformanceCounters.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/remove Calendar Sync Assistant perf counters -->
+    <ServerTaskInfo Id="_e9311042daa34bae990f630fd09e22c3" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>new-PerfCounters -DefinitionFileName CalendarSyncAssistantPerformanceCounters.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-PerfCounters -DefinitionFileName CalendarSyncAssistantPerformanceCounters.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/remove Resource Booking perf counters -->
+    <ServerTaskInfo Id="_1fc6dd199d9241b09c33ec1046f5dff3" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>new-PerfCounters -DefinitionFileName ResourceBookingCounters.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-PerfCounters -DefinitionFileName ResourceBookingCounters.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/remove ECP Counters -->
+    <ServerTaskInfo Id="_98cd1285bd054671b74d9a09c2708b47" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>new-PerfCounters -DefinitionFileName EcpPerfCounters.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-PerfCounters -DefinitionFileName EcpPerfCounters.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/remove throttling perf counters -->
+    <ServerTaskInfo Id="_fff6ea6dd5cb4a8fbef6a9d04479f7fb" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>new-PerfCounters -DefinitionFileName ThrottlingPerformanceCounters.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-PerfCounters -DefinitionFileName ThrottlingPerformanceCounters.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/remove middle-tier store perf counters -->
+    <ServerTaskInfo Id="_059a7be1ba1c4a1296c492b83443fa62" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>new-PerfCounters -DefinitionFileName MiddleTierStoragePerformanceCounters.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-PerfCounters -DefinitionFileName MiddleTierStoragePerformanceCounters.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/remove Rms perf counters -->
+    <ServerTaskInfo Id="_234fdae7600e4a639363753a89158719" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>new-PerfCounters -DefinitionFileName RmsPerfCounters.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-PerfCounters -DefinitionFileName RmsPerfCounters.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/remove ELC perf counters -->
+    <ServerTaskInfo Id="_58b88b77a96d404b94fb0c619d01a10e" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>new-PerfCounters -DefinitionFileName ELCPerformanceCounters.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-PerfCounters -DefinitionFileName ELCPerformanceCounters.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/remove Junk E-mail Options assistant perf counters -->
+    <ServerTaskInfo Id="_72fa80676d4b41328cebfe21b5e1eac2" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>new-PerfCounters -DefinitionFileName JEOPerformanceCounters.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-PerfCounters -DefinitionFileName JEOPerformanceCounters.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/Remove Approval Assistants perf counters -->
+    <ServerTaskInfo Id="_92c35a4a2071402fa30031fd491a27ee" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>new-PerfCounters -DefinitionFileName ApprovalAssistantPerformanceCounters.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-PerfCounters -DefinitionFileName ApprovalAssistantPerformanceCounters.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/Remove Fast Search Service Counters -->
+    <ServerTaskInfo Id="_5DCFC56E-8F01-492B-AC44-D742540FFF82" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>new-PerfCounters -DefinitionFileName MailboxOperatorsPerformanceCounters.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-PerfCounters -DefinitionFileName MailboxOperatorsPerformanceCounters.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+    
+   <ServerTaskInfo Id="_BBC01D92-2908-4D25-AACF-9F7BF3866B60" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>new-PerfCounters -DefinitionFileName TransportCtsFlowPerformanceCounters.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-PerfCounters -DefinitionFileName TransportCtsFlowPerformanceCounters.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+
+    <ServerTaskInfo Id="_26c97e88e6e34197b9876ea2d904dd93" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>new-PerfCounters -DefinitionFileName SearchMdbCachePerformanceCounters.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-PerfCounters -DefinitionFileName SearchMdbCachePerformanceCounters.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <ServerTaskInfo Id="_9a67c382fdf14ee088ff5c7550b58a21" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <!-- Specify non-default FileMappingSize for this category: it can have a very large number of instances. -->
+        <Standalone>new-PerfCounters -DefinitionFileName SearchMdbPerformanceCounters.xml -FileMappingSize 5242880</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-PerfCounters -DefinitionFileName SearchMdbPerformanceCounters.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <ServerTaskInfo Id="_8da1c57124ce4ba8bb66162657b4edf3" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>new-PerfCounters -DefinitionFileName PipelinePerformanceCounters.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-PerfCounters -DefinitionFileName PipelinePerformanceCounters.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <ServerTaskInfo Id="_d0c04403d03f42cf887a52fe60b6a3a1" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>new-PerfCounters -DefinitionFileName StatefulComponentPerformanceCounters.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-PerfCounters -DefinitionFileName StatefulComponentPerformanceCounters.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/remove Mail Submission Service Counters -->
+    <ServerTaskInfo Id="_5ec5968c017b4ce2ad69786c7398020e" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>new-PerfCounters -DefinitionFileName MailSubmissionSvcPerfCounters.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-PerfCounters -DefinitionFileName MailSubmissionSvcPerfCounters.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/remove Log Search service perf counters -->
+    <ServerTaskInfo Id="_c3f34dbf96de4c51834e299da719948c" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>new-perfcounters -DefinitionFileName LogSearchPerfCounters.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-perfcounters -DefinitionFileName LogSearchPerfCounters.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/remove MSExchangeRepl Server Counters -->
+    <ServerTaskInfo Id="_InstallReplayServerPerfCounters" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>new-PerfCounters -DefinitionFileName ReplayServerPerfmon.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-PerfCounters -DefinitionFileName ReplayServerPerfmon.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/remove MSExchangeRepl Source Database Counters -->
+    <ServerTaskInfo Id="_7641f84c-6fde-4674-a4bd-bdf54a3a8418" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>new-PerfCounters -DefinitionFileName SourceDatabasePerfmon.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-PerfCounters -DefinitionFileName SourceDatabasePerfmon.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/remove MSExchangeIS HA Counters -->
+    <ServerTaskInfo Id="_ff3e6f96-5cea-432e-b2d2-a996b1bbb577" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>new-PerfCounters -DefinitionFileName MSExchangeISHAPerfCounters.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-PerfCounters -DefinitionFileName MSExchangeISHAPerfCounters.xml.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/remove MSExchangeIS HA Active Database Sender Counters -->
+    <ServerTaskInfo Id="_d34a8c88-4674-46f6-b4bc-7f1d97a66077" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>new-PerfCounters -DefinitionFileName MSExchangeISHASenderPerfCounters.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-PerfCounters -DefinitionFileName MSExchangeISHASenderPerfCounters.xml.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/remove Replay Service Counters -->
+    <ServerTaskInfo Id="_e358bfaddec54dfc8ebc253a132b3248" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>new-PerfCounters -DefinitionFileName ReplayServicePerfmon.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-PerfCounters -DefinitionFileName ReplayServicePerfmon.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/remove Replica Seeder Counters -->
+    <ServerTaskInfo Id="_21ba17ab106145ccac0fbddf207d6d52" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>new-PerfCounters -DefinitionFileName ReplicaSeederPerfmon.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-PerfCounters -DefinitionFileName ReplicaSeederPerfmon.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/remove Active Manager Counters -->
+    <ServerTaskInfo Id="_0c96bb61be584854b315aab9a94b8e13" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>new-PerfCounters -DefinitionFileName ActiveManagerPerfmon.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-PerfCounters -DefinitionFileName ActiveManagerPerfmon.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/remove Active Manager Role Counters -->
+    <ServerTaskInfo Id="_34c55d3b631f4ea1be1c97fbffcfb51c" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>new-PerfCounters -DefinitionFileName ActiveManagerDagNamePerfmon.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-PerfCounters -DefinitionFileName ActiveManagerDagNamePerfmon.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/remove Active Manager Client Counters -->
+    <ServerTaskInfo Id="_f765145dec8f41cab59e8fe7ea68b472" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>new-PerfCounters -DefinitionFileName ActiveManagerClientPerfmon.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-PerfCounters -DefinitionFileName ActiveManagerClientPerfmon.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/remove Active Manager Server Counters -->
+    <ServerTaskInfo Id="_a26a40c3821549a381a5c53c80a933bb" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>new-PerfCounters -DefinitionFileName ActiveManagerServerPerfmon.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-PerfCounters -DefinitionFileName ActiveManagerServerPerfmon.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/remove Network Manager Counters -->
+    <ServerTaskInfo Id="_3ffe7a2a680d40b1bc47ab8ed3ddf820" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>new-PerfCounters -DefinitionFileName NetworkManagerPerfmon.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-PerfCounters -DefinitionFileName NetworkManagerPerfmon.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/remove Calendar Repair Assistant perf counters -->
+    <ServerTaskInfo Id="_44bff686a38643a58081ed7877a860cb" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>new-PerfCounters -DefinitionFileName CalendarRepairPerformanceCounters.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-PerfCounters -DefinitionFileName CalendarRepairPerformanceCounters.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/remove TopN Assistant perf counters -->
+    <ServerTaskInfo Id="_51ec233624ae47f4957f21a12f84ba7a" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>new-PerfCounters -DefinitionFileName TopNPerformanceCounters.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-PerfCounters -DefinitionFileName TopNPerformanceCounters.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/remove OAB Generator Assistant perf counters -->
+    <ServerTaskInfo Id="_52ec233624ae47f4957f21a13b84ba4a" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>new-PerfCounters -DefinitionFileName OABGeneratorPerformanceCounters.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-PerfCounters -DefinitionFileName OABGeneratorPerformanceCounters.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/remove Push Notification Publishers perf counters -->
+    <ServerTaskInfo Id="_0cf0cadb356442f0bdddfd126175b630" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>New-PerfCounters -DefinitionFileName PushNotificationsPublishersPerformanceCounters.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>Remove-PerfCounters -DefinitionFileName PushNotificationsPublishersPerformanceCounters.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/remove Push Notification Publishers perf counters -->
+    <ServerTaskInfo Id="_a8a037474d4246dc6e9f9c5b68546edb" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>New-PerfCounters -DefinitionFileName PushNotificationsPendingGetPerformanceCounters.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>Remove-PerfCounters -DefinitionFileName PushNotificationsPendingGetPerformanceCounters.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/remove Push Notification Publishers perf counters -->
+    <ServerTaskInfo Id="_eb3446b443e2fd8af407cabdd2767e85" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>New-PerfCounters -DefinitionFileName PushNotificationsApnsChannelPerformanceCounters.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>Remove-PerfCounters -DefinitionFileName PushNotificationsApnsChannelPerformanceCounters.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/remove Push Notification Publishers perf counters -->
+    <ServerTaskInfo Id="_a39aa9992c3b473ffe34ac1042d5a3c7" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>New-PerfCounters -DefinitionFileName PushNotificationsManagerPerformanceCounters.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>Remove-PerfCounters -DefinitionFileName PushNotificationsManagerPerformanceCounters.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/remove Push Notification Assistant perf counters -->
+    <ServerTaskInfo Id="_5081cb26de734a2a886d672b98c9530d" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>New-PerfCounters -DefinitionFileName PushNotificationsAssistantPerformanceCounters.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>Remove-PerfCounters -DefinitionFileName PushNotificationsAssistantPerformanceCounters.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/remove Recipient DL Expansion Assistant perf counters -->
+    <ServerTaskInfo Id="_913694f0124d4cbf91c103169cd76725" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>New-PerfCounters -DefinitionFileName RecipientDLExpansionPerformanceCounters.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>Remove-PerfCounters -DefinitionFileName RecipientDLExpansionPerformanceCounters.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+    
+    <!-- Install/remove Provisioning Perf Counters -->
+    <ServerTaskInfo Id="_90517181744d470c86c09e2ccfff7610" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>new-PerfCounters -DefinitionFileName ProvisioningPerfCounters.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-PerfCounters -DefinitionFileName ProvisioningPerfCounters.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/remove Admin Audit perf counters -->
+    <ServerTaskInfo Id="_0e1c1df1071249c6b1d2e9a0b0db3345" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>new-PerfCounters -DefinitionFileName AdminAuditPerfCounters.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-PerfCounters -DefinitionFileName AdminAuditPerfCounters.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/remove Managed Store perf counters -->
+    <ServerTaskInfo Id="_FDF5D16B3B0046ed93EE9A380F1ADD6B" Component="EXCHANGE14:\Current\Release\PIM Storage\Managed Store">
+      <Install IsFatal="false">
+        <!-- Specify non-default FileMappingSize for this category: it can have a very large number of instances. -->
+        <Standalone>new-PerfCounters -DefinitionFileName MSExchangeISStorePerfCounters.xml -FileMappingSize 5242880</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-PerfCounters -DefinitionFileName MSExchangeISStorePerfCounters.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/remove Managed Store client type perf counters -->
+    <ServerTaskInfo Id="_AEFB956D518F42D6AB486FE4AAFBFB71" Component="EXCHANGE14:\Current\Release\PIM Storage\Managed Store">
+      <Install IsFatal="false">
+        <!-- Specify non-default FileMappingSize for this category: it can have a very large number of instances. -->
+        <Standalone>new-PerfCounters -DefinitionFileName MSExchangeISStoreClientTypePerfCounters.xml -FileMappingSize 5242880</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-PerfCounters -DefinitionFileName MSExchangeISStoreClientTypePerfCounters.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/remove Managed Store physical access perf counters -->
+    <ServerTaskInfo Id="_D3BC727E0B5F41249977DA93CEB8B793" Component="EXCHANGE14:\Current\Release\PIM Storage\Managed Store">
+      <Install IsFatal="false">
+        <Standalone>new-PerfCounters -DefinitionFileName PhysicalAccessPerfCounters.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-PerfCounters -DefinitionFileName PhysicalAccessPerfCounters.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/remove MSExchangeSubmission Service Counters -->
+    <ServerTaskInfo Id="_730155E4587F45BFBB6F0C644B6C1020" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>new-PerfCounters -DefinitionFileName MailboxTransportSubmissionServicePerfCounters.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade>
+      <Standalone>
+        remove-PerfCounters -DefinitionFileName MailboxTransportSubmissionServicePerfCounters.xml
+        new-PerfCounters -DefinitionFileName MailboxTransportSubmissionServicePerfCounters.xml
+          </Standalone>
+          </BuildToBuildUpgrade>
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-PerfCounters -DefinitionFileName MailboxTransportSubmissionServicePerfCounters.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/remove MSExchangeSubmission Store Driver Submission Counters -->
+    <ServerTaskInfo Id="_5DE92ED94AB846F0AD905D0E32D301EB" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>new-PerfCounters -DefinitionFileName StoreDriverSubmissionPerfCounters.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-PerfCounters -DefinitionFileName StoreDriverSubmissionPerfCounters.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/remove MSExchangeSubmission Store Driver Submission Agents Counters -->
+    <ServerTaskInfo Id="_B621276115D04B6289BA28452939F8D5" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>new-PerfCounters -DefinitionFileName StoreDriverSubmissionAgentPerfCounters.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-PerfCounters -DefinitionFileName StoreDriverSubmissionAgentPerfCounters.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/remove MSExchangeSubmission Store Driver Submission Databases Counters -->
+    <ServerTaskInfo Id="_5B934AD3373A4BF28C5FBE3B7BB92076" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>new-PerfCounters -DefinitionFileName StoreDriverSubmissionDatabasePerfCounters.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-PerfCounters -DefinitionFileName StoreDriverSubmissionDatabasePerfCounters.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Remove obsolete MSExchangeDelivery Service Counters -->
+    <ServerTaskInfo Id="_4141055487844680B514EAC5A2F206D6" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>
+          $category = "MSExchange Delivery Service"
+          if ([Diagnostics.PerformanceCounterCategory]::Exists($category))
+          {
+            [Diagnostics.PerformanceCounterCategory]::Delete($category)
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Install/remove MSExchangeDelivery Store Driver Counters -->
+    <ServerTaskInfo Id="_73B6140B81F0401C8AA4E82B8456BE86" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>new-PerfCounters -DefinitionFileName StoreDriverDeliveryPerfCounters.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-PerfCounters -DefinitionFileName StoreDriverDeliveryPerfCounters.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/remove MSExchangeDelivery Agents Counters -->
+    <ServerTaskInfo Id="_12ED884CE5074CEC95663788DFA61CB7" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>new-PerfCounters -DefinitionFileName StoreDriverDeliveryAgentPerfCounters.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-PerfCounters -DefinitionFileName StoreDriverDeliveryAgentPerfCounters.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/remove MSExchangeDelivery Databases Counters -->
+    <ServerTaskInfo Id="_A56F97693FF249FFB461CA3BCE320C7C" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>new-PerfCounters -DefinitionFileName StoreDriverDeliveryDatabasePerfCounters.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-PerfCounters -DefinitionFileName StoreDriverDeliveryDatabasePerfCounters.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/remove MSExchange Delivery Approval Framework Counters -->
+    <ServerTaskInfo Id="_FC4EE74DDF184E7095736CB47AE6A129" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>new-PerfCounters -DefinitionFileName TransportApprovalDeliveryPerfCounters.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-PerfCounters -DefinitionFileName TransportApprovalDeliveryPerfCounters.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/remove MSExchangeDelivery Conversations Processing Agent Counters -->
+    <ServerTaskInfo Id="_78f48a7eabfc44468607cdd00a1a9802" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>new-PerfCounters -DefinitionFileName ConversationsAgentDeliveryPerfCounters.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-PerfCounters -DefinitionFileName ConversationsAgentDeliveryPerfCounters.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/remove MSExchangeDelivery SMS delivery Agent Counters -->
+    <ServerTaskInfo Id="_9785609b2e044c7a9afc20df1e976ec4" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>new-PerfCounters -DefinitionFileName SmsDeliveryAgentDeliveryPerfCounters.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-PerfCounters -DefinitionFileName SmsDeliveryAgentDeliveryPerfCounters.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/remove MailboxDelivery SmtpReceive perfcounters-->
+    <ServerTaskInfo Id="_ae1c8d6d07c2494f82051ccfea78bbbe" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>new-PerfCounters -DefinitionFileName MSExchangeTransportDelivery_SmtpReceive.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-PerfCounters -DefinitionFileName MSExchangeTransportDelivery_SmtpReceive.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/remove MailboxDelivery SmtpSend perfcounters-->
+    <ServerTaskInfo Id="_efdfeda1ce384208ace0b7a99bed1cb9" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>new-PerfCounters -DefinitionFileName MSExchangeTransportDelivery_SmtpSend.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-PerfCounters -DefinitionFileName MSExchangeTransportDelivery_SmtpSend.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/remove MailboxDelivery SmtpAvailability Counters -->
+    <ServerTaskInfo Id="_44a48355689342468fbd1e9fc8385cec" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>new-PerfCounters -DefinitionFileName MSExchangeTransportDelivery_SmtpAvailability.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-PerfCounters -DefinitionFileName MSExchangeTransportDelivery_SmtpAvailability.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/remove SMTP Connection Cache perf counters -->
+    <ServerTaskInfo Id="_a80caf3b-f427-4949-8626-6b7f1b140ebd" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>new-PerfCounters -DefinitionFileName MSExchangeTransportDelivery_SmtpConnectionCachePerfCounters.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-PerfCounters -DefinitionFileName MSExchangeTransportDelivery_SmtpConnectionCachePerfCounters.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/remove MailboxDelivery Routing Counters -->
+    <ServerTaskInfo Id="_656498d353cd45a5936c21a7706bb240" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>new-PerfCounters -DefinitionFileName MSExchangeTransportDelivery_Routing.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-PerfCounters -DefinitionFileName MSExchangeTransportDelivery_Routing.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/remove MailboxDelivery Proxy Hub Selector Counters -->
+    <ServerTaskInfo Id="_fb86ada67c434b1995a7aadcd16a902a" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>new-PerfCounters -DefinitionFileName MSExchangeTransportDelivery_ProxyHubSelector.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-PerfCounters -DefinitionFileName MSExchangeTransportDelivery_ProxyHubSelector.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/remove MailboxDelivery Configuration Cache Counters -->
+    <ServerTaskInfo Id="_31067c5e749549a2bb0099db9a052237" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>new-PerfCounters -DefinitionFileName MSExchangeTransportDelivery_Configuration_Cache.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-PerfCounters -DefinitionFileName MSExchangeTransportDelivery_Configuration_Cache.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/remove MailboxDelivery Certificate Validation Cache Counters -->
+    <ServerTaskInfo Id="_2e4e597848a248e1b8698b2618e4d9ba" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>new-PerfCounters -DefinitionFileName MSExchangeTransportDelivery_Certificate_Validation_Cache.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-PerfCounters -DefinitionFileName MSExchangeTransportDelivery_Certificate_Validation_Cache.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/remove MailboxDelivery DSN Counters -->
+    <ServerTaskInfo Id="_0b24c322d91742e5b789ed2983166d6f" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>new-PerfCounters -DefinitionFileName MSExchangeTransportDelivery_DSN.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-PerfCounters -DefinitionFileName MSExchangeTransportDelivery_DSN.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/remove MailboxDelivery Latency tracker perfcounters-->
+    <ServerTaskInfo Id="_fc7aff0909f843f88bbc814a38e6af05" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>new-PerfCounters -DefinitionFileName MSExchangeTransportDelivery_LatencyTracker.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-PerfCounters -DefinitionFileName MSExchangeTransportDelivery_LatencyTracker.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/remove MailboxDelivery End To End Latency tracker perfcounters-->
+    <ServerTaskInfo Id="_b44abf08cc8c4e26b9ba0f4cbe824786" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>new-PerfCounters -DefinitionFileName MSExchangeTransportDelivery_EndToEndLatencyTracker.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-PerfCounters -DefinitionFileName MSExchangeTransportDelivery_EndToEndLatencyTracker.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/remove MEX perf counters -->
+    <ServerTaskInfo Id="_D213FD1A587B4EDCA660FB6197F3C224" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>new-PerfCounters -DefinitionFileName MSExchangeTransportDelivery_MExCounters.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-PerfCounters -DefinitionFileName MSExchangeTransportDelivery_MExCounters.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/remove MailboxSubmission SmtpSend perfcounters-->
+    <ServerTaskInfo Id="_f4436be367bf4faabe54aea19e4c4550" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>new-PerfCounters -DefinitionFileName MSExchangeTransportSubmission_SmtpSend.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-PerfCounters -DefinitionFileName MSExchangeTransportSubmission_SmtpSend.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/remove SMTP Connection Cache perf counters -->
+    <ServerTaskInfo Id="_e09e16e8-cedd-4ecc-a89e-64741ac5953a" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>new-PerfCounters -DefinitionFileName MSExchangeTransportSubmission_SmtpConnectionCachePerfCounters.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-PerfCounters -DefinitionFileName MSExchangeTransportSubmission_SmtpConnectionCachePerfCounters.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/remove MailboxSubmission Routing Counters -->
+    <ServerTaskInfo Id="_8da703ae10654db58e553b91046092bf" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>new-PerfCounters -DefinitionFileName MSExchangeTransportSubmission_Routing.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-PerfCounters -DefinitionFileName MSExchangeTransportSubmission_Routing.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/remove MailboxSubmission Proxy Hub Selector Counters -->
+    <ServerTaskInfo Id="_4733e867d0a2421d8a4979081b555729" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>new-PerfCounters -DefinitionFileName MSExchangeTransportSubmission_ProxyHubSelector.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-PerfCounters -DefinitionFileName MSExchangeTransportSubmission_ProxyHubSelector.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/remove MailboxSubmission Configuration Cache Counters -->
+    <ServerTaskInfo Id="_6b46754279474e7fa1a7a22a4f98991f" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>new-PerfCounters -DefinitionFileName MSExchangeTransportSubmission_Configuration_Cache.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-PerfCounters -DefinitionFileName MSExchangeTransportSubmission_Configuration_Cache.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/remove MailboxSubmission Certificate Validation Cache Counters -->
+    <ServerTaskInfo Id="_0fe09c6545a84427a47f5e0d280515d1" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>new-PerfCounters -DefinitionFileName MSExchangeTransportSubmission_Certificate_Validation_Cache.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-PerfCounters -DefinitionFileName MSExchangeTransportSubmission_Certificate_Validation_Cache.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/remove MailboxSubmission DSN Counters -->
+    <ServerTaskInfo Id="_1e07ff3618b04155ae1a42c39c8a0f2e" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>new-PerfCounters -DefinitionFileName MSExchangeTransportSubmission_DSN.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-PerfCounters -DefinitionFileName MSExchangeTransportSubmission_DSN.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/remove MailboxSubmission Latency tracker perfcounters-->
+    <ServerTaskInfo Id="_57e372f6c61d4b6aa62589808cea77d2" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>new-PerfCounters -DefinitionFileName MSExchangeTransportSubmission_LatencyTracker.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-PerfCounters -DefinitionFileName MSExchangeTransportSubmission_LatencyTracker.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/remove MEX perf counters -->
+    <ServerTaskInfo Id="_3750923E1B664C298843FC9708A9D0F3" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>new-PerfCounters -DefinitionFileName MSExchangeTransportSubmission_MExCounters.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-PerfCounters -DefinitionFileName MSExchangeTransportSubmission_MExCounters.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/remove Provisioning Cache perf counters -->
+    <ServerTaskInfo Id="_824687361E7C413A834C21A66104679f" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>new-PerfCounters -DefinitionFileName ProvisioningCachePerformanceCounters.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-PerfCounters -DefinitionFileName ProvisioningCachePerformanceCounters.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/remove People I Know agent perf counters -->
+    <ServerTaskInfo Id="_3878800cbf4cd74f929d0601369544fa" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>new-PerfCounters -DefinitionFileName PeopleIKnowAgentPerformanceCounters.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-PerfCounters -DefinitionFileName PeopleIKnowAgentPerformanceCounters.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/remove Working Set agent perf counters -->
+    <ServerTaskInfo Id="_c61324e1192342c082a4512ae9f04f0d" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+        <Install IsFatal="false">
+            <Standalone>new-PerfCounters -DefinitionFileName WorkingSetAgentPerformanceCounters.xml</Standalone>
+        </Install>
+        <BuildToBuildUpgrade UseInstallTasks="true" />
+        <DisasterRecovery UseInstallTasks="true" />
+        <Uninstall IsFatal="false">
+            <Standalone>remove-PerfCounters -DefinitionFileName WorkingSetAgentPerformanceCounters.xml</Standalone>
+        </Uninstall>
+    </ServerTaskInfo>
+
+
+    <!-- Install/remove Meeting Series Meeting Ordering agent perf counters -->
+    <ServerTaskInfo Id="_651c4b64645842e586c9597b5d34b8fb" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>new-PerfCounters -DefinitionFileName MeetingSeriesMessageOrderingAgentPerfCounters.xml</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>remove-PerfCounters -DefinitionFileName MeetingSeriesMessageOrderingAgentPerfCounters.xml</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/remove Shared mailbox sent item agent perf counters -->
+    <ServerTaskInfo Id="_28A30CC92EF6441DA237507B72A5040C" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+        <Install IsFatal="false">
+            <Standalone>new-PerfCounters -DefinitionFileName sharedmailboxSentItemsAgentPerformanceCounters.xml</Standalone>
+        </Install>
+        <BuildToBuildUpgrade UseInstallTasks="true" />
+        <DisasterRecovery UseInstallTasks="true" />
+        <Uninstall IsFatal="false">
+            <Standalone>remove-PerfCounters -DefinitionFileName sharedmailboxSentItemsAgentPerformanceCounters.xml</Standalone>
+        </Uninstall>
+    </ServerTaskInfo>
+    <!-- Install/remove Office Graph agent perf counters -->
+    <ServerTaskInfo Id="_1aea7672927d49f8b76a92a5420184f3" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+        <Install IsFatal="false">
+            <Standalone>new-PerfCounters -DefinitionFileName OfficeGraphAgentPerformanceCounters.xml</Standalone>
+        </Install>
+        <BuildToBuildUpgrade UseInstallTasks="true" />
+        <DisasterRecovery UseInstallTasks="true" />
+        <Uninstall IsFatal="false">
+            <Standalone>remove-PerfCounters -DefinitionFileName OfficeGraphAgentPerformanceCounters.xml</Standalone>
+        </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/remove Office Graph writer perf counters -->
+    <ServerTaskInfo Id="_6f2ab3ea9c32460d9621c8a5bc7008db " Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+        <Install IsFatal="false">
+            <Standalone>new-PerfCounters -DefinitionFileName OfficeGraphLogProcessorPerfCounters.xml</Standalone>
+        </Install>
+        <BuildToBuildUpgrade UseInstallTasks="true" />
+        <DisasterRecovery UseInstallTasks="true" />
+        <Uninstall IsFatal="false">
+            <Standalone>remove-PerfCounters -DefinitionFileName OfficeGraphLogProcessorPerfCounters.xml</Standalone>
+        </Uninstall>
+    </ServerTaskInfo>
+
+  </ServerTasks>
+
+</SetupComponentInfo>
+

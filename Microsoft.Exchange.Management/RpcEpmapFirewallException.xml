@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo Name="Enable RPC-EPMAP firewall exception" >
+	<ServerTasks>
+		<!-- E12-129591 E14-46622- Need to open RPC EPMap in RC0 of W2K8.
+        Enable the Remote Administration (RPC-EPMAP) exception for Windows Firewall in Mbx, CAS and Hub servers
+        On uninstall, remove WMI from the windows firewall exception list in LH.-->
+		<ServerTaskInfo Id="_2e98edb735e04324a5149bdef14dde18" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+			<Install IsFatal="false">
+				<Standalone>
+					if ([Environment]::OSVersion.Version.Major -ge 6)
+					{
+						Add-FirewallException -FirewallRule (New-Object Microsoft.Exchange.Security.WindowsFirewall.RpcEndPointMapperFirewallRule)
+					}
+				</Standalone>
+			</Install>
+			<BuildToBuildUpgrade UseInstallTasks="true"/>
+			<DisasterRecovery/>
+			<Uninstall IsFatal="false">
+				<Standalone>
+					if ([Environment]::OSVersion.Version.Major -ge 6)
+					{
+						Remove-FirewallException -FirewallRule (New-Object Microsoft.Exchange.Security.WindowsFirewall.RpcEndPointMapperFirewallRule)
+					}
+				</Standalone>
+			</Uninstall>
+		</ServerTaskInfo>
+	</ServerTasks>
+</SetupComponentInfo>

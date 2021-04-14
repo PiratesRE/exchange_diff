@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+    <xsd:element name="internalConfiguration" type="internalConfigurationType" />
+
+    <xsd:complexType name="internalConfigurationType">
+        <xsd:sequence>
+            <xsd:element name="internalMexRuntime" type="internalMexRuntimeType" />
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="internalMexRuntimeType">
+        <xsd:sequence>
+            <xsd:element name="enterpriseBridgehead" type="perRoleMexRuntime"> </xsd:element>
+            <xsd:element name="enterpriseGateway" type="perRoleMexRuntime"> </xsd:element>
+            <xsd:element name="enterpriseFrontend" type="perRoleMexRuntime"> </xsd:element>
+            <xsd:element name="exchangeDatacenterBridgehead" type="perRoleMexRuntime"> </xsd:element>
+            <xsd:element name="partnerHostedBridgehead" type="perRoleMexRuntime"> </xsd:element>
+            <xsd:element name="partnerHostedGateway" type="perRoleMexRuntime"> </xsd:element>
+            <xsd:element name="forefrontForOfficeFrontend" type="perRoleMexRuntime"> </xsd:element>
+            <xsd:element name="forefrontForOfficeBridgehead" type="perRoleMexRuntime"> </xsd:element>
+            <xsd:element name="exchangeDatacenterFrontend" type="perRoleMexRuntime"> </xsd:element>
+            <xsd:element name="exchangeDatacenterMailboxSubmission" type="perRoleMexRuntime"> </xsd:element>
+            <xsd:element name="partnerHostedMailboxSubmission" type="perRoleMexRuntime"> </xsd:element>
+            <xsd:element name="enterpriseMailboxSubmission" type="perRoleMexRuntime"> </xsd:element>
+            <xsd:element name="exchangeDatacenterMailboxDelivery" type="perRoleMexRuntime"> </xsd:element>
+            <xsd:element name="partnerHostedMailboxDelivery" type="perRoleMexRuntime"> </xsd:element>
+            <xsd:element name="enterpriseMailboxDelivery" type="perRoleMexRuntime"> </xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="perRoleMexRuntime">
+        <xsd:sequence>
+            <xsd:element name="preExecution" type="agentListType"></xsd:element>
+            <xsd:element name="postExecution" type="agentListType"></xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+
+</xsd:schema>

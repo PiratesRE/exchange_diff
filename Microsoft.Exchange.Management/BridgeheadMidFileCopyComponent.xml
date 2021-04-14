@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo Name="Bridgehead MidFileCopy" DescriptionId="SetupComponentMidFileCopyBridgehead">
+
+  <ServerTasks>
+
+    <ServerTaskInfo Id="_efacdf9495934559999caa607c447e9d" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install />
+
+      <!-- 
+        Rename Bridgehead to HubTransport
+      
+        The Bridgehead role was renamed to Hub transport.  To ensure that the updated code can
+        find the registry entries created by the older code, the registry key is renamed here.
+        
+        Requires permissions to the local registry hive
+      -->
+      <BuildToBuildUpgrade>
+        <Standalone>
+		      if(test-path 'HKLM:\SOFTWARE\Microsoft\ExchangeServer\v15\BridgeheadRole')
+		      {
+  			    move-item -path 'HKLM:\SOFTWARE\Microsoft\ExchangeServer\v15\BridgeheadRole' -destination 'HKLM:\SOFTWARE\Microsoft\ExchangeServer\v15\HubTransportRole';
+		      }
+		    </Standalone>
+      </BuildToBuildUpgrade>
+
+      <DisasterRecovery />
+      <Uninstall />
+    </ServerTaskInfo>
+
+  </ServerTasks>
+
+</SetupComponentInfo>
+

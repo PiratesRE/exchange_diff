@@ -1,0 +1,177 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{09CD9476-CD82-489E-B9E2-84B47CA1418C}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Microsoft.Exchange.RpcClientAccess.Monitoring</RootNamespace>
+    <AssemblyName>Microsoft.Exchange.RpcClientAccess.Monitoring</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AsyncTask.cs" />
+    <Compile Include="BaseLogger.cs" />
+    <Compile Include="BaseNspiRpcTask.cs" />
+    <Compile Include="BaseRpcClient.cs" />
+    <Compile Include="BaseRpcTask.cs" />
+    <Compile Include="BaseTask.cs" />
+    <Compile Include="CallResult.cs" />
+    <Compile Include="CertificateValidationError.cs" />
+    <Compile Include="ClientCallContext.cs" />
+    <Compile Include="ClientCancelableCallContext.cs" />
+    <Compile Include="CompositeLogger.cs" />
+    <Compile Include="CompositeTask.cs" />
+    <Compile Include="ConnectCallResult.cs" />
+    <Compile Include="Constants.cs" />
+    <Compile Include="Context.cs" />
+    <Compile Include="ContextProperty.2.cs" />
+    <Compile Include="ContextProperty.cs" />
+    <Compile Include="ContextPropertySchema.cs" />
+    <Compile Include="DiscoverWebProxyTask.cs" />
+    <Compile Include="DummyCallResult.cs" />
+    <Compile Include="DummyMapiHttpTask.cs" />
+    <Compile Include="DummyRpcTask.cs" />
+    <Compile Include="DummyTask.cs" />
+    <Compile Include="EmsmdbCallContext.cs" />
+    <Compile Include="EmsmdbCallResult.cs" />
+    <Compile Include="EmsmdbClient.cs" />
+    <Compile Include="EmsmdbConnectTask.cs" />
+    <Compile Include="EmsmdbLogonTask.cs" />
+    <Compile Include="EmsmdbMapiHttpTask.cs" />
+    <Compile Include="EmsmdbOperationBaseTask.cs" />
+    <Compile Include="EmsmdbTask.cs" />
+    <Compile Include="Environment.cs" />
+    <Compile Include="ExecuteAsyncResult.cs" />
+    <Compile Include="ExecuteContext.cs" />
+    <Compile Include="ExtensionMethods.cs" />
+    <Compile Include="IContext.cs" />
+    <Compile Include="IEmsmdbClient.cs" />
+    <Compile Include="IEnvironment.cs" />
+    <Compile Include="ILogger.cs" />
+    <Compile Include="INspiClient.cs" />
+    <Compile Include="IPropertyBag.cs" />
+    <Compile Include="IRfriClient.cs" />
+    <Compile Include="IRpcClient.cs" />
+    <Compile Include="ISampleClient.cs" />
+    <Compile Include="ITask.cs" />
+    <Compile Include="ITaskDescriptor.cs" />
+    <Compile Include="IVerifyRpcProxyClient.cs" />
+    <Compile Include="LogonCallResult.cs" />
+    <Compile Include="NspiBindTask.cs" />
+    <Compile Include="NspiCallResult.cs" />
+    <Compile Include="NspiClient.cs" />
+    <Compile Include="NspiDataException.cs" />
+    <Compile Include="NspiDNToEphTask.cs" />
+    <Compile Include="NspiGetHierarchyInfoTask.cs" />
+    <Compile Include="NspiGetMatchesTask.cs" />
+    <Compile Include="NspiGetNetworkAddressesPropertyTask.cs" />
+    <Compile Include="NspiGetNetworkAddressesTask.cs" />
+    <Compile Include="NspiQueryHomeMdbTask.cs" />
+    <Compile Include="NspiQueryRowsTask.cs" />
+    <Compile Include="NspiTask.cs" />
+    <Compile Include="NspiUnbindTask.cs" />
+    <Compile Include="NullTask.cs" />
+    <Compile Include="OutlookEndpointSelection.cs" />
+    <Compile Include="OutlookTask.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="PropertyBag.cs" />
+    <Compile Include="PropertyNotFoundException.cs" />
+    <Compile Include="PublicFolderEmsMdbTask.cs" />
+    <Compile Include="PublicFolderMailboxLogonTask.cs" />
+    <Compile Include="RcaOutlookTask.cs" />
+    <Compile Include="RetryTask.cs" />
+    <Compile Include="RfriCallResult.cs" />
+    <Compile Include="RfriClient.cs" />
+    <Compile Include="RfriGetFqdnTask.cs" />
+    <Compile Include="RfriGetNewDsaTask.cs" />
+    <Compile Include="RfriTask.cs" />
+    <Compile Include="RpcCallContext.cs" />
+    <Compile Include="RpcCallResult.cs" />
+    <Compile Include="RpcHelper.cs" />
+    <Compile Include="ScomAlertLogger.cs" />
+    <Compile Include="Strings.cs" />
+    <Compile Include="SupportShellHelper.cs" />
+    <Compile Include="SupportShellLogger.cs" />
+    <Compile Include="TaskEngine.cs" />
+    <Compile Include="TaskException.cs" />
+    <Compile Include="TaskInfo.cs" />
+    <Compile Include="TaskResult.cs" />
+    <Compile Include="TaskType.cs" />
+    <Compile Include="TplTaskEngine.cs" />
+    <Compile Include="VerifyRpcProxyClient.cs" />
+    <Compile Include="VerifyRpcProxyNlbAffinityTask.cs" />
+    <Compile Include="VerifyRpcProxyResult.cs" />
+    <Compile Include="VerifyRpcProxyTask.cs" />
+    <Compile Include="VerifyRpcProxyTimeoutTask.cs" />
+    <Compile Include="WrongPropertyValueCombinationException.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Strings.resources" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Common\Microsoft.Exchange.Data.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140D3}</Project>
+      <Name>Microsoft.Exchange.Data.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data\Microsoft.Exchange.Data.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14106}</Project>
+      <Name>Microsoft.Exchange.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Diagnostics\Microsoft.Exchange.Diagnostics.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14113}</Project>
+      <Name>Microsoft.Exchange.Diagnostics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.MapiHttpClient\Microsoft.Exchange.MapiHttpClient.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14168}</Project>
+      <Name>Microsoft.Exchange.MapiHttpClient</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Net\Microsoft.Exchange.Net.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14178}</Project>
+      <Name>Microsoft.Exchange.Net</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.RpcClientAccess.Parser\Microsoft.Exchange.RpcClientAccess.Parser.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1418D}</Project>
+      <Name>Microsoft.Exchange.RpcClientAccess.Parser</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Rpc\Microsoft.Exchange.Rpc.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14188}</Project>
+      <Name>Microsoft.Exchange.Rpc</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\mscorlib\mscorlib.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141F1}</Project>
+      <Name>mscorlib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

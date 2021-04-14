@@ -1,0 +1,50 @@
+﻿using System;
+
+namespace Microsoft.Exchange.Server.Storage.StoreCommonServices
+{
+	public enum ClientType : byte
+	{
+		System = 1,
+		Administrator,
+		User,
+		Transport,
+		AirSync,
+		EventBasedAssistants,
+		OWA,
+		Imap,
+		RpcHttp,
+		ContentIndexing,
+		AvailabilityService,
+		ELC,
+		Management,
+		Monitoring,
+		UnifiedMessaging,
+		WebServices,
+		ApprovalAPI,
+		TimeBasedAssistants,
+		MoMT,
+		Migration,
+		TransportSync,
+		HA,
+		Maintenance,
+		Inference,
+		SMS,
+		TeamMailbox,
+		StoreActiveMonitoring,
+		LoadGen,
+		SimpleMigration,
+		PublicFolderSystem,
+		EDiscoverySearch,
+		ContentIndexingMoveDestination,
+		AnchorService,
+		MailboxLoadBalance,
+		OutlookService,
+		UnifiedPolicy,
+		NotificationBroker,
+		Pop,
+		LiveIdBasicAuth,
+		ADDriver,
+		SnackyService,
+		MaxValue
+	}
+}

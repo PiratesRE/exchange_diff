@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="requestschema2006" targetNamespace="http://schemas.microsoft.com/exchange/autodiscover/mobilesync/requestschema/2006" elementFormDefault="qualified" xmlns="http://schemas.microsoft.com/exchange/autodiscover/mobilesync/requestschema/2006" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+	<!-- The Root element that contains one or more Request Elements -->
+	<xs:element name="Autodiscover">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Request" type="RequestType" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<!-- The mobile client fills in these values from user response -->
+	<xs:complexType name="RequestType">
+		<xs:all>
+
+			<!-- In case the server encounters an error while processing the request, 
+				the error message will be localized to the client culture specified here.
+				In the absence of this element, the server culture will be used by default 
+				The string will be of the form "en:us" -->
+			<!-- This feature is cut for M3
+			<xs:element name="Culture" type="xs:string" minOccurs="0"/>
+			-->
+
+			<!-- The SMTP email address of the user that is used to identify the users mailbox in the network -->
+			<xs:element name="EMailAddress" type="xs:string" minOccurs="1" maxOccurs="1"/>
+
+			<!-- This is the schema that the server should send the response in -->
+			<xs:element name="AcceptableResponseSchema"  type="xs:string" minOccurs="1" maxOccurs="1"/>
+
+		</xs:all>
+	</xs:complexType>
+
+</xs:schema>
+
+<!-- Version 0.1 - radheshm@microsoft.com 06/01/2005 -->
+
+<!-- TBD Referal -->

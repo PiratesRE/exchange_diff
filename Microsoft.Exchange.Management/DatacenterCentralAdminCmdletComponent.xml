@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo IsDatacenterOnly="true" Name="Central Admin Cmdlets">
+
+  <ServerTasks>
+
+    <!--
+      TODO: Remove this task when there's an opportunity to do code cleanup (details described in E14:307860).
+      For now:
+        1. Don't touch this key if it's already been set by SCOM,
+           such as the case of running the Monitoring role setup on the primary/secondary RMS server.
+           This addresses the problem described in bug E14:302550.
+        2. In order to maintain R4 compatibility, if this key is NOT already set,
+           set it to the momrms CNAME so that R4 workflows can continue use this value to establish connection to the SDK.
+    -->
+    <!-- Set Registry Key for Operations Manager Server if Operations Manager SDK is installed -->
+    <ServerTaskInfo Id="_001a68819f8b4174aec178c1e969ea46" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          $keyPath = "HKLM:\SOFTWARE\Microsoft\Microsoft Operations Manager\3.0\Setup";
+
+          if (Get-Item $keyPath -ea SilentlyContinue)
+          {
+            if (!(Get-ItemProperty -path $keyPath -name "DatabaseServerName" -ea SilentlyContinue))
+            {
+              if (![string]::IsNullOrEmpty($RoleDatacenterOpsMgrRmsServerNameActive))
+              {
+                Set-ItemProperty -path $keyPath -name "DatabaseServerName" -value $RoleDatacenterOpsMgrRmsServerNameActive;
+              }
+              else
+              {
+                Set-ItemProperty -path $keyPath -name "DatabaseServerName" -value "localhost";
+              }
+            }
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall/>
+    </ServerTaskInfo>
+
+    <!--Set Registry Key for Operations Manager Database Name if Operations Manager SDK is installed-->
+    <ServerTaskInfo Id="_05814926a9b644f8bd7976c749a3f789" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          $keyPath = "HKLM:\SOFTWARE\Microsoft\Microsoft Operations Manager\3.0\Setup";
+          if (Get-Item $keyPath -ea SilentlyContinue)
+          {
+            if (![string]::IsNullOrEmpty($RoleDatacenterOpsMgrDatabaseName))
+            {
+              Set-ItemProperty -path $keyPath -name "DatabaseName" -value $RoleDatacenterOpsMgrDatabaseName;
+            }
+            else
+            {
+              Set-ItemProperty -path $keyPath -name "DatabaseName" -value "OperationsManager";
+            }
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall/>
+    </ServerTaskInfo>
+    
+    <!--Create the Central Admin Servers USG if it does not exist-->
+    <ServerTaskInfo Id="_b139e63fdf1e477aa17a76c75aa8802b" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          . $RoleBinPath\CentralAdminSetup.ps1;
+          CreateCAServersGroup
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall/>
+    </ServerTaskInfo>
+    
+    <!--Add/remove the local computer account to/from the Central Admin Servers USG-->
+    <ServerTaskInfo Id="_18fa006a4ac34c028cf2b80853a94c8f" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+            . $RoleBinPath\CentralAdminSetup.ps1;
+            AddLocalComputerAccountToCentralAdminGroup -role:$RoleRoleName
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade>
+        <Standalone>
+            . $RoleBinPath\CentralAdminSetup.ps1;
+            if ($RoleRoleName -eq 'CentralAdminRole')
+            {
+                RemoveLocalComputerAccountFromCentralAdminServersGroup;
+            }
+            
+            AddLocalComputerAccountToCentralAdminGroup -role:$RoleRoleName
+        </Standalone>
+      </BuildToBuildUpgrade>
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>
+            . $RoleBinPath\CentralAdminSetup.ps1;
+            RemoveLocalComputerAccountFromCentralAdminGroup -role:$RoleRoleName
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!--Configure Group Policy for Winrm-->
+    <ServerTaskInfo Id="_8dce651fd11a4cbfa49067723d0c1b27" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          start-setupservice -ServiceName winrm;
+          winrm s winrm/config/client/Auth '@{CredSSP="true"}'
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall>
+        <Standalone>
+          start-setupservice -ServiceName winrm;
+          winrm s winrm/config/client/Auth '@{CredSSP="false"}'
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <ServerTaskInfo Id="_37ca845414ce4067ac8f83df6166c5e0" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          new-item  HKLM:Software\Policies\Microsoft\Windows\CredentialsDelegation -ea SilentlyContinue
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade/>
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall>
+        <Standalone>
+          remove-item  HKLM:Software\Policies\Microsoft\Windows\CredentialsDelegation -ea SilentlyContinue
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <ServerTaskInfo Id="_cf0d269a6d25450593b0b0704baeeac5" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          Enable-WSManCredSSP -DelegateComputer * -Role Client
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade/>
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall>
+        <Standalone>
+          Disable-WSManCredSSP -Role Client
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <ServerTaskInfo Id="_a1ef0b0ce3cb46479da2a2921de2c6ff" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          set-itemproperty -path HKLM:Software\Policies\Microsoft\Windows\CredentialsDelegation -Name AllowFreshCredentialsWhenNTLMOnly -Value 1 -Type DWORD
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade/>
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall>
+        <Standalone>
+          set-itemproperty -path HKLM:Software\Policies\Microsoft\Windows\CredentialsDelegation -Name AllowFreshCredentialsWhenNTLMOnly -Value 0 -Type DWORD
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>	
+
+    <ServerTaskInfo Id="_198bf02758ab4a8bbbe0e72c0c61035b" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          set-itemproperty -path HKLM:Software\Policies\Microsoft\Windows\CredentialsDelegation -Name ConcatenateDefaults_AllowFreshNTLMOnly -Value 1 -Type DWORD
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade/>
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall>
+        <Standalone>
+          set-itemproperty -path HKLM:Software\Policies\Microsoft\Windows\CredentialsDelegation -Name ConcatenateDefaults_AllowFreshNTLMOnly -Value 0 -Type DWORD
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <ServerTaskInfo Id="_9be272e991084a5e96cc72cc22d0976a" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          new-item -path HKLM:Software\Policies\Microsoft\Windows\CredentialsDelegation\AllowFreshCredentialsWhenNTLMOnly -ea SilentlyContinue
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade/>
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall/>
+    </ServerTaskInfo>
+
+    <ServerTaskInfo Id="_ec9fea4041df4986805793bff64d1cb5" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          set-itemproperty -path HKLM:Software\Policies\Microsoft\Windows\CredentialsDelegation\AllowFreshCredentialsWhenNTLMOnly -Name "1" -Value "WSMAN/*"
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade/>
+      <DisasterRecovery />
+      <Uninstall/>
+    </ServerTaskInfo>
+
+  </ServerTasks>
+
+</SetupComponentInfo>

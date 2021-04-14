@@ -1,0 +1,1105 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo IsDatacenterOnly="true" Name="Datacenter CentralAdmin Configuration">
+  <ServerTasks>
+    <!-- Set Cafe and Mailbox role -->
+    <ServerTaskInfo Id="_1c2ba762fc41480db9cddc609f92ccd5" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          set-ExchangeServerRole -Identity $RoleFqdnOrName -IsCafeServer:$true -DomainController $RoleDomainController
+          set-ExchangeServerRole -Identity $RoleFqdnOrName -IsMailboxServer:$true -DomainController $RoleDomainController
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery />
+      <Uninstall>
+        <Standalone>
+          set-ExchangeServerRole -Identity $RoleFqdnOrName -IsCafeServer:$false -DomainController $RoleDomainController
+          set-ExchangeServerRole -Identity $RoleFqdnOrName -IsMailboxServer:$false -DomainController $RoleDomainController
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/uninstall CAFE IIS web service extensions -->
+    <ServerTaskInfo Id="_2f8b914a7c6748acbaf6f21191569cbd" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>install-CafeIisWebServiceExtensions</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>uninstall-CafeIisWebServiceExtensions</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+    
+    <!-- Remove CAS created PowerShell FE vdir -->
+    <ServerTaskInfo Id="_b0773fbec7d54eac8c55d88cb67410dc" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          get-PowerShellVirtualDirectory -server $RoleFqdnOrName -DomainController $RoleDomainController | remove-PowerShellVirtualDirectory -DomainController $RoleDomainController;
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Create PowerShell virtual directory -->
+    <ServerTaskInfo Id="_28ded5ec769748d4a7f40f4b4a63fc01" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          $vdirName = "PowerShell";
+          $InternalPowerShellUrl="http://" + $RoleFqdnOrName + "/powershell";          
+          new-PowerShellVirtualDirectory $vdirName -InternalUrl $InternalPowerShellUrl -DomainController $RoleDomainController -BasicAuthentication:$false -WindowsAuthentication:$false -RequireSSL:$false -Role ClientAccess;
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade>
+        <Standalone>
+          $vdirName = "PowerShell (Default Web Site)";
+          $InternalPowerShellUrl="http://" + $RoleFqdnOrName + "/powershell";
+          $vdir = get-PowerShellVirtualDirectory -server $RoleFqdnOrName -DomainController $RoleDomainController | where { $_.Name -eq $vdirName };
+          if ($vdir -eq $null)
+          {
+            $vdirName = "PowerShell";
+            new-PowerShellVirtualDirectory $vdirName -InternalUrl $InternalPowerShellUrl -DomainController $RoleDomainController -BasicAuthentication:$false -WindowsAuthentication:$false -RequireSSL:$false -Role ClientAccess;
+          }
+          else
+          {
+            update-PowerShellVirtualDirectoryVersion -DomainController $RoleDomainController;
+            Set-PowerShellVirtualDirectory $vdirName -InternalUrl $InternalPowerShellUrl -DomainController $RoleDomainController -WindowsAuthentication:$false -RequireSSL:$false;
+          }
+        </Standalone>
+      </BuildToBuildUpgrade>
+      <DisasterRecovery>
+        <Standalone>
+          get-PowerShellVirtualDirectory -server $RoleFqdnOrName -DomainController $RoleDomainController | remove-PowerShellVirtualDirectory -DomainController $RoleDomainController -Confirm:$false;
+          $vdirName = "PowerShell";
+          $InternalPowerShellUrl="http://" + $RoleFqdnOrName + "/powershell";
+          new-PowerShellVirtualDirectory $vdirName -InternalUrl $InternalPowerShellUrl -DomainController $RoleDomainController -BasicAuthentication:$false -WindowsAuthentication:$false -RequireSSL:$false -Role ClientAccess;
+        </Standalone>
+      </DisasterRecovery>
+      <Uninstall IsFatal="false">
+        <Standalone>
+          get-PowerShellVirtualDirectory -server $RoleFqdnOrName -DomainController $RoleDomainController | remove-PowerShellVirtualDirectory -DomainController $RoleDomainController;
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Remove PowerShell virtual directory for certificate authentication during B2B Upgrade-->
+    <ServerTaskInfo Id="_9c685f2462b743768ef642787587a6e6" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install />
+      <BuildToBuildUpgrade>
+        <Standalone>
+          $vdirName = "PowerShell-Cert (Default Web Site)";
+          $vdir = get-PowerShellVirtualDirectory -server $RoleFqdnOrName -DomainController $RoleDomainController | where { $_.Name -eq $vdirName };
+          if ($vdir -ne $null)
+          {
+            remove-PowerShellVirtualDirectory $vdir -DomainController $RoleDomainController;
+          }
+        </Standalone>
+      </BuildToBuildUpgrade>
+      <DisasterRecovery />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Set install path in app config "ClientAccess/PowerShell" -->
+    <ServerTaskInfo Id="_3fab3837ae084a03b585ada009dd4ce2" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>set-InstallPathInAppConfig -ConfigFileRelativePath "FrontEnd\HttpProxy\PowerShell\" -ConfigFileName web.config</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Create SIP container -->
+    <ServerTaskInfo Id="_8d26fd7ca4b740dc91727fcad39e144d" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>install-SIPContainer -Name:"SIP" -DomainController $RoleDomainController</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- 
+      Disable shutting down of ALL application pools when the process crashes(Maximum Failures)
+      within a specified time period (Failure Interval).
+    -->
+      <ServerTaskInfo Id="_5fe3f25177ac48659ccc6e2b9e4999cc" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>
+          . "$RoleInstallPath\Scripts\ConfigureNetworkProtocolParameters.ps1";
+          Set-RapidFailProtection $false
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall />
+    </ServerTaskInfo>
+	
+	<!-- 
+      O15:3210694
+	  IIS Kernel-mode authentication is Enabled by default in Stand-Alone cafe installs for /OWA and /ECP
+	  and Disabled by default in Multi-Role Installs - Need to make Disabled by default in ALL installs
+    -->
+      <ServerTaskInfo Id="_DisableKernelModeAuthByDefault" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          . "$RoleInstallPath\Scripts\ConfigureNetworkProtocolParameters.ps1"; 
+          Set-IisKernelModeAuthentication $false
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall />
+    </ServerTaskInfo>
+    
+    <!-- Add/remove by port firewall exceptions -->
+    <ServerTaskInfo Id="_e9c130342dd84c0eb283dea8b2af8238" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          Add-FirewallException -FirewallRule (New-Object Microsoft.Exchange.Security.WindowsFirewall.MSExchangeCAFERemoteRegistryByPortRule);
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>
+          Remove-FirewallException -FirewallRule (New-Object Microsoft.Exchange.Security.WindowsFirewall.MSExchangeCAFERemoteRegistryByPortRule);
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!--Update IIS TLS cipher list to EXO standards-->
+    <ServerTaskInfo Id="_16169c5d65e6427f81cd3bd3a95d7a9f" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          $keyPathRoot = "HKLM:\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols";
+          $keyPath = $keyPathRoot + "\SSL 2.0\Server";
+          if (!(Test-Path $keyPath))
+          {
+          New-Item -path $keyPathRoot"\SSL 2.0" -ItemType key -Name "Server" -Force;
+          }
+          Set-ItemProperty -path $keyPath -name "Enabled" -value 0x0 -Type DWORD -Force;
+
+          $keyPath = $keyPathRoot + "\SSL 3.0\Server";
+          if (!(Test-Path $keyPath))
+          {
+          New-Item -path $keyPathRoot"\SSL 3.0" -ItemType key -Name "Server" -Force;
+          }
+          Set-ItemProperty -path $keyPath -name "Enabled" -value 0x1 -Type DWORD -Force;
+
+          $keyPath = $keyPathRoot + "\TLS 1.0\Server";
+          if (!(Test-Path $keyPath))
+          {
+          New-Item -path $keyPathRoot"\TLS 1.0" -ItemType key -Name "Server" -Force;
+          }
+          Set-ItemProperty -path $keyPath -name "Enabled" -value 0x1 -Type DWORD -Force;
+
+          $keyPath = $keyPathRoot + "\TLS 1.1\Server";
+          if (!(Test-Path $keyPath))
+          {
+          New-Item -path $keyPathRoot"\TLS 1.1" -ItemType key -Name "Server" -Force;
+          }
+          Set-ItemProperty -path $keyPath -name "Enabled" -value 0x1 -Type DWORD -Force;
+          Set-ItemProperty -path $keyPath -name "DisabledByDefault" -value 0x0 -Type DWORD -Force;
+
+          $keyPath = $keyPathRoot + "\TLS 1.2\Server";
+          if (!(Test-Path $keyPath))
+          {
+          New-Item -path $keyPathRoot"\TLS 1.2" -ItemType key -Name "Server" -Force;
+          }
+          Set-ItemProperty -path $keyPath -name "Enabled" -value 0x1 -Type DWORD -Force;
+          Set-ItemProperty -path $keyPath -name "DisabledByDefault" -value 0x0 -Type DWORD -Force;
+
+          $keypath = "HKLM:\SOFTWARE\Policies\Microsoft\Cryptography\Configuration\SSL\00010002";
+          if (!(Test-Path $keyPath)) { New-Item $keyPath -Force }
+          Set-ItemProperty -path $keyPath -name "Functions" -value "TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384_P384,TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P384,TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA_P384,TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA_P256,TLS_RSA_WITH_AES_256_CBC_SHA,TLS_RSA_WITH_3DES_EDE_CBC_SHA,TLS_RSA_WITH_AES_128_CBC_SHA,TLS_RSA_WITH_RC4_128_SHA,TLS_RSA_WITH_RC4_128_MD5" -Force;
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true"  />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!--
+    Add X-FEServer custom response header in order to identity target fe server for all requests processed by this cafe server
+    Note: please DO NOT add customer header for ReportingWebService, since rws inherit the config from ecp. Otherwise, it will cause duplicated key error. See bug 2940683 for more details.
+    -->
+    <ServerTaskInfo Id="_427a9e92380a4f5dad75162c1235c731" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          ."$RoleInstallPath\Scripts\ConfigureCafeResponseHeaders.ps1";
+          CreateCustomHeadersNodeForCafe 'powershell'
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall/>
+    </ServerTaskInfo>
+
+    <!-- Set the ServiceConnectionPoint on the server. -->
+    <ServerTaskInfo Id="_9b5feb8e2ff64c4ebd10edb43c3a2aa9" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          set-ClientAccessServer -Identity $RoleFqdnOrName;
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>
+          $clientAccessServer = get-ClientAccessServer -Identity $RoleFqdnOrName;
+          if($clientAccessServer)
+          {
+            if(($clientAccessServer.AutoDiscoverServiceInternalUri) -and ($clientAccessServer.AutoDiscoverSiteScope))
+            {
+              set-ClientAccessServer -Identity $RoleFqdnOrName -AutoDiscoverServiceInternalUri:$null -AutoDiscoverSiteScope:$null
+            }
+          }
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Redirect IIS Log folder path to $RoleDatacenterIisLogPath and Set logExtFileFlags. -->
+    <ServerTaskInfo Id="_7b6923587ed645538236e66698ad13b1" Component="EXCHANGE14:\Current\Release\Shared\TwC\Security">
+      <Install>
+        <Standalone>
+          $CommandAppCmd = join-path $env:SystemRoot System32\inetsrv\appcmd.exe;
+
+          Start-SetupProcess -Name "$CommandAppCmd" -args "set config /section:system.applicationHost/log  /centralBinaryLogFile.directory:$RoleDatacenterIisLogPath\LogFiles"
+          Start-SetupProcess -Name "$CommandAppCmd" -args "set config /section:system.applicationHost/log  /centralW3CLogFile.directory:$RoleDatacenterIisLogPath\LogFiles\W3SVC1"
+
+          Start-SetupProcess -Name "$CommandAppCmd" -args "set config -section:sites /siteDefaults.logfile.directory:$RoleDatacenterIisLogPath\LogFiles"
+          Start-SetupProcess -Name "$CommandAppCmd" -args "set config -section:sites /siteDefaults.traceFailedRequestsLogging.directory:$RoleDatacenterIisLogPath\FailedReqLogFiles"
+
+          $logExtFileFlags = "Date, Time, ClientIP, UserName, ServerIP, Method, UriStem, UriQuery, HttpStatus, Win32Status, TimeTaken, ServerPort, UserAgent, HttpSubStatus, Host"
+          Start-SetupProcess -Name "$CommandAppCmd" -args "set config -section:sites /siteDefaults.logFile.logExtFileFlags:`"$logExtFileFlags`""
+
+          $key = "HKLM:\Software\Microsoft\ExchangeServer\v15";
+          Set-ItemProperty $key "IISLogDirectory" $RoleDatacenterIisLogPath
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Configure SSL certificates -->
+    <ServerTaskInfo Id="_1480c8aa620b46deb09ee0a01297c7d7" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          Install-ExchangeCertificate -Thumbprint $RoleDatacenterIisSHA1Thumbprint -Services IIS
+          Install-ExchangeCertificate -WebSiteName "Exchange Back End" -Thumbprint $RoleDatacenterIisSHA1Thumbprint -Services IIS
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall />
+    </ServerTaskInfo>
+
+
+    <!-- Set external URL on Powershell virtual directory. -->
+    <ServerTaskInfo Id="_5d9d864a99444b9b8d690e7d44e48e2a" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          $vdirName = "PowerShell (Default Web Site)";
+          $ExternalPowerShellUrl="https://" + $RoleFqdnOrName + "/powershell";
+          $vdir = Get-PowerShellVirtualDirectory -server $RoleFqdnOrName -DomainController $RoleDomainController | where { $_.Name -eq $vdirName };
+          if ($vdir -ne $null)
+          {
+          Set-PowerShellVirtualDirectory $vdirName -ExternalUrl $ExternalPowerShellUrl
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Configure WSMan IIS Hosting on Datacenter CAS server. This is just to do more checkings on DC CAS vdirs -->
+    <ServerTaskInfo Id="_17fdea85a33d433196ad58d9dddb0e73" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          configure-WSManIISHosting;
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>   
+
+    <!-- Set trace file pointer in app config "ClientAccess/PowerShell" -->
+    <ServerTaskInfo Id="_6131fae1f30e46dd816eeb78ce61eb48" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          $fullPath = "$RoleInstallPath\ClientAccess\PowerShell\web.config";
+          set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:ExInMemoryTraceConfiguration -NewValue:"$RoleBinPath\EnabledInMemoryTraces.config"
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Set trace file pointer in app config "ClientAccess/PowerShell-Proxy" -->
+    <ServerTaskInfo Id="_f348a53cd4244c038c5171c2378b04fb" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          $fullPath = "$RoleInstallPath\ClientAccess\PowerShell-Proxy\web.config";
+          set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:ExInMemoryTraceConfiguration -NewValue:"$RoleBinPath\EnabledInMemoryTraces.config"
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Enable in-memory tracing for these VDIrs above -->
+    <ServerTaskInfo Id="_643ae5d370ed4967ac326f80ed98d0bf" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          &amp;"$RoleInstallPath\Scripts\Enable-InMemoryTracing.ps1"
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+
+    <!-- Configure RpcClientAccess web service vdir -->
+
+    <!-- Give permission to Network Service to register RpcClientAccess vdir -->
+    <ServerTaskInfo Id="_e90fe5febf2e45bab31489472e3a7ed6" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          netsh http add urlacl url="https://+:444/xrop/" user="NT AUTHORITY\NETWORK SERVICE"
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall />
+    </ServerTaskInfo>
+
+
+    <!-- Enable Event Logs for PowerShell / WSMan by default -->
+    <ServerTaskInfo Id="_2aca88a34a854941adb740996be77326" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>
+          $pathForwevutilcmd = join-path $env:SystemRoot System32\wevtutil.exe;
+
+          $osVer = [environment]::osversion ;
+          $isWin7 = ($osVer.Version.Major -ge 7) -or (($osVer.Version.Major -ge 6) -and ($osVer.Version.Minor -ge 1));
+
+          if (Test-Path $pathForwevutilcmd)
+          {
+          if ($isWin7)
+          {
+          invoke-expression ($pathForwevutilcmd + " sl Microsoft-Windows-PowerShell/Operational /e:true /q");
+          invoke-expression ($pathForwevutilcmd + " sl Microsoft-Windows-PowerShell/Analytic /e:false /q");
+          invoke-expression ($pathForwevutilcmd + " sl Microsoft-Windows-PowerShell/Analytic /e:true /q");
+          invoke-expression ($pathForwevutilcmd + " sl Microsoft-Windows-WinRM/Operational /e:true /q");
+          invoke-expression ($pathForwevutilcmd + " sl Microsoft-Windows-WinRM/Analytic /e:false /q");
+          invoke-expression ($pathForwevutilcmd + " sl Microsoft-Windows-WinRM/Analytic /e:true /q");
+          }
+          else
+          {
+          invoke-expression ($pathForwevutilcmd + " sl Microsoft-Windows-PowerShell/Operational /e:true");
+          invoke-expression ($pathForwevutilcmd + " sl Microsoft-Windows-PowerShell/Analytic /e:false");
+          invoke-expression ($pathForwevutilcmd + " sl Microsoft-Windows-PowerShell/Analytic /e:true");
+          invoke-expression ($pathForwevutilcmd + " sl Microsoft-Windows-WinRM/Operational /e:true");
+          invoke-expression ($pathForwevutilcmd + " sl Microsoft-Windows-WinRM/Analytic /e:false");
+          invoke-expression ($pathForwevutilcmd + " sl Microsoft-Windows-WinRM/Analytic /e:true");
+          }
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery/>
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!--Create the Central Admin Servers USG if it does not exist. This will be executed only for the management forest -->
+    <ServerTaskInfo Id="_eefa7eeda9df4a88b65c79e28daa1224" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          if ($RoleDatacenterEnableFullLanguageMode -eq "True")
+          {
+          . $RoleBinPath\CentralAdminSetup.ps1;
+          CreateCAServersGroup;
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall/>
+    </ServerTaskInfo>
+
+    <!--Add the local computer account to the Central Admin Servers USG. This will be executed only for the management forest -->
+    <ServerTaskInfo Id="_ce118e17306a4c37b33c35faba1fabf0" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          if ($RoleDatacenterEnableFullLanguageMode -eq "True")
+          {
+          . $RoleBinPath\CentralAdminSetup.ps1;
+          AddLocalComputerAccountToCentralAdminServersGroup
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>
+          if ($RoleDatacenterEnableFullLanguageMode -eq "True")
+          {
+          .$RoleBinPath\CentralAdminSetup.ps1;
+          RemoveLocalComputerAccountFromCentralAdminServersGroup
+          }
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!--Create Central Admin registry key so that Central Admin cmdlets work. This will be executed only for the management forest -->
+    <ServerTaskInfo Id="_53a50bc342d94b2f8fe623ba915f0c62" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          if ($RoleDatacenterEnableFullLanguageMode -eq "True")
+          {
+          new-item HKLM:\Software\Microsoft\ExchangeServer\v15\CentralAdmin -ea SilentlyContinue;
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall/>
+    </ServerTaskInfo>
+
+    <!--Configure Central Admin registry key so that Central Admin cmdlets work. This will be executed only for the management forest -->
+    <ServerTaskInfo Id="_dc63e9ea37b24404bc51e2400b73b626" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          if ($RoleDatacenterEnableFullLanguageMode -eq "True")
+          {
+          if (-not ([String]::IsNullOrEmpty($RoleDatacenterCentralAdminDatabaseServer)))
+          {
+          set-itemproperty -path HKLM:\Software\Microsoft\ExchangeServer\v15\CentralAdmin -Name "DatabaseServer" -Value $RoleDatacenterCentralAdminDatabaseServer;
+          }
+          else
+          {
+          Write-ExchangeSetupLog -Warning "Could not identify the Central Admin database server name to store in the registry. The registry may need to be manually set after setup.";
+          }
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall/>
+    </ServerTaskInfo>
+
+    <!--Generate Central Admin proxy scripts on this machine if this is a management forest CAS machine -->
+    <ServerTaskInfo Id="_c990412daaa24a459049007e3811d1a2" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          if ($RoleDatacenterEnableFullLanguageMode -eq "True")
+          {
+          Add-PSSnapin Microsoft.Exchange.Management.Powershell.CentralAdmin -ea SilentlyContinue;
+          . $RoleBinPath\CentralAdminSetup.ps1;
+          $scriptConfigFilePath = [System.IO.Path]::Combine($RoleInstallPath, 'Datacenter\Config\CentralAdminScriptDefinitions.xml');
+          Create-ProxyScripts -ConfigFilePath $scriptConfigFilePath;
+          if($RoleDatacenterFfoEnvironment -eq "True")
+          {
+          $scriptConfigFilePath = [System.IO.Path]::Combine($RoleInstallPath, 'Datacenter\Config\FfoCentralAdminScriptDefinitions.xml');
+          Create-ProxyScripts -ConfigFilePath $scriptConfigFilePath;
+          }
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery />
+      <Uninstall/>
+    </ServerTaskInfo>
+
+    <!--Modify web.config in PowerShell vdir to enable FullLanguage mode for the management forest -->
+    <ServerTaskInfo Id="_7e7e242b265b49fa98d58403f1be4d07" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          if ($RoleDatacenterEnableFullLanguageMode -eq "True")
+          {
+          Write-ExchangeSetupLog -Info "Setting the web config for the /PowerShell virtual directory to enable FullLanguageMode";
+          $powerShellVdirPath = [System.IO.Path]::Combine((Get-ItemProperty -path 'HKLM:SOFTWARE\Microsoft\ExchangeServer\v15\Setup').MsiInstallPath,"ClientAccess\PowerShell");
+          if (Test-Path("$powerShellVdirPath\web.config"))
+          {
+          $webConfig = [xml] [string]::join("`n", (Get-Content "$powerShellVdirPath\web.config"));
+
+          ($webconfig.configuration.appSettings.add | where {$_.key -eq "PSLanguageMode"}).value = "FullLanguage";
+          $webconfig.Save("$powershellvdirpath\web.config");
+          }
+          else
+          {
+          Write-ExchangeSetupLog -Warning "Could not find web.config under $powerShellVdirPath";
+          }
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall/>
+    </ServerTaskInfo>
+
+    <!--Modify web.config in PowerShell-Proxy vdir to enable FullLanguage mode for the management forest -->
+    <ServerTaskInfo Id="_10ecf187ef034c66ae00c7827d68baa5" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          if ($RoleDatacenterEnableFullLanguageMode -eq "True")
+          {
+          Write-ExchangeSetupLog -Info "Setting the web config for the /PowerShell (proxy) virtual directory to enable FullLanguageMode";
+          $powerShellVdirPath = [System.IO.Path]::Combine((Get-ItemProperty -path 'HKLM:SOFTWARE\Microsoft\ExchangeServer\v15\Setup').MsiInstallPath,"ClientAccess\PowerShell-Proxy");
+          if (Test-Path("$powerShellVdirPath\web.config"))
+          {
+          $webConfig = [xml] [string]::join("`n", (Get-Content "$powerShellVdirPath\web.config"));
+
+          ($webconfig.configuration.appSettings.add | where {$_.key -eq "PSLanguageMode"}).value = "FullLanguage";
+          $webconfig.Save("$powershellvdirpath\web.config");
+          }
+          else
+          {
+          Write-ExchangeSetupLog -Warning "Could not find web.config under $powerShellVdirPath";
+          }
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall/>
+    </ServerTaskInfo>
+
+    <!--Disable Basic Authentication and accept client certificates on the PowerShell vdir. This step is executed only on the management forest CAS servers. -->
+    <ServerTaskInfo Id="_3c886ee10cbf4154942704c3a3744f6f" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          if ($RoleDatacenterEnableFullLanguageMode -eq "True")
+          {
+          Write-ExchangeSetupLog -Info "Disabling Basic Authentication and enabling client certificate authentication on the /PowerShell virtual directory";
+          $vdirName = "PowerShell (Default Web Site)";
+          Set-PowerShellVirtualDirectory $vdirName -DomainController $RoleDomainController -BasicAuthentication:$false -CertificateAuthentication:$true -ErrorAction SilentlyContinue;
+
+          $psvdir = get-PowerShellVirtualDirectory -server $RoleFqdnOrName -DomainController $RoleDomainController | where { $_.Name -eq $vdirName };
+          if ($psvdir -eq $null)
+          {
+          Write-ExchangeSetupLog -Warning "Could not retrieve the configuration information of the /Powershell virtual directory";
+          }
+          else
+          {
+          if ($psvdir.BasicAuthentication -ne $false)
+          {
+          Write-ExchangeSetupLog -Warning "Could not disable Basic Authentication on the /Powershell virtual directory";
+          }
+          if ($psvdir.CertificateAuthentication -ne $true)
+          {
+          Write-ExchangeSetupLog -Warning "Could not enable client certificate authentication on the /Powershell virtual directory";
+          }
+          }
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall/>
+    </ServerTaskInfo>
+    
+    <!-- Enable and configure Global Criminal Compliance logging for client access data -->
+
+    <!-- Global config, this is in the registry because it needs to be read by the logger and the log agent -->
+    <ServerTaskInfo Id="_ac03f57240d3475fad5c76eea20af9cf" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          remove-itemproperty -path HKLM:\SOFTWARE\Microsoft\ExchangeServer\v15 -name "GccLogRoot" -erroraction:silentlycontinue;
+          new-itemproperty -path HKLM:\SOFTWARE\Microsoft\ExchangeServer\v15 -name "GccLogRoot" -PropertyType String -value "D:\ExchangeLogs\CriminalCompliance";
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall />
+    </ServerTaskInfo>
+
+
+    <!--Configure Group Policy for Winrm-->
+
+    <ServerTaskInfo Id="_0503689fbf30480699f11de5e3813a19" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          if ($RoleDatacenterEnableFullLanguageMode -eq "True")
+          {
+          start-setupservice -ServiceName winrm;
+          winrm s winrm/config/client/Auth '@{CredSSP="true"}'
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall>
+        <Standalone>
+          if ($RoleDatacenterEnableFullLanguageMode -eq "True")
+          {
+          start-setupservice -ServiceName winrm;
+          winrm s winrm/config/client/Auth '@{CredSSP="false"}'
+          }
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <ServerTaskInfo Id="_f6f7fa705b474f9eb8284ee5b8257e76" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          if ($RoleDatacenterEnableFullLanguageMode -eq "True")
+          {
+          new-item  HKLM:Software\Policies\Microsoft\Windows\CredentialsDelegation -ea SilentlyContinue
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade/>
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall>
+        <Standalone>
+          if ($RoleDatacenterEnableFullLanguageMode -eq "True")
+          {
+          remove-item  HKLM:Software\Policies\Microsoft\Windows\CredentialsDelegation -ea SilentlyContinue
+          }
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <ServerTaskInfo Id="_e2323c4e32044b67b6c184b035cf91a2" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          if ($RoleDatacenterEnableFullLanguageMode -eq "True")
+          {
+          Enable-WSManCredSSP -DelegateComputer * -Role Client
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade/>
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall>
+        <Standalone>
+          if ($RoleDatacenterEnableFullLanguageMode -eq "True")
+          {
+          Disable-WSManCredSSP
+          }
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <ServerTaskInfo Id="_9c03184dce8c445da5cceb304cae23ee" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          if ($RoleDatacenterEnableFullLanguageMode -eq "True")
+          {
+          set-itemproperty -path HKLM:Software\Policies\Microsoft\Windows\CredentialsDelegation -Name AllowFreshCredentialsWhenNTLMOnly -Value 1 -Type DWORD
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade/>
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall>
+        <Standalone>
+          if ($RoleDatacenterEnableFullLanguageMode -eq "True")
+          {
+          set-itemproperty -path HKLM:Software\Policies\Microsoft\Windows\CredentialsDelegation -Name AllowFreshCredentialsWhenNTLMOnly -Value 0 -Type DWORD
+          }
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <ServerTaskInfo Id="_e21f1d59eb0c4374892d1cf20458c633" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          if ($RoleDatacenterEnableFullLanguageMode -eq "True")
+          {
+          set-itemproperty -path HKLM:Software\Policies\Microsoft\Windows\CredentialsDelegation -Name ConcatenateDefaults_AllowFreshNTLMOnly -Value 1 -Type DWORD
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade/>
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall>
+        <Standalone>
+          if ($RoleDatacenterEnableFullLanguageMode -eq "True")
+          {
+          set-itemproperty -path HKLM:Software\Policies\Microsoft\Windows\CredentialsDelegation -Name ConcatenateDefaults_AllowFreshNTLMOnly -Value 0 -Type DWORD
+          }
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <ServerTaskInfo Id="_7108b0cfa8db4933abe2e2c3491d6036" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          if ($RoleDatacenterEnableFullLanguageMode -eq "True")
+          {
+          new-item -path HKLM:Software\Policies\Microsoft\Windows\CredentialsDelegation\AllowFreshCredentialsWhenNTLMOnly -ea SilentlyContinue
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade/>
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall/>
+    </ServerTaskInfo>
+
+    <ServerTaskInfo Id="_0df4d1bcfa984168aa0d6cce2f4425a2" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          if ($RoleDatacenterEnableFullLanguageMode -eq "True")
+          {
+          set-itemproperty -path HKLM:Software\Policies\Microsoft\Windows\CredentialsDelegation\AllowFreshCredentialsWhenNTLMOnly -Name "1" -Value "WSMAN/*"
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade/>
+      <DisasterRecovery />
+      <Uninstall/>
+    </ServerTaskInfo>
+
+
+
+    <!-- Adds the FopeInboundSummaryUrl value to ClientAccess\PowerShell\web.config -->
+    <ServerTaskInfo Id="_09CDD3B93C8A46629DAAAB739F771B54" Component="EXCHANGE14:\Current\Release\Transport\Platform\Safety and Prevention\EHF">
+      <Install>
+        <Standalone>
+          if($RoleDatacenterFopeInboundSummaryUrl -ne $null)
+          {
+          $fullPath = [System.IO.Path]::Combine($RoleInstallPath, "ClientAccess\PowerShell\web.config");
+
+          Write-ExchangeSetupLog -Info "Setting the FopeInboundSummaryUrl to $RoleDatacenterFopeInboundSummaryUrl. Web.ConfigPath = $fullPath";
+
+          Set-AppConfigValue -Element "configuration/appSettings" -ConfigFileFullPath $fullPath -AppSettingKey FopeInboundSummaryUrl -NewValue $RoleDatacenterFopeInboundSummaryUrl;
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Adds the FopeInboundSummaryUrl value to ClientAccess\PowerShell-Proxy\web.config -->
+    <ServerTaskInfo Id="_e804183902bd43e9b08d64734b6b6964" Component="EXCHANGE14:\Current\Release\Transport\Platform\Safety and Prevention\EHF">
+      <Install>
+        <Standalone>
+          if($RoleDatacenterFopeInboundSummaryUrl -ne $null)
+          {
+          $fullPath = [System.IO.Path]::Combine($RoleInstallPath, "ClientAccess\PowerShell-Proxy\web.config");
+
+          Write-ExchangeSetupLog -Info "Setting the FopeInboundSummaryUrl to $RoleDatacenterFopeInboundSummaryUrl. Web.ConfigPath = $fullPath";
+
+          Set-AppConfigValue -Element "configuration/appSettings" -ConfigFileFullPath $fullPath -AppSettingKey FopeInboundSummaryUrl -NewValue $RoleDatacenterFopeInboundSummaryUrl;
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Adds the FISMA Banner script to ClientAccess\PowerShell\web.config -->
+    <ServerTaskInfo Id="_08CED2B93C8A46629DCACB739F771B13" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Cmdlet Infrastructure" ExcludeInDatacenterDedicated="true">
+      <Install>
+        <Standalone>
+          $fullPath = [System.IO.Path]::Combine($RoleInstallPath, "ClientAccess\PowerShell\web.config");
+
+          Write-ExchangeSetupLog -Info "Setting the ShouldShowFismaBanner to true. Web.ConfigPath = $fullPath";
+
+          Set-AppConfigValue -Element "configuration/appSettings" -ConfigFileFullPath $fullPath -AppSettingKey ShouldShowFismaBanner -NewValue $true;
+
+          $scriptFile = [System.IO.Path]::Combine($RoleInstallPath, "RemoteScripts\ExchangeFismaBannerMessage.ps1");
+          $xmlDocument = New-Object System.Xml.XmlDocument;
+          $xmlDocument.Load($fullPath);
+          $paramsNode = $xmlDocument.SelectSingleNode("configuration/system.webServer/system.management.wsmanagement.config/PluginModules/OperationsPlugins/Plugin/InitializationParameters");
+          $targetNode = $xmlDocument.SelectSingleNode("configuration/system.webServer/system.management.wsmanagement.config/PluginModules/OperationsPlugins/Plugin/InitializationParameters/Param[@Name='StartUpScript']");
+
+          if (($paramsNode -ne $null) -and ($targetNode -eq $null))
+          {
+          Write-ExchangeSetupLog -Info "Setting the StartUpScript to $scriptFile. Web.ConfigPath = $fullPath";
+          $elem = $xmlDocument.CreateElement("Param");
+          $elem.SetAttribute("Name", "StartUpScript");
+          $elem.SetAttribute("Value", $scriptFile);
+          $paramsNode.AppendChild($elem) > $null;
+          $xmlDocument.Save($fullPath);
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Adds the FISMA Banner script to ClientAccess\PowerShell-Proxy\web.config -->
+    <ServerTaskInfo Id="_aa5ffe230c5a431eb74965e29aa5c0e2" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Cmdlet Infrastructure" ExcludeInDatacenterDedicated="true">
+      <Install>
+        <Standalone>
+          $fullPath = [System.IO.Path]::Combine($RoleInstallPath, "ClientAccess\PowerShell-Proxy\web.config");
+
+          Write-ExchangeSetupLog -Info "Setting the ShouldShowFismaBanner to true. Web.ConfigPath = $fullPath";
+
+          Set-AppConfigValue -Element "configuration/appSettings" -ConfigFileFullPath $fullPath -AppSettingKey ShouldShowFismaBanner -NewValue $true;
+
+          $scriptFile = [System.IO.Path]::Combine($RoleInstallPath, "RemoteScripts\ExchangeFismaBannerMessage.ps1");
+          $xmlDocument = New-Object System.Xml.XmlDocument;
+          $xmlDocument.Load($fullPath);
+          $paramsNode = $xmlDocument.SelectSingleNode("configuration/system.webServer/system.management.wsmanagement.config/PluginModules/OperationsPlugins/Plugin/InitializationParameters");
+          $targetNode = $xmlDocument.SelectSingleNode("configuration/system.webServer/system.management.wsmanagement.config/PluginModules/OperationsPlugins/Plugin/InitializationParameters/Param[@Name='StartUpScript']");
+
+          if (($paramsNode -ne $null) -and ($targetNode -eq $null))
+          {
+          Write-ExchangeSetupLog -Info "Setting the StartUpScript to $scriptFile. Web.ConfigPath = $fullPath";
+          $elem = $xmlDocument.CreateElement("Param");
+          $elem.SetAttribute("Name", "StartUpScript");
+          $elem.SetAttribute("Value", $scriptFile);
+          $paramsNode.AppendChild($elem) > $null;
+          $xmlDocument.Save($fullPath);
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    
+    <!-- The private memory recycling threshold for App pools -->
+    <ServerTaskInfo Id="_c3997bf380e64e7a84c65c964eb758e6" Component="EXCHANGE14:\Current\Release\Shared\TwC\Performance">
+      <Install>
+        <Standalone>
+          $CommandAppCmd = join-path $env:SystemRoot System32\inetsrv\appcmd.exe;
+          Start-SetupProcess -Name "$CommandAppCmd" -args "set apppool MSExchangePowerShellAppPool /recycling.periodicRestart.privateMemory:$RoleDatacenterMSExchangePowerShellAppPoolPrivateMemoryThreshold /recycling.logEventOnRecycle:`"Time, Memory, OnDemand, PrivateMemory`" ";
+          Start-SetupProcess -Name "$CommandAppCmd" -args "set config `"Default Web Site`" /section:access  /sslFlags:None /commit:APPHOST"
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Fixes any IIS modules that have been improperly installed -->
+    <ServerTaskInfo Id="_abcd4de942e1a4ab2b94d21652d5432f" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          . "$RoleInstallPath\Scripts\Fix-IisConfiguration.ps1"
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall/>
+    </ServerTaskInfo>
+
+    <!-- Copy web files to webroot. -->
+    <ServerTaskInfo Id="_547e56f7ddfd4c22a5bcb84e581edb60" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          if(test-path "$RoleInstallPath\FrontEnd\ExchangeLabs\wwwroot")
+	  {
+	    Copy-Item $RoleInstallPath\FrontEnd\ExchangeLabs\wwwroot\* $env:SystemDrive\inetpub\wwwroot -Recurse -Force;
+	  }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Modify Test.htm under inetpub\wwwroot\SmokeTest. -->
+    <ServerTaskInfo Id="_e8bce8d3739a40dbb8ac440d129aa79c" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          $smokeTestPath = "$env:SystemDrive\inetpub\wwwroot\SmokeTest";
+          if(test-path "$smokeTestPath\Test.htm")
+          {
+              $testHtml = [xml] [string]::join("`n", (Get-Content "$smokeTestPath\Test.htm"));
+
+              if (-not $testHtml.HTML.HEAD.TITLE.Contains($RoleFqdnOrName))
+              {
+              $testHtml.HTML.HEAD.TITLE = $testHtml.HTML.BODY + "-" + $RoleFqdnOrName;
+              }
+
+              if (-not $testHtml.HTML.BODY.Contains($RoleFqdnOrName))
+              {
+              $testHtml.HTML.BODY = $testHtml.HTML.BODY + "-" + $RoleFqdnOrName;
+              }
+              $testHtml.Save("$smokeTestPath\Test.htm");
+          }       
+       </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Make /SmokeTest a proper IIS application hosted by its own app pool. -->
+    <ServerTaskInfo Id="_3204975234095a40dbb0349752334234" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          $appCmdExePath = join-path $env:SystemRoot System32\inetsrv\appcmd.exe;
+          $sslAppCmdArgs = "-section:system.webServer/security/access /sslFlags:Ssl,Ssl128 /commit:apphost";
+          $site = "Default Web Site";
+          $virtualPath = "/SmokeTest";
+          $fullVirtualPath = $site + $virtualPath;
+          $physicalPath = "$env:SystemDrive\inetpub\wwwroot\SmokeTest";
+          $appPoolName = "MSExchangeSmokeTestAppPool";
+
+          Start-SetupProcess -Name "$appCmdExePath" -args "add apppool /name:$appPoolName /managedRuntimeVersion:`"`" /managedPipelineMode:Classic /autoStart:true"
+          Start-SetupProcess -Name "$appCmdExePath" -args "add app /site.name:`"$site`" /path:`"$virtualPath`" /physicalPath:`"$physicalPath`" /applicationPool:$appPoolName"
+          Start-SetupProcess -Name "$appCmdExePath" -args "set config `"$fullVirtualPath`" $sslAppCmdArgs"
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall />
+    </ServerTaskInfo>
+    
+    <!-- Change the AD Driver event log levels to low for the datacenter -->
+    <ServerTaskInfo Id="_52F14B27352747138812EF743136CB3E" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\AD Core">
+      <Install>
+        <Standalone>
+          Set-EventLogLevel -Identity "MSExchange ADAccess\LDAP" -Level Low
+          Set-EventLogLevel -Identity "MSExchange ADAccess\Topology" -Level Low
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+  
+    <!-- Set redirect template strings in app config "ClientAccess/PowerShell". Settings in "ClientAccess/PowerShell-LiveID" is set in enable-LiveIDForWebApplication-->
+    <ServerTaskInfo Id="_6db6c88b32dc4afeba930e8ab864d9ca" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup" ExcludeInDatacenterDedicated="true">
+      <Install>
+        <Standalone>
+          $fullPath = "$RoleInstallPath\FrontEnd\HttpProxy\PowerShell\web.config";
+          set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:PodSiteStartRange -NewValue:$RoleDatacenterPodSiteStartRange;
+          set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:PodSiteEndRange -NewValue:$RoleDatacenterPodSiteEndRange;
+          set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:PodRedirectTemplate -NewValue:"$RoleDatacenterPodRedirectTemplatePowerShell";
+          set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:SiteRedirectTemplate -NewValue:"$RoleDatacenterSiteRedirectTemplatePowerShell";
+
+          $proxyFullPath = "$RoleInstallPath\ClientAccess\PowerShell-Proxy\web.config";
+          set-appconfigvalue -ConfigFileFullPath:$proxyFullPath -Element:configuration/appSettings -AppSettingKey:PodSiteStartRange -NewValue:$RoleDatacenterPodSiteStartRange;
+          set-appconfigvalue -ConfigFileFullPath:$proxyFullPath -Element:configuration/appSettings -AppSettingKey:PodSiteEndRange -NewValue:$RoleDatacenterPodSiteEndRange;
+          set-appconfigvalue -ConfigFileFullPath:$proxyFullPath -Element:configuration/appSettings -AppSettingKey:PodRedirectTemplate -NewValue:"$RoleDatacenterPodRedirectTemplatePowerShell";
+          set-appconfigvalue -ConfigFileFullPath:$proxyFullPath -Element:configuration/appSettings -AppSettingKey:SiteRedirectTemplate -NewValue:"$RoleDatacenterSiteRedirectTemplatePowerShell";
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>  
+
+    <!-- Generate web.config under inetpub\wwwroot -->
+    <ServerTaskInfo Id="_fcd441a2-e91f-407f-841b-5488eef272c7" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>         
+          $filePath = "$env:SystemDrive\inetpub\wwwroot\web.config" 
+          # Create The Document
+          $XmlWriter = New-Object System.XMl.XmlTextWriter($filePath,$Null)
+ 
+          # Set The Formatting
+          $xmlWriter.Formatting = "Indented"
+          $xmlWriter.Indentation = "4"
+
+          # Write the XML Decleration
+          $xmlWriter.WriteStartDocument() 
+ 
+          # Write Root Element
+          $xmlWriter.WriteStartElement("configuration") 
+          # Write the Document
+          $xmlWriter.WriteStartElement("location")
+          $xmlWriter.WriteAttributeString($null, "inheritInChildApplications", $null, "false")
+
+          $xmlWriter.WriteElementString("system.webServer", $null)
+          $xmlWriter.WriteStartElement("system.web")
+
+          $xmlWriter.WriteStartElement("machineKey")
+          $xmlWriter.WriteAttributeString($null, "validationKey", $null, "AutoGenerate,IsolateApps")
+          $xmlWriter.WriteEndElement() 
+
+          $xmlWriter.WriteStartElement("compilation")
+          $xmlWriter.WriteAttributeString($null, "defaultLanguage", $null, "c#")
+          $xmlWriter.WriteAttributeString($null, "debug", $null, "false")
+          $xmlWriter.WriteEndElement() 
+
+          $xmlWriter.WriteEndElement() #end of system.web
+          $xmlWriter.WriteEndElement() #end of location
+          $xmlWriter.WriteEndElement()  #end of configuration
+          $xmlWriter.WriteEndDocument()
+ 
+          # Finish The Document
+          $xmlWriter.Finalize
+          $xmlWriter.Flush
+          $xmlWriter.Close()
+       </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall />
+    </ServerTaskInfo>      
+
+    <!-- Drop Microsoft.Exchange.Clients.Security.dll -->
+    <ServerTaskInfo Id="_a68941e4-ed61-4c8f-a140-852f8f7a8dec" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>          
+          copy-item "$env:SystemDrive\LocalFiles\Exchange\Setup\ServerRoles\Common\Microsoft.Exchange.Clients.Security.dll" "$env:SystemDrive\Program Files\Microsoft\Exchange Server\V15\Bin" -Force
+       </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Copy Microsoft.Exchange.ManagedLexRuntime.MPPGRuntime.dll. -->
+    <ServerTaskInfo Id="_1eb49c0a-f6cb-4141-9352-0bebd837a4a7" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>    
+          If (!(Test-Path "$env:SystemDrive\Program Files\Microsoft\Exchange Server\V15\Bin\Microsoft.Exchange.ManagedLexRuntime.MPPGRuntime.dll"))
+          {
+            Copy-Item -Force "$env:SystemDrive\LocalFiles\Exchange\Setup\ServerRoles\Common\Microsoft.Exchange.ManagedLexRuntime.MPPGRuntime.dll" "$env:SystemDrive\Program Files\Microsoft\Exchange Server\V15\Bin\";
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Generates a common include file for web.config files to reference. -->
+    <ServerTaskInfo Id="_GenerateDependentAssemblies" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          $dependentAssemblyGeneratorExePath = [System.IO.Path]::Combine($RoleInstallPath, "bin", "DependentAssemblyGenerator.exe");
+          $exchangeBinPath = [System.IO.Path]::Combine($RoleInstallPath, "bin");
+          $frontEndPath = [System.IO.Path]::Combine($RoleInstallPath, "FrontEnd");
+          $sharedWebConfig = [System.IO.Path]::Combine($RoleInstallPath, "FrontEnd", "HttpProxy", "SharedWebConfig.config");
+
+          $a = &amp;"$dependentAssemblyGeneratorExePath" -exchangePath "$exchangeBinPath" -exchangePath "$frontEndPath" -configFile "$sharedWebConfig";
+          $a | % { if ($_.Length > 0) { Write-ExchangeSetupLog -Info "$_.ToString()" } }
+          Start-SetupProcess -Name "iisreset" -Args "/timeout:120"
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>      
+
+    <!-- [OM: 52673] Add firewall rule for CAS to MBX proxy -->
+    <ServerTaskInfo Id="_FCCBCAA0AA2A46B1BD875043B6DA2CC8" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          Add-FirewallException -FirewallRule (New-Object Microsoft.Exchange.Security.WindowsFirewall.MSExchangeCASToMBXProxyPortFirewallRule)
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>
+          Remove-FirewallException -FirewallRule (New-Object Microsoft.Exchange.Security.WindowsFirewall.MSExchangeCASToMBXProxyPortFirewallRule)
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+  </ServerTasks>
+</SetupComponentInfo>

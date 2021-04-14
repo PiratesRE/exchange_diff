@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo IsDatacenterOnly="true" Name="Exchange Central Admin Front End Post Setup Component">
+   <ServerTasks>  
+    <!-- Change a list of application pools from the default GC to run as clientGC, aka gcServer=false-->
+    <ServerTaskInfo Id="_SelectedAppPoolsToGCServerFalse" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          $configFilePath = [System.IO.Path]::Combine($RoleInstallPath, "bin", "GenericAppPoolConfigWithGCServerEnabledFalse.config");
+          $appCmd = [System.IO.Path]::Combine("$env:windir", "system32\inetsrv\appcmd.exe");
+
+          # List of app pools excluded from this processing - some app pools already have a config file or they should remain as server gc
+          [string[]] $excluded = @("msexchangerpcproxyapppool", "msexchangemapifrontendapppool", "msexchangemapimailboxapppool", "msexchangemapiaddressbookapppool")
+          $appPools = &amp;"$appCmd" "list" "apppool";
+          foreach($appPool in $appPools)
+          {
+              $startIndex = $appPool.IndexOf('"') + 1;
+              $endIndex = $appPool.SubString($startIndex).IndexOf('"');
+              $appPoolName = $appPool.SubString($startIndex, $endIndex);
+
+              if ($appPoolName.ToLower() -notIn $excluded)
+              {
+                  # We'll set this whether or not the app pool exists.  Failures are ignored.
+                  $a= &amp;"$appCmd" "set" "apppool" "$appPoolName" /managedRuntimeLoader:"";
+                  $b= &amp;"$appCmd" "set" "apppool" "$appPoolName" /CLRConfigFile:"$configFilePath";
+                  Write-ExchangeSetupLog -Info ($a + " " + $b)
+              }
+              else
+              {
+                  Write-ExchangeSetupLog -Info "Skipping $appPoolName since it is in the exclusion list"
+              }
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- W3SVC service control-->
+    <ServerTaskInfo Id="_a78b2a2c7e2f48e8939f5df69db7e591" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="StartingW3SVC" IsFatal="false">
+        <Standalone>start-SetupService -ServiceName W3SVC</Standalone>
+      </Install>
+      <BuildToBuildUpgrade />
+      <DisasterRecovery  UseInstallTasks="true"/>
+      <Uninstall />
+    </ServerTaskInfo>
+    
+    <!-- 
+      Disable shutting down of ALL application pools when the process crashes(Maximum Failures)
+      within a specified time period (Failure Interval).
+      Refer BUG:257747, Release:E14, Milestone:R5
+    -->
+    <ServerTaskInfo Id="_af4b4bef642a4ec388921cf2fdcead07" Component="EXCHANGE14:\Current\Release\PIM Storage\RPC Client Access">
+      <Install IsFatal="false">
+        <Standalone>
+          . "$RoleInstallPath\Scripts\ConfigureNetworkProtocolParameters.ps1";
+          Set-RapidFailProtection $false
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall />
+    </ServerTaskInfo>
+  </ServerTasks>
+</SetupComponentInfo>
+

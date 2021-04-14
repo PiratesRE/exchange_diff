@@ -1,0 +1,131 @@
+﻿(?nx)         # Sets the required options: ExplicitMatches and IgnorePatternWhitespace
+
+# If this regular expression fails to match, then parsing fails.
+# If succeeds, then the code should
+#   1) make sure there's at most 1 match for each of the groups
+#   2) validate 'addr' according to SMTP rules if 'rt' is not matched
+# Validity of addresses will be validated by the code.
+# The criteria that Outlook uses is the presence of @
+# Use of non-backtracking matches (?>...) is for performance reasons only. Try putting
+#   it as "high" in the nesting as possible, so that less back-tracking will potentially
+#   occur. Use of this construct may be a little bit excessive, but it's intended to
+#   convey intention: all top-level variants that are not intended to be back-tracking, 
+#   are marked as such, even if the same construct is used inside of them and limits
+#   back-tracking to a harmless amount.
+# (?(group)^$) clauses make sure that the "group" only occurs once per match.
+
+^
+(
+  #Whitespace
+  (?> \s+)  # reason: see bug #108522
+|
+  #Address (custom-typed)
+  #Example:
+  #    [fax: 12345]
+  (?>                 # don't back-track this variant
+                      # no-op, as this variant captures the EOL
+    (?(addr)^$)
+
+    \[
+    (?> \s*)          # reason: 'rt' match can contain spaces
+    (?'rt'                    # trimmed from both sides
+      (
+        (?=[^:"\[\]])
+        [\x01-\x7F]           # only ASCII characters
+      ){1,9}                  # maximum length is 9, as defined
+                              # in the AD (for Ti compatibility)
+    )
+    
+    (?<!\s)\s*                # now, do the right-side trim. 
+                              # (?<!...) will make sure that all 
+                              # trailing spaces are captured
+    :
+    (?> \s*)          # reason: 'addr' match can contain spaces
+    
+    (?'addr'[^\[\]]+)         # trimmed only on the left
+    \]
+
+    #This group should be the last one to match.
+    #Display name, if present, should precede, not succeed
+    \s*$
+  )
+|
+  #Display name (quoted)
+  #Example:
+  #    "a 'b@c' d"
+  (             # DO back-track this variant.
+                # excessive, as the main matching loop is also
+                # non-back-tracking
+    (?(dn)^$)
+
+    "
+    (         # no need to back-track if quotes don't match
+      (?'dn'
+        (?>
+          "[^"]*"
+          | 
+          [^"]+
+        )+
+      )
+    )
+    "
+  )
+|
+  #Address (smtp)
+  #Example:
+  #    [foo@bar.com)
+  #    foo@bar.com
+  #    "foo @\"bar"@bar.com
+  #(), [] and <> can be used interchangeably
+  #Addresses may contain whatever non-special characters from 1-126 range
+  (?>           # don't back-track this variant
+    (?(addr)^$)
+    (?'fwd_brkt1' [\(\[<] \s* )?    # Outlook allows at most 1 space after the bracket, we'll allow more.
+    (?<=^|[\s",:\[\]()<>])          # protects from foo bcd@com cases
+
+    (?'addr'
+      (
+        ((?=[^\s@",:\\\[\]()<>])[\x01-\x7E])+
+        |
+        "
+        (
+          \\[\x01-\x7F]       # 7F is not a typo! It's not considered special when escaped
+          |
+          (?=[^"\\])[\x01-\x7E]
+        )+
+        "
+      )
+      @
+      ((?=[^\s@",\\\[\]()<>])[\x01-\x7E])+
+    )
+
+    (?(fwd_brkt1) \s* [\)\]>] )?    # Outlook allows at most 1 space before the bracket, we'll allow more
+  )
+|
+  #Display name (optionally bracketed)
+  #Example: 
+  #    [a "b@c)" d)
+  #  one!слово
+  #() and [] can be used interchangeably
+  (             # DO back-track this variant
+    (?(dn)^$)
+    (?![\s"])   # Shouldn't start with a space or quote, as there're separate matching
+                # alternatives for that (see below): "Whitespace" and "Display name (quoted)"
+
+    (?'fwd_brkt2' [\(\[<] )?
+    (?'dn'
+      (?>     # back-trackable series of non-backtrackable chunks
+              # this should make back-tracking faster, as we'll be
+              # rolling back all chunks of consecutive whitespace
+              # and non-whitespace, instead of one char at a time
+        "[^"]*"
+        |
+        \s+
+        |
+        [^"\s@\[\]\(\)<>]+
+      )+
+    )
+    (?(fwd_brkt2) [\)\]>] )
+  )
+)+
+$

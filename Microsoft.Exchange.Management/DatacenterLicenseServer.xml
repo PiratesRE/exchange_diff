@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo IsDatacenterOnly="true" IsDatacenterDedicatedOnly="true" Name="Datacenter Server License">
+
+  <ServerTasks>
+
+    <!-- License this Exchange server -->
+    <!-- 
+       For Mailbox servers, we need to license the server before MSExchangeIS service is started
+    -->
+    <ServerTaskInfo Id="_a668e45928624665ad2ae194dd027fb6" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          <!-- Check for 64-bit machine before product key validation (Bug 63437)-->
+          if ($RoleProductPlatform -eq "amd64")
+          {
+            Set-ExchangeServer -identity $RoleFqdnOrName -productKey $RoleDatacenterProductKey
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+  </ServerTasks>
+
+</SetupComponentInfo>

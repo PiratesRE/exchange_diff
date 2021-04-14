@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo Name="Prereq Configuration">
+  <ServerTasks>
+    <ServerTaskInfo Id="StartRemoteRegistry" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          if (Get-Service RemoteRegistry* | ?{$_.Name -eq 'RemoteRegistry'})
+          {
+            Set-Service RemoteRegistry -StartupType Automatic
+            Start-SetupService -ServiceName RemoteRegistry
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>
+          if (Get-Service RemoteRegistry* | ?{$_.Name -eq 'RemoteRegistry'})
+          {
+            Set-Service RemoteRegistry -StartupType Automatic
+            Start-SetupService -ServiceName RemoteRegistry
+          }
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <ServerTaskInfo Id="StartWinMgmt" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          if (Get-Service WinMgmt* | ?{$_.Name -eq 'WinMgmt'})
+          {
+            Set-Service WinMgmt -StartupType Automatic
+            Start-SetupService -ServiceName WinMgmt
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>
+          if (Get-Service WinMgmt* | ?{$_.Name -eq 'WinMgmt'})
+          {
+            Set-Service WinMgmt -StartupType Automatic
+            Start-SetupService -ServiceName WinMgmt
+          }
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <ServerTaskInfo Id="StartMpsSvc" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          if (Get-Service MpsSvc* | ?{$_.Name -eq 'MpsSvc'})
+          {
+            Set-Service MpsSvc -StartupType Automatic
+            Start-SetupService -ServiceName MpsSvc
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>
+          if (Get-Service MpsSvc* | ?{$_.Name -eq 'MpsSvc'})
+          {
+            Set-Service MpsSvc -StartupType Automatic
+            Start-SetupService -ServiceName MpsSvc
+          }
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo> 
+
+    <!-- Call Start-SetupProcess to call aspnet_regiis -->
+    <ServerTaskInfo Id="_28cd70d5c6fa4522a981b65916441af6" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="RunningAspNetRegIis">
+        <Standalone>
+            $aspnet = [System.Runtime.InteropServices.RuntimeEnvironment]::GetRunTimeDirectory() + "aspnet_regiis.exe";
+            Start-SetupProcess -name "$aspnet" -args "-ir -enable"
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Start MSDTC for all server roles as this is required by CAS, UM, CAFE and FFT, 
+         where CAS and UM belong to mailbox role, and CAFE and FFT belong to clientaccess role. -->
+    <ServerTaskInfo Id="StartMSDTC" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          if (Get-Service MSDTC* | ?{$_.Name -eq 'MSDTC'})
+          {
+            Set-Service MSDTC -StartupType Automatic
+            Start-SetupService -ServiceName MSDTC
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>
+          if (Get-Service MSDTC* | ?{$_.Name -eq 'MSDTC'})
+          {
+            Set-Service MSDTC -StartupType Automatic
+            Start-SetupService -ServiceName MSDTC
+          }
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+  <!-- At the start of uninstall, set the server state to InActive (tasks are run in reverse order for uninstall per xml file).
+       If the server can not be identified as an Exchange Server (installed with only MT role), then log message and continue with setup.
+       If unable to set the server state, throw an exception and setup fails. -->        
+  <ServerTaskInfo Id="SetServerStateForSetupUninstall" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install />
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>  
+          try
+          {
+            $Target = $env:COMPUTERNAME         
+            try
+            { 
+              $exSrv = get-ExchangeServer $Target -ErrorAction SilentlyContinue 
+            } 
+            catch 
+            {
+              Write-ExchangeSetupLog -Warning "Unable to set monitoring and server state to inactive.  Setup will continue.";
+            }
+
+            if ($exSrv -eq $null)
+            {
+              Write-ExchangeSetupLog -Warning "$Target is not an Exchange Server. Unable to set monitoring and server state to inactive.  Setup will continue.";
+              return
+            }
+
+            Set-ServerComponentState $Target -Component Monitoring -Requester Functional -State Inactive
+            Write-ExchangeSetupLog -Info "Monitoring has been set to Inactive while uninstalling Exchange."
+
+            Set-ServerComponentState $Target -Component RecoveryActionsEnabled -Requester Functional -State Inactive
+            Write-ExchangeSetupLog -Info "RecoveryActionsEnabled has been set to Inactive while uninstalling Exchange."
+
+            Set-ServerComponentState $Target -Component ServerWideOffline -Requester Functional -State InActive
+            Write-ExchangeSetupLog -Info "The server state has been set to Inactive while uninstalling Exchange."
+          }
+          catch 
+          {
+            Write-ExchangeSetupLog -Warning "Unable to set monitoring and server state to inactive.  Setup can not continue.";
+            throw;
+          }
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+  </ServerTasks>
+</SetupComponentInfo>

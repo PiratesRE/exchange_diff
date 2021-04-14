@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo Name="Prereq Configuration">
+  <ServerTasks>
+
+    <ServerTaskInfo Id="StartW3Svc" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          if (Get-Service W3Svc* | ?{$_.Name -eq 'W3Svc'})
+          {
+            Set-Service W3Svc -StartupType Automatic
+            Start-SetupService -ServiceName W3Svc
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>
+          if (Get-Service W3Svc* | ?{$_.Name -eq 'W3Svc'})
+          {
+            Set-Service W3Svc -StartupType Automatic
+            Start-SetupService -ServiceName W3Svc
+          }
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+  </ServerTasks>
+</SetupComponentInfo>

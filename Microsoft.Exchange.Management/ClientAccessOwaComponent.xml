@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo Name="OWA Configuration" DescriptionId="ClientAccessOwaComponentDescription">
+
+  <ServerTasks>
+
+    <!-- Create HTTP container -->
+    <ServerTaskInfo Id="_3dd3ae9b426f4adc9ce8d972c723f5fd" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>new-HttpContainer -DomainController $RoleDomainController</Standalone>
+      </Install>
+      <BuildToBuildUpgrade />
+      <DisasterRecovery />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Set install path in app config "ClientAccess/Owa" -->
+    <ServerTaskInfo Id="_1eb7d7bde5ae43539d9dc87e4a8ed1a2" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>set-InstallPathInAppConfig -ConfigFileRelativePath "ClientAccess\owa\" -ConfigFileName web.config</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+    
+    <!-- Set install path in app config "ClientAccess/Autodiscover" -->
+    <ServerTaskInfo Id="_93a065c4de3b40b69c08142b3b6fc7dd" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>set-InstallPathInAppConfig -ConfigFileRelativePath "ClientAccess\Autodiscover\" -ConfigFileName web.config</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- 
+    Create OWA virtual directory
+    CAS deployment will create or modify BE vdirs.  FE vdirs will be created and modified by Cafe role deployment
+    -->
+    <ServerTaskInfo Id="_62bd834915a7470798aa47ba1f2b6800" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          $BEVdirIdentity = $RoleNetBIOSName + "\OWA (Exchange Back End)";
+          new-OwaVirtualDirectory -Role Mailbox -WebSiteName "Exchange Back End" -DomainController $RoleDomainController;
+          set-OwaVirtualdirectory -Identity $BEVdirIdentity -FormsAuthentication:$false -WindowsAuthentication:$true;
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade>
+        <Standalone>
+          Update-OwaVirtualDirectory -DomainController $RoleDomainController;
+          $BEVdirIdentity = $RoleNetBIOSName + "\OWA (Exchange Back End)";
+          set-OwaVirtualdirectory -Identity $BEVdirIdentity -FormsAuthentication:$false -WindowsAuthentication:$true;
+          . "$RoleInstallPath\Scripts\Update-AppPoolManagedFrameworkVersion.ps1" -AppPoolName:"MSExchangeOWAAppPool" -Version:"v4.0";
+          . "$RoleInstallPath\Scripts\Update-AppPoolManagedFrameworkVersion.ps1" -AppPoolName:"MSExchangeOWACalendarAppPool" -Version:"v4.0";
+        </Standalone>
+      </BuildToBuildUpgrade>
+      <DisasterRecovery>
+        <Standalone>
+          $BEVdirIdentity = $RoleNetBIOSName + "\OWA (Exchange Back End)";
+          get-OwaVirtualDirectory -ShowMailboxVirtualDirectories -Identity $BEVdirIdentity -DomainController $RoleDomainController| remove-OwaVirtualDirectory -DomainController $RoleDomainController;
+          new-OwaVirtualDirectory -Role Mailbox -WebSiteName "Exchange Back End" -DomainController $RoleDomainController;
+          set-OwaVirtualdirectory -Identity $BEVdirIdentity -FormsAuthentication:$false -WindowsAuthentication:$true;
+        </Standalone>
+      </DisasterRecovery>
+      <Uninstall>
+        <Standalone>
+          get-OwaVirtualDirectory -ShowMailboxVirtualDirectories -server $RoleFqdnOrName -DomainController $RoleDomainController | where {$_.OwaVersion -eq "Exchange2010"} | remove-OwaVirtualDirectory -DomainController $RoleDomainController;
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <ServerTaskInfo Id="_954f6dc03e6b4a1da2d21bcbe053952e" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>
+          $ExternalOwaUrl = $null;
+          if ($RoleExternalCASServerDomain -ne $null)
+          {
+          $ExternalOwaUrl = "https://" + $RoleExternalCASServerDomain + "/owa";
+          }
+          get-OwaVirtualDirectory -ShowMailboxVirtualDirectories -server $RoleFqdnOrName -DomainController $RoleDomainController | Set-OwaVirtualDirectory -ExternalUrl $ExternalOwaUrl;
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade/>
+      <DisasterRecovery/>
+      <Uninstall/>
+    </ServerTaskInfo>
+
+    <!-- Bug#146946 Add w3wp exception for MSExchangeOWAAppPool to Windows firewall for IM-->
+    <ServerTaskInfo Id="_5e8227aa7cb341b0a79e77c10dff572c" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>  
+        <Standalone>
+          if ([Environment]::OSVersion.Version.Major -ge 6)
+          {
+            Add-FirewallException -FirewallRule (New-Object Microsoft.Exchange.Security.WindowsFirewall.MSExchangeOWAFirewallRule);
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>        
+        <Standalone>
+          if ([Environment]::OSVersion.Version.Major -ge 6)
+          {
+            Remove-FirewallException -FirewallRule (New-Object Microsoft.Exchange.Security.WindowsFirewall.MSExchangeOWAFirewallRule);
+          }
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install exppw.dll if this is IIS 7 -->
+    <ServerTaskInfo Id="_5effe7121e1740c083904cc189687464" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          $CommandAppCmd = join-path $env:SystemRoot System32\inetsrv\appcmd.exe;
+          $imagePath = [System.IO.Path]::Combine($RoleInstallPath, "ClientAccess\Owa\auth\exppw.dll");
+          Start-SetupProcess -Name "$CommandAppCmd" -args "install module /name:exppw /image:`"$imagePath`" /add:false" -IgnoreExitCode @(183);
+          Start-SetupProcess -Name "$CommandAppCmd" -args "add module /name:exppw /app.name:`"Exchange Back End/owa`"" -IgnoreExitCode @(183);
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall>
+        <Standalone>
+          $CommandAppCmd = join-path $env:SystemRoot System32\inetsrv\appcmd.exe;
+          Start-SetupProcess -Name "$CommandAppCmd" -args "uninstall module exppw";
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+  </ServerTasks>
+
+</SetupComponentInfo>
+

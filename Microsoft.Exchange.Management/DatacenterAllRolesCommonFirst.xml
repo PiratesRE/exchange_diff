@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo IsDatacenterOnly="true" IsDatacenterDedicatedOnly="true" Name="Datacenter Common Configuration">
+
+  <ServerTasks>
+    <!-- Configure Echange-WLCD registry keys-->
+    <ServerTaskInfo Id="_4d7f6a5451784f14a45a55bb631c00e6" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup" ExcludeInDatacenterDedicated="true">
+      <Install>
+        <Standalone>
+          if ($RoleDatacenterWindowsLiveIdInstance -ine 'Gallatin')
+          {
+          .$RoleBinPath\..\Scripts\SetDomainServicesConnectionKeys.ps1 $RoleDatacenterWindowsLiveCustomDomainsEnvironment;
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- IDSAPI service configuration -->
+    <ServerTaskInfo Id="_153dbea894c741eeb53ef0e4506b72a8" Component="EXCHANGE14:\Current\Release\PIM Storage\Sharing" ExcludeInDatacenterDedicated="true">
+      <Install>
+        <Standalone>
+          $keyPath = "HKLM:\SOFTWARE\Microsoft\ExchangeServer\v15\ExchangeLiveServices\";
+
+          new-item $keyPath -force;
+
+          if ($RoleDatacenterWindowsLiveIdInstance -ine 'Gallatin')
+          {
+              new-itemproperty -path $keyPath -name "CertThumbprint" -value $RoleDatacenterSHA1Thumbprint -force;
+              new-itemproperty -path $keyPath -name "CredentialServicesUrl" -value $RoleDatacenterCredentialServiceUrl -force;
+              new-itemproperty -path $keyPath -name "ProfileServicesUrl" -value $RoleDatacenterProfileServiceUrl -force;
+              new-itemproperty -path $keyPath -name "NamespaceServicesUrl" -value $RoleDatacenterNamespaceServiceUrl -force;
+              new-itemproperty -path $keyPath -name "AppIDServicesUrl" -value $RoleDatacenterAppIDServiceUrl -force;
+              new-itemproperty -path $keyPath -name "SiteId" -value $RoleDatacenterSiteId -propertyType DWord -force;
+          }
+
+          new-itemproperty -path $keyPath -name "CertThumbprintBusiness" -value $RoleDatacenterSHA1ThumbprintBusiness -force;
+          new-itemproperty -path $keyPath -name "CredentialServicesUrlBusiness" -value $RoleDatacenterCredentialServiceUrlBusiness -force;
+          new-itemproperty -path $keyPath -name "ProfileServicesUrlBusiness" -value $RoleDatacenterProfileServiceUrlBusiness -force;
+          new-itemproperty -path $keyPath -name "NamespaceServicesUrlBusiness" -value $RoleDatacenterNamespaceServiceUrlBusiness -force;
+          new-itemproperty -path $keyPath -name "AppIDServicesUrlBusiness" -value $RoleDatacenterAppIDServiceUrlBusiness -force;
+          new-itemproperty -path $keyPath -name "SiteIdBusiness" -value $RoleDatacenterSiteIdBusiness -propertyType DWord -force;
+
+          new-itemproperty -path $keyPath -name "LiveIdInstance" -value $RoleDatacenterWindowsLiveIdInstance -force;
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Exchange cross forest configuration -->
+    <ServerTaskInfo Id="_d84346da4e9344608a1051f879af9538" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup" ExcludeInDatacenterDedicated="true">
+      <Install>
+        <Standalone>
+          $keyPath = "HKLM:\SOFTWARE\Microsoft\ExchangeServer\v15\ExchangeCrossForest\";
+
+          new-item $keyPath -force;
+          new-itemproperty -path $keyPath -name "CertSubject" -value $RoleDatacenterExchangeCrossForestClientCertSubject -force;
+          new-itemproperty -path $keyPath -name "CertThumbprint" -value $RoleDatacenterExchangeCrossForestClientCertThumbprint -force;
+          new-itemproperty -path $keyPath -name "ManagementEndpointUrlTemplate" -value $RoleDatacenterManagementEndpointUrlTemplate -force;
+          new-itemproperty -path $keyPath -name "RemotePowershellManagementEndpointUrlTemplate" -value $RoleDatacenterRemotePowershellManagementEndpointUrlTemplate -force;
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!--
+      TODO: Remove this task when there's an opportunity to do code cleanup (details described in E14:307860).
+      For now:
+        1. Don't touch this key if it's already been set by SCOM,
+           such as the case of running the Monitoring role setup on the primary/secondary RMS server.
+           This addresses the problem described in bug E14:302550.
+        2. In order to maintain R4 compatibility, if this key is NOT already set,
+           set it to the momrms CNAME so that R4 workflows can continue use this value to establish connection to the SDK.
+    -->
+    <!-- MOM Agent configuration -->
+    <!-- If the OpsMgrDBServerName parameter is specified, set the registry key to it's value. If it does not exist, default the servername to localhost -->
+    <ServerTaskInfo Id="_7c331d99b5c4497faa62b42ee38f3d96" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          $keyPath = "HKLM:\SOFTWARE\Microsoft\Microsoft Operations Manager\3.0\Setup";
+
+          if (!(Get-Item $keyPath -ErrorAction SilentlyContinue)) { New-Item $keyPath -Force; }
+
+          if (!(Get-ItemProperty -path $keyPath -name "DatabaseServerName" -ea SilentlyContinue))
+          {
+            if (![string]::IsNullOrEmpty($RoleDatacenterOpsMgrRmsServerNameActive))
+            {
+              Set-ItemProperty -path $keyPath -name "DatabaseServerName" -value $RoleDatacenterOpsMgrRmsServerNameActive;
+            }
+            else
+            {
+              Set-ItemProperty -path $keyPath -name "DatabaseServerName" -value "localhost";
+            }
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- If the OpsMgrDatabaseName parameter is specified, set the registry key to it's value. If it does not exist, default the DB name to OperationsManager -->
+    <ServerTaskInfo Id="_b0ecbebafb7140a7a991f5a74c670ed3" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          $keyPath = "HKLM:\SOFTWARE\Microsoft\Microsoft Operations Manager\3.0\Setup";
+          if (!(Get-Item $keyPath -ErrorAction SilentlyContinue)) { New-Item $keyPath -Force }
+          if (![string]::IsNullOrEmpty($RoleDatacenterOpsMgrDatabaseName))
+          {
+            Set-ItemProperty -path $keyPath -name "DatabaseName" -value $RoleDatacenterOpsMgrDatabaseName;
+          }
+          else
+          {
+            Set-ItemProperty -path $keyPath -name "DatabaseName" -value "OperationsManager";
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- This calls the SetExchangeShares script with the -setuplog switch which will only share out the setup logs in the beginning of setup. -->
+    <ServerTaskInfo Id="_4ca74875e04843e7b6604c99351287a5" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          &amp; "$RoleInstallPath\Scripts\SetExchangeShares.ps1" -InstallPath $RoleInstallPath -ForeignForestFQDN $RoleDataCenterManagementForestFQDN -setuplog;
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Install the DLP Classification Rule Package encryption certificate. -->
+    <ServerTaskInfo Id="_9a0cb841b21844dc9856457937e5f279" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          $keyPath = "HKLM:\SOFTWARE\Microsoft\ExchangeServer\v15\Dlp\ClassificationRulePackageEncryption";
+
+          new-item $keyPath -force;
+          new-itemproperty -path $keyPath -name "CertSubject" -value $RoleDatacenterDlpRulePackageEncryptionCertSubject -force;
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Configure GLS registry keys-->
+    <ServerTaskInfo Id="_1cb32d48-55d2-48e0-933d-a09fb41a0073" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup" ExcludeInDatacenterDedicated="true">
+      <Install>
+        <Standalone>
+          $keyPath = "HKLM:\SOFTWARE\Microsoft\ExchangeServer\v15"
+          new-itemproperty -path $keyPath -name "SmtpNextHopDomainFormat" -value $RoleDatacenterSmtpNextHopDomainTemplate -force;
+
+          if ($RoleDatacenterGlsEnvironment -ieq 'Gallatin')
+          {
+              new-itemproperty -path $keyPath -name "GlobalDirectoryLookupType" -value "GlsOnly" -force;
+              new-itemproperty -path $keyPath -name "GlobalDirectoryEnvironmentType" -value $RoleDatacenterGlsEnvironment -force;
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+  </ServerTasks>
+
+</SetupComponentInfo>

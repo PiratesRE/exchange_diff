@@ -1,0 +1,50 @@
+﻿using System;
+
+namespace Microsoft.Exchange.Net.MonitoringWebClient
+{
+	internal enum TestId
+	{
+		OwaLoginScenario,
+		OwaExternalLoginAgainstSpecificServer,
+		OwaHealthCheckScenario,
+		OwaStaticPage,
+		OwaFindPlacesScenario,
+		OwaCertificateRevocationCheckScenario,
+		EcpLoginScenario,
+		EcpExternalLoginAgainstSpecificServer,
+		EcpActiveMonitoringLocal,
+		EcpActiveMonitoringOutsideIn,
+		RwsCallScenario,
+		Authentication,
+		LiveIdAuthentication,
+		FbaAuthentication,
+		BrickAuthentication,
+		AdfsAuthentication,
+		IisAuthentication,
+		Logoff,
+		MeasureClientLatency,
+		OwaStartPage,
+		OwaPing,
+		OwaSessionData,
+		OwaDownloadStaticFile,
+		OwaHealthCheck,
+		OwaWebService,
+		EstablishAffinity,
+		EcpStartPage,
+		EcpWebServiceCall,
+		EcpPing,
+		EcpGetInboxRuleWSCall,
+		EcpGetRecipientWSCall,
+		EcpGetRoleAssignmentPolicyWSCall,
+		EcpDownloadStaticFile,
+		ECPSetOOFWSCall,
+		EcpNavigateToHelpDesk,
+		EcpGoToSyndicatedAdminStartPage,
+		RwsAuthentication,
+		RwsBrickAuthentication,
+		RwsCall,
+		E4ePost,
+		E4ePageRequest,
+		E4eEwsCall
+	}
+}

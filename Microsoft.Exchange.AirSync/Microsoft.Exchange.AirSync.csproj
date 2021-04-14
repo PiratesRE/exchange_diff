@@ -1,0 +1,717 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{09CD9476-CD82-489E-B9E2-84B47CA140D9}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Microsoft.Exchange.AirSync</RootNamespace>
+    <AssemblyName>Microsoft.Exchange.AirSync</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.DirectoryServices" />
+    <Reference Include="System.DirectoryServices.Protocols" />
+    <Reference Include="System.Management.Automation" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ABQMailHelper.cs" />
+    <Compile Include="ABQMailState.cs" />
+    <Compile Include="ActiveSyncRequestCache.cs" />
+    <Compile Include="ActiveSyncRequestData.cs" />
+    <Compile Include="ADABContact.cs" />
+    <Compile Include="ADABGroup.cs" />
+    <Compile Include="ADABObjectId.cs" />
+    <Compile Include="ADABPropertyMapper.cs" />
+    <Compile Include="ADABRawEntry.cs" />
+    <Compile Include="ADABSession.cs" />
+    <Compile Include="ADABUtils.cs" />
+    <Compile Include="ADDeviceManager.cs" />
+    <Compile Include="ADNotificationManager.cs" />
+    <Compile Include="ADObjIdToVDirMap.cs" />
+    <Compile Include="ADUserCache.cs" />
+    <Compile Include="AirSyncCalendarSyncState.cs" />
+    <Compile Include="AirSyncConditionalHandlerSchema.cs" />
+    <Compile Include="AirSyncContext.cs" />
+    <Compile Include="AirSyncCounters.cs" />
+    <Compile Include="AirSyncDeviceHealth.cs" />
+    <Compile Include="AirSyncDeviceHealthHandler.cs" />
+    <Compile Include="AirSyncDiagnostics.cs" />
+    <Compile Include="AirSyncEventLogConstants.cs" />
+    <Compile Include="AirSyncFatalException.cs" />
+    <Compile Include="AirSyncInMemoryTraceHandler.cs" />
+    <Compile Include="AirSyncPermanentException.cs" />
+    <Compile Include="AirSyncPhotoRetriever.cs" />
+    <Compile Include="AirSyncRequest.cs" />
+    <Compile Include="AirSyncResponse.cs" />
+    <Compile Include="AirSyncRootInfo.cs" />
+    <Compile Include="AirSyncRootSyncStateInfo.cs" />
+    <Compile Include="AirSyncServiceHealth.cs" />
+    <Compile Include="AirSyncServiceHealthHandler.cs" />
+    <Compile Include="AirSyncStream.cs" />
+    <Compile Include="AirSyncSyncStateTypeFactory.cs" />
+    <Compile Include="AirSyncTraces.cs" />
+    <Compile Include="AirSyncUser.cs" />
+    <Compile Include="AirSyncUserSecurityContext.cs" />
+    <Compile Include="AirSyncUtility.cs" />
+    <Compile Include="AirSyncV25FilterTypes.cs" />
+    <Compile Include="AmbiguousRecipientToResolve.cs" />
+    <Compile Include="AnnotationsManager.cs" />
+    <Compile Include="AnrManager.cs" />
+    <Compile Include="AttachmentHelper.cs" />
+    <Compile Include="AutdStatusData.cs" />
+    <Compile Include="AutdSyncStateInfo.cs" />
+    <Compile Include="AutdTriggerSyncStateInfo.cs" />
+    <Compile Include="BackOffType.cs" />
+    <Compile Include="BackOffValue.cs" />
+    <Compile Include="BaseAttachmentFetchProvider.cs" />
+    <Compile Include="CallType.cs" />
+    <Compile Include="CertificateManager.cs" />
+    <Compile Include="ChangeTrackingFilter.cs" />
+    <Compile Include="ChangeTrackingFilterFactory.cs" />
+    <Compile Include="ChangeTrackingItemRejectedException.cs" />
+    <Compile Include="ChangeTrackingNode.cs" />
+    <Compile Include="ClientSecurityContextWrapper.cs" />
+    <Compile Include="CollectionCommand.cs" />
+    <Compile Include="Command.cs" />
+    <Compile Include="CommandType.cs" />
+    <Compile Include="ConditionalHandlerIntermediateSchema.cs" />
+    <Compile Include="Constants.cs" />
+    <Compile Include="CountingDictionary.cs" />
+    <Compile Include="CreateCollectionCommand.cs" />
+    <Compile Include="CustomStateDatumType.cs" />
+    <Compile Include="CustomSyncStateInfo.cs" />
+    <Compile Include="DataTooLargeException.cs" />
+    <Compile Include="DateTimeCustomSyncFilter.cs" />
+    <Compile Include="DeleteCollectionCommand.cs" />
+    <Compile Include="DeviceAccessRuleData.cs" />
+    <Compile Include="DeviceAutoBlockThreshold.cs" />
+    <Compile Include="DeviceBehavior.cs" />
+    <Compile Include="DeviceBehaviorCache.cs" />
+    <Compile Include="DeviceBehaviorData.cs" />
+    <Compile Include="DeviceCapability.cs" />
+    <Compile Include="DeviceClassCache.cs" />
+    <Compile Include="DeviceFilterInvalidException.cs" />
+    <Compile Include="DeviceFilterManager.cs" />
+    <Compile Include="DeviceInfo.cs" />
+    <Compile Include="DeviceInformationSetting.cs" />
+    <Compile Include="DevicePasswordSetting.cs" />
+    <Compile Include="DiagnosticsHelper.cs" />
+    <Compile Include="DiscoveryInfoMissingException.cs" />
+    <Compile Include="DocumentLibraryFetchProvider.cs" />
+    <Compile Include="DocumentLibrarySearchProvider.cs" />
+    <Compile Include="DocumentLibraryUtility.cs" />
+    <Compile Include="DummyTimeEntry.cs" />
+    <Compile Include="EasDeviceBudget.cs" />
+    <Compile Include="EasDeviceBudgetAllocator.cs" />
+    <Compile Include="EasDeviceBudgetCache.cs" />
+    <Compile Include="EasDeviceBudgetKey.cs" />
+    <Compile Include="EasDeviceBudgetWrapper.cs" />
+    <Compile Include="EasDeviceThrottlingPolicy.cs" />
+    <Compile Include="EasFeature.cs" />
+    <Compile Include="EasFeaturesManager.cs" />
+    <Compile Include="EasMailboxSessionCacheHandler.cs" />
+    <Compile Include="EasMailboxSessionCacheResult.cs" />
+    <Compile Include="EasMailboxSessionCacheResultItem.cs" />
+    <Compile Include="EASServerStrings.cs" />
+    <Compile Include="EmptyFolderContentsProvider.cs" />
+    <Compile Include="EntityAttachmentFetchProvider.cs" />
+    <Compile Include="EntityFolderSync.cs" />
+    <Compile Include="EntitySyncCollection.cs" />
+    <Compile Include="EntitySyncItem.cs" />
+    <Compile Include="EntitySyncItemId.cs" />
+    <Compile Include="EntitySyncProvider.cs" />
+    <Compile Include="EntitySyncProviderFactory.cs" />
+    <Compile Include="EntitySyncWatermark.cs" />
+    <Compile Include="ErrorDetail.cs" />
+    <Compile Include="FirstTimeFolderSync.cs" />
+    <Compile Include="FirstTimeSyncProvider.cs" />
+    <Compile Include="FirstTimeSyncProviderFactory.cs" />
+    <Compile Include="FirstTimeSyncWatermark.cs" />
+    <Compile Include="FolderCommand.cs" />
+    <Compile Include="FolderCreateCommand.cs" />
+    <Compile Include="FolderDeleteCommand.cs" />
+    <Compile Include="FolderHierarchySyncStateCustomDataInfo.cs" />
+    <Compile Include="FolderIdMapping.cs" />
+    <Compile Include="FolderIdMappingSyncStateInfo.cs" />
+    <Compile Include="FolderSyncCommand.cs" />
+    <Compile Include="FolderSyncStateCustomDataInfo.cs" />
+    <Compile Include="FolderTree.cs" />
+    <Compile Include="FolderUpdateCommand.cs" />
+    <Compile Include="GalSearchProvider.cs" />
+    <Compile Include="GetAttachmentCommand.cs" />
+    <Compile Include="GetHierarchyCommand.cs" />
+    <Compile Include="GetItemEstimateCommand.cs" />
+    <Compile Include="GetSyncStateHandler.cs" />
+    <Compile Include="GlobalInfo.cs" />
+    <Compile Include="GlobalSettings.cs" />
+    <Compile Include="GlobalSettingsHandler.cs" />
+    <Compile Include="GlobalSettingsPropertyDefinition.cs" />
+    <Compile Include="GlobalSettingsResult.cs" />
+    <Compile Include="GlobalSettingsResultItem.cs" />
+    <Compile Include="GlobalSettingsSchema.cs" />
+    <Compile Include="GlobalSyncStateInfo.cs" />
+    <Compile Include="GraphApiHelper.cs" />
+    <Compile Include="HeartBeatInterval.cs" />
+    <Compile Include="IAirSyncContext.cs" />
+    <Compile Include="IAirSyncRequest.cs" />
+    <Compile Include="IAirSyncResponse.cs" />
+    <Compile Include="IAirSyncUser.cs" />
+    <Compile Include="IAsyncCommand.cs" />
+    <Compile Include="IAutdStatusData.cs" />
+    <Compile Include="IChangeTrackingFilter.cs" />
+    <Compile Include="IdMapping.cs" />
+    <Compile Include="IEasDeviceBudget.cs" />
+    <Compile Include="IEasFeaturesManager.cs" />
+    <Compile Include="IGlobalInfo.cs" />
+    <Compile Include="IIdMapping.cs" />
+    <Compile Include="IItemIdMapping.cs" />
+    <Compile Include="IItemOperationsProvider.cs" />
+    <Compile Include="IMultipartResponse.cs" />
+    <Compile Include="IncorrectUrlRequestException.cs" />
+    <Compile Include="INotificationManagerContext.cs" />
+    <Compile Include="InstanceAction.cs" />
+    <Compile Include="InternDataPool.cs" />
+    <Compile Include="IOrganizationSettingsData.cs" />
+    <Compile Include="IPolicyData.cs" />
+    <Compile Include="IProvisionCommandHost.cs" />
+    <Compile Include="IReusable.cs" />
+    <Compile Include="ISearchProvider.cs" />
+    <Compile Include="ISyncStatusData.cs" />
+    <Compile Include="ItemIdMapping.cs" />
+    <Compile Include="ItemOperationsCommand.cs" />
+    <Compile Include="IThreadIdProvider.cs" />
+    <Compile Include="ITimeEntry.cs" />
+    <Compile Include="MailboxAttachmentFetchProvider.cs" />
+    <Compile Include="MailboxItemFetchProvider.cs" />
+    <Compile Include="MailboxLogDataName.cs" />
+    <Compile Include="MailboxLogDataNameData.cs" />
+    <Compile Include="MailboxLogger.cs" />
+    <Compile Include="MailboxSearchCriteriaBuilder.cs" />
+    <Compile Include="MailboxSearchProvider.cs" />
+    <Compile Include="MailboxSessionCache.cs" />
+    <Compile Include="MeetingOrganizerEntry.cs" />
+    <Compile Include="MeetingOrganizerEntryData.cs" />
+    <Compile Include="MeetingOrganizerInfo.cs" />
+    <Compile Include="MeetingOrganizerInfoData.cs" />
+    <Compile Include="MeetingOrganizerSyncState.cs" />
+    <Compile Include="MeetingOrganizerSyncStateInfo.cs" />
+    <Compile Include="MeetingResponseCommand.cs" />
+    <Compile Include="MoveCollectionCommand.cs" />
+    <Compile Include="MoveItemsCommand.cs" />
+    <Compile Include="MoveProvider.cs" />
+    <Compile Include="NewAutdStatusData.cs" />
+    <Compile Include="NewSyncStatusData.cs" />
+    <Compile Include="NotificationManager.cs" />
+    <Compile Include="NotificationManagerHandler.cs" />
+    <Compile Include="NotificationManagerResult.cs" />
+    <Compile Include="NotificationManagerResultItem.cs" />
+    <Compile Include="OofSetting.cs" />
+    <Compile Include="OptionsCommand.cs" />
+    <Compile Include="OrganizationSettingsData.cs" />
+    <Compile Include="OTABootstrapMail.cs" />
+    <Compile Include="OutlookExtension.cs" />
+    <Compile Include="PerFolderProtocolLoggerData.cs" />
+    <Compile Include="PerThreadTimeTracker.cs" />
+    <Compile Include="PictureOptions.cs" />
+    <Compile Include="PingCommand.cs" />
+    <Compile Include="PolicyData.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ProtocolLogger.cs" />
+    <Compile Include="ProtocolLoggerData.cs" />
+    <Compile Include="ProviderSyncType.cs" />
+    <Compile Include="ProvisionCommand.cs" />
+    <Compile Include="ProvisionCommandPhaseBase.cs" />
+    <Compile Include="ProvisionCommandPhaseOne.cs" />
+    <Compile Include="ProvisionCommandPhaseTwo.cs" />
+    <Compile Include="ProxyHandler.cs" />
+    <Compile Include="RecipientAddress.cs" />
+    <Compile Include="RecipientInfoCacheSyncCollection.cs" />
+    <Compile Include="RecipientInfoCacheSyncItem.cs" />
+    <Compile Include="RecipientInfoCacheSyncItemId.cs" />
+    <Compile Include="RecipientInfoCacheSyncProvider.cs" />
+    <Compile Include="RecipientInfoCacheSyncProviderFactory.cs" />
+    <Compile Include="RecipientInfoCacheSyncWatermark.cs" />
+    <Compile Include="RequestParsingException.cs" />
+    <Compile Include="ResolvedRecipient.cs" />
+    <Compile Include="ResolveRecipientsCommand.cs" />
+    <Compile Include="RightsManagementInformationSetting.cs" />
+    <Compile Include="RmsTemplateReaderCache.cs" />
+    <Compile Include="SchemaConverter\AirSyncEntitySchemaState.cs" />
+    <Compile Include="SchemaConverter\AirSyncProtocolVersionParserBuilder.cs" />
+    <Compile Include="SchemaConverter\AirSyncRecipientInfoCacheSchemaState.cs" />
+    <Compile Include="SchemaConverter\AirSyncSchemaState.cs" />
+    <Compile Include="SchemaConverter\AirSyncVersionFactoryV120.cs" />
+    <Compile Include="SchemaConverter\AirSyncVersionFactoryV121.cs" />
+    <Compile Include="SchemaConverter\AirSyncVersionFactoryV140.cs" />
+    <Compile Include="SchemaConverter\AirSyncVersionFactoryV141.cs" />
+    <Compile Include="SchemaConverter\AirSyncVersionFactoryV160.cs" />
+    <Compile Include="SchemaConverter\AirSyncVersionFactoryV20.cs" />
+    <Compile Include="SchemaConverter\AirSyncVersionFactoryV21.cs" />
+    <Compile Include="SchemaConverter\AirSyncVersionFactoryV25.cs" />
+    <Compile Include="SchemaConverter\AirSyncXsoSchemaState.cs" />
+    <Compile Include="SchemaConverter\AirSync\AirSync12AttachmentsProperty.cs" />
+    <Compile Include="SchemaConverter\AirSync\AirSync14AttachmentsProperty.cs" />
+    <Compile Include="SchemaConverter\AirSync\AirSync16AttachmentsProperty.cs" />
+    <Compile Include="SchemaConverter\AirSync\AirSyncAttachmentsProperty.cs" />
+    <Compile Include="SchemaConverter\AirSync\AirSyncAttendeesProperty.cs" />
+    <Compile Include="SchemaConverter\AirSync\AirSyncBinaryTimeZoneProperty.cs" />
+    <Compile Include="SchemaConverter\AirSync\AirSyncBodyPartProperty.cs" />
+    <Compile Include="SchemaConverter\AirSync\AirSyncBodyProperty.cs" />
+    <Compile Include="SchemaConverter\AirSync\AirSyncBooleanProperty.cs" />
+    <Compile Include="SchemaConverter\AirSync\AirSyncBusyStatusProperty.cs" />
+    <Compile Include="SchemaConverter\AirSync\AirSyncByteArrayProperty.cs" />
+    <Compile Include="SchemaConverter\AirSync\AirSyncChangeTrackedMultiValuedStringProperty.cs" />
+    <Compile Include="SchemaConverter\AirSync\AirSyncChangeTrackedStringProperty.cs" />
+    <Compile Include="SchemaConverter\AirSync\AirSyncContent14Property.cs" />
+    <Compile Include="SchemaConverter\AirSync\AirSyncContent16Property.cs" />
+    <Compile Include="SchemaConverter\AirSync\AirSyncContentProperty.cs" />
+    <Compile Include="SchemaConverter\AirSync\AirSyncDataObject.cs" />
+    <Compile Include="SchemaConverter\AirSync\AirSyncDateFormat.cs" />
+    <Compile Include="SchemaConverter\AirSync\AirSyncEmailBodyProperty.cs" />
+    <Compile Include="SchemaConverter\AirSync\AirSyncEnhancedLocationProperty.cs" />
+    <Compile Include="SchemaConverter\AirSync\AirSyncExceptionsProperty.cs" />
+    <Compile Include="SchemaConverter\AirSync\AirSyncExDateTimeProperty.cs" />
+    <Compile Include="SchemaConverter\AirSync\AirSyncExtendedAttendeesProperty.cs" />
+    <Compile Include="SchemaConverter\AirSync\AirSyncFlagProperty.cs" />
+    <Compile Include="SchemaConverter\AirSync\AirSyncIntegerProperty.cs" />
+    <Compile Include="SchemaConverter\AirSync\AirSyncLocalDateTimeProperty.cs" />
+    <Compile Include="SchemaConverter\AirSync\AirSyncMeetingRequestProperty.cs" />
+    <Compile Include="SchemaConverter\AirSync\AirSyncMIMEDataProperty.cs" />
+    <Compile Include="SchemaConverter\AirSync\AirSyncMultiValuedStringProperty.cs" />
+    <Compile Include="SchemaConverter\AirSync\AirSyncNestedProperty.cs" />
+    <Compile Include="SchemaConverter\AirSync\AirSyncPictureProperty.cs" />
+    <Compile Include="SchemaConverter\AirSync\AirSyncProperty.cs" />
+    <Compile Include="SchemaConverter\AirSync\AirSyncRecurrenceProperty.cs" />
+    <Compile Include="SchemaConverter\AirSync\AirSyncReminder141Property.cs" />
+    <Compile Include="SchemaConverter\AirSync\AirSyncReminder160Property.cs" />
+    <Compile Include="SchemaConverter\AirSync\AirSyncReminderProperty.cs" />
+    <Compile Include="SchemaConverter\AirSync\AirSyncRightsManagementLicenseProperty.cs" />
+    <Compile Include="SchemaConverter\AirSync\AirSyncRtfBodyProperty.cs" />
+    <Compile Include="SchemaConverter\AirSync\AirSyncSetToDefaultStrategy.cs" />
+    <Compile Include="SchemaConverter\AirSync\AirSyncSetToUnmodifiedStrategy.cs" />
+    <Compile Include="SchemaConverter\AirSync\AirSyncStartDueDateProperty.cs" />
+    <Compile Include="SchemaConverter\AirSync\AirSyncStringProperty.cs" />
+    <Compile Include="SchemaConverter\AirSync\AirSyncTaskStateProperty.cs" />
+    <Compile Include="SchemaConverter\AirSync\AirSyncUnlinkedProperty.cs" />
+    <Compile Include="SchemaConverter\AirSync\AirSyncUtcDateTimeProperty.cs" />
+    <Compile Include="SchemaConverter\AirSync\AirSyncXmlProperty.cs" />
+    <Compile Include="SchemaConverter\AirSync\FlexibleSchemaStrategy.cs" />
+    <Compile Include="SchemaConverter\AirSync\IAirSyncDataObjectGenerator.cs" />
+    <Compile Include="SchemaConverter\AirSync\IAirSyncMissingPropertyStrategy.cs" />
+    <Compile Include="SchemaConverter\AirSync\MailboxSchemaOptionsParser.cs" />
+    <Compile Include="SchemaConverter\Common\AirSyncAttachmentInfo.cs" />
+    <Compile Include="SchemaConverter\Common\AirSyncMeetingMessageType.cs" />
+    <Compile Include="SchemaConverter\Common\Attachment12Data.cs" />
+    <Compile Include="SchemaConverter\Common\Attachment14Data.cs" />
+    <Compile Include="SchemaConverter\Common\Attachment16Data.cs" />
+    <Compile Include="SchemaConverter\Common\AttachmentAction.cs" />
+    <Compile Include="SchemaConverter\Common\AttachmentData.cs" />
+    <Compile Include="SchemaConverter\Common\AttendeeData.cs" />
+    <Compile Include="SchemaConverter\Common\BodyPartPreference.cs" />
+    <Compile Include="SchemaConverter\Common\BodyPreference.cs" />
+    <Compile Include="SchemaConverter\Common\BodyType.cs" />
+    <Compile Include="SchemaConverter\Common\BodyUtility.cs" />
+    <Compile Include="SchemaConverter\Common\CalendarConstants.cs" />
+    <Compile Include="SchemaConverter\Common\ConversionException.cs" />
+    <Compile Include="SchemaConverter\Common\EmailAddressConverter.cs" />
+    <Compile Include="SchemaConverter\Common\EnhancedLocationData.cs" />
+    <Compile Include="SchemaConverter\Common\ExceptionInstance.cs" />
+    <Compile Include="SchemaConverter\Common\ExtendedAttendeeData.cs" />
+    <Compile Include="SchemaConverter\Common\FlagData.cs" />
+    <Compile Include="SchemaConverter\Common\HexStringConverter.cs" />
+    <Compile Include="SchemaConverter\Common\IAirSyncAttachments.cs" />
+    <Compile Include="SchemaConverter\Common\IAttachments12Property.cs" />
+    <Compile Include="SchemaConverter\Common\IAttachmentsProperty.cs" />
+    <Compile Include="SchemaConverter\Common\IAttendeesProperty.cs" />
+    <Compile Include="SchemaConverter\Common\IBodyContentProperty.cs" />
+    <Compile Include="SchemaConverter\Common\IBodyPartProperty.cs" />
+    <Compile Include="SchemaConverter\Common\IBodyProperty.cs" />
+    <Compile Include="SchemaConverter\Common\IBooleanProperty.cs" />
+    <Compile Include="SchemaConverter\Common\IBusyStatusProperty.cs" />
+    <Compile Include="SchemaConverter\Common\IByteArrayProperty.cs" />
+    <Compile Include="SchemaConverter\Common\IContent14Property.cs" />
+    <Compile Include="SchemaConverter\Common\IContent16Property.cs" />
+    <Compile Include="SchemaConverter\Common\IContentProperty.cs" />
+    <Compile Include="SchemaConverter\Common\IDataObjectGenerator.cs" />
+    <Compile Include="SchemaConverter\Common\IDataObjectGeneratorContainer.cs" />
+    <Compile Include="SchemaConverter\Common\IDateTimeProperty.cs" />
+    <Compile Include="SchemaConverter\Common\IExceptionsProperty.cs" />
+    <Compile Include="SchemaConverter\Common\IExtendedAttendeesProperty.cs" />
+    <Compile Include="SchemaConverter\Common\IIntegerProperty.cs" />
+    <Compile Include="SchemaConverter\Common\IMIMEDataProperty.cs" />
+    <Compile Include="SchemaConverter\Common\IMIMERelatedProperty.cs" />
+    <Compile Include="SchemaConverter\Common\IMultivaluedProperty.cs" />
+    <Compile Include="SchemaConverter\Common\INestedData.cs" />
+    <Compile Include="SchemaConverter\Common\INestedProperty.cs" />
+    <Compile Include="SchemaConverter\Common\IPictureProperty.cs" />
+    <Compile Include="SchemaConverter\Common\IProperty.cs" />
+    <Compile Include="SchemaConverter\Common\IPropertyContainer.cs" />
+    <Compile Include="SchemaConverter\Common\IReminder160Property.cs" />
+    <Compile Include="SchemaConverter\Common\IServerDataObject.cs" />
+    <Compile Include="SchemaConverter\Common\IStartDueDateProperty.cs" />
+    <Compile Include="SchemaConverter\Common\IStringProperty.cs" />
+    <Compile Include="SchemaConverter\Common\ITaskState.cs" />
+    <Compile Include="SchemaConverter\Common\ITimeZoneProperty.cs" />
+    <Compile Include="SchemaConverter\Common\IUnlinkedProperty.cs" />
+    <Compile Include="SchemaConverter\Common\IXmlProperty.cs" />
+    <Compile Include="SchemaConverter\Common\MeetingRequestData.cs" />
+    <Compile Include="SchemaConverter\Common\MIMESupportValue.cs" />
+    <Compile Include="SchemaConverter\Common\PropertyBase.cs" />
+    <Compile Include="SchemaConverter\Common\PropertyState.cs" />
+    <Compile Include="SchemaConverter\Common\PropertyType.cs" />
+    <Compile Include="SchemaConverter\Common\RecurrenceData.cs" />
+    <Compile Include="SchemaConverter\Common\RightsManagementLicenseData.cs" />
+    <Compile Include="SchemaConverter\Common\TaskRecurrenceData.cs" />
+    <Compile Include="SchemaConverter\Common\TimeZoneConverter.cs" />
+    <Compile Include="SchemaConverter\Common\TypeOfRecurrence.cs" />
+    <Compile Include="SchemaConverter\Common\UnexpectedTypeException.cs" />
+    <Compile Include="SchemaConverter\Entity\EntityAttachmentsProperty.cs" />
+    <Compile Include="SchemaConverter\Entity\EntityAttendeesProperty.cs" />
+    <Compile Include="SchemaConverter\Entity\EntityBooleanProperty.cs" />
+    <Compile Include="SchemaConverter\Entity\EntityContentProperty.cs" />
+    <Compile Include="SchemaConverter\Entity\EntityDataObject.cs" />
+    <Compile Include="SchemaConverter\Entity\EntityDeleteAttachment.cs" />
+    <Compile Include="SchemaConverter\Entity\EntityEnhancedLocationProperty.cs" />
+    <Compile Include="SchemaConverter\Entity\EntityEnumProperty.cs" />
+    <Compile Include="SchemaConverter\Entity\EntityExDateTimeProperty.cs" />
+    <Compile Include="SchemaConverter\Entity\EntityMeetingStatusProperty.cs" />
+    <Compile Include="SchemaConverter\Entity\EntityMultiValuedStringProperty.cs" />
+    <Compile Include="SchemaConverter\Entity\EntityNativeBodyProperty.cs" />
+    <Compile Include="SchemaConverter\Entity\EntityNestedProperty.cs" />
+    <Compile Include="SchemaConverter\Entity\EntityProperty.cs" />
+    <Compile Include="SchemaConverter\Entity\EntityPropertyDefinition.cs" />
+    <Compile Include="SchemaConverter\Entity\EntityRecurrenceProperty.cs" />
+    <Compile Include="SchemaConverter\Entity\EntityReminderOffsetProperty.cs" />
+    <Compile Include="SchemaConverter\Entity\EntityStringProperty.cs" />
+    <Compile Include="SchemaConverter\Entity\EventParametersParser.cs" />
+    <Compile Include="SchemaConverter\IAirSyncVersionFactory.cs" />
+    <Compile Include="SchemaConverter\IClassFilter.cs" />
+    <Compile Include="SchemaConverter\PrototypeSchemasV120\CalendarPrototypeSchemaState.cs" />
+    <Compile Include="SchemaConverter\PrototypeSchemasV120\ContactsPrototypeSchemaState.cs" />
+    <Compile Include="SchemaConverter\PrototypeSchemasV120\EmailPrototypeSchemaState.cs" />
+    <Compile Include="SchemaConverter\PrototypeSchemasV120\ExceptionPrototypeSchemaState.cs" />
+    <Compile Include="SchemaConverter\PrototypeSchemasV120\TasksPrototypeSchemaState.cs" />
+    <Compile Include="SchemaConverter\PrototypeSchemasV121\CalendarPrototypeSchemaState.cs" />
+    <Compile Include="SchemaConverter\PrototypeSchemasV121\ContactsPrototypeSchemaState.cs" />
+    <Compile Include="SchemaConverter\PrototypeSchemasV121\EmailPrototypeSchemaState.cs" />
+    <Compile Include="SchemaConverter\PrototypeSchemasV121\ExceptionPrototypeSchemaState.cs" />
+    <Compile Include="SchemaConverter\PrototypeSchemasV121\TasksPrototypeSchemaState.cs" />
+    <Compile Include="SchemaConverter\PrototypeSchemasV140\CalendarPrototypeSchemaState.cs" />
+    <Compile Include="SchemaConverter\PrototypeSchemasV140\ConsumerSmsAndMmsPrototypeSchemaState.cs" />
+    <Compile Include="SchemaConverter\PrototypeSchemasV140\ContactsPrototypeSchemaState.cs" />
+    <Compile Include="SchemaConverter\PrototypeSchemasV140\EmailPrototypeSchemaState.cs" />
+    <Compile Include="SchemaConverter\PrototypeSchemasV140\ExceptionPrototypeSchemaState.cs" />
+    <Compile Include="SchemaConverter\PrototypeSchemasV140\NotesPrototypeSchemaState.cs" />
+    <Compile Include="SchemaConverter\PrototypeSchemasV140\RecipientInfoCacheSchemaState.cs" />
+    <Compile Include="SchemaConverter\PrototypeSchemasV140\SmsPrototypeSchemaState.cs" />
+    <Compile Include="SchemaConverter\PrototypeSchemasV140\TasksPrototypeSchemaState.cs" />
+    <Compile Include="SchemaConverter\PrototypeSchemasV141\CalendarPrototypeSchemaState.cs" />
+    <Compile Include="SchemaConverter\PrototypeSchemasV141\ContactsPrototypeSchemaState.cs" />
+    <Compile Include="SchemaConverter\PrototypeSchemasV141\EmailPrototypeSchemaState.cs" />
+    <Compile Include="SchemaConverter\PrototypeSchemasV141\ExceptionPrototypeSchemaState.cs" />
+    <Compile Include="SchemaConverter\PrototypeSchemasV141\NotesPrototypeSchemaState.cs" />
+    <Compile Include="SchemaConverter\PrototypeSchemasV141\RecipientInfoCacheSchemaState.cs" />
+    <Compile Include="SchemaConverter\PrototypeSchemasV141\SmsPrototypeSchemaState.cs" />
+    <Compile Include="SchemaConverter\PrototypeSchemasV141\TasksPrototypeSchemaState.cs" />
+    <Compile Include="SchemaConverter\PrototypeSchemasV160\CalendarPrototypeSchemaState.cs" />
+    <Compile Include="SchemaConverter\PrototypeSchemasV160\ContactsPrototypeSchemaState.cs" />
+    <Compile Include="SchemaConverter\PrototypeSchemasV160\EmailPrototypeSchemaState.cs" />
+    <Compile Include="SchemaConverter\PrototypeSchemasV160\NotesPrototypeSchemaState.cs" />
+    <Compile Include="SchemaConverter\PrototypeSchemasV160\RecipientInfoCacheSchemaState.cs" />
+    <Compile Include="SchemaConverter\PrototypeSchemasV160\SmsPrototypeSchemaState.cs" />
+    <Compile Include="SchemaConverter\PrototypeSchemasV160\TasksPrototypeSchemaState.cs" />
+    <Compile Include="SchemaConverter\PrototypeSchemasV20\CalendarPrototypeSchemaState.cs" />
+    <Compile Include="SchemaConverter\PrototypeSchemasV20\ContactsPrototypeSchemaState.cs" />
+    <Compile Include="SchemaConverter\PrototypeSchemasV20\EmailPrototypeSchemaState.cs" />
+    <Compile Include="SchemaConverter\PrototypeSchemasV20\ExceptionPrototypeSchemaState.cs" />
+    <Compile Include="SchemaConverter\PrototypeSchemasV25\CalendarPrototypeSchemaState.cs" />
+    <Compile Include="SchemaConverter\PrototypeSchemasV25\ContactsPrototypeSchemaState.cs" />
+    <Compile Include="SchemaConverter\PrototypeSchemasV25\EmailPrototypeSchemaState.cs" />
+    <Compile Include="SchemaConverter\PrototypeSchemasV25\ExceptionPrototypeSchemaState.cs" />
+    <Compile Include="SchemaConverter\PrototypeSchemasV25\TasksPrototypeSchemaState.cs" />
+    <Compile Include="SchemaConverter\RecipientInfoCache\RecipientInfoCacheDataObject.cs" />
+    <Compile Include="SchemaConverter\RecipientInfoCache\RecipientInfoCacheEntryElements.cs" />
+    <Compile Include="SchemaConverter\RecipientInfoCache\RecipientInfoCacheIntProperty.cs" />
+    <Compile Include="SchemaConverter\RecipientInfoCache\RecipientInfoCacheProperty.cs" />
+    <Compile Include="SchemaConverter\RecipientInfoCache\RecipientInfoCacheStringProperty.cs" />
+    <Compile Include="SchemaConverter\SchemaState.cs" />
+    <Compile Include="SchemaConverter\XSO\AttachmentPolicy.cs" />
+    <Compile Include="SchemaConverter\XSO\BodyConversionUtilities.cs" />
+    <Compile Include="SchemaConverter\XSO\IXsoDataObjectGenerator.cs" />
+    <Compile Include="SchemaConverter\XSO\Markup.cs" />
+    <Compile Include="SchemaConverter\XSO\NewItemType.cs" />
+    <Compile Include="SchemaConverter\XSO\ReadFlagDataObject.cs" />
+    <Compile Include="SchemaConverter\XSO\ReadFlagProperty.cs" />
+    <Compile Include="SchemaConverter\XSO\SafeHtmlCallback.cs" />
+    <Compile Include="SchemaConverter\XSO\Xso14AttachmentsProperty.cs" />
+    <Compile Include="SchemaConverter\XSO\Xso16AttachmentsProperty.cs" />
+    <Compile Include="SchemaConverter\XSO\XsoAccountIdProperty.cs" />
+    <Compile Include="SchemaConverter\XSO\XsoApptExceptionUtcStartTimeProperty.cs" />
+    <Compile Include="SchemaConverter\XSO\XsoAttachments12Property.cs" />
+    <Compile Include="SchemaConverter\XSO\XsoAttachmentsProperty.cs" />
+    <Compile Include="SchemaConverter\XSO\XsoAttendeesProperty.cs" />
+    <Compile Include="SchemaConverter\XSO\XsoBase64StringProperty.cs" />
+    <Compile Include="SchemaConverter\XSO\XsoBccProperty.cs" />
+    <Compile Include="SchemaConverter\XSO\XsoBodyPartProperty.cs" />
+    <Compile Include="SchemaConverter\XSO\XsoBodyProperty.cs" />
+    <Compile Include="SchemaConverter\XSO\XsoBooleanProperty.cs" />
+    <Compile Include="SchemaConverter\XSO\XsoBusyStatusProperty.cs" />
+    <Compile Include="SchemaConverter\XSO\XsoCategoriesProperty.cs" />
+    <Compile Include="SchemaConverter\XSO\XsoCCProperty.cs" />
+    <Compile Include="SchemaConverter\XSO\XsoComplexProperty.cs" />
+    <Compile Include="SchemaConverter\XSO\XsoConsumerSmsMmsContentProperty.cs" />
+    <Compile Include="SchemaConverter\XSO\XsoContent14Property.cs" />
+    <Compile Include="SchemaConverter\XSO\XsoContentClassProperty.cs" />
+    <Compile Include="SchemaConverter\XSO\XsoContentProperty.cs" />
+    <Compile Include="SchemaConverter\XSO\XsoConversationIdProperty.cs" />
+    <Compile Include="SchemaConverter\XSO\XsoConversationIndexProperty.cs" />
+    <Compile Include="SchemaConverter\XSO\XsoDataObject.cs" />
+    <Compile Include="SchemaConverter\XSO\XsoEmailBodyContent14Property.cs" />
+    <Compile Include="SchemaConverter\XSO\XsoEmailBodyContentProperty.cs" />
+    <Compile Include="SchemaConverter\XSO\XsoEmailProperty.cs" />
+    <Compile Include="SchemaConverter\XSO\XsoEmailSubjectProperty.cs" />
+    <Compile Include="SchemaConverter\XSO\XsoEvmCallerIdProperty.cs" />
+    <Compile Include="SchemaConverter\XSO\XsoEvmStringProperty.cs" />
+    <Compile Include="SchemaConverter\XSO\XsoExceptionsProperty.cs" />
+    <Compile Include="SchemaConverter\XSO\XsoExtendedAttendeesProperty.cs" />
+    <Compile Include="SchemaConverter\XSO\XsoFlagProperty.cs" />
+    <Compile Include="SchemaConverter\XSO\XsoFromProperty.cs" />
+    <Compile Include="SchemaConverter\XSO\XsoGuidProperty.cs" />
+    <Compile Include="SchemaConverter\XSO\XsoIntegerProperty.cs" />
+    <Compile Include="SchemaConverter\XSO\XsoIsEventProperty.cs" />
+    <Compile Include="SchemaConverter\XSO\XsoLastVerbExecutedProperty.cs" />
+    <Compile Include="SchemaConverter\XSO\XsoLocalDateTimeProperty.cs" />
+    <Compile Include="SchemaConverter\XSO\XsoManagerProperty.cs" />
+    <Compile Include="SchemaConverter\XSO\XsoMeetingRequestProperty.cs" />
+    <Compile Include="SchemaConverter\XSO\XsoMeetingStatusProperty.cs" />
+    <Compile Include="SchemaConverter\XSO\XsoMessageClassProperty.cs" />
+    <Compile Include="SchemaConverter\XSO\XsoMIMEDataProperty.cs" />
+    <Compile Include="SchemaConverter\XSO\XsoMultiValuedStringProperty.cs" />
+    <Compile Include="SchemaConverter\XSO\XsoNativeBodyProperty.cs" />
+    <Compile Include="SchemaConverter\XSO\XsoNestedProperty.cs" />
+    <Compile Include="SchemaConverter\XSO\XsoOrganizerEmailProperty.cs" />
+    <Compile Include="SchemaConverter\XSO\XsoOrganizerNameProperty.cs" />
+    <Compile Include="SchemaConverter\XSO\XsoPersistentStringProperty.cs" />
+    <Compile Include="SchemaConverter\XSO\XsoPictureProperty.cs" />
+    <Compile Include="SchemaConverter\XSO\XsoProperty.cs" />
+    <Compile Include="SchemaConverter\XSO\XsoReadFlagProperty.cs" />
+    <Compile Include="SchemaConverter\XSO\XsoRecipientProperty.cs" />
+    <Compile Include="SchemaConverter\XSO\XsoRecurrenceProperty.cs" />
+    <Compile Include="SchemaConverter\XSO\XsoReminderOffsetProperty.cs" />
+    <Compile Include="SchemaConverter\XSO\XsoReplyToProperty.cs" />
+    <Compile Include="SchemaConverter\XSO\XsoRightsManagementLicenseProperty.cs" />
+    <Compile Include="SchemaConverter\XSO\XsoSenderProperty.cs" />
+    <Compile Include="SchemaConverter\XSO\XsoSensitivityProperty.cs" />
+    <Compile Include="SchemaConverter\XSO\XsoSMSContentProperty.cs" />
+    <Compile Include="SchemaConverter\XSO\XsoSmsDateReceivedProperty.cs" />
+    <Compile Include="SchemaConverter\XSO\XsoStartDueDateProperty.cs" />
+    <Compile Include="SchemaConverter\XSO\XsoStringProperty.cs" />
+    <Compile Include="SchemaConverter\XSO\XsoSubjectProperty.cs" />
+    <Compile Include="SchemaConverter\XSO\XsoTaskStateProperty.cs" />
+    <Compile Include="SchemaConverter\XSO\XsoTimeZoneProperty.cs" />
+    <Compile Include="SchemaConverter\XSO\XsoToProperty.cs" />
+    <Compile Include="SchemaConverter\XSO\XsoUidProperty.cs" />
+    <Compile Include="SchemaConverter\XSO\XsoUnlinkedProperty.cs" />
+    <Compile Include="SchemaConverter\XSO\XsoUtcDateTimeProperty.cs" />
+    <Compile Include="SchemaConverter\XSO\XsoUtcDtStampProperty.cs" />
+    <Compile Include="SearchCommand.cs" />
+    <Compile Include="SearchFilterGenerator.cs" />
+    <Compile Include="SearchFilterTooComplexException.cs" />
+    <Compile Include="SearchNeedToFolderSyncException.cs" />
+    <Compile Include="SearchProtocolErrorException.cs" />
+    <Compile Include="SearchTimeOutException.cs" />
+    <Compile Include="SecurityContextAndSession.cs" />
+    <Compile Include="SendMailBase.cs" />
+    <Compile Include="SendMailCommand.cs" />
+    <Compile Include="SettingsBase.cs" />
+    <Compile Include="SettingsCommand.cs" />
+    <Compile Include="SmartForwardCommand.cs" />
+    <Compile Include="SmartReplyCommand.cs" />
+    <Compile Include="StatusCode.cs" />
+    <Compile Include="StreamHelper.cs" />
+    <Compile Include="Strings.cs" />
+    <Compile Include="SyncBase.cs" />
+    <Compile Include="SyncCalendarFolderSyncState.cs" />
+    <Compile Include="SyncCalendarSyncStateBase.cs" />
+    <Compile Include="SyncCollection.cs" />
+    <Compile Include="SyncCommand.cs" />
+    <Compile Include="SyncCommandItem.cs" />
+    <Compile Include="SyncRequestWasHangingCache.cs" />
+    <Compile Include="SyncStateConverter\CommonInfo.cs" />
+    <Compile Include="SyncStateConverter\CommonNodeStruct.cs" />
+    <Compile Include="SyncStateConverter\FolderInfo.cs" />
+    <Compile Include="SyncStateConverter\FolderNodeStruct.cs" />
+    <Compile Include="SyncStateConverter\MailboxUtility.cs" />
+    <Compile Include="SyncStateConverter\MailboxUtilityDeviceInfo.cs" />
+    <Compile Include="SyncStateConverter\MailboxUtilityQueryResult.cs" />
+    <Compile Include="SyncStateConverter\MappingNodeStruct.cs" />
+    <Compile Include="SyncStateConverter\SyncStateUpgradeHelper.cs" />
+    <Compile Include="SyncStateConverter\SyncStateUpgrader.cs" />
+    <Compile Include="SyncStateConverter\TagNodeStruct.cs" />
+    <Compile Include="SyncStateDataInfo.cs" />
+    <Compile Include="SyncStateUpgradeResult.cs" />
+    <Compile Include="SyncStatusData.cs" />
+    <Compile Include="SyncStatusSyncStateInfo.cs" />
+    <Compile Include="SyncType.cs" />
+    <Compile Include="TagNode.cs" />
+    <Compile Include="TestHooks.cs" />
+    <Compile Include="ThreadIdProvider.cs" />
+    <Compile Include="TiFolderSyncUpgrade.cs" />
+    <Compile Include="TimeEntry.cs" />
+    <Compile Include="TimeId.cs" />
+    <Compile Include="TimeIdAttribute.cs" />
+    <Compile Include="TimeTracker.cs" />
+    <Compile Include="TimeZoneOffsetSettings.cs" />
+    <Compile Include="TiSyncUpgrade.cs" />
+    <Compile Include="UserInformationSetting.cs" />
+    <Compile Include="UserPhotoResolution.cs" />
+    <Compile Include="ValidateCertCommand.cs" />
+    <Compile Include="Validator.cs" />
+    <Compile Include="VirtualFolderItemId.cs" />
+    <Compile Include="Wbxml\AirSyncBlobXmlNode.cs" />
+    <Compile Include="Wbxml\AirSyncSecureStringXmlNode.cs" />
+    <Compile Include="Wbxml\AirSyncString.cs" />
+    <Compile Include="Wbxml\AirSyncStringArrays.cs" />
+    <Compile Include="Wbxml\GlobalCodes.cs" />
+    <Compile Include="Wbxml\SubStream.cs" />
+    <Compile Include="Wbxml\WbxmlBase.cs" />
+    <Compile Include="Wbxml\WbxmlException.cs" />
+    <Compile Include="Wbxml\WbxmlReader.cs" />
+    <Compile Include="Wbxml\WbxmlSchema.cs" />
+    <Compile Include="Wbxml\WbxmlSchema30.cs" />
+    <Compile Include="Wbxml\WbxmlWriter.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="EASServerStrings.resources" />
+    <EmbeddedResource Include="Strings.resources" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.Exchange.Common\Microsoft.Exchange.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140F0}</Project>
+      <Name>Microsoft.Exchange.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Compliance\Microsoft.Exchange.Compliance.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140F2}</Project>
+      <Name>Microsoft.Exchange.Compliance</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Configuration.ObjectModel\Microsoft.Exchange.Configuration.ObjectModel.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140FC}</Project>
+      <Name>Microsoft.Exchange.Configuration.ObjectModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.ApplicationLogic\Microsoft.Exchange.Data.ApplicationLogic.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14104}</Project>
+      <Name>Microsoft.Exchange.Data.ApplicationLogic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Common\Microsoft.Exchange.Data.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140D3}</Project>
+      <Name>Microsoft.Exchange.Data.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Directory\Microsoft.Exchange.Data.Directory.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14105}</Project>
+      <Name>Microsoft.Exchange.Data.Directory</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.GroupMailboxAccessLayer\Microsoft.Exchange.Data.GroupMailboxAccessLayer.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14107}</Project>
+      <Name>Microsoft.Exchange.Data.GroupMailboxAccessLayer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Storage\Microsoft.Exchange.Data.Storage.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1410F}</Project>
+      <Name>Microsoft.Exchange.Data.Storage</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Transport\Microsoft.Exchange.Data.Transport.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140D5}</Project>
+      <Name>Microsoft.Exchange.Data.Transport</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data\Microsoft.Exchange.Data.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14106}</Project>
+      <Name>Microsoft.Exchange.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Diagnostics\Microsoft.Exchange.Diagnostics.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14113}</Project>
+      <Name>Microsoft.Exchange.Diagnostics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Entities.Calendaring\Microsoft.Exchange.Entities.Calendaring.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1411E}</Project>
+      <Name>Microsoft.Exchange.Entities.Calendaring</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Entities.Common\Microsoft.Exchange.Entities.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1411F}</Project>
+      <Name>Microsoft.Exchange.Entities.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Entities.DataModel\Microsoft.Exchange.Entities.DataModel.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14120}</Project>
+      <Name>Microsoft.Exchange.Entities.DataModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Extensibility.Internal\Microsoft.Exchange.Extensibility.Internal.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14126}</Project>
+      <Name>Microsoft.Exchange.Extensibility.Internal</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.InfoWorker.Common\Microsoft.Exchange.InfoWorker.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1413C}</Project>
+      <Name>Microsoft.Exchange.InfoWorker.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Net\Microsoft.Exchange.Net.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14178}</Project>
+      <Name>Microsoft.Exchange.Net</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Security\Microsoft.Exchange.Security.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14198}</Project>
+      <Name>Microsoft.Exchange.Security</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.StoreProvider\Microsoft.Exchange.StoreProvider.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141B9}</Project>
+      <Name>Microsoft.Exchange.StoreProvider</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Transport.Sync.Common\Microsoft.Exchange.Transport.Sync.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141D5}</Project>
+      <Name>Microsoft.Exchange.Transport.Sync.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.VariantConfiguration\Microsoft.Exchange.VariantConfiguration.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141E0}</Project>
+      <Name>Microsoft.Exchange.VariantConfiguration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.WorkloadManagement\Microsoft.Exchange.WorkloadManagement.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141E1}</Project>
+      <Name>Microsoft.Exchange.WorkloadManagement</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\mscorlib\mscorlib.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141F1}</Project>
+      <Name>mscorlib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

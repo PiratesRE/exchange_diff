@@ -1,0 +1,16 @@
+﻿using System;
+
+namespace Microsoft.Exchange.Cluster.ClusApi
+{
+	internal enum AmClusterEnum : uint
+	{
+		CLUSTER_ENUM_NODE = 1U,
+		CLUSTER_ENUM_RESTYPE,
+		CLUSTER_ENUM_RESOURCE = 4U,
+		CLUSTER_ENUM_GROUP = 8U,
+		CLUSTER_ENUM_NETWORK = 16U,
+		CLUSTER_ENUM_NETINTERFACE = 32U,
+		CLUSTER_ENUM_INTERNAL_NETWORK = 2147483648U,
+		CLUSTER_ENUM_ALL = 63U
+	}
+}

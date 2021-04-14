@@ -1,0 +1,155 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{09CD9476-CD82-489E-B9E2-84B47CA140E6}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Microsoft.Exchange.Clients</RootNamespace>
+    <AssemblyName>Microsoft.Exchange.Clients.Common</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Exchange.Clients.Strings" />
+    <Reference Include="Microsoft.Exchange.Management.Powershell.CentralAdmin" />
+    <Reference Include="Microsoft.Live.Frontend" />
+    <Reference Include="Microsoft.Live.Services" />
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Common\BrandingUtilities.cs" />
+    <Compile Include="Common\Canary15.cs" />
+    <Compile Include="Common\Canary15Cookie.cs" />
+    <Compile Include="Common\Canary15DataManager.cs" />
+    <Compile Include="Common\Canary15DataSegment.cs" />
+    <Compile Include="Common\Canary15Profile.cs" />
+    <Compile Include="Common\Canary15Trace.cs" />
+    <Compile Include="Common\ClientIdCookie.cs" />
+    <Compile Include="Common\CobrandingAssetKey.cs" />
+    <Compile Include="Common\CobrandingAssetKeys.cs" />
+    <Compile Include="Common\CobrandingAssetReader.cs" />
+    <Compile Include="Common\CryptoMessage.cs" />
+    <Compile Include="Common\ErrorInformation.cs" />
+    <Compile Include="Common\ErrorMode.cs" />
+    <Compile Include="Common\FBL\AuthkeyAuthenticationRequest.cs" />
+    <Compile Include="Common\FBL\FblConstants.cs" />
+    <Compile Include="Common\FBL\FBLPerfCounters.cs" />
+    <Compile Include="Common\FBL\FblRequestParameters.cs" />
+    <Compile Include="Common\FBL\HashUtility.cs" />
+    <Compile Include="Common\FBL\OwaFblHandler.cs" />
+    <Compile Include="Common\FBL\XssEncode.cs" />
+    <Compile Include="Common\FixedSizeQueueBool.cs" />
+    <Compile Include="Common\ILiveHeaderElement.cs" />
+    <Compile Include="Common\LayoutType.cs" />
+    <Compile Include="Common\LiveAssetKey.cs" />
+    <Compile Include="Common\LiveAssetKeys.cs" />
+    <Compile Include="Common\LiveAssetReader.cs" />
+    <Compile Include="Common\LiveHeaderElementFactory.cs" />
+    <Compile Include="Common\LiveHeaderLink.cs" />
+    <Compile Include="Common\LiveHeaderLinkCollection.cs" />
+    <Compile Include="Common\LiveHeaderMenu.cs" />
+    <Compile Include="Common\LiveHeaderMenuSeparator.cs" />
+    <Compile Include="Common\LoggingUtilities.cs" />
+    <Compile Include="Common\LogOnSettings.cs" />
+    <Compile Include="Common\OfflineClientRequestUtilities.cs" />
+    <Compile Include="Common\OwaExtendedError.cs" />
+    <Compile Include="Common\OwaExtendedErrorCode.cs" />
+    <Compile Include="Common\OwaSingleCounters.cs" />
+    <Compile Include="Common\PerformanceCounterManager.cs" />
+    <Compile Include="Common\SupportLevel.cs" />
+    <Compile Include="Common\UniqueUserData.cs" />
+    <Compile Include="Common\UrlUtilities.cs" />
+    <Compile Include="Common\UserAgent.cs" />
+    <Compile Include="Common\UserAgentUtilities.cs" />
+    <Compile Include="Common\UserAgentVersion.cs" />
+    <Compile Include="EventLogs\ClientsEventLogConstants.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.Exchange.Common\Microsoft.Exchange.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140F0}</Project>
+      <Name>Microsoft.Exchange.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.ApplicationLogic\Microsoft.Exchange.Data.ApplicationLogic.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14104}</Project>
+      <Name>Microsoft.Exchange.Data.ApplicationLogic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Common\Microsoft.Exchange.Data.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140D3}</Project>
+      <Name>Microsoft.Exchange.Data.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Directory\Microsoft.Exchange.Data.Directory.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14105}</Project>
+      <Name>Microsoft.Exchange.Data.Directory</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Transport\Microsoft.Exchange.Data.Transport.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140D5}</Project>
+      <Name>Microsoft.Exchange.Data.Transport</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data\Microsoft.Exchange.Data.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14106}</Project>
+      <Name>Microsoft.Exchange.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Diagnostics\Microsoft.Exchange.Diagnostics.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14113}</Project>
+      <Name>Microsoft.Exchange.Diagnostics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Extensibility.Internal\Microsoft.Exchange.Extensibility.Internal.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14126}</Project>
+      <Name>Microsoft.Exchange.Extensibility.Internal</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Net\Microsoft.Exchange.Net.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14178}</Project>
+      <Name>Microsoft.Exchange.Net</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Security\Microsoft.Exchange.Security.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14198}</Project>
+      <Name>Microsoft.Exchange.Security</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.VariantConfiguration\Microsoft.Exchange.VariantConfiguration.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141E0}</Project>
+      <Name>Microsoft.Exchange.VariantConfiguration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\mscorlib\mscorlib.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141F1}</Project>
+      <Name>mscorlib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\mscorlib\mscorlib.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141F1}</Project>
+      <Name>mscorlib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

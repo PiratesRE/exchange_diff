@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo Name="All Roles Common First - Run Once">
+
+  <!-- This component is only executed for the first installed role and the last uninstalled role -->
+  <ServerTasks>
+    
+    <!-- Modify the Windows Error Reporting (WER) consent DWORDs for the Exchange event types/verticals -->
+    <ServerTaskInfo Id="_b30cefaa0d2a486086e9b6517e52add7" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          Set-WERRegistryMarkers;
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>
+          Remove-WERRegistryMarkers;
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+    
+    <!-- Create the ExchangeInstallPath Environment Variable -->
+    <ServerTaskInfo Id="_9fae27cba21348db814fcc4ffc0a7fe8" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          Set-EnvironmentVariable -Name "ExchangeInstallPath" -Value "$RoleInstallPath" -Target Machine;
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>
+          Remove-EnvironmentVariable -Name "ExchangeInstallPath" -Target Machine;
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+  </ServerTasks>
+</SetupComponentInfo>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo Name="UnifiedMessagingExchangeCertificate">
+
+  <ServerTasks>
+    <ServerTaskInfo Id="_c031c5bcf1a74e0c81fe32a5c716436e" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+        Install-ExchangeCertificate -services IIS -DomainController $RoleDomainController;
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall/>
+    </ServerTaskInfo>
+
+  </ServerTasks>
+</SetupComponentInfo>
+

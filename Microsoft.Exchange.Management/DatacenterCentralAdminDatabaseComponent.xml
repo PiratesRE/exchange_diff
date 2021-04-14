@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo IsDatacenterOnly="true" Name="Exchange Central Admin Database Component">
+
+  <!-- Central Admin Database role will be deprecated. All the setup tasks have moved to DatacenterCentralAdminComponent.xml  -->
+  <!-- If you need to modify any setup tasks that used to be in this component xml, see DatacenterCentralAdminComponent.xml instead --> 
+
+  <ServerTasks>
+  </ServerTasks>
+
+</SetupComponentInfo>

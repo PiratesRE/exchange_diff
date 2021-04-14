@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!--
+  This component configures the local active directory application mode (ADAM) instance
+  for use with this role.
+  
+  Because the operations happen on the local instance, Local Admin permissions
+  are sufficient for all operations in this component.  Also, most of the "AD" operations,
+  even importing the schema, take about the same amount of time as the other operations
+  so they don't need separate descriptions.
+    
+  Notes:
+  - Edge does not support clustering.  All cluster entries should be empty.
+  - Edge does not support Disaster Recovery from setup.  All DisasterRecovery nodes should be empty.
+  - Edge AD entries are stored in an ADAM instance specific to this installation.  On uninstall,
+    the whole database is removed, so there is no need to delete individual AD settings.
+
+-->
+<SetupComponentInfo Name="ADAM Configuration" DescriptionId="SetupComponentAdam">
+
+  <ServerTasks>
+
+    <!-- 
+      Install/uninstall ADAM 
+      
+      Creates or removes the instance of ADAM that will store the Edge role data.
+    -->
+    <ServerTaskInfo Id="_072bad463959434d964e8b33675bc818" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install Weight="10" DescriptionId="SetupProgressCreatingAdamInstance">
+        <Standalone>install-adam -Port $RoleAdamLdapPort -SslPort $RoleAdamSslPort</Standalone>
+      </Install>
+      <!-- The instance must already exist and be running for upgrade to start -->
+      <BuildToBuildUpgrade />
+      <DisasterRecovery />
+      <Uninstall Weight="10" DescriptionId="SetupProgressRemovingAdamInstance">
+        <Standalone>uninstall-adam</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- 
+      Stop the ADAM service 
+      
+      This only needs to happen on uninstall, in preparation for removing the instance.      
+      In install and dr modes, the service should be started by the install-adam task
+      when it creates the instance.  On upgrades, the service must be running for setup
+      to allow the upgrade.
+    -->
+    <ServerTaskInfo Id="_c298f9326cc04c6e8059fa5ccce0f5c1" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install />
+      <BuildToBuildUpgrade />
+      <DisasterRecovery />
+      <Uninstall Weight="5" DescriptionId="SetupProgressStoppingAdam">
+        <Standalone>stop-SetupService -ServiceName ADAM_MSExchange</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- 
+      Install ADAM schema:  Basic schema 
+      
+      This takes much longer than the other schema operations, so it gets its own description
+    -->
+    <ServerTaskInfo Id="_3dc0bdb578114784859fe9bf9663d1f3" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install Weight="10" DescriptionId="SetupProgressImportingAdamSchema">
+        <Standalone>install-AdamSchema -LdapFileName ($roleInstallPath + "\Setup\Data\schemaadam.ldf")</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Install ADAM schema:  Organizational containers -->
+    <ServerTaskInfo Id="_93b0971950ff4007a91d35495935b5a2" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressImportingAddionalEdgeSchema">
+        <Standalone>
+          install-AdamSchema `
+            -LdapFileName ($roleInstallPath + "\Setup\Data\adamorgcontainers.ldf") `
+            -MacroName:'&lt;ConfigurationContainerDN&gt;' `
+            -MacroValue:'#configurationNamingContext'
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Install ADAM schema:  Recipient API -->
+    <ServerTaskInfo Id="_cd836742addc4ff8a13a6db1206c1bbc" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressImportingAddionalEdgeSchema">
+        <Standalone>install-AdamSchema -LdapFileName ($roleInstallPath + "\Setup\Data\adamschema-recipientapi.ldf")</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Install ADAM schema:  Permissions -->
+    <ServerTaskInfo Id="_2a3b3987773b4a9f9b08e3ea1a55e919" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressImportingAddionalEdgeSchema">
+        <Standalone>
+          install-AdamSchema `
+            -LdapFileName ($roleInstallPath + "\Setup\Data\rightsadam.ldf") `
+            -MacroName:'&lt;ConfigurationContainerDN&gt;' `
+            -MacroValue:'#configurationNamingContext'
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- 
+      Reset the topology mode
+      
+      On clean installs, the AD driver won't be in ADAM mode because the ADAM instance wouldn't
+      have existed when the AD driver did its discovery.  Now that the instance exists and 
+      the schema has been updated, we instruct the AD Driver to use the ADAM topology mode.
+      
+      The task itself doesn't take any parameters to this effect because the AD Driver can
+      only go from AD to ADAM mode, not the other way around.
+      
+      This kicks off a background process which can take a couple seconds.  As a result setup
+      can occasionally move onto the next step and fail when Edge Role is installed on a domian
+      joined machine.  The delay is very short and 5 seconds should cover it completely.
+    -->
+    <ServerTaskInfo Id="_3d5d7afc081b4507b7b38c0fb0a710ca" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          Set-TopologyMode;
+          Start-Sleep -s 5;
+        </Standalone>
+      </Install>
+      <!-- ADAM should already be installed during upgrade, so the driver will have detected
+      the ADAM instance and automatically selected ADAM topology mode.  -->
+      <BuildToBuildUpgrade />
+      <DisasterRecovery />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Create Exchange server -->
+    <ServerTaskInfo Id="_eb6b00c2a3d14dbcb8d44c5de83cc287" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>new-ExchangeServer</Standalone>
+      </Install>
+
+      <!-- This shouldn't run in upgrade or DR because the object should already exist -->
+      <BuildToBuildUpgrade />
+      <DisasterRecovery />
+      <!-- This doesn't need to be removed because the ADAM database containing this
+      object will be removed.  -->
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Set Gateway role -->
+    <ServerTaskInfo Id="_2857fb7781d3470ba1207b001b4ce709" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>set-ExchangeServerRole -Identity $RoleFqdnOrName -IsEdgeServer:$true</Standalone>
+      </Install>
+
+      <!-- This shouldn't run in upgrade or DR because the role should already be set -->
+      <BuildToBuildUpgrade />
+      <DisasterRecovery />
+      
+      
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Update Server object -->
+    <ServerTaskInfo Id="_35c9fb39cd3b4b1896a2d0305ffc1095" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install />
+      <!-- Upgrade admin display version information on server object when B2B upgrading -->
+      <BuildToBuildUpgrade>
+        <Standalone>upgrade-ExchangeServer -Identity $RoleFqdnOrName</Standalone>
+      </BuildToBuildUpgrade>
+      <DisasterRecovery />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Creates "ExchangeAssistance" container under "Organization" container ( CN=ExchangeAssistance,CN=<Org Name>, CN=Microsoft Exchange,... ) -->
+    <ServerTaskInfo Id="_9060d98a84cb4de5aed1d4131b3bc0b2" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>New-ExchangeAssistanceConfig</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery />
+      <!-- This doesn't need to be removed because the ADAM database containing this object will be removed.  -->
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!--CEIP Opt-in/Out-->
+    <!--Make sure that Global CustomerFeedbackEnabled is not null-->
+    <ServerTaskInfo Id="_ceb3000c356f41378f83df5945d2f78f" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          if ($RoleCustomerFeedbackEnabled -ne $null)
+          {
+            $organizationConfig = get-OrganizationConfig;
+            if ($organizationConfig.CustomerFeedbackEnabled -eq $null)
+            {
+              Set-OrganizationConfig -CustomerFeedbackEnabled $RoleCustomerFeedbackEnabled;
+
+              if ($RoleCustomerFeedbackEnabled -ne $False)
+              {
+                Set-ExchangeServer -Identity $RoleFqdnOrName -CustomerFeedbackEnabled $RoleCustomerFeedbackEnabled;
+              }
+            }
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade/>
+      <DisasterRecovery/>
+      <Uninstall/>
+    </ServerTaskInfo>
+
+    <!--Industry-->
+    <ServerTaskInfo Id="_b8274003f8b44ca7a23f8b5097064aa1" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+            Set-OrganizationConfig -Industry $RoleIndustry;
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade/>
+      <DisasterRecovery/>
+      <Uninstall/>
+    </ServerTaskInfo>
+
+    <!-- Create the transport settings container -->
+    <ServerTaskInfo Id="_24a9e113287d4f9ca51c1c18b05bc476" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressCreatingEdgeContainers">
+        <Standalone>install-TransportConfigContainer -Name:"Transport Settings" -DomainController $RoleDomainController</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Create the Transport Settings/Accepted Domains container -->
+    <ServerTaskInfo Id="_aafddbbad98d40adbd6d93dd18bf1118" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressCreatingEdgeContainers">
+        <Standalone>install-Container -Name:"Transport Settings","Accepted Domains" -DomainController $RoleDomainController</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery />
+      <Uninstall />
+    </ServerTaskInfo>
+
+  </ServerTasks>
+
+</SetupComponentInfo>

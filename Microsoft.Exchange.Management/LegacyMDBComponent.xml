@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo Name="Exchange 2003 MDB Configuration" DescriptionId="SetupComponentConfiguringMDB">
+
+  <ServerTasks>
+
+	<!--Create/delete the store service (MDB) 
+		1. Creates the Server level Information Store Container 
+		   at /dc=<domain>/cn=Configuration/cn=Sites/cn=Servers/cn=server settings/cn=Information store
+		2. Creates the Server level Storage Group 
+		   at /dc=<domain>/cn=Configuration/cn=Sites/cn=Servers/cn=server settings/cn=Information store/cn=Strorage Group
+	-->
+    <ServerTaskInfo Id="_3d52c6281600447dae96b445626aedb1" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>install-ExsetdataAtom -AtomName MDB -DomainController $RoleDomainController</Standalone>
+      </Install>
+      <BuildToBuildUpgrade>
+        <Standalone>buildToBuildUpgrade-ExsetdataAtom -AtomName MDB -DomainController $RoleDomainController</Standalone>
+      </BuildToBuildUpgrade>
+      <DisasterRecovery>
+        <Standalone>disasterRecovery-ExsetdataAtom -AtomName MDB -DomainController $RoleDomainController</Standalone>
+      </DisasterRecovery>
+      <Uninstall>
+        <Standalone>uninstall-ExsetdataAtom -AtomName MDB -DomainController $RoleDomainController</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <ServerTaskInfo Id="_fcd732a5a56d42a98656f206b13b5d9a" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>
+          start-SetupProcess -Name:"unlodctr" -Args:"ESE" -Timeout:180000;
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <ServerTaskInfo Id="_196a3554ceab473c8db2e49a4460bac2" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>
+          $proc = [System.Environment]::GetEnvironmentVariable("PROCESSOR_ARCHITECTURE");
+          $p = [System.IO.Path]::Combine("$RoleInstallPath", "bin");
+          $p = [System.IO.Path]::Combine("$p", "perf");
+          $p = [System.IO.Path]::Combine("$p", "$proc");
+          $p = [System.IO.Path]::Combine("$p", "eseperf.ini");
+          start-SetupProcess -Name:"lodctr" -Args:"`"$p`"" -Timeout:600000;
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>
+          start-SetupProcess -Name:"unlodctr" -Args:"ESE" -Timeout:180000;
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <ServerTaskInfo Id="_b33942ac24e3425493a33910a9e4d2e2" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>
+          start-SetupProcess -Name:"unlodctr" -Args:"MSExchangeIS" -Timeout:180000;
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <ServerTaskInfo Id="_51b8608157864109874bd84744808a15" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>
+          $proc = [System.Environment]::GetEnvironmentVariable("PROCESSOR_ARCHITECTURE");
+          $p = [System.IO.Path]::Combine("$RoleInstallPath", "bin");
+          $p = [System.IO.Path]::Combine("$p", "perf");
+          $p = [System.IO.Path]::Combine("$p", "$proc");
+          $p = [System.IO.Path]::Combine("$p", "mdbperf.ini");
+          start-SetupProcess -Name:"lodctr" -Args:"`"$p`"" -Timeout:1200000;
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall IsFatal="false">
+        <Standalone>
+          start-SetupProcess -Name:"unlodctr" -Args:"MSExchangeIS" -Timeout:180000;
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+  </ServerTasks>
+
+</SetupComponentInfo>
+

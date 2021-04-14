@@ -1,0 +1,205 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x64</Platform>
+    <ProjectGuid>{09CD9476-CD82-489E-B9E2-84B47CA14183}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Microsoft.Exchange</RootNamespace>
+    <AssemblyName>Microsoft.Exchange.ProvisioningAgent</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x64' ">
+    <PlatformTarget>x64</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x64' ">
+    <PlatformTarget>x64</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Exchange.WebServices" />
+    <Reference Include="Microsoft.Office.Compliance.Audit" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.DirectoryServices" />
+    <Reference Include="System.Management.Automation" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DefaultProvisioningAgent\PolicyEngine\DefaultPolicyDataProvider.cs" />
+    <Compile Include="DefaultProvisioningAgent\PolicyEngine\IPolicyDataProvider.cs" />
+    <Compile Include="DefaultProvisioningAgent\PolicyEngine\LruPolicyDataCache.cs" />
+    <Compile Include="DefaultProvisioningAgent\PolicyEngine\PolicyConfiguration.cs" />
+    <Compile Include="DefaultProvisioningAgent\PolicyEngine\PolicyConfigurationEntry.cs" />
+    <Compile Include="DefaultProvisioningAgent\PolicyEngine\PolicyDataCacheKey.cs" />
+    <Compile Include="DefaultProvisioningAgent\PolicyEngine\ProvisioningSession.cs" />
+    <Compile Include="DefaultProvisioningAgent\Rus\AddressBookDataProvider.cs" />
+    <Compile Include="DefaultProvisioningAgent\Rus\AddressBookHandler.cs" />
+    <Compile Include="DefaultProvisioningAgent\Rus\AndLdapFilter.cs" />
+    <Compile Include="DefaultProvisioningAgent\Rus\CompositionLdapFilter.cs" />
+    <Compile Include="DefaultProvisioningAgent\Rus\EmailAddressPolicyDataProvider.cs" />
+    <Compile Include="DefaultProvisioningAgent\Rus\EmailAddressPolicyHandler.cs" />
+    <Compile Include="DefaultProvisioningAgent\Rus\LdapComparisonOperator.cs" />
+    <Compile Include="DefaultProvisioningAgent\Rus\LdapFilter.cs" />
+    <Compile Include="DefaultProvisioningAgent\Rus\LdapFilterProvider.cs" />
+    <Compile Include="DefaultProvisioningAgent\Rus\NotLdapFilter.cs" />
+    <Compile Include="DefaultProvisioningAgent\Rus\OrLdapFilter.cs" />
+    <Compile Include="DefaultProvisioningAgent\Rus\PolicyContainer.cs" />
+    <Compile Include="DefaultProvisioningAgent\Rus\ProxyAddressTypeInfo.cs" />
+    <Compile Include="DefaultProvisioningAgent\Rus\ProxyDLL.cs" />
+    <Compile Include="DefaultProvisioningAgent\Rus\ProxySession.cs" />
+    <Compile Include="DefaultProvisioningAgent\Rus\RecipientInfo.cs" />
+    <Compile Include="DefaultProvisioningAgent\Rus\ReturnCode.cs" />
+    <Compile Include="DefaultProvisioningAgent\Rus\RusDataHandler.cs" />
+    <Compile Include="DefaultProvisioningAgent\Rus\RusDataProviderBase.cs" />
+    <Compile Include="DefaultProvisioningAgent\Rus\SchemaAttributePresentationObject.cs" />
+    <Compile Include="DefaultProvisioningAgent\Rus\SinglePropertyLdapFilter.cs" />
+    <Compile Include="DefaultProvisioningAgent\Rus\SingleProxySession.cs" />
+    <Compile Include="DefaultProvisioningAgent\Rus\SystemPolicyHandler.cs" />
+    <Compile Include="Management\SystemConfigurationTasks\ErrorsDuringAdminLogProvisioningHandlerValidateException.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ProvisioningAgent\AddressBookRUSProvisioningHandler.cs" />
+    <Compile Include="ProvisioningAgent\AdminAuditLogHealth.cs" />
+    <Compile Include="ProvisioningAgent\AdminAuditLogHealthHandler.cs" />
+    <Compile Include="ProvisioningAgent\AdminAuditPerfCounters.cs" />
+    <Compile Include="ProvisioningAgent\AdminAuditPerfCountersInstance.cs" />
+    <Compile Include="ProvisioningAgent\AdminAuditSettings.cs" />
+    <Compile Include="ProvisioningAgent\AdminLogAgentClassFactory.cs" />
+    <Compile Include="ProvisioningAgent\AdminLogCmdletSkipList.cs" />
+    <Compile Include="ProvisioningAgent\AdminLogMessageData.cs" />
+    <Compile Include="ProvisioningAgent\AdminLogProvisioningHandler.cs" />
+    <Compile Include="ProvisioningAgent\ADPolicyProvisioningHandler.cs" />
+    <Compile Include="ProvisioningAgent\AsyncAuditLogger.cs" />
+    <Compile Include="ProvisioningAgent\AsyncAuditReceiver.cs" />
+    <Compile Include="ProvisioningAgent\AuditData.cs" />
+    <Compile Include="ProvisioningAgent\AuditLoggerFactory.cs" />
+    <Compile Include="ProvisioningAgent\ConfigurationCache.cs" />
+    <Compile Include="ProvisioningAgent\ConfigWrapper.cs" />
+    <Compile Include="ProvisioningAgent\DCAdminActionsLogFields.cs" />
+    <Compile Include="ProvisioningAgent\DCAdminActionsLogger.cs" />
+    <Compile Include="ProvisioningAgent\DCAdminActionsLoggerSettings.cs" />
+    <Compile Include="ProvisioningAgent\DefaultRUSProvisioningHandler.cs" />
+    <Compile Include="ProvisioningAgent\Disposable.cs" />
+    <Compile Include="ProvisioningAgent\EmailAddressPolicyRUSProvisioningHandler.cs" />
+    <Compile Include="ProvisioningAgent\EwsAuditLogger.cs" />
+    <Compile Include="ProvisioningAgent\ExceptionDetails.cs" />
+    <Compile Include="ProvisioningAgent\FfoAuditLogger.cs" />
+    <Compile Include="ProvisioningAgent\IAdminAuditLogConfig.cs" />
+    <Compile Include="ProvisioningAgent\IConfigurationPolicy.cs" />
+    <Compile Include="ProvisioningAgent\LdapFilterException.cs" />
+    <Compile Include="ProvisioningAgent\LocDescriptionAttribute.cs" />
+    <Compile Include="ProvisioningAgent\MailboxCreationTimeAgentClassFactory.cs" />
+    <Compile Include="ProvisioningAgent\MailboxCreationTimeProvisioningHandler.cs" />
+    <Compile Include="ProvisioningAgent\MailboxPermissionsAgentClassFactory.cs" />
+    <Compile Include="ProvisioningAgent\MailboxPermissionsProvisioningHandler.cs" />
+    <Compile Include="ProvisioningAgent\MailboxPlansAgentClassFactory.cs" />
+    <Compile Include="ProvisioningAgent\MailboxPlansProvisioningHandler.cs" />
+    <Compile Include="ProvisioningAgent\MailboxProvisioningHandler.cs" />
+    <Compile Include="ProvisioningAgent\MailboxResourcesManagementAgentClassFactory.cs" />
+    <Compile Include="ProvisioningAgent\MailboxSessionCache.cs" />
+    <Compile Include="ProvisioningAgent\MailboxSessionCacheKey.cs" />
+    <Compile Include="ProvisioningAgent\MailboxSessionManager.cs" />
+    <Compile Include="ProvisioningAgent\MoveOfflineAddressbookProvisioningHandler.cs" />
+    <Compile Include="ProvisioningAgent\NewOfflineAddressbookProvisioningHandler.cs" />
+    <Compile Include="ProvisioningAgent\OABResourcesManagementAgentClassFactory.cs" />
+    <Compile Include="ProvisioningAgent\ProvisioningDataCorruptException.cs" />
+    <Compile Include="ProvisioningAgent\ProvisioningPolicyAgentClassFactory.cs" />
+    <Compile Include="ProvisioningAgent\ProvisioningPolicyValidationException.cs" />
+    <Compile Include="ProvisioningAgent\QueryBaseDNRestrictionAgentClassFactory.cs" />
+    <Compile Include="ProvisioningAgent\QueryBaseDNRestrictionModifyObjectProvisioningHandler.cs" />
+    <Compile Include="ProvisioningAgent\QueryBaseDNRestrictionNewObjectProvisioningHandler.cs" />
+    <Compile Include="ProvisioningAgent\RusAgentClassFactory.cs" />
+    <Compile Include="ProvisioningAgent\RusException.cs" />
+    <Compile Include="ProvisioningAgent\RUSProvisioningHandler.cs" />
+    <Compile Include="ProvisioningAgent\RusProvisioningHandlerForRemove.cs" />
+    <Compile Include="ProvisioningAgent\ScriptingAgentClassFactory.cs" />
+    <Compile Include="ProvisioningAgent\ScriptingAgentConfiguration.cs" />
+    <Compile Include="ProvisioningAgent\ScriptingAgentHandler.cs" />
+    <Compile Include="ProvisioningAgent\Strings.cs" />
+    <Compile Include="ProvisioningAgent\UnifiedAdminAuditLog.cs" />
+    <Compile Include="ProvisioningAgent\XsoAuditLogger.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="ProvisioningAgent\Strings.resources" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.Exchange.Common\Microsoft.Exchange.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140F0}</Project>
+      <Name>Microsoft.Exchange.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Compliance\Microsoft.Exchange.Compliance.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140F2}</Project>
+      <Name>Microsoft.Exchange.Compliance</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Configuration.ObjectModel\Microsoft.Exchange.Configuration.ObjectModel.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140FC}</Project>
+      <Name>Microsoft.Exchange.Configuration.ObjectModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.ApplicationLogic\Microsoft.Exchange.Data.ApplicationLogic.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14104}</Project>
+      <Name>Microsoft.Exchange.Data.ApplicationLogic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Common\Microsoft.Exchange.Data.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140D3}</Project>
+      <Name>Microsoft.Exchange.Data.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Directory\Microsoft.Exchange.Data.Directory.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14105}</Project>
+      <Name>Microsoft.Exchange.Data.Directory</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Storage\Microsoft.Exchange.Data.Storage.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1410F}</Project>
+      <Name>Microsoft.Exchange.Data.Storage</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data\Microsoft.Exchange.Data.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14106}</Project>
+      <Name>Microsoft.Exchange.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Diagnostics\Microsoft.Exchange.Diagnostics.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14113}</Project>
+      <Name>Microsoft.Exchange.Diagnostics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Management\Microsoft.Exchange.Management.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1415C}</Project>
+      <Name>Microsoft.Exchange.Management</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Net\Microsoft.Exchange.Net.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14178}</Project>
+      <Name>Microsoft.Exchange.Net</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.StoreProvider\Microsoft.Exchange.StoreProvider.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141B9}</Project>
+      <Name>Microsoft.Exchange.StoreProvider</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.VariantConfiguration\Microsoft.Exchange.VariantConfiguration.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141E0}</Project>
+      <Name>Microsoft.Exchange.VariantConfiguration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\mscorlib\mscorlib.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141F1}</Project>
+      <Name>mscorlib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

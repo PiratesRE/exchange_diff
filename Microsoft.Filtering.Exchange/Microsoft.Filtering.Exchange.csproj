@@ -1,0 +1,114 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{09CD9476-CD82-489E-B9E2-84B47CA141E2}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Microsoft</RootNamespace>
+    <AssemblyName>Microsoft.Filtering.Exchange</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Filtering" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Filtering\AgentUtils.cs" />
+    <Compile Include="Filtering\ClassificationEngineInvalidCustomConfigurationException.cs" />
+    <Compile Include="Filtering\ClassificationEngineInvalidOobConfigurationException.cs" />
+    <Compile Include="Filtering\ExceptionDataConstants.cs" />
+    <Compile Include="Filtering\FileFipsDataStreamFilteringRequest.cs" />
+    <Compile Include="Filtering\FilteringRequestExtensions.cs" />
+    <Compile Include="Filtering\FipsDataStreamFilteringAsyncResult.cs" />
+    <Compile Include="Filtering\FipsDataStreamFilteringRequest.cs" />
+    <Compile Include="Filtering\FipsDataStreamFilteringService.cs" />
+    <Compile Include="Filtering\IExtendedMapiFilteringContext.cs" />
+    <Compile Include="Filtering\IFipsDataStreamFilteringService.cs" />
+    <Compile Include="Filtering\MapiFipsDataStreamFilteringRequest.cs" />
+    <Compile Include="Filtering\MimeFipsDataStreamFilteringRequest.cs" />
+    <Compile Include="Filtering\RecoveryOptions.cs" />
+    <Compile Include="Filtering\ResultsValidationException.cs" />
+    <Compile Include="Filtering\Results\FilteringElapsedTimes.cs" />
+    <Compile Include="Filtering\Results\RuleAgentResultUtils.cs" />
+    <Compile Include="Filtering\Streams\SubjectPrependedStream.cs" />
+    <Compile Include="Filtering\TextExtractionData.cs" />
+    <Compile Include="Filtering\TextExtractionLog.cs" />
+    <Compile Include="Filtering\TextExtractionLogLineFields.cs" />
+    <Compile Include="Filtering\TextExtractionSchema.cs" />
+    <Compile Include="Internal\ManagedWPP\WPP_0aa0dc6458a5fee18236a223d5cb2d97.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Common\Microsoft.Exchange.Data.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140D3}</Project>
+      <Name>Microsoft.Exchange.Data.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Storage\Microsoft.Exchange.Data.Storage.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1410F}</Project>
+      <Name>Microsoft.Exchange.Data.Storage</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Transport\Microsoft.Exchange.Data.Transport.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140D5}</Project>
+      <Name>Microsoft.Exchange.Data.Transport</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Diagnostics\Microsoft.Exchange.Diagnostics.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14113}</Project>
+      <Name>Microsoft.Exchange.Diagnostics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Extensibility.Internal\Microsoft.Exchange.Extensibility.Internal.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14126}</Project>
+      <Name>Microsoft.Exchange.Extensibility.Internal</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Net\Microsoft.Exchange.Net.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14178}</Project>
+      <Name>Microsoft.Exchange.Net</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Transport\Microsoft.Exchange.Transport.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141CD}</Project>
+      <Name>Microsoft.Exchange.Transport</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.UnifiedContent.Exchange\Microsoft.Exchange.UnifiedContent.Exchange.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141DE}</Project>
+      <Name>Microsoft.Exchange.UnifiedContent.Exchange</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.UnifiedContent\Microsoft.Exchange.UnifiedContent.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141DD}</Project>
+      <Name>Microsoft.Exchange.UnifiedContent</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\mscorlib\mscorlib.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141F1}</Project>
+      <Name>mscorlib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

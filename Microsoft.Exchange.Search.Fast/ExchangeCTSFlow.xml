@@ -1,0 +1,1129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<OperatorGraph name='[FlowNamePlaceHolder]' xmlns='http://schemas.microsoft.com/ceres/studio/2009/10/flow'>
+	<Parameters>
+		<Parameter name='SubmissionComponent/SupportsAtomicGrouping' value='true' />
+		<Parameter name="CorrelationIdField" value="CorrelationId" />
+	</Parameters>
+	<Operators>
+		<Operator name='FlowInput' type='Microsoft.Ceres.Evaluation.Operators.Core.Input'>
+			<Targets>
+				<Target>
+					<operatorMoniker name='AfterFlowInputTracingPoint' />
+				</Target>
+			</Targets>
+			<Properties>
+				<Property name='inputName' value='myInput' />
+				<Property name='maxMemoryInBytes' value='2097152L' />
+				<Property name='sortedPrefix' value='0' />
+				<Property name='useDisk' value='False' />
+			</Properties>
+			<OutputSchema sortedPrefix='0'>
+				<Field name='id' type='String' canBeNull='false' />
+				<Field name='CorrelationId' type='Guid' canBeNull='false' />
+				<Field name='tenantid' type='Guid' canBeNull='false' />
+				<Field name='ExchangeCtsFlowOperation' type='String' canBeNull='false' />
+				<Field name='mailboxguid' type='String' canBeNull='true' />
+				<Field name='folderid' type='String' canBeNull='true' />
+				<Field name='documentid' type='Int64' canBeNull='true' />
+				<Field name='indexid' type='Int64' canBeNull='true' />
+				<Field name='compositeitemid' type='String' canBeNull='true' />
+				<Field name='ismovedestination' type='Boolean' canBeNull='true' />
+				<Field name='islocalmdb' type='Boolean' canBeNull='true' />
+				<Field name='errorcode' type='Int32' canBeNull='true' />
+				<Field name='errormessage' type='String' canBeNull='true' />
+				<Field name='attemptcount' type='Int32' canBeNull='true' />
+				<Field name='properties' type='Bucket' canBeNull='false' />
+				<Field name='indexsystemname' type='String' canBeNull='false' />
+				<Field name='instancename' type='String' canBeNull='true' />
+				<Field name='watermark' type='Int64' canBeNull='true' />
+				<Field name='version' type='Int32' canBeNull='true' />
+			</OutputSchema>
+		</Operator>
+
+		<!-- Beginning of Tracing Operators -->
+		<Operator name="AfterFlowInputTracingPoint" type="Microsoft.Ceres.ContentEngine.Operators.Tracing.FlowDetailsTraceOperator">
+			<Targets>
+				<Target>
+					<operatorMoniker name="ExchangeOperationTypeFork" />
+				</Target>
+			</Targets>
+			<Properties>
+				<Property name="correlationIDFieldName" value="CorrelationId" />
+				<Property name="documentIDFieldName" value="indexid" />
+				<Property name="tracingPointID" value="2000" />
+				<Property name="operationTypeFieldName" value="ExchangeCtsFlowOperation" />
+				<Property name="flowTypeName" value="Writer" />
+			</Properties>
+		</Operator>
+
+		<Operator name="ExchangeOperationTypeFork" type="Microsoft.Ceres.ContentEngine.Operators.BuiltIn.Router">
+			<Targets>
+				<Target breakpointEnabled="false">
+					<operatorMoniker name="DocumentTrackerOperator" />
+				</Target>
+				<Target breakpointEnabled="false">
+					<operatorMoniker name="WatermarkUpdateRecordManager" />
+				</Target>
+				<Target breakpointEnabled="false">
+					<operatorMoniker name="FolderUpdateRetrieverOperator" />
+				</Target>
+				<Target breakpointEnabled="false">
+					<operatorMoniker name="DeleteOperationRecordManager" />
+				</Target>
+				<Target breakpointEnabled="false">
+					<operatorMoniker name="DeleteSelectionOperationRecordManager" />
+				</Target>
+			</Targets>
+			<Properties>
+				<Property name="routerGroups" value='[
+					(0,
+					&quot;default&quot;,
+					&quot;&quot;,
+					&quot;DocumentTrackerOperator&quot;
+					),
+					(1,
+					&quot;WatermarkUpdatePath&quot;,
+					&quot;ExchangeCtsFlowOperation == \&quot;WatermarkUpdate\&quot;&quot;,
+					&quot;WatermarkUpdateRecordManager&quot;
+					),
+					(2,
+					&quot;FolderUpdatePath&quot;,
+					&quot;ExchangeCtsFlowOperation == \&quot;FolderUpdate\&quot;&quot;,
+					&quot;FolderUpdateRetrieverOperator&quot;
+					),
+					(3,
+					&quot;DeleteOperationPath&quot;,
+					&quot;ExchangeCtsFlowOperation == \&quot;Delete\&quot;&quot;,
+					&quot;DeleteOperationRecordManager&quot;
+					),
+					(4,
+					&quot;DeleteSelectionOperationPath&quot;,
+					&quot;ExchangeCtsFlowOperation == \&quot;DeleteSelection\&quot;&quot;,
+					&quot;DeleteSelectionOperationRecordManager&quot;
+					)]' />
+			</Properties>
+		</Operator>
+
+		<Operator name='WatermarkUpdateRecordManager' type='Microsoft.Exchange.Search.OperatorSchema.RecordManagerOperator'>
+			<Targets>
+				<Target breakpointEnabled='false'>
+					<operatorMoniker name='WatermarkUpdateDocumentConverter' />
+				</Target>
+			</Targets>
+			<Properties>
+			</Properties>
+		</Operator>
+
+		<Operator name="WatermarkUpdateDocumentConverter" type="Microsoft.Ceres.ContentEngine.Operators.Mars.MarsDocumentConverter">
+			<Targets>
+				<Target breakpointEnabled="false">
+					<operatorMoniker name="WatermarkUpdateIndexWriter" />
+				</Target>
+			</Targets>
+			<Properties>
+				<Property name="idField" value="indexid" />
+				<Property name="tenantIdField" value="tenantid" />
+				<Property name="indexSystemField" value="indexsystemname" />
+				<Property name="documentDataField" value="documentData" />
+			</Properties>
+		</Operator>
+
+		<Operator name="WatermarkUpdateIndexWriter" type="Microsoft.Ceres.ContentEngine.Operators.Mars.IndexWriter">
+			<Properties>
+				<Property name="commitInterval" value="1" />
+				<Property name="provideCallbacks" value="True" />
+				<Property name="idField" value="indexid" />
+				<Property name="tenantIdField" value="tenantid" />
+				<Property name="indexSystemField" value="indexsystemname" />
+				<Property name="documentDataField" value="documentData" />
+				<Property name='isTraceOperator' value='True'/>
+				<Property name='documentSubmittedTracingPointID' value='2502'/>
+				<Property name='callbackReceievedTracingPointID' value='2503'/>
+			</Properties>
+		</Operator>
+
+		<Operator name='FolderUpdateRetrieverOperator' type='Microsoft.Exchange.Search.OperatorSchema.FolderUpdateRetrieverOperator'>
+			<Targets>
+				<Target breakpointEnabled='false'>
+					<operatorMoniker name='FolderUpdateRetrieverErrorCheck' />
+				</Target>
+			</Targets>
+			<ErrorTarget>
+				<operatorMoniker name='FolderUpdateRetrieverOperatorError' />
+			</ErrorTarget>
+			<Properties>
+				<Property name='compositeitemid' value='compositeitemid' />
+				<Property name='ismovedestination' value='ismovedestination' />
+				<Property name='islocalmdb' value='islocalmdb' />
+				<Property name='errorcode' value='errorcode' />
+				<Property name='documentid' value='documentid' />
+				<Property name='annotationtoken' value='annotationtoken' />
+			</Properties>
+		</Operator>
+
+		<Operator name="FolderUpdateRetrieverErrorCheck" type="Microsoft.Ceres.ContentEngine.Operators.BuiltIn.Router">
+			<Targets>
+				<Target breakpointEnabled="false">
+					<operatorMoniker name="FolderUpdateRecordManager" />
+				</Target>
+				<Target breakpointEnabled="false">
+					<operatorMoniker name="FolderUpdateErrorMapper" />
+				</Target>
+			</Targets>
+			<Properties>
+				<Property name="routerGroups" value="[
+					(0,
+					&quot;default&quot;,
+					&quot;&quot;,
+					&quot;FolderUpdateRecordManager&quot;
+					),
+					(1,
+					&quot;FolderUpdateErrorMapperPath&quot;,
+					&quot;folderupdateerrorcode != 0&quot;,
+					&quot;FolderUpdateErrorMapper&quot;
+					)]" />
+			</Properties>
+		</Operator>
+
+		<Operator name='FolderUpdateRecordManager' type='Microsoft.Exchange.Search.OperatorSchema.RecordManagerOperator'>
+			<Targets>
+				<Target breakpointEnabled='false'>
+					<operatorMoniker name='FolderUpdateDocumentConverter' />
+				</Target>
+			</Targets>
+			<Properties>
+			</Properties>
+		</Operator>
+
+		<Operator name="FolderUpdateDocumentConverter" type="Microsoft.Ceres.ContentEngine.Operators.Mars.MarsDocumentConverter">
+			<Targets>
+				<Target breakpointEnabled="false">
+					<operatorMoniker name="FolderUpdateIndexWriter" />
+				</Target>
+			</Targets>
+			<Properties>
+				<Property name="idField" value="indexid" />
+				<Property name="tenantIdField" value="tenantid" />
+				<Property name="indexSystemField" value="indexsystemname" />
+				<Property name="documentDataField" value="documentData" />
+			</Properties>
+		</Operator>
+
+		<Operator name="FolderUpdateIndexWriter" type="Microsoft.Ceres.ContentEngine.Operators.Mars.IndexWriter">
+			<Properties>
+				<Property name="commitInterval" value="1" />
+				<Property name="provideCallbacks" value="True" />
+				<Property name="idField" value="indexid" />
+				<Property name="tenantIdField" value="tenantid" />
+				<Property name="indexSystemField" value="indexsystemname" />
+				<Property name="documentDataField" value="documentData" />
+				<Property name='isTraceOperator' value='True'/>
+				<Property name='documentSubmittedTracingPointID' value='2504'/>
+				<Property name='callbackReceievedTracingPointID' value='2505'/>
+			</Properties>
+		</Operator>
+
+		<Operator name="FolderUpdateErrorMapper" type="Microsoft.Ceres.ContentEngine.Operators.BuiltIn.Mapper">
+			<Targets>
+				<Target breakpointEnabled="false">
+					<operatorMoniker name="FolderUpdateErrorRecordManager" />
+				</Target>
+			</Targets>
+			<Properties>
+				<Property name="expressions" />
+				<Property name="fieldsToRemove" />
+				<Property name="adaptableType" value="True" />
+			</Properties>
+			<OutputSchema>
+				<Field name="errorcode" type="Int32" canBeNull="true" expression="folderupdateerrorcode"/>
+				<Field name="errormessage" type="String" canBeNull="true" expression="folderupdateerrormessage"/>
+				<Field name="documentid" type="Int64" canBeNull="true" expression="indexid"/>
+				<Field name="mailboxguid" type="String" canBeNull="true" expression="folderupdatemailboxguid"/>
+			</OutputSchema>
+		</Operator>
+
+		<Operator name='FolderUpdateErrorRecordManager' type='Microsoft.Exchange.Search.OperatorSchema.RecordManagerOperator'>
+			<Targets>
+				<Target breakpointEnabled='false'>
+					<operatorMoniker name='FolderUpdateMapperDocumentConverter' />
+				</Target>
+			</Targets>
+			<Properties>
+			</Properties>
+		</Operator>
+
+		<Operator name="FolderUpdateMapperDocumentConverter" type="Microsoft.Ceres.ContentEngine.Operators.Mars.MarsDocumentConverter">
+			<Targets>
+				<Target breakpointEnabled="false">
+					<operatorMoniker name="FolderUpdateMapperIndexWriter" />
+				</Target>
+			</Targets>
+			<Properties>
+				<Property name="idField" value="indexid" />
+				<Property name="tenantIdField" value="tenantid" />
+				<Property name="indexSystemField" value="indexsystemname" />
+				<Property name="documentDataField" value="documentData" />
+			</Properties>
+		</Operator>
+
+		<Operator name="FolderUpdateMapperIndexWriter" type="Microsoft.Ceres.ContentEngine.Operators.Mars.IndexWriter">
+			<Properties>
+				<Property name="commitInterval" value="1" />
+				<Property name="provideCallbacks" value="True" />
+				<Property name="idField" value="indexid" />
+				<Property name="tenantIdField" value="tenantid" />
+				<Property name="indexSystemField" value="indexsystemname" />
+				<Property name="documentDataField" value="documentData" />
+				<Property name='isTraceOperator' value='True'/>
+				<Property name='documentSubmittedTracingPointID' value='2510'/>
+				<Property name='callbackReceievedTracingPointID' value='2511'/>
+			</Properties>
+		</Operator>
+
+		<Operator name='DeleteOperationRecordManager' type='Microsoft.Exchange.Search.OperatorSchema.RecordManagerOperator'>
+			<Targets>
+				<Target breakpointEnabled='false'>
+					<operatorMoniker name='DeleteOperationDocumentConverter' />
+				</Target>
+			</Targets>
+			<Properties>
+			</Properties>
+		</Operator>
+
+		<Operator name="DeleteOperationDocumentConverter" type="Microsoft.Ceres.ContentEngine.Operators.Mars.MarsDocumentConverter">
+			<Targets>
+				<Target breakpointEnabled="false">
+					<operatorMoniker name="DeleteOperationIndexWriter" />
+				</Target>
+			</Targets>
+			<Properties>
+				<Property name="idField" value="indexid" />
+				<Property name="tenantIdField" value="tenantid" />
+				<Property name="indexSystemField" value="indexsystemname" />
+				<Property name="documentDataField" value="documentData" />
+			</Properties>
+		</Operator>
+
+		<Operator name="DeleteOperationIndexWriter" type="Microsoft.Ceres.ContentEngine.Operators.Mars.IndexWriter">
+			<Properties>
+				<Property name="commitInterval" value="1" />
+				<Property name="provideCallbacks" value="True" />
+				<Property name="idField" value="indexid" />
+				<Property name="tenantIdField" value="tenantid" />
+				<Property name="indexSystemField" value="indexsystemname" />
+				<Property name="documentDataField" value="documentData" />
+				<Property name='isTraceOperator' value='True'/>
+				<Property name='documentSubmittedTracingPointID' value='2506'/>
+				<Property name='callbackReceievedTracingPointID' value='2507'/>
+			</Properties>
+		</Operator>
+
+		<Operator name='DeleteSelectionOperationRecordManager' type='Microsoft.Exchange.Search.OperatorSchema.RecordManagerOperator'>
+			<Targets>
+				<Target breakpointEnabled='false'>
+					<operatorMoniker name='DeleteSelectionOperationDocumentConverter' />
+				</Target>
+			</Targets>
+			<Properties>
+			</Properties>
+		</Operator>
+
+		<Operator name="DeleteSelectionOperationDocumentConverter" type="Microsoft.Ceres.ContentEngine.Operators.Mars.MarsDocumentConverter">
+			<Targets>
+				<Target breakpointEnabled="false">
+					<operatorMoniker name="DeleteSelectionOperationIndexWriter" />
+				</Target>
+			</Targets>
+			<Properties>
+				<Property name="idField" value="indexid" />
+				<Property name="tenantIdField" value="tenantid" />
+				<Property name="indexSystemField" value="indexsystemname" />
+				<Property name="documentDataField" value="documentData" />
+			</Properties>
+		</Operator>
+
+		<Operator name="DeleteSelectionOperationIndexWriter" type="Microsoft.Ceres.ContentEngine.Operators.Mars.IndexWriter">
+			<Properties>
+				<Property name="commitInterval" value="1" />
+				<Property name="provideCallbacks" value="True" />
+				<Property name="idField" value="indexid" />
+				<Property name="tenantIdField" value="tenantid" />
+				<Property name="indexSystemField" value="indexsystemname" />
+				<Property name="documentDataField" value="documentData" />
+				<Property name='isTraceOperator' value='True'/>
+				<Property name='documentSubmittedTracingPointID' value='2508'/>
+				<Property name='callbackReceievedTracingPointID' value='2509'/>
+			</Properties>
+		</Operator>
+
+		<Operator name='DocumentTrackerOperator' type='Microsoft.Exchange.Search.OperatorSchema.DocumentTrackerOperator'>
+			<Targets>
+				<Target breakpointEnabled='false'>
+					<operatorMoniker name='AfterDocumentTrackerTracingPoint' />
+				</Target>
+			</Targets>
+			<Properties>
+				<Property name='documentid' value='documentid' />
+				<Property name='CorrelationId' value='CorrelationId' />
+				<Property name='compositeitemid' value='compositeitemid' />
+			</Properties>
+		</Operator>
+
+		<Operator name="AfterDocumentTrackerTracingPoint" type="Microsoft.Ceres.ContentEngine.Operators.Tracing.NormalTraceOperator">
+			<Targets>
+				<Target>
+					<operatorMoniker name="ErrorBypassCheck" />
+				</Target>
+			</Targets>
+			<Properties>
+				<Property name="correlationIDFieldName" value="CorrelationId" />
+				<Property name="documentIDFieldName" value="documentid" />
+				<Property name="tracingPointID" value="2020" />
+			</Properties>
+		</Operator>
+
+		<Operator name="ErrorBypassCheck" type="Microsoft.Ceres.ContentEngine.Operators.BuiltIn.Router">
+			<Targets>
+				<Target breakpointEnabled="false">
+					<operatorMoniker name="ErrorBypass" />
+				</Target>
+				<Target breakpointEnabled="false">
+					<operatorMoniker name="RetrieverOperator" />
+				</Target>
+			</Targets>
+			<Properties>
+				<Property name="routerGroups" value="[
+					(0,
+					&quot;default&quot;,
+					&quot;&quot;,
+					&quot;ErrorBypass&quot;
+					),
+					(1,
+					&quot;ItemRetrieverPath&quot;,
+					&quot;(IsNull(errorcode) || errorcode == 0 || errorcode == 8)&quot;,
+					&quot;RetrieverOperator&quot;
+					)]" />
+			</Properties>
+		</Operator>
+
+		<Operator name='ErrorBypass' type='Microsoft.Exchange.Search.OperatorSchema.ErrorBypassOperator'>
+			<Targets>
+				<Target breakpointEnabled='false'>
+					<operatorMoniker name='ErrorBypassDocumentConverter' />
+				</Target>
+			</Targets>
+			<Properties>
+				<Property name='documentid' value='documentid' />
+				<Property name='errorcode' value='errorcode' />
+				<Property name='attemptcount' value='attemptcount' />
+			</Properties>
+		</Operator>
+
+		<Operator name="ErrorBypassDocumentConverter" type="Microsoft.Ceres.ContentEngine.Operators.Mars.MarsDocumentConverter">
+			<Targets>
+				<Target breakpointEnabled="false">
+					<operatorMoniker name="ErrorBypassIndexWriter" />
+				</Target>
+			</Targets>
+			<Properties>
+				<Property name="idField" value="indexid" />
+				<Property name="tenantIdField" value="tenantid" />
+				<Property name="indexSystemField" value="indexsystemname" />
+				<Property name="documentDataField" value="documentData" />
+			</Properties>
+		</Operator>
+
+		<Operator name="ErrorBypassIndexWriter" type="Microsoft.Ceres.ContentEngine.Operators.Mars.IndexWriter">
+			<Properties>
+				<Property name="commitInterval" value="1" />
+				<Property name="provideCallbacks" value="True" />
+				<Property name="idField" value="indexid" />
+				<Property name="tenantIdField" value="tenantid" />
+				<Property name="indexSystemField" value="indexsystemname" />
+				<Property name="documentDataField" value="documentData" />
+				<Property name='isTraceOperator' value='True'/>
+				<Property name='documentSubmittedTracingPointID' value='3500'/>
+				<Property name='callbackReceievedTracingPointID' value='3501'/>
+			</Properties>
+		</Operator>
+
+		<Operator name='RetrieverOperator' type='Microsoft.Exchange.Search.OperatorSchema.RetrieverOperator'>
+			<Targets>
+				<Target breakpointEnabled='false'>
+					<operatorMoniker name='AfterRetrieverTracingPoint' />
+				</Target>
+			</Targets>
+			<ErrorTarget>
+				<operatorMoniker name='RetrieverOperatorError' />
+			</ErrorTarget>
+			<Properties>
+				<Property name='compositeitemid' value='compositeitemid' />
+				<Property name='ismovedestination' value='ismovedestination' />
+				<Property name='islocalmdb' value='islocalmdb' />
+				<Property name='errorcode' value='errorcode' />
+				<Property name='documentid' value='documentid' />
+				<Property name='annotationtoken' value='annotationtoken' />
+			</Properties>
+		</Operator>
+
+		<Operator name="AfterRetrieverTracingPoint" type="Microsoft.Ceres.ContentEngine.Operators.Tracing.WithNumbersTraceOperator">
+			<Targets>
+				<Target>
+					<operatorMoniker name="RetrieverErrorCheck" />
+				</Target>
+			</Targets>
+			<Properties>
+				<Property name="correlationIDFieldName" value="CorrelationId" />
+				<Property name="documentIDFieldName" value="documentid" />
+				<Property name="tracingPointID" value="2040" />
+				<Property name="attachmentsFieldName" value="attachmentfilenames" />
+				<Property name="hasAttachmentsFieldName" value="hasattachment" />
+				<Property name="isAnnotatedFieldName" value="annotationtoken" />
+				<Property name="documentSizeFieldName" value="size" />
+			</Properties>
+		</Operator>
+
+		<Operator name="RetrieverErrorCheck" type="Microsoft.Ceres.ContentEngine.Operators.BuiltIn.Router">
+			<Targets>
+				<Target breakpointEnabled="false">
+					<operatorMoniker name="RetrieverErrorBypass" />
+				</Target>
+				<Target breakpointEnabled="false">
+					<operatorMoniker name="AfterRetrieverErrorCheckTracingPoint" />
+				</Target>
+			</Targets>
+			<Properties>
+				<Property name="routerGroups" value="[
+					(0,
+					&quot;default&quot;,
+					&quot;&quot;,
+					&quot;AfterRetrieverErrorCheckTracingPoint&quot;
+					),
+					(1,
+					&quot;RetrieverErrorBypassPath&quot;,
+					&quot;shouldbranchtoerror&quot;,
+					&quot;RetrieverErrorBypass&quot;
+					)]" />
+			</Properties>
+		</Operator>
+
+		<Operator name='RetrieverErrorBypass' type='Microsoft.Exchange.Search.OperatorSchema.ErrorBypassOperator'>
+			<Targets>
+				<Target breakpointEnabled='false'>
+					<operatorMoniker name='RetrieverErrorBypassRecordManager' />
+				</Target>
+			</Targets>
+			<Properties>
+				<Property name='documentid' value='documentid' />
+				<Property name='errorcode' value='errorcode' />
+				<Property name='attemptcount' value='attemptcount' />
+			</Properties>
+		</Operator>
+
+		<Operator name='RetrieverErrorBypassRecordManager' type='Microsoft.Exchange.Search.OperatorSchema.RecordManagerOperator'>
+			<Targets>
+				<Target breakpointEnabled='false'>
+					<operatorMoniker name='RetrieverErrorBypassDocumentConverter' />
+				</Target>
+			</Targets>
+			<Properties>
+			</Properties>
+		</Operator>
+
+		<Operator name="RetrieverErrorBypassDocumentConverter" type="Microsoft.Ceres.ContentEngine.Operators.Mars.MarsDocumentConverter">
+			<Targets>
+				<Target breakpointEnabled="false">
+					<operatorMoniker name="RetrieverErrorBypassIndexWriter" />
+				</Target>
+			</Targets>
+			<Properties>
+				<Property name="idField" value="indexid" />
+				<Property name="tenantIdField" value="tenantid" />
+				<Property name="indexSystemField" value="indexsystemname" />
+				<Property name="documentDataField" value="documentData" />
+			</Properties>
+		</Operator>
+
+		<Operator name="RetrieverErrorBypassIndexWriter" type="Microsoft.Ceres.ContentEngine.Operators.Mars.IndexWriter">
+			<Properties>
+				<Property name="commitInterval" value="1" />
+				<Property name="provideCallbacks" value="True" />
+				<Property name="idField" value="indexid" />
+				<Property name="tenantIdField" value="tenantid" />
+				<Property name="indexSystemField" value="indexsystemname" />
+				<Property name="documentDataField" value="documentData" />
+				<Property name='isTraceOperator' value='True'/>
+				<Property name='documentSubmittedTracingPointID' value='3504'/>
+				<Property name='callbackReceievedTracingPointID' value='3505'/>
+			</Properties>
+		</Operator>
+
+		<Operator name="AfterRetrieverErrorCheckTracingPoint" type="Microsoft.Ceres.ContentEngine.Operators.Tracing.NormalTraceOperator">
+			<Targets>
+				<Target>
+					<operatorMoniker name="DocumentParser" />
+				</Target>
+			</Targets>
+			<Properties>
+				<Property name="correlationIDFieldName" value="CorrelationId" />
+				<Property name="documentIDFieldName" value="documentid" />
+				<Property name="tracingPointID" value="2060" />
+			</Properties>
+		</Operator>
+
+		<Operator name="DocumentParser" type="Microsoft.Ceres.ContentEngine.Operators.BuiltIn.SubFlow.SubFlow">
+			<Targets>
+				<Target breakpointEnabled="false">
+					<operatorMoniker name="AfterDocumentParserTracingPoint" />
+				</Target>
+			</Targets>
+			<ErrorTarget>
+				<operatorMoniker name='DocumentParserError' />
+			</ErrorTarget>
+			<Properties>
+				<Property name="subFlowName" value="&quot;Microsoft.DocParsingSubFlow&quot;" />
+				<Property name="subFlowInputs" />
+				<Property name="subFlowOutputs" />
+				<Property name="inputOutputMap" />
+			</Properties>
+		</Operator>
+
+		<Operator name="AfterDocumentParserTracingPoint" type="Microsoft.Ceres.ContentEngine.Operators.Tracing.SizeTraceOperator">
+			<Targets>
+				<Target>
+					<operatorMoniker name="PostDocParserOperator" />
+				</Target>
+			</Targets>
+			<Properties>
+				<Property name="correlationIDFieldName" value="CorrelationId" />
+				<Property name="documentIDFieldName" value="documentid" />
+				<Property name="tracingPointID" value="2080" />
+				<Property name="documentSizeFieldName" value="size" />
+			</Properties>
+		</Operator>
+
+		<Operator name='PostDocParserOperator' type='Microsoft.Exchange.Search.OperatorSchema.PostDocParserOperator'>
+			<Targets>
+				<Target breakpointEnabled='false'>
+					<operatorMoniker name='AllToTextual' />
+				</Target>
+			</Targets>
+			<ErrorTarget>
+				<operatorMoniker name='PostDocParserOperatorError' />
+			</ErrorTarget>
+			<Properties>
+				<Property name='id' value='id' />
+				<Property name='documentid' value='documentid' />
+				<Property name='errorcode' value='errorcode' />
+			</Properties>
+		</Operator>
+
+		<Operator name='AllToTextual' type='Microsoft.Ceres.ContentEngine.Operators.BuiltIn.TextToTextual'>
+			<Targets>
+				<Target>
+					<operatorMoniker name='PostTextualDiagnosticOperator' />
+				</Target>
+			</Targets>
+			<ErrorTarget>
+				<operatorMoniker name='AllToTextualError' />
+			</ErrorTarget>
+			<Properties>
+				<Property name='fieldsToIgnore' value="['annotationtoken','mailboxguid', 'compositeitemid','Attachments','tenantid','indexsystemname', 'errormessage', 'detectedlanguage', 'ExchangeCtsFlowOperation']" />
+			</Properties>
+		</Operator>
+
+		<Operator name='PostTextualDiagnosticOperator' type='Microsoft.Exchange.Search.OperatorSchema.DiagnosticOperator'>
+			<Targets>
+				<Target breakpointEnabled='false'>
+					<operatorMoniker name='LanguageIdentifier_body' />
+				</Target>
+			</Targets>
+			<Properties>
+			</Properties>
+		</Operator>
+
+		<Operator name='LanguageIdentifier_body' type='Microsoft.Ceres.ContentEngine.NlpOperators.LanguageDetector'>
+			<Targets>
+				<Target>
+					<operatorMoniker name='PostLanguageIdentifierDiagnosticOperator' />
+				</Target>
+			</Targets>
+			<ErrorTarget>
+				<operatorMoniker name='LanguageIdentifier_bodyError' />
+			</ErrorTarget>
+			<Properties>
+				<Property name='inputField' value='mailboxlanguagedetectiontext' />
+				<Property name='fallbackLanguageField' value='detectedlanguage' />
+				<Property name='maximumCharactersToRead' value='5000' />
+				<Property name='documentLanguageOutputField' value='language' />
+			</Properties>
+		</Operator>
+
+		<Operator name='PostLanguageIdentifierDiagnosticOperator' type='Microsoft.Exchange.Search.OperatorSchema.DiagnosticOperator'>
+			<Targets>
+				<Target breakpointEnabled='false'>
+					<operatorMoniker name='AfterPostLanguageIdentifierTracingPoint' />
+				</Target>
+			</Targets>
+			<Properties>
+			</Properties>
+		</Operator>
+
+		<Operator name="AfterPostLanguageIdentifierTracingPoint" type="Microsoft.Ceres.ContentEngine.Operators.Tracing.SizeTraceOperator">
+			<Targets>
+				<Target>
+					<operatorMoniker name="WordBreaker" />
+				</Target>
+			</Targets>
+			<Properties>
+				<Property name="correlationIDFieldName" value="CorrelationId" />
+				<Property name="documentIDFieldName" value="documentid" />
+				<Property name="tracingPointID" value="2100" />
+				<Property name="documentSizeFieldName" value="size" />
+			</Properties>
+		</Operator>
+
+		<Operator name="WordBreaker" type="Microsoft.Ceres.ContentEngine.NlpOperators.WordBreaker">
+			<Targets>
+				<Target>
+					<operatorMoniker name="AfterWordBreakerTracingPoint" />
+				</Target>
+			</Targets>
+			<ErrorTarget>
+				<operatorMoniker name='WordBreakerError' />
+			</ErrorTarget>
+			<Properties>
+				<Property name="languageField" value="&quot;language&quot;" />
+				<Property name="inputField" value="&quot;nextField&quot;" />
+				<Property name="tokenAnnotationName" value="token" />
+				<Property name="altTokenAnnotationName" value="alttoken" />
+				<Property name="annotateTokenSegments" value="True" />
+				<Property name="annotateNGramsForTokenSegments" value="True" />
+				<Property name="maxAnnotations" value="131072" />
+				<Property name="enablePartialProcessing" value="True" />
+				<Property name="propertiesField" value="&quot;properties&quot;" />
+				<Property name="fieldList" value="[WordBreakerPropertyList]" />
+			</Properties>
+		</Operator>
+
+		<Operator name="AfterWordBreakerTracingPoint" type="Microsoft.Ceres.ContentEngine.Operators.Tracing.SizeTraceOperator">
+			<Targets>
+				<Target>
+					<operatorMoniker name="TokenDeserializerOperator" />
+				</Target>
+			</Targets>
+			<Properties>
+				<Property name="correlationIDFieldName" value="CorrelationId" />
+				<Property name="documentIDFieldName" value="documentid" />
+				<Property name="tracingPointID" value="2120" />
+				<Property name="documentSizeFieldName" value="size" />
+			</Properties>
+		</Operator>
+
+		<Operator name='TokenDeserializerOperator' type='Microsoft.Exchange.Search.OperatorSchema.TokenDeserializerOperator'>
+			<Targets>
+				<Target breakpointEnabled='false'>
+					<operatorMoniker name='BodyPropertySetter' />
+				</Target>
+			</Targets>
+			<ErrorTarget>
+				<operatorMoniker name='TokenDeserializerError' />
+			</ErrorTarget>
+			<Properties>
+				<Property name='annotationtoken' value='annotationtoken' />
+				<Property name='errorcode' value='errorcode' />
+				<Property name='outputfield' value='newbody' />
+			</Properties>
+		</Operator>
+
+		<Operator name="BodyPropertySetter" type="Microsoft.Ceres.ContentEngine.Operators.BuiltIn.Mapper">
+			<Targets>
+				<Target breakpointEnabled="false">
+					<operatorMoniker name="AfterBodyPropertySetterTracingPoint" />
+				</Target>
+			</Targets>
+			<Properties>
+				<Property name="expressions" />
+				<Property name="fieldsToRemove" />
+				<Property name="adaptableType" value="True" />
+			</Properties>
+			<OutputSchema>
+				<Field name="body" type="Textual" canBeNull="true" expression="newbody"/>
+			</OutputSchema>
+		</Operator>
+
+		<Operator name="AfterBodyPropertySetterTracingPoint" type="Microsoft.Ceres.ContentEngine.Operators.Tracing.NormalTraceOperator">
+			<Targets>
+				<Target>
+					<operatorMoniker name="RecordManagerOperator" />
+				</Target>
+			</Targets>
+			<Properties>
+				<Property name="correlationIDFieldName" value="CorrelationId" />
+				<Property name="documentIDFieldName" value="documentid" />
+				<Property name="tracingPointID" value="2140" />
+			</Properties>
+		</Operator>
+
+		<Operator name='RecordManagerOperator' type='Microsoft.Exchange.Search.OperatorSchema.RecordManagerOperator'>
+			<Targets>
+				<Target breakpointEnabled='false'>
+					<operatorMoniker name='MainDocumentConverter' />
+				</Target>
+			</Targets>
+			<Properties>
+			</Properties>
+		</Operator>
+
+		<Operator name="MainDocumentConverter" type="Microsoft.Ceres.ContentEngine.Operators.Mars.MarsDocumentConverter">
+			<Targets>
+				<Target breakpointEnabled="false">
+					<operatorMoniker name="MainIndexWriter" />
+				</Target>
+			</Targets>
+			<Properties>
+				<Property name="managedPropertyBuckets" value="[properties]" />
+				<Property name="idField" value="indexid" />
+				<Property name="tenantIdField" value="tenantid" />
+				<Property name="indexSystemField" value="indexsystemname" />
+				<Property name="truncatedFlagField" value="IsPartiallyProcessed" />
+				<Property name="documentDataField" value="documentData" />
+			</Properties>
+		</Operator>
+
+		<Operator name="MainIndexWriter" type="Microsoft.Ceres.ContentEngine.Operators.Mars.IndexWriter">
+			<Properties>
+				<Property name="commitInterval" value="1" />
+				<Property name="provideCallbacks" value="True" />
+				<Property name="idField" value="indexid" />
+				<Property name="tenantIdField" value="tenantid" />
+				<Property name="indexSystemField" value="indexsystemname" />
+				<Property name="documentDataField" value="documentData" />
+				<Property name='isTraceOperator' value='True'/>
+				<Property name='documentSubmittedTracingPointID' value='2500'/>
+				<Property name='callbackReceievedTracingPointID' value='2501'/>
+			</Properties>
+		</Operator>
+
+		<!-- Beginning of Error Handling Operators -->
+		<Operator name='RetrieverOperatorError' type='Microsoft.Exchange.Search.OperatorSchema.ErrorOperator'>
+			<Targets>
+				<Target breakpointEnabled='false'>
+					<operatorMoniker name='RetrieverOperatorErrorDocumentConverter' />
+				</Target>
+			</Targets>
+			<Properties>
+				<Property name='Exception' value='Exception' />
+				<Property name='ExceptionCorrelationId' value='ExceptionCorrelationId' />
+			</Properties>
+		</Operator>
+
+		<Operator name="RetrieverOperatorErrorDocumentConverter" type="Microsoft.Ceres.ContentEngine.Operators.Mars.MarsDocumentConverter">
+			<Targets>
+				<Target breakpointEnabled="false">
+					<operatorMoniker name="RetrieverOperatorErrorIndexWriter" />
+				</Target>
+			</Targets>
+			<Properties>
+				<Property name="idField" value="indexid" />
+				<Property name="tenantIdField" value="tenantid" />
+				<Property name="indexSystemField" value="indexsystemname" />
+				<Property name="documentDataField" value="documentData" />
+			</Properties>
+		</Operator>
+
+		<Operator name="RetrieverOperatorErrorIndexWriter" type="Microsoft.Ceres.ContentEngine.Operators.Mars.IndexWriter">
+			<Properties>
+				<Property name="commitInterval" value="1" />
+				<Property name="provideCallbacks" value="True" />
+				<Property name="idField" value="indexid" />
+				<Property name="tenantIdField" value="tenantid" />
+				<Property name="indexSystemField" value="indexsystemname" />
+				<Property name="documentDataField" value="documentData" />
+				<Property name='isTraceOperator' value='True'/>
+				<Property name='documentSubmittedTracingPointID' value='3502'/>
+				<Property name='callbackReceievedTracingPointID' value='3503'/>
+			</Properties>
+		</Operator>
+
+		<Operator name='FolderUpdateRetrieverOperatorError' type='Microsoft.Exchange.Search.OperatorSchema.ErrorOperator'>
+			<Targets>
+				<Target breakpointEnabled='false'>
+					<operatorMoniker name='FolderUpdateRetrieverOperatorErrorDocumentConverter' />
+				</Target>
+			</Targets>
+			<Properties>
+				<Property name='Exception' value='Exception' />
+				<Property name='ExceptionCorrelationId' value='ExceptionCorrelationId' />
+			</Properties>
+		</Operator>
+
+		<Operator name="FolderUpdateRetrieverOperatorErrorDocumentConverter" type="Microsoft.Ceres.ContentEngine.Operators.Mars.MarsDocumentConverter">
+			<Targets>
+				<Target breakpointEnabled="false">
+					<operatorMoniker name="FolderUpdateRetrieverOperatorErrorIndexWriter" />
+				</Target>
+			</Targets>
+			<Properties>
+				<Property name="idField" value="indexid" />
+				<Property name="tenantIdField" value="tenantid" />
+				<Property name="indexSystemField" value="indexsystemname" />
+				<Property name="documentDataField" value="documentData" />
+			</Properties>
+		</Operator>
+
+		<Operator name="FolderUpdateRetrieverOperatorErrorIndexWriter" type="Microsoft.Ceres.ContentEngine.Operators.Mars.IndexWriter">
+			<Properties>
+				<Property name="commitInterval" value="1" />
+				<Property name="provideCallbacks" value="True" />
+				<Property name="idField" value="indexid" />
+				<Property name="tenantIdField" value="tenantid" />
+				<Property name="indexSystemField" value="indexsystemname" />
+				<Property name="documentDataField" value="documentData" />
+				<Property name='isTraceOperator' value='True'/>
+				<Property name='documentSubmittedTracingPointID' value='2512'/>
+				<Property name='callbackReceievedTracingPointID' value='2513'/>
+			</Properties>
+		</Operator>
+
+		<Operator name='DocumentParserError' type='Microsoft.Exchange.Search.OperatorSchema.ErrorOperator'>
+			<Targets>
+				<Target breakpointEnabled='false'>
+					<operatorMoniker name='DocumentParserErrorDocumentConverter' />
+				</Target>
+			</Targets>
+			<Properties>
+				<Property name='Exception' value='Exception' />
+				<Property name='ExceptionCorrelationId' value='ExceptionCorrelationId' />
+			</Properties>
+		</Operator>
+
+		<Operator name="DocumentParserErrorDocumentConverter" type="Microsoft.Ceres.ContentEngine.Operators.Mars.MarsDocumentConverter">
+			<Targets>
+				<Target breakpointEnabled="false">
+					<operatorMoniker name="DocumentParserErrorIndexWriter" />
+				</Target>
+			</Targets>
+			<Properties>
+				<Property name="idField" value="indexid" />
+				<Property name="tenantIdField" value="tenantid" />
+				<Property name="indexSystemField" value="indexsystemname" />
+				<Property name="documentDataField" value="documentData" />
+			</Properties>
+		</Operator>
+
+		<Operator name="DocumentParserErrorIndexWriter" type="Microsoft.Ceres.ContentEngine.Operators.Mars.IndexWriter">
+			<Properties>
+				<Property name="commitInterval" value="1" />
+				<Property name="provideCallbacks" value="True" />
+				<Property name="idField" value="indexid" />
+				<Property name="tenantIdField" value="tenantid" />
+				<Property name="indexSystemField" value="indexsystemname" />
+				<Property name="documentDataField" value="documentData" />
+				<Property name='isTraceOperator' value='True'/>
+				<Property name='documentSubmittedTracingPointID' value='3506'/>
+				<Property name='callbackReceievedTracingPointID' value='3507'/>
+			</Properties>
+		</Operator>
+
+		<Operator name='PostDocParserOperatorError' type='Microsoft.Exchange.Search.OperatorSchema.ErrorOperator'>
+			<Targets>
+				<Target breakpointEnabled='false'>
+					<operatorMoniker name='PostDocParserOperatorErrorDocumentConverter' />
+				</Target>
+			</Targets>
+			<Properties>
+				<Property name='Exception' value='Exception' />
+				<Property name='ExceptionCorrelationId' value='ExceptionCorrelationId' />
+			</Properties>
+		</Operator>
+
+		<Operator name="PostDocParserOperatorErrorDocumentConverter" type="Microsoft.Ceres.ContentEngine.Operators.Mars.MarsDocumentConverter">
+			<Targets>
+				<Target breakpointEnabled="false">
+					<operatorMoniker name="PostDocParserOperatorErrorIndexWriter" />
+				</Target>
+			</Targets>
+			<Properties>
+				<Property name="idField" value="indexid" />
+				<Property name="tenantIdField" value="tenantid" />
+				<Property name="indexSystemField" value="indexsystemname" />
+				<Property name="documentDataField" value="documentData" />
+			</Properties>
+		</Operator>
+
+		<Operator name="PostDocParserOperatorErrorIndexWriter" type="Microsoft.Ceres.ContentEngine.Operators.Mars.IndexWriter">
+			<Properties>
+				<Property name="commitInterval" value="1" />
+				<Property name="provideCallbacks" value="True" />
+				<Property name="idField" value="indexid" />
+				<Property name="tenantIdField" value="tenantid" />
+				<Property name="indexSystemField" value="indexsystemname" />
+				<Property name="documentDataField" value="documentData" />
+				<Property name='isTraceOperator' value='True'/>
+				<Property name='documentSubmittedTracingPointID' value='3508'/>
+				<Property name='callbackReceievedTracingPointID' value='3509'/>
+			</Properties>
+		</Operator>
+
+		<Operator name='AllToTextualError' type='Microsoft.Exchange.Search.OperatorSchema.ErrorOperator'>
+			<Targets>
+				<Target breakpointEnabled='false'>
+					<operatorMoniker name='AllToTextualErrorDocumentConverter' />
+				</Target>
+			</Targets>
+			<Properties>
+				<Property name='Exception' value='Exception' />
+				<Property name='ExceptionCorrelationId' value='ExceptionCorrelationId' />
+			</Properties>
+		</Operator>
+
+		<Operator name="AllToTextualErrorDocumentConverter" type="Microsoft.Ceres.ContentEngine.Operators.Mars.MarsDocumentConverter">
+			<Targets>
+				<Target breakpointEnabled="false">
+					<operatorMoniker name="AllToTextualErrorIndexWriter" />
+				</Target>
+			</Targets>
+			<Properties>
+				<Property name="idField" value="indexid" />
+				<Property name="tenantIdField" value="tenantid" />
+				<Property name="indexSystemField" value="indexsystemname" />
+				<Property name="documentDataField" value="documentData" />
+			</Properties>
+		</Operator>
+
+		<Operator name="AllToTextualErrorIndexWriter" type="Microsoft.Ceres.ContentEngine.Operators.Mars.IndexWriter">
+			<Properties>
+				<Property name="commitInterval" value="1" />
+				<Property name="provideCallbacks" value="True" />
+				<Property name="idField" value="indexid" />
+				<Property name="tenantIdField" value="tenantid" />
+				<Property name="indexSystemField" value="indexsystemname" />
+				<Property name="documentDataField" value="documentData" />
+				<Property name='isTraceOperator' value='True'/>
+				<Property name='documentSubmittedTracingPointID' value='3510'/>
+				<Property name='callbackReceievedTracingPointID' value='3511'/>
+			</Properties>
+		</Operator>
+
+		<Operator name='LanguageIdentifier_bodyError' type='Microsoft.Exchange.Search.OperatorSchema.ErrorOperator'>
+			<Targets>
+				<Target breakpointEnabled='false'>
+					<operatorMoniker name='LanguageIdentifier_bodyErrorDocumentConverter' />
+				</Target>
+			</Targets>
+			<Properties>
+				<Property name='Exception' value='Exception' />
+				<Property name='ExceptionCorrelationId' value='ExceptionCorrelationId' />
+			</Properties>
+		</Operator>
+
+		<Operator name="LanguageIdentifier_bodyErrorDocumentConverter" type="Microsoft.Ceres.ContentEngine.Operators.Mars.MarsDocumentConverter">
+			<Targets>
+				<Target breakpointEnabled="false">
+					<operatorMoniker name="LanguageIdentifier_bodyErrorIndexWriter" />
+				</Target>
+			</Targets>
+			<Properties>
+				<Property name="idField" value="indexid" />
+				<Property name="tenantIdField" value="tenantid" />
+				<Property name="indexSystemField" value="indexsystemname" />
+				<Property name="documentDataField" value="documentData" />
+			</Properties>
+		</Operator>
+
+		<Operator name="LanguageIdentifier_bodyErrorIndexWriter" type="Microsoft.Ceres.ContentEngine.Operators.Mars.IndexWriter">
+			<Properties>
+				<Property name="commitInterval" value="1" />
+				<Property name="provideCallbacks" value="True" />
+				<Property name="idField" value="indexid" />
+				<Property name="tenantIdField" value="tenantid" />
+				<Property name="indexSystemField" value="indexsystemname" />
+				<Property name="documentDataField" value="documentData" />
+				<Property name='isTraceOperator' value='True'/>
+				<Property name='documentSubmittedTracingPointID' value='3512'/>
+				<Property name='callbackReceievedTracingPointID' value='3513'/>
+			</Properties>
+		</Operator>
+
+		<Operator name='WordBreakerError' type='Microsoft.Exchange.Search.OperatorSchema.ErrorOperator'>
+			<Targets>
+				<Target breakpointEnabled='false'>
+					<operatorMoniker name='WordBreakerErrorDocumentConverter' />
+				</Target>
+			</Targets>
+			<Properties>
+				<Property name='Exception' value='Exception' />
+				<Property name='ExceptionCorrelationId' value='ExceptionCorrelationId' />
+			</Properties>
+		</Operator>
+
+		<Operator name="WordBreakerErrorDocumentConverter" type="Microsoft.Ceres.ContentEngine.Operators.Mars.MarsDocumentConverter">
+			<Targets>
+				<Target breakpointEnabled="false">
+					<operatorMoniker name="WordBreakerErrorIndexWriter" />
+				</Target>
+			</Targets>
+			<Properties>
+				<Property name="idField" value="indexid" />
+				<Property name="tenantIdField" value="tenantid" />
+				<Property name="indexSystemField" value="indexsystemname" />
+				<Property name="documentDataField" value="documentData" />
+			</Properties>
+		</Operator>
+
+		<Operator name="WordBreakerErrorIndexWriter" type="Microsoft.Ceres.ContentEngine.Operators.Mars.IndexWriter">
+			<Properties>
+				<Property name="commitInterval" value="1" />
+				<Property name="provideCallbacks" value="True" />
+				<Property name="idField" value="indexid" />
+				<Property name="tenantIdField" value="tenantid" />
+				<Property name="indexSystemField" value="indexsystemname" />
+				<Property name="documentDataField" value="documentData" />
+				<Property name='isTraceOperator' value='True'/>
+				<Property name='documentSubmittedTracingPointID' value='3514'/>
+				<Property name='callbackReceievedTracingPointID' value='3515'/>
+			</Properties>
+		</Operator>
+
+		<Operator name='TokenDeserializerError' type='Microsoft.Exchange.Search.OperatorSchema.ErrorOperator'>
+			<Targets>
+				<Target breakpointEnabled='false'>
+					<operatorMoniker name='TokenDeserializerErrorDocumentConverter' />
+				</Target>
+			</Targets>
+			<Properties>
+				<Property name='Exception' value='Exception' />
+				<Property name='ExceptionCorrelationId' value='ExceptionCorrelationId' />
+			</Properties>
+		</Operator>
+
+		<Operator name="TokenDeserializerErrorDocumentConverter" type="Microsoft.Ceres.ContentEngine.Operators.Mars.MarsDocumentConverter">
+			<Targets>
+				<Target breakpointEnabled="false">
+					<operatorMoniker name="TokenDeserializerErrorIndexWriter" />
+				</Target>
+			</Targets>
+			<Properties>
+				<Property name="idField" value="indexid" />
+				<Property name="tenantIdField" value="tenantid" />
+				<Property name="indexSystemField" value="indexsystemname" />
+				<Property name="documentDataField" value="documentData" />
+			</Properties>
+		</Operator>
+
+		<Operator name="TokenDeserializerErrorIndexWriter" type="Microsoft.Ceres.ContentEngine.Operators.Mars.IndexWriter">
+			<Properties>
+				<Property name="commitInterval" value="1" />
+				<Property name="provideCallbacks" value="True" />
+				<Property name="idField" value="indexid" />
+				<Property name="tenantIdField" value="tenantid" />
+				<Property name="indexSystemField" value="indexsystemname" />
+				<Property name="documentDataField" value="documentData" />
+				<Property name='isTraceOperator' value='True'/>
+				<Property name='documentSubmittedTracingPointID' value='3516'/>
+				<Property name='callbackReceievedTracingPointID' value='3517'/>
+			</Properties>
+		</Operator>
+	</Operators>
+</OperatorGraph>

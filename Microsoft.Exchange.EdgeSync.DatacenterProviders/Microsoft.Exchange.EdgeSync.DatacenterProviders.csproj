@@ -1,0 +1,132 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{09CD9476-CD82-489E-B9E2-84B47CA1411A}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Microsoft.Exchange.EdgeSync</RootNamespace>
+    <AssemblyName>Microsoft.Exchange.EdgeSync.DatacenterProviders</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Exchange.EdgeSyncSvc" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.DirectoryServices.Protocols" />
+    <Reference Include="System.Management.Automation" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Datacenter\DatacenterTargetConnection.cs" />
+    <Compile Include="Datacenter\DatacenterTargetServerConfig.cs" />
+    <Compile Include="Datacenter\EdgeSyncDiag.cs" />
+    <Compile Include="Datacenter\FileLeaseManager.cs" />
+    <Compile Include="Ehf\AdminSyncUser.cs" />
+    <Compile Include="Ehf\EhfADAdapter.cs" />
+    <Compile Include="Ehf\EhfAdminAccountSynchronizer.cs" />
+    <Compile Include="Ehf\EhfAdminSyncChangeBuilder.cs" />
+    <Compile Include="Ehf\EhfAdminSyncState.cs" />
+    <Compile Include="Ehf\EhfADResultCode.cs" />
+    <Compile Include="Ehf\EhfCompanyAdmins.cs" />
+    <Compile Include="Ehf\EhfCompanyIdentity.cs" />
+    <Compile Include="Ehf\EhfCompanyItem.cs" />
+    <Compile Include="Ehf\EhfCompanySyncFlags.cs" />
+    <Compile Include="Ehf\EhfCompanySynchronizer.cs" />
+    <Compile Include="Ehf\EhfConfigTargetConnection.cs" />
+    <Compile Include="Ehf\EhfDomainItem.cs" />
+    <Compile Include="Ehf\EhfDomainItemVersion2.cs" />
+    <Compile Include="Ehf\EhfDomainSynchronizer.cs" />
+    <Compile Include="Ehf\EhfDomainSynchronizerVersion2.cs" />
+    <Compile Include="Ehf\EhfPerfCounterHandler.cs" />
+    <Compile Include="Ehf\EhfPerfCounters.cs" />
+    <Compile Include="Ehf\EhfPerfCountersInstance.cs" />
+    <Compile Include="Ehf\EhfProvisioningService.cs" />
+    <Compile Include="Ehf\EhfRecipientTargetConnection.cs" />
+    <Compile Include="Ehf\EhfSyncAppConfig.cs" />
+    <Compile Include="Ehf\EhfSyncErrorTracker.cs" />
+    <Compile Include="Ehf\EhfSynchronizationProvider.cs" />
+    <Compile Include="Ehf\EhfSynchronizer.cs" />
+    <Compile Include="Ehf\EhfSyncItem.cs" />
+    <Compile Include="Ehf\EhfTargetConnection.cs" />
+    <Compile Include="Ehf\EhfTargetServerConfig.cs" />
+    <Compile Include="Ehf\EhfTransientFailureInfo.cs" />
+    <Compile Include="Ehf\EhfWebServiceVersion.cs" />
+    <Compile Include="Ehf\EhfWellKnownGroup.cs" />
+    <Compile Include="Ehf\MailboxAdminSyncUser.cs" />
+    <Compile Include="Ehf\PartnerGroupAdminSyncUser.cs" />
+    <Compile Include="Mserve\MserveEdgeSyncService.cs" />
+    <Compile Include="Mserve\MserveSynchronizationProvider.cs" />
+    <Compile Include="Mserve\MserveTargetConnection.cs" />
+    <Compile Include="Mserve\MserveTargetServerConfig.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.Exchange.Common\Microsoft.Exchange.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140F0}</Project>
+      <Name>Microsoft.Exchange.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Common\Microsoft.Exchange.Data.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140D3}</Project>
+      <Name>Microsoft.Exchange.Data.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Directory\Microsoft.Exchange.Data.Directory.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14105}</Project>
+      <Name>Microsoft.Exchange.Data.Directory</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data\Microsoft.Exchange.Data.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14106}</Project>
+      <Name>Microsoft.Exchange.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Diagnostics\Microsoft.Exchange.Diagnostics.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14113}</Project>
+      <Name>Microsoft.Exchange.Diagnostics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.EdgeSync.Common\Microsoft.Exchange.EdgeSync.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14119}</Project>
+      <Name>Microsoft.Exchange.EdgeSync.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.MessageSecurity\Microsoft.Exchange.MessageSecurity.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1416A}</Project>
+      <Name>Microsoft.Exchange.MessageSecurity</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Net\Microsoft.Exchange.Net.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14178}</Project>
+      <Name>Microsoft.Exchange.Net</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\mscorlib\mscorlib.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141F1}</Project>
+      <Name>mscorlib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

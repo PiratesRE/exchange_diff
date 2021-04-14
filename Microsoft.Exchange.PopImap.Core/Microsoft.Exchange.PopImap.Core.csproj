@@ -1,0 +1,157 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{09CD9476-CD82-489E-B9E2-84B47CA1417D}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Microsoft.Exchange</RootNamespace>
+    <AssemblyName>Microsoft.Exchange.PopImap.Core</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Exchange.Common.IL" />
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Imap4\Imap4Flags.cs" />
+    <Compile Include="Imap4\Imap4FlagsHelper.cs" />
+    <Compile Include="Imap4\Imap4UTF7Encoding.cs" />
+    <Compile Include="Imap4\MessageRights.cs" />
+    <Compile Include="PopImap\Core\BaseSession.cs" />
+    <Compile Include="PopImap\Core\BufferResponseItem.cs" />
+    <Compile Include="PopImap\Core\ConnectionPool.cs" />
+    <Compile Include="PopImap\Core\DataAccessView.cs" />
+    <Compile Include="PopImap\Core\DataProcessResponseItem.cs" />
+    <Compile Include="PopImap\Core\EndResponseItem.cs" />
+    <Compile Include="PopImap\Core\ErrorDetail.cs" />
+    <Compile Include="PopImap\Core\FastQueryView.cs" />
+    <Compile Include="PopImap\Core\IProxyLogin.cs" />
+    <Compile Include="PopImap\Core\IResponseItem.cs" />
+    <Compile Include="PopImap\Core\LightWeightLog.cs" />
+    <Compile Include="PopImap\Core\LightWeightLogSession.cs" />
+    <Compile Include="PopImap\Core\LiveIdBasicAuthenticationMock.cs" />
+    <Compile Include="PopImap\Core\LrsLog.cs" />
+    <Compile Include="PopImap\Core\LrsSession.cs" />
+    <Compile Include="PopImap\Core\MimeHeaderStream.cs" />
+    <Compile Include="PopImap\Core\ParseResult.cs" />
+    <Compile Include="PopImap\Core\PooledBufferResponseItem.cs" />
+    <Compile Include="PopImap\Core\PopImapConditionalHandlerSchema.cs" />
+    <Compile Include="PopImap\Core\PopImapRequestCache.cs" />
+    <Compile Include="PopImap\Core\PopImapRequestData.cs" />
+    <Compile Include="PopImap\Core\PopImapServiceHealth.cs" />
+    <Compile Include="PopImap\Core\PopImapServiceHealthHandler.cs" />
+    <Compile Include="PopImap\Core\ProtocolBaseServices.cs" />
+    <Compile Include="PopImap\Core\ProtocolBaseStrings.cs" />
+    <Compile Include="PopImap\Core\ProtocolEvent.cs" />
+    <Compile Include="PopImap\Core\ProtocolMessage.cs" />
+    <Compile Include="PopImap\Core\ProtocolRequest.cs" />
+    <Compile Include="PopImap\Core\ProtocolResponse.cs" />
+    <Compile Include="PopImap\Core\ProtocolSession.cs" />
+    <Compile Include="PopImap\Core\ProtocolUser.cs" />
+    <Compile Include="PopImap\Core\ProxySession.cs" />
+    <Compile Include="PopImap\Core\RefCountTable.cs" />
+    <Compile Include="PopImap\Core\ResponseFactory.cs" />
+    <Compile Include="PopImap\Core\ResponseQueue.cs" />
+    <Compile Include="PopImap\Core\Rfc822Date.cs" />
+    <Compile Include="PopImap\Core\SecureBufferResponseItem.cs" />
+    <Compile Include="PopImap\Core\SessionInfo.cs" />
+    <Compile Include="PopImap\Core\SessionsInfo.cs" />
+    <Compile Include="PopImap\Core\StreamResponseItem.cs" />
+    <Compile Include="PopImap\Core\StreamWrapper.cs" />
+    <Compile Include="PopImap\Core\StringResponseItem.cs" />
+    <Compile Include="PopImap\Core\StringResponseItemProcessor.cs" />
+    <Compile Include="PopImap\Core\Strings.cs" />
+    <Compile Include="PopImap\Core\UserInfo.cs" />
+    <Compile Include="PopImap\Core\VirtualServer.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="PopImap\Core\ProtocolBaseStrings.resources" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.ApplicationLogic\Microsoft.Exchange.Data.ApplicationLogic.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14104}</Project>
+      <Name>Microsoft.Exchange.Data.ApplicationLogic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Common\Microsoft.Exchange.Data.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140D3}</Project>
+      <Name>Microsoft.Exchange.Data.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Directory\Microsoft.Exchange.Data.Directory.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14105}</Project>
+      <Name>Microsoft.Exchange.Data.Directory</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Storage\Microsoft.Exchange.Data.Storage.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1410F}</Project>
+      <Name>Microsoft.Exchange.Data.Storage</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data\Microsoft.Exchange.Data.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14106}</Project>
+      <Name>Microsoft.Exchange.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Diagnostics\Microsoft.Exchange.Diagnostics.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14113}</Project>
+      <Name>Microsoft.Exchange.Diagnostics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Extensibility.Internal\Microsoft.Exchange.Extensibility.Internal.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14126}</Project>
+      <Name>Microsoft.Exchange.Extensibility.Internal</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Net\Microsoft.Exchange.Net.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14178}</Project>
+      <Name>Microsoft.Exchange.Net</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Rules.Common\Microsoft.Exchange.Rules.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14191}</Project>
+      <Name>Microsoft.Exchange.Rules.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Security\Microsoft.Exchange.Security.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14198}</Project>
+      <Name>Microsoft.Exchange.Security</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.VariantConfiguration\Microsoft.Exchange.VariantConfiguration.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141E0}</Project>
+      <Name>Microsoft.Exchange.VariantConfiguration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.WorkloadManagement\Microsoft.Exchange.WorkloadManagement.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141E1}</Project>
+      <Name>Microsoft.Exchange.WorkloadManagement</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\mscorlib\mscorlib.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141F1}</Project>
+      <Name>mscorlib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

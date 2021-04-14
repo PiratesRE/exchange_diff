@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo Name="Admin Tools PostSetup" DescriptionId="SetupComponentPostSetupAdminTools">
+
+  <ServerTasks>
+    <ServerTaskInfo Id="_f3cf83f3084747cd95a90d06b9f3e254" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install/>
+      <BuildToBuildUpgrade/>
+      <DisasterRecovery/>
+      <Uninstall DescriptionId="SetupProgressCleanRegistry" IsFatal="false">
+        <!--# Remove the base exchange key-->
+        <Standalone>
+          Write-Verbose "Removing the exchange registry key";
+          remove-item "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\ExchangeServer\v15" -Recurse -Force;
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+    <ServerTaskInfo Id="_a05fab6aac4844e4be88acf82ef8e161" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install/>
+      <BuildToBuildUpgrade/>
+      <DisasterRecovery/>
+      <Uninstall DescriptionId="SetupProgressCleanEmptyDirs" IsFatal="false" Weight="5">
+        <!-- Delete all the empty folders-->
+        <Standalone>
+          $installDir=$RoleSetupAssemblyPath.ToLower().TrimEnd("bin\");
+          get-childitem -recurse $installDir | where {$_.PsIsContainer -and ((get-childitem $_.FullName) -eq $null) }| remove-item -Force -recurse;
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>   
+    <!-- 
+          Do Post-Uninstall file cleanup operations. we log the errors on setup log, but we mark this operation as non fatal so that setup
+          is still a success if file cleanup fails.
+    -->
+    <!--The following things are nonremovable:
+          1.All contents under Data Directory.
+          2.All contents under ExchangeOAB directory.
+          3.All contents under Logging directory.
+          4.All edb files, que files, jrs files, chk files and log files for edb/que files must be kept in the box.
+          edb, que, jrs and chk files are user's data, logs could be needed for backup and restore.
+          5.All contents under UnifiedMessaging\voicemail and UnifiedMessaging\badvoicemail, because there are undelivered voicemails under these directories.
+          6.All contents under TransportRoles\Logs.
+          7.All OWA Customization Files: a) ...\ClientAccess\OWA\CustomADproperties.xml; b) ...\ClientAccess\OWA\forms\... (except ...\ClientAccess\OWA\forms\basic\... and ...\ClientAccess\OWA\forms\premium\...); -->
+    <!-- $excludeDirs - A list of all directories whose content need to remain intact. If you need any specific directory to be non-removable, please add them to this list -->
+    <!-- $excludeTypes - A list of all file extensions which should not be removed. Please add any custom file extensions you do not want to remove during uninstall here.-->
+    <!-- $excludeFiles - A list of any specific files which should not be removed. Please add any custom files you do not want to remove during uninstall here.-->
+    <ServerTaskInfo Id="_959d768f5a0644df8f2bd786ae7b5212" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install />
+      <BuildToBuildUpgrade />
+      <DisasterRecovery />
+      <Uninstall DescriptionId="SetupProgressCleanupFiles" IsFatal="false" Weight="20">
+        <Standalone>
+          $installDir=$RoleSetupAssemblyPath.ToLower().TrimEnd("bin");
+          $excludeDirs = "UnifiedMessaging\VoiceMail","UnifiedMessaging\BadVoiceMail","TransportRoles\Logs","Data","ExchangeOAB","Logging","ClientAccess\Owa\forms";
+          $excludeTypes = "*.edb", "*.que", "*.jrs", "*.chk", "*.log";
+          $excludeFiles = "ClientAccess\OWA\CustomADproperties.xml";
+          if (-not $excludeDirs.Count)
+          {
+             $excludeDirs=$installDir.TrimEnd("\")+"\" +$excludeDirs;
+          }
+          else
+          {
+             for($i = 0;$i -lt $excludeDirs.Count; $i++) {$excludeDirs[$i]=$installDir.TrimEnd("\")+"\" +$excludeDirs[$i]};
+          }
+          if (-not $excludeFiles.Count)
+          {
+             $excludeFiles=$installDir.TrimEnd("\")+"\" +$excludeFiles;
+          }
+          else
+          {
+             for($i = 0;$i -lt $excludeFiles.Count; $i++) {$excludeFiles[$i]=$installDir.TrimEnd("\")+"\" +$excludeFiles[$i]};
+          }
+
+          Write-Verbose("Deleting files");
+          $filesToRemove = get-childitem $installDir\* -force -recurse -exclude $excludeTypes |?{!$_.PSISContainer -and !$($path=$_.fullname; $excludeDirs | ?{$path -like "$_*"})} |?{$excludeFiles -notcontains $_.FullName};
+          foreach($file in  $filesToRemove)
+          {
+             Write-Verbose("Deleting file $file") -Verbose;
+             remove-item $file -force;
+          }
+          $owaFormsBasicDir = $installDir.TrimEnd("\")+"\ClientAccess\Owa\Forms\basic";
+          $owaFormsPremiumDir = $installDir.TrimEnd("\")+"\ClientAccess\Owa\Forms\premium";
+          if(Test-Path -Path $owaFormsBasicDir -PathType Container)
+          {
+             Write-Verbose ("Deleting OWA directory $owaFormsBasicDir");
+             remove-item $owaFormsBasicDir -force -recurse;
+          }
+          if(Test-Path -Path $owaFormsPremiumDir -PathType Container)
+          {
+             Write-Verbose ("Deleting OWA directory $owaFormsPremiumDir");
+             remove-item $owaFormsPremiumDir -force -recurse;
+          }
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+  </ServerTasks>
+</SetupComponentInfo>

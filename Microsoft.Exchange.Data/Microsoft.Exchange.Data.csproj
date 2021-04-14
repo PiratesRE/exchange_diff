@@ -1,0 +1,748 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{09CD9476-CD82-489E-B9E2-84B47CA14106}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Microsoft.Exchange.Data</RootNamespace>
+    <AssemblyName>Microsoft.Exchange.Data</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Exchange.ManagedLexRuntime.MPPGRuntime" />
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Management.Automation" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ActivationRule.cs" />
+    <Compile Include="ActivationRuleCollection.cs" />
+    <Compile Include="AddressSpace.cs" />
+    <Compile Include="AdminAuditLogCmdletParameter.cs" />
+    <Compile Include="AdminAuditLogEventFacade.cs" />
+    <Compile Include="AdminAuditLogFacadeSchema.cs" />
+    <Compile Include="AdminAuditLogModifiedProperty.cs" />
+    <Compile Include="AdoFilterSchema.cs" />
+    <Compile Include="AlternateMailbox.cs" />
+    <Compile Include="AmbiguousNameResolutionFilter.cs" />
+    <Compile Include="AndFilter.cs" />
+    <Compile Include="ApplicationPermissionRoleEntry.cs" />
+    <Compile Include="AsciiCharactersOnlyConstraint.cs" />
+    <Compile Include="AsciiString.cs" />
+    <Compile Include="AttributeMetadata.cs" />
+    <Compile Include="AuditLogSearchId.cs" />
+    <Compile Include="Authority.cs" />
+    <Compile Include="AutoDiscoverSmtpDomain.cs" />
+    <Compile Include="BinaryFileDataObject.cs" />
+    <Compile Include="BinaryFileDataObjectSchema.cs" />
+    <Compile Include="BinaryFilter.cs" />
+    <Compile Include="BitMaskAndFilter.cs" />
+    <Compile Include="BitMaskFilter.cs" />
+    <Compile Include="BitMaskOrFilter.cs" />
+    <Compile Include="ByteArrayLengthConstraint.cs" />
+    <Compile Include="ByteQuantifiedSize.cs" />
+    <Compile Include="ByteQuantifiedSizeAppSettingsEntry.cs" />
+    <Compile Include="CalendarRepairType.cs" />
+    <Compile Include="CallerIdItem.cs" />
+    <Compile Include="CallerIdItemType.cs" />
+    <Compile Include="CannotCloneException.cs" />
+    <Compile Include="CharacterConstraint.cs" />
+    <Compile Include="CharacterRegexConstraint.cs" />
+    <Compile Include="ClientAccessAuthenticationMethod.cs" />
+    <Compile Include="ClientAccessProtocol.cs" />
+    <Compile Include="ClientAccessRulesAction.cs" />
+    <Compile Include="ClientAccessRules\AnyOfAuthenticationTypesPredicate.cs" />
+    <Compile Include="ClientAccessRules\AnyOfClientIPAddressesOrRangesPredicate.cs" />
+    <Compile Include="ClientAccessRules\AnyOfProtocolsPredicate.cs" />
+    <Compile Include="ClientAccessRules\AnyOfSourceTcpPortNumbersPredicate.cs" />
+    <Compile Include="ClientAccessRules\ClientAccessRule.cs" />
+    <Compile Include="ClientAccessRules\ClientAccessRuleAction.cs" />
+    <Compile Include="ClientAccessRules\ClientAccessRuleAllowAccessAction.cs" />
+    <Compile Include="ClientAccessRules\ClientAccessRuleCollection.cs" />
+    <Compile Include="ClientAccessRules\ClientAccessRuleDenyAccessAction.cs" />
+    <Compile Include="ClientAccessRules\ClientAccessRuleParser.cs" />
+    <Compile Include="ClientAccessRules\ClientAccessRulesAuthenticationTypeProperty.cs" />
+    <Compile Include="ClientAccessRules\ClientAccessRulesBlockedConnectionException.cs" />
+    <Compile Include="ClientAccessRules\ClientAccessRulesClientIpProperty.cs" />
+    <Compile Include="ClientAccessRules\ClientAccessRulesConstants.cs" />
+    <Compile Include="ClientAccessRules\ClientAccessRuleSerializer.cs" />
+    <Compile Include="ClientAccessRules\ClientAccessRulesEvaluationContext.cs" />
+    <Compile Include="ClientAccessRules\ClientAccessRulesExecutionStatus.cs" />
+    <Compile Include="ClientAccessRules\ClientAccessRulesPerformanceCounters.cs" />
+    <Compile Include="ClientAccessRules\ClientAccessRulesProtocolProperty.cs" />
+    <Compile Include="ClientAccessRules\ClientAccessRulesSourcePortNumberProperty.cs" />
+    <Compile Include="ClientAccessRules\ClientAccessRulesTracer.cs" />
+    <Compile Include="ClientAccessRules\ClientAccessRulesUsernamePatternProperty.cs" />
+    <Compile Include="ClientAccessRules\ClientAccessRulesUserRecipientFilterProperty.cs" />
+    <Compile Include="ClientAccessRules\UsernameMatchesAnyOfPatternsPredicate.cs" />
+    <Compile Include="ClientAccessRules\UserRecipientFilterPredicate.cs" />
+    <Compile Include="CloneHelper.cs" />
+    <Compile Include="CmdletRoleEntry.cs" />
+    <Compile Include="CollectionDelegateConstraint.cs" />
+    <Compile Include="CollectionPropertyDefinitionConstraint.cs" />
+    <Compile Include="CollectionPropertyMaxCountConstraint.cs" />
+    <Compile Include="CollectionRule.cs" />
+    <Compile Include="CollectionValidationDelegate.cs" />
+    <Compile Include="CommentFilter.cs" />
+    <Compile Include="ComparisonFilter.cs" />
+    <Compile Include="ComparisonOperator.cs" />
+    <Compile Include="CompositeFilter.cs" />
+    <Compile Include="ConditionalEnumerable.cs" />
+    <Compile Include="ConditionalEnumerator.cs" />
+    <Compile Include="ConfigObjectId.cs" />
+    <Compile Include="ConfigurableObject.cs" />
+    <Compile Include="ConfigurationSettingsAppSettingsException.cs" />
+    <Compile Include="ConfigurationSettingsException.cs" />
+    <Compile Include="ConfigurationSettingsPropertyBadTypeException.cs" />
+    <Compile Include="ConfigurationSettingsPropertyBadValueException.cs" />
+    <Compile Include="ConfigurationSettingsPropertyFailedValidationException.cs" />
+    <Compile Include="ConfigurationSettingsPropertyNotFoundException.cs" />
+    <Compile Include="ConfigurationSettingsScopePropertyBadValueException.cs" />
+    <Compile Include="ConfigurationSettingsScopePropertyFailedValidationException.cs" />
+    <Compile Include="ConfigurationSettingsScopePropertyNotFoundException.cs" />
+    <Compile Include="ConfigurationSettings\AppConfigDriver.cs" />
+    <Compile Include="ConfigurationSettings\ConfigDiagnosticArgument.cs" />
+    <Compile Include="ConfigurationSettings\ConfigDriverBase.cs" />
+    <Compile Include="ConfigurationSettings\ConfigFlags.cs" />
+    <Compile Include="ConfigurationSettings\ConfigProviderBase.cs" />
+    <Compile Include="ConfigurationSettings\ConfigSchemaBase.cs" />
+    <Compile Include="ConfigurationSettings\DiagnosticSettingsContext.cs" />
+    <Compile Include="ConfigurationSettings\ExchangeConfigurationSection.cs" />
+    <Compile Include="ConfigurationSettings\GenericSettingsContext.cs" />
+    <Compile Include="ConfigurationSettings\IConfigDriver.cs" />
+    <Compile Include="ConfigurationSettings\IConfigProvider.cs" />
+    <Compile Include="ConfigurationSettings\IConfigSchema.cs" />
+    <Compile Include="ConfigurationSettings\ISettingsContext.cs" />
+    <Compile Include="ConfigurationSettings\ISettingsContextProvider.cs" />
+    <Compile Include="ConfigurationSettings\MailboxSettingsContext.cs" />
+    <Compile Include="ConfigurationSettings\SettingsContextBase.cs" />
+    <Compile Include="ConfigurationSettings\SimpleDatabaseSettingsContext.cs" />
+    <Compile Include="ConnectedDomain.cs" />
+    <Compile Include="ContainingNonWhitespaceConstraint.cs" />
+    <Compile Include="ContentFilter.cs" />
+    <Compile Include="ConvertOutputPropertyDelegate.cs" />
+    <Compile Include="ConvertOutputPropertyEventArgs.cs" />
+    <Compile Include="CountFilter.cs" />
+    <Compile Include="CSharpFilter.cs" />
+    <Compile Include="CsvColumnMap.cs" />
+    <Compile Include="CsvDuplicatedColumnException.cs" />
+    <Compile Include="CsvFileIsEmptyException.cs" />
+    <Compile Include="CsvProhibitedColumnPresentException.cs" />
+    <Compile Include="CsvReader.cs" />
+    <Compile Include="CsvRequiredColumnMissingException.cs" />
+    <Compile Include="CsvRow.cs" />
+    <Compile Include="CsvSchema.cs" />
+    <Compile Include="CsvTooManyRowsException.cs" />
+    <Compile Include="CsvUnknownColumnsException.cs" />
+    <Compile Include="CsvValidationException.cs" />
+    <Compile Include="CsvWriter.cs" />
+    <Compile Include="CsvWrongNumberOfColumnsException.cs" />
+    <Compile Include="CustomFilterBuilderDelegate.cs" />
+    <Compile Include="CustomLdapFilter.cs" />
+    <Compile Include="CustomMenuKey.cs" />
+    <Compile Include="CustomMenuKeyMapping.cs" />
+    <Compile Include="CustomNetworkAddress.cs" />
+    <Compile Include="CustomNetworkProtocol.cs" />
+    <Compile Include="CustomProxyAddress.cs" />
+    <Compile Include="CustomProxyAddressPrefix.cs" />
+    <Compile Include="CustomProxyAddressTemplate.cs" />
+    <Compile Include="CustomScheduleName.cs" />
+    <Compile Include="DagNetMultiValuedProperty.cs" />
+    <Compile Include="DagNetPropertyBag.cs" />
+    <Compile Include="DagNetworkObjectId.cs" />
+    <Compile Include="DagSubnetIdComparer.cs" />
+    <Compile Include="DatabaseAvailabilityGroupNetwork.cs" />
+    <Compile Include="DatabaseAvailabilityGroupNetworkInterface.cs" />
+    <Compile Include="DatabaseAvailabilityGroupNetworkSchema.cs" />
+    <Compile Include="DatabaseAvailabilityGroupNetworkSubnet.cs" />
+    <Compile Include="DatabaseAvailabilityGroupSubnetId.cs" />
+    <Compile Include="DataConversionException.cs" />
+    <Compile Include="DataSourceOperationException.cs" />
+    <Compile Include="DataSourceTransientException.cs" />
+    <Compile Include="DataStrings.cs" />
+    <Compile Include="DataValidationException.cs" />
+    <Compile Include="DateTimeFormatProvider.cs" />
+    <Compile Include="DaysOfWeek.cs" />
+    <Compile Include="DeferReason.cs" />
+    <Compile Include="DelegateConstraint.cs" />
+    <Compile Include="DelegatedObjectId.cs" />
+    <Compile Include="DelegatedPrincipal.cs" />
+    <Compile Include="DeliveryType.cs" />
+    <Compile Include="DependencyValidationError.cs" />
+    <Compile Include="DialGroupEntry.cs" />
+    <Compile Include="DialGroupEntryComment.cs" />
+    <Compile Include="DialGroupEntryDialedNumber.cs" />
+    <Compile Include="DialGroupEntryField.cs" />
+    <Compile Include="DialGroupEntryName.cs" />
+    <Compile Include="DialGroupEntryNumberMask.cs" />
+    <Compile Include="Directory\OperationRetryManagerBase.cs" />
+    <Compile Include="Directory\SystemConfiguration\ReconciliationCookie.cs" />
+    <Compile Include="DisallowStarSmtpDomainWithSubdomainsConstraint.cs" />
+    <Compile Include="DisclaimerText.cs" />
+    <Compile Include="DNWithBinary.cs" />
+    <Compile Include="DomainMatchMap.cs" />
+    <Compile Include="DSNConversionOption.cs" />
+    <Compile Include="DsnFormat.cs" />
+    <Compile Include="DsnRequestedFlags.cs" />
+    <Compile Include="DsnText.cs" />
+    <Compile Include="DtmfString.cs" />
+    <Compile Include="EDiscoveryExportToolRequestPathHandler.cs" />
+    <Compile Include="ElcScheduleIntervalsConstraint.cs" />
+    <Compile Include="EnabledEmailAddressTemplatesConstraint.cs" />
+    <Compile Include="EncryptionType.cs" />
+    <Compile Include="EnhancedStatusCode.cs" />
+    <Compile Include="EnhancedTimeSpan.cs" />
+    <Compile Include="EnhancedTimeSpanUnitConstraint.cs" />
+    <Compile Include="EnterpriseExchangeVersionEnum.cs" />
+    <Compile Include="EnumerableWrapper.cs" />
+    <Compile Include="EnumValueDefinedConstraint.cs" />
+    <Compile Include="ErrorExecutionContext.cs" />
+    <Compile Include="ErrorPolicies.cs" />
+    <Compile Include="EumAddress.cs" />
+    <Compile Include="EumProxyAddress.cs" />
+    <Compile Include="EumProxyAddressPrefix.cs" />
+    <Compile Include="EumProxyAddressTemplate.cs" />
+    <Compile Include="EventCategoryIdentity.cs" />
+    <Compile Include="EventCategoryObject.cs" />
+    <Compile Include="EventCategorySession.cs" />
+    <Compile Include="EventLogText.cs" />
+    <Compile Include="ExArgumentNullException.cs" />
+    <Compile Include="ExchangeBuild.cs" />
+    <Compile Include="ExchangeErrorCategory.cs" />
+    <Compile Include="ExchangeObjectVersion.cs" />
+    <Compile Include="ExchangeOperationContext.cs" />
+    <Compile Include="ExistsFilter.cs" />
+    <Compile Include="ExtensionInstallScope.cs" />
+    <Compile Include="ExtensionType.cs" />
+    <Compile Include="FailureCategory.cs" />
+    <Compile Include="FalseFilter.cs" />
+    <Compile Include="FaxResultType.cs" />
+    <Compile Include="FileShareWitnessServerName.cs" />
+    <Compile Include="FilterLanguage.cs" />
+    <Compile Include="FilterOnlyAttributesException.cs" />
+    <Compile Include="FilterSchema.cs" />
+    <Compile Include="FormFactor.cs" />
+    <Compile Include="FormSettings.cs" />
+    <Compile Include="Fqdn.cs" />
+    <Compile Include="Generated\IErrorHandler.cs" />
+    <Compile Include="Generated\LexValue.cs" />
+    <Compile Include="Generated\Parser.cs" />
+    <Compile Include="Generated\ScanBase.cs" />
+    <Compile Include="Generated\ScanBuff.cs" />
+    <Compile Include="Generated\Scanner.cs" />
+    <Compile Include="Generated\Tokens.cs" />
+    <Compile Include="GenericBitMaskFilter.cs" />
+    <Compile Include="GeoCoordinates.cs" />
+    <Compile Include="GetterDelegate.cs" />
+    <Compile Include="GroupBy.cs" />
+    <Compile Include="GuidHelper.cs" />
+    <Compile Include="HeaderName.cs" />
+    <Compile Include="HeaderPromotionMode.cs" />
+    <Compile Include="HeaderValue.cs" />
+    <Compile Include="HolidaySchedule.cs" />
+    <Compile Include="Hostname.cs" />
+    <Compile Include="ICmdletProxyable.cs" />
+    <Compile Include="IConfigDataProvider.cs" />
+    <Compile Include="IConfigurable.cs" />
+    <Compile Include="IDnFormattable.cs" />
+    <Compile Include="IEnumerableFilter.cs" />
+    <Compile Include="IErrorContextException.cs" />
+    <Compile Include="IErrorExecutionContext.cs" />
+    <Compile Include="IInvalidProxy.cs" />
+    <Compile Include="IMAPAuthenticationMechanism.cs" />
+    <Compile Include="IMAPSecurityMechanism.cs" />
+    <Compile Include="InboundConnectorSettings.cs" />
+    <Compile Include="InChainFilter.cs" />
+    <Compile Include="InferenceClassificationResult.cs" />
+    <Compile Include="InferenceClientActivityFlags.cs" />
+    <Compile Include="InferredImportance.cs" />
+    <Compile Include="InferredImportanceReason.cs" />
+    <Compile Include="InStringArrayConstraint.cs" />
+    <Compile Include="Int32ParsableNullableEmptiableStringConstraint.cs" />
+    <Compile Include="Int32ParsableNullableStringConstraint.cs" />
+    <Compile Include="Int32ParsableStringConstraint.cs" />
+    <Compile Include="Internal\Globals.cs" />
+    <Compile Include="IntRange.cs" />
+    <Compile Include="IntRangeConstraint.cs" />
+    <Compile Include="InvalidObjectOperationException.cs" />
+    <Compile Include="InvalidProxyAddress.cs" />
+    <Compile Include="InvalidProxyAddressTemplate.cs" />
+    <Compile Include="IOperationRetryManager.cs" />
+    <Compile Include="IPagedView.cs" />
+    <Compile Include="IPageInformation.cs" />
+    <Compile Include="IPBinding.cs" />
+    <Compile Include="IPRange.cs" />
+    <Compile Include="IPRangeConstraint.cs" />
+    <Compile Include="IPRangeRemote.cs" />
+    <Compile Include="IPropertyBag.cs" />
+    <Compile Include="IPv6AddressesNotAllowedConstraint.cs" />
+    <Compile Include="IPvxAddress.cs" />
+    <Compile Include="IReadOnlyPropertyBag.cs" />
+    <Compile Include="ISendAsSource.cs" />
+    <Compile Include="ISmimeSettingsProvider.cs" />
+    <Compile Include="ISyncNowNotificationClient.cs" />
+    <Compile Include="ITableView.cs" />
+    <Compile Include="ItemHasAttachmentRule.cs" />
+    <Compile Include="ItemHasKnownEntityRule.cs" />
+    <Compile Include="ItemHasRegularExpressionMatchRule.cs" />
+    <Compile Include="ItemIsRule.cs" />
+    <Compile Include="ItemIsRuleFormType.cs" />
+    <Compile Include="ItemIsRuleItemType.cs" />
+    <Compile Include="IUrlTokenEncode.cs" />
+    <Compile Include="IVersionable.cs" />
+    <Compile Include="KeyMapping.cs" />
+    <Compile Include="KeyMappingType.cs" />
+    <Compile Include="KnownEntityType.cs" />
+    <Compile Include="KqlFilterSchema.cs" />
+    <Compile Include="LdapPolicy.cs" />
+    <Compile Include="LegacyThrottlingPolicySettings.cs" />
+    <Compile Include="LicenseType.cs" />
+    <Compile Include="LinkedPartnerGroupInformation.cs" />
+    <Compile Include="LinkMetadata.cs" />
+    <Compile Include="LocalLongFullPathLengthConstraint.cs" />
+    <Compile Include="LocDescriptionAttribute.cs" />
+    <Compile Include="MachineName.cs" />
+    <Compile Include="MailboxAuditLogSourceFolder.cs" />
+    <Compile Include="MailboxAuditLogSourceItem.cs" />
+    <Compile Include="MailboxContextFilter.cs" />
+    <Compile Include="MailboxSignature\IMailboxSignatureSectionCreator.cs" />
+    <Compile Include="MailboxSignature\IMailboxSignatureSectionProcessor.cs" />
+    <Compile Include="MailboxSignature\MailboxSignatureSectionMetadata.cs" />
+    <Compile Include="MailboxSignature\MailboxSignatureSectionsContainer.cs" />
+    <Compile Include="MailboxSignature\MailboxSignatureSectionType.cs" />
+    <Compile Include="MailboxSignature\NullMailboxSignatureSectionProcessor.cs" />
+    <Compile Include="MailboxSignature\PartitionInformation.cs" />
+    <Compile Include="MailboxSignature\TenantHintHelper.cs" />
+    <Compile Include="MailRecipientType.cs" />
+    <Compile Include="MandatoryStringLengthConstraint.cs" />
+    <Compile Include="MapiFolderPath.cs" />
+    <Compile Include="MapiVersion.cs" />
+    <Compile Include="MapiVersionRanges.cs" />
+    <Compile Include="MatchFlags.cs" />
+    <Compile Include="MatchOptions.cs" />
+    <Compile Include="MessageActionLabel.cs" />
+    <Compile Include="MeumProxyAddress.cs" />
+    <Compile Include="MeumProxyAddressE164.cs" />
+    <Compile Include="MeumProxyAddressFactory.cs" />
+    <Compile Include="MeumProxyAddressGateway.cs" />
+    <Compile Include="MeumProxyAddressPrefix.cs" />
+    <Compile Include="MigrationEventType.cs" />
+    <Compile Include="MonadFilterSchema.cs" />
+    <Compile Include="MonitoringItemTypeEnum.cs" />
+    <Compile Include="MultivaluedInstanceComparisonFilter.cs" />
+    <Compile Include="MultiValuedProperty.cs" />
+    <Compile Include="MultiValuedPropertyBase.cs" />
+    <Compile Include="NaturalLanguage\Address.cs" />
+    <Compile Include="NaturalLanguage\AddressSerializer.cs" />
+    <Compile Include="NaturalLanguage\AddressSet.cs" />
+    <Compile Include="NaturalLanguage\BaseSerializer.cs" />
+    <Compile Include="NaturalLanguage\Business.cs" />
+    <Compile Include="NaturalLanguage\Contact.cs" />
+    <Compile Include="NaturalLanguage\ContactSerializer.cs" />
+    <Compile Include="NaturalLanguage\ContactSet.cs" />
+    <Compile Include="NaturalLanguage\Email.cs" />
+    <Compile Include="NaturalLanguage\EmailPosition.cs" />
+    <Compile Include="NaturalLanguage\EmailSerializer.cs" />
+    <Compile Include="NaturalLanguage\EmailSet.cs" />
+    <Compile Include="NaturalLanguage\EmailUser.cs" />
+    <Compile Include="NaturalLanguage\ExtractionSet.2.cs" />
+    <Compile Include="NaturalLanguage\ExtractionSet.cs" />
+    <Compile Include="NaturalLanguage\ExtractionVersions.cs" />
+    <Compile Include="NaturalLanguage\IExtractionSerializer.cs" />
+    <Compile Include="NaturalLanguage\IPositionedExtraction.cs" />
+    <Compile Include="NaturalLanguage\Keyword.cs" />
+    <Compile Include="NaturalLanguage\KeywordSerializer.cs" />
+    <Compile Include="NaturalLanguage\KeywordSet.cs" />
+    <Compile Include="NaturalLanguage\Meeting.cs" />
+    <Compile Include="NaturalLanguage\MeetingSerializer.cs" />
+    <Compile Include="NaturalLanguage\MeetingSet.cs" />
+    <Compile Include="NaturalLanguage\Person.cs" />
+    <Compile Include="NaturalLanguage\Phone.cs" />
+    <Compile Include="NaturalLanguage\PhoneSerializer.cs" />
+    <Compile Include="NaturalLanguage\PhoneSet.cs" />
+    <Compile Include="NaturalLanguage\PhoneType.cs" />
+    <Compile Include="NaturalLanguage\SerializerCache.cs" />
+    <Compile Include="NaturalLanguage\Task.cs" />
+    <Compile Include="NaturalLanguage\TaskSerializer.cs" />
+    <Compile Include="NaturalLanguage\TaskSet.cs" />
+    <Compile Include="NaturalLanguage\Url.cs" />
+    <Compile Include="NaturalLanguage\UrlSerializer.cs" />
+    <Compile Include="NaturalLanguage\UrlSet.cs" />
+    <Compile Include="NaturalLanguage\UrlType.cs" />
+    <Compile Include="NearFilter.cs" />
+    <Compile Include="NetID.cs" />
+    <Compile Include="NetworkAddress.cs" />
+    <Compile Include="NetworkAddressCollection.cs" />
+    <Compile Include="NetworkProtocol.cs" />
+    <Compile Include="NoInheritedACEsConstraint.cs" />
+    <Compile Include="NoLeadingOrTrailingWhitespaceConstraint.cs" />
+    <Compile Include="NotFilter.cs" />
+    <Compile Include="NotNullOrEmptyConstraint.cs" />
+    <Compile Include="NotNullOrEmptyStrictConstraint.cs" />
+    <Compile Include="NoTrailingSpecificCharacterConstraint.cs" />
+    <Compile Include="NullableEnhancedTimeSpanUnitConstraint.cs" />
+    <Compile Include="NullableEnumValueDefinedConstraint.cs" />
+    <Compile Include="NullFilter.cs" />
+    <Compile Include="NumberFormat.cs" />
+    <Compile Include="ObjectId.cs" />
+    <Compile Include="ObjectOutputHelper.cs" />
+    <Compile Include="ObjectSchema.cs" />
+    <Compile Include="ObjectState.cs" />
+    <Compile Include="ObjectValidationError.cs" />
+    <Compile Include="OpathFilterEvaluator.cs" />
+    <Compile Include="OperationRetryManagerResult.cs" />
+    <Compile Include="OperationRetryManagerResultCode.cs" />
+    <Compile Include="OrFilter.cs" />
+    <Compile Include="OrganizationSummaryEntry.cs" />
+    <Compile Include="OriginalDeliveryFolderInfo.cs" />
+    <Compile Include="ParsingException.cs" />
+    <Compile Include="ParsingInvalidFilterOperator.cs" />
+    <Compile Include="ParsingInvalidFormat.cs" />
+    <Compile Include="ParsingNonFilterablePropertyException.cs" />
+    <Compile Include="ParsingNonFilterablePropertyWithListException.cs" />
+    <Compile Include="ParsingSyntaxException.cs" />
+    <Compile Include="ParsingVariablesNotSupported.cs" />
+    <Compile Include="PerimeterQueue.cs" />
+    <Compile Include="PermissionGroups.cs" />
+    <Compile Include="PersonType.cs" />
+    <Compile Include="PickupType.cs" />
+    <Compile Include="PiiLocString.cs" />
+    <Compile Include="PiiMap.cs" />
+    <Compile Include="PiiMapManager.cs" />
+    <Compile Include="PiiPropertyDefinition.cs" />
+    <Compile Include="PiiRedactor.cs" />
+    <Compile Include="PiiResource.cs" />
+    <Compile Include="PredictedAction.cs" />
+    <Compile Include="PredictedActionAndProbability.cs" />
+    <Compile Include="PredictedMessageAction.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="PropertyBag.cs" />
+    <Compile Include="PropertyComparisonFilter.cs" />
+    <Compile Include="PropertyConstraintViolationError.cs" />
+    <Compile Include="PropertyConversionError.cs" />
+    <Compile Include="PropertyDefinition.cs" />
+    <Compile Include="PropertyDefinitionCollection.cs" />
+    <Compile Include="PropertyDefinitionConstraint.cs" />
+    <Compile Include="PropertyDefinitionFlags.cs" />
+    <Compile Include="PropertyDefinitionsHelper.cs" />
+    <Compile Include="PropertyStreamReader.cs" />
+    <Compile Include="PropertyStreamWriter.cs" />
+    <Compile Include="PropertyValidationError.cs" />
+    <Compile Include="Protocol.cs" />
+    <Compile Include="ProtocolAddress.cs" />
+    <Compile Include="ProtocolAddressCollection.cs" />
+    <Compile Include="ProtocolConnectionSettings.cs" />
+    <Compile Include="ProtocolLoggingLevel.cs" />
+    <Compile Include="ProtocolOption.cs" />
+    <Compile Include="ProviderError.cs" />
+    <Compile Include="ProviderPropertyDefinition.cs" />
+    <Compile Include="ProvisioningValidationError.cs" />
+    <Compile Include="ProxyAddress.cs" />
+    <Compile Include="ProxyAddressBase.cs" />
+    <Compile Include="ProxyAddressBaseCollection.cs" />
+    <Compile Include="ProxyAddressCollection.cs" />
+    <Compile Include="ProxyAddressPrefix.cs" />
+    <Compile Include="ProxyAddressTemplate.cs" />
+    <Compile Include="ProxyAddressTemplateCollection.cs" />
+    <Compile Include="PswsKeyProperties.cs" />
+    <Compile Include="PublicFolderAdministrativePermission.cs" />
+    <Compile Include="PublicFolderInformation.cs" />
+    <Compile Include="PublicFolderPermission.cs" />
+    <Compile Include="PublicFolderPermissionRole.cs" />
+    <Compile Include="PushNotifications\O365Notification.cs" />
+    <Compile Include="PushNotifications\PushNotificationSubscription.cs" />
+    <Compile Include="PushNotifications\PushNotificationSubscriptionOption.cs" />
+    <Compile Include="QueryFilter.cs" />
+    <Compile Include="QueryParser.cs" />
+    <Compile Include="QueryParserUtils.cs" />
+    <Compile Include="QueueDigest\QueueDigestDetails.cs" />
+    <Compile Include="QueueDigest\QueueDigestPresentationObject.cs" />
+    <Compile Include="QueueDigest\QueueDigestPresentationObjectSchema.cs" />
+    <Compile Include="QueueViewerIncludesAndExcludes.cs" />
+    <Compile Include="QueueViewerSortOrderEntry.cs" />
+    <Compile Include="QueueViewer\CompareFieldWithFieldDelegate.cs" />
+    <Compile Include="QueueViewer\CompareFieldWithValueDelegate.cs" />
+    <Compile Include="QueueViewer\ComponentLatencyInfo.cs" />
+    <Compile Include="QueueViewer\DateTimeConverter.cs" />
+    <Compile Include="QueueViewer\ExtensibleMessageInfo.cs" />
+    <Compile Include="QueueViewer\ExtensibleMessageInfoSchema.cs" />
+    <Compile Include="QueueViewer\ExtensibleQueueInfo.cs" />
+    <Compile Include="QueueViewer\ExtensibleQueueInfoSchema.cs" />
+    <Compile Include="QueueViewer\MatchFieldWithTextDelegate.cs" />
+    <Compile Include="QueueViewer\MessageIdentity.cs" />
+    <Compile Include="QueueViewer\MessageInfo.cs" />
+    <Compile Include="QueueViewer\MessageInfoPropertyBag.cs" />
+    <Compile Include="QueueViewer\MessageInfoSchema.cs" />
+    <Compile Include="QueueViewer\MessageStatus.cs" />
+    <Compile Include="QueueViewer\PagedDataObject.cs" />
+    <Compile Include="QueueViewer\PagedObjectSchema.cs" />
+    <Compile Include="QueueViewer\PropertyBagBasedMessageInfo.cs" />
+    <Compile Include="QueueViewer\PropertyBagBasedQueueInfo.cs" />
+    <Compile Include="QueueViewer\QueueIdentity.cs" />
+    <Compile Include="QueueViewer\QueueInfo.cs" />
+    <Compile Include="QueueViewer\QueueInfoPropertyBag.cs" />
+    <Compile Include="QueueViewer\QueueInfoSchema.cs" />
+    <Compile Include="QueueViewer\QueueStatus.cs" />
+    <Compile Include="QueueViewer\QueueType.cs" />
+    <Compile Include="QueueViewer\QueueViewerPropertyDefinition.cs" />
+    <Compile Include="QueueViewer\RecipientInfo.cs" />
+    <Compile Include="QueueViewer\RecipientStatus.cs" />
+    <Compile Include="RangedNullableUnlimitedConstraint.cs" />
+    <Compile Include="RangedNullableValueConstraint.cs" />
+    <Compile Include="RangedUnlimitedConstraint.cs" />
+    <Compile Include="RangedValueConstraint.cs" />
+    <Compile Include="RangedValuePerFileExtensionListConstraint.cs" />
+    <Compile Include="RecipientAccessRight.cs" />
+    <Compile Include="RedirectionHistoryReason.cs" />
+    <Compile Include="RegexConstraint.cs" />
+    <Compile Include="RegExPropertyName.cs" />
+    <Compile Include="RegistryObject.cs" />
+    <Compile Include="RegistryObjectId.cs" />
+    <Compile Include="RegistryObjectSchema.cs" />
+    <Compile Include="RegistryPropertyDefinition.cs" />
+    <Compile Include="RegistrySession.cs" />
+    <Compile Include="RejectStatusCode.cs" />
+    <Compile Include="RejectText.cs" />
+    <Compile Include="Reporting\ITenantThrottlingSession.cs" />
+    <Compile Include="Reporting\TenantThrottleInfo.cs" />
+    <Compile Include="Reporting\TenantThrottleInfoSchema.cs" />
+    <Compile Include="Reporting\TenantThrottleState.cs" />
+    <Compile Include="RequestedCapabilities.cs" />
+    <Compile Include="ResourcePropertyConstraint.cs" />
+    <Compile Include="Result.cs" />
+    <Compile Include="RightGuidAttribute.cs" />
+    <Compile Include="RightsManagement\RmsTemplateIdentity.cs" />
+    <Compile Include="RightsManagement\RmsTemplatePresentation.cs" />
+    <Compile Include="RightsManagement\RmsTemplatePresentationSchema.cs" />
+    <Compile Include="RightsManagement\RmsTemplateQueryFilter.cs" />
+    <Compile Include="RoleEntry.cs" />
+    <Compile Include="RoleEntryComparer.cs" />
+    <Compile Include="RoutingX400Address.cs" />
+    <Compile Include="Schedule.cs" />
+    <Compile Include="ScheduleBuilder.cs" />
+    <Compile Include="ScheduleMode.cs" />
+    <Compile Include="SchemaPiiPropertyDefinition.cs" />
+    <Compile Include="SclValue.cs" />
+    <Compile Include="ScriptRoleEntry.cs" />
+    <Compile Include="SeekReference.cs" />
+    <Compile Include="SerializationTypeBinder.cs" />
+    <Compile Include="SerializationTypeConverter.cs" />
+    <Compile Include="Serialization\Serialization.cs" />
+    <Compile Include="ServerCostPair.cs" />
+    <Compile Include="ServerEdition.cs" />
+    <Compile Include="ServerEditionType.cs" />
+    <Compile Include="ServerEditionValue.cs" />
+    <Compile Include="ServerVersion.cs" />
+    <Compile Include="ServiceEndpoint.cs" />
+    <Compile Include="ServicePlanFeaturesValidationError.cs" />
+    <Compile Include="ServicePlanSchemaValidationError.cs" />
+    <Compile Include="ServiceProviderSettings.cs" />
+    <Compile Include="ServiceState.cs" />
+    <Compile Include="SetterDelegate.cs" />
+    <Compile Include="ShadowMessagePreference.cs" />
+    <Compile Include="SharedConfigurationInfo.cs" />
+    <Compile Include="SharingPolicyAction.cs" />
+    <Compile Include="SharingPolicyDomain.cs" />
+    <Compile Include="SimpleGenericsTypeConverter.cs" />
+    <Compile Include="SimpleProviderObjectSchema.cs" />
+    <Compile Include="SimpleProviderPropertyBag.cs" />
+    <Compile Include="SimpleProviderPropertyDefinition.cs" />
+    <Compile Include="SinglePropertyFilter.cs" />
+    <Compile Include="SizeFilter.cs" />
+    <Compile Include="SizeMode.cs" />
+    <Compile Include="SmartHost.cs" />
+    <Compile Include="SmtpAddress.cs" />
+    <Compile Include="SmtpDomain.cs" />
+    <Compile Include="SmtpDomainWithSubdomains.cs" />
+    <Compile Include="SmtpPermission.cs" />
+    <Compile Include="SmtpProxyAddress.cs" />
+    <Compile Include="SmtpProxyAddressPrefix.cs" />
+    <Compile Include="SmtpProxyAddressTemplate.cs" />
+    <Compile Include="SmtpReceiveCapabilities.cs" />
+    <Compile Include="SmtpReceiveDomainCapabilities.cs" />
+    <Compile Include="SmtpResponseConstraint.cs" />
+    <Compile Include="SmtpX509Identifier.cs" />
+    <Compile Include="SmtpX509IdentifierEx.cs" />
+    <Compile Include="SortBy.cs" />
+    <Compile Include="SortOrder.cs" />
+    <Compile Include="StatusCodeConverter.cs" />
+    <Compile Include="Storage\Infoworker\MailboxSearch\DiscoverySearchStats.cs" />
+    <Compile Include="Storage\Infoworker\MailboxSearch\KeywordHit.cs" />
+    <Compile Include="Storage\LazilyInitialized.cs" />
+    <Compile Include="StreamPropertyType.cs" />
+    <Compile Include="StringLengthConstraint.cs" />
+    <Compile Include="StrongTypeFormatException.cs" />
+    <Compile Include="SubFilter.cs" />
+    <Compile Include="SubFilterProperties.cs" />
+    <Compile Include="SubjectPrefix.cs" />
+    <Compile Include="SuppressingPiiConfig.cs" />
+    <Compile Include="SuppressingPiiContext.cs" />
+    <Compile Include="SuppressingPiiProperty.cs" />
+    <Compile Include="SyncLoggingLevel.cs" />
+    <Compile Include="TenantConnectorSource.cs" />
+    <Compile Include="TenantConnectorType.cs" />
+    <Compile Include="TextFilter.cs" />
+    <Compile Include="ThrottlingPolicyAnonymousSettings.cs" />
+    <Compile Include="ThrottlingPolicyBaseSettings.cs" />
+    <Compile Include="ThrottlingPolicyBaseSettingsWithCommonAttributes.cs" />
+    <Compile Include="ThrottlingPolicyDefaults.cs" />
+    <Compile Include="ThrottlingPolicyE4eSettings.cs" />
+    <Compile Include="ThrottlingPolicyEasSettings.cs" />
+    <Compile Include="ThrottlingPolicyEwsSettings.cs" />
+    <Compile Include="ThrottlingPolicyGeneralSettings.cs" />
+    <Compile Include="ThrottlingPolicyImapSettings.cs" />
+    <Compile Include="ThrottlingPolicyOwaSettings.cs" />
+    <Compile Include="ThrottlingPolicyPopSettings.cs" />
+    <Compile Include="ThrottlingPolicyPowerShellSettings.cs" />
+    <Compile Include="ThrottlingPolicyPushNotificationSettings.cs" />
+    <Compile Include="ThrottlingPolicyRcaSettings.cs" />
+    <Compile Include="TimeOfDay.cs" />
+    <Compile Include="TimeOfDayType.cs" />
+    <Compile Include="TlsAuthLevel.cs" />
+    <Compile Include="TlsCertificate.cs" />
+    <Compile Include="TransportDeliveryTypes.cs" />
+    <Compile Include="TransportProcessingQuotaConfig.cs" />
+    <Compile Include="TransportProcessingQuotaConfigSchema.cs" />
+    <Compile Include="TransportQueueLog.cs" />
+    <Compile Include="TransportQueueLogs.cs" />
+    <Compile Include="TransportQueueLogSchema.cs" />
+    <Compile Include="TransportQueueQuerySchema.cs" />
+    <Compile Include="TransportQueueSchema.cs" />
+    <Compile Include="TransportQueueSchemaHelper.cs" />
+    <Compile Include="TransportQueueStatistics.cs" />
+    <Compile Include="TransportQueueStatisticsSchema.cs" />
+    <Compile Include="TransportService.cs" />
+    <Compile Include="TrueFilter.cs" />
+    <Compile Include="TypeConversionException.cs" />
+    <Compile Include="TypedValue.cs" />
+    <Compile Include="UIImpactStringLengthConstraint.cs" />
+    <Compile Include="UMLanguage.cs" />
+    <Compile Include="UMLanguagePackHelper.cs" />
+    <Compile Include="UMNumberingPlanFormat.cs" />
+    <Compile Include="UMPartnerContext.cs" />
+    <Compile Include="UMPartnerFaxContext.cs" />
+    <Compile Include="UMPartnerFaxStatus.cs" />
+    <Compile Include="UMPartnerMinimalTranscriptionContext.cs" />
+    <Compile Include="UMPartnerTranscriptionContext.cs" />
+    <Compile Include="UMSmartHost.cs" />
+    <Compile Include="UnifiedPolicy\IUnifiedPolicyStatusPublisher.cs" />
+    <Compile Include="UnknownRoleEntry.cs" />
+    <Compile Include="Unlimited.cs" />
+    <Compile Include="UnlimitedEnhancedTimeSpanUnitConstraint.cs" />
+    <Compile Include="UnreachableReason.cs" />
+    <Compile Include="UpdateErrorsDelegate.cs" />
+    <Compile Include="UriKindConstraint.cs" />
+    <Compile Include="UriSchemeConstraint.cs" />
+    <Compile Include="UrlTokenConverter.cs" />
+    <Compile Include="UrlTokenEncodedObjectId.cs" />
+    <Compile Include="ValidateNotEmptyGuidAttribute.cs" />
+    <Compile Include="ValidationDelegate.cs" />
+    <Compile Include="ValidationError.cs" />
+    <Compile Include="ValidDomainConstraint.cs" />
+    <Compile Include="ValidSmtpAddressConstraint.cs" />
+    <Compile Include="ValueConvertor.cs" />
+    <Compile Include="ValueDefinedConstraint.cs" />
+    <Compile Include="WebServiceRoleEntry.cs" />
+    <Compile Include="WellKnownGuid.cs" />
+    <Compile Include="WellKnownSids.cs" />
+    <Compile Include="Wildcard.cs" />
+    <Compile Include="WildcardPattern.cs" />
+    <Compile Include="WindowsLiveId.cs" />
+    <Compile Include="WindowsLiveIdApplicationCertificate.cs" />
+    <Compile Include="WindowsLiveIDLocalPartConstraint.cs" />
+    <Compile Include="WinRMInfo.cs" />
+    <Compile Include="Word.cs" />
+    <Compile Include="X400AddressParser.cs" />
+    <Compile Include="X400ComponentType.cs" />
+    <Compile Include="X400Domain.cs" />
+    <Compile Include="X400ProxyAddress.cs" />
+    <Compile Include="X400ProxyAddressPrefix.cs" />
+    <Compile Include="X400ProxyAddressTemplate.cs" />
+    <Compile Include="X509Identifier.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="DataStrings.resources" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.Exchange.Common\Microsoft.Exchange.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140F0}</Project>
+      <Name>Microsoft.Exchange.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Compliance\Microsoft.Exchange.Compliance.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140F2}</Project>
+      <Name>Microsoft.Exchange.Compliance</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Core.Strings\Microsoft.Exchange.Core.Strings.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14103}</Project>
+      <Name>Microsoft.Exchange.Core.Strings</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Common\Microsoft.Exchange.Data.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140D3}</Project>
+      <Name>Microsoft.Exchange.Data.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Transport\Microsoft.Exchange.Data.Transport.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140D5}</Project>
+      <Name>Microsoft.Exchange.Data.Transport</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Diagnostics\Microsoft.Exchange.Diagnostics.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14113}</Project>
+      <Name>Microsoft.Exchange.Diagnostics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Extensibility.Internal\Microsoft.Exchange.Extensibility.Internal.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14126}</Project>
+      <Name>Microsoft.Exchange.Extensibility.Internal</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Net\Microsoft.Exchange.Net.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14178}</Project>
+      <Name>Microsoft.Exchange.Net</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Rpc\Microsoft.Exchange.Rpc.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14188}</Project>
+      <Name>Microsoft.Exchange.Rpc</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Rules.Common\Microsoft.Exchange.Rules.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14191}</Project>
+      <Name>Microsoft.Exchange.Rules.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\mscorlib\mscorlib.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141F1}</Project>
+      <Name>mscorlib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

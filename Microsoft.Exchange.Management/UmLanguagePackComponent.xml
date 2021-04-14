@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo Name="UM Language Pack Configuration">
+  <ServerTasks>
+    <!-- Add/remove language pack -->
+    <!-- The tasks for uninstallation are performed in reversed order, therefore-->
+    <!-- the task that needs to be performed first will be listed last-->
+    <!-- Remove the language pack in upgrade mode -->
+    <ServerTaskInfo Id="_adacb802c5fd485bbad616cb75d89385" Component="EXCHANGE14:\Current\Release\Client Access\Unified Messaging">
+      <Install />
+      <BuildToBuildUpgrade>
+        <Standalone>
+          uninstall-MsiPackage -ProductCode $RoleProductCode -LogFile $RoleLogFilePath -PropertyValues ("ESE=1");
+
+          uninstall-MsiPackage -ProductCode $RoleTeleProductCode -LogFile $RoleLogFilePath;
+
+          if ( $RoleTransProductCode -ne [system.guid]::empty )
+          {
+            uninstall-MsiPackage -ProductCode $RoleTransProductCode -LogFile $RoleLogFilePath;
+          }
+
+          uninstall-MsiPackage -ProductCode $RoleTtsProductCode -LogFile $RoleLogFilePath;
+        </Standalone>
+      </BuildToBuildUpgrade>
+      <DisasterRecovery />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Install UMLanguagePack MSI first inorder to perform version and Platform check. -->
+    <ServerTaskInfo Id="_98c7f337c1334ef59c2ac59e52813c12" Component="EXCHANGE14:\Current\Release\Client Access\Unified Messaging">
+      <Install>
+        <Standalone>
+          install-MsiPackage -PackagePath $RolePackagePath -LogFile $RoleLogFilePath -UpdatesDir $RoleUpdatesDir -PropertyValues ("INSTALLDIR=`"" + $RoleInstallPath + "`" ESE=1");
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+    
+    <!-- Install the remaining MSIs-->
+    <ServerTaskInfo Id="_98c7f337c1334ef59c2ac59e52813c11" Component="EXCHANGE14:\Current\Release\Client Access\Unified Messaging">
+      <Install>
+        <Standalone>
+          install-MsiPackage -PackagePath $RoleTelePackagePath -LogFile $RoleLogFilePath -PropertyValues ("ARPSYSTEMCOMPONENT=1 ALLUSERS=1");
+
+          if ( $RoleTransPackagePath -ne $null )
+          {
+            install-MsiPackage -PackagePath $RoleTransPackagePath -LogFile $RoleLogFilePath -PropertyValues ("ARPSYSTEMCOMPONENT =1 ALLUSERS=1");
+          }
+
+          install-MsiPackage -PackagePath $RoleTtsPackagePath -LogFile $RoleLogFilePath -PropertyValues ("ARPSYSTEMCOMPONENT=1 ALLUSERS=1");
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall/>
+    </ServerTaskInfo>
+
+    <!-- Update the server object in the Active Directory by adding the language.-->
+    <ServerTaskInfo Id="_95d093ee93e94a729eb4f16b6c493f65" Component="EXCHANGE14:\Current\Release\Client Access\Unified Messaging">
+      <Install>
+        <Standalone>
+          $lochost = hostname;
+          set-UMServerLanguages -Identity $lochost -Languages @{Add = $RoleLanguage} -DomainController $RoleDomainController;
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery>
+        <Standalone>
+          $lochost = hostname;
+          $mvp = $null;
+          $mvp += $RoleLanguage;
+          set-UMServerLanguages -Identity $lochost -Languages $mvp -DomainController $RoleDomainController;
+        </Standalone>
+      </DisasterRecovery>
+      <Uninstall/>
+    </ServerTaskInfo>
+
+    <!-- tasks for adding and removing the um language pack product codes to/from the registry-->
+    <ServerTaskInfo Id="_98c7f337c1334ef59c2ac59e52813c13" Component="EXCHANGE14:\Current\Release\Client Access\Unified Messaging">
+      <Install>
+        <Standalone>
+          Add-UMLanguagePackRegistry -Language $RoleLanguage;
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>
+          Remove-UMLanguagePackRegistry -Language $RoleLanguage;
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Update the server object in the Active Directory by removing the language.-->
+    <ServerTaskInfo Id="_98c7f337c1334ef59c2ac59e52813c15" Component="EXCHANGE14:\Current\Release\Client Access\Unified Messaging">
+      <Install/>
+      <BuildToBuildUpgrade/>
+      <DisasterRecovery/>
+      <Uninstall>
+        <Standalone>
+          $lochost = hostname;
+          set-UMServerLanguages -Identity $lochost -Languages @{Remove = $RoleLanguage} -DomainController $RoleDomainController;
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Uninstall the MSIs first.-->
+    <ServerTaskInfo Id="_98c7f337c1334ef59c2ac59e52813c16" Component="EXCHANGE14:\Current\Release\Client Access\Unified Messaging">
+      <Install/>
+      <BuildToBuildUpgrade/>
+      <DisasterRecovery/>
+      <Uninstall>
+        <Standalone>
+          uninstall-MsiPackage -ProductCode $RoleProductCode -LogFile $RoleLogFilePath -PropertyValues ("ESE=1");
+
+          $lochost=hostname;
+          $exchsrv=Get-ExchangeServer -Identity $lochost -DomainController $RoleDomainController;
+          if (-not $exchsrv.IsMailboxServer)
+          {
+            uninstall-MsiPackage -ProductCode $RoleTeleProductCode -LogFile $RoleLogFilePath;
+          }
+
+          if ( $RoleTransProductCode -ne [system.guid]::empty )
+          {
+            uninstall-MsiPackage -ProductCode $RoleTransProductCode -LogFile $RoleLogFilePath;
+          }
+
+          uninstall-MsiPackage -ProductCode $RoleTtsProductCode -LogFile $RoleLogFilePath;
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+  </ServerTasks>
+</SetupComponentInfo>

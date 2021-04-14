@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo Name="Protected Service Host Service Control" DescriptionId="ProtectedServiceHostServiceControlComponentDescription">
+
+  <ServerTasks>
+    
+	<!-- Stop MSExchangeProtectedServiceHost service -->
+	<ServerTaskInfo Id="_e9a2d0c2a3a247e7851f1b22dc4bee15" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+	  <Install/>
+	  <BuildToBuildUpgrade />
+	  <DisasterRecovery UseInstallTasks="true" />
+	  <Uninstall DescriptionId="SetupProgressStoppingProtectedServiceHostService">
+		<Standalone>stop-SetupService -ServiceName MSExchangeProtectedServiceHost</Standalone>
+	  </Uninstall>
+	</ServerTaskInfo>
+
+  </ServerTasks>
+
+</SetupComponentInfo>

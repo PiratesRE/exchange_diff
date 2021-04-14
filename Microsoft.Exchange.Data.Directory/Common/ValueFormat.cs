@@ -1,0 +1,53 @@
+﻿using System;
+
+namespace Microsoft.Exchange.Common
+{
+	public enum ValueFormat : byte
+	{
+		TypeShift = 3,
+		TypeMask = 248,
+		FormatModifierMask = 7,
+		FormatModifierShift = 0,
+		Null = 0,
+		Boolean = 8,
+		Int16 = 16,
+		Int32 = 24,
+		Int64 = 32,
+		Single = 40,
+		Double = 48,
+		DateTime = 56,
+		Guid = 64,
+		String = 72,
+		Binary = 80,
+		Reserved2 = 104,
+		Reserved1 = 112,
+		Reference = 120,
+		MVFlag = 128,
+		MVInt16 = 144,
+		MVInt32 = 152,
+		MVInt64 = 160,
+		MVSingle = 168,
+		MVDouble = 176,
+		MVDateTime = 184,
+		MVGuid = 192,
+		MVString = 200,
+		MVBinary = 208,
+		LengthMask = 3,
+		LengthZero = 0,
+		LengthSizeOneByte,
+		LengthSizeTwoBytes,
+		LengthSizeFourBytes,
+		StringEncodingMask,
+		StringEncodingUcs16 = 0,
+		StringEncodingUtf8 = 4,
+		IntegerSizeMask = 7,
+		IntegerSizeZero = 0,
+		IntegerSizeOneByte,
+		IntegerSizeTwoBytes,
+		IntegerSizeFourBytes,
+		IntegerSizeEightBytes,
+		BooleanFalse = 0,
+		BooleanTrue,
+		ReferenceZero = 4
+	}
+}

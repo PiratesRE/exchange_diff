@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo Name="Admin Tools Configuration" DescriptionId="SetupComponentConfigurationAdminTools">
+  <ServerTasks>
+    <ServerTaskInfo Id="_99aa0a89-1e09-4dd5-8f17-998a1cbe2154" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          Copy-Item -Path ($RoleInstallPath+"Bin\mmc.exe.config") -Destination (Split-Path (where.exe mmc)) -Force
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+        <DisasterRecovery />
+      <Uninstall>
+        <Standalone>
+          Remove-Item -Path ((Split-Path (where.exe mmc))+"\mmc.exe.config") -Confirm:$false -ErrorAction SilentlyContinue;         
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+  </ServerTasks>
+</SetupComponentInfo>
+

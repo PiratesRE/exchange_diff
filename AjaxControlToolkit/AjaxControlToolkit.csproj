@@ -1,0 +1,103 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{09CD9476-CD82-489E-B9E2-84B47CA140D2}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>AjaxControlToolkit</RootNamespace>
+    <AssemblyName>AjaxControlToolkit</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Design" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Extensions.Design" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ClientCssResourceAttribute.cs" />
+    <Compile Include="ClientPropertyNameAttribute.cs" />
+    <Compile Include="ClientScriptResourceAttribute.cs" />
+    <Compile Include="CombinableScripts.cs" />
+    <Compile Include="CommonToolkitScripts.cs" />
+    <Compile Include="ComponentReferenceAttribute.cs" />
+    <Compile Include="Design\ExtenderControlBaseDesigner.cs" />
+    <Compile Include="Design\ExtenderPropertiesProxy.cs" />
+    <Compile Include="Design\ExtenderPropertiesTypeDescriptor.cs" />
+    <Compile Include="Design\ExtenderVisiblePropertyAttribute.cs" />
+    <Compile Include="Design\FilterTypeDescriptionProvider.cs" />
+    <Compile Include="Design\TypedControlIDConverter.cs" />
+    <Compile Include="ElementReferenceAttribute.cs" />
+    <Compile Include="ExtenderControlBase.cs" />
+    <Compile Include="ExtenderControlEventAttribute.cs" />
+    <Compile Include="ExtenderControlMethodAttribute.cs" />
+    <Compile Include="ExtenderControlPropertyAttribute.cs" />
+    <Compile Include="IClientStateManager.cs" />
+    <Compile Include="IControlResolver.cs" />
+    <Compile Include="ModalPopupDesigner.cs" />
+    <Compile Include="ModalPopupExtender.cs" />
+    <Compile Include="ProfilePropertyBinding.cs" />
+    <Compile Include="ProfilePropertyBindingCollection.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RequiredPropertyAttribute.cs" />
+    <Compile Include="RequiredScriptAttribute.cs" />
+    <Compile Include="ResolveControlEventArgs.cs" />
+    <Compile Include="ResolveControlEventHandler.cs" />
+    <Compile Include="Resources.cs" />
+    <Compile Include="ScriptBuckets.cs" />
+    <Compile Include="ScriptCombineAttribute.cs" />
+    <Compile Include="ScriptComponentDescriptorExtender.cs" />
+    <Compile Include="ScriptControlBase.cs" />
+    <Compile Include="ScriptEntry.cs" />
+    <Compile Include="ScriptObjectBuilder.cs" />
+    <Compile Include="ScriptResources.cs" />
+    <Compile Include="ScriptsEntries.cs" />
+    <Compile Include="ServicePathConverter.cs" />
+    <Compile Include="TextBoxWatermarkExtender.cs" />
+    <Compile Include="TextBoxWatermarkExtenderDesigner.cs" />
+    <Compile Include="ToolkitScriptManager.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Common\Common.js" />
+    <EmbeddedResource Include="ModalPopup\ModalPopupBehavior.js" />
+    <EmbeddedResource Include="Properties\Resources.resources" />
+    <EmbeddedResource Include="ScriptResources\ScriptResources.resources" />
+    <EmbeddedResource Include="TextboxWatermark\TextboxWatermark.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\mscorlib\mscorlib.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141F1}</Project>
+      <Name>mscorlib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

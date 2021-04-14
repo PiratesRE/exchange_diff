@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo Name="Prepare Shared Configuration Tenants" DescriptionId="SetupComponentPrepareSharedConfig">
+
+  <OrgTasks>
+    <!-- This task creates Shared Configuration Tenants. -->
+    <OrgTaskInfo Id="_A85247D294E8-4964852CDD7D02B4C4B4" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\AD Core">
+      <Install>
+        <Global>
+          $partition = Get-AccountPartition | where {$_.IsLocalForest -eq $true}
+          if ($RolePrepareSCT -and $RoleDatacenterFfoEnvironment -ne 'True')
+          {
+            #GLS is not needed for lookups and creation of SCTs
+            Set-ADServerSettings -DisableGls:$true
+
+            #MServ redirection and aggregation has to be disabled to successfully provision TT in AD
+            Set-ADServerSettings -ForceADInTemplateScope:$true
+
+            $prodProgramId = "MSOnline"
+            $testProgramId = "ExchangeTest"
+            $programIdOfferIdMap = @{$prodProgramId = ('BPOS_L', 'BPOS_L_Pilot','BPOS_S','BPOS_S_Pilot','BPOS_M','BPOS_M_Pilot','BPOS_Basic_CustomDomain', 'Outlook');$testProgramId = @('17', '18','21','25')}
+            $failedToCreateSCT = $false
+
+            foreach($programId in $programIdOfferIdMap.Keys)
+            {
+              $offerIds = $programIdOfferIdMap[$programId]
+
+              if (-not $RoleDatacenterIsTestEnv -and $programId -eq $testProgramId)
+              {
+                continue
+              }
+
+              foreach($offerId in $offerIds)
+              {
+                $retryCount = 2;
+                while ($retryCount -gt 0)
+                {
+                  $org = New-Organization -Location US -ProgramId $programId -OfferId $offerId -CreateSharedConfiguration -EnableFileLogging -AccountPartition:$partition;
+                  if ($org -ne $null)
+                  {
+                    Write-ExchangeSetupLog -Info "SharedConfigurationTenant for ProgramId '$programId' and OfferId '$offerId' was created successfully"
+                    break;
+                  }
+
+                  $retryCount--
+                  Write-ExchangeSetupLog -Warning "Failed to create SharedConfigurationTenant for ProgramId '$programId' and OfferId '$offerId'. Retries remaining = $retryCount"
+                  sleep 10
+                }
+
+                if ($retryCount -le 0)
+                {
+                  $failedToCreateSCT = $true
+                }
+              }
+            }
+
+            if ($failedToCreateSCT)
+            {
+              Write-ExchangeSetupLog -Error "Failed to create SharedConfigurationTenant for a ProgramId and OfferId. See setup log for more details. Please rerun the setup."
+            }
+
+            #MServ redirection and aggregation can be enabled now
+            Set-ADServerSettings -ForceADInTemplateScope:$false
+
+            #Don't forget to turn GLS back on in this runspace
+            Set-ADServerSettings -DisableGls:$false
+          }
+        </Global>
+        <Tenant />
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+
+  </OrgTasks>
+
+</SetupComponentInfo>
+

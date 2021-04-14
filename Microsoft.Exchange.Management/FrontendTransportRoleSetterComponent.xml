@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo Name="Front End Role Setter" DescriptionId="SetupComponentRoleSetterFrontEnd">
+
+  <ServerTasks>
+
+    <!-- Set FrontEnd role in the AD. Permission to access AD is required-->
+    <ServerTaskInfo Id="_60CEEB797639491BB6018E87365C1494" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>set-ExchangeServerRole -Identity $RoleFqdnOrName -IsFrontendTransportServer:$true -DomainController $RoleDomainController</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery />
+      <Uninstall>
+        <Standalone>set-ExchangeServerRole -Identity $RoleFqdnOrName -IsFrontendTransportServer:$false -DomainController $RoleDomainController</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+  </ServerTasks>
+</SetupComponentInfo>
+
+
+

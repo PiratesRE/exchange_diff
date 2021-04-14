@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo Name="POP/IMAP Backend Configuration" DescriptionId="PopImapBackendComponentDescription">
+
+  <ServerTasks>
+
+    <!-- Install/remove IMAP4 BE service -->
+    <ServerTaskInfo Id="_d91be94d83bb4dc28e1fbdf7d94ca60e" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="InstallingIMAP4BEService">
+        <Standalone>
+          if (!(get-service MSExchangeIMAP4BE* | where {$_.name -eq "MSExchangeIMAP4BE"}))
+          {
+            install-Imap4BeService
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall DescriptionId="UninstallingIMAP4BEService">
+        <Standalone>uninstall-Imap4BeService</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Stop IMAP4 BE service -->
+    <ServerTaskInfo Id="_4531ac7067494c5a9e8b5b1134394190" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install />
+      <BuildToBuildUpgrade />
+      <DisasterRecovery />
+      <Uninstall DescriptionId="StoppingIMAP4BEService">
+        <Standalone>stop-SetupService -ServiceName MSExchangeIMAP4BE</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install/remove POP3 BE service -->
+    <ServerTaskInfo Id="_e2debc6ecabf457eb6f278096ad5102c" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="InstallingPOP3BEService">
+        <Standalone>
+          if (!(get-service MSExchangePOP3BE* | where {$_.name -eq "MSExchangePOP3BE"}))
+          {
+            install-Pop3BeService
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall DescriptionId="UninstallingPOP3BEService">
+        <Standalone>uninstall-Pop3BeService</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Stop POP3 BE service -->
+    <ServerTaskInfo Id="_59df710fb83e4ab49f2F8a2e4cdfd91a" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install />
+      <BuildToBuildUpgrade />
+      <DisasterRecovery />
+      <Uninstall DescriptionId="StoppingPOP3BEService">
+        <Standalone>stop-SetupService -ServiceName MSExchangePOP3BE</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Set install path in app config "BackEnd/PopImap" Pop3Service.exe.config -->
+    <!-- Remove old app config file if it exists -->
+    <!-- Preserve some application settings and set them to the new .config file -->
+    <!-- E14 82092: In the appconfig file, set Code Access Security (CAS) policy-->
+    <!-- to skip publisher (certificate) validation.-->
+    <ServerTaskInfo Id="_7ee4dbb3fe884d26bb3e060ac68061ee" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          $file = 'Microsoft.Exchange.Pop3Service.exe.config';
+          $template = $file + '.template';
+          $relPath = 'ClientAccess\PopImap';
+          $fullPath = [System.IO.Path]::Combine($RoleInstallPath, $relPath);
+          $fullFilePath = [System.IO.Path]::Combine($fullPath, $file);
+
+          Set-InstallPathInAppConfig -ConfigFileRelativePath $relPath -ConfigFileName $template;
+          Preserve-AppSettings -RoleInstallPath $fullPath -ConfigFileName $file;
+          set-appconfigvalue -ConfigFileFullPath:$fullFilePath -Element:configuration/runtime/generatePublisherEvidence -Attribute:enabled -NewValue:false
+
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Set install path in app config "BackEnd/PopImap" Pop3.exe.config -->
+    <!-- Remove old app config file if it exists -->
+    <!-- Preserve some application settings and set them to the new .config file -->
+    <ServerTaskInfo Id="_9b86c2af9f364990aa196cb6e69905b6" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          $file = 'Microsoft.Exchange.Pop3.exe.config';
+          $template = $file + '.template';
+          $relPath = 'ClientAccess\PopImap';
+          $fullPath = [System.IO.Path]::Combine($RoleInstallPath, $relPath);
+
+          Set-InstallPathInAppConfig -ConfigFileRelativePath $relPath -ConfigFileName $template;
+          Preserve-AppSettings -RoleInstallPath $fullPath -ConfigFileName $file;
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Set install path in app config "BackEnd/PopImap" Imap4Service.exe.config -->
+    <!-- Remove old app config file if it exists -->
+    <!-- Preserve some application settings and set them to the new .config file -->
+    <!-- E14 82092: In the appconfig file, set Code Access Security (CAS) policy-->
+    <!-- to skip publisher (certificate) validation.-->
+    <ServerTaskInfo Id="_01c604c08fd6402e9de6b3c45e3431c8" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          $file = 'Microsoft.Exchange.Imap4Service.exe.config';
+          $template = $file + '.template';
+          $relPath = 'ClientAccess\PopImap';
+          $fullPath = [System.IO.Path]::Combine($RoleInstallPath, $relPath);
+          $fullFilePath = [System.IO.Path]::Combine($fullPath, $file);
+
+          Set-InstallPathInAppConfig -ConfigFileRelativePath $relPath -ConfigFileName $template;
+          Preserve-AppSettings -RoleInstallPath $fullPath -ConfigFileName $file;
+          set-appconfigvalue -ConfigFileFullPath:$fullFilePath -Element:configuration/runtime/generatePublisherEvidence -Attribute:enabled -NewValue:false
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Set install path in app config "BackEnd/PopImap" Imap4.exe.config -->
+    <!-- Remove old app config file if it exists -->
+    <!-- Preserve some application settings and set them to the new .config file -->
+    <ServerTaskInfo Id="_2528980001a444fcb7097d123e879728" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          $file = 'Microsoft.Exchange.Imap4.exe.config';
+          $template = $file + '.template';
+          $relPath = 'ClientAccess\PopImap';
+          $fullPath = [System.IO.Path]::Combine($RoleInstallPath, $relPath);
+
+          Set-InstallPathInAppConfig -ConfigFileRelativePath $relPath -ConfigFileName $template;
+          Preserve-AppSettings -RoleInstallPath $fullPath -ConfigFileName $file;
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Create IMAP4 container for backend -->
+     <ServerTaskInfo Id="_bbfdc492aaf748298977cb9b98e00029" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>install-Imap4Container -Name:"IMAP4" -DomainController $RoleDomainController</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Create POP3 container for backend -->
+     <ServerTaskInfo Id="_091c98cfe0f145189c0966717496795e" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>install-Pop3Container -Name:"POP3" -DomainController $RoleDomainController</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Create IMAP config for backend -->
+    <ServerTaskInfo Id="_42cb9f4ac2924c27b6ebf60b92a03628" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>new-ImapSettings -DomainController $RoleDomainController -ExchangePath $RoleInstallPath</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Create POP config for backend -->
+    <ServerTaskInfo Id="_181f5361a5df4e7ca009f21f26f8c0d5" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>new-PopSettings -DomainController $RoleDomainController -ExchangePath $RoleInstallPath</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery />
+      <Uninstall />
+    </ServerTaskInfo>
+
+  </ServerTasks>
+
+</SetupComponentInfo>
+

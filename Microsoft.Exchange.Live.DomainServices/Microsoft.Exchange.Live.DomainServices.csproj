@@ -1,0 +1,167 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{09CD9476-CD82-489E-B9E2-84B47CA1413F}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Microsoft.Exchange</RootNamespace>
+    <AssemblyName>Microsoft.Exchange.Live.DomainServices</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Live\DomainServices\AddBrandInfoCompletedEventHandler.cs" />
+    <Compile Include="Live\DomainServices\Admin.cs" />
+    <Compile Include="Live\DomainServices\AdminPassportAuthHeader.cs" />
+    <Compile Include="Live\DomainServices\BlockMemberEmailCompletedEventHandler.cs" />
+    <Compile Include="Live\DomainServices\CertData.cs" />
+    <Compile Include="Live\DomainServices\CompleteDomainEmailMigrationCompletedEventHandler.cs" />
+    <Compile Include="Live\DomainServices\CompleteMemberEmailMigrationCompletedEventHandler.cs" />
+    <Compile Include="Live\DomainServices\ConvertMemberSubscriptionCompletedEventHandler.cs" />
+    <Compile Include="Live\DomainServices\CreateByodRequestCompletedEventHandler.cs" />
+    <Compile Include="Live\DomainServices\CreateMemberCompletedEventArgs.cs" />
+    <Compile Include="Live\DomainServices\CreateMemberCompletedEventHandler.cs" />
+    <Compile Include="Live\DomainServices\CreateMemberEncryptedCompletedEventArgs.cs" />
+    <Compile Include="Live\DomainServices\CreateMemberEncryptedCompletedEventHandler.cs" />
+    <Compile Include="Live\DomainServices\CreateMemberEncryptedExCompletedEventArgs.cs" />
+    <Compile Include="Live\DomainServices\CreateMemberEncryptedExCompletedEventHandler.cs" />
+    <Compile Include="Live\DomainServices\CreateMemberExCompletedEventArgs.cs" />
+    <Compile Include="Live\DomainServices\CreateMemberExCompletedEventHandler.cs" />
+    <Compile Include="Live\DomainServices\DeprovisionMemberSubscriptionCompletedEventHandler.cs" />
+    <Compile Include="Live\DomainServices\DomainAvailability.cs" />
+    <Compile Include="Live\DomainServices\DomainInfo.cs" />
+    <Compile Include="Live\DomainServices\DomainInfoEx.cs" />
+    <Compile Include="Live\DomainServices\DomainServices.cs" />
+    <Compile Include="Live\DomainServices\DomainServicesHelper.cs" />
+    <Compile Include="Live\DomainServices\DomainServicesHelperConfigException.cs" />
+    <Compile Include="Live\DomainServices\DomainServicesHelperException.cs" />
+    <Compile Include="Live\DomainServices\DomainServicesPerformanceData.cs" />
+    <Compile Include="Live\DomainServices\EmailState.cs" />
+    <Compile Include="Live\DomainServices\EmailType.cs" />
+    <Compile Include="Live\DomainServices\EnableOpenMembershipCompletedEventHandler.cs" />
+    <Compile Include="Live\DomainServices\EnumByodDomainsCompletedEventArgs.cs" />
+    <Compile Include="Live\DomainServices\EnumByodDomainsCompletedEventHandler.cs" />
+    <Compile Include="Live\DomainServices\EnumMembersCompletedEventArgs.cs" />
+    <Compile Include="Live\DomainServices\EnumMembersCompletedEventHandler.cs" />
+    <Compile Include="Live\DomainServices\EvictAllUnmanagedMembersCompletedEventHandler.cs" />
+    <Compile Include="Live\DomainServices\EvictMemberCompletedEventHandler.cs" />
+    <Compile Include="Live\DomainServices\EvictUnmanagedMemberCompletedEventHandler.cs" />
+    <Compile Include="Live\DomainServices\GetAdminsCompletedEventArgs.cs" />
+    <Compile Include="Live\DomainServices\GetAdminsCompletedEventHandler.cs" />
+    <Compile Include="Live\DomainServices\GetCountMembersCompletedEventArgs.cs" />
+    <Compile Include="Live\DomainServices\GetCountMembersCompletedEventHandler.cs" />
+    <Compile Include="Live\DomainServices\GetDomainAvailabilityCompletedEventArgs.cs" />
+    <Compile Include="Live\DomainServices\GetDomainAvailabilityCompletedEventHandler.cs" />
+    <Compile Include="Live\DomainServices\GetDomainInfoCompletedEventArgs.cs" />
+    <Compile Include="Live\DomainServices\GetDomainInfoCompletedEventHandler.cs" />
+    <Compile Include="Live\DomainServices\GetDomainInfoExCompletedEventArgs.cs" />
+    <Compile Include="Live\DomainServices\GetDomainInfoExCompletedEventHandler.cs" />
+    <Compile Include="Live\DomainServices\GetManagementCertificateCompletedEventArgs.cs" />
+    <Compile Include="Live\DomainServices\GetManagementCertificateCompletedEventHandler.cs" />
+    <Compile Include="Live\DomainServices\GetMaxMembersCompletedEventArgs.cs" />
+    <Compile Include="Live\DomainServices\GetMaxMembersCompletedEventHandler.cs" />
+    <Compile Include="Live\DomainServices\GetMemberPropertiesCompletedEventArgs.cs" />
+    <Compile Include="Live\DomainServices\GetMemberPropertiesCompletedEventHandler.cs" />
+    <Compile Include="Live\DomainServices\GetMemberTypeCompletedEventArgs.cs" />
+    <Compile Include="Live\DomainServices\GetMemberTypeCompletedEventHandler.cs" />
+    <Compile Include="Live\DomainServices\GetMxRecordsCompletedEventArgs.cs" />
+    <Compile Include="Live\DomainServices\GetMxRecordsCompletedEventHandler.cs" />
+    <Compile Include="Live\DomainServices\ImportUnmanagedMemberCompletedEventHandler.cs" />
+    <Compile Include="Live\DomainServices\ManagementCertificateAuthHeader.cs" />
+    <Compile Include="Live\DomainServices\Member.cs" />
+    <Compile Include="Live\DomainServices\MemberHasMailboxCompletedEventArgs.cs" />
+    <Compile Include="Live\DomainServices\MemberHasMailboxCompletedEventHandler.cs" />
+    <Compile Include="Live\DomainServices\MemberHasSubscriptionCompletedEventArgs.cs" />
+    <Compile Include="Live\DomainServices\MemberHasSubscriptionCompletedEventHandler.cs" />
+    <Compile Include="Live\DomainServices\MemberNameToNetIdCompletedEventArgs.cs" />
+    <Compile Include="Live\DomainServices\MemberNameToNetIdCompletedEventHandler.cs" />
+    <Compile Include="Live\DomainServices\MemberType.cs" />
+    <Compile Include="Live\DomainServices\NamespaceState.cs" />
+    <Compile Include="Live\DomainServices\NetIdToMemberNameCompletedEventArgs.cs" />
+    <Compile Include="Live\DomainServices\NetIdToMemberNameCompletedEventHandler.cs" />
+    <Compile Include="Live\DomainServices\OpenState.cs" />
+    <Compile Include="Live\DomainServices\PartnerAuthHeader.cs" />
+    <Compile Include="Live\DomainServices\PermissionFlags.cs" />
+    <Compile Include="Live\DomainServices\ProcessDomainCompletedEventArgs.cs" />
+    <Compile Include="Live\DomainServices\ProcessDomainCompletedEventHandler.cs" />
+    <Compile Include="Live\DomainServices\Property.cs" />
+    <Compile Include="Live\DomainServices\ProvisionMemberSubscriptionCompletedEventHandler.cs" />
+    <Compile Include="Live\DomainServices\RegistryConstants.cs" />
+    <Compile Include="Live\DomainServices\ReleaseDomainCompletedEventHandler.cs" />
+    <Compile Include="Live\DomainServices\RemoveBrandInfoCompletedEventHandler.cs" />
+    <Compile Include="Live\DomainServices\RenameMemberCompletedEventHandler.cs" />
+    <Compile Include="Live\DomainServices\ReserveDomainCompletedEventArgs.cs" />
+    <Compile Include="Live\DomainServices\ReserveDomainCompletedEventHandler.cs" />
+    <Compile Include="Live\DomainServices\ResetMemberPasswordCompletedEventHandler.cs" />
+    <Compile Include="Live\DomainServices\ResetMemberPasswordEncryptedCompletedEventHandler.cs" />
+    <Compile Include="Live\DomainServices\SetManagementCertificateCompletedEventHandler.cs" />
+    <Compile Include="Live\DomainServices\SetManagementPermissionsCompletedEventHandler.cs" />
+    <Compile Include="Live\DomainServices\SetMaxMembersCompletedEventHandler.cs" />
+    <Compile Include="Live\DomainServices\SetMemberPropertiesCompletedEventHandler.cs" />
+    <Compile Include="Live\DomainServices\Strings.cs" />
+    <Compile Include="Live\DomainServices\SuspendEmailCompletedEventHandler.cs" />
+    <Compile Include="Live\DomainServices\TestConnectionCompletedEventArgs.cs" />
+    <Compile Include="Live\DomainServices\TestConnectionCompletedEventHandler.cs" />
+    <Compile Include="Live\DomainServices\WLCDDomainException.cs" />
+    <Compile Include="Live\DomainServices\WLCDMemberException.cs" />
+    <Compile Include="Live\DomainServices\WLCDPartnerAccessException.cs" />
+    <Compile Include="Live\DomainServices\WLCDPartnerException.cs" />
+    <Compile Include="Management\LiveServices\LiveServicesPerformanceData.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Live\DomainServices\Strings.resources" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Common\Microsoft.Exchange.Data.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140D3}</Project>
+      <Name>Microsoft.Exchange.Data.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Diagnostics\Microsoft.Exchange.Diagnostics.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14113}</Project>
+      <Name>Microsoft.Exchange.Diagnostics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Net\Microsoft.Exchange.Net.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14178}</Project>
+      <Name>Microsoft.Exchange.Net</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\mscorlib\mscorlib.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141F1}</Project>
+      <Name>mscorlib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

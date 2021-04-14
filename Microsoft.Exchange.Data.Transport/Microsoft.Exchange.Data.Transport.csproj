@@ -1,0 +1,302 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{09CD9476-CD82-489E-B9E2-84B47CA140D5}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Microsoft.Exchange</RootNamespace>
+    <AssemblyName>Microsoft.Exchange.Data.Transport</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CtsResources\EmailMessageStrings.cs" />
+    <Compile Include="Data\ExchangeConfigurationException.cs" />
+    <Compile Include="Data\Transport\AcceptedDomain.cs" />
+    <Compile Include="Data\Transport\AcceptedDomainCollection.cs" />
+    <Compile Include="Data\Transport\AddressBook.cs" />
+    <Compile Include="Data\Transport\AddressBookEntry.cs" />
+    <Compile Include="Data\Transport\AddressBookTransientException.cs" />
+    <Compile Include="Data\Transport\Agent.cs" />
+    <Compile Include="Data\Transport\AgentAsyncCallback.cs" />
+    <Compile Include="Data\Transport\AgentAsyncContext.cs" />
+    <Compile Include="Data\Transport\AgentFactory.cs" />
+    <Compile Include="Data\Transport\AgentManager.cs" />
+    <Compile Include="Data\Transport\CertificateValidationStatus.cs" />
+    <Compile Include="Data\Transport\DeliverableMailItem.cs" />
+    <Compile Include="Data\Transport\DeliveryMethod.cs" />
+    <Compile Include="Data\Transport\DeliveryPriority.cs" />
+    <Compile Include="Data\Transport\DeliveryQueueDomain.cs" />
+    <Compile Include="Data\Transport\Delivery\CloseConnectionEventArgs.cs" />
+    <Compile Include="Data\Transport\Delivery\CloseConnectionEventHandler.cs" />
+    <Compile Include="Data\Transport\Delivery\CloseConnectionEventSource.cs" />
+    <Compile Include="Data\Transport\Delivery\DeliverMailItemEventArgs.cs" />
+    <Compile Include="Data\Transport\Delivery\DeliverMailItemEventHandler.cs" />
+    <Compile Include="Data\Transport\Delivery\DeliverMailItemEventSource.cs" />
+    <Compile Include="Data\Transport\Delivery\DeliveryAgent.cs" />
+    <Compile Include="Data\Transport\Delivery\DeliveryAgentEventBindings.cs" />
+    <Compile Include="Data\Transport\Delivery\DeliveryAgentFactory.cs" />
+    <Compile Include="Data\Transport\Delivery\DeliveryAgentManager.cs" />
+    <Compile Include="Data\Transport\Delivery\OpenConnectionEventArgs.cs" />
+    <Compile Include="Data\Transport\Delivery\OpenConnectionEventHandler.cs" />
+    <Compile Include="Data\Transport\Delivery\OpenConnectionEventSource.cs" />
+    <Compile Include="Data\Transport\DNSNameFormat.cs" />
+    <Compile Include="Data\Transport\DNSNameStatus.cs" />
+    <Compile Include="Data\Transport\DnsNativeMethods2.cs" />
+    <Compile Include="Data\Transport\DsnFormatRequested.cs" />
+    <Compile Include="Data\Transport\DsnType.cs" />
+    <Compile Include="Data\Transport\DsnTypeRequested.cs" />
+    <Compile Include="Data\Transport\Email\Attachment.cs" />
+    <Compile Include="Data\Transport\Email\AttachmentCollection.cs" />
+    <Compile Include="Data\Transport\Email\AttachmentCookie.cs" />
+    <Compile Include="Data\Transport\Email\AttachmentData.cs" />
+    <Compile Include="Data\Transport\Email\AttachmentDataCollection.cs" />
+    <Compile Include="Data\Transport\Email\AttachmentMethod.cs" />
+    <Compile Include="Data\Transport\Email\AttachmentType.cs" />
+    <Compile Include="Data\Transport\Email\Body.cs" />
+    <Compile Include="Data\Transport\Email\BodyContentWriteStream.cs" />
+    <Compile Include="Data\Transport\Email\BodyData.cs" />
+    <Compile Include="Data\Transport\Email\BodyFormat.cs" />
+    <Compile Include="Data\Transport\Email\BodyFormatConversionStorage.cs" />
+    <Compile Include="Data\Transport\Email\BodyStructure.cs" />
+    <Compile Include="Data\Transport\Email\BodyTypes.cs" />
+    <Compile Include="Data\Transport\Email\BoundedStream.cs" />
+    <Compile Include="Data\Transport\Email\ContentClasses.cs" />
+    <Compile Include="Data\Transport\Email\ContentManagerFactory.cs" />
+    <Compile Include="Data\Transport\Email\EmailMessage.cs" />
+    <Compile Include="Data\Transport\Email\EmailRecipient.cs" />
+    <Compile Include="Data\Transport\Email\EmailRecipientCollection.cs" />
+    <Compile Include="Data\Transport\Email\EnumUtility.cs" />
+    <Compile Include="Data\Transport\Email\ForkToTempStorageReadStream.cs" />
+    <Compile Include="Data\Transport\Email\GetDefaultValue.cs" />
+    <Compile Include="Data\Transport\Email\HeaderValues.cs" />
+    <Compile Include="Data\Transport\Email\IBody.cs" />
+    <Compile Include="Data\Transport\Email\IMapiPropertyAccess.cs" />
+    <Compile Include="Data\Transport\Email\Importance.cs" />
+    <Compile Include="Data\Transport\Email\InternalAttachmentType.cs" />
+    <Compile Include="Data\Transport\Email\InternalBodyFormat.cs" />
+    <Compile Include="Data\Transport\Email\IRelayable.cs" />
+    <Compile Include="Data\Transport\Email\MediaTypeNames.cs" />
+    <Compile Include="Data\Transport\Email\MessageClasses.cs" />
+    <Compile Include="Data\Transport\Email\MessageFlags.cs" />
+    <Compile Include="Data\Transport\Email\MessageImplementation.cs" />
+    <Compile Include="Data\Transport\Email\MessageSecurityType.cs" />
+    <Compile Include="Data\Transport\Email\MessageType.cs" />
+    <Compile Include="Data\Transport\Email\MessageTypeEntry.cs" />
+    <Compile Include="Data\Transport\Email\MessageTypeTable.cs" />
+    <Compile Include="Data\Transport\Email\MimeAppleTranscoder.cs" />
+    <Compile Include="Data\Transport\Email\MimeAttachmentData.cs" />
+    <Compile Include="Data\Transport\Email\MimeTnefMessage.cs" />
+    <Compile Include="Data\Transport\Email\MimeTnefVersions.cs" />
+    <Compile Include="Data\Transport\Email\NormalizeOptions.cs" />
+    <Compile Include="Data\Transport\Email\ParameterNames.cs" />
+    <Compile Include="Data\Transport\Email\ParameterValues.cs" />
+    <Compile Include="Data\Transport\Email\Priority.cs" />
+    <Compile Include="Data\Transport\Email\PureCalendarMessage.cs" />
+    <Compile Include="Data\Transport\Email\PureMimeMessage.cs" />
+    <Compile Include="Data\Transport\Email\PureTnefMessage.cs" />
+    <Compile Include="Data\Transport\Email\RecipientType.cs" />
+    <Compile Include="Data\Transport\Email\RelayStorage.cs" />
+    <Compile Include="Data\Transport\Email\Sensitivity.cs" />
+    <Compile Include="Data\Transport\Email\StoragePropertyValue.cs" />
+    <Compile Include="Data\Transport\Email\TnefAttachmentData.cs" />
+    <Compile Include="Data\Transport\Email\TnefNameTag.cs" />
+    <Compile Include="Data\Transport\Email\TnefPropertyBag.cs" />
+    <Compile Include="Data\Transport\Email\TnefRecipient.cs" />
+    <Compile Include="Data\Transport\Email\Utility.cs" />
+    <Compile Include="Data\Transport\EnumUtils.cs" />
+    <Compile Include="Data\Transport\EnvelopeRecipient.cs" />
+    <Compile Include="Data\Transport\EnvelopeRecipientCollection.cs" />
+    <Compile Include="Data\Transport\ICloneableInternal.cs" />
+    <Compile Include="Data\Transport\IExecutionControl.cs" />
+    <Compile Include="Data\Transport\INextHopServer.cs" />
+    <Compile Include="Data\Transport\InternalConfiguration.cs" />
+    <Compile Include="Data\Transport\IPPermission.cs" />
+    <Compile Include="Data\Transport\MailDirectionality.cs" />
+    <Compile Include="Data\Transport\MailItem.cs" />
+    <Compile Include="Data\Transport\MessageSnapshotWriter.cs" />
+    <Compile Include="Data\Transport\NextHopCategory.cs" />
+    <Compile Include="Data\Transport\PermissionCheckResults.cs" />
+    <Compile Include="Data\Transport\ReadOnlyEnvelopeRecipientCollection.cs" />
+    <Compile Include="Data\Transport\RecipientCategory.cs" />
+    <Compile Include="Data\Transport\RecipientType.cs" />
+    <Compile Include="Data\Transport\RemoteDomain.cs" />
+    <Compile Include="Data\Transport\RemoteDomainCollection.cs" />
+    <Compile Include="Data\Transport\RequiredTlsAuthLevel.cs" />
+    <Compile Include="Data\Transport\RiskLevel.cs" />
+    <Compile Include="Data\Transport\RoutingAddress.cs" />
+    <Compile Include="Data\Transport\RoutingDomain.cs" />
+    <Compile Include="Data\Transport\RoutingHost.cs" />
+    <Compile Include="Data\Transport\RoutingHostName.cs" />
+    <Compile Include="Data\Transport\RoutingOverride.cs" />
+    <Compile Include="Data\Transport\Routing\CategorizedMessageEventHandler.cs" />
+    <Compile Include="Data\Transport\Routing\CategorizedMessageEventSource.cs" />
+    <Compile Include="Data\Transport\Routing\QueuedMessageEventArgs.cs" />
+    <Compile Include="Data\Transport\Routing\QueuedMessageEventSource.cs" />
+    <Compile Include="Data\Transport\Routing\RecipientExpansionInfo.cs" />
+    <Compile Include="Data\Transport\Routing\ResolvedMessageEventHandler.cs" />
+    <Compile Include="Data\Transport\Routing\ResolvedMessageEventSource.cs" />
+    <Compile Include="Data\Transport\Routing\RoutedMessageEventHandler.cs" />
+    <Compile Include="Data\Transport\Routing\RoutedMessageEventSource.cs" />
+    <Compile Include="Data\Transport\Routing\RoutingAgent.cs" />
+    <Compile Include="Data\Transport\Routing\RoutingAgentFactory.cs" />
+    <Compile Include="Data\Transport\Routing\RoutingEventBindings.cs" />
+    <Compile Include="Data\Transport\Routing\SubmittedMessageEventHandler.cs" />
+    <Compile Include="Data\Transport\Routing\SubmittedMessageEventSource.cs" />
+    <Compile Include="Data\Transport\SmtpServer.cs" />
+    <Compile Include="Data\Transport\Smtp\AuthCommandEventArgs.cs" />
+    <Compile Include="Data\Transport\Smtp\AuthCommandEventHandler.cs" />
+    <Compile Include="Data\Transport\Smtp\AuthenticationSource.cs" />
+    <Compile Include="Data\Transport\Smtp\BodyType.cs" />
+    <Compile Include="Data\Transport\Smtp\ConnectEventArgs.cs" />
+    <Compile Include="Data\Transport\Smtp\ConnectEventHandler.cs" />
+    <Compile Include="Data\Transport\Smtp\ConnectEventSource.cs" />
+    <Compile Include="Data\Transport\Smtp\DataCommandEventArgs.cs" />
+    <Compile Include="Data\Transport\Smtp\DataCommandEventHandler.cs" />
+    <Compile Include="Data\Transport\Smtp\DisconnectEventArgs.cs" />
+    <Compile Include="Data\Transport\Smtp\DisconnectEventHandler.cs" />
+    <Compile Include="Data\Transport\Smtp\DisconnectEventSource.cs" />
+    <Compile Include="Data\Transport\Smtp\DisconnectReason.cs" />
+    <Compile Include="Data\Transport\Smtp\EhloCommandEventArgs.cs" />
+    <Compile Include="Data\Transport\Smtp\EhloCommandEventHandler.cs" />
+    <Compile Include="Data\Transport\Smtp\EndOfAuthenticationEventArgs.cs" />
+    <Compile Include="Data\Transport\Smtp\EndOfAuthenticationEventHandler.cs" />
+    <Compile Include="Data\Transport\Smtp\EndOfAuthenticationEventSource.cs" />
+    <Compile Include="Data\Transport\Smtp\EndOfDataEventArgs.cs" />
+    <Compile Include="Data\Transport\Smtp\EndOfDataEventHandler.cs" />
+    <Compile Include="Data\Transport\Smtp\EndOfHeadersEventArgs.cs" />
+    <Compile Include="Data\Transport\Smtp\EndOfHeadersEventHandler.cs" />
+    <Compile Include="Data\Transport\Smtp\EnhancedStatusCodeImpl.cs" />
+    <Compile Include="Data\Transport\Smtp\HeloCommandEventArgs.cs" />
+    <Compile Include="Data\Transport\Smtp\HeloCommandEventHandler.cs" />
+    <Compile Include="Data\Transport\Smtp\HelpCommandEventArgs.cs" />
+    <Compile Include="Data\Transport\Smtp\HelpCommandEventHandler.cs" />
+    <Compile Include="Data\Transport\Smtp\MailCommandEventArgs.cs" />
+    <Compile Include="Data\Transport\Smtp\MailCommandEventHandler.cs" />
+    <Compile Include="Data\Transport\Smtp\NoopCommandEventArgs.cs" />
+    <Compile Include="Data\Transport\Smtp\NoopCommandEventHandler.cs" />
+    <Compile Include="Data\Transport\Smtp\ParsingStatus.cs" />
+    <Compile Include="Data\Transport\Smtp\ProcessAuthenticationEventArgs.cs" />
+    <Compile Include="Data\Transport\Smtp\ProcessAuthenticationEventHandler.cs" />
+    <Compile Include="Data\Transport\Smtp\ProxyInboundMessageEventArgs.cs" />
+    <Compile Include="Data\Transport\Smtp\ProxyInboundMessageEventHandler.cs" />
+    <Compile Include="Data\Transport\Smtp\ProxyInboundMessageEventSource.cs" />
+    <Compile Include="Data\Transport\Smtp\Rcpt2CommandEventArgs.cs" />
+    <Compile Include="Data\Transport\Smtp\Rcpt2CommandEventHandler.cs" />
+    <Compile Include="Data\Transport\Smtp\RcptCommandEventArgs.cs" />
+    <Compile Include="Data\Transport\Smtp\RcptCommandEventHandler.cs" />
+    <Compile Include="Data\Transport\Smtp\ReceiveCommandEventArgs.cs" />
+    <Compile Include="Data\Transport\Smtp\ReceiveCommandEventSource.cs" />
+    <Compile Include="Data\Transport\Smtp\ReceiveEventArgs.cs" />
+    <Compile Include="Data\Transport\Smtp\ReceiveEventSource.cs" />
+    <Compile Include="Data\Transport\Smtp\ReceiveMessageEventSource.cs" />
+    <Compile Include="Data\Transport\Smtp\RejectEventArgs.cs" />
+    <Compile Include="Data\Transport\Smtp\RejectEventHandler.cs" />
+    <Compile Include="Data\Transport\Smtp\RejectEventSource.cs" />
+    <Compile Include="Data\Transport\Smtp\RsetCommandEventArgs.cs" />
+    <Compile Include="Data\Transport\Smtp\RsetCommandEventHandler.cs" />
+    <Compile Include="Data\Transport\Smtp\SmtpAuthenticationMechanism.cs" />
+    <Compile Include="Data\Transport\Smtp\SmtpEventBindings.cs" />
+    <Compile Include="Data\Transport\Smtp\SmtpReceiveAgent.cs" />
+    <Compile Include="Data\Transport\Smtp\SmtpReceiveAgentFactory.cs" />
+    <Compile Include="Data\Transport\Smtp\SmtpResponse.cs" />
+    <Compile Include="Data\Transport\Smtp\SmtpResponseCompareOptions.cs" />
+    <Compile Include="Data\Transport\Smtp\SmtpResponseParser.cs" />
+    <Compile Include="Data\Transport\Smtp\SmtpResponseType.cs" />
+    <Compile Include="Data\Transport\Smtp\SmtpSession.cs" />
+    <Compile Include="Data\Transport\Smtp\StartTlsCommandEventArgs.cs" />
+    <Compile Include="Data\Transport\Smtp\StartTlsEventHandler.cs" />
+    <Compile Include="Data\Transport\Smtp\XSessionParamsCommandEventArgs.cs" />
+    <Compile Include="Data\Transport\Smtp\XSessionParamsCommandEventHandler.cs" />
+    <Compile Include="Data\Transport\Smtp\XSessionType.cs" />
+    <Compile Include="Data\Transport\SnapshotWriter.cs" />
+    <Compile Include="Data\Transport\SnapshotWriterEvents.cs" />
+    <Compile Include="Data\Transport\SnapshotWriterState.cs" />
+    <Compile Include="Data\Transport\SpamAction.cs" />
+    <Compile Include="Data\Transport\Storage\LoadedMessageEventHandler.cs" />
+    <Compile Include="Data\Transport\Storage\StorageAgent.cs" />
+    <Compile Include="Data\Transport\Storage\StorageAgentFactory.cs" />
+    <Compile Include="Data\Transport\Storage\StorageEventArgs.cs" />
+    <Compile Include="Data\Transport\Storage\StorageEventBindings.cs" />
+    <Compile Include="Data\Transport\Storage\StorageEventSource.cs" />
+    <Compile Include="Data\Transport\StoreDriverDelivery\CompletedMessageEventHandler.cs" />
+    <Compile Include="Data\Transport\StoreDriverDelivery\CreatedMessageEventHandler.cs" />
+    <Compile Include="Data\Transport\StoreDriverDelivery\DeliveredMessageEventHandler.cs" />
+    <Compile Include="Data\Transport\StoreDriverDelivery\DeliveryEventBindings.cs" />
+    <Compile Include="Data\Transport\StoreDriverDelivery\InitializedMessageEventHandler.cs" />
+    <Compile Include="Data\Transport\StoreDriverDelivery\PromotedMessageEventHandler.cs" />
+    <Compile Include="Data\Transport\StoreDriverDelivery\StoreDriverDeliveryAgent.cs" />
+    <Compile Include="Data\Transport\StoreDriverDelivery\StoreDriverDeliveryAgentFactory.cs" />
+    <Compile Include="Data\Transport\StoreDriver\CompletedMessageEventHandler.cs" />
+    <Compile Include="Data\Transport\StoreDriver\CreatedMessageEventHandler.cs" />
+    <Compile Include="Data\Transport\StoreDriver\DeliveredMessageEventHandler.cs" />
+    <Compile Include="Data\Transport\StoreDriver\DeliveryAgent.cs" />
+    <Compile Include="Data\Transport\StoreDriver\DeliveryEventBindings.cs" />
+    <Compile Include="Data\Transport\StoreDriver\DemotedMessageEventHandler.cs" />
+    <Compile Include="Data\Transport\StoreDriver\InitializedMessageEventHandler.cs" />
+    <Compile Include="Data\Transport\StoreDriver\PromotedMessageEventHandler.cs" />
+    <Compile Include="Data\Transport\StoreDriver\StoreDriverAgent.cs" />
+    <Compile Include="Data\Transport\StoreDriver\StoreDriverAgentFactory.cs" />
+    <Compile Include="Data\Transport\StoreDriver\StoreDriverDeliveryEventArgs.cs" />
+    <Compile Include="Data\Transport\StoreDriver\StoreDriverEventArgs.cs" />
+    <Compile Include="Data\Transport\StoreDriver\StoreDriverEventSource.cs" />
+    <Compile Include="Data\Transport\StoreDriver\StoreDriverSubmissionEventArgs.cs" />
+    <Compile Include="Data\Transport\StoreDriver\SubmissionAgent.cs" />
+    <Compile Include="Data\Transport\StoreDriver\SubmissionEventBindings.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="CtsResources\EmailMessageStrings.resources" />
+    <EmbeddedResource Include="CtsResources\ExtStrings.resources" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Common\Microsoft.Exchange.Data.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140D3}</Project>
+      <Name>Microsoft.Exchange.Data.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Diagnostics\Microsoft.Exchange.Diagnostics.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14113}</Project>
+      <Name>Microsoft.Exchange.Diagnostics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Net\Microsoft.Exchange.Net.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14178}</Project>
+      <Name>Microsoft.Exchange.Net</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\mscorlib\mscorlib.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141F1}</Project>
+      <Name>mscorlib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo Name="Bridgehead Permissions Configuration" DescriptionId="SetupComponentConfigPermissionsBridgehead">
+
+	<ServerTasks>
+		<!-- Set Folder/Registry Permissions when installing, recovering or upgrade Bridgehead Role
+         The permissions are described in Management/Deployment/LocalPermissions.xml
+    -->
+		<ServerTaskInfo Id="_2e2dbc2a97cb4429bc2074edc50bedbd" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+			<Install>
+				<Standalone>Set-LocalPermissions -Feature:"Bridgehead"</Standalone>
+			</Install>
+			<BuildToBuildUpgrade UseInstallTasks="true" />
+			<DisasterRecovery UseInstallTasks="true" />
+      <!--Uninstall is not required as folder/registry entries are removed when the role is uninstalled-->
+			<Uninstall/>
+		</ServerTaskInfo>
+	</ServerTasks>
+</SetupComponentInfo>

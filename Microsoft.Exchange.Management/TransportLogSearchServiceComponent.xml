@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo Name="Transport Log Search Service" DescriptionId="SetupComponentTransportLogSearchService">
+
+  <!-- If you make any edits to this file, please make the same changes to DatacenterTransportLogSearchServiceComponent.xml -->
+
+  <!--
+       I know that it would have been much better to have a single file than two, but given the choice of having two files that
+       need to be kept in sync, vs requiring this component to know what role it will be installed into (which would have broken
+       encapsulation), I decided to keep the encapsulation.
+   -->
+
+  <ServerTasks>
+
+    <!-- Preserve config files (MSExchangeTransportLogSearch.exe.config) potentially containing user data -->
+    <!-- E14 82092: In the appconfig file, set Code Access Security (CAS) policy -->
+    <!-- to skip publisher (certificate) validation.-->
+    <ServerTaskInfo Id="_44edd7bc447d49a2bfb76a4d36b57686" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          $file = 'MSExchangeTransportLogSearch.exe.config';
+          $fullPath = [System.IO.Path]::Combine([System.IO.Path]::Combine($RoleInstallPath, "bin"), $file);
+          if (!([System.IO.File]::Exists($fullPath))) { copy-item ($fullPath + ".template") $fullPath; }
+          set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/runtime/generatePublisherEvidence -Attribute:enabled -NewValue:false
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+    <!-- Install/uninstall Transport Log Search service -->
+    <ServerTaskInfo Id="_582ff214af6d4634b3781e04e4e0df06" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressInstallTransportLogSearchService">
+        <Standalone>
+          if (!(get-service MSExchangeTransportLogSearch* | where {$_.name -eq "MSExchangeTransportLogSearch"}))
+          {
+              install-TransportLogSearchService -ServicesDependedOnParameter MSExchangeADTopology
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall DescriptionId="SetupProgressUninstallTransportLogSearchService">
+        <Standalone>uninstall-TransportLogSearchService</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+  </ServerTasks>
+</SetupComponentInfo>
+

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo Name="Unified Messaging Finalization">
+
+  <ServerTasks>
+  <!-- We do all the exchange service starts in the post-setup bucket for install. Except the services which are necessary for setup to complete.
+  This is done so that we dont error out setup if any of the services fail to start.
+  There is one more exception: UnifiedMessaging. UM is installed/uninstalled with en-US language pack by default.
+People can add more language packs post installation. In that case we would like the UM service to start after the 
+language pack has been added. 
+  -->
+    <ServerTaskInfo Id="_b821f3ece61145fb960dbe9727439228" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressStartingUMService">
+        <Standalone>if ($RoleIsPostInstallUMAddLP){start-SetupService -ServiceName MSExchangeUM}</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall/>	
+    </ServerTaskInfo>
+   
+    <!-- Stop the UM service during uninstall -->
+    <ServerTaskInfo Id="_8a6b98ad68be497a9b3ea4c351b52ae6" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install/>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+	  <Uninstall DescriptionId="SetupProgressStoppingUMService">
+        <Standalone>stop-SetupService -ServiceName MSExchangeUM</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+  </ServerTasks>
+
+</SetupComponentInfo>

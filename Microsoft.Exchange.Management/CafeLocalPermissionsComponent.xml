@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo Name="Cafe Permissions Configuration" DescriptionId="CafeLocalPermissionsComponentDescription">
+
+  <ServerTasks>
+
+    <!-- Set Folder/Registry Permissions when installing, recovering or upgrade ClientAccess Role-->
+    <ServerTaskInfo Id="_119702da028743b5bacbb9e9741bbd7a" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>Set-LocalPermissions -Feature:"Cafe"</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+  </ServerTasks>
+
+</SetupComponentInfo>
+

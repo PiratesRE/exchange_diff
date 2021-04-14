@@ -1,0 +1,335 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{09CD9476-CD82-489E-B9E2-84B47CA14152}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Microsoft.Exchange.MailboxReplicationService</RootNamespace>
+    <AssemblyName>Microsoft.Exchange.MailboxReplicationService.Upgrade14to15</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Management.Automation" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CertificateHelper.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ProxyWrapper.cs" />
+    <Compile Include="Upgrade14to15\AccessDeniedFault.cs" />
+    <Compile Include="Upgrade14to15\AddMsodsTenant.cs" />
+    <Compile Include="Upgrade14to15\AddMsodsTenantResponse.cs" />
+    <Compile Include="Upgrade14to15\AddMsodsUser.cs" />
+    <Compile Include="Upgrade14to15\AddMsodsUserResponse.cs" />
+    <Compile Include="Upgrade14to15\AddPilotUsers.cs" />
+    <Compile Include="Upgrade14to15\AddPilotUsersCompletedEventArgs.cs" />
+    <Compile Include="Upgrade14to15\AddPilotUsersResponse.cs" />
+    <Compile Include="Upgrade14to15\AddSchedulerTenant.cs" />
+    <Compile Include="Upgrade14to15\AddSchedulerTenantResponse.cs" />
+    <Compile Include="Upgrade14to15\AddTenant.cs" />
+    <Compile Include="Upgrade14to15\AddTenantResponse.cs" />
+    <Compile Include="Upgrade14to15\AddWorkItem.cs" />
+    <Compile Include="Upgrade14to15\AddWorkItemResponse.cs" />
+    <Compile Include="Upgrade14to15\ADSessionProxy.cs" />
+    <Compile Include="Upgrade14to15\AnchorServiceInstanceNotActiveException.cs" />
+    <Compile Include="Upgrade14to15\ArgumentFault.cs" />
+    <Compile Include="Upgrade14to15\BlackoutInterval.cs" />
+    <Compile Include="Upgrade14to15\CacheEntryProxy.cs" />
+    <Compile Include="Upgrade14to15\CancelNotAllowedFault.cs" />
+    <Compile Include="Upgrade14to15\CancelTenantUpgrade.cs" />
+    <Compile Include="Upgrade14to15\CancelTenantUpgradeResponse.cs" />
+    <Compile Include="Upgrade14to15\CapacityBlock.cs" />
+    <Compile Include="Upgrade14to15\Constraint.cs" />
+    <Compile Include="Upgrade14to15\ConstraintStatus.cs" />
+    <Compile Include="Upgrade14to15\DataCenterRegion.cs" />
+    <Compile Include="Upgrade14to15\DataSource.cs" />
+    <Compile Include="Upgrade14to15\DelayWorkloadUpgrade.cs" />
+    <Compile Include="Upgrade14to15\DelayWorkloadUpgradeResponse.cs" />
+    <Compile Include="Upgrade14to15\DeleteConstraint.cs" />
+    <Compile Include="Upgrade14to15\DeleteConstraintResponse.cs" />
+    <Compile Include="Upgrade14to15\DeleteGroup.cs" />
+    <Compile Include="Upgrade14to15\DeleteGroupResponse.cs" />
+    <Compile Include="Upgrade14to15\DeleteSchedulerTenant.cs" />
+    <Compile Include="Upgrade14to15\DeleteSchedulerTenantResponse.cs" />
+    <Compile Include="Upgrade14to15\DeleteTenant.cs" />
+    <Compile Include="Upgrade14to15\DeleteTenantResponse.cs" />
+    <Compile Include="Upgrade14to15\DeleteWorkItem.cs" />
+    <Compile Include="Upgrade14to15\DeleteWorkItemResponse.cs" />
+    <Compile Include="Upgrade14to15\EmailAttribute.cs" />
+    <Compile Include="Upgrade14to15\EmailDefinition.cs" />
+    <Compile Include="Upgrade14to15\EmailType.cs" />
+    <Compile Include="Upgrade14to15\ErrorGettingDatabasesException.cs" />
+    <Compile Include="Upgrade14to15\ErrorGettingFilesException.cs" />
+    <Compile Include="Upgrade14to15\ErrorQueryingWorkItemException.cs" />
+    <Compile Include="Upgrade14to15\ErrorReadingFileException.cs" />
+    <Compile Include="Upgrade14to15\GetDeploymentId.cs" />
+    <Compile Include="Upgrade14to15\GetDeploymentIdResponse.cs" />
+    <Compile Include="Upgrade14to15\GetEmailByTrackingId.cs" />
+    <Compile Include="Upgrade14to15\GetEmailByTrackingIdResponse.cs" />
+    <Compile Include="Upgrade14to15\GetPilotUsers.cs" />
+    <Compile Include="Upgrade14to15\GetPilotUsersCompletedEventArgs.cs" />
+    <Compile Include="Upgrade14to15\GetPilotUsersResponse.cs" />
+    <Compile Include="Upgrade14to15\GetSchedulerTenant.cs" />
+    <Compile Include="Upgrade14to15\GetSchedulerTenantResponse.cs" />
+    <Compile Include="Upgrade14to15\GetTenant.cs" />
+    <Compile Include="Upgrade14to15\GetTenantApplicationData.cs" />
+    <Compile Include="Upgrade14to15\GetTenantApplicationDataResponse.cs" />
+    <Compile Include="Upgrade14to15\GetTenantPhase.cs" />
+    <Compile Include="Upgrade14to15\GetTenantPhaseResponse.cs" />
+    <Compile Include="Upgrade14to15\GetTenantResponse.cs" />
+    <Compile Include="Upgrade14to15\GetUserApplicationData.cs" />
+    <Compile Include="Upgrade14to15\GetUserApplicationDataResponse.cs" />
+    <Compile Include="Upgrade14to15\GetWorkItem.cs" />
+    <Compile Include="Upgrade14to15\GetWorkItemResponse.cs" />
+    <Compile Include="Upgrade14to15\GetWorkItemsByTenant.cs" />
+    <Compile Include="Upgrade14to15\GetWorkItemsByTenantResponse.cs" />
+    <Compile Include="Upgrade14to15\Group.cs" />
+    <Compile Include="Upgrade14to15\GroupBlackout.cs" />
+    <Compile Include="Upgrade14to15\GroupCapacity.cs" />
+    <Compile Include="Upgrade14to15\IADSession.cs" />
+    <Compile Include="Upgrade14to15\ICacheEntry.cs" />
+    <Compile Include="Upgrade14to15\IMonitorable.cs" />
+    <Compile Include="Upgrade14to15\IMonitorableChannel.cs" />
+    <Compile Include="Upgrade14to15\InvalidE14MailboxesException.cs" />
+    <Compile Include="Upgrade14to15\InvalidE15MailboxesException.cs" />
+    <Compile Include="Upgrade14to15\InvalidOperationFault.cs" />
+    <Compile Include="Upgrade14to15\InvalidOrganizationStateException.cs" />
+    <Compile Include="Upgrade14to15\InvalidOrganizationVersionException.cs" />
+    <Compile Include="Upgrade14to15\InvalidRequestedTypeException.cs" />
+    <Compile Include="Upgrade14to15\InvalidUpgradeStatusException.cs" />
+    <Compile Include="Upgrade14to15\IOrganizationOperation.cs" />
+    <Compile Include="Upgrade14to15\ISuiteHandler.cs" />
+    <Compile Include="Upgrade14to15\ISuiteHandlerChannel.cs" />
+    <Compile Include="Upgrade14to15\ISymphonyProxy.cs" />
+    <Compile Include="Upgrade14to15\IUpgradeHandler.cs" />
+    <Compile Include="Upgrade14to15\IUpgradeHandlerChannel.cs" />
+    <Compile Include="Upgrade14to15\IUpgradeSchedulingConstraints.cs" />
+    <Compile Include="Upgrade14to15\IUpgradeSchedulingConstraintsChannel.cs" />
+    <Compile Include="Upgrade14to15\LocDescriptionAttribute.cs" />
+    <Compile Include="Upgrade14to15\MbxData.cs" />
+    <Compile Include="Upgrade14to15\MonitorableClient.cs" />
+    <Compile Include="Upgrade14to15\MovePartnerTenantUpgradeDate.cs" />
+    <Compile Include="Upgrade14to15\MovePartnerTenantUpgradeDateResponse.cs" />
+    <Compile Include="Upgrade14to15\NoE14ServersFoundException.cs" />
+    <Compile Include="Upgrade14to15\OrganizationHasConstraintsException.cs" />
+    <Compile Include="Upgrade14to15\OrganizationInDryRunModeException.cs" />
+    <Compile Include="Upgrade14to15\OrganizationNotFoundException.cs" />
+    <Compile Include="Upgrade14to15\OrgOperationProxy.cs" />
+    <Compile Include="Upgrade14to15\PickedWorkItemInfo.cs" />
+    <Compile Include="Upgrade14to15\PickWorkItems.cs" />
+    <Compile Include="Upgrade14to15\PickWorkItemsResponse.cs" />
+    <Compile Include="Upgrade14to15\PilotUser.cs" />
+    <Compile Include="Upgrade14to15\PilotUserInfo.cs" />
+    <Compile Include="Upgrade14to15\Ping.cs" />
+    <Compile Include="Upgrade14to15\PingCompletedEventArgs.cs" />
+    <Compile Include="Upgrade14to15\PingResponse.cs" />
+    <Compile Include="Upgrade14to15\PopulationValidationUtils.cs" />
+    <Compile Include="Upgrade14to15\PostponeTenantUpgrade.cs" />
+    <Compile Include="Upgrade14to15\PostponeTenantUpgradeResponse.cs" />
+    <Compile Include="Upgrade14to15\QueryBlackout.cs" />
+    <Compile Include="Upgrade14to15\QueryBlackoutCompletedEventArgs.cs" />
+    <Compile Include="Upgrade14to15\QueryBlackoutResponse.cs" />
+    <Compile Include="Upgrade14to15\QueryCapacity.cs" />
+    <Compile Include="Upgrade14to15\QueryCapacityCompletedEventArgs.cs" />
+    <Compile Include="Upgrade14to15\QueryCapacityResponse.cs" />
+    <Compile Include="Upgrade14to15\QueryConstraint.cs" />
+    <Compile Include="Upgrade14to15\QueryConstraintCompletedEventArgs.cs" />
+    <Compile Include="Upgrade14to15\QueryConstraintResponse.cs" />
+    <Compile Include="Upgrade14to15\QueryGroup.cs" />
+    <Compile Include="Upgrade14to15\QueryGroupCompletedEventArgs.cs" />
+    <Compile Include="Upgrade14to15\QueryGroupResponse.cs" />
+    <Compile Include="Upgrade14to15\QueryTenantReadiness.cs" />
+    <Compile Include="Upgrade14to15\QueryTenantReadinessCompletedEventArgs.cs" />
+    <Compile Include="Upgrade14to15\QueryTenantReadinessResponse.cs" />
+    <Compile Include="Upgrade14to15\QueryTenantWorkItems.cs" />
+    <Compile Include="Upgrade14to15\QueryTenantWorkItemsCompletedEventArgs.cs" />
+    <Compile Include="Upgrade14to15\QueryTenantWorkItemsResponse.cs" />
+    <Compile Include="Upgrade14to15\QueryWorkItems.cs" />
+    <Compile Include="Upgrade14to15\QueryWorkItemsCompletedEventArgs.cs" />
+    <Compile Include="Upgrade14to15\QueryWorkItemsResponse.cs" />
+    <Compile Include="Upgrade14to15\RecipientWrapper.cs" />
+    <Compile Include="Upgrade14to15\RedirectTenantWorkloads.cs" />
+    <Compile Include="Upgrade14to15\RedirectTenantWorkloadsResponse.cs" />
+    <Compile Include="Upgrade14to15\ReschedulePartnerTenant.cs" />
+    <Compile Include="Upgrade14to15\ReschedulePartnerTenantResponse.cs" />
+    <Compile Include="Upgrade14to15\RescheduleWorkItemToNow.cs" />
+    <Compile Include="Upgrade14to15\RescheduleWorkItemToNowResponse.cs" />
+    <Compile Include="Upgrade14to15\ResetWorkItemLease.cs" />
+    <Compile Include="Upgrade14to15\ResetWorkItemLeaseResponse.cs" />
+    <Compile Include="Upgrade14to15\SchedulePartnerTenant.cs" />
+    <Compile Include="Upgrade14to15\SchedulePartnerTenantResponse.cs" />
+    <Compile Include="Upgrade14to15\SchedulerState.cs" />
+    <Compile Include="Upgrade14to15\SchedulerTenant.cs" />
+    <Compile Include="Upgrade14to15\SchedulerTenantWorkload.cs" />
+    <Compile Include="Upgrade14to15\ScheduleTenantUpgrade.cs" />
+    <Compile Include="Upgrade14to15\ScheduleTenantUpgradeResponse.cs" />
+    <Compile Include="Upgrade14to15\SetTenantApplicationData.cs" />
+    <Compile Include="Upgrade14to15\SetTenantApplicationDataResponse.cs" />
+    <Compile Include="Upgrade14to15\SetUserApplicationData.cs" />
+    <Compile Include="Upgrade14to15\SetUserApplicationDataResponse.cs" />
+    <Compile Include="Upgrade14to15\Status.cs" />
+    <Compile Include="Upgrade14to15\SuiteHandlerClient.cs" />
+    <Compile Include="Upgrade14to15\SymphonyAccessDeniedFaultException.cs" />
+    <Compile Include="Upgrade14to15\SymphonyArgumentFaultException.cs" />
+    <Compile Include="Upgrade14to15\SymphonyCancelNotAllowedFaultException.cs" />
+    <Compile Include="Upgrade14to15\SymphonyFaultException.cs" />
+    <Compile Include="Upgrade14to15\SymphonyInvalidOperationFaultException.cs" />
+    <Compile Include="Upgrade14to15\SymphonyProxy.cs" />
+    <Compile Include="Upgrade14to15\Tenant.cs" />
+    <Compile Include="Upgrade14to15\TenantData.cs" />
+    <Compile Include="Upgrade14to15\TenantDataCollectorConfig.cs" />
+    <Compile Include="Upgrade14to15\TenantDataCollectorContext.cs" />
+    <Compile Include="Upgrade14to15\TenantDataCollectorScheduler.cs" />
+    <Compile Include="Upgrade14to15\TenantDataCsvSchema.cs" />
+    <Compile Include="Upgrade14to15\TenantEmail.cs" />
+    <Compile Include="Upgrade14to15\TenantInfo.cs" />
+    <Compile Include="Upgrade14to15\TenantOrganizationPresentationObjectWrapper.cs" />
+    <Compile Include="Upgrade14to15\TenantReadiness.cs" />
+    <Compile Include="Upgrade14to15\TenantSize.cs" />
+    <Compile Include="Upgrade14to15\TenantSizeLog.cs" />
+    <Compile Include="Upgrade14to15\TenantUpgradeData.cs" />
+    <Compile Include="Upgrade14to15\TenantWorkload.cs" />
+    <Compile Include="Upgrade14to15\TestTenantManagement\AccessDeniedFault.cs" />
+    <Compile Include="Upgrade14to15\TestTenantManagement\ArgumentFault.cs" />
+    <Compile Include="Upgrade14to15\TestTenantManagement\ITestTenantManagement.cs" />
+    <Compile Include="Upgrade14to15\TestTenantManagement\ITestTenantManagementChannel.cs" />
+    <Compile Include="Upgrade14to15\TestTenantManagement\OfferType.cs" />
+    <Compile Include="Upgrade14to15\TestTenantManagement\PopulationStatus.cs" />
+    <Compile Include="Upgrade14to15\TestTenantManagement\QueryTenantsToPopulateCompletedEventArgs.cs" />
+    <Compile Include="Upgrade14to15\TestTenantManagement\QueryTenantsToValidateByScenarioCompletedEventArgs.cs" />
+    <Compile Include="Upgrade14to15\TestTenantManagement\QueryTenantsToValidateCompletedEventArgs.cs" />
+    <Compile Include="Upgrade14to15\TestTenantManagement\Tenant.cs" />
+    <Compile Include="Upgrade14to15\TestTenantManagement\TenantOffer.cs" />
+    <Compile Include="Upgrade14to15\TestTenantManagement\TestTenantManagementClient.cs" />
+    <Compile Include="Upgrade14to15\TestTenantManagement\ValidationStatus.cs" />
+    <Compile Include="Upgrade14to15\TooManyPilotMailboxesException.cs" />
+    <Compile Include="Upgrade14to15\UnsupportedBatchTypeException.cs" />
+    <Compile Include="Upgrade14to15\UnsupportedUpgradeRequestTypeException.cs" />
+    <Compile Include="Upgrade14to15\UpdateBlackout.cs" />
+    <Compile Include="Upgrade14to15\UpdateBlackoutResponse.cs" />
+    <Compile Include="Upgrade14to15\UpdateCapacity.cs" />
+    <Compile Include="Upgrade14to15\UpdateCapacityResponse.cs" />
+    <Compile Include="Upgrade14to15\UpdateConstraint.cs" />
+    <Compile Include="Upgrade14to15\UpdateConstraintResponse.cs" />
+    <Compile Include="Upgrade14to15\UpdateGroup.cs" />
+    <Compile Include="Upgrade14to15\UpdateGroupResponse.cs" />
+    <Compile Include="Upgrade14to15\UpdateTenantReadiness.cs" />
+    <Compile Include="Upgrade14to15\UpdateTenantReadinessResponse.cs" />
+    <Compile Include="Upgrade14to15\UpdateTenantUpgradeStartDate.cs" />
+    <Compile Include="Upgrade14to15\UpdateTenantUpgradeStartDateResponse.cs" />
+    <Compile Include="Upgrade14to15\UpdateWorkItem.cs" />
+    <Compile Include="Upgrade14to15\UpdateWorkItemResponse.cs" />
+    <Compile Include="Upgrade14to15\UpdateWorkItemScheduledDate.cs" />
+    <Compile Include="Upgrade14to15\UpdateWorkItemScheduledDateResponse.cs" />
+    <Compile Include="Upgrade14to15\UpdateWorkloadPilotUpgradeStatus.cs" />
+    <Compile Include="Upgrade14to15\UpdateWorkloadPilotUpgradeStatusResponse.cs" />
+    <Compile Include="Upgrade14to15\UpdateWorkloadUpgradeStatus.cs" />
+    <Compile Include="Upgrade14to15\UpdateWorkloadUpgradeStatusResponse.cs" />
+    <Compile Include="Upgrade14to15\UpgradeBatchCreatorConfig.cs" />
+    <Compile Include="Upgrade14to15\UpgradeBatchCreatorContext.cs" />
+    <Compile Include="Upgrade14to15\UpgradeBatchCreatorProgressLog.cs" />
+    <Compile Include="Upgrade14to15\UpgradeBatchCreatorScheduler.cs" />
+    <Compile Include="Upgrade14to15\UpgradeCommon.cs" />
+    <Compile Include="Upgrade14to15\UpgradeHandlerClient.cs" />
+    <Compile Include="Upgrade14to15\UpgradeHandlerConfig.cs" />
+    <Compile Include="Upgrade14to15\UpgradeHandlerContext.cs" />
+    <Compile Include="Upgrade14to15\UpgradeHandlerScheduler.cs" />
+    <Compile Include="Upgrade14to15\UpgradeHandlerStrings.cs" />
+    <Compile Include="Upgrade14to15\UpgradeHandlerSyncLog.cs" />
+    <Compile Include="Upgrade14to15\UpgradeSchedulingConstraintsClient.cs" />
+    <Compile Include="Upgrade14to15\UserId.cs" />
+    <Compile Include="Upgrade14to15\UserNotFoundException.cs" />
+    <Compile Include="Upgrade14to15\UserWorkloadStatusInfo.cs" />
+    <Compile Include="Upgrade14to15\VersionData.cs" />
+    <Compile Include="Upgrade14to15\WorkItem.cs" />
+    <Compile Include="Upgrade14to15\WorkItemInfo.cs" />
+    <Compile Include="Upgrade14to15\WorkItemPickResult.cs" />
+    <Compile Include="Upgrade14to15\WorkItemQueryResult.cs" />
+    <Compile Include="Upgrade14to15\WorkItemStatus.cs" />
+    <Compile Include="Upgrade14to15\WorkItemStatusInfo.cs" />
+    <Compile Include="Upgrade14to15\WorkloadStatus.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Upgrade14to15\Strings.resources" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.Exchange.AnchorService\Microsoft.Exchange.AnchorService.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140DB}</Project>
+      <Name>Microsoft.Exchange.AnchorService</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Configuration.ObjectModel\Microsoft.Exchange.Configuration.ObjectModel.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140FC}</Project>
+      <Name>Microsoft.Exchange.Configuration.ObjectModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Common\Microsoft.Exchange.Data.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140D3}</Project>
+      <Name>Microsoft.Exchange.Data.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Directory\Microsoft.Exchange.Data.Directory.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14105}</Project>
+      <Name>Microsoft.Exchange.Data.Directory</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Storage\Microsoft.Exchange.Data.Storage.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1410F}</Project>
+      <Name>Microsoft.Exchange.Data.Storage</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data\Microsoft.Exchange.Data.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14106}</Project>
+      <Name>Microsoft.Exchange.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Diagnostics\Microsoft.Exchange.Diagnostics.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14113}</Project>
+      <Name>Microsoft.Exchange.Diagnostics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.MailboxReplicationService.Common\Microsoft.Exchange.MailboxReplicationService.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14147}</Project>
+      <Name>Microsoft.Exchange.MailboxReplicationService.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Net\Microsoft.Exchange.Net.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14178}</Project>
+      <Name>Microsoft.Exchange.Net</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Office.Datacenter.ActiveMonitoringLocal\Microsoft.Office.Datacenter.ActiveMonitoringLocal.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141ED}</Project>
+      <Name>Microsoft.Office.Datacenter.ActiveMonitoringLocal</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\mscorlib\mscorlib.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141F1}</Project>
+      <Name>mscorlib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

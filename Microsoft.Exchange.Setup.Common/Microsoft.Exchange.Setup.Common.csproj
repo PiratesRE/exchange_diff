@@ -1,0 +1,245 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{09CD9476-CD82-489E-B9E2-84B47CA141B0}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Microsoft.Exchange.Setup.Common</RootNamespace>
+    <AssemblyName>Microsoft.Exchange.Setup.Common</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Exchange.CabUtility" />
+    <Reference Include="Microsoft.Exchange.Setup.SignVerfWrapper" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.DirectoryServices" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Management.Automation" />
+    <Reference Include="System.ServiceProcess" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AddLanguagePackCfgDataHandler.cs" />
+    <Compile Include="AddLanguagePackFileCopyDataHandler.cs" />
+    <Compile Include="AddUmLanguagePackCfgDataHandler.cs" />
+    <Compile Include="AddUmLanguagePackModeDataHandler.cs" />
+    <Compile Include="AdminToolsRoleConfigurationInfo.cs" />
+    <Compile Include="ADRelatedUnknownErrorException.cs" />
+    <Compile Include="BackupKeyInaccessibleException.cs" />
+    <Compile Include="BackupKeyIsWrongTypeException.cs" />
+    <Compile Include="BindingCategory.cs" />
+    <Compile Include="BridgeheadRoleConfigurationInfo.cs" />
+    <Compile Include="CafeRoleConfigurationInfo.cs" />
+    <Compile Include="CentralAdminDatabaseRoleConfigurationInfo.cs" />
+    <Compile Include="CentralAdminFrontEndRoleConfigurationInfo.cs" />
+    <Compile Include="CentralAdminRoleConfigurationInfo.cs" />
+    <Compile Include="ClientAccessRoleConfigurationInfo.cs" />
+    <Compile Include="CommandLoggingSession.cs" />
+    <Compile Include="ConfigurationDataHandler.cs" />
+    <Compile Include="DatacenterMsiConfigurationInfo.cs" />
+    <Compile Include="DataHandler.cs" />
+    <Compile Include="DisasterRecoveryAtCfgDataHandler.cs" />
+    <Compile Include="DisasterRecoveryBhdCfgDataHandler.cs" />
+    <Compile Include="DisasterRecoveryCfgDataHandler.cs" />
+    <Compile Include="DisasterRecoveryFetCfgDataHandler.cs" />
+    <Compile Include="DisasterRecoveryGwyCfgDataHandler.cs" />
+    <Compile Include="DisasterRecoveryMntCfgDataHandler.cs" />
+    <Compile Include="DisasterRecoveryModeDataHandler.cs" />
+    <Compile Include="DisasterRecoveryPrecheckDataHandler.cs" />
+    <Compile Include="ExchangeDataHandler.cs" />
+    <Compile Include="FailedToReadLCIDFromRegistryException.cs" />
+    <Compile Include="FileDataHandler.cs" />
+    <Compile Include="FrontendTransportRoleConfigurationInfo.cs" />
+    <Compile Include="GatewayRoleConfigurationInfo.cs" />
+    <Compile Include="InstallableUnitConfigurationInfo.cs" />
+    <Compile Include="InstallableUnitConfigurationInfoManager.cs" />
+    <Compile Include="InstallableUnitNames.cs" />
+    <Compile Include="InstallAtCfgDataHandler.cs" />
+    <Compile Include="InstallBhdCfgDataHandler.cs" />
+    <Compile Include="InstallCacCfgDataHandler.cs" />
+    <Compile Include="InstallCafeCfgDataHandler.cs" />
+    <Compile Include="InstallCentralAdminCfgDataHandler.cs" />
+    <Compile Include="InstallCentralAdminDatabaseCfgDataHandler.cs" />
+    <Compile Include="InstallCentralAdminFrontEndCfgDataHandler.cs" />
+    <Compile Include="InstallDatacenterRoleBaseDataHandler.cs" />
+    <Compile Include="InstallFetCfgDataHandler.cs" />
+    <Compile Include="InstallFileDataHandler.cs" />
+    <Compile Include="InstallGwyCfgDataHandler.cs" />
+    <Compile Include="InstallMbxCfgDataHandler.cs" />
+    <Compile Include="InstallModeDataHandler.cs" />
+    <Compile Include="InstallMonitoringCfgDataHandler.cs" />
+    <Compile Include="InstallOrgCfgDataHandler.cs" />
+    <Compile Include="InstallOSPCfgDataHandler.cs" />
+    <Compile Include="InstallPreCheckDataHandler.cs" />
+    <Compile Include="InstallRoleBaseDataHandler.cs" />
+    <Compile Include="InstallUMCfgDataHandler.cs" />
+    <Compile Include="InvalidFqdnException.cs" />
+    <Compile Include="InvalidOrganizationNameException.cs" />
+    <Compile Include="IOrganizationName.cs" />
+    <Compile Include="IPrecheckEnabled.cs" />
+    <Compile Include="ISetupContext.cs" />
+    <Compile Include="LanguagePackConfigurationInfo.cs" />
+    <Compile Include="LanguagePackContext.cs" />
+    <Compile Include="LanguagePackInstallInfo.cs" />
+    <Compile Include="LauncherBase.cs" />
+    <Compile Include="LocDescriptionAttribute.cs" />
+    <Compile Include="LocDisplayNameAttribute.cs" />
+    <Compile Include="LoggableMonadCommand.cs" />
+    <Compile Include="LPPathNotFoundException.cs" />
+    <Compile Include="MailboxBaseConfigurationInfo.cs" />
+    <Compile Include="MailboxRoleConfigurationInfo.cs" />
+    <Compile Include="ModeDataHandler.cs" />
+    <Compile Include="MonitoringRoleConfigurationInfo.cs" />
+    <Compile Include="MsiConfigurationInfo.cs" />
+    <Compile Include="NetworkConfiguration.cs" />
+    <Compile Include="NewOrganizationName.cs" />
+    <Compile Include="OrganizationName.cs" />
+    <Compile Include="OrgCfgDataHandler.cs" />
+    <Compile Include="OSPRoleConfigurationInfo.cs" />
+    <Compile Include="PostconditionAttribute.cs" />
+    <Compile Include="PreCheckDataHandler.cs" />
+    <Compile Include="PreconditionAttribute.cs" />
+    <Compile Include="PreConfigTaskDataHandler.cs" />
+    <Compile Include="PrereqBaseTaskDataHandler.cs" />
+    <Compile Include="PrerequisiteAnalysisTaskDataHandler.cs" />
+    <Compile Include="ProductMsiConfigurationInfo.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ProvisionServerDataHandler.cs" />
+    <Compile Include="RegistryConstants.cs" />
+    <Compile Include="RemoveLanguagePackCfgDataHandler.cs" />
+    <Compile Include="RemoveProvisionedServerDataHandler.cs" />
+    <Compile Include="RemoveUmLanguagePackCfgDataHandler.cs" />
+    <Compile Include="RemoveUmLanguagePackModeDataHandler.cs" />
+    <Compile Include="RequiredDiskSpaceStatistics.cs" />
+    <Compile Include="RestoreServer.cs" />
+    <Compile Include="RootDataHandler.cs" />
+    <Compile Include="ScanType.cs" />
+    <Compile Include="SetupBindingTaskDataHandler.cs" />
+    <Compile Include="SetupContext.cs" />
+    <Compile Include="SetupEventLog.cs" />
+    <Compile Include="SetupNotFoundInSourceDirException.cs" />
+    <Compile Include="SetupSingleTaskDataHandler.cs" />
+    <Compile Include="SetupValidationError.cs" />
+    <Compile Include="SourceDirNotSpecifiedException.cs" />
+    <Compile Include="Strings.cs" />
+    <Compile Include="SubnetNetworkConfiguration.cs" />
+    <Compile Include="UmLanguagePackConfigurationInfo.cs" />
+    <Compile Include="UmLanguagePackModeDataHandler.cs" />
+    <Compile Include="UnifiedMessagingRoleConfigurationInfo.cs" />
+    <Compile Include="UninstallAtCfgDataHandler.cs" />
+    <Compile Include="UninstallCentralAdminCfgDataHandler.cs" />
+    <Compile Include="UninstallCentralAdminDatabaseCfgDataHandler.cs" />
+    <Compile Include="UninstallCentralAdminFrontEndCfgDataHandler.cs" />
+    <Compile Include="UninstallCfgDataHandler.cs" />
+    <Compile Include="UninstallFileDataHandler.cs" />
+    <Compile Include="UninstallMbxCfgDataHandler.cs" />
+    <Compile Include="UninstallModeDataHandler.cs" />
+    <Compile Include="UninstallOrgCfgDataHandler.cs" />
+    <Compile Include="UninstallPreCheckDataHandler.cs" />
+    <Compile Include="UninstallUMCfgDataHandler.cs" />
+    <Compile Include="UpgradeAtCfgDataHandler.cs" />
+    <Compile Include="UpgradeCentralAdminCfgDataHandler.cs" />
+    <Compile Include="UpgradeCentralAdminDatabaseCfgDataHandler.cs" />
+    <Compile Include="UpgradeCentralAdminFrontEndCfgDataHandler.cs" />
+    <Compile Include="UpgradeCfgDataHandler.cs" />
+    <Compile Include="UpgradeModeDataHandler.cs" />
+    <Compile Include="UpgradeMonitoringCfgDataHandler.cs" />
+    <Compile Include="UpgradePrecheckDataHandler.cs" />
+    <Compile Include="UserChoiceState.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Strings.resources" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.Exchange.Common\Microsoft.Exchange.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140F0}</Project>
+      <Name>Microsoft.Exchange.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Configuration.ObjectModel\Microsoft.Exchange.Configuration.ObjectModel.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140FC}</Project>
+      <Name>Microsoft.Exchange.Configuration.ObjectModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Common\Microsoft.Exchange.Data.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140D3}</Project>
+      <Name>Microsoft.Exchange.Data.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Directory\Microsoft.Exchange.Data.Directory.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14105}</Project>
+      <Name>Microsoft.Exchange.Data.Directory</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data\Microsoft.Exchange.Data.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14106}</Project>
+      <Name>Microsoft.Exchange.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Diagnostics\Microsoft.Exchange.Diagnostics.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14113}</Project>
+      <Name>Microsoft.Exchange.Diagnostics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Management.Deployment\Microsoft.Exchange.Management.Deployment.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1415A}</Project>
+      <Name>Microsoft.Exchange.Management.Deployment</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Management\Microsoft.Exchange.Management.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1415C}</Project>
+      <Name>Microsoft.Exchange.Management</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Net\Microsoft.Exchange.Net.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14178}</Project>
+      <Name>Microsoft.Exchange.Net</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.PowerShell.Configuration\Microsoft.Exchange.PowerShell.Configuration.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1417F}</Project>
+      <Name>Microsoft.Exchange.PowerShell.Configuration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Setup.AcquireLanguagePack\Microsoft.Exchange.Setup.AcquireLanguagePack.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141AE}</Project>
+      <Name>Microsoft.Exchange.Setup.AcquireLanguagePack</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Setup.CommonBase\Microsoft.Exchange.Setup.CommonBase.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141B1}</Project>
+      <Name>Microsoft.Exchange.Setup.CommonBase</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Setup.Parser\Microsoft.Exchange.Setup.Parser.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141B4}</Project>
+      <Name>Microsoft.Exchange.Setup.Parser</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.UM.UMCommon\Microsoft.Exchange.UM.UMCommon.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141DB}</Project>
+      <Name>Microsoft.Exchange.UM.UMCommon</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\mscorlib\mscorlib.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141F1}</Project>
+      <Name>mscorlib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

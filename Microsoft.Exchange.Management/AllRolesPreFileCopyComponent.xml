@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo Name="All Roles Pre File Copy">
+
+  <ServerTasks>
+
+    <!-- Log all active processes and the files in use before MSI uninstallation. -->
+    <!-- Note that uninstall tasks are executed in a reverted order. See similar
+    task block below for install/upgrade/disaster-recovery modes. -->
+    <ServerTaskInfo Id="_91410e5f876e4508aaf5849a9e771865" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install/>
+      <BuildToBuildUpgrade/>
+      <DisasterRecovery/>
+      <Uninstall IsFatal="false" DescriptionId="SetupProgressListOpenFiles">
+        <Standalone>
+          Write-ExchangeSetupLog -Info "Listing all processes and the files held open by each process after known services has been stopped.";
+          $sb = new-object system.text.stringbuilder;
+          get-process |
+            sort Id |
+            %{ $o = @{}; $p = $_; $p.Modules | %{ $m = $_; if($m.FileName -like '*') {$o.Id = $p.Id; $o.Process = $p.Name; $o.Module = $m.FileName }; $o } } |
+            %{ $null = $sb.AppendFormat("{0}, {1}, {2}",$_.Id,$_.Process,$_.Module); $sb.AppendLine(); };
+          Write-ExchangeSetupLog -Info $sb.ToString();
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <ServerTaskInfo Id="_2f7e3804a2b340c69e930798211fb8fd" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install Weight="10" DescriptionId="SetupProgressStoppingServices">
+        <!-- For install mode, when the LanguagePacks role appears, we want to stop services that may have Exchange binaries
+        loaded.  Note that the LanguagePacks role will only appear in the Roles list when the customer is deploying
+        language packs after the initial deployment and should never appear during a clean deployment.
+        -->
+        <Standalone>
+          $roleList = $RoleRoles.Replace('Role','').Split(',');
+
+          if($roleList -contains 'LanguagePacks')
+          {
+            &amp; $RoleBinPath\ServiceControl.ps1 Save
+            &amp; $RoleBinPath\ServiceControl.ps1 DisableServices $roleList;
+            &amp; $RoleBinPath\ServiceControl.ps1 Stop $roleList;
+             
+          };
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade Weight="10" DescriptionId="SetupProgressStoppingServices">
+        <Standalone>
+          &amp; $RoleBinPath\ServiceControl.ps1 -Operation:DisableServices -Roles:($RoleRoles.Replace('Role','').Split(',')) -SetupScriptsDirectory:$RoleBinPath;
+          &amp; $RoleBinPath\ServiceControl.ps1 Stop $RoleRoles.Replace('Role','').Split(',')
+        </Standalone>
+      </BuildToBuildUpgrade>
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall>
+        <Standalone>
+          &amp; $RoleBinPath\ServiceControl.ps1 DisableServices $RoleRoles.Replace('Role','').Split(',');
+          &amp; $RoleBinPath\ServiceControl.ps1 Stop $RoleRoles.Replace('Role','').Split(',')
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Log all active processes and the files in use before MSI installation/upgrade. -->
+    <ServerTaskInfo Id="_5d9638ca1d0745f9ae1b75232f5084ba" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false" DescriptionId="SetupProgressListOpenFiles">
+        <Standalone>
+          Write-ExchangeSetupLog -Info "Listing all processes and the files held open by each process after known services has been stopped.";
+          $sb = new-object system.text.stringbuilder;
+          get-process |
+            sort Id |
+            %{ $o = @{}; $p = $_; $p.Modules | %{ $m = $_; if($m.FileName -like '*') {$o.Id = $p.Id; $o.Process = $p.Name; $o.Module = $m.FileName }; $o } } |
+            %{ $null = $sb.AppendFormat("{0}, {1}, {2}",$_.Id,$_.Process,$_.Module); $sb.AppendLine(); };
+          Write-ExchangeSetupLog -Info $sb.ToString();
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall/>
+    </ServerTaskInfo>
+
+    <ServerTaskInfo Id="_6879424007224be39186baf5e197ab9f" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install/>
+      <BuildToBuildUpgrade/>
+      <DisasterRecovery/>
+      <Uninstall>
+        <!-- In case of uninstall ServiceControl.ps1 is uninstalled by MSI. So, before
+        uninstalling MSI we save it here under different name. We'll change it back to
+        ServiceControl.ps1 in AllRolesPostFileCopyComponent. -->
+        <Standalone>
+          if (Test-Path $RoleBinPath\ServiceControl.ps1.bak)
+          {
+            del $RoleBinPath\ServiceControl.ps1.bak
+          };
+          copy $RoleBinPath\ServiceControl.ps1 $RoleBinPath\ServiceControl.ps1.bak
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+  </ServerTasks>
+</SetupComponentInfo>

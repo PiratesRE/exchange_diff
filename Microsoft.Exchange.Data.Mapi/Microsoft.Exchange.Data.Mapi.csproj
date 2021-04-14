@@ -1,0 +1,155 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{09CD9476-CD82-489E-B9E2-84B47CA1410A}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Microsoft.Exchange.Data.Mapi</RootNamespace>
+    <AssemblyName>Microsoft.Exchange.Data.Mapi</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ClientMode.cs" />
+    <Compile Include="Common\DatabaseUnavailableException.cs" />
+    <Compile Include="Common\FailedToRefreshMailboxException.cs" />
+    <Compile Include="Common\FolderAlreadyExistsException.cs" />
+    <Compile Include="Common\LocDescriptionAttribute.cs" />
+    <Compile Include="Common\MailboxLogonFailedException.cs" />
+    <Compile Include="Common\MailboxNotFoundException.cs" />
+    <Compile Include="Common\MapiAccessDeniedException.cs" />
+    <Compile Include="Common\MapiCalculatedPropertyGettingException.cs" />
+    <Compile Include="Common\MapiCalculatedPropertySettingException.cs" />
+    <Compile Include="Common\MapiConvertingException.cs" />
+    <Compile Include="Common\MapiExceptionNoReplicaHere.cs" />
+    <Compile Include="Common\MapiExtractingException.cs" />
+    <Compile Include="Common\MapiInconsistentObjectException.cs" />
+    <Compile Include="Common\MapiInvalidOperationException.cs" />
+    <Compile Include="Common\MapiLogonFailedException.cs" />
+    <Compile Include="Common\MapiNetworkErrorException.cs" />
+    <Compile Include="Common\MapiObjectAlreadyExistsException.cs" />
+    <Compile Include="Common\MapiObjectNotFoundException.cs" />
+    <Compile Include="Common\MapiOperationException.cs" />
+    <Compile Include="Common\MapiPackingException.cs" />
+    <Compile Include="Common\MapiPartialCompletionException.cs" />
+    <Compile Include="Common\MapiSessionLimitException.cs" />
+    <Compile Include="Common\MapiTransientException.cs" />
+    <Compile Include="Common\ModificationDisallowedException.cs" />
+    <Compile Include="Common\PublicFolderNotFoundException.cs" />
+    <Compile Include="Common\PublicStoreLogonFailedException.cs" />
+    <Compile Include="Common\Strings.cs" />
+    <Compile Include="ConnectionPool.cs" />
+    <Compile Include="ConsistencyMode.cs" />
+    <Compile Include="CustomizedMapiPropValueConvertor.cs" />
+    <Compile Include="DatabaseId.cs" />
+    <Compile Include="Folder.cs" />
+    <Compile Include="FolderId.cs" />
+    <Compile Include="FolderType.cs" />
+    <Compile Include="LogonStatistics.cs" />
+    <Compile Include="LogonStatisticsEntry.cs" />
+    <Compile Include="LogonStatisticsSchema.cs" />
+    <Compile Include="MailboxEntry.cs" />
+    <Compile Include="MailboxId.cs" />
+    <Compile Include="MailboxResourceMonitor.cs" />
+    <Compile Include="MailboxResourceMonitorEntry.cs" />
+    <Compile Include="MailboxResourceMonitorSchema.cs" />
+    <Compile Include="MailboxState.cs" />
+    <Compile Include="MailboxStatistics.cs" />
+    <Compile Include="MailboxStatisticsSchema.cs" />
+    <Compile Include="MapiAdministrationSession.cs" />
+    <Compile Include="MapiEntryId.cs" />
+    <Compile Include="MapiMessageStoreSession.cs" />
+    <Compile Include="MapiModifyTableWrapper.cs" />
+    <Compile Include="MapiObject.cs" />
+    <Compile Include="MapiObjectId.cs" />
+    <Compile Include="MapiObjectSchema.cs" />
+    <Compile Include="MapiPropertyBag.cs" />
+    <Compile Include="MapiPropertyDefinition.cs" />
+    <Compile Include="MapiPropertyDefinitionFlags.cs" />
+    <Compile Include="MapiPropertyDefinitions.cs" />
+    <Compile Include="MapiPropValueConvertor.cs" />
+    <Compile Include="MapiPropValueExtractorDelegate.cs" />
+    <Compile Include="MapiPropValuePackerDelegate.cs" />
+    <Compile Include="MapiSession.cs" />
+    <Compile Include="MapiTableWrapper.cs" />
+    <Compile Include="MessageId.cs" />
+    <Compile Include="MessageStore.cs" />
+    <Compile Include="MessageStoreId.cs" />
+    <Compile Include="ObjectClass.cs" />
+    <Compile Include="ParameterlessReturnlessDelegate.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="PublicFolderId.cs" />
+    <Compile Include="PublicFolderQuotaStyle.cs" />
+    <Compile Include="PublicStoreId.cs" />
+    <Compile Include="QueryScope.cs" />
+    <Compile Include="ReplicationStyle.cs" />
+    <Compile Include="StorageLimitStatus.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Common\Strings.resources" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Common\Microsoft.Exchange.Data.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140D3}</Project>
+      <Name>Microsoft.Exchange.Data.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Directory\Microsoft.Exchange.Data.Directory.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14105}</Project>
+      <Name>Microsoft.Exchange.Data.Directory</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Storage\Microsoft.Exchange.Data.Storage.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1410F}</Project>
+      <Name>Microsoft.Exchange.Data.Storage</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data\Microsoft.Exchange.Data.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14106}</Project>
+      <Name>Microsoft.Exchange.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Diagnostics\Microsoft.Exchange.Diagnostics.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14113}</Project>
+      <Name>Microsoft.Exchange.Diagnostics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Net\Microsoft.Exchange.Net.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14178}</Project>
+      <Name>Microsoft.Exchange.Net</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.StoreProvider\Microsoft.Exchange.StoreProvider.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141B9}</Project>
+      <Name>Microsoft.Exchange.StoreProvider</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\mscorlib\mscorlib.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141F1}</Project>
+      <Name>mscorlib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

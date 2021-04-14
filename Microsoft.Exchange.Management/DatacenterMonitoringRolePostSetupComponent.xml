@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo IsDatacenterOnly="true" IsDatacenterDedicatedOnly="true" Name="Datacenter Monitoring Role Post Setup Component">
+
+  <ServerTasks>
+    
+    <!-- Starts the Monitoring Correlation service. -->
+    <ServerTaskInfo Id="_52cbdc809d6b44498ba366862e27d96e" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>Start-SetupService -ServiceName MSExchangeMonitoringCorrelation</Standalone>
+      </Install>
+      <BuildToBuildUpgrade />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+    
+  </ServerTasks>
+
+</SetupComponentInfo>
+

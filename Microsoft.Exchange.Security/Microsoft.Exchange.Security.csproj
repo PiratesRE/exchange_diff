@@ -1,0 +1,325 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{09CD9476-CD82-489E-B9E2-84B47CA14198}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Microsoft</RootNamespace>
+    <AssemblyName>Microsoft.Exchange.Security</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.IdentityModel" />
+    <Reference Include="Microsoft.Office365.DataInsights.Uploader" />
+    <Reference Include="Microsoft.Passport.RPS" />
+    <Reference Include="Microsoft.Passport.RPS.Native" />
+    <Reference Include="System" />
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.DirectoryServices" />
+    <Reference Include="System.IdentityModel" />
+    <Reference Include="System.IdentityModel" />
+    <Reference Include="System.IdentityModel.Tokens.Jwt" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Exchange\Security\Authentication\AdfsAuthCounters.cs" />
+    <Compile Include="Exchange\Security\Authentication\AdfsAuthCountersInstance.cs" />
+    <Compile Include="Exchange\Security\Authentication\AdfsConfigErrorReason.cs" />
+    <Compile Include="Exchange\Security\Authentication\AdfsConfigurationException.cs" />
+    <Compile Include="Exchange\Security\Authentication\AdfsCookieTransform.cs" />
+    <Compile Include="Exchange\Security\Authentication\AdfsFederationAuthModule.cs" />
+    <Compile Include="Exchange\Security\Authentication\AdfsIdentifyModelSection.cs" />
+    <Compile Include="Exchange\Security\Authentication\AdfsIdentity.cs" />
+    <Compile Include="Exchange\Security\Authentication\AdfsIdentityException.cs" />
+    <Compile Include="Exchange\Security\Authentication\AdfsRequestValidator.cs" />
+    <Compile Include="Exchange\Security\Authentication\AdfsRsaEncryptionCookieTransform.cs" />
+    <Compile Include="Exchange\Security\Authentication\AdfsRsaSignatureCookieTransform.cs" />
+    <Compile Include="Exchange\Security\Authentication\AdfsServiceConfiguration.cs" />
+    <Compile Include="Exchange\Security\Authentication\AdfsSessionAuthModule.cs" />
+    <Compile Include="Exchange\Security\Authentication\AdfsSessionSecurityTokenHandler.cs" />
+    <Compile Include="Exchange\Security\Authentication\AdfsTimeBasedLogonCookie.cs" />
+    <Compile Include="Exchange\Security\Authentication\AdfsTokenAccessor.cs" />
+    <Compile Include="Exchange\Security\Authentication\AuthCommon.cs" />
+    <Compile Include="Exchange\Security\Authentication\AuthenticationAuthority.cs" />
+    <Compile Include="Exchange\Security\Authentication\AuthenticationCounters.cs" />
+    <Compile Include="Exchange\Security\Authentication\AuthenticationCountersInstance.cs" />
+    <Compile Include="Exchange\Security\Authentication\AuthIdentifierCache.cs" />
+    <Compile Include="Exchange\Security\Authentication\AuthModulePerformanceCounterHelper.cs" />
+    <Compile Include="Exchange\Security\Authentication\AuthOptions.cs" />
+    <Compile Include="Exchange\Security\Authentication\BackendAuthenticator.cs" />
+    <Compile Include="Exchange\Security\Authentication\BackendRehydrationException.cs" />
+    <Compile Include="Exchange\Security\Authentication\BackendRehydrationModule.cs" />
+    <Compile Include="Exchange\Security\Authentication\CertificateSidTokenAccessor.cs" />
+    <Compile Include="Exchange\Security\Authentication\ClientAuthenticationHelper.cs" />
+    <Compile Include="Exchange\Security\Authentication\CommonAccessTokenAccessor.cs" />
+    <Compile Include="Exchange\Security\Authentication\CompositeIdentity.cs" />
+    <Compile Include="Exchange\Security\Authentication\CompositeIdentityAuthenticationHelper.cs" />
+    <Compile Include="Exchange\Security\Authentication\CompositeIdentityAuthenticator.cs" />
+    <Compile Include="Exchange\Security\Authentication\CompositeIdentityBuilder.cs" />
+    <Compile Include="Exchange\Security\Authentication\ConsumerEasAuthModule.cs" />
+    <Compile Include="Exchange\Security\Authentication\CookieNames.cs" />
+    <Compile Include="Exchange\Security\Authentication\CookieSignHelper.cs" />
+    <Compile Include="Exchange\Security\Authentication\DirectoryAccessorExtension.cs" />
+    <Compile Include="Exchange\Security\Authentication\DirectoryExceptionTranslator.cs" />
+    <Compile Include="Exchange\Security\Authentication\DirectoryHelper.cs" />
+    <Compile Include="Exchange\Security\Authentication\FederatedAuthService\AccountValidationContextBase.cs" />
+    <Compile Include="Exchange\Security\Authentication\FederatedAuthService\AccountValidationContextByMailboxGuid.cs" />
+    <Compile Include="Exchange\Security\Authentication\FederatedAuthService\AccountValidationContextByPUID.cs" />
+    <Compile Include="Exchange\Security\Authentication\FederatedAuthService\AccountValidationContextBySID.cs" />
+    <Compile Include="Exchange\Security\Authentication\FederatedAuthService\ADHomeRealmDiscovery.cs" />
+    <Compile Include="Exchange\Security\Authentication\FederatedAuthService\ADHrdException.cs" />
+    <Compile Include="Exchange\Security\Authentication\FederatedAuthService\AuthService.cs" />
+    <Compile Include="Exchange\Security\Authentication\FederatedAuthService\AuthServiceClient.cs" />
+    <Compile Include="Exchange\Security\Authentication\FederatedAuthService\AuthServiceHelper.cs" />
+    <Compile Include="Exchange\Security\Authentication\FederatedAuthService\AuthServiceStaticConfig.cs" />
+    <Compile Include="Exchange\Security\Authentication\FederatedAuthService\AuthStatus.cs" />
+    <Compile Include="Exchange\Security\Authentication\FederatedAuthService\CredFailure.cs" />
+    <Compile Include="Exchange\Security\Authentication\FederatedAuthService\DomainConfig.cs" />
+    <Compile Include="Exchange\Security\Authentication\FederatedAuthService\EduDomainFlags.cs" />
+    <Compile Include="Exchange\Security\Authentication\FederatedAuthService\FederatedSTS.cs" />
+    <Compile Include="Exchange\Security\Authentication\FederatedAuthService\FederationState.cs" />
+    <Compile Include="Exchange\Security\Authentication\FederatedAuthService\HashedCredInfo.cs" />
+    <Compile Include="Exchange\Security\Authentication\FederatedAuthService\HashExtension.cs" />
+    <Compile Include="Exchange\Security\Authentication\FederatedAuthService\HomeRealmDiscovery.cs" />
+    <Compile Include="Exchange\Security\Authentication\FederatedAuthService\IAuthService.cs" />
+    <Compile Include="Exchange\Security\Authentication\FederatedAuthService\IAuthServiceChannel.cs" />
+    <Compile Include="Exchange\Security\Authentication\FederatedAuthService\IHomeRealmDiscovery.cs" />
+    <Compile Include="Exchange\Security\Authentication\FederatedAuthService\KnownTypesProvider.cs" />
+    <Compile Include="Exchange\Security\Authentication\FederatedAuthService\LiveIdBasicAuthenticationCounters.cs" />
+    <Compile Include="Exchange\Security\Authentication\FederatedAuthService\LiveIdBasicAuthenticationCountersInstance.cs" />
+    <Compile Include="Exchange\Security\Authentication\FederatedAuthService\LiveIdSTS.cs" />
+    <Compile Include="Exchange\Security\Authentication\FederatedAuthService\LiveIdSTSBase.cs" />
+    <Compile Include="Exchange\Security\Authentication\FederatedAuthService\LiveIdSTSSamlForm.cs" />
+    <Compile Include="Exchange\Security\Authentication\FederatedAuthService\LiveIdXmlAuth.cs" />
+    <Compile Include="Exchange\Security\Authentication\FederatedAuthService\LivePreferredProtocol.cs" />
+    <Compile Include="Exchange\Security\Authentication\FederatedAuthService\LogonCache.cs" />
+    <Compile Include="Exchange\Security\Authentication\FederatedAuthService\LogonCacheConfig.cs" />
+    <Compile Include="Exchange\Security\Authentication\FederatedAuthService\LogWarning.cs" />
+    <Compile Include="Exchange\Security\Authentication\FederatedAuthService\NamespaceCache.cs" />
+    <Compile Include="Exchange\Security\Authentication\FederatedAuthService\NamespaceStats.cs" />
+    <Compile Include="Exchange\Security\Authentication\FederatedAuthService\OfflineOrgIdAuth.cs" />
+    <Compile Include="Exchange\Security\Authentication\FederatedAuthService\ProtocolName.cs" />
+    <Compile Include="Exchange\Security\Authentication\FederatedAuthService\PuidCredInfo.cs" />
+    <Compile Include="Exchange\Security\Authentication\FederatedAuthService\SamlSTS.cs" />
+    <Compile Include="Exchange\Security\Authentication\FederatedAuthService\STSBase.cs" />
+    <Compile Include="Exchange\Security\Authentication\FederatedAuthService\TestFailoverFlags.cs" />
+    <Compile Include="Exchange\Security\Authentication\FederatedAuthService\UserOp.cs" />
+    <Compile Include="Exchange\Security\Authentication\FederatedAuthService\UserOpsTracker.cs" />
+    <Compile Include="Exchange\Security\Authentication\FederatedAuthService\Win32.cs" />
+    <Compile Include="Exchange\Security\Authentication\FederatedAuthService\WsuTimestamp.cs" />
+    <Compile Include="Exchange\Security\Authentication\IdentityRef.cs" />
+    <Compile Include="Exchange\Security\Authentication\ILiveIdBasicAuthentication.cs" />
+    <Compile Include="Exchange\Security\Authentication\IMSATokenValidation.cs" />
+    <Compile Include="Exchange\Security\Authentication\InvalidOAuthLinkedAccountException.cs" />
+    <Compile Include="Exchange\Security\Authentication\IOAuthExtensionAuthenticationHandler.cs" />
+    <Compile Include="Exchange\Security\Authentication\ITokenMunger.cs" />
+    <Compile Include="Exchange\Security\Authentication\LiveIdBasicAuthentication.cs" />
+    <Compile Include="Exchange\Security\Authentication\LiveIdBasicAuthInfo.cs" />
+    <Compile Include="Exchange\Security\Authentication\LiveIdBasicAuthModule.cs" />
+    <Compile Include="Exchange\Security\Authentication\LiveIdBasicAuthRawData.cs" />
+    <Compile Include="Exchange\Security\Authentication\LiveIdBasicTokenAccessor.cs" />
+    <Compile Include="Exchange\Security\Authentication\LiveIdFbaTokenAccessor.cs" />
+    <Compile Include="Exchange\Security\Authentication\LiveIDIdentity.cs" />
+    <Compile Include="Exchange\Security\Authentication\LiveIdLoginAttributes.cs" />
+    <Compile Include="Exchange\Security\Authentication\LiveIdNegotiateAuxiliaryModule.cs" />
+    <Compile Include="Exchange\Security\Authentication\LiveIdTicketDictionary.cs" />
+    <Compile Include="Exchange\Security\Authentication\LowPasswordConfidenceException.cs" />
+    <Compile Include="Exchange\Security\Authentication\Mailbox\MailBoxStatisticsHelper.cs" />
+    <Compile Include="Exchange\Security\Authentication\Mailbox\MailboxUserProfile.cs" />
+    <Compile Include="Exchange\Security\Authentication\MissingIdentityException.cs" />
+    <Compile Include="Exchange\Security\Authentication\MSAIdentity.cs" />
+    <Compile Include="Exchange\Security\Authentication\MSATokenValidationClient.cs" />
+    <Compile Include="Exchange\Security\Authentication\MSATokenValidationService.cs" />
+    <Compile Include="Exchange\Security\Authentication\OAuthCookieExtensionAuthenticationHandler.cs" />
+    <Compile Include="Exchange\Security\Authentication\OAuthExtensionContext.cs" />
+    <Compile Include="Exchange\Security\Authentication\OAuthExtensionsManager.cs" />
+    <Compile Include="Exchange\Security\Authentication\OAuthOwaExtensionAuthenticationHandler.cs" />
+    <Compile Include="Exchange\Security\Authentication\OAuthTokenAccessor.cs" />
+    <Compile Include="Exchange\Security\Authentication\OwaAuthenticationHelper.cs" />
+    <Compile Include="Exchange\Security\Authentication\RPSCommon.cs" />
+    <Compile Include="Exchange\Security\Authentication\RPSHttpAuthClient.cs" />
+    <Compile Include="Exchange\Security\Authentication\SidBasedIdentity.cs" />
+    <Compile Include="Exchange\Security\Authentication\SlaveAccountTokenMunger.cs" />
+    <Compile Include="Exchange\Security\Authentication\TokenMungingException.cs" />
+    <Compile Include="Exchange\Security\Authentication\Utility.cs" />
+    <Compile Include="Exchange\Security\Authentication\V1CallbackTokenCookie.cs" />
+    <Compile Include="Exchange\Security\Authentication\WindowsTokenAccessor.cs" />
+    <Compile Include="Exchange\Security\FaultInjection.cs" />
+    <Compile Include="Exchange\Security\Nego2\Nego2Credentials.cs" />
+    <Compile Include="Exchange\Security\Nego2\Nego2NativeHelper.cs" />
+    <Compile Include="Exchange\Security\OAuth\ACSTokenBuildRequest.cs" />
+    <Compile Include="Exchange\Security\OAuth\ACSTokenCache.cs" />
+    <Compile Include="Exchange\Security\OAuth\ACSTokenLifeTime.cs" />
+    <Compile Include="Exchange\Security\OAuth\ClaimProvider.cs" />
+    <Compile Include="Exchange\Security\OAuth\ConfigProvider.cs" />
+    <Compile Include="Exchange\Security\OAuth\Constants.cs" />
+    <Compile Include="Exchange\Security\OAuth\DefaultOutboundTracer.cs" />
+    <Compile Include="Exchange\Security\OAuth\HttpAuthenticationChallenge.cs" />
+    <Compile Include="Exchange\Security\OAuth\HttpAuthenticationResponseHeader.cs" />
+    <Compile Include="Exchange\Security\OAuth\HttpTokenReader.cs" />
+    <Compile Include="Exchange\Security\OAuth\InvalidOAuthTokenException.cs" />
+    <Compile Include="Exchange\Security\OAuth\IOutboundTracer.cs" />
+    <Compile Include="Exchange\Security\OAuth\IssuerKind.cs" />
+    <Compile Include="Exchange\Security\OAuth\IssuerMetadata.cs" />
+    <Compile Include="Exchange\Security\OAuth\LinkedAccountCache.cs" />
+    <Compile Include="Exchange\Security\OAuth\LocalConfiguration.cs" />
+    <Compile Include="Exchange\Security\OAuth\LocalTokenIssuer.cs" />
+    <Compile Include="Exchange\Security\OAuth\LocalTokenIssuerMetadata.cs" />
+    <Compile Include="Exchange\Security\OAuth\MSDiagnosticsHeader.cs" />
+    <Compile Include="Exchange\Security\OAuth\OAuthActAsUser.cs" />
+    <Compile Include="Exchange\Security\OAuth\OAuthActAsUserExtensions.cs" />
+    <Compile Include="Exchange\Security\OAuth\OAuthApplication.cs" />
+    <Compile Include="Exchange\Security\OAuth\OAuthApplicationType.cs" />
+    <Compile Include="Exchange\Security\OAuth\OAuthAppPoolLevelPolicy.cs" />
+    <Compile Include="Exchange\Security\OAuth\OAuthCommon.cs" />
+    <Compile Include="Exchange\Security\OAuth\OAuthCounters.cs" />
+    <Compile Include="Exchange\Security\OAuth\OAuthCountersInstance.cs" />
+    <Compile Include="Exchange\Security\OAuth\OAuthCredentials.cs" />
+    <Compile Include="Exchange\Security\OAuth\OAuthErrorCategory.cs" />
+    <Compile Include="Exchange\Security\OAuth\OAuthErrors.cs" />
+    <Compile Include="Exchange\Security\OAuth\OAuthErrorsUtil.cs" />
+    <Compile Include="Exchange\Security\OAuth\OAuthGrant.cs" />
+    <Compile Include="Exchange\Security\OAuth\OAuthHttpModule.cs" />
+    <Compile Include="Exchange\Security\OAuth\OAuthIdentity.cs" />
+    <Compile Include="Exchange\Security\OAuth\OAuthIdentityDeserializationException.cs" />
+    <Compile Include="Exchange\Security\OAuth\OAuthIdentitySerializer.cs" />
+    <Compile Include="Exchange\Security\OAuth\OAuthOutboundErrorCodes.cs" />
+    <Compile Include="Exchange\Security\OAuth\OAuthOutboundErrorsUtil.cs" />
+    <Compile Include="Exchange\Security\OAuth\OAuthPreAuthIdentity.cs" />
+    <Compile Include="Exchange\Security\OAuth\OAuthPreAuthType.cs" />
+    <Compile Include="Exchange\Security\OAuth\OAuthProtocols\DictionaryExtension.cs" />
+    <Compile Include="Exchange\Security\OAuth\OAuthProtocols\OAuth2AccessTokenRequest.cs" />
+    <Compile Include="Exchange\Security\OAuth\OAuthProtocols\OAuth2AccessTokenResponse.cs" />
+    <Compile Include="Exchange\Security\OAuth\OAuthProtocols\OAuth2Constants.cs" />
+    <Compile Include="Exchange\Security\OAuth\OAuthProtocols\OAuth2ErrorResponse.cs" />
+    <Compile Include="Exchange\Security\OAuth\OAuthProtocols\OAuth2Message.cs" />
+    <Compile Include="Exchange\Security\OAuth\OAuthProtocols\OAuth2MessageFactory.cs" />
+    <Compile Include="Exchange\Security\OAuth\OAuthTokenBuilder.cs" />
+    <Compile Include="Exchange\Security\OAuth\OAuthTokenHandler.cs" />
+    <Compile Include="Exchange\Security\OAuth\OAuthTokenRequestFailedException.cs" />
+    <Compile Include="Exchange\Security\OAuth\OfficeExtensionInfo.cs" />
+    <Compile Include="Exchange\Security\OAuth\OutboundProtocolLog.cs" />
+    <Compile Include="Exchange\Security\OAuth\ResultType.cs" />
+    <Compile Include="Exchange\Security\OAuth\SerializedOAuthIdentity.cs" />
+    <Compile Include="Exchange\Security\OAuth\SidOAuthIdentity.cs" />
+    <Compile Include="Exchange\Security\OAuth\TenantLevelPartnerApplicationCache.cs" />
+    <Compile Include="Exchange\Security\OAuth\TokenResult.cs" />
+    <Compile Include="Exchange\Security\OAuth\TrustedIssuer.cs" />
+    <Compile Include="Exchange\Security\OAuth\V1ProfileAppInfo.cs" />
+    <Compile Include="Exchange\Security\OAuth\ValidationResultCollector.cs" />
+    <Compile Include="Exchange\Security\OAuth\ValidationResultNode.cs" />
+    <Compile Include="Exchange\Security\OAuth\ValidationResultNodeId.cs" />
+    <Compile Include="Exchange\Security\OAuth\ValidationResultNodeSchema.cs" />
+    <Compile Include="Exchange\Security\PartnerToken\IOrganizationScopedIdentity.cs" />
+    <Compile Include="Exchange\Security\PartnerToken\PartnerIdentity.cs" />
+    <Compile Include="Exchange\Security\PartnerToken\PartnerInfo.cs" />
+    <Compile Include="Exchange\Security\PartnerToken\PartnerToken.cs" />
+    <Compile Include="Exchange\Security\PartnerToken\XmlConstants.cs" />
+    <Compile Include="Exchange\Security\SecurityEventLogConstants.cs" />
+    <Compile Include="Exchange\Security\SecurityStrings.cs" />
+    <Compile Include="Exchange\Security\X509CertAuth\X509CertUser.cs" />
+    <Compile Include="Exchange\Security\X509CertAuth\X509CertUserCache.cs" />
+    <Compile Include="Passport\RPS\RPSHttpAuthEx.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Exchange\Security\Strings.resources" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.Exchange.Common\Microsoft.Exchange.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140F0}</Project>
+      <Name>Microsoft.Exchange.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Compliance\Microsoft.Exchange.Compliance.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140F2}</Project>
+      <Name>Microsoft.Exchange.Compliance</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.ApplicationLogic\Microsoft.Exchange.Data.ApplicationLogic.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14104}</Project>
+      <Name>Microsoft.Exchange.Data.ApplicationLogic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Common\Microsoft.Exchange.Data.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140D3}</Project>
+      <Name>Microsoft.Exchange.Data.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Directory\Microsoft.Exchange.Data.Directory.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14105}</Project>
+      <Name>Microsoft.Exchange.Data.Directory</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Mapi\Microsoft.Exchange.Data.Mapi.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1410A}</Project>
+      <Name>Microsoft.Exchange.Data.Mapi</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Storage\Microsoft.Exchange.Data.Storage.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1410F}</Project>
+      <Name>Microsoft.Exchange.Data.Storage</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data\Microsoft.Exchange.Data.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14106}</Project>
+      <Name>Microsoft.Exchange.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Diagnostics\Microsoft.Exchange.Diagnostics.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14113}</Project>
+      <Name>Microsoft.Exchange.Diagnostics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Net\Microsoft.Exchange.Net.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14178}</Project>
+      <Name>Microsoft.Exchange.Net</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.StoreProvider\Microsoft.Exchange.StoreProvider.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141B9}</Project>
+      <Name>Microsoft.Exchange.StoreProvider</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.VariantConfiguration\Microsoft.Exchange.VariantConfiguration.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141E0}</Project>
+      <Name>Microsoft.Exchange.VariantConfiguration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\mscorlib\mscorlib.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141F1}</Project>
+      <Name>mscorlib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\mscorlib\mscorlib.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141F1}</Project>
+      <Name>mscorlib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

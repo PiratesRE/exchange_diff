@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo Name="Client Access Service Control" DescriptionId="ClientAccessServiceControlComponentDescription">
+
+  <ServerTasks>
+    <ServerTaskInfo Id="_ef7fa14362774cd9af8882d6287b640a" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>Start-SetupProcess -Name "iisreset" -Args "/noforce /timeout:120"</Standalone>
+      </Install>
+      <BuildToBuildUpgrade  UseInstallTasks="true"/>
+      <DisasterRecovery  UseInstallTasks="true"/>
+      <Uninstall />
+    </ServerTaskInfo>
+
+  </ServerTasks>
+
+</SetupComponentInfo>
+

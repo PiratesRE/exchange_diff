@@ -1,0 +1,221 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{09CD9476-CD82-489E-B9E2-84B47CA141ED}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Microsoft.Office.Datacenter.ActiveMonitoring</RootNamespace>
+    <AssemblyName>Microsoft.Office.Datacenter.ActiveMonitoringLocal</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="ManagedAvailabilityCrimsonMsg" />
+    <Reference Include="Microsoft.Office365.DataInsights.Uploader" />
+    <Reference Include="Microsoft.PowerShell.HostingTools" />
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Management.Automation" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceProcess" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Component.cs" />
+    <Compile Include="CorrelatedMonitorAction.cs" />
+    <Compile Include="CorrelatedMonitorInfo.cs" />
+    <Compile Include="CorrelatedMonitorMatchInfo.cs" />
+    <Compile Include="CrimsonBookmarker.cs" />
+    <Compile Include="CrimsonConnectionInfo.cs" />
+    <Compile Include="CrimsonHelper.cs" />
+    <Compile Include="CrimsonOperation.cs" />
+    <Compile Include="CrimsonReader.cs" />
+    <Compile Include="CrimsonWatcher.cs" />
+    <Compile Include="DailySchedulePattern.cs" />
+    <Compile Include="DataAccessQuery.cs" />
+    <Compile Include="DataInsightsPublisher.cs" />
+    <Compile Include="DefinitionIdGenerator.cs" />
+    <Compile Include="EscalateResponderBase.cs" />
+    <Compile Include="EscalationEnvironment.cs" />
+    <Compile Include="EscalationState.cs" />
+    <Compile Include="EventNotificationItem.cs" />
+    <Compile Include="ExchangeComponent.cs" />
+    <Compile Include="ExecutionType.cs" />
+    <Compile Include="ExtensionMethods.cs" />
+    <Compile Include="GenericServiceProbe.cs" />
+    <Compile Include="HaScopeEnum.cs" />
+    <Compile Include="HealthGroup.cs" />
+    <Compile Include="HealthSetEscalationHelper.cs" />
+    <Compile Include="HealthSetEscalationState.cs" />
+    <Compile Include="HostnameResolver.cs" />
+    <Compile Include="HttpWebRequestUtility.cs" />
+    <Compile Include="IEventBookmarker.cs" />
+    <Compile Include="IMaintenanceWorkBroker.cs" />
+    <Compile Include="IMonitorWorkBroker.cs" />
+    <Compile Include="IPersistence.cs" />
+    <Compile Include="IProbeWorkBroker.cs" />
+    <Compile Include="IResponderWorkBroker.cs" />
+    <Compile Include="IWorkItemResultSerialization.cs" />
+    <Compile Include="LocalDataAccess.cs" />
+    <Compile Include="LocalDataAccessMetaData.cs" />
+    <Compile Include="LocalDataAccessPerfCounters.cs" />
+    <Compile Include="Local\DefinitionTable.cs" />
+    <Compile Include="Local\IIndex.cs" />
+    <Compile Include="Local\ITable.2.cs" />
+    <Compile Include="Local\ITable.cs" />
+    <Compile Include="Local\KeyComparer.cs" />
+    <Compile Include="Local\ResultQueue.cs" />
+    <Compile Include="Local\ResultsTable.cs" />
+    <Compile Include="Local\SimpleIndex.cs" />
+    <Compile Include="Local\SimpleTable.cs" />
+    <Compile Include="MaintenanceDefinition.cs" />
+    <Compile Include="MaintenanceResult.cs" />
+    <Compile Include="MaintenanceResultIdGenerator.cs" />
+    <Compile Include="MaintenanceWorkBroker.cs" />
+    <Compile Include="MaintenanceWorkItem.cs" />
+    <Compile Include="ManagedAvailabilityPriority.cs" />
+    <Compile Include="MonitorDefinition.cs" />
+    <Compile Include="MonitorDefinitionIndex.cs" />
+    <Compile Include="MonitorIdentity.cs" />
+    <Compile Include="MonitoringNotificationConstants.cs" />
+    <Compile Include="MonitoringNotificationEvent.cs" />
+    <Compile Include="MonitorResult.cs" />
+    <Compile Include="MonitorResultIdGenerator.cs" />
+    <Compile Include="MonitorResultIndex.cs" />
+    <Compile Include="MonitorResultLogConfiguration.cs" />
+    <Compile Include="MonitorResultLogger.cs" />
+    <Compile Include="MonitorStateMachine.cs" />
+    <Compile Include="MonitorStateTransition.cs" />
+    <Compile Include="MonitorWorkBroker.cs" />
+    <Compile Include="MonitorWorkItem.cs" />
+    <Compile Include="NativeMethods.cs" />
+    <Compile Include="NotificationItem.cs" />
+    <Compile Include="NotificationServiceClass.cs" />
+    <Compile Include="OverallConsecutiveFailuresMonitor.cs" />
+    <Compile Include="OverallConsecutiveProbeFailuresMonitor.cs" />
+    <Compile Include="OverallConsecutiveSampleValueAboveThresholdMonitor.cs" />
+    <Compile Include="OverallConsecutiveSampleValueBelowThresholdMonitor.cs" />
+    <Compile Include="OverallPercentSuccessHistoryByFailureCategoryMonitor.cs" />
+    <Compile Include="OverallPercentSuccessHistoryByFailureCategoryMonitorExtended.cs" />
+    <Compile Include="OverallPercentSuccessMonitor.cs" />
+    <Compile Include="OverallPercentSuccessNoTimeoutMonitor.cs" />
+    <Compile Include="OverallXFailuresMonitor.cs" />
+    <Compile Include="PerformanceCounterNotificationItem.cs" />
+    <Compile Include="PersistentStateLogConfiguration.cs" />
+    <Compile Include="PersistentStateLogger.cs" />
+    <Compile Include="ProbeDefinition.cs" />
+    <Compile Include="ProbeDefinitionIndex.cs" />
+    <Compile Include="ProbeIdentity.cs" />
+    <Compile Include="ProbeResult.cs" />
+    <Compile Include="ProbeResultIdGenerator.cs" />
+    <Compile Include="ProbeResultIndex.cs" />
+    <Compile Include="ProbeResultRawData.cs" />
+    <Compile Include="ProbeType.cs" />
+    <Compile Include="ProbeWorkBroker.cs" />
+    <Compile Include="ProbeWorkItem.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Quarantine.cs" />
+    <Compile Include="RemotePowerShell.cs" />
+    <Compile Include="ResponderDefinition.cs" />
+    <Compile Include="ResponderDefinitionIndex.cs" />
+    <Compile Include="ResponderIdentity.cs" />
+    <Compile Include="ResponderResult.cs" />
+    <Compile Include="ResponderResultIdGenerator.cs" />
+    <Compile Include="ResponderSkipMode.cs" />
+    <Compile Include="ResponderWorkBroker.cs" />
+    <Compile Include="ResponderWorkItem.cs" />
+    <Compile Include="ResponseMessageReader.cs" />
+    <Compile Include="ResultIdGenerator.cs" />
+    <Compile Include="ResultSeverityLevel.cs" />
+    <Compile Include="ResultWatcher.cs" />
+    <Compile Include="ScopeMapping.cs" />
+    <Compile Include="ScopeMappingEndpoint.cs" />
+    <Compile Include="ScopeMappingEndpointManager.cs" />
+    <Compile Include="ScopeNotificationCache.cs" />
+    <Compile Include="ScopeNotificationRawData.cs" />
+    <Compile Include="ScopeNotificationUploadState.cs" />
+    <Compile Include="ServiceHealthStatus.cs" />
+    <Compile Include="ServiceRecoveryResult.cs" />
+    <Compile Include="ServiceSeverity.cs" />
+    <Compile Include="StartupNotification.cs" />
+    <Compile Include="StartupNotificationWatcher.cs" />
+    <Compile Include="StringsLocal.cs" />
+    <Compile Include="SystemMonitoringMapping.cs" />
+    <Compile Include="TableDecorator.cs" />
+    <Compile Include="TestActiveMonitoringProbe.cs" />
+    <Compile Include="TopologyScope.cs" />
+    <Compile Include="TopologyScopeIndex.cs" />
+    <Compile Include="Update.cs" />
+    <Compile Include="WorkDefinitionDeploymentFileReader.cs" />
+    <Compile Include="WorkDefinitionOverrideExtension.cs" />
+    <Compile Include="WorkItemFactory.cs" />
+    <Compile Include="WorkItemIdentity.cs" />
+    <Compile Include="WorkItemIdentityExtensions.cs" />
+    <Compile Include="XmlDefinitionReaderWorkItem.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Microsoft.Office.Datacenter.ActiveMonitoringLocal.CoreResour.resources" />
+    <EmbeddedResource Include="Microsoft.Office.Datacenter.ActiveMonitoringLocal.StringsLoc.resources" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.Exchange.Common\Microsoft.Exchange.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140F0}</Project>
+      <Name>Microsoft.Exchange.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Compliance\Microsoft.Exchange.Compliance.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140F2}</Project>
+      <Name>Microsoft.Exchange.Compliance</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Common\Microsoft.Exchange.Data.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140D3}</Project>
+      <Name>Microsoft.Exchange.Data.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Diagnostics\Microsoft.Exchange.Diagnostics.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14113}</Project>
+      <Name>Microsoft.Exchange.Diagnostics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Office.Datacenter.WorkerTaskFrameworkInternalProvi\Microsoft.Office.Datacenter.WorkerTaskFrameworkInternalProvi.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141EF}</Project>
+      <Name>Microsoft.Office.Datacenter.WorkerTaskFrameworkInternalProvider</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\mscorlib\mscorlib.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141F1}</Project>
+      <Name>mscorlib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

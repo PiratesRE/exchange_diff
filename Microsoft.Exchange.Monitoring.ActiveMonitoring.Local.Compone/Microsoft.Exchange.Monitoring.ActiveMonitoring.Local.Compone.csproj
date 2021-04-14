@@ -1,0 +1,1488 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{09CD9476-CD82-489E-B9E2-84B47CA14176}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Microsoft.Exchange.Monitoring.ActiveMonitoring.Local.Components</RootNamespace>
+    <AssemblyName>Microsoft.Exchange.Monitoring.ActiveMonitoring.Local.Components</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AntiXssLibrary" />
+    <Reference Include="Interop.ActiveDS" />
+    <Reference Include="ManagedAvailabilityCrimsonMsg" />
+    <Reference Include="Microsoft.Ceres.CoreServices.Services" />
+    <Reference Include="Microsoft.Ceres.SearchCore.Admin" />
+    <Reference Include="Microsoft.Exchange.Cluster.Common" />
+    <Reference Include="Microsoft.Exchange.InstantMessaging" />
+    <Reference Include="Microsoft.Exchange.LogAnalyzer.Analyzers.CmdletInfraLog" />
+    <Reference Include="Microsoft.Exchange.LogAnalyzer.Analyzers.EventLog" />
+    <Reference Include="Microsoft.Exchange.LogAnalyzer.Analyzers.PerfLog" />
+    <Reference Include="Microsoft.Exchange.LogAnalyzer.Core" />
+    <Reference Include="Microsoft.Exchange.LogAnalyzer.Extensions.CmdletInfraLog" />
+    <Reference Include="Microsoft.Exchange.LogAnalyzer.Extensions.PerfLog" />
+    <Reference Include="Microsoft.Exchange.PowerSharp" />
+    <Reference Include="Microsoft.Exchange.Search.OperatorSchema" />
+    <Reference Include="Microsoft.Exchange.WebServices" />
+    <Reference Include="Microsoft.Forefront.RecoveryActionArbiter.Contract" />
+    <Reference Include="Microsoft.Office.OutlookService.ServiceApi" />
+    <Reference Include="Microsoft.Office365.DataInsights.Uploader" />
+    <Reference Include="Microsoft.Online.CSE.SmartAlerts.DataContracts" />
+    <Reference Include="Microsoft.PowerShell.Commands.Diagnostics" />
+    <Reference Include="Microsoft.PowerShell.HostingTools" />
+    <Reference Include="Microsoft.Rtc.Collaboration" />
+    <Reference Include="Microsoft.Web.Administration" />
+    <Reference Include="MSExchangeMailboxAssistants" />
+    <Reference Include="System" />
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.DirectoryServices" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.IO.Compression.FileSystem" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.Management.Automation" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.ServiceModel.Web" />
+    <Reference Include="System.ServiceProcess" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CompanyManagerFederatedServiceTestClient.cs" />
+    <Compile Include="ICompanyManagerFederatedServiceTest.cs" />
+    <Compile Include="ICompanyManagerFederatedServiceTestChannel.cs" />
+    <Compile Include="IProvisioningWebService.cs" />
+    <Compile Include="IProvisioningWebServiceChannel.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\ActiveMonitoring\HealthManagerDiscovery.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\ActiveMonitoring\KeepAliveMaintenance.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\ActiveMonitoring\Monitors\ComponentHealthHeartbeatMonitor.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\ActiveMonitoring\Monitors\ComponentHealthMonitor.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\ActiveMonitoring\Monitors\ComponentHealthPercentFailureMonitor.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\ActiveMonitoring\Monitors\HealthSetScopeNotificationMonitor.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\ActiveMonitoring\Monitors\HealthStateCollectionMonitor.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\ActiveMonitoring\Monitors\HeartbeatMonitor.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\ActiveMonitoring\Monitors\MaintenanceFailureMonitor.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\ActiveMonitoring\Monitors\MaintenanceMonitor.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\ActiveMonitoring\Monitors\MaintenanceTimeoutMonitor.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\ActiveMonitoring\Monitors\MonitoringScopeNotificationMonitor.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\ActiveMonitoring\Monitors\NotificationHeartbeatMonitor.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\ActiveMonitoring\Monitors\OverallConsecutiveAggregationMonitor.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\ActiveMonitoring\Monitors\OverallConsecutiveSumAboveThresholdMonitor.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\ActiveMonitoring\Monitors\OverallPercentSuccessByStateAttribute1Monitor.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\ActiveMonitoring\Monitors\ProbeResultGroupedByTimeMonitor.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\ActiveMonitoring\Monitors\QuarantineMonitor.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\ActiveMonitoring\Monitors\ScopeNotificationCollectionMonitor.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\ActiveMonitoring\Monitors\ScopeNotificationMonitor.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\ActiveMonitoring\ObserverMaintenance.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\ActiveMonitoring\ObserverSelectionReason.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\ActiveMonitoring\Probes\ObserverHeartbeatProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\ActiveMonitoring\Probes\ObserverHeartbeatResult.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\ActiveMonitoring\Probes\ObserverHeartbeatResultExtension.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\ActiveMonitoring\Responders\ConditionalEscalateResponder.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\ActiveMonitoring\Responders\EscalateByDatabaseHealthResponder.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\ActiveMonitoring\Responders\EscalateResponder.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\ActiveMonitoring\Responders\EscalateResponderWithCustomMessage.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\ActiveMonitoring\Responders\EscalationNotificationResponder.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\ActiveMonitoring\Responders\ExtraDetailsEscalateResponder.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\ActiveMonitoring\Responders\F1TraceResponder.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\ActiveMonitoring\Responders\GenericEventWriteResponder.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\ActiveMonitoring\Responders\HeartbeatResponder.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\ActiveMonitoring\Responders\OBDEscalateResponder.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\ActiveMonitoring\Responders\PublicFolderConnectionResponder.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\ActiveMonitoring\Responders\PublicFolderMailboxResponder.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\ActiveMonitoring\Responders\RemoteRestartServiceResponder.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\ActiveMonitoring\Responders\SetMonitorStateRepairingResponder.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\ActiveMonitoring\Responders\WatsonF1TraceResponder.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\ActiveMonitoring\Responders\WatsonResponder.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\ActiveMonitoring\SubjectMaintenance.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\ActiveSync\ActiveSyncDiscovery.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\ActiveSync\Probes\ActiveSyncAppPoolPingProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\ActiveSync\Probes\ActiveSyncCustomerTouchPointProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\ActiveSync\Probes\ActiveSyncMailboxDeepProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\ActiveSync\Probes\ActiveSyncProbeBase.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\ActiveSync\Probes\ActiveSyncProbeStateObject.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\ActiveSync\Probes\ActiveSyncProbeUtil.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\ActiveSync\Probes\ActiveSyncWebResponse.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\ActiveSync\Probes\ProbeState.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Antimalware\AntimalwareDiscovery.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Antimalware\CleanupFolderResponder.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Auditing\AuditingEventsDiscovery.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Auditing\AuditingPassiveDiscovery.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Auditing\PassiveMonitorType.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\AvailabilityService\AvailabilityServiceDiscovery.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\AvailabilityService\AvailabilityServiceStrings.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\AvailabilityService\Monitors\AvailabilityServiceMonitor.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\AvailabilityService\Monitors\AvailabilityServiceOffBoxRequestMonitor.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\AvailabilityService\Probes\AvailabilityServiceLocalProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\AvailabilityService\Probes\AvailabilityServiceProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\AvailabilityService\Probes\AvailabilityServiceProbeUtil.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\BitlockerDeployment\BitlockerDeploymentConstants.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\BitlockerDeployment\BitlockerDeploymentDiscovery.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\BitlockerDeployment\BitlockerDeploymentUtility.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\BitlockerDeployment\BootVolumeEncryptionStatusMonitoringContext.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\BitlockerDeployment\DraDecryptorMonitoringContext.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\BitlockerDeployment\DraProtectorMonitoringContext.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\BitlockerDeployment\EncryptionStatusMonitoringContext.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\BitlockerDeployment\EncryptionSuspendedMonitoringContext.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\BitlockerDeployment\LockStatusMonitoringContext.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\BitlockerDeployment\MonitoringContextBase.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\BitlockerDeployment\MonitorStateResponderTuple.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\BitlockerDeployment\Probes\BootVolumeEncryptionStatusProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\BitlockerDeployment\Probes\DraDecryptorProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\BitlockerDeployment\Probes\DraProtectorProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\BitlockerDeployment\Probes\EncryptionStatusProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\BitlockerDeployment\Probes\EncryptionSuspendedProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\BitlockerDeployment\Probes\LockStatusProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\BitlockerDeployment\ProcessRunner.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\BitlockerDeployment\Responders\BitlockerDeploymentLockResponder.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\BitlockerDeployment\Responders\BitlockerDeploymentSuspendResponder.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\CalendarSharing\OWACalendarAppPoolDiscovery.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\CalendarSharing\Probes\CalendarSharingException.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\CalendarSharing\Probes\CalendarSharingUtils.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\CalendarSharing\Probes\OWACalendarAppPoolProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Calendar\Probes\AutodiscoverException.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Calendar\Probes\AvailabilityServiceValidationException.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Calendar\Probes\CalendarProbeBase.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Classification\ClassificationDiscovery.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\ClientAccess\CafeDiscovery.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\ClientAccess\CafeExtraDetailsParser.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\ClientAccess\CafeLocalProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\ClientAccess\CafeProtocols.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\ClientAccess\ClearLsassCacheResponder.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\ClientAccess\EscalateComponentStateResponder.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\ClientAccess\HttpProtocol.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\ClientAccess\Passive\CafePassiveDiscovery.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\ClientAccess\Passive\PassiveMonitorType.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\ClientAccess\Passive\ThreadCountLocalProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\ClientAccess\PerfCounterEscalateResponder.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\ClientAccess\ProbeState.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\ClientAccess\ProtocolDescriptor.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\ClientAccess\RebootServerComponentStateResponder.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\CollectFIPSLogsResponderHelper.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Common\ActiveMonitoringGenericRpcServerHelper.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Common\ActiveMonitoringPowerShellException.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Common\ActiveMonitoringRpcErrorCode.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Common\ActiveMonitoringRpcServer.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Common\ADUtils.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Common\ApplicationPoolHelper.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Common\AssistantsCollection.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Common\BackendMailboxDatabaseEndpointDelegate.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Common\Breadcrumbs.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Common\CafeMailboxDatabaseEndpointDelegate.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Common\CafeUtils.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Common\CentralEventLogWatcher.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Common\CommonAccessTokenHelper.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Common\Constants.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Common\CoordinatedOfflineAction.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Common\CoordinatedQuotaBasedRecoveryAction.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Common\CriticalDependencyAlertEscalator.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Common\CriticalDependencyExtensions.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Common\CriticalDependencyVerification.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Common\DagUtils.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Common\DatabaseCopyConnectivity.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Common\DatabaseMonitoringStatus.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Common\DirectoryAccessor.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Common\DirectoryGeneralUtils.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Common\DNSCriticalDependency.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Common\EndpointMaintenance.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Common\EventLogCriticalDependency.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Common\EventLogNotification.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Common\EventLogSubscription.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Common\EventMatchingRule.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Common\ExchangeHostnameResolver.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Common\ExchangeRecoveryActionHelper.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Common\ExchangeServerRoleEndpoint.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Common\ExchangeThrottleSettings.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Common\ExtensionMethods.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Common\ForceRebootHelper.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Common\HealthSetEscalationLocalHelper.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Common\HpAcuCliWrapper.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Common\HtmlHelper.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Common\HttpProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Common\ICriticalDependency.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Common\IEndpoint.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Common\ILiveIdHelper.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Common\Imap4Connection.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Common\Imap4Response.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Common\InvokeNowCommon.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Common\InvokeNowCrimsonHelper.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Common\InvokeNowEntry.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Common\InvokeNowResult.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Common\InvokeNowState.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Common\IObserver.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Common\IObserverFactory.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Common\ISubject.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Common\ISubjectFactory.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Common\IWorkItem.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Common\LocalEndpointManager.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Common\LocalMonitoringMailboxManagement.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Common\LocalOverrideManager.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Common\LocalPowerShellProvider.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Common\MailboxDatabaseEndpoint.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Common\MailboxDatabaseEndpointDelegate.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Common\MailboxDatabaseInfo.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Common\MailboxNotValidatedException.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Common\MonitoringDiagnosticLogConfiguration.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Common\MonitoringEndpoint.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Common\MonitoringLogConfiguration.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Common\MonitoringLogger.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Common\MonitoringServerManager.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Common\MonitorResultCacheManager.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Common\MonitorStateHelper.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Common\NativeMethods.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Common\NullWebProxy.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Common\Observer.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Common\ObserverFactory.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Common\ObserverHeartbeatResponse.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Common\OfflineAddressBookEndpoint.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Common\OverrideEndpoint.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Common\OwaUtils.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Common\PerfCounterHelper.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Common\Pop3Connection.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Common\Pop3Response.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Common\PublicFolderMonitoringHelper.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Common\RecoveryActionsEnabledEndpoint.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Common\ResponseType.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Common\RpcCancelObserverImpl.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Common\RpcGetCrimsonEventImpl.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Common\RpcGetLastBugcheckStatusImpl.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Common\RpcGetMonitoringItemHelpImpl.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Common\RpcGetMonitoringItemIdentityImpl.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Common\RpcGetServerComponentStatusImpl.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Common\RpcInvokeMonitoringProbeImpl.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Common\RpcLockHealthSetEscalationStateIfRequiredImpl.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Common\RpcLogCrimsonEventImpl.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Common\RpcObserverHeartbeatImpl.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Common\RpcRequestObserverImpl.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Common\RpcSetHealthSetEscalationStateImpl.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Common\RpcUpdateHealthStatusImpl.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Common\ScopeMappingLocalEndpoint.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Common\SmartCategorization\CafeFailureAnalyser.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Common\SmartCategorization\FailureAnalyserBase.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Common\SmartCategorization\FailureDetails.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Common\SmartCategorization\FailureType.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Common\SmartCategorization\IFailureAnalyser.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Common\SmartCategorization\RequestContext.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Common\SmartCategorization\SCStrings.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Common\StoreMonitoringHelpers.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Common\StoreUsageStatisticsData.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Common\StoreUsageStatisticsResult.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Common\Subject.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Common\SubjectFactory.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Common\SubjectListEndpoint.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Common\TcpConnection.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Common\TcpResponse.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Common\TenantRelocationUtils.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Common\ThrottleHelper.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Common\TraceCollector.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Common\UnifiedMessagingCallRouterEndpoint.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Common\UnifiedMessagingEndpoint.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Common\UnifiedMessagingServiceEndpoint.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Common\UserExperienceVerificationRequest.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Common\Utils.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Common\VipProbeUtils.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Common\WebClientProbeBase.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Common\WindowsServerRoleEndpoint.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Common\WorkDefinitionHelper.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Common\WorkItemResultType.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Compliance\DarLam.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\ComponentHealthHeartbeatMonitorHelper.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\ComponentHealthPercentFailureMonitorHelper.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\ControlServiceResponderHelper.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\CustomWorkItem.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\DefaultMonitorHelper.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\DefaultProbeHelper.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\DefaultResponderHelper.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\DefinitionHelperBase.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Directory\CheckDCInMMEscalateResponder.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Directory\CheckMultipleDCInMMEscalateResponder.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Directory\DirectoryDiscovery.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Directory\DirectoryMonitor.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Directory\DirectoryMonitoringScenario.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Directory\DirectoryMonitoringStrings.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Directory\DirectoryUtils.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Directory\EscalateForSpecificExceptionResponder.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Directory\MonitoringPattern.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Directory\Probes\ActiveDirectoryConnectivityConfigDCProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Directory\Probes\ActiveDirectoryConnectivityOnADProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Directory\Probes\ActiveDirectoryConnectivityProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Directory\Probes\DoMTConnectivityProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Directory\Probes\GLSConnectivityProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Directory\Probes\LiveIdAuthenticationProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Directory\Probes\NtlmConnectivityProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Directory\Probes\OfflineGLSProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Directory\Probes\PassiveADReplicationMonitorProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Directory\Probes\PassiveReplicationMonitorProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Directory\Probes\PassiveReplicationPerformanceCounterProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Directory\Probes\RemoteDomainControllerStateProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Directory\Probes\RidMonitorProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Directory\Probes\RidSetReferencesMonitorProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Directory\Probes\SharedConfigurationTenantProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Directory\Probes\SyntheticReplicationMonitorProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Directory\Probes\SyntheticReplicationTransactionProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Directory\Probes\TenantRelocationErrorProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Directory\Probes\TenantRelocationHealthUtils.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Directory\Probes\TenantRelocationTransportProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Directory\Probes\TestKDCServiceProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Directory\Probes\TopologyServiceAvailabilityProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Directory\Probes\TrustMonitorProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Directory\PutDCInMMResponder.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Directory\PutMultipleDCInMMResponder.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Directory\RenameNTDSPowerOffResponder.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Directory\RestartServerForSpecificExceptionResponder.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Directory\RestartServiceForSpecificExceptionResponder.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\DiscoveryContext.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\DiscoveryErrorReportMonitor.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\DiscoveryErrorReportProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\DiscoveryErrorReportResponder.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\DLExpansion\DLExpansionDiscovery.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\DLExpansion\DLExpansionSuccessWorkItem.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Eac\EacDiscovery.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Eac\EacEdsAlertDiscovery.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Eac\Probes\EacBackEndLogonProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Eac\Probes\EacBackEndPingProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Eac\Probes\EacWebClientProbeBase.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Ediscovery\EdiscoveryProbeHelper.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Ediscovery\Probes\EdiscoveryProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\EDS\Analyzers\PerfLogActiveMonitoringAnalyzer.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\EDS\EDSDiscovery.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\ELC\ELCDiscovery.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\EscalateResponderHelper.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\EventAssistants\EventAssistantsDiscovery.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\EventAssistants\EventAssistantsMonitoringStrings.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\EventAssistants\Probes\EventAssistantsWatermarksProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\EventAssistants\Responders\EventAssistantsWatermarksEscalateResponder.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\EventAssistants\Responders\EventAssistantsWatermarksRestartResponder.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Ews\Probes\AutodiscoverCommon.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Ews\Probes\AutodiscoverE15Probe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Ews\Probes\EWSAutoDProtocolDependency.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Ews\Probes\EWSCommon.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Ews\Probes\EwsConstants.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Ews\Probes\EwsDiscovery.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Ews\Probes\EWSExtensions.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Ews\Probes\EwsGenericProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Ews\Probes\EWSGenericProbeCommon.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Ews\Probes\InvokeProbeUtils.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Ews\Probes\ProbeAuthNType.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Ews\Probes\StateAttribute.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\FEP\FEPDiscovery.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\FfoLocalEndpointManager.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Fips\CheckAVEngineEnabled.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Fips\Constants.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Fips\EngineUpdateFailuresProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Fips\FailedUpdatesDefinition.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Fips\FileDeleter.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Fips\FipsDiscovery.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Fips\FipsUtils.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Fips\IFileDeletionPolicy.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Fips\OldFileDeletionPolicy.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Fips\Responders\CollectFIPSLogsResponder.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\ForceRebootServerResponderHelper.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\GenericRusClientDiscovery.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\GenericRusServiceDiscovery.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\GenericWorkItemHelper.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\GenericWorkItemHelperException.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\HDPhoto\HDPhotoDiscovery.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\HDPhoto\Probes\HDPhotoLocalProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\HDPhoto\Probes\HDPhotoProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\HighAvailability\AllRolesMonitoringContext.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\HighAvailability\CachedAdReader.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\HighAvailability\CachedDbStatusReader.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\HighAvailability\CachedList.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\HighAvailability\CachedObject.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\HighAvailability\CachedRegistryReader.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\HighAvailability\ClusterMonitoringContext.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\HighAvailability\DatabaseCopyMonitoringContext.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\HighAvailability\DataRedundancyMonitoringContext.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\HighAvailability\EseDatabaseMonitoringContext.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\HighAvailability\ExternalNotificationMonitoringContext.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\HighAvailability\HighAvailabilityConstants.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\HighAvailability\HighAvailabilityDiscovery.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\HighAvailability\HighAvailabilityMAProbeException.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\HighAvailability\HighAvailabilityMAProbeRedResultException.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\HighAvailability\HighAvailabilityMAResponderException.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\HighAvailability\HighAvailabilityMAUtilityException.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\HighAvailability\HighAvailabilityUtility.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\HighAvailability\MonitoringContextBase.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\HighAvailability\MonitorStateResponderTuple.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\HighAvailability\Probes\ActiveManagerProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\HighAvailability\Probes\CircularLoggingProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\HighAvailability\Probes\ClusterGroupProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\HighAvailability\Probes\ClusterNetworkProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\HighAvailability\Probes\ClusterRpcProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\HighAvailability\Probes\CopyStatusProbeBase.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\HighAvailability\Probes\DiskLatencyProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\HighAvailability\Probes\FailedAndSuspendedCopyProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\HighAvailability\Probes\LaggedCopyProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\HighAvailability\Probes\MultipleFailedCopiesProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\HighAvailability\Probes\ReplicationHealthChecksProbeBase.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\HighAvailability\Probes\ServerLocatorProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\HighAvailability\Probes\ServerWideOfflineProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\HighAvailability\Probes\ServiceMonitorProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\HighAvailability\Probes\StalledCopyProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\HighAvailability\Probes\SuspendedCopyProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\HighAvailability\Probes\TasksRpcListenerProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\HighAvailability\Probes\TcpListenerProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\HighAvailability\Probes\UnMonitoredDatabaseProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\HighAvailability\ReplServiceMonitoringContext.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\HighAvailability\Responders\ClusterHungNodesForceRestartResponder.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\HighAvailability\Responders\ClusterNodeShutdownEvictResponder.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\HighAvailability\Responders\CollectAndMergeResponder.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\HighAvailability\Responders\EnableDatabaseMonitoringResponder.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\HighAvailability\Responders\PotentialOneCopyRemoteServerRestartResponder.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\HighAvailability\Responders\RaiseFailureItemResponder.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\HighAvailability\Responders\RaiseNTFSCorruptionFailureItemResponder.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\HighAvailability\Responders\ReleaseDiskSpaceResponder.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\HighAvailability\Responders\RemotePowerShellResponder.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\HighAvailability\Responders\RemoteServerRestartResponder.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\HighAvailability\Responders\ResetControllerCacheResponder.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Inference\DisableInferenceComponentResponder.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Inference\InferenceActivityLogSyntheticProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Inference\InferenceComponentDisabledProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Inference\InferenceDiscovery.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Inference\InferenceMonitoringHelper.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Inference\InferenceStrings.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\InvokeNow\InvokeNowDiscovery.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\JournalArchive\JournalArchiveDiscovery.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\JournalArchive\JournalArchiveResponder.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\JournalArchive\JournalArchiveWorkItem.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Journaling\JournalFilterAgentWorkItem.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Journaling\JournalingDiscovery.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Journaling\JournalingWorkItem.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Local\AssistantsActiveDatabaseException.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Local\AssistantsNotRunningException.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Local\AssistantsNotRunningToCompletionException.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Local\AssistantsOutOfSlaException.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Local\BugCheckActionFailedException.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Local\ComplianceDiscovery.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Local\Components\Common\Probes\FilteredEventSection.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Local\Components\Common\Probes\FilteredGenericEventLogProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Local\Components\Common\Probes\GenericEventLogProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Local\Components\Common\Probes\GenericProcessCrashDetectionProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Local\Components\FacebookProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Local\Components\LinkedInProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Local\Components\Network\NetworkUtils.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Local\Components\Network\Probes\DnsHostRecordProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Local\Components\Network\Probes\DnsServerForwardersProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Local\Components\Network\Probes\DnsServiceProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Local\Components\Network\Probes\FireWallProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Local\Components\Network\Probes\HttpConnectivityProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Local\Components\Network\Probes\IntraDagPingProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Local\Components\Network\Probes\NetworkAdapterProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Local\Components\Network\Probes\NetworkAdapterRssProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Local\Components\Network\Probes\RouteTableProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Local\Components\Network\Responders\NetworkAdapterRecoveryResponder.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Local\Components\Network\Responders\RegisterDnsHostRecordResponder.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Local\Components\Network\Responders\RouteTableRecoveryResponder.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Local\Components\Network\WmiDnsClient.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Local\Components\PeopleConnectMaintenance.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Local\Components\Rws\RwsSqlQueries.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Local\DatabaseGuidNotFoundException.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Local\DatabaseGuidNotSuppliedException.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Local\DatabaseNotAttachedReadOnlyException.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Local\DatabaseNotFoundInADException.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Local\DatabaseValidationNullRefException.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Local\DiscoveryWorkItem.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Local\EdiscoveryDiscovery.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Local\EndpointManagerEndpointUninitializedException.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Local\HAPassiveCopyUnhealthyException.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Local\InferenceComponentDisabledException.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Local\InfrastructureValidationException.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Local\InvalidIncludedAssistantTypeException.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Local\InvalidMailboxDatabaseEndpointException.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Local\MultipleRecipientsFoundException.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Local\NoMonitoringAccountsAvailableException.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Local\OutlookAnywhereNotFoundException.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Local\OutlookDiscovery.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Local\OutlookMapiHttpDiscovery.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Local\OutlookRpcDiscovery.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Local\ParseDiagnosticsStringException.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Local\ProcessCrashingException.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Local\PushNotificationCafeUnexpectedResponse.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Local\PushNotificationConfigurationException.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Local\RequestForFfoApprovalToOfflineFailedException.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Local\Strings.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Local\SystemMailboxGuidNotFoundException.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Local\UnableToGetDatabaseSchemaVersionException.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Local\UnableToGetDatabaseStateException.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Local\WatermarksBehindException.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\MailboxSpace\MailboxSpaceDiscovery.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\MailboxSpace\MailboxSpaceMonitoringStrings.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\MailboxSpace\Monitors\DatabaseSizeMonitor.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\MailboxSpace\Probes\DatabaseSpaceProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\MailboxSpace\Responders\DatabaseProvisioningResponder.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\MailboxSpace\Responders\DatabaseSizeEscalationNotificationResponder.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Migration\MigrationDiscovery.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Migration\MRSAvailabilityData.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Migration\MRSAvailabilityLog.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Migration\Probes\MRSDiagnosticsProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Migration\Probes\MRSQueueScanProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Migration\Probes\MRSRPCPingProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Migration\Responders\MailboxLockedResponder.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\MonitorDefinitionHelper.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Monitoring\CentralMaintenanceWorkItem.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Monitoring\Discovery\KeynoteLocalDiscovery.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Monitoring\Discovery\KeynoteServiceDiscovery.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Monitoring\KeynoteMeasurementsMonitor.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Monitoring\KeynoteServiceProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Monitoring\PersistentStateDiscovery.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Monitoring\Responders\KeynoteEscalateResponder.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Network\NetworkDiscovery.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Network\Win32DnsQuery.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Network\Win32DnsQueryResult.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\NTEvent.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\O365\Common\SmartAlertsV2Client.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Oab\OabDiscovery.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Oab\OabEdsAlertDefinitions.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Oab\OabEdsDiscovery.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Oab\OabWebAppRestartEventDiscovery.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Oab\OabWebAppRestartEventMonitor.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Oab\Probes\AutodiscoverOabUrlNotFound.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Oab\Probes\InvalidOabDataFileException.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Oab\Probes\InvalidOabManifestFileException.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Oab\Probes\OabBaseLocalProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Oab\Probes\OabDownloadProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Oab\Probes\OabMailboxProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Oab\Probes\OabProtocolProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\OAuth\OAuthDiscovery.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\OAuth\OAuthExchangeProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\OAuth\OAuthLyncProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\OAuth\OAuthPartnerProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\OAuth\OAuthPassiveDiscovery.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\OAuth\OAuthSharePointProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\OAuth\PassiveMonitorType.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\OfficeGraph\OfficeGraphDiscovery.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\OfficeGraph\OfficeGraphMonitoringHelper.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\OfficeGraph\Probes\OfficeGraphMessageTracingPluginLogSizeProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\OfficeGraph\Probes\OfficeGraphMessageTracingPluginProcessingTimeProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\OfficeGraph\Probes\OfficeGraphProbeFailureException.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\OfficeGraph\Probes\OfficeGraphTransportDeliveryAgentProcessingTimeProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\OnlineMeeting\OnlineMeetingCreateDiscovery.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\OnlineMeeting\Probes\OnlineMeetingCreateLocalProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\OnlineMeeting\Probes\OnlineMeetingCreateProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\OutlookService\ExtraDetailsAlertResponder.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\OutlookService\OutlookServiceDiscovery.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\OutlookService\OutlookServiceSelfTestProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\OutlookService\Probes\OutlookServiceLocalPingProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\OutlookService\Probes\OutlookServiceLocalSyncProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\OutlookService\Probes\OutlookServicePingProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\OutlookService\Probes\OutlookServiceSocketProbeBase.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\OutlookService\SocketClient.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\OverallConsecutiveProbeFailuresMonitorHelper.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\OverallConsecutiveSampleValueAboveThresholdMonitorHelper.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\OverallConsecutiveSampleValueBelowThresholdMonitorHelper.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\OverallPercentSuccessMonitorHelper.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\OverallXFailuresMonitorHelper.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Owa\InstantMessagingDiscovery.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Owa\InstantMessagingLocalDiscovery.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Owa\InstantMessagingLocalProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Owa\InstantMessagingLogAnalyzerDiscovery.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Owa\OwaDiscovery.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Owa\OwaEdsAlertDefinitions.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Owa\OwaEdsDiscovery.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Owa\OwaErrorDetectionAlertDefinition.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Owa\OwaErrorDetectionDiscovery.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Owa\OwaWebAppRestartEventDiscovery.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Owa\Probes\OwaBackEndMailboxProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Owa\Probes\OwaBaseProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Owa\Probes\OwaCtpProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Owa\Probes\OwaHealthCheckProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Owa\Probes\OwaLocalLogonProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Owa\Probes\OwaLogonProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Owa\Responders\OwaErrorDetectionResponder.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\PerfCounter.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Places\FindPlacesEdsDiscovery.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\PopImap\IMAP4\ImapDiscovery.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\PopImap\IMAP4\ImapDiscoveryV2.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\PopImap\POP3\PopDiscovery.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\PopImap\POP3\PopDiscoveryV2.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\PopImap\PopImapCommonStrings.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\PopImap\PopImapDiscoveryCommon.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\PopImap\Probes\ImapCustomerTouchPointProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\PopImap\Probes\ImapDeepTestProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\PopImap\Probes\ImapMailboxProbeSSL.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\PopImap\Probes\ImapProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\PopImap\Probes\ImapProxyTestProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\PopImap\Probes\ImapSelfTestProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\PopImap\Probes\PopCustomerTouchPointProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\PopImap\Probes\PopDeepTestProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\PopImap\Probes\PopImapProbeBase.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\PopImap\Probes\PopImapProbeStateObject.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\PopImap\Probes\PopImapProbeUtil.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\PopImap\Probes\PopMailboxProbeSSL.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\PopImap\Probes\PopProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\PopImap\Probes\PopProxyTestProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\PopImap\Probes\PopSelfTestProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\PopImap\Probes\ProbeState.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\PopImap\Probes\TcpProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\ProbeDefinitionHelper.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\ProbeRunSequence.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\ProcessIsolation\Monitors\ProcessConfiguration.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\ProcessIsolation\Monitors\ProcessIsolationMonitor.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\ProcessIsolation\Monitors\ProcessResponderConfiguration.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\ProcessIsolation\Monitors\ProcessTrigger.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\ProcessIsolation\Monitors\ProcessType.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\ProcessIsolation\Monitors\ResponderDefinitionDelegate.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\ProcessIsolation\Monitors\SubComponentConfiguration.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\ProcessIsolation\ProcessIsolationDiscovery.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\ProcessUtilizationManager\PumDiscovery.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Provisioning\BecWebServiceProxy.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Provisioning\ForwardSyncEventlogUtil.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Provisioning\FowardSyncEventRecord.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Provisioning\LiveIdentityManager.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Provisioning\NativeMethods.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Provisioning\ProbeStatus.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Provisioning\Probes\ForwardFullSyncProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Provisioning\Probes\ForwardSyncCompanyProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Provisioning\Probes\ForwardSyncCookieProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Provisioning\Probes\ForwardSyncMonopolizedProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Provisioning\ProvisioningDiscovery.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Provisioning\Responders\ProvisioningSTXEscalateResponder.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Provisioning\Responders\ProvisioningSTXRestartServiceResponder.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Provisioning\WindowsLiveException.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Psws\Probes\PswsBackEndProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Psws\Probes\PswsProbeBase.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Psws\PswsDiscovery.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Psws\PswsEdsAlertDiscovery.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\PublicFolders\PFMailboxConnectionWorkItem.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\PublicFolders\PFMailboxQuotaWorkItem.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\PublicFolders\PublicFolderDiscovery.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\PublicFolders\PublicFolderLocalEWSLogon.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\PublicFolders\PublicFolderMoveJobStuckWorkItem.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\PublicFolders\PublicFolderSyncSuccessWorkItem.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\PushNotifications\AzureChallengeRequestProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\PushNotifications\AzureDeviceRegistrationProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\PushNotifications\AzureHubCreationProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\PushNotifications\CafeOnPremProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\PushNotifications\Components.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\PushNotifications\DatacenterOnPremBackendEndpointProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\PushNotifications\EnterpriseConnectivityProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\PushNotifications\ExternalProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\PushNotifications\NotificationDeliveryProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\PushNotifications\PublisherChannelHealthProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\PushNotifications\PublisherProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\PushNotifications\PublisherType.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\PushNotifications\PushNotificationsDiscovery.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\PushNotifications\PushNotificationsProbeUtil.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\RemoteStore\Monitors\RemoteStoreAdminRPCInterfaceMonitor.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\RemoteStore\RemoteStoreDiscovery.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\RemoteStore\RemoteStoreMonitoringStrings.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\RemoteStore\Responders\RemoteStoreAdminRPCInterfaceEscalateResponder.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\RemoteStore\Responders\RemoteStoreAdminRPCInterfaceForceRebootResponder.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\ResetIISAppPoolResponderHelper.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\ResponderDefinitionHelper.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Responders\CafeOfflineResponder.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Responders\DagForceRebootServerResponder.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Responders\DatabaseFailoverResponder.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Responders\FileDeleteResponder.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Responders\ForceRebootServerResponder.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Responders\MapiMTCheckMemoryRestartResponder.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Responders\MemoryRestartResponderChecker.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Responders\OfflineResponder.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Responders\OnlineResponder.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Responders\PerformanceCounterCheckSetting.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Responders\PerformanceCounterRestartResponderChecker.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Responders\PerformanceCounterRestartResponderCheckers.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Responders\ProcessKillResponder.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Responders\ProcessorAffinityResponder.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Responders\RecoveryModeResponder.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Responders\ResetIISAppPoolResponder.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Responders\RestartResponderChecker.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Responders\SystemFailoverResponder.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Responders\TraceLogResponder.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\RestartServiceResponderHelper.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\RpcClientAccess\AutoPopulateDefinition.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\RpcClientAccess\Extensions.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\RpcClientAccess\FailingComponent.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\RpcClientAccess\InterpretedResult.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\RpcClientAccess\LocalProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\RpcClientAccess\MapiProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\RpcClientAccess\OutlookEscalateResponder.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\RpcClientAccess\RootCause.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Rps\FailureCategory.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Rps\FailureCategoryList.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Rps\FailureInstance.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Rps\Probes\AddressListTipProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Rps\Probes\AutogroupTipProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Rps\Probes\CASMailboxTipProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Rps\Probes\ContactTipProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Rps\Probes\DistributionGroupMemberProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Rps\Probes\DistributionGroupProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Rps\Probes\DynamicDistributionGroupProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Rps\Probes\GlobalAddressListTipProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Rps\Probes\GroupProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Rps\Probes\LinkedUserTipProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Rps\Probes\MailboxPermissionTipProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Rps\Probes\MailboxTipProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Rps\Probes\MailContactTipProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Rps\Probes\MailUserTipProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Rps\Probes\RecipientSignOffScenarioProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Rps\Probes\RecipientTipProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Rps\Probes\RPSBackEndLogonProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Rps\Probes\RPSLogonProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Rps\Probes\RpsTipProbeBase.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Rps\Probes\RpsTipProbeUtilities.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Rps\Probes\UserTipProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Rps\RPSDiscovery.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Rps\RpsEdsAlertDiscovery.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Rps\RpsEscalateResponder.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Rws\Probes\RwsCNAMEMappingProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Rws\Probes\RwsDatabaseCapacityProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Rws\Probes\RwsDatamartAvailabilityProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Rws\Probes\RwsDatamartConnectionProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Rws\Probes\RwsInstrumentationProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Rws\Probes\RwsMailboxADQueryProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Rws\Probes\RwsProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Rws\Probes\RwsPumperRunHistoryProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Rws\Probes\RwsSyntheticTenantMailboxUsageDetailProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Rws\Probes\RwsSyntheticTenantMailboxUsageProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Rws\RwsCNAMEMappingDiscovery.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Rws\RwsCryptographyHelper.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Rws\RwsDatabaseCapacityDiscovery.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Rws\RwsDatamartAvailabilityDiscovery.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Rws\RwsDatamartConnectionDiscovery.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Rws\RwsDiscovery.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Rws\RwsInstrumentationDiscovery.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Rws\RwsMailboxADQueryDiscovery.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Rws\RwsPumperRunHistoryDiscovery.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Rws\RwsSyntheticTenantMailboxUsageDetailDiscovery.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Rws\RwsSyntheticTenantMailboxUsageDiscovery.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Search\HostControllerDiscovery.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Search\MrsDiagnosticInfoHelper.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Search\Probes\HostContollerNodeRestartProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Search\Probes\HostControllerNodeAvailabilityProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Search\Probes\SearchCatalogAvailabilityProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Search\Probes\SearchCatalogSizeProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Search\Probes\SearchCopyStatusHaImpactingProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Search\Probes\SearchFeedingControllerFailureMonitor.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Search\Probes\SearchGracefulDegradationStatusProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Search\Probes\SearchIndexBacklogProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Search\Probes\SearchIndexFailureProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Search\Probes\SearchIndexSuspendedProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Search\Probes\SearchInstantSearchStxProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Search\Probes\SearchLocalCopyStatusProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Search\Probes\SearchMemoryUsageOverThresholdProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Search\Probes\SearchMountedCopyStatusProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Search\Probes\SearchNumberOfParserServersDegradationProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Search\Probes\SearchProbeBase.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Search\Probes\SearchProbeFailureException.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Search\Probes\SearchQueryFailureProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Search\Probes\SearchQueryStxProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Search\Probes\SearchQueryStxProbeBase.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Search\Probes\SearchResourceLoadProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Search\Probes\SearchSingleCopyProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Search\Probes\SearchTransportAgentProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Search\Probes\SearchWordBreakerLoadingProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Search\Responders\RestartHostControllerServiceResponder2.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Search\Responders\RestartNodeResponder.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Search\Responders\ResumeCatalogResponder.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Search\Responders\SearchDatabaseFailoverResponder.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Search\Responders\SearchEscalateResponder.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Search\SearchDiscovery.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Search\SearchMonitoringHelper.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Search\SearchStoreHelper.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Search\SearchStrings.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Security\PowerShellProfileDiscovery.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Security\PowerShellProfileProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Security\PowerShellProfileResponder.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Security\SecurityDiscovery.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\SharedCache\SharedCacheDiscovery.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\SharedCache\SharedCacheProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\SiteMailbox\ServiceHostAvailabilityWorkItem.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\SiteMailbox\ServiceHostProcessCrashDetectionWorkItem.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\SiteMailbox\SiteMailboxDiscovery.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\SiteMailbox\SiteMailboxSyncSuccessWorkItem.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Store\Monitors\DatabaseRPCLatencyMonitor.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Store\Monitors\DatabaseSchemaVersionCheckMonitor.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Store\Monitors\MaintenanceAssistantMonitor.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Store\Probes\ActiveDatabaseAvailabilityProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Store\Probes\DatabaseAvailabilityProbeBase.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Store\Probes\DatabaseSchemaVersionCheckProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Store\Probes\PassiveDatabaseAvailabilityProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Store\Probes\StoreAdminRPCInterfaceProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Store\Responders\AlertNotificationTypeByDatabaseCopyStateResponder.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Store\Responders\DatabaseAvailabilityEscalateResponder.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Store\Responders\DatabaseAvailabilityEscalationNotificationResponder.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Store\Responders\DatabaseRPCLatencyResponder.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Store\Responders\DatabaseSchemaVersionCheckEscalationNotificationResponder.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Store\Responders\MailboxQuarantinedEscalateResponder.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Store\Responders\StoreKillServerByExceptionTypeResponder.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Store\Responders\StoreWatsonResponder.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Store\StoreDiscovery.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Store\StoreMonitoringStrings.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\SystemFailoverResponderHelper.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\TimeBasedAssistants\AssistantInfo.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\TimeBasedAssistants\InfrastructureValidationCriteria.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\TimeBasedAssistants\InfrastructureValidationDiscovery.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\TimeBasedAssistants\InfrastructureValidationProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\TimeBasedAssistants\MailboxDatabase.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\TimeBasedAssistants\TbaOutOfSlaAlertType.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\TimeBasedAssistants\TbaOutOfSlaDecisionMakerScheduled.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\TimeBasedAssistants\TbaOutOfSlaDecisionMakerUrgent.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\TimeBasedAssistants\TimeBasedAssistantsActiveDatabaseCriteria.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\TimeBasedAssistants\TimeBasedAssistantsActiveDatabaseDiscovery.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\TimeBasedAssistants\TimeBasedAssistantsActiveDatabaseProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\TimeBasedAssistants\TimeBasedAssistantsCriteria.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\TimeBasedAssistants\TimeBasedAssistantsDiagnosticsParser.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\TimeBasedAssistants\TimeBasedAssistantsDiscovery.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\TimeBasedAssistants\TimeBasedAssistantsDiscoveryHelpers.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\TimeBasedAssistants\TimeBasedAssistantsLastNCriteria.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\TimeBasedAssistants\TimeBasedAssistantsNotRunningToCompletionCriteria.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\TimeBasedAssistants\TimeBasedAssistantsNotRunningToCompletionDiscovery.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\TimeBasedAssistants\TimeBasedAssistantsNotRunningToCompletionProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\TimeBasedAssistants\TimeBasedAssistantsOutOfSlaDecisionMaker.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\TimeBasedAssistants\TimeBasedAssistantsOutOfSlaMonitor.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\TimeBasedAssistants\TimeBasedAssistantsOutOfSlaProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\TimeBasedAssistants\TimeBasedAssistantsOutOfSlaProbeScheduled.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\TimeBasedAssistants\TimeBasedAssistantsOutOfSlaProbeUrgent.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\TimeBasedAssistants\WindowJob.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\TransportProbeHelper.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\TransportSync\Configurations.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\TransportSync\DatabaseConsistency.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\TransportSync\DeltaSyncEndpointUnreachable.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\TransportSync\DeltaSyncPartnerAuthenticationFailed.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\TransportSync\DeltaSyncServiceEndpointsLoadFailed.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\TransportSync\DiagnosticInfo.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\TransportSync\DiagnosticInfoConstants.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\TransportSync\DiagnosticMode.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\TransportSync\Exceptions\DatabaseDiscoveryTimeOutException.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\TransportSync\Exceptions\DatabaseNotLoadedByTransportSyncException.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\TransportSync\Exceptions\DatabaseOutOfSlaException.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\TransportSync\Exceptions\InvalidDatabaseException.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\TransportSync\Exceptions\TransportSyncException.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\TransportSync\MdbHealthInfo.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\TransportSync\Probes\DatabaseConsistencyProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\TransportSync\RegistryAccessDenied.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\TransportSync\ServiceAvailability.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\TransportSync\SlaDiagnosticInfo.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\TransportSync\SubscriptionSlaMissed.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\TransportSync\TransportSyncExceptionAnalyzerAlertDefinition.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\TransportSync\TransportSyncExceptionAnalyzerMaintenance.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\TransportSync\TransportSyncManagerDiscovery.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\TransportSync\TransportSyncStrings.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\TransportSync\TransportSyncWorkerDiscovery.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Transport\ComponentStateBasedServiceProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Transport\CrossPremiseMailFlowProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Transport\Responders\ControlServiceResponder.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Transport\TestMailflow.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Transport\TransportDiscovery.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\UM\DiagnosticsItemBase.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\UM\DiagnosticsItemCallAudioReceived.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\UM\DiagnosticsItemCallDisconnected.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\UM\DiagnosticsItemCallEstablished.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\UM\DiagnosticsItemCallEstablishFailed.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\UM\DiagnosticsItemCallEstablishing.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\UM\DiagnosticsItemCallReceived.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\UM\DiagnosticsItemCallRedirect.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\UM\DiagnosticsItemCallStart.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\UM\DiagnosticsItemExchangeServer.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\UM\DiagnosticsItemFactory.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\UM\DiagnosticsItemLyncServer.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\UM\DiagnosticsItemTrace.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\UM\DiagnosticsItemUnknown.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\UM\DiagnosticsItemWithServiceBase.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\UM\DiagnosticsTracker.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\UM\IUMLocalMonitoringMonitorAndResponder.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\UM\MediaEdgeAuthenticationServiceCredentialsAcquisitionFailedMo.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\UM\MediaEdgeResourceAllocationFailedMonitorAndResponder.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\UM\MediaEstablishedStatusFailedMonitorAndResponder.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\UM\Monitors\UMSipOptionsMonitor.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\UM\PerfCounterRecentMissedCallNotificationProxyFailedMonitorAnd.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\UM\PerfCounterRecentPartnerTranscriptionFailedMonitorAndRespond.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\UM\PerfCounterUMPipelineSLAMonitorAndResponder.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\UM\Probes\DiversionType.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\UM\Probes\MediaException.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\UM\Probes\MediaProtocol.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\UM\Probes\SipTransportType.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\UM\Probes\UMSipOptionsProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\UM\Probes\VoiceObject.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\UM\Responders\UMSipOptionsEscalateResponder.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\UM\Responders\UMSipOptionsResponderUtils.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\UM\Responders\UMSipOptionsRestartServiceResponder.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\UM\UMCallRouterCertificateNearExpiryMonitorAndResponder.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\UM\UMCertificateNearExpiryMonitorAndResponder.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\UM\UMDiscovery.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\UM\UMGrammarUsageMonitorAndResponder.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\UM\UMMonitoringConstants.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\UM\UMNotificationEventUtils.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\UM\UMPerfCounterUtils.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\UM\UMPipelineFullMonitorAndResponder.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\UM\UMProtectedVoiceMessageEncryptDecryptFailedMonitorAndRespond.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\UM\UMServiceType.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\UM\UMSipOptionsDiscoveryUtils.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\UM\UMTranscriptionThrottledMonitorAndResponder.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\UnifiedPolicy\UnifiedPolicySync.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\UserThrottling\UserThrottlingDiscovery.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\UserThrottling\UserThrottlingProtocolConfiguration.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Wac\OAuthWacDiscovery.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Wac\OAuthWacProbe.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Wac\WacDiscoveryFailureEventDiscovery.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Wac\WacDiscoveryFailureEventMonitor.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Wascl\WasclDiscovery.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\WebUIProbeHelper.cs" />
+    <Compile Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\WorkItemResultHelper.cs" />
+    <Compile Include="Microsoft\Office365\OBD\Monitoring\ActiveMonitoring\Common\OBDEscalateResponderConstants.cs" />
+    <Compile Include="Microsoft\Office\Datacenter\ActiveMonitoring\ActiveMonitoring\MonitoringMailboxCleaner.cs" />
+    <Compile Include="Microsoft\Office\Datacenter\ActiveMonitoring\ActiveMonitoring\OfficeHealthManagerDiscovery.cs" />
+    <Compile Include="Microsoft\Office\Datacenter\ActiveMonitoring\EdsTriggerNotificationItem.cs" />
+    <Compile Include="Microsoft\Office\Datacenter\ActiveMonitoring\OwaWebAppRestartEventMonitor.cs" />
+    <Compile Include="Microsoft\Office\Datacenter\ActiveMonitoring\ScopeMappingEndpointManagerExtensions.cs" />
+    <Compile Include="Microsoft\Online\Administration\AccountSkuDetails.cs" />
+    <Compile Include="Microsoft\Online\Administration\AccountSkuIdentifier.cs" />
+    <Compile Include="Microsoft\Online\Administration\AuthenticationProtocol.cs" />
+    <Compile Include="Microsoft\Online\Administration\AuthorizedService.cs" />
+    <Compile Include="Microsoft\Online\Administration\CompanyInformation.cs" />
+    <Compile Include="Microsoft\Online\Administration\CompanySettings.cs" />
+    <Compile Include="Microsoft\Online\Administration\CompanyType.cs" />
+    <Compile Include="Microsoft\Online\Administration\Contact.cs" />
+    <Compile Include="Microsoft\Online\Administration\ContactSearchDefinition.cs" />
+    <Compile Include="Microsoft\Online\Administration\DirSyncStatus.cs" />
+    <Compile Include="Microsoft\Online\Administration\Domain.cs" />
+    <Compile Include="Microsoft\Online\Administration\DomainAuthenticationType.cs" />
+    <Compile Include="Microsoft\Online\Administration\DomainCapabilities.cs" />
+    <Compile Include="Microsoft\Online\Administration\DomainDnsCnameRecord.cs" />
+    <Compile Include="Microsoft\Online\Administration\DomainDnsMXRecord.cs" />
+    <Compile Include="Microsoft\Online\Administration\DomainDnsNullRecord.cs" />
+    <Compile Include="Microsoft\Online\Administration\DomainDnsRecord.cs" />
+    <Compile Include="Microsoft\Online\Administration\DomainDnsRecordError.cs" />
+    <Compile Include="Microsoft\Online\Administration\DomainDnsSrvRecord.cs" />
+    <Compile Include="Microsoft\Online\Administration\DomainDnsTxtRecord.cs" />
+    <Compile Include="Microsoft\Online\Administration\DomainFederationSettings.cs" />
+    <Compile Include="Microsoft\Online\Administration\DomainSearchFilter.cs" />
+    <Compile Include="Microsoft\Online\Administration\DomainStatus.cs" />
+    <Compile Include="Microsoft\Online\Administration\DomainVerificationMode.cs" />
+    <Compile Include="Microsoft\Online\Administration\Group.cs" />
+    <Compile Include="Microsoft\Online\Administration\GroupMember.cs" />
+    <Compile Include="Microsoft\Online\Administration\GroupMemberSearchDefinition.cs" />
+    <Compile Include="Microsoft\Online\Administration\GroupMemberType.cs" />
+    <Compile Include="Microsoft\Online\Administration\GroupSearchDefinition.cs" />
+    <Compile Include="Microsoft\Online\Administration\GroupType.cs" />
+    <Compile Include="Microsoft\Online\Administration\LicenseErrorDetail.cs" />
+    <Compile Include="Microsoft\Online\Administration\LicenseErrorType.cs" />
+    <Compile Include="Microsoft\Online\Administration\LicenseOption.cs" />
+    <Compile Include="Microsoft\Online\Administration\ListContactResults.cs" />
+    <Compile Include="Microsoft\Online\Administration\ListGroupMemberResults.cs" />
+    <Compile Include="Microsoft\Online\Administration\ListGroupResults.cs" />
+    <Compile Include="Microsoft\Online\Administration\ListPartnerContractResults.cs" />
+    <Compile Include="Microsoft\Online\Administration\ListResults.cs" />
+    <Compile Include="Microsoft\Online\Administration\ListRoleMemberResults.cs" />
+    <Compile Include="Microsoft\Online\Administration\ListServicePrincipalResults.cs" />
+    <Compile Include="Microsoft\Online\Administration\ListUserResults.cs" />
+    <Compile Include="Microsoft\Online\Administration\Page.cs" />
+    <Compile Include="Microsoft\Online\Administration\PartnerContract.cs" />
+    <Compile Include="Microsoft\Online\Administration\PartnerContractSearchDefinition.cs" />
+    <Compile Include="Microsoft\Online\Administration\PartnerInformation.cs" />
+    <Compile Include="Microsoft\Online\Administration\ProvisioningStatus.cs" />
+    <Compile Include="Microsoft\Online\Administration\RestoreUserError.cs" />
+    <Compile Include="Microsoft\Online\Administration\Role.cs" />
+    <Compile Include="Microsoft\Online\Administration\RoleMember.cs" />
+    <Compile Include="Microsoft\Online\Administration\RoleMemberSearchDefinition.cs" />
+    <Compile Include="Microsoft\Online\Administration\RoleMemberType.cs" />
+    <Compile Include="Microsoft\Online\Administration\SearchDefinition.cs" />
+    <Compile Include="Microsoft\Online\Administration\ServiceEndpoint.cs" />
+    <Compile Include="Microsoft\Online\Administration\ServiceInformation.cs" />
+    <Compile Include="Microsoft\Online\Administration\ServiceInstanceInformation.cs" />
+    <Compile Include="Microsoft\Online\Administration\ServicePlan.cs" />
+    <Compile Include="Microsoft\Online\Administration\ServicePrincipal.cs" />
+    <Compile Include="Microsoft\Online\Administration\ServicePrincipalCredential.cs" />
+    <Compile Include="Microsoft\Online\Administration\ServicePrincipalCredentialType.cs" />
+    <Compile Include="Microsoft\Online\Administration\ServicePrincipalCredentialUsage.cs" />
+    <Compile Include="Microsoft\Online\Administration\ServicePrincipalExtended.cs" />
+    <Compile Include="Microsoft\Online\Administration\ServicePrincipalSearchDefinition.cs" />
+    <Compile Include="Microsoft\Online\Administration\ServiceStatus.cs" />
+    <Compile Include="Microsoft\Online\Administration\SkuTargetClass.cs" />
+    <Compile Include="Microsoft\Online\Administration\SortDirection.cs" />
+    <Compile Include="Microsoft\Online\Administration\SortField.cs" />
+    <Compile Include="Microsoft\Online\Administration\Subscription.cs" />
+    <Compile Include="Microsoft\Online\Administration\SubscriptionStatus.cs" />
+    <Compile Include="Microsoft\Online\Administration\User.cs" />
+    <Compile Include="Microsoft\Online\Administration\UserEnabledFilter.cs" />
+    <Compile Include="Microsoft\Online\Administration\UserExtended.cs" />
+    <Compile Include="Microsoft\Online\Administration\UserLicense.cs" />
+    <Compile Include="Microsoft\Online\Administration\UserSearchDefinition.cs" />
+    <Compile Include="Microsoft\Online\Administration\ValidationError.cs" />
+    <Compile Include="Microsoft\Online\Administration\ValidationStatus.cs" />
+    <Compile Include="Microsoft\Online\Administration\Version.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\AccessDeniedException.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\AddDomainRequest.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\AddDomainResponse.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\AddGroupMembersRequest.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\AddGroupRequest.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\AddGroupResponse.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\AddRoleMembersByRoleNameRequest.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\AddRoleMembersRequest.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\AddServicePrincipalCredentialsByAppPrincipalIdRequest.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\AddServicePrincipalCredentialsBySpnRequest.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\AddServicePrincipalCredentialsRequest.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\AddServicePrincipalRequest.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\AddServicePrincipalResponse.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\AddUserRequest.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\AddUserResponse.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\BindingRedirectionException.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\ChangeUserPrincipalNameByUpnRequest.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\ChangeUserPrincipalNameByUpnResponse.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\ChangeUserPrincipalNameRequest.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\ChangeUserPrincipalNameResponse.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\ClientVersionException.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\ClientVersionHeader.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\CompanyNotFoundException.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\ContactNotFoundException.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\Context.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\ContractNotFoundException.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\ContractVersionHeader.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\ConvertFederatedUserToManagedRequest.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\ConvertFederatedUserToManagedResponse.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\DataOperationException.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\DefaultDomainDeletionException.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\DefaultDomainInvalidAuthenticationException.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\DefaultDomainUnsetException.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\DirectoryInternalServiceException.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\DirSyncStatusChangeNotAllowedException.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\DomainAlreadyExistsException.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\DomainAlreadyExistsInOldSystemException.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\DomainCapabilitySetException.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\DomainCapabilityUnavailableException.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\DomainCapabilityUnsetException.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\DomainDataOperationException.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\DomainHasChildDomainException.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\DomainLiveNamespaceAuthenticationException.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\DomainLiveNamespaceExistsException.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\DomainLiveNamespaceUnmanagedException.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\DomainLiveNamespaceUriConflictException.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\DomainNameConflictException.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\DomainNameForbiddenWordException.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\DomainNotEmptyException.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\DomainNotFoundException.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\DomainNotRootException.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\DomainOverlappingOperationException.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\DomainPendingDeletionException.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\DomainUnexpectedAuthenticationException.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\DomainVerificationMissingCnameException.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\DomainVerificationMissingDnsRecordException.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\DomainVerificationWrongCnameTargetException.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\GetCompanyInformationResponse.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\GetContactRequest.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\GetContactResponse.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\GetDomainFederationSettingsRequest.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\GetDomainFederationSettingsResponse.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\GetDomainRequest.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\GetDomainResponse.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\GetDomainVerificationDnsRequest.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\GetDomainVerificationDnsResponse.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\GetGroupRequest.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\GetGroupResponse.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\GetHeaderInfoResponse.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\GetPartnerInformationResponse.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\GetRoleByNameRequest.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\GetRoleByNameResponse.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\GetRoleRequest.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\GetRoleResponse.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\GetServicePrincipalByAppPrincipalIdRequest.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\GetServicePrincipalByAppPrincipalIdResponse.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\GetServicePrincipalBySpnRequest.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\GetServicePrincipalBySpnResponse.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\GetServicePrincipalRequest.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\GetServicePrincipalResponse.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\GetSubscriptionRequest.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\GetSubscriptionResponse.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\GetUserByLiveIdRequest.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\GetUserByLiveIdResponse.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\GetUserByUpnRequest.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\GetUserByUpnResponse.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\GetUserRequest.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\GetUserResponse.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\GroupAlreadyExistsException.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\GroupDeletionNotAllowedException.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\GroupMemberNotFoundException.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\GroupNotFoundException.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\GroupUpdateNotAllowedException.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\IdentityInternalServiceException.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\IncorrectPasswordException.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\InitialDomainDeletionException.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\InitialDomainUpdateException.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\InternalServiceException.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\InvalidContextException.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\InvalidHeaderException.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\InvalidLicenseConfigurationException.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\InvalidListContextException.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\InvalidParameterException.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\InvalidPasswordContainMemberNameException.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\InvalidPasswordException.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\InvalidPasswordWeakException.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\InvalidSubscriptionStatusException.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\InvalidUserLicenseException.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\InvalidUserLicenseOptionException.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\ItemCountValidationException.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\LicenseQuotaExceededException.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\ListAccountSkusRequest.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\ListAccountSkusResponse.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\ListContactsRequest.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\ListContactsResponse.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\ListDomainsRequest.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\ListDomainsResponse.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\ListGroupMembersRequest.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\ListGroupMembersResponse.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\ListGroupsRequest.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\ListGroupsResponse.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\ListPartnerContractsRequest.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\ListPartnerContractsResponse.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\ListRoleMembersRequest.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\ListRoleMembersResponse.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\ListRolesForUserByUpnRequest.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\ListRolesForUserByUpnResponse.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\ListRolesForUserRequest.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\ListRolesForUserResponse.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\ListRolesResponse.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\ListServicePrincipalCredentialsByAppPrincipalIdRequest.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\ListServicePrincipalCredentialsByAppPrincipalIdResponse.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\ListServicePrincipalCredentialsBySpnRequest.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\ListServicePrincipalCredentialsBySpnResponse.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\ListServicePrincipalCredentialsRequest.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\ListServicePrincipalCredentialsResponse.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\ListServicePrincipalsRequest.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\ListServicePrincipalsResponse.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\ListSubscriptionsResponse.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\ListUsersRequest.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\ListUsersResponse.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\LiveTokenExpiredException.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\MailEnabledGroupsNotSupportedException.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\MemberAlreadyExistsException.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\MsolAdministrationException.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\MsolConnectResponse.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\NavigateContactResultsRequest.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\NavigateContactResultsResponse.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\NavigateGroupMemberResultsRequest.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\NavigateGroupMemberResultsResponse.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\NavigateGroupResultsRequest.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\NavigateGroupResultsResponse.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\NavigateListServicePrincipalsRequest.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\NavigateListServicePrincipalsResponse.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\NavigatePartnerContractsRequest.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\NavigatePartnerContractsResponse.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\NavigateRoleMemberResultsRequest.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\NavigateRoleMemberResultsResponse.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\NavigateUserResultsRequest.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\NavigateUserResultsResponse.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\ObjectAlreadyExistsException.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\ObjectNotFoundException.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\PageNotAvailableException.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\PropertyDomainValidationException.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\PropertyNotSettableException.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\PropertyValidationException.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\QuotaExceededException.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\RemoveContactRequest.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\RemoveDirSyncObjectNotAllowedException.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\RemoveDomainRequest.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\RemoveGroupMembersRequest.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\RemoveGroupRequest.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\RemoveRoleMembersByRoleNameRequest.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\RemoveRoleMembersRequest.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\RemoveSelfFromRoleException.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\RemoveServicePrincipalByAppPrincipalIdRequest.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\RemoveServicePrincipalBySpnRequest.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\RemoveServicePrincipalCredentialsByAppPrincipalIdRequest.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\RemoveServicePrincipalCredentialsBySpnRequest.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\RemoveServicePrincipalCredentialsRequest.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\RemoveServicePrincipalRequest.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\RemoveUserByUpnRequest.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\RemoveUserRequest.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\Request.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\RequiredPropertyNotSetException.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\ResetUserPasswordByUpnRequest.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\ResetUserPasswordByUpnResponse.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\ResetUserPasswordRequest.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\ResetUserPasswordResponse.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\Response.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\RestoreUserByUpnRequest.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\RestoreUserByUpnResponse.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\RestoreUserErrorException.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\RestoreUserLicenseErrorException.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\RestoreUserNotAllowedException.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\RestoreUserRequest.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\RestoreUserResponse.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\RoleMemberNotFoundException.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\RoleNotFoundException.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\ServicePrincipalCredentialNotSettableException.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\ServicePrincipalNotFoundException.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\ServiceUnavailableException.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\SetCompanyContactInformationRequest.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\SetCompanyDirSyncEnabledRequest.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\SetCompanySettingsRequest.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\SetDomainAuthenticationRequest.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\SetDomainFederationSettingsRequest.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\SetDomainRequest.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\SetGroupRequest.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\SetPartnerInformationRequest.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\SetServicePrincipalByAppPrincipalIdRequest.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\SetServicePrincipalBySpnRequest.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\SetServicePrincipalNameRequest.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\SetServicePrincipalRequest.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\SetUnverifiedDomainAsDefaultException.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\SetUserLicensesByUpnRequest.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\SetUserLicensesRequest.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\SetUserRequest.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\StringLengthValidationException.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\StringSyntaxValidationException.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\SubscriptionNotFoundException.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\TenantNotPartnerTypeException.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\ThrottlingException.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\TooManySearchResultsException.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\TooManyUnverifiedDomainException.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\TrackingHeader.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\UniquenessValidationException.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\UserAccountDisabledException.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\UserAlreadyExistsException.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\UserAuthenticationUnchangedException.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\UserConflictAuthenticationException.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\UserIdentityHeader.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\UserNotFoundException.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\UserRemoveSelfException.cs" />
+    <Compile Include="Microsoft\Online\Administration\WebService\VerifyDomainRequest.cs" />
+    <Compile Include="Microsoft\Online\Provisioning\CompanyManagement\BindingRedirectionFault.cs" />
+    <Compile Include="Microsoft\Online\Provisioning\CompanyManagement\CompanyManagementFault.cs" />
+    <Compile Include="Microsoft\Online\Provisioning\CompanyManagement\CompanyNotFoundFault.cs" />
+    <Compile Include="Microsoft\Online\Provisioning\CompanyManagement\DifferentServiceInstanceAlreadyExistsFault.cs" />
+    <Compile Include="Microsoft\Online\Provisioning\CompanyManagement\InvalidServiceInstanceFault.cs" />
+    <Compile Include="Microsoft\Online\Provisioning\CompanyManagement\ServiceUnavailableFault.cs" />
+    <Compile Include="Microsoft\Online\Provisioning\CompanyManagement\Subscription.cs" />
+    <Compile Include="Microsoft\Online\Provisioning\CompanyManagement\SubscriptionState.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ProvisioningWebServiceClient.cs" />
+    <Compile Include="schemas\microsoft\com\online\nws\change\_2010\_01\NetworkSyntheticFault.cs" />
+    <Compile Include="System\Xml\Linq\ArrayOfXElement.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="EscalationMessage.LocalProbe.html" />
+    <EmbeddedResource Include="EscalationMessage.OutlookServiceProbe.html" />
+    <EmbeddedResource Include="MapiMTPerformanceCounterResponderCheckConfig.xml" />
+    <EmbeddedResource Include="Microsoft\Exchange\Monitoring\ActiveMonitoring\Local\Strings.resources" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.Exchange.AirSync\Microsoft.Exchange.AirSync.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140D9}</Project>
+      <Name>Microsoft.Exchange.AirSync</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Cluster.Common.Extensions\Microsoft.Exchange.Cluster.Common.Extensions.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140EA}</Project>
+      <Name>Microsoft.Exchange.Cluster.Common.Extensions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Cluster.Replay\Microsoft.Exchange.Cluster.Replay.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140EB}</Project>
+      <Name>Microsoft.Exchange.Cluster.Replay</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Cluster.Shared\Microsoft.Exchange.Cluster.Shared.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140EE}</Project>
+      <Name>Microsoft.Exchange.Cluster.Shared</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Common\Microsoft.Exchange.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140F0}</Project>
+      <Name>Microsoft.Exchange.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Compliance\Microsoft.Exchange.Compliance.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140F2}</Project>
+      <Name>Microsoft.Exchange.Compliance</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Configuration.ObjectModel\Microsoft.Exchange.Configuration.ObjectModel.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140FC}</Project>
+      <Name>Microsoft.Exchange.Configuration.ObjectModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.ApplicationLogic\Microsoft.Exchange.Data.ApplicationLogic.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14104}</Project>
+      <Name>Microsoft.Exchange.Data.ApplicationLogic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Common\Microsoft.Exchange.Data.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140D3}</Project>
+      <Name>Microsoft.Exchange.Data.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Directory\Microsoft.Exchange.Data.Directory.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14105}</Project>
+      <Name>Microsoft.Exchange.Data.Directory</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.HA\Microsoft.Exchange.Data.HA.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14108}</Project>
+      <Name>Microsoft.Exchange.Data.HA</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Storage\Microsoft.Exchange.Data.Storage.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1410F}</Project>
+      <Name>Microsoft.Exchange.Data.Storage</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Transport\Microsoft.Exchange.Data.Transport.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140D5}</Project>
+      <Name>Microsoft.Exchange.Data.Transport</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data\Microsoft.Exchange.Data.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14106}</Project>
+      <Name>Microsoft.Exchange.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Diagnostics\Microsoft.Exchange.Diagnostics.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14113}</Project>
+      <Name>Microsoft.Exchange.Diagnostics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Hygiene.Data\Microsoft.Exchange.Hygiene.Data.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14135}</Project>
+      <Name>Microsoft.Exchange.Hygiene.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.InfoWorker.Common\Microsoft.Exchange.InfoWorker.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1413C}</Project>
+      <Name>Microsoft.Exchange.InfoWorker.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.MailboxReplicationService.Common\Microsoft.Exchange.MailboxReplicationService.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14147}</Project>
+      <Name>Microsoft.Exchange.MailboxReplicationService.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Management.PSDirectInvoke\Microsoft.Exchange.Management.PSDirectInvoke.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14160}</Project>
+      <Name>Microsoft.Exchange.Management.PSDirectInvoke</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Management.Recipient\Microsoft.Exchange.Management.Recipient.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14162}</Project>
+      <Name>Microsoft.Exchange.Management.Recipient</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Management\Microsoft.Exchange.Management.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1415C}</Project>
+      <Name>Microsoft.Exchange.Management</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.MapiHttpClient\Microsoft.Exchange.MapiHttpClient.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14168}</Project>
+      <Name>Microsoft.Exchange.MapiHttpClient</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Monitoring.ServiceContextProvider\Microsoft.Exchange.Monitoring.ServiceContextProvider.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14177}</Project>
+      <Name>Microsoft.Exchange.Monitoring.ServiceContextProvider</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Net\Microsoft.Exchange.Net.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14178}</Project>
+      <Name>Microsoft.Exchange.Net</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.PowerSharp.Management\Microsoft.Exchange.PowerSharp.Management.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1417E}</Project>
+      <Name>Microsoft.Exchange.PowerSharp.Management</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.PushNotifications.Publishers\Microsoft.Exchange.PushNotifications.Publishers.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14186}</Project>
+      <Name>Microsoft.Exchange.PushNotifications.Publishers</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.PushNotifications\Microsoft.Exchange.PushNotifications.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14185}</Project>
+      <Name>Microsoft.Exchange.PushNotifications</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.RpcClientAccess.Monitoring\Microsoft.Exchange.RpcClientAccess.Monitoring.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1418C}</Project>
+      <Name>Microsoft.Exchange.RpcClientAccess.Monitoring</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.RpcClientAccess.Parser\Microsoft.Exchange.RpcClientAccess.Parser.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1418D}</Project>
+      <Name>Microsoft.Exchange.RpcClientAccess.Parser</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Rpc\Microsoft.Exchange.Rpc.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14188}</Project>
+      <Name>Microsoft.Exchange.Rpc</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Search.Core\Microsoft.Exchange.Search.Core.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14193}</Project>
+      <Name>Microsoft.Exchange.Search.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Search.Engine\Microsoft.Exchange.Search.Engine.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14194}</Project>
+      <Name>Microsoft.Exchange.Search.Engine</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Search.Fast\Microsoft.Exchange.Search.Fast.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14195}</Project>
+      <Name>Microsoft.Exchange.Search.Fast</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Search.Query\Microsoft.Exchange.Search.Query.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14197}</Project>
+      <Name>Microsoft.Exchange.Search.Query</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Security\Microsoft.Exchange.Security.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14198}</Project>
+      <Name>Microsoft.Exchange.Security</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.SharedCache.Client\Microsoft.Exchange.SharedCache.Client.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141B5}</Project>
+      <Name>Microsoft.Exchange.SharedCache.Client</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.StoreProvider\Microsoft.Exchange.StoreProvider.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141B9}</Project>
+      <Name>Microsoft.Exchange.StoreProvider</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Transport.Sync.Common\Microsoft.Exchange.Transport.Sync.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141D5}</Project>
+      <Name>Microsoft.Exchange.Transport.Sync.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Transport\Microsoft.Exchange.Transport.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141CD}</Project>
+      <Name>Microsoft.Exchange.Transport</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.UM.UMCommon\Microsoft.Exchange.UM.UMCommon.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141DB}</Project>
+      <Name>Microsoft.Exchange.UM.UMCommon</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.VariantConfiguration\Microsoft.Exchange.VariantConfiguration.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141E0}</Project>
+      <Name>Microsoft.Exchange.VariantConfiguration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Office.Datacenter.ActiveMonitoring.Management.Comm\Microsoft.Office.Datacenter.ActiveMonitoring.Management.Comm.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141EB}</Project>
+      <Name>Microsoft.Office.Datacenter.ActiveMonitoring.Management.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Office.Datacenter.ActiveMonitoringLocal\Microsoft.Office.Datacenter.ActiveMonitoringLocal.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141ED}</Project>
+      <Name>Microsoft.Office.Datacenter.ActiveMonitoringLocal</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Office.Datacenter.Monitoring.ActiveMonitoring.Reco\Microsoft.Office.Datacenter.Monitoring.ActiveMonitoring.Reco.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141EE}</Project>
+      <Name>Microsoft.Office.Datacenter.Monitoring.ActiveMonitoring.Recovery</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Office.Datacenter.WorkerTaskFrameworkInternalProvi\Microsoft.Office.Datacenter.WorkerTaskFrameworkInternalProvi.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141EF}</Project>
+      <Name>Microsoft.Office.Datacenter.WorkerTaskFrameworkInternalProvider</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\mscorlib\mscorlib.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141F1}</Project>
+      <Name>mscorlib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\mscorlib\mscorlib.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141F1}</Project>
+      <Name>mscorlib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

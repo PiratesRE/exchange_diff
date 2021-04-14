@@ -1,0 +1,97 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{09CD9476-CD82-489E-B9E2-84B47CA14103}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Microsoft.Exchange.Core</RootNamespace>
+    <AssemblyName>Microsoft.Exchange.Core.Strings</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CompressionException.cs" />
+    <Compile Include="CompressionOutOfMemoryException.cs" />
+    <Compile Include="CoreStrings.cs" />
+    <Compile Include="Countries.cs" />
+    <Compile Include="DecompressionException.cs" />
+    <Compile Include="FopePolicyRuleContainsIncompatibleConditionsException.cs" />
+    <Compile Include="FopePolicyRuleContainsInvalidPatternException.cs" />
+    <Compile Include="FopePolicyRuleDisabledException.cs" />
+    <Compile Include="FopePolicyRuleExpiredException.cs" />
+    <Compile Include="FopePolicyRuleHasMaxRecipientsConditionException.cs" />
+    <Compile Include="FopePolicyRuleHasProhibitedRegularExpressionsException.cs" />
+    <Compile Include="FopePolicyRuleHasUnrecognizedActionException.cs" />
+    <Compile Include="FopePolicyRuleHasWordsThatExceedMaximumLengthException.cs" />
+    <Compile Include="FopePolicyRuleIsPartialMessageException.cs" />
+    <Compile Include="FopePolicyRuleIsSkippableAntiSpamRuleException.cs" />
+    <Compile Include="FopePolicyRuleIsTooLargeToMigrateException.cs" />
+    <Compile Include="InboundFopePolicyRuleWithDuplicateDomainNameException.cs" />
+    <Compile Include="InvalidAttachmentExtensionConditionException.cs" />
+    <Compile Include="LocDescriptionAttribute.cs" />
+    <Compile Include="MigratedFooterSizeExceedsDisclaimerMaxSizeException.cs" />
+    <Compile Include="NoValidDomainNameExistsInDomainScopedRuleException.cs" />
+    <Compile Include="NoValidDomainNameExistsInDomainSettingsException.cs" />
+    <Compile Include="NoValidIpRangesInFopeRuleException.cs" />
+    <Compile Include="NoValidRecipientDomainNameExistsInRecipientDomainConditionEx.cs" />
+    <Compile Include="NoValidSenderDomainNameExistsInSenderDomainConditionExceptio.cs" />
+    <Compile Include="NoValidSmtpAddressException.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RuleTasks\ClientAccessRuleActionNotSupportedException.cs" />
+    <Compile Include="RuleTasks\LocDescriptionAttribute.cs" />
+    <Compile Include="RuleTasks\LocDisplayNameAttribute.cs" />
+    <Compile Include="RuleTasks\RulesTasksStrings.cs" />
+    <Compile Include="SystemMessages.cs" />
+    <Compile Include="TrackingExceptionMessageTypeNotSupported.cs" />
+    <Compile Include="TrackingExceptionNoResultsDueToLogsExpired.cs" />
+    <Compile Include="TrackingExceptionNoResultsDueToLogsNotFound.cs" />
+    <Compile Include="TrackingExceptionNoResultsDueToUntrackableMessagePath.cs" />
+    <Compile Include="TrackingExceptionSearchNotAuthorized.cs" />
+    <Compile Include="TrackingSearchException.cs" />
+    <Compile Include="TrackingWarningNoResultsDueToTrackingTooEarly.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="CoreStrings.resources" />
+    <EmbeddedResource Include="Countries.resources" />
+    <EmbeddedResource Include="RulesTasksStrings.resources" />
+    <EmbeddedResource Include="SystemMessages.resources" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Common\Microsoft.Exchange.Data.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140D3}</Project>
+      <Name>Microsoft.Exchange.Data.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\mscorlib\mscorlib.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141F1}</Project>
+      <Name>mscorlib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

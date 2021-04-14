@@ -1,0 +1,44 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="initial-scale=1.0">
+<meta name="format-detection" content="telephone=no">
+</head>
+<body>
+<style type="text/css">
+table { border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt; }
+</style>
+<center>
+  <table border="0" width="100%" cellpadding="0" cellspacing="0" align="left" bgcolor="#ebebeb" class="request-container" style="background-color: #eee; color: #000; max-width: 600px; font-family: Calibri, sans-serif; text-align: left;">
+    <tr>
+      <td style="padding: 5px;">
+        <h1 class="heading" style="color: #0072C6; font-size: 28px;">${header}</h1>
+      </td>
+    </tr>
+
+    <tr>
+      <td style="padding: 5px;">
+      <p>${intro_text}</p>
+      </td>
+    </tr>
+      
+    <tr>
+      <td style="padding: 5px;">
+        <!-- Table for containing message since div doesn't support padding and margins -->
+        <table border="0" width="100%" cellpadding="0" cellspacing="0"><tr>
+            <td style="padding: 5px; background-color: #fff; color: #000; font-family: Calibri, sans-serif;" bgcolor="#fff">${user_message}</td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr>
+        <td style="padding: 5px;">
+            <p>${footer_text}</p>
+        </td>
+        <br />
+    </tr>
+  </table>
+</center>
+</body>
+</html>

@@ -1,0 +1,107 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{09CD9476-CD82-489E-B9E2-84B47CA141AE}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Microsoft.Exchange.Setup.AcquireLanguagePack</RootNamespace>
+    <AssemblyName>Microsoft.Exchange.Setup.AcquireLanguagePack</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Exchange.CabUtility" />
+    <Reference Include="Microsoft.Exchange.Setup.SignVerfWrapper" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DiskSpaceValidator.cs" />
+    <Compile Include="DownloadCanceledHandler.cs" />
+    <Compile Include="DownloadCompletedHandler.cs" />
+    <Compile Include="DownloaderErrorHandler.cs" />
+    <Compile Include="DownloadFileInfo.cs" />
+    <Compile Include="DownloadParameter.cs" />
+    <Compile Include="DownloadProgressChangeHandler.cs" />
+    <Compile Include="HttpProtocol.cs" />
+    <Compile Include="LanguagePackBundleLoadException.cs" />
+    <Compile Include="LanguagePackValidator.cs" />
+    <Compile Include="LanguagePackVersion.cs" />
+    <Compile Include="LanguagePackXmlHelper.cs" />
+    <Compile Include="LocDescriptionAttribute.cs" />
+    <Compile Include="LocDisplayNameAttribute.cs" />
+    <Compile Include="Logger.cs" />
+    <Compile Include="LPVersioningValueException.cs" />
+    <Compile Include="MsiBase.cs" />
+    <Compile Include="MsiDatabase.cs" />
+    <Compile Include="MsiException.cs" />
+    <Compile Include="MsiHelper.cs" />
+    <Compile Include="MsiNativeMethods.cs" />
+    <Compile Include="MsiRecord.cs" />
+    <Compile Include="MsiView.cs" />
+    <Compile Include="MspUtility.cs" />
+    <Compile Include="MspValidator.cs" />
+    <Compile Include="PostconditionAttribute.cs" />
+    <Compile Include="PreconditionAttribute.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SafeMsiHandle.cs" />
+    <Compile Include="Segmentator.cs" />
+    <Compile Include="Strings.cs" />
+    <Compile Include="UpdatesValidator.cs" />
+    <Compile Include="ValidationHelper.cs" />
+    <Compile Include="ValidatorBase.cs" />
+    <Compile Include="WebDownloaderEventArgs.cs" />
+    <Compile Include="WebDownloaderException.cs" />
+    <Compile Include="WebFileDownloader.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Strings.resources" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.Exchange.Compliance\Microsoft.Exchange.Compliance.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140F2}</Project>
+      <Name>Microsoft.Exchange.Compliance</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Configuration.ObjectModel\Microsoft.Exchange.Configuration.ObjectModel.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140FC}</Project>
+      <Name>Microsoft.Exchange.Configuration.ObjectModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Common\Microsoft.Exchange.Data.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140D3}</Project>
+      <Name>Microsoft.Exchange.Data.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\mscorlib\mscorlib.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141F1}</Project>
+      <Name>mscorlib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

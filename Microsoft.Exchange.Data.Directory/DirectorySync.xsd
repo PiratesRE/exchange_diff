@@ -1,0 +1,352 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema
+  elementFormDefault="qualified"
+  targetNamespace="http://schemas.microsoft.com/online/directoryservices/sync/2008/11"
+  xmlns:chg="http://schemas.microsoft.com/online/directoryservices/change/2008/11"
+  xmlns:tns="http://schemas.microsoft.com/online/directoryservices/sync/2008/11"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <xs:import namespace="http://schemas.microsoft.com/online/directoryservices/change/2008/11" />
+
+  <xs:complexType name="DirectoryChanges">
+    <xs:sequence>
+      <xs:element name="Contexts" type="chg:ArrayOfDirectoryContext" />
+      <xs:element name="Objects" type="chg:ArrayOfDirectoryObject" />
+      <xs:element name="Links" type="chg:ArrayOfDirectoryLink" />
+      <xs:element name="NextCookie" type="xs:base64Binary" />
+      <xs:element name="More" type="xs:boolean" />
+    </xs:sequence>
+    <xs:attribute name="OperationResultCode" type="tns:OperationResultCode" default="Success">
+      <xs:annotation>
+        <xs:documentation>
+          Result code of the operation.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:complexType>
+
+  <xs:simpleType name="OperationResultCode">
+    <xs:annotation>
+      <xs:documentation>
+        Indicates the result of a web operation.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Success">
+        <xs:annotation>
+          <xs:documentation>The operation completed successfully.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="PartitionUnavailable">
+        <xs:annotation>
+          <xs:documentation>
+            The directory partition containing the specified ContextId is temporarily unavailable.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="ContextNotFound">
+        <xs:annotation>
+          <xs:documentation>
+            An context with the specified ContextId could not be found.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="ContextOutOfScope">
+        <xs:annotation>
+          <xs:documentation>
+            The requested context is out of scope of for the federated service's service instance.
+            This could be because the context is out of subscriber filter.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MergeFailedIncompleteGetChangesSequence">
+        <xs:annotation>
+          <xs:documentation>
+            Merge operation failed because the sync cookie was returned as a part of an ongoing GetChanges sequence.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MergeFailedIncompleteGetContextSequence">
+        <xs:annotation>
+          <xs:documentation>
+            Merge operation failed because the page token was returned as a part of an ongoing GetContext sequence.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MergeDelayedRetryAfterSometime">
+        <xs:annotation>
+          <xs:documentation>
+            Merge operation cannot continue at this time due to replication delays. Retry after some time.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="UnspecifiedError">
+        <xs:annotation>
+          <xs:documentation>
+            An unspecified error occured.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:complexType name="DirectoryObjectsAndLinks">
+    <xs:sequence>
+      <xs:element name="Objects" type="chg:ArrayOfDirectoryObject" />
+      <xs:element name="Links" type="chg:ArrayOfDirectoryLink" />
+      <xs:element name="Errors" type="tns:ArrayOfDirectoryObjectError" />
+      <xs:element name="NextPageToken" type="xs:base64Binary" />
+      <xs:element name="More" type="xs:boolean" />
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:simpleType name="DirectoryObjectClassCapabilityTarget">
+    <xs:annotation>
+      <xs:documentation>
+        Identifier for a subtype of DirectoryObject that is restricted to objects that can be
+        assigned service capabilities.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="chg:DirectoryObjectClass">
+      <xs:enumeration value="Company" />
+      <xs:enumeration value="User" />
+      <xs:enumeration value="Contact" />
+      <xs:enumeration value="Group" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="ServicePublication" type="tns:ServicePublication">
+    <xs:annotation>
+      <xs:documentation>
+        An update to one or more property values mastered by a federated service.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:complexType name="ServicePublication">
+    <xs:sequence>
+      <xs:element ref="chg:CloudSipProxyAddress" minOccurs="0" />
+      <xs:element ref="chg:ProvisionedPlan" minOccurs="0" />
+      <xs:element ref="chg:ServiceInfo" minOccurs="0" />
+      <xs:element ref="chg:ValidationError" minOccurs="0" />
+    </xs:sequence>
+    <xs:attribute name="ContextId" type="chg:ContextId" use="required">
+      <xs:annotation>
+        <xs:documentation>
+          Key for the context containing the object to update.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="ObjectClass" type="tns:DirectoryObjectClassCapabilityTarget" use="required">
+      <xs:annotation>
+        <xs:documentation>
+          Class of the object to update.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="ObjectId" type="chg:ObjectId" use="required">
+      <xs:annotation>
+        <xs:documentation>
+          Key for the object to update.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:complexType>
+
+  <xs:simpleType name="DirectoryObjectErrorCode">
+    <xs:annotation>
+      <xs:documentation>
+        Indicates the error that occured as a result of an attempt to enumerate object scoped changes.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Busy">
+        <xs:annotation>
+          <xs:documentation>
+            The directory service is too busy to process the request at this time; retry later.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="ContextOutOfScope">
+        <xs:annotation>
+          <xs:documentation>
+            The requested context is out of scope of for the federated service's service instance.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="ObjectNotFound">
+        <xs:annotation>
+          <xs:documentation>
+            An object with the specified ObjectId could not be found.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="ObjectOutOfScope">
+        <xs:annotation>
+          <xs:documentation>
+            The requested object is out of scope for the federated service's service instance.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="PartitionUnavailable">
+        <xs:annotation>
+          <xs:documentation>
+            The directory partition containing the specified ContextId is temporarily unavailable.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="UnspecifiedError">
+        <xs:annotation>
+          <xs:documentation>
+            An unspecified error occured.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:complexType name="DirectoryObjectIdentity">
+    <xs:annotation>
+      <xs:documentation>
+        Represents the identity of a directory object.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:attribute name="ContextId" type="chg:ContextId" use="required" />
+    <xs:attribute name="ObjectClass" type="chg:DirectoryObjectClass" use="required" />
+    <xs:attribute name="ObjectId" type="chg:ObjectId" use="required" />
+  </xs:complexType>
+  <xs:element name="DirectoryObjectIdentity" type="tns:DirectoryObjectIdentity" />
+
+  <xs:complexType name="DirectoryObjectError">
+    <xs:annotation>
+      <xs:documentation>
+        Represents the error code returned while getting directory objects.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:attribute name="ContextId" type="chg:ContextId" use="required" />
+    <xs:attribute name="ObjectClass" type="chg:DirectoryObjectClass" />
+    <xs:attribute name="ObjectId" type="chg:ObjectId" use="required" />
+    <xs:attribute name="ErrorCode" type="tns:DirectoryObjectErrorCode" use="required" />
+    <xs:attribute name="ErrorDetail" type="xs:string" />
+  </xs:complexType>
+  <xs:element name="DirectoryObjectError" type="tns:DirectoryObjectError" />
+
+  <xs:element name="ArrayOfDirectoryObjectError" type="tns:ArrayOfDirectoryObjectError" />
+  <xs:complexType name="ArrayOfDirectoryObjectError">
+    <xs:sequence>
+      <xs:element ref="tns:DirectoryObjectError" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="ContextDirSyncStatus" type="tns:ContextDirSyncStatus">
+    <xs:annotation>
+      <xs:documentation>
+        Pairing of a context with a set of DirSyncStatus property values of the corresponding Company object in that
+        context.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:complexType name="ContextDirSyncStatus">
+    <xs:sequence>
+      <xs:element ref="chg:DirSyncStatus" />
+    </xs:sequence>
+    <xs:attribute name="ContextId" type="chg:ContextId" use="required">
+      <xs:annotation>
+        <xs:documentation>
+          Key for the context containing the Company object.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:complexType>
+
+  <xs:element name="CookieUpdateStatus" type="tns:CookieUpdateStatus">
+    <xs:annotation>
+      <xs:documentation>
+        Indicates the progress of sync filter update triggered by a UpdateCookie call by a sync client.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:complexType name="CookieUpdateStatus">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="StatusMessage" nillable="true" type="xs:string" />
+    </xs:sequence>
+    <xs:attribute name="StatusCode" type="xs:int" use="required" />
+  </xs:complexType>
+
+  <xs:element name="BindingRedirectionFault" type="tns:BindingRedirectionFault">
+    <xs:annotation>
+      <xs:documentation>
+        Binding redirection fault is used for slicing to redirect client request to another sync site.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:complexType name="BindingRedirectionFault">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="Location" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  
+  <xs:element name="SecretEncryptionFailureFault" type="tns:SecretEncryptionFailureFault">
+    <xs:annotation>
+      <xs:documentation>
+        Fault returned when SyncWS encounters a failure while encrypting a secret using secret encryption certificate.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:complexType name="SecretEncryptionFailureFault">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="Location" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="ContextRecoveryInfo" type="tns:ContextRecoveryInfo">
+    <xs:annotation>
+      <xs:documentation>
+        Returns the pair of SyncCookie and ContextRecoveryToken for incremental faultin of the specified tenant.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:complexType name="ContextRecoveryInfo">
+    <xs:sequence>
+      <xs:element name="FilteredContextSyncCookie" nillable="true" type="xs:base64Binary" />
+      <xs:element name="ContextRecoveryToken" nillable="true" type="xs:base64Binary" />
+    </xs:sequence>
+    <xs:attribute name="StatusCode" type="xs:int" use="required" />
+  </xs:complexType>
+
+  <xs:element name="ContextBacklogMeasurement" type="tns:ContextBacklogMeasurement">
+    <xs:annotation>
+      <xs:documentation>
+        Indicates the backlog for the specified context.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:complexType name="ContextBacklogMeasurement">
+    <xs:attribute name="ContextId" type="chg:ContextId" use="required" />
+    <xs:attribute name="Objects" type="xs:unsignedInt" use="required" />
+    <xs:attribute name="Links" type="xs:unsignedInt" use="required" />
+    <xs:attribute name="StreamCode" type="xs:int" use="required" />
+  </xs:complexType>
+
+  <xs:element name="ArrayOfContextBacklogMeasurement" type="tns:ArrayOfContextBacklogMeasurement" />
+  <xs:complexType name="ArrayOfContextBacklogMeasurement">
+    <xs:sequence>
+      <xs:element ref="tns:ContextBacklogMeasurement" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+  </xs:complexType>
+  
+  <xs:element name="BacklogEstimateBatch" type="tns:BacklogEstimateBatch">
+    <xs:annotation>
+      <xs:documentation>
+        Returns the pair of SyncCookie and TenantRecoveryToken for incremental faultin of the specified tenant.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:complexType name="BacklogEstimateBatch">
+    <xs:sequence>
+      <xs:element name="ContextBacklogs" nillable="true" type="tns:ArrayOfContextBacklogMeasurement" />
+      <xs:element name="NextPageToken" nillable="true" type="xs:base64Binary" />
+    </xs:sequence>
+    <xs:attribute name="StatusCode" type="xs:int" use="required" />
+  </xs:complexType>
+  
+</xs:schema>

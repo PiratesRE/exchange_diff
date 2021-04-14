@@ -1,0 +1,234 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{09CD9476-CD82-489E-B9E2-84B47CA1415E}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Microsoft.Exchange</RootNamespace>
+    <AssemblyName>Microsoft.Exchange.Management.Mobility</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Exchange.WebServices" />
+    <Reference Include="System" />
+    <Reference Include="System.Configuration.Install" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Management.Automation" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.ServiceProcess" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Configuration\Tasks\CacheDataProvider.cs" />
+    <Compile Include="Configuration\Tasks\CacheIdParameter.cs" />
+    <Compile Include="Configuration\Tasks\ConnectSubscriptionDataProvider.cs" />
+    <Compile Include="Configuration\Tasks\SubscriptionConfigDataProviderFactory.cs" />
+    <Compile Include="Management\Aggregation\ConnectSubscriptionTaskKnownExceptions.cs" />
+    <Compile Include="Management\Aggregation\ContactsUploaderPerformanceTracker.cs" />
+    <Compile Include="Management\Aggregation\ContactsUploaderPerformanceTrackerBookmarks.cs" />
+    <Compile Include="Management\Aggregation\ContactsUploaderPerformanceTrackerSchema.cs" />
+    <Compile Include="Management\Aggregation\FacebookContactsUploader.cs" />
+    <Compile Include="Management\Aggregation\FacebookContactUploadException.cs" />
+    <Compile Include="Management\Aggregation\FacebookNewSubscriptionException.cs" />
+    <Compile Include="Management\Aggregation\FacebookUpdateSubscriptionException.cs" />
+    <Compile Include="Management\Aggregation\GetConnectSubscription.cs" />
+    <Compile Include="Management\Aggregation\GetHotmailSubscription.cs" />
+    <Compile Include="Management\Aggregation\GetImapSubscription.cs" />
+    <Compile Include="Management\Aggregation\GetPopSubscription.cs" />
+    <Compile Include="Management\Aggregation\GetRemoteAccountSyncCache.cs" />
+    <Compile Include="Management\Aggregation\GetSendAddress.cs" />
+    <Compile Include="Management\Aggregation\GetSubscription.cs" />
+    <Compile Include="Management\Aggregation\GetSubscriptionBase.cs" />
+    <Compile Include="Management\Aggregation\IContactsUploaderPerformanceTracker.cs" />
+    <Compile Include="Management\Aggregation\ImportContactList.cs" />
+    <Compile Include="Management\Aggregation\ImportContactListResult.cs" />
+    <Compile Include="Management\Aggregation\ImportContactListResultSchema.cs" />
+    <Compile Include="Management\Aggregation\INewConnectSubscription.cs" />
+    <Compile Include="Management\Aggregation\ISetConnectSubscription.cs" />
+    <Compile Include="Management\Aggregation\NewConnectSubscription.cs" />
+    <Compile Include="Management\Aggregation\NewFacebookSubscription.cs" />
+    <Compile Include="Management\Aggregation\NewHotmailSubscription.cs" />
+    <Compile Include="Management\Aggregation\NewImapSubscription.cs" />
+    <Compile Include="Management\Aggregation\NewLinkedInSubscription.cs" />
+    <Compile Include="Management\Aggregation\NewPopSubscription.cs" />
+    <Compile Include="Management\Aggregation\NewSubscription.cs" />
+    <Compile Include="Management\Aggregation\NewSubscriptionBase.cs" />
+    <Compile Include="Management\Aggregation\RemoveConnectSubscription.cs" />
+    <Compile Include="Management\Aggregation\RemoveRemoteAccountSyncCache.cs" />
+    <Compile Include="Management\Aggregation\RemoveSubscription.cs" />
+    <Compile Include="Management\Aggregation\RemoveSubscriptionBase.cs" />
+    <Compile Include="Management\Aggregation\SendAddressDataProvider.cs" />
+    <Compile Include="Management\Aggregation\SetConnectSubscription.cs" />
+    <Compile Include="Management\Aggregation\SetFacebookSubscription.cs" />
+    <Compile Include="Management\Aggregation\SetHotmailSubscription.cs" />
+    <Compile Include="Management\Aggregation\SetImapSubscription.cs" />
+    <Compile Include="Management\Aggregation\SetLinkedInSubscription.cs" />
+    <Compile Include="Management\Aggregation\SetPopSubscription.cs" />
+    <Compile Include="Management\Aggregation\SetRemoteAccountSyncCache.cs" />
+    <Compile Include="Management\Aggregation\SetSubscriptionBase.cs" />
+    <Compile Include="Management\Aggregation\SetSubscriptionParameterSet.cs" />
+    <Compile Include="Management\Aggregation\SetSubscriptionSendAsVerifiedBase.cs" />
+    <Compile Include="Management\Aggregation\SubscriptionCacheClient.cs" />
+    <Compile Include="Management\Aggregation\SubscriptionsCache.cs" />
+    <Compile Include="Management\Aggregation\TestLinkedInConnect.cs" />
+    <Compile Include="Management\Extension\App.cs" />
+    <Compile Include="Management\Extension\DefaultStateForUser.cs" />
+    <Compile Include="Management\Extension\DisableApp.cs" />
+    <Compile Include="Management\Extension\EnableApp.cs" />
+    <Compile Include="Management\Extension\EnableDisableOWAExtensionBase.cs" />
+    <Compile Include="Management\Extension\GetApp.cs" />
+    <Compile Include="Management\Extension\LicenseType.cs" />
+    <Compile Include="Management\Extension\NewApp.cs" />
+    <Compile Include="Management\Extension\OrgApp.cs" />
+    <Compile Include="Management\Extension\OWAAppDataProviderForNonMailboxUser.cs" />
+    <Compile Include="Management\Extension\OWAExtensionDataProvider.cs" />
+    <Compile Include="Management\Extension\OWAExtensionHelper.cs" />
+    <Compile Include="Management\Extension\OWAExtensionSchema.cs" />
+    <Compile Include="Management\Extension\OWAOrgExtensionSchema.cs" />
+    <Compile Include="Management\Extension\RemoveApp.cs" />
+    <Compile Include="Management\Extension\SetApp.cs" />
+    <Compile Include="Management\Mobility\LocDescriptionAttribute.cs" />
+    <Compile Include="Management\Mobility\LocDisplayNameAttribute.cs" />
+    <Compile Include="Management\Mobility\PostconditionAttribute.cs" />
+    <Compile Include="Management\Mobility\PreconditionAttribute.cs" />
+    <Compile Include="Management\Mobility\Strings.cs" />
+    <Compile Include="Management\PushNotifications\CannotResolveFallbackPartition.cs" />
+    <Compile Include="Management\PushNotifications\DisablePushNotificationProxy.cs" />
+    <Compile Include="Management\PushNotifications\EnablePushNotificationProxy.cs" />
+    <Compile Include="Management\PushNotifications\GetPushNotificationApp.cs" />
+    <Compile Include="Management\PushNotifications\GetPushNotificationSubscription.cs" />
+    <Compile Include="Management\PushNotifications\InstallCannedPushNotificationApp.cs" />
+    <Compile Include="Management\PushNotifications\NewPushNotificationApp.cs" />
+    <Compile Include="Management\PushNotifications\ProxyCmdletBaseClass.cs" />
+    <Compile Include="Management\PushNotifications\PushNotificationAppParameterSet.cs" />
+    <Compile Include="Management\PushNotifications\PushNotificationAppPresentationObject.cs" />
+    <Compile Include="Management\PushNotifications\PushNotificationAppPresentationSchema.cs" />
+    <Compile Include="Management\PushNotifications\PushNotificationProxyPresentationObject.cs" />
+    <Compile Include="Management\PushNotifications\PushNotificationProxyPresentationSchema.cs" />
+    <Compile Include="Management\PushNotifications\PushNotificationStoreId.cs" />
+    <Compile Include="Management\PushNotifications\PushNotificationSubscription.cs" />
+    <Compile Include="Management\PushNotifications\PushNotificationSubscriptionSchema.cs" />
+    <Compile Include="Management\PushNotifications\RemovePushNotificationApp.cs" />
+    <Compile Include="Management\PushNotifications\RemovePushNotificationSubscription.cs" />
+    <Compile Include="Management\PushNotifications\SetPushNotificationApp.cs" />
+    <Compile Include="Management\Tasks\InstallTransportSyncManagerService.cs" />
+    <Compile Include="Management\Tasks\ManageTransportSyncManagerService.cs" />
+    <Compile Include="Management\Tasks\UninstallTransportSyncManagerService.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Management\Mobility\Strings.resources" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.DKM.Proxy\Microsoft.DKM.Proxy.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140D7}</Project>
+      <Name>Microsoft.DKM.Proxy</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Common\Microsoft.Exchange.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140F0}</Project>
+      <Name>Microsoft.Exchange.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Compliance\Microsoft.Exchange.Compliance.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140F2}</Project>
+      <Name>Microsoft.Exchange.Compliance</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Configuration.ObjectModel\Microsoft.Exchange.Configuration.ObjectModel.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140FC}</Project>
+      <Name>Microsoft.Exchange.Configuration.ObjectModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.ApplicationLogic\Microsoft.Exchange.Data.ApplicationLogic.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14104}</Project>
+      <Name>Microsoft.Exchange.Data.ApplicationLogic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Common\Microsoft.Exchange.Data.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140D3}</Project>
+      <Name>Microsoft.Exchange.Data.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Directory\Microsoft.Exchange.Data.Directory.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14105}</Project>
+      <Name>Microsoft.Exchange.Data.Directory</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Storage\Microsoft.Exchange.Data.Storage.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1410F}</Project>
+      <Name>Microsoft.Exchange.Data.Storage</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Transport\Microsoft.Exchange.Data.Transport.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140D5}</Project>
+      <Name>Microsoft.Exchange.Data.Transport</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data\Microsoft.Exchange.Data.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14106}</Project>
+      <Name>Microsoft.Exchange.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Diagnostics\Microsoft.Exchange.Diagnostics.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14113}</Project>
+      <Name>Microsoft.Exchange.Diagnostics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Management\Microsoft.Exchange.Management.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1415C}</Project>
+      <Name>Microsoft.Exchange.Management</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Net\Microsoft.Exchange.Net.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14178}</Project>
+      <Name>Microsoft.Exchange.Net</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.PushNotifications.Publishers\Microsoft.Exchange.PushNotifications.Publishers.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14186}</Project>
+      <Name>Microsoft.Exchange.PushNotifications.Publishers</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Rpc\Microsoft.Exchange.Rpc.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14188}</Project>
+      <Name>Microsoft.Exchange.Rpc</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.StoreProvider\Microsoft.Exchange.StoreProvider.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141B9}</Project>
+      <Name>Microsoft.Exchange.StoreProvider</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Transport.Sync.Common\Microsoft.Exchange.Transport.Sync.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141D5}</Project>
+      <Name>Microsoft.Exchange.Transport.Sync.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Transport.Sync.Worker\Microsoft.Exchange.Transport.Sync.Worker.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141D8}</Project>
+      <Name>Microsoft.Exchange.Transport.Sync.Worker</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\mscorlib\mscorlib.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141F1}</Project>
+      <Name>mscorlib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\mscorlib\mscorlib.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141F1}</Project>
+      <Name>mscorlib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

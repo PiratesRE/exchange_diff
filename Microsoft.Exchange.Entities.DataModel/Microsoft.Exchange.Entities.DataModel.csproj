@@ -1,0 +1,213 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{09CD9476-CD82-489E-B9E2-84B47CA14120}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Microsoft.Exchange.Entities</RootNamespace>
+    <AssemblyName>Microsoft.Exchange.Entities.DataModel</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BirthdayCalendar\IBirthdayContact.cs" />
+    <Compile Include="BirthdayCalendar\IBirthdayContactInternal.cs" />
+    <Compile Include="DataModel\BirthdayCalendar\BirthdayCalendar.cs" />
+    <Compile Include="DataModel\BirthdayCalendar\BirthdayContact.cs" />
+    <Compile Include="DataModel\BirthdayCalendar\BirthdayContactSchema.cs" />
+    <Compile Include="DataModel\BirthdayCalendar\BirthdayEvent.cs" />
+    <Compile Include="DataModel\BirthdayCalendar\BirthdayEventSchema.cs" />
+    <Compile Include="DataModel\BirthdayCalendar\IBirthdayEvent.cs" />
+    <Compile Include="DataModel\BirthdayCalendar\IBirthdayEventInternal.cs" />
+    <Compile Include="DataModel\Calendaring\Attendee.cs" />
+    <Compile Include="DataModel\Calendaring\AttendeeSchema.cs" />
+    <Compile Include="DataModel\Calendaring\AttendeeType.cs" />
+    <Compile Include="DataModel\Calendaring\BirthdayCalendarSchema.cs" />
+    <Compile Include="DataModel\Calendaring\Calendar.cs" />
+    <Compile Include="DataModel\Calendaring\CalendarGroup.cs" />
+    <Compile Include="DataModel\Calendaring\CalendarGroupSchema.cs" />
+    <Compile Include="DataModel\Calendaring\CalendarSchema.cs" />
+    <Compile Include="DataModel\Calendaring\CustomActions\CancelEventParameters.cs" />
+    <Compile Include="DataModel\Calendaring\CustomActions\CancelEventParametersSchema.cs" />
+    <Compile Include="DataModel\Calendaring\CustomActions\EventWorkflowParameters.cs" />
+    <Compile Include="DataModel\Calendaring\CustomActions\EventWorkflowParametersSchema.cs" />
+    <Compile Include="DataModel\Calendaring\CustomActions\ExpandedEvent.cs" />
+    <Compile Include="DataModel\Calendaring\CustomActions\ExpandEventParameters.cs" />
+    <Compile Include="DataModel\Calendaring\CustomActions\ExpandEventParametersSchema.cs" />
+    <Compile Include="DataModel\Calendaring\CustomActions\ForwardEventParameters.cs" />
+    <Compile Include="DataModel\Calendaring\CustomActions\ForwardEventParametersSchema.cs" />
+    <Compile Include="DataModel\Calendaring\CustomActions\ICalendarViewParameters.cs" />
+    <Compile Include="DataModel\Calendaring\CustomActions\RespondToEventParameters.cs" />
+    <Compile Include="DataModel\Calendaring\CustomActions\RespondToEventParametersSchema.cs" />
+    <Compile Include="DataModel\Calendaring\CustomActions\UpdateEventParameters.cs" />
+    <Compile Include="DataModel\Calendaring\CustomActions\UpdateEventParametersSchema.cs" />
+    <Compile Include="DataModel\Calendaring\Event.cs" />
+    <Compile Include="DataModel\Calendaring\EventPopupReminderSetting.cs" />
+    <Compile Include="DataModel\Calendaring\EventPopupReminderSettingSchema.cs" />
+    <Compile Include="DataModel\Calendaring\EventSchema.cs" />
+    <Compile Include="DataModel\Calendaring\EventType.cs" />
+    <Compile Include="DataModel\Calendaring\FreeBusyStatus.cs" />
+    <Compile Include="DataModel\Calendaring\IAttendee.cs" />
+    <Compile Include="DataModel\Calendaring\IBirthdayCalendar.cs" />
+    <Compile Include="DataModel\Calendaring\ICalendar.cs" />
+    <Compile Include="DataModel\Calendaring\ICalendarGroup.cs" />
+    <Compile Include="DataModel\Calendaring\ICalendarGroupReference.cs" />
+    <Compile Include="DataModel\Calendaring\ICalendarGroups.cs" />
+    <Compile Include="DataModel\Calendaring\ICalendaringContainer.cs" />
+    <Compile Include="DataModel\Calendaring\ICalendarReference.cs" />
+    <Compile Include="DataModel\Calendaring\ICalendars.cs" />
+    <Compile Include="DataModel\Calendaring\IEvent.cs" />
+    <Compile Include="DataModel\Calendaring\IEventInternal.cs" />
+    <Compile Include="DataModel\Calendaring\IEventReference.cs" />
+    <Compile Include="DataModel\Calendaring\IEvents.cs" />
+    <Compile Include="DataModel\Calendaring\IMailboxCalendars.cs" />
+    <Compile Include="DataModel\Calendaring\IMeetingRequestMessages.cs" />
+    <Compile Include="DataModel\Calendaring\MeetingMessage.cs" />
+    <Compile Include="DataModel\Calendaring\MeetingMessageSchema.cs" />
+    <Compile Include="DataModel\Calendaring\MeetingMessageType.cs" />
+    <Compile Include="DataModel\Calendaring\MeetingRequestMessage.cs" />
+    <Compile Include="DataModel\Calendaring\Organizer.cs" />
+    <Compile Include="DataModel\Calendaring\Recurrence\AbsoluteMonthlyRecurrencePattern.cs" />
+    <Compile Include="DataModel\Calendaring\Recurrence\AbsoluteYearlyRecurrencePattern.cs" />
+    <Compile Include="DataModel\Calendaring\Recurrence\DailyRecurrencePattern.cs" />
+    <Compile Include="DataModel\Calendaring\Recurrence\EndDateRecurrenceRange.cs" />
+    <Compile Include="DataModel\Calendaring\Recurrence\NoEndRecurrenceRange.cs" />
+    <Compile Include="DataModel\Calendaring\Recurrence\NumberedRecurrenceRange.cs" />
+    <Compile Include="DataModel\Calendaring\Recurrence\PatternedRecurrence.cs" />
+    <Compile Include="DataModel\Calendaring\Recurrence\RecurrencePattern.cs" />
+    <Compile Include="DataModel\Calendaring\Recurrence\RecurrencePatternType.cs" />
+    <Compile Include="DataModel\Calendaring\Recurrence\RecurrenceRange.cs" />
+    <Compile Include="DataModel\Calendaring\Recurrence\RecurrenceRangeType.cs" />
+    <Compile Include="DataModel\Calendaring\Recurrence\RelativeMonthlyRecurrencePattern.cs" />
+    <Compile Include="DataModel\Calendaring\Recurrence\RelativeYearlyRecurrencePattern.cs" />
+    <Compile Include="DataModel\Calendaring\Recurrence\WeekIndex.cs" />
+    <Compile Include="DataModel\Calendaring\Recurrence\WeeklyRecurrencePattern.cs" />
+    <Compile Include="DataModel\Calendaring\ResponseStatus.cs" />
+    <Compile Include="DataModel\Calendaring\ResponseStatusSchema.cs" />
+    <Compile Include="DataModel\Calendaring\ResponseType.cs" />
+    <Compile Include="DataModel\CommandContext.cs" />
+    <Compile Include="DataModel\Entity.cs" />
+    <Compile Include="DataModel\EntitySchema.cs" />
+    <Compile Include="DataModel\EntitySetExtensions.cs" />
+    <Compile Include="DataModel\IEntity.cs" />
+    <Compile Include="DataModel\IEntityQueryOptions.cs" />
+    <Compile Include="DataModel\IEntityReference.cs" />
+    <Compile Include="DataModel\IEntitySet.cs" />
+    <Compile Include="DataModel\IExchangeEntityContainers.cs" />
+    <Compile Include="DataModel\IStorageEntity.cs" />
+    <Compile Include="DataModel\Items\Attachment.cs" />
+    <Compile Include="DataModel\Items\AttachmentSchema.cs" />
+    <Compile Include="DataModel\Items\BodyType.cs" />
+    <Compile Include="DataModel\Items\FileAttachment.cs" />
+    <Compile Include="DataModel\Items\FileAttachmentSchema.cs" />
+    <Compile Include="DataModel\Items\IAttachment.cs" />
+    <Compile Include="DataModel\Items\IAttachments.cs" />
+    <Compile Include="DataModel\Items\IFileAttachment.cs" />
+    <Compile Include="DataModel\Items\IItem.cs" />
+    <Compile Include="DataModel\Items\IItemAttachment.cs" />
+    <Compile Include="DataModel\Items\IItemIdAttachment.cs" />
+    <Compile Include="DataModel\Items\IItemReference.cs" />
+    <Compile Include="DataModel\Items\Importance.cs" />
+    <Compile Include="DataModel\Items\IRecipient.cs" />
+    <Compile Include="DataModel\Items\IReferenceAttachment.cs" />
+    <Compile Include="DataModel\Items\Item.cs" />
+    <Compile Include="DataModel\Items\ItemAttachment.cs" />
+    <Compile Include="DataModel\Items\ItemAttachmentSchema.cs" />
+    <Compile Include="DataModel\Items\ItemBody.cs" />
+    <Compile Include="DataModel\Items\ItemIdAttachment.cs" />
+    <Compile Include="DataModel\Items\ItemIdAttachmentSchema.cs" />
+    <Compile Include="DataModel\Items\ItemSchema.cs" />
+    <Compile Include="DataModel\Items\Recipient.cs" />
+    <Compile Include="DataModel\Items\RecipientSchema.cs" />
+    <Compile Include="DataModel\Items\ReferenceAttachment.cs" />
+    <Compile Include="DataModel\Items\ReferenceAttachmentSchema.cs" />
+    <Compile Include="DataModel\Items\Sensitivity.cs" />
+    <Compile Include="DataModel\IVersioned.cs" />
+    <Compile Include="DataModel\Location.cs" />
+    <Compile Include="DataModel\Messaging\EmailMessage.cs" />
+    <Compile Include="DataModel\Messaging\EmailMessageSchema.cs" />
+    <Compile Include="DataModel\Messaging\IEmailMessage.cs" />
+    <Compile Include="DataModel\OrderByClause.cs" />
+    <Compile Include="DataModel\People\Contact.cs" />
+    <Compile Include="DataModel\PropertyBags\DelegatedPropertyAccessor.cs" />
+    <Compile Include="DataModel\PropertyBags\EntityPropertyAccessor.cs" />
+    <Compile Include="DataModel\PropertyBags\EntityPropertyAccessorBase.cs" />
+    <Compile Include="DataModel\PropertyBags\IPropertyAccessor.cs" />
+    <Compile Include="DataModel\PropertyBags\IPropertyChangeTracker.cs" />
+    <Compile Include="DataModel\PropertyBags\IPropertyValueCollectionAccessor.cs" />
+    <Compile Include="DataModel\PropertyBags\ISchematizedObject.cs" />
+    <Compile Include="DataModel\PropertyBags\PropertyAccessor.cs" />
+    <Compile Include="DataModel\PropertyBags\PropertyBag.cs" />
+    <Compile Include="DataModel\PropertyBags\PropertyChangeTracker.cs" />
+    <Compile Include="DataModel\PropertyBags\PropertyDefinition.cs" />
+    <Compile Include="DataModel\PropertyBags\SchematizedObject.cs" />
+    <Compile Include="DataModel\PropertyBags\TypedPropertyDefinition.cs" />
+    <Compile Include="DataModel\PropertyBags\TypeSchema.cs" />
+    <Compile Include="DataModel\PropertyChangeTrackingObject.cs" />
+    <Compile Include="DataModel\ReliableActions\IActionPropagationState.cs" />
+    <Compile Include="DataModel\ReliableActions\IActionQueue.cs" />
+    <Compile Include="DataModel\Serialization\Strings.cs" />
+    <Compile Include="DataModel\Serialization\ValueOutOfRangeException.cs" />
+    <Compile Include="DataModel\StorageEntity.cs" />
+    <Compile Include="DataModel\StorageEntitySchema.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="DataModel\Serialization\Strings.resources" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Common\Microsoft.Exchange.Data.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140D3}</Project>
+      <Name>Microsoft.Exchange.Data.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Storage\Microsoft.Exchange.Data.Storage.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1410F}</Project>
+      <Name>Microsoft.Exchange.Data.Storage</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Diagnostics\Microsoft.Exchange.Diagnostics.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14113}</Project>
+      <Name>Microsoft.Exchange.Diagnostics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Net\Microsoft.Exchange.Net.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14178}</Project>
+      <Name>Microsoft.Exchange.Net</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\mscorlib\mscorlib.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141F1}</Project>
+      <Name>mscorlib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

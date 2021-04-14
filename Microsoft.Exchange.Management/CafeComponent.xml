@@ -1,0 +1,1000 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo Name="CAFE Component Configuration">
+
+  <ServerTasks>
+
+    <!-- Set Cafe role -->
+    <ServerTaskInfo Id="_1c2ba762fc41480db9cddc609f92ccd5" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>set-ExchangeServerRole -Identity $RoleFqdnOrName -IsCafeServer:$true -DomainController $RoleDomainController</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery />
+      <Uninstall>
+        <Standalone>set-ExchangeServerRole -Identity $RoleFqdnOrName -IsCafeServer:$false -DomainController $RoleDomainController</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- ClientAccessExchangeCertificate -->
+    <ServerTaskInfo Id="_ece23aa8c6744163B617570021d78090" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          Install-ExchangeCertificate -services "IIS, POP, IMAP" -DomainController $RoleDomainController
+          if ($RoleIsDatacenter -ne $true -And $RoleIsPartnerHosted -ne $true)
+          {
+          Install-AuthCertificate -DomainController $RoleDomainController
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall/>
+    </ServerTaskInfo>
+
+    <!-- Install cert for BE website, so RPS can use -TargetServer param -->
+    <!-- For DisasterRecovery mode, we need to make sure the BE website exists first -->
+    <ServerTaskInfo Id="_fb5e9028e6abcd4d94dba90aace8c2f9" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          Install-ExchangeCertificate -WebSiteName "Exchange Back End" -services "IIS" -DomainController $RoleDomainController -InstallInTrustedRootCAIfSelfSigned $true
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="false" />
+      <DisasterRecovery>
+        <Standalone>
+          $tpath = "$env:SystemRoot\system32\inetsrv\microsoft.web.administration.dll";
+          add-type -Path $tpath;
+          $sm = new-object Microsoft.Web.Administration.ServerManager;
+          if ($sm.Sites["Exchange Back End"] -eq $null)
+          {
+            $backEndWebSitePath = [System.IO.Path]::Combine($RoleInstallPath, "ClientAccess");
+            $s = $sm.Sites.Add("Exchange Back End","http", "*:81:", $backEndWebSitePath);
+            $s.ServerAutoStart = $true;
+            $sb =$s.Bindings;
+            $b = $sb.Add("*:444:","https");
+            $sm.CommitChanges();
+          }
+          Install-ExchangeCertificate -WebSiteName "Exchange Back End" -services "IIS" -DomainController $RoleDomainController -InstallInTrustedRootCAIfSelfSigned $true
+        </Standalone>
+      </DisasterRecovery>
+      <Uninstall/>
+    </ServerTaskInfo>
+
+    <!-- Install/uninstall CAFE IIS web service extensions -->
+    <ServerTaskInfo Id="_2f8b914a7c6748acbaf6f21191569cbd" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>install-CafeIisWebServiceExtensions</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>uninstall-CafeIisWebServiceExtensions</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Create Cafe FE OWA vdir -->
+    <ServerTaskInfo Id="_bb7da0d258a640c18755eae1daec22c1" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+            $InternalOwaUrl = "https://" + $RoleFqdnOrName + "/owa";
+            new-OwaVirtualDirectory -Role ClientAccess -DomainController $RoleDomainController -InternalUrl $InternalOwaUrl;
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade>
+        <Standalone>
+          . "$RoleInstallPath\Scripts\Update-AppPoolManagedFrameworkVersion.ps1" -AppPoolName:"MSExchangeOWAAppPool" -Version:"v4.0";
+          . "$RoleInstallPath\Scripts\Update-AppPoolManagedFrameworkVersion.ps1" -AppPoolName:"MSExchangeOWACalendarAppPool" -Version:"v4.0";
+        </Standalone>
+      </BuildToBuildUpgrade>
+      <DisasterRecovery>
+        <Standalone>
+          get-OwaVirtualDirectory -server $RoleFqdnOrName -DomainController $RoleDomainController | remove-OwaVirtualDirectory -DomainController $RoleDomainController;
+          $InternalOwaUrl = "https://" + $RoleFqdnOrName + "/owa";
+          new-OwaVirtualDirectory -Role ClientAccess -DomainController $RoleDomainController -InternalUrl $InternalOwaUrl;
+        </Standalone>
+      </DisasterRecovery>
+      <Uninstall IsFatal="false">
+        <Standalone>
+          get-OwaVirtualDirectory -server $RoleFqdnOrName -DomainController $RoleDomainController | remove-OwaVirtualDirectory -DomainController $RoleDomainController;
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!--Set root app pool to OWA app pool for use with OWAUrlModule-->
+    <ServerTaskInfo Id="_831ecd394f4a48b4a140533da4d54bad" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          $CommandAppCmd = join-path $env:SystemRoot System32\inetsrv\appcmd.exe;
+          Start-SetupProcess -Name "$CommandAppCmd" -args "set site /site.name:`"Default Web Site`" /[path='/'].applicationPool:MSExchangeOWAAppPool" -IgnoreExitCode @(183);
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall>
+        <Standalone>
+          $CommandAppCmd = join-path $env:SystemRoot System32\inetsrv\appcmd.exe;
+          Start-SetupProcess -Name "$CommandAppCmd" -args "set site /site.name:`"Default Web Site`" /[path='/'].applicationPool:DefaultAppPool" -IgnoreExitCode @(183);
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Create Cafe FE ECP vdir -->
+    <ServerTaskInfo Id="_a4028fe5e136461ab4d0102bd329efb3" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          $InternalEcpUrl="https://" + $RoleFqdnOrName + "/ecp";
+          $ExternalEcpUrl = $null;
+          if ($RoleExternalCASServerDomain -ne $null)
+          {
+            $ExternalEcpUrl = "https://" + $RoleExternalCASServerDomain + "/ecp";
+          }
+          new-EcpVirtualDirectory -Role ClientAccess -DomainController $RoleDomainController -InternalUrl $InternalEcpUrl -ExternalUrl $ExternalEcpUrl;
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade>
+        <Standalone>
+          . "$RoleInstallPath\Scripts\Update-AppPoolManagedFrameworkVersion.ps1" -AppPoolName:"MSExchangeECPAppPool" -Version:"v4.0";
+        </Standalone>
+      </BuildToBuildUpgrade>
+      <DisasterRecovery>
+        <Standalone>
+          get-EcpVirtualDirectory -DomainController $RoleDomainController -server $RoleFqdnOrName | remove-EcpVirtualDirectory -DomainController $RoleDomainController;
+          $InternalEcpUrl="https://" + $RoleFqdnOrName + "/ecp";
+          $ExternalEcpUrl = $null;
+          if ($RoleExternalCASServerDomain -ne $null)
+          {
+            $ExternalEcpUrl = "https://" + $RoleExternalCASServerDomain + "/ecp";
+          }
+          new-EcpVirtualDirectory -Role ClientAccess -DomainController $RoleDomainController -InternalUrl $InternalEcpUrl -ExternalUrl $ExternalEcpUrl;
+        </Standalone>
+      </DisasterRecovery>
+      <Uninstall IsFatal="false">
+        <Standalone>
+          get-EcpVirtualDirectory -DomainController $RoleDomainController -server $RoleFqdnOrName | remove-EcpVirtualDirectory -DomainController $RoleDomainController;
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Create Cafe FE EWS vdir -->
+    <ServerTaskInfo Id="_9d46f5e7da744b19ae143b91b7e57ba8" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          new-WebServicesVirtualDirectory -Role ClientAccess -windowsAuthentication:$true -WSSecurityAuthentication:$true -OAuthAuthentication:$true -DomainController $RoleDomainController -Force -GzipLevel High;
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade>
+        <Standalone>
+          . "$RoleInstallPath\Scripts\Update-AppPoolManagedFrameworkVersion.ps1" -AppPoolName:"MSExchangeServicesAppPool" -Version:"v4.0";
+          get-WebServicesVirtualDirectory -server $RoleFqdnOrName | set-WebServicesVirtualDirectory -windowsAuthentication:$true -WSSecurityAuthentication:$true -OAuthAuthentication:$true
+        </Standalone>
+      </BuildToBuildUpgrade>
+      <DisasterRecovery>
+        <Standalone>
+          get-WebServicesVirtualDirectory -server $RoleFqdnOrName | remove-WebServicesVirtualDirectory -DomainController $RoleDomainController -Force;
+          $urlToUse = "https://" + $RoleFqdnOrName + "/ews/exchange.asmx";
+          new-WebServicesVirtualDirectory -Role ClientAccess -windowsAuthentication:$true -WSSecurityAuthentication:$true -OAuthAuthentication:$true -InternalNLBBypassUrl $urlToUse -DomainController $RoleDomainController -Force -GzipLevel High;
+        </Standalone>
+      </DisasterRecovery>
+      <Uninstall IsFatal="false">
+        <Standalone>
+          get-WebServicesVirtualDirectory -server $RoleFqdnOrName | remove-WebServicesVirtualDirectory -DomainController $RoleDomainController -Force;
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Create Cafe FE Autodiscover vdir -->
+    <ServerTaskInfo Id="_590cbdb17c9f46ccb7eb81102dae4e5c" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          new-AutodiscoverVirtualDirectory -Role ClientAccess -WSSecurityAuthentication:$true -OAuthAuthentication:$true -DomainController $RoleDomainController;
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade>
+        <Standalone>
+          . "$RoleInstallPath\Scripts\Update-AppPoolManagedFrameworkVersion.ps1" -AppPoolName:"MSExchangeAutodiscoverAppPool" -Version:"v4.0";
+          get-AutodiscoverVirtualDirectory -server $RoleFqdnOrName | set-AutodiscoverVirtualDirectory -WSSecurityAuthentication:$true -OAuthAuthentication:$true
+        </Standalone>
+      </BuildToBuildUpgrade>
+      <DisasterRecovery>
+        <Standalone>
+          get-AutodiscoverVirtualDirectory -server $RoleFqdnOrName | remove-AutodiscoverVirtualDirectory -DomainController $RoleDomainController;
+          new-AutodiscoverVirtualDirectory -Role ClientAccess -WSSecurityAuthentication:$true -OAuthAuthentication:$true -DomainController $RoleDomainController;
+        </Standalone>
+      </DisasterRecovery>
+      <Uninstall IsFatal="false">
+        <Standalone>
+          get-AutodiscoverVirtualDirectory -server $RoleFqdnOrName | remove-AutodiscoverVirtualDirectory -DomainController $RoleDomainController;
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!--
+         Enable OutlookAnywhere using defaults if not already enabled
+    -->
+    <ServerTaskInfo Id="_54921f0b8cf241D1b573cc0DDD82ce9D" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          $outlookAnywhere = get-outlookanywhere -server $RoleNetBIOSName;
+          if ( $outlookAnywhere -eq $null )
+          {
+              enable-outlookanywhere -server $RoleNetBIOSName -IISAuthenticationMethods Negotiate,Ntlm,Basic -SSLOffloading $True -InternalHostname $RoleFqdnOrName -InternalClientAuthenticationMethod Ntlm -InternalClientsRequireSsl $false
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall/>
+    </ServerTaskInfo>
+
+    <!-- Configure external URL for OWA virtual directory-->
+    <ServerTaskInfo Id="_65dc6eb917434be9aa9b6fa8afdd873b" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>
+          $ExternalOwaUrl = $null;
+          if ($RoleExternalCASServerDomain -ne $null)
+          {
+            $ExternalOwaUrl = "https://" + $RoleExternalCASServerDomain + "/owa";
+          }
+          $FEVdirIdentity = $RoleNetBIOSName + "\OWA (Default Web Site)";
+          get-OwaVirtualDirectory -Identity $FEVdirIdentity -DomainController $RoleDomainController | Set-OwaVirtualDirectory -ExternalUrl $ExternalOwaUrl;
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade/>
+      <DisasterRecovery/>
+      <Uninstall/>
+    </ServerTaskInfo>
+
+    <!-- Set install path in app config "FrontEnd/HttpProxy/autodiscover" -->
+    <ServerTaskInfo Id="_3aa8d801afc441c7a3374d9d118e0b44" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>set-InstallPathInAppConfig -ConfigFileRelativePath "FrontEnd\HttpProxy\autodiscover" -ConfigFileName web.config</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Configure external URL for Web Services virtual directory-->
+    <ServerTaskInfo Id="_ad051f4b05040fa89f89b11f9a3c1f" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>
+          if ($RoleExternalCASServerDomain -ne $null)
+          {
+            $ExternalWebServicesUrl = "https://" + $RoleExternalCASServerDomain + "/ews/exchange.asmx";
+            $FEVdirIdentity = $RoleNetBIOSName + "\EWS (Default Web Site)";
+            Get-WebServicesVirtualDirectory -Identity $FEVdirIdentity -DomainController $RoleDomainController | Set-WebServicesVirtualDirectory -ExternalUrl $ExternalWebServicesUrl;
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade/>
+      <DisasterRecovery/>
+      <Uninstall/>
+    </ServerTaskInfo>
+
+    <!-- Configure external URL for AutoDiscover virtual directory-->
+    <ServerTaskInfo Id="_98fef19ddda844c8867fda3a7afc49ea" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>
+          if ($RoleExternalCASServerDomain -ne $null)
+          {
+            $ExternalAutoDiscoverUrl = "https://" + $RoleExternalCASServerDomain + "/autodiscover/autodiscover.svc";
+            $FEVdirIdentity = $RoleNetBIOSName + "\Autodiscover (Default Web Site)";
+            Get-AutodiscoverVirtualDirectory -Identity $FEVdirIdentity -DomainController $RoleDomainController | Set-AutodiscoverVirtualDirectory -ExternalUrl $ExternalAutoDiscoverUrl;
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade/>
+      <DisasterRecovery/>
+      <Uninstall/>
+    </ServerTaskInfo>
+
+    <!-- Set install path in app config "FrontEnd/HttpProxy/owa" -->
+    <ServerTaskInfo Id="_b07dd1c1d3b14b84a964cd6985eca1c" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>set-InstallPathInAppConfig -ConfigFileRelativePath "FrontEnd\HttpProxy\owa" -ConfigFileName web.config</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Set install path in app config "FrontEnd/HttpProxy/ecp" -->
+    <ServerTaskInfo Id="_810817e87c0541ab99185b1afcd28aa2" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>set-InstallPathInAppConfig -ConfigFileRelativePath "FrontEnd\HttpProxy\ecp" -ConfigFileName web.config</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Set install path in app config "FrontEnd/HttpProxy/rpc" -->
+    <ServerTaskInfo Id="_4e539571-229a-42c3-8e09-77f71fe36200" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>set-InstallPathInAppConfig -ConfigFileRelativePath "FrontEnd\HttpProxy\rpc" -ConfigFileName web.config</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Set install path in app config "FrontEnd/HttpProxy/mapi" -->
+    <ServerTaskInfo Id="_E47F6FB4-F352-4745-B902-FFD7A9169DF6" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>set-InstallPathInAppConfig -ConfigFileRelativePath "FrontEnd\HttpProxy\mapi" -ConfigFileName web.config</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Set install path in app config "FrontEnd/HttpProxy/ReportingWebService" -->
+    <ServerTaskInfo Id="_F9728B20-2816-4D3F-9137-7BD5C0787233" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>set-InstallPathInAppConfig -ConfigFileRelativePath "FrontEnd\HttpProxy\ReportingWebService" -ConfigFileName web.config</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Create/remove Mobile Sync Cafe virtual directory -->
+    <ServerTaskInfo Id="_e1130a139a734d90b6c5eec88868fbe9" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          new-ActiveSyncVirtualDirectory -DomainController $RoleDomainController -Role ClientAccess;
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade>
+        <Standalone>
+          $fe = get-ActiveSyncVirtualDirectory -server $RoleFqdnOrName -DomainController $RoleDomainController -ErrorAction SilentlyContinue;
+
+          if ($fe -eq $null)
+          {
+            new-ActiveSyncVirtualDirectory -DomainController $RoleDomainController -Role ClientAccess;
+          }
+          else
+          {
+            update-ActiveSyncVirtualDirectory $fe -DomainController $RoleDomainController -InstallIsapiFilter $true
+          }
+        </Standalone>
+      </BuildToBuildUpgrade>
+      <DisasterRecovery>
+        <Standalone>
+          get-ActiveSyncVirtualDirectory -server $RoleFqdnOrName -DomainController $RoleDomainController | remove-ActiveSyncVirtualDirectory -DomainController $RoleDomainController
+          new-ActiveSyncVirtualDirectory -DomainController $RoleDomainController -Role ClientAccess;
+        </Standalone>
+      </DisasterRecovery>
+      <Uninstall IsFatal="false">
+        <Standalone>get-ActiveSyncVirtualDirectory -server $RoleFqdnOrName -DomainController $RoleDomainController | remove-ActiveSyncVirtualDirectory -DomainController $RoleDomainController</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Configure external URL for Mobile Sync virtual directory-->
+    <ServerTaskInfo Id="_90cefc68b56348d1b0cab4ee9cde29f7" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>
+          $ExternalActivesyncUrl = $null;
+          if ($RoleExternalCASServerDomain -ne $null)
+          {
+            $ExternalActivesyncUrl = "https://" + $RoleExternalCASServerDomain + "/Microsoft-Server-ActiveSync";
+            Get-ActiveSyncVirtualDirectory -Server:$RoleFqdnOrName -DomainController $RoleDomainController | Set-ActiveSyncVirtualDirectory -ExternalUrl $ExternalActivesyncUrl;
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade>
+        <Standalone>
+          . "$RoleInstallPath\Scripts\Update-AppPoolManagedFrameworkVersion.ps1" -AppPoolName:"MSExchangeSyncAppPool" -Version:"v4.0";
+        </Standalone>
+      </BuildToBuildUpgrade>
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall/>
+    </ServerTaskInfo>
+
+    <!-- Set install path in app config "ClientAccess/sync" -->
+    <ServerTaskInfo Id="_d38ac523f5a042ac810c074c7b03c874" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>set-InstallPathInAppConfig -ConfigFileRelativePath "FrontEnd\HttpProxy\sync" -ConfigFileName web.config</Standalone>
+      </Install>
+      <BuildToBuildUpgrade>
+        <Standalone>
+          set-InstallPathInAppConfig -ConfigFileRelativePath "FrontEnd\HttpProxy\sync" -ConfigFileName web.config;
+          Write-ExchangeSetupLog -Info "Ensuring web.config supports OAuth...";
+          if ($RoleIsDatacenter -ne $true -And $RoleIsPartnerHosted -ne $true)
+          {
+              $fullPath = [System.IO.Path]::Combine($RoleInstallPath, "FrontEnd\HttpProxy\sync\web.config");
+              if (Test-Path $fullPath) {
+                Write-ExchangeSetupLog -Info "Found config file. Begin patching...";
+                Set-AppConfigValue -ConfigFileFullPath $fullPath -Element "configuration/appSettings" -AppSettingKey "OAuthHttpModule.Profiles" -NewValue "V1AppActAs";
+                Set-AppConfigValue -ConfigFileFullPath $fullPath -Element "configuration/appSettings" -AppSettingKey "OAuthHttpModule.V1AppScopes" -NewValue "EAS.AccessAsUser.All";
+                [xml] $xml = "";
+                $add = $xml.CreateElement("add");
+                $add.SetAttribute("name", "OAuthAuthModule");
+                $add.SetAttribute("type", "Microsoft.Exchange.Security.OAuth.OAuthHttpModule");
+                Set-AppConfigValue -ConfigFileFullPath $fullPath -Element "configuration/system.webServer/modules/add[@name='OAuthAuthModule']" -xmlNode $add;
+              }
+              else {
+                  Write-ExchangeSetupLog -Info "Nothing to patch";
+              }
+          }
+        </Standalone>
+      </BuildToBuildUpgrade>
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Create Cafe FE OAB vdir -->
+    <ServerTaskInfo Id="_3c4d5a9090994d57908df348ba3810ea" Component="EXCHANGE14:\Current\Release\Shared\DIY\Recipients&amp;Provisioning\OAB">
+      <Install>
+        <Standalone>
+          $InternalOabUrl = "https://" + $RoleFqdnOrName + "/OAB";
+          new-OabVirtualDirectory -Role ClientAccess -DomainController $RoleDomainController -InternalUrl $InternalOabUrl;
+          get-OabVirtualDirectory -server $RoleFqdnOrName -DomainController $RoleDomainController | set-OabVirtualDirectory -OAuthAuthentication:$true;
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade>
+        <Standalone>
+          . "$RoleInstallPath\Scripts\Update-AppPoolManagedFrameworkVersion.ps1" -AppPoolName:"MSExchangeOABAppPool" -Version:"v4.0";
+          get-OabVirtualDirectory -server $RoleFqdnOrName -DomainController $RoleDomainController | set-OabVirtualDirectory -OAuthAuthentication:$true;
+        </Standalone>
+      </BuildToBuildUpgrade>
+      <DisasterRecovery>
+        <Standalone>
+          get-OabVirtualDirectory -server $RoleFqdnOrName -DomainController $RoleDomainController | remove-OabVirtualDirectory -DomainController $RoleDomainController;
+          $InternalOabUrl = "https://" + $RoleFqdnOrName + "/OAB";
+          new-OabVirtualDirectory -Role ClientAccess -DomainController $RoleDomainController -InternalUrl $InternalOabUrl;
+          get-OabVirtualDirectory -server $RoleFqdnOrName -DomainController $RoleDomainController | set-OabVirtualDirectory -OAuthAuthentication:$true;
+        </Standalone>
+      </DisasterRecovery>
+      <Uninstall IsFatal="false">
+        <Standalone>
+          get-OabVirtualDirectory -server $RoleFqdnOrName -DomainController $RoleDomainController | remove-OabVirtualDirectory -DomainController $RoleDomainController;
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Enable web distribution for default OAB -->
+    <ServerTaskInfo Id="_9E9ED32E3FAA498698DB6E5743330CC8" Component="EXCHANGE14:\Current\Release\Shared\DIY\Recipients&amp;Provisioning\OAB">
+      <Install>
+        <Standalone>
+        get-OfflineAddressBook -DomainController $RoleDomainController | where { $_.IsDefault } | Enable-OabWebDistribution
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade />
+      <DisasterRecovery />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Set install path in app config "FrontEnd/HttpProxy/oab" -->
+    <ServerTaskInfo Id="_08b9469698c643ebb821ad7e58bccaa5" Component="EXCHANGE14:\Current\Release\Shared\DIY\Recipients&amp;Provisioning\OAB">
+      <Install>
+        <Standalone>set-InstallPathInAppConfig -ConfigFileRelativePath "FrontEnd\HttpProxy\oab" -ConfigFileName web.config</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+      <!-- Set install path in app config "FrontEnd/HttpProxy/ews" -->
+    <ServerTaskInfo Id="_ed07d947376d42e1a8f28aba391d813a" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>set-InstallPathInAppConfig -ConfigFileRelativePath "FrontEnd\HttpProxy\ews" -ConfigFileName web.config</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Set install path in app config "FrontEnd/HttpProxy/PushNotifications" -->
+    <ServerTaskInfo Id="_4b2c74d9aaca4cff88e9e6fc8e40568f" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>set-InstallPathInAppConfig -ConfigFileRelativePath "FrontEnd\HttpProxy\PushNotifications" -ConfigFileName web.config</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Remove CAS created PowerShell FE vdir -->
+    <ServerTaskInfo Id="_b0773fbec7d54eac8c55d88cb67410dc" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          get-PowerShellVirtualDirectory -server $RoleFqdnOrName -DomainController $RoleDomainController | remove-PowerShellVirtualDirectory -DomainController $RoleDomainController;
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Create PowerShell virtual directory -->
+    <ServerTaskInfo Id="_28ded5ec769748d4a7f40f4b4a63fc01" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          $vdirName = "PowerShell";
+          $InternalPowerShellUrl="http://" + $RoleFqdnOrName + "/powershell";
+          new-PowerShellVirtualDirectory $vdirName -InternalUrl $InternalPowerShellUrl -DomainController $RoleDomainController -BasicAuthentication:$false -WindowsAuthentication:$false -RequireSSL:$false -Role ClientAccess;
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade>
+        <Standalone>
+          $vdirName = "PowerShell (Default Web Site)";
+          $InternalPowerShellUrl="http://" + $RoleFqdnOrName + "/powershell";
+          $vdir = get-PowerShellVirtualDirectory -server $RoleFqdnOrName -DomainController $RoleDomainController | where { $_.Name -eq $vdirName };
+          if ($vdir -eq $null)
+          {
+            $vdirName = "PowerShell";
+            new-PowerShellVirtualDirectory $vdirName -InternalUrl $InternalPowerShellUrl -DomainController $RoleDomainController -BasicAuthentication:$false -WindowsAuthentication:$false -RequireSSL:$false -Role ClientAccess;
+          }
+          else
+          {
+            update-PowerShellVirtualDirectoryVersion -DomainController $RoleDomainController;
+            Set-PowerShellVirtualDirectory $vdirName -InternalUrl $InternalPowerShellUrl -DomainController $RoleDomainController -WindowsAuthentication:$false -RequireSSL:$false;
+          }
+        </Standalone>
+      </BuildToBuildUpgrade>
+      <DisasterRecovery>
+        <Standalone>
+          get-PowerShellVirtualDirectory -server $RoleFqdnOrName -DomainController $RoleDomainController | remove-PowerShellVirtualDirectory -DomainController $RoleDomainController -Confirm:$false;
+          $vdirName = "PowerShell";
+          $InternalPowerShellUrl="http://" + $RoleFqdnOrName + "/powershell";
+          new-PowerShellVirtualDirectory $vdirName -InternalUrl $InternalPowerShellUrl -DomainController $RoleDomainController -BasicAuthentication:$false -WindowsAuthentication:$false -RequireSSL:$false -Role ClientAccess;
+        </Standalone>
+      </DisasterRecovery>
+      <Uninstall IsFatal="false">
+        <Standalone>
+          get-PowerShellVirtualDirectory -server $RoleFqdnOrName -DomainController $RoleDomainController | remove-PowerShellVirtualDirectory -DomainController $RoleDomainController;
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Remove PowerShell virtual directory for certificate authentication during B2B Upgrade-->
+    <ServerTaskInfo Id="_9c685f2462b743768ef642787587a6e6" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install />
+      <BuildToBuildUpgrade>
+        <Standalone>
+          $vdirName = "PowerShell-Cert (Default Web Site)";
+          $vdir = get-PowerShellVirtualDirectory -server $RoleFqdnOrName -DomainController $RoleDomainController | where { $_.Name -eq $vdirName };
+          if ($vdir -ne $null)
+          {
+            remove-PowerShellVirtualDirectory $vdir -DomainController $RoleDomainController;
+          }
+        </Standalone>
+      </BuildToBuildUpgrade>
+      <DisasterRecovery />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Set install path in app config "ClientAccess/PowerShell" -->
+    <ServerTaskInfo Id="_3fab3837ae084a03b585ada009dd4ce2" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>set-InstallPathInAppConfig -ConfigFileRelativePath "FrontEnd\HttpProxy\PowerShell\" -ConfigFileName web.config</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Create SIP container -->
+    <ServerTaskInfo Id="_8d26fd7ca4b740dc91727fcad39e144d" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>install-SIPContainer -Name:"SIP" -DomainController $RoleDomainController</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Create UM CallRouter config -->
+    <ServerTaskInfo Id="_0f8072df128f4adb8e2306f18706be03" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>new-UMCallRouterSettings -DomainController $RoleDomainController</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Set install paths in config file -->
+    <ServerTaskInfo Id="_c1e7497a91664b6bbee21d28d60030fd" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>set-InstallPathInAppConfig -ConfigFileRelativePath "FrontEnd\CallRouter" -ConfigFileName Microsoft.Exchange.UM.CallRouter.exe.config</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Set install path in root web.config -->
+    <ServerTaskInfo Id="_344A18A1FF7A40CBB38383BA21EAD6E5" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>set-InstallPathInAppConfig -ConfigFileAbsolutePath "$env:SystemDrive\inetpub\wwwroot" -ConfigFileName web.config</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+    
+    <!-- Install/remove UM Call Router -->
+    <ServerTaskInfo Id="_dfaad326027e4a46ada02274798d310e" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+            install-UMCallRouter
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>uninstall-UMCallRouter</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Carry over the auth flags for OWA virtual directory -->
+    <!-- i.e. We are resetting all the vdir auth flags to the same values as before the upgrade. This is required because the web.config got
+         overwritten during the upgrade and the set commandlet updates the web.config appropriately. (OfficeMain bug#78914) -->  
+    <ServerTaskInfo Id="_b222f03cbc01447d8e833e996ae84799" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install/>
+      <BuildToBuildUpgrade>
+        <Standalone>
+          $FEOWAVdirIdentity = $RoleNetBIOSName + "\OWA (Default Web Site)";
+          $FEOWAVdir = get-OwaVirtualDirectory -Identity $FEOWAVdirIdentity -DomainController $RoleDomainController;
+
+          if ($FEOWAVdir -ne $null)
+          {
+            Set-OwaVirtualDirectory -Identity $FEOWAVdir.Identity -ExternalUrl $FEOWAVdir.ExternalUrl -InternalUrl $FEOWAVdir.InternalUrl -ExternalAuthenticationMethods $FEOWAVdir.ExternalAuthenticationMethods -BasicAuthentication ([Convert]::ToBoolean($FEOWAVdir.BasicAuthentication)) -WindowsAuthentication ([Convert]::ToBoolean($FEOWAVdir.WindowsAuthentication)) -DigestAuthentication ([Convert]::ToBoolean($FEOWAVdir.DigestAuthentication)) -FormsAuthentication ([Convert]::ToBoolean($FEOWAVdir.FormsAuthentication)) -LiveIdAuthentication ([Convert]::ToBoolean($FEOWAVdir.LiveIdAuthentication)) -OAuthAuthentication ([Convert]::ToBoolean($FEOWAVdir.OAuthAuthentication)) -AdfsAuthentication ([Convert]::ToBoolean($FEOWAVdir.AdfsAuthentication));
+          }
+        </Standalone>
+      </BuildToBuildUpgrade>
+      <DisasterRecovery/>
+      <Uninstall/>
+    </ServerTaskInfo>
+
+    <!-- Carry over the auth flags for ECP virtual directory-->
+    <!-- i.e. We are resetting all the vdir auth flags to the same values as before the upgrade. This is required because the web.config got
+         overwritten during the upgrade and the set commandlet updates the web.config appropriately.  (OfficeMain bug#78914) -->  
+    <ServerTaskInfo Id="_a652dd06b3884a0b9edf3b8648f3ff6c" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install/>
+      <BuildToBuildUpgrade>
+        <Standalone>
+          $FEECPVdirIdentity = $RoleNetBIOSName + "\ECP (Default Web Site)";
+          $FEECPVdir = get-EcpVirtualDirectory -Identity $FEECPVdirIdentity -DomainController $RoleDomainController;
+
+          if ($FEECPVdir -ne $null)
+          {
+            Set-EcpVirtualDirectory -Identity $FEECPVdir.Identity -ExternalUrl $FEECPVdir.ExternalUrl -InternalUrl $FEECPVdir.InternalUrl -ExternalAuthenticationMethods $FEECPVdir.ExternalAuthenticationMethods -BasicAuthentication ([Convert]::ToBoolean($FEECPVdir.BasicAuthentication)) -WindowsAuthentication ([Convert]::ToBoolean($FEECPVdir.WindowsAuthentication)) -DigestAuthentication ([Convert]::ToBoolean($FEECPVdir.DigestAuthentication)) -FormsAuthentication ([Convert]::ToBoolean($FEECPVdir.FormsAuthentication)) -LiveIdAuthentication ([Convert]::ToBoolean($FEECPVdir.LiveIdAuthentication)) -AdfsAuthentication ([Convert]::ToBoolean($FEECPVdir.AdfsAuthentication));
+          }
+        </Standalone>
+      </BuildToBuildUpgrade>
+      <DisasterRecovery/>
+      <Uninstall/>
+    </ServerTaskInfo>
+    
+     <!--
+    Increase the default TCP port range beyond 16K ports and set default TCP start port beyond 6000
+    so that UM reserved ports and not in the dynamic allocation range.
+    -->
+    <ServerTaskInfo Id="_60cf5d14f7cd4fdeb396508a1dae1514" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          . "$RoleInstallPath\Scripts\ConfigureNetworkProtocolParameters.ps1";
+          Enable-ExtendedTcpPortRange
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall/>
+    </ServerTaskInfo>
+
+    <!-- 
+      Disable shutting down of ALL application pools when the process crashes(Maximum Failures)
+      within a specified time period (Failure Interval).
+    -->
+      <ServerTaskInfo Id="_5fe3f25177ac48659ccc6e2b9e4999cc" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>
+          . "$RoleInstallPath\Scripts\ConfigureNetworkProtocolParameters.ps1";
+          Set-RapidFailProtection $false
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall />
+    </ServerTaskInfo>
+	
+	<!-- 
+      O15:3210694
+	  IIS Kernel-mode authentication is Enabled by default in Stand-Alone cafe installs for /OWA and /ECP
+	  and Disabled by default in Multi-Role Installs - Need to make Disabled by default in ALL installs
+    -->
+      <ServerTaskInfo Id="_DisableKernelModeAuthByDefault" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          . "$RoleInstallPath\Scripts\ConfigureNetworkProtocolParameters.ps1"; 
+          Set-IisKernelModeAuthentication $false
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall />
+    </ServerTaskInfo>
+    
+    <!-- Add/remove by port firewall exceptions -->
+    <ServerTaskInfo Id="_e9c130342dd84c0eb283dea8b2af8238" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          Add-FirewallException -FirewallRule (New-Object Microsoft.Exchange.Security.WindowsFirewall.MSExchangeUMCallRouterNumberedByPort);
+          Add-FirewallException -FirewallRule (New-Object Microsoft.Exchange.Security.WindowsFirewall.MSExchangeCAFERemoteRegistryByPortRule);
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>
+          Remove-FirewallException -FirewallRule (New-Object Microsoft.Exchange.Security.WindowsFirewall.MSExchangeUMCallRouterNumberedByPort);
+          Remove-FirewallException -FirewallRule (New-Object Microsoft.Exchange.Security.WindowsFirewall.MSExchangeCAFERemoteRegistryByPortRule);
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <ServerTaskInfo Id="_376670f5a2bf4af48f794f78baf2e18f" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <!-- NGEN Microsoft.Exchange.UM.CallRouter.exe to avoid delays when service is starting up. -->
+      <Install Weight="5" DescriptionId="SetupProgressPrecompilingBinaries" IsFatal="false">
+        <Standalone>
+          $fullPath = [System.IO.Path]::Combine($RoleInstallPath, "FrontEnd\CallRouter\Microsoft.Exchange.UM.CallRouter.exe");
+          $appBase = [System.IO.Path]::Combine($RoleInstallPath, "bin");
+          precompile-ManagedBinary -BinaryName  $fullPath -AppBase $appBase;
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall Weight="5" DescriptionId="SetupProgressPrecompilingBinaries" IsFatal="false">
+        <Standalone>
+          $fullPath = [System.IO.Path]::Combine($RoleInstallPath, "FrontEnd\CallRouter\Microsoft.Exchange.UM.CallRouter.exe");
+          $appBase = [System.IO.Path]::Combine($RoleInstallPath, "bin");
+          precompile-ManagedBinary -BinaryName  $fullPath -AppBase $appBase -Action uninstall;
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Add global firewall rule for POP/IMAP -->
+    <ServerTaskInfo Id="_14a8380225064798b531f04884a317de" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          Add-FirewallException -FirewallRule (New-Object Microsoft.Exchange.Security.WindowsFirewall.MSExchangePOPByPortRule)
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>remove-firewallexception -FirewallRule (New-Object Microsoft.Exchange.Security.WindowsFirewall.MSExchangePOPByPortRule)</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <ServerTaskInfo Id="_40eb79eed4e1409b8f04bf9547cd1436" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          Add-FirewallException -FirewallRule (New-Object Microsoft.Exchange.Security.WindowsFirewall.MSExchangeIMAPByPortRule)
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>remove-firewallexception -FirewallRule (New-Object Microsoft.Exchange.Security.WindowsFirewall.MSExchangeIMAPByPortRule)</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Install exppw.dll -->
+    <ServerTaskInfo Id="_4f97548ee3da4452ac5da213b5e92bc6" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          $CommandAppCmd = join-path $env:SystemRoot System32\inetsrv\appcmd.exe;
+          $imagePath = [System.IO.Path]::Combine($RoleInstallPath, "FrontEnd\HttpProxy\bin\exppw.dll");
+          Start-SetupProcess -Name "$CommandAppCmd" -args "install module /name:cafe_exppw /image:`"$imagePath`" /add:false" -IgnoreExitCode @(183);
+          Start-SetupProcess -Name "$CommandAppCmd" -args "add module /name:cafe_exppw /app.name:`"Default Web Site/owa`"" -IgnoreExitCode @(183);
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <DisasterRecovery UseInstallTasks="true"/>
+      <Uninstall>
+        <Standalone>
+          $CommandAppCmd = join-path $env:SystemRoot System32\inetsrv\appcmd.exe;
+          Start-SetupProcess -Name "$CommandAppCmd" -args "uninstall module cafe_exppw";
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Configure app pool, application and auth for mapi -->
+    <ServerTaskInfo Id="_afb7c4dee3fa1432a556a312b4e54b57" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          $InternalMapiUrl = "https://" + $RoleFqdnOrName + "/mapi";
+          $mapiVirtualDirectory = Get-MapiVirtualDirectory -Server $RoleFqdnOrName -DomainController $RoleDomainController;
+          if ($mapiVirtualDirectory -eq $null)
+          {
+              New-MapiVirtualDirectory -InternalUrl $InternalMapiUrl -IISAuthenticationMethods Negotiate,NTLM,OAuth;
+          }
+          else
+          {
+              $mapiVirtualDirectory | Set-MapiVirtualDirectory -ApplyDefaults:$true;
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true"/>
+      <DisasterRecovery>
+        <Standalone>
+          $InternalMapiUrl = "https://" + $RoleFqdnOrName + "/mapi";
+          Get-MapiVirtualDirectory -server $RoleFqdnOrName -DomainController $RoleDomainController | Remove-MapiVirtualDirectory -DomainController $RoleDomainController;
+          New-MapiVirtualDirectory -InternalUrl $InternalMapiUrl -IISAuthenticationMethods Negotiate,NTLM,OAuth;
+        </Standalone>
+      </DisasterRecovery>
+      <Uninstall>
+        <Standalone>
+          Get-MapiVirtualDirectory -server $RoleFqdnOrName -DomainController $RoleDomainController | Remove-MapiVirtualDirectory -DomainController $RoleDomainController;
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+        
+    <!-- Enable change password screen in registry -->
+    <!-- we need this to use unmodified exppw.dll from OWA-->
+    <!-- TODO change this to use the new AD setting once the OWA team defines it-->
+    <ServerTaskInfo Id="_" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          $keyPath = "HKLM:\SYSTEM\CurrentControlSet\Services\MSExchange OWA";
+          if (!(Get-Item $keyPath -ErrorAction SilentlyContinue)) { New-Item $keyPath -Force }
+          Set-ItemProperty -path $keyPath -name "ChangeExpiredPasswordEnabled" -value 0x1 -Type DWORD -Force;
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true"  />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!--Update IIS TLS cipher list to EXO standards-->
+    <ServerTaskInfo Id="_16169c5d65e6427f81cd3bd3a95d7a9f" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          $keyPathRoot = "HKLM:\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols";
+          $keyPath = $keyPathRoot + "\SSL 2.0\Server";
+          if (!(Test-Path $keyPath))
+          {
+          New-Item -path $keyPathRoot"\SSL 2.0" -ItemType key -Name "Server" -Force;
+          }
+          Set-ItemProperty -path $keyPath -name "Enabled" -value 0x0 -Type DWORD -Force;
+
+          $keyPath = $keyPathRoot + "\SSL 3.0\Server";
+          if (!(Test-Path $keyPath))
+          {
+          New-Item -path $keyPathRoot"\SSL 3.0" -ItemType key -Name "Server" -Force;
+          }
+          Set-ItemProperty -path $keyPath -name "Enabled" -value 0x0 -Type DWORD -Force;
+
+          $keyPath = $keyPathRoot + "\TLS 1.0\Server";
+          if (!(Test-Path $keyPath))
+          {
+          New-Item -path $keyPathRoot"\TLS 1.0" -ItemType key -Name "Server" -Force;
+          }
+          Set-ItemProperty -path $keyPath -name "Enabled" -value 0x1 -Type DWORD -Force;
+
+          $keyPath = $keyPathRoot + "\TLS 1.1\Server";
+          if (!(Test-Path $keyPath))
+          {
+          New-Item -path $keyPathRoot"\TLS 1.1" -ItemType key -Name "Server" -Force;
+          }
+          Set-ItemProperty -path $keyPath -name "Enabled" -value 0x1 -Type DWORD -Force;
+          Set-ItemProperty -path $keyPath -name "DisabledByDefault" -value 0x0 -Type DWORD -Force;
+
+          $keyPath = $keyPathRoot + "\TLS 1.2\Server";
+          if (!(Test-Path $keyPath))
+          {
+          New-Item -path $keyPathRoot"\TLS 1.2" -ItemType key -Name "Server" -Force;
+          }
+          Set-ItemProperty -path $keyPath -name "Enabled" -value 0x1 -Type DWORD -Force;
+          Set-ItemProperty -path $keyPath -name "DisabledByDefault" -value 0x0 -Type DWORD -Force;
+
+          $keypath = "HKLM:\SOFTWARE\Policies\Microsoft\Cryptography\Configuration\SSL\00010002";
+          if (!(Test-Path $keyPath)) { New-Item $keyPath -Force }
+          Set-ItemProperty -path $keyPath -name "Functions" -value "TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384_P384,TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P384,TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA_P384,TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA_P256,TLS_RSA_WITH_AES_256_CBC_SHA,TLS_RSA_WITH_3DES_EDE_CBC_SHA,TLS_RSA_WITH_AES_128_CBC_SHA,TLS_RSA_WITH_RC4_128_SHA,TLS_RSA_WITH_RC4_128_MD5" -Force;
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="false" />
+      <DisasterRecovery UseInstallTasks="true"  />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Restart Microsoft.Exchange.ServiceHost to flush CLR assemblies-->
+    <ServerTaskInfo Id="_D3D56093B30e48fa825d407b8fa4b1f0" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          if (get-service MSExchangeServiceHost* | where {$_.name -eq "MSExchangeServiceHost"})
+          {
+          restart-service MSExchangeServiceHost
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall/>
+    </ServerTaskInfo>
+
+    <!-- Restart Microsoft.Exchange.ProtectedServiceHost to flush CLR assemblies-->
+    <ServerTaskInfo Id="_1edd2f79bDf345D3883241c322970662" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          if (get-service MSExchangeProtectedServiceHost* | where {$_.name -eq "MSExchangeProtectedServiceHost"})
+          {
+          restart-service MSExchangeProtectedServiceHost
+          }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall/>
+    </ServerTaskInfo>
+
+    <!--
+    Add X-FEServer custom response header in order to identity target fe server for all requests processed by this cafe server
+    Note: please DO NOT add customer header for ReportingWebService, since rws inherit the config from ecp. Otherwise, it will cause duplicated key error. See bug 2940683 for more details.
+    -->
+    <ServerTaskInfo Id="_427a9e92380a4f5dad75162c1235c731" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          ."$RoleInstallPath\Scripts\ConfigureCafeResponseHeaders.ps1";
+          CreateCustomHeadersNodeForCafe 'autodiscover'
+          CreateCustomHeadersNodeForCafe 'ecp'
+          CreateCustomHeadersNodeForCafe 'ews'
+          CreateCustomHeadersNodeForCafe 'oab'
+          CreateCustomHeadersNodeForCafe 'owa'
+          CreateCustomHeadersNodeForCafe 'powershell'
+          CreateCustomHeadersNodeForCafe 'rpc'
+          CreateCustomHeadersNodeForCafe 'mapi'
+          CreateCustomHeadersNodeForCafe 'sync'
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall/>
+    </ServerTaskInfo>
+
+    <!-- Set the ServiceConnectionPoint on the server. -->
+    <ServerTaskInfo Id="_9b5feb8e2ff64c4ebd10edb43c3a2aa9" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          set-ClientAccessServer -Identity $RoleFqdnOrName;
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>
+          $clientAccessServer = get-ClientAccessServer -Identity $RoleFqdnOrName;
+          if($clientAccessServer)
+          {
+            if(($clientAccessServer.AutoDiscoverServiceInternalUri) -and ($clientAccessServer.AutoDiscoverSiteScope))
+            {
+              set-ClientAccessServer -Identity $RoleFqdnOrName -AutoDiscoverServiceInternalUri:$null -AutoDiscoverSiteScope:$null
+            }
+          }
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+    
+   <!-- Increase both MaxFieldLength and MaxRequestBytes to 65536 to allow large HTTP header. -->
+    <ServerTaskInfo Id="_6EB84EE13C824B9086A00FD7908C64AE" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+            $keyPath = "HKLM:\System\CurrentControlSet\Services\HTTP\Parameters";
+            if (!(Get-Item $keyPath -ErrorAction SilentlyContinue)) { New-Item $keyPath -Force }
+            set-itemproperty -path $keyPath -Name "MaxFieldLength" -Value 65534 -Type DWORD -Force;
+            set-itemproperty -path $keyPath -Name "MaxRequestBytes" -Value 65534 -Type DWORD -Force;
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+    
+  </ServerTasks>
+
+</SetupComponentInfo>
+

@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo Name="Transport Global AD Configuration" DescriptionId="SetupComponentTransportGlobalConfig">
+
+  <OrgTasks>
+
+    <!-- Creates the Transport Settings/DSN Customization container (CN=DSN Customization,CN=Tranport Settings,CN=<Org Name>... ) 
+       - only in First Organization - we do not need these containers in tenant context 
+         as we do not grant permissions to *-SystemMessage to any tenant role, and do not create any objects there at provisioning time.-->
+    <OrgTaskInfo Id="_ef584b8c55904c1faceec6a2ed26a277" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressCreateDSNCustomizationContainer">
+        <Global>install-Container -Name:"Transport Settings","DSN Customization" -DomainController $RoleDomainController</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+
+    <!-- Creates the Transport Settings/Message Classifications container and make it searchable by Authenticated Users (CN=Message Classifications,CN=Tranport Settings,CN=<Org Name>... ) -->
+    <ServicePlanTaskInfo FeatureName="CommonHydrateableObjectsSharedEnabled">
+      <Install DescriptionId="SetupProgressConfigureMessageClassificationsContainer">
+        <Global>install-Container -Name:"Transport Settings","Message Classifications" -DomainController $RoleDomainController</Global>
+        <Tenant>
+          if(!$CommonHydrateableObjectsSharedEnabled)
+          {
+              install-Container -Name:"Transport Settings","Message Classifications" -DomainController $RoleDomainController -Organization $RoleOrganizationHierarchicalPath
+          }
+      </Tenant>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </ServicePlanTaskInfo>
+
+    <!-- Creates the Transport Settings/Message Classifications/Default container (CN=Default,CN=Message Classifications,... ) -->
+    <ServicePlanTaskInfo FeatureName="CommonHydrateableObjectsSharedEnabled">
+      <Install DescriptionId="SetupProgressCreateDefaultMessageClassificationsContainer">
+        <Global>install-Container -Name:"Transport Settings","Message Classifications","Default" -DomainController $RoleDomainController</Global>
+        <Tenant>
+          if(!$CommonHydrateableObjectsSharedEnabled)
+          {
+              install-Container -Name:"Transport Settings","Message Classifications","Default" -DomainController $RoleDomainController -Organization $RoleOrganizationHierarchicalPath;
+          }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </ServicePlanTaskInfo>
+
+    <!-- Install message classification -->
+    <!-- Creates system message classification objects for enterprise in the default message classification container -->
+    <ServicePlanTaskInfo FeatureName="CommonHydrateableObjectsSharedEnabled">
+      <Install DescriptionId="SetupProgressConfigureSystemMessageClassification">
+        <Global>install-SystemMessageClassification -Name:"Transport Settings","Message Classifications" -DomainController $RoleDomainController</Global>
+        <Tenant>
+          <!-- PS 315201: Eventually, once all tenants have been upgraded to R5, this code should be removed. PS 318369 tracks the removal. -->
+          if(!$CommonHydrateableObjectsSharedEnabled)
+          {
+              Get-MessageClassification -DomainController $RoleDomainController -Organization $RoleOrganizationHierarchicalPath | where { ($_.ClassificationID -eq "103a41b0-6d8d-4be5-a866-da3c25d3d679") -and ($_.Identity -like "*ExInternetConfidential*") } | Remove-MessageClassification -Confirm:$false
+          }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </ServicePlanTaskInfo>
+
+    <!-- Creates the Transport Settings/Rules container (CN=Rules,CN=Tranport Settings,... ) -->
+    <ServicePlanTaskInfo FeatureName="TransportRulesCollectionsEnabled">
+      <Install DescriptionId="SetupProgressCreateRulesContainer">
+        <Global>install-Container -Name:"Transport Settings","Rules" -DomainController $RoleDomainController</Global>
+        <Tenant>
+            if(($ServicePlanSettings.Organization.TransportRulesCollectionsEnabled -or $RoleIsPartnerHosted) -and !$CreateSharedConfiguration)
+            {
+                install-Container -Name:"Transport Settings","Rules" -DomainController $RoleDomainController -Organization $RoleOrganizationHierarchicalPath;
+            }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </ServicePlanTaskInfo>
+
+    <!-- Creates the Transport Settings/Message Hygiene container (CN=Message Hygiene,CN=Transport Settings,... ) -->
+    <OrgTaskInfo Id="_03cd349c82b44de6833eeac323f4c5e1" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressCreateMessageHygieneContainer">
+        <Global>install-Container -Name:"Transport Settings","Message Hygiene" -DomainController $RoleDomainController</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+
+    <!-- Creates the Transport Settings/Message Hygiene/Sender Reputation configuration (CN=Sender Reupation,CN=Message Hygiene,... )  -->
+    <OrgTaskInfo Id="_1d715c0f8fb34bf39e7a44848498952d" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressCreateSenderRepuationConfiguration">
+        <Global>new-SenderReputationConfig -Name:"Transport Settings","Message Hygiene","Sender Reputation" -DomainController $RoleDomainController</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+
+    <!-- Creates hierachy of the DSN containers - 9 is the LCID for en -->
+    <OrgTaskInfo Id="_c02bb6b1a77841bdbaa997eff504c225" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressCreateDSNContainerHierarcy">
+        <Global>
+          foreach ($lcid in (get-DsnSupportedLanguages))
+          {
+            $lcidStr = $lcid.ToString("", [System.Globalization.NumberFormatInfo].InvariantInfo);
+            install-Container -Name:"Transport Settings","DSN Customization",$lcidStr  -DomainController $RoleDomainController;
+            install-Container -Name:"Transport Settings","DSN Customization",$lcidStr,"Internal" -DomainController $RoleDomainController;
+            install-Container -Name:"Transport Settings","DSN Customization",$lcidStr,"External" -DomainController $RoleDomainController;
+          }
+        </Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+
+    <!-- Creates singleton config objects for antispam - content filter config (CN=ContentFilterConfig,CN=Message Hygiene,... ) -->
+    <OrgTaskInfo Id="_deeab2b9875c4b7d9de49611005b404f" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressConfigureAntispamObjects">
+        <Global>install-ContentFilterConfig -DomainController $RoleDomainController</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+
+    <!-- Creates singleton config objects for antispam - sender id config (CN=SenderIdConfig,CN=Message Hygiene,... ) -->
+    <OrgTaskInfo Id="_63e3d937d0a646d0b604caf2f0bf640e" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressConfigureAntispamObjects">
+        <Global>install-SenderIDConfig -DomainController $RoleDomainController</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+
+    <!-- Creates singleton config objects for antispam - sender filter config (CN=SenderFilterConfig,CN=Message Hygiene,... ) -->
+    <OrgTaskInfo Id="_7d08d49cb28b431ea3de6a52b84caa5c" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressConfigureAntispamObjects">
+        <Global>install-SenderFilterConfig -DomainController $RoleDomainController</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+
+    <!-- Creates singleton config objects for antispam - recipient filter config (CN=RecipientFilterConfig,CN=Message Hygiene,... ) -->
+    <OrgTaskInfo Id="_86dca7ac871442e4abddd7b04eadc6fb" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressConfigureAntispamObjects">
+        <Global>install-RecipientFilterConfig -DomainController $RoleDomainController</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+
+    <!-- Creates singleton config objects for antispam - IP allow list config (CN=IPAllowListConfig,CN=Message Hygiene,... ) -->
+    <OrgTaskInfo Id="_5e01485a3a17492981de8791d7abebc1" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressConfigureAntispamObjects">
+        <Global>install-IPAllowListConfig -DomainController $RoleDomainController</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+
+    <!-- Creates singleton config objects for antispam - IP allow list providers config (CN=IPAllowListProvidersConfig,CN=Message Hygiene,... ) -->
+    <OrgTaskInfo Id="_a1a899f956da4a738e88fd44bf026464" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressConfigureAntispamObjects">
+        <Global>install-IPAllowListProvidersConfig -DomainController $RoleDomainController</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+
+    <!-- Creates singleton config objects for antispam - IP block list config (CN=IPBlockListConfig,CN=Message Hygiene,... ) -->
+    <OrgTaskInfo Id="_39216db389134bb095dd71007322ac17" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressConfigureAntispamObjects">
+        <Global>install-IPBlockListConfig -DomainController $RoleDomainController</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+
+    <!-- Creates singleton config objects for antispam - IP block list providers config (CN=IPBlockListProvidersConfig,CN=Message Hygiene,... ) -->
+    <OrgTaskInfo Id="_84fbfd7b19c140c6bb7a597046c192ef" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressConfigureAntispamObjects">
+        <Global>install-IPBlockListProvidersConfig -DomainController $RoleDomainController</Global>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </OrgTaskInfo>
+
+    <!-- Sets open domain routing on tenant organization if the domain id being migrated from hotmail (windows live custom domains)  -->
+    <ServicePlanTaskInfo FeatureName="OpenDomainRoutingEnabled">
+      <Install DescriptionId="SetOpenDomainRoutingOnHotmailMigrateDomain">
+        <Global/>
+        <Tenant>
+          if( $RoleHotmailMigration -eq $true -or $ServicePlanSettings.Organization.OpenDomainRoutingEnabled)
+          {
+            Set-Transportconfig -OpenDomainRoutingEnabled:$true -Identity:$RoleTenantName
+          }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade/>
+      <Uninstall />
+    </ServicePlanTaskInfo>
+    
+    <!-- Adds accepted domains for Outlook.com tenant (if we are provisioning this tenant as part of hotmail migration)  -->
+    <ServicePlanTaskInfo FeatureName="AddOutlookAcceptedDomains">
+      <Install DescriptionId="AddOutlookTenantAcceptedDomains">
+        <Global/>
+        <Tenant>
+          if( $RoleHotmailMigration -eq $true -or $ServicePlanSettings.Organization.AddOutlookAcceptedDomains)
+          {
+            New-AcceptedDomain -Name hotmail.com -DomainName hotmail.com -Organization $TenantOrganizationFullPath -DomainType Authoritative -AuthenticationType $RoleAuthenticationType -LiveIdInstanceType $RoleLiveIdInstanceType -SkipDomainNameValidation:$true
+            New-AcceptedDomain -Name outlook.com -DomainName outlook.com -Organization $TenantOrganizationFullPath -DomainType Authoritative -AuthenticationType $RoleAuthenticationType -LiveIdInstanceType $RoleLiveIdInstanceType -SkipDomainNameValidation:$true
+          }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade/>
+      <Uninstall />
+    </ServicePlanTaskInfo>
+    
+        <!-- Creates the Transport Settings/Rules container (CN=Rules,CN=Tranport Settings,... ) -->
+    <ServicePlanTaskInfo FeatureName="MalwareFilteringPolicyCustomizationEnabled">
+      <Install>
+        <Global>install-Container -Name:"Transport Settings","Rules" -DomainController $RoleDomainController</Global>
+        <Tenant>
+          if (!$CreateSharedConfiguration -and !$CommonHydrateableObjectsSharedEnabled -and $ServicePlanSettings.Organization.MalwareFilteringPolicyCustomizationEnabled)
+          {
+            install-Container -Name:"Transport Settings","Rules" -DomainController $RoleDomainController -Organization $RoleOrganizationHierarchicalPath;
+          }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </ServicePlanTaskInfo>
+    
+    <!-- Creates malware filtering rule collection -->
+    <ServicePlanTaskInfo FeatureName="MalwareFilteringPolicyCustomizationEnabled">
+      <Install DescriptionId="SetupProgressCreateMalwareFilterRuleCollection">
+        <Global>install-RuleCollection -Name:"MalwareFilterVersioned" -DomainController $RoleDomainController</Global>
+        <Tenant>
+          if (!$CommonHydrateableObjectsSharedEnabled -and !$CreateSharedConfiguration)
+          {
+            if ($ServicePlanSettings.Organization.MalwareFilteringPolicyCustomizationEnabled)
+            {
+              install-RuleCollection -Name:"MalwareFilterVersioned" -DomainController $RoleDomainController -Organization $RoleOrganizationHierarchicalPath;
+            }
+            else
+            {
+              # Remove all existing malware filtering rules
+              Get-MalwareFilterRule -DomainController $RoleDomainController -Organization $RoleOrganizationHierarchicalPath | Remove-MalwareFilterRule -Confirm:$false
+            }
+          }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </ServicePlanTaskInfo>
+    
+    <!-- Creates the Transport Settings/Rules container so we can create content filter rule collection -->
+    <ServicePlanTaskInfo FeatureName="HostedSpamFilteringPolicyCustomizationEnabled">
+      <Install>
+        <Tenant>
+          if (!$CreateSharedConfiguration -and !$CommonHydrateableObjectsSharedEnabled -and $ServicePlanSettings.Organization.HostedSpamFilteringPolicyCustomizationEnabled)
+          {
+            install-Container -Name:"Transport Settings","Rules" -DomainController $RoleDomainController -Organization $RoleOrganizationHierarchicalPath;
+          }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </ServicePlanTaskInfo>
+    
+    <!-- Creates hosted content filtering rule collection -->
+    <ServicePlanTaskInfo FeatureName="HostedSpamFilteringPolicyCustomizationEnabled">
+      <Install DescriptionId="SetupProgressCreateHostedContentFilterRuleCollection">
+        <Tenant>
+          if (!$CommonHydrateableObjectsSharedEnabled -and !$CreateSharedConfiguration)
+          {
+            if ($ServicePlanSettings.Organization.HostedSpamFilteringPolicyCustomizationEnabled)
+            {
+              install-RuleCollection -Name:"HostedContentFilterVersioned" -DomainController $RoleDomainController -Organization $RoleOrganizationHierarchicalPath;
+            }
+            else
+            {
+              # Remove all existing hosted content filtering rules
+              Get-HostedContentFilterRule -DomainController $RoleDomainController -Organization $RoleOrganizationHierarchicalPath | Remove-HostedContentFilterRule -Confirm:$false
+            }
+          }
+        </Tenant>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <Uninstall />
+    </ServicePlanTaskInfo>
+
+  </OrgTasks>
+
+</SetupComponentInfo>

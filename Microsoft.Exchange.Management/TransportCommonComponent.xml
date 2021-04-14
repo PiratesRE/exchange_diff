@@ -1,0 +1,385 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo Name="Transport Common Configuration" DescriptionId="SetupComponentCommonTransportConfiguration">
+
+  <ServerTasks>
+
+    <!-- Register/Unregister ExSMIME DLL. -->
+    <ServerTaskInfo Id="_194ab1f52c3c424d917a08973d87801d" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          $dllFile = join-path $RoleInstallPath "bin\ExSMIME.dll";
+          $regsvr = join-path (join-path $env:SystemRoot system32) regsvr32.exe;
+          start-SetupProcess -Name:"$regsvr" -Args:"/s `"$dllFile`"" -Timeout:120000;
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>
+          $dllFile = join-path $RoleInstallPath "bin\ExSMIME.dll";
+          $regsvr = join-path (join-path $env:SystemRoot system32) regsvr32.exe;
+          start-SetupProcess -Name:"$regsvr" -Args:"/s /u `"$dllFile`"" -Timeout:120000;
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Create the Protocols/SMTP Recieve Connectors SMTP container -->
+    <ServerTaskInfo Id="_e5cfea1c2dbc439b8814423dd7be6518" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>install-SmtpContainer -Name:"Protocols","SMTP Receive Connectors" -DomainController $RoleDomainController</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Update MaxHopCount for all ReceiveConnectors -->
+    <ServerTaskInfo Id="_79d82f60693f413588aa8c3a58e90b41" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          $connectors = Get-ReceiveConnector -Server $RoleFqdnOrName;
+          foreach($connector in $connectors) { if($connector.MaxLocalHopCount -gt 1) { Set-ReceiveConnector -Identity $connector.Identity -MaxLocalHopCount 5 } };
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Preserve config files (EdgeTransport.exe.config) potentially containing user data 
+         EdgeTransport.exe.config.template file is copied during the MSI installation. This is renamed
+         to EdgeTransport.exe.config so that Upgrade doesn't removes the file. The rename is done only
+         if EdgeTransport.exe.config doesn't exists.
+         Also, add the custom section for lists and add the list of permanent responses that need to be
+         treated as transient
+         Add a list of transient failures that need to be treated as permanent errors.
+    -->
+    <ServerTaskInfo Id="_3b9fe8211a064c2a89ec22bb04c347b9" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          $file = 'EdgeTransport.exe.config';
+          $fullPath = [System.IO.Path]::Combine([System.IO.Path]::Combine($RoleInstallPath, "bin"), $file);
+          if (!([System.IO.File]::Exists($fullPath))) { copy-item ($fullPath + ".template") $fullPath; Set-InstallPathInAppConfig -ConfigFileRelativePath "bin\" -ConfigFileName $file }
+
+          Set-AppConfigValue -ConfigFileFullPath $fullPath -Element "configuration/configSections/section" -Attribute "name" -NewValue "customLists" -InsertAsFirst;
+          Set-AppConfigValue -ConfigFileFullPath $fullPath -Element "configuration/configSections/section" -Attribute "type" -NewValue "Microsoft.Exchange.Transport.TransportAppConfig+ConfigurationListsSection,Microsoft.Exchange.Transport, Version=15.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" -InsertAsFirst;
+          Set-AppConfigValue -ConfigFileFullPath $fullPath -Element "configuration/configSections/section" -Attribute "requirePermission" -NewValue "false" -InsertAsFirst;
+
+          Set-AppconfigValue -ConfigFileFullPath $fullPath -Element "configuration/customLists/downgradedResponses" -ListValues `
+            "504 5.7.4 Unrecognized authentication type",`
+            "530 5.7.0 Must issue a STARTTLS command first",`
+            "530 5.7.1 Client was not authenticated",`
+            "530 5.7.1 Not authenticated",`
+            "535 5.7.3 Authentication unsuccessful",`
+            "550 5.2.2 Submission quota exceeded",`
+            "550 5.3.5 System incorrectly configured",`
+            "550 5.4.1",`
+            "550 5.7.1",`
+            "550 5.7.7 Access Denied, bad EHLO",`
+            "554 5.4.4 Unable to route",`
+            "554 5.4.4 Unable to route due to invalid recipient address",`
+            "554 5.6.0 Invalid message content",`
+            "554 5.7.3 Unable to initialize security subsystem"
+
+          Set-AppconfigValue -ConfigFileFullPath $fullPath -Element "configuration/customLists/upgradedResponses" -ListValues `
+            "421 4.7.1 ^.*All messages from .* will be permanently deferred"
+
+          Set-Appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/appSettings -AppSettingKey:'SmtpSendTreatTransientErrorsAsPermanentErrors' -NewValue:true;
+      </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+    
+    <!-- Preserve config files (MSExchangeTransport.exe.config) potentially containing user data
+    -->
+    <ServerTaskInfo Id="_9b4eb345817e48db8d20a50f95956fcf" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          $file = 'MSExchangeTransport.exe.config';
+          $fullPath = [System.IO.Path]::Combine([System.IO.Path]::Combine($RoleInstallPath, "bin"), $file);
+          if (!([System.IO.File]::Exists($fullPath))) { copy-item ($fullPath + ".template") $fullPath; }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Preserve config files (MSExchangeTransportLogSearch.exe.config) potentially containing user data -->
+    <!-- E14 82092: In the appconfig file, set Code Access Security (CAS) policy -->
+    <!-- to skip publisher (certificate) validation.-->
+    <ServerTaskInfo Id="_9ff57943321d4a588cccaac10b5d312c" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          $file = 'MSExchangeTransportLogSearch.exe.config';
+          $fullPath = [System.IO.Path]::Combine([System.IO.Path]::Combine($RoleInstallPath, "bin"), $file);
+          if (!([System.IO.File]::Exists($fullPath))) { copy-item ($fullPath + ".template") $fullPath; }
+          set-appconfigvalue -ConfigFileFullPath:$fullPath -Element:configuration/runtime/generatePublisherEvidence -Attribute:enabled -NewValue:false
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Preserve config files (agents.config) potentially containing user data 
+         agents.config.template file is copied to agents.config, if agents.config does not exist. 
+         agents.config.template file is a key file for an MSI component so this should not be renamed, 
+         otherwise any MSIConfig call will try to restore it.
+    -->
+    <ServerTaskInfo Id="_347c4c4558c545fc9af82c31f1a88887" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          $file = 'agents.config';
+          $fullPath = [System.IO.Path]::Combine([System.IO.Path]::Combine($RoleInstallPath, "TransportRoles\Shared"), $file);
+          if (!([System.IO.File]::Exists($fullPath))) { copy-item ($fullPath + ".template") $fullPath; }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- same as above but for fetagents.config -->
+    <ServerTaskInfo Id="_7a7ff28996e64474a32ad73b6f2df465" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          $file = 'fetagents.config';
+          $fullPath = [System.IO.Path]::Combine([System.IO.Path]::Combine($RoleInstallPath, "TransportRoles\Shared"), $file);
+          if (!([System.IO.File]::Exists($fullPath))) { copy-item ($fullPath + ".template") $fullPath; }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Disable the SMTP service -->
+    <ServerTaskInfo Id="_0a8d28fa98d04e53ad04942db8041272" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>set-service -ServiceName SMTPSVC -StartupType Disabled</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Stop the SMTP service -->
+    <ServerTaskInfo Id="_1e9fcaf569a642eb9d83195e4b253c6d" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install IsFatal="false">
+        <Standalone>stop-SetupService -ServiceName SMTPSVC</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- register/unregister audit dlls -->
+    <ServerTaskInfo Id="_96c680ac82984e9a8da935845efb7bae" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>Install-Audit</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>Uninstall-Audit</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Set up the Internal Transport Certificate -->
+    <ServerTaskInfo Id="_463307cc238945d98188471d1f64bc84" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install DescriptionId="SetupProgressNewTLSCertificate">
+        <Standalone>Install-ExchangeCertificate -DomainController $RoleDomainController -Services SMTP</Standalone>
+      </Install>
+      <BuildToBuildUpgrade />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone></Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Register the content filter -->
+    <ServerTaskInfo Id="_3e4d1208017a4e8fa529b1d72483ac82" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>register-ContentFilter</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>unregister-ContentFilter</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Register ComInterop type library -->
+    <ServerTaskInfo Id="_c05511cd334841e7bc1a36550871cf9d" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>register-ComInteropTLB</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+		  <Standalone>
+			  unregister-ComInteropTLB;
+			  $fullPath = $RoleInstallPath + "\bin\ComInterop.tlb";
+			  if (([System.IO.File]::Exists($fullPath))) { remove-item $fullpath; }
+		  </Standalone>
+	  </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- In case of upgrade, uninstall the MSI packages first -->
+    <ServerTaskInfo Id="_0ac71b0d1d014ed0a5bd16b072c22d1e" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install />
+      <BuildToBuildUpgrade>
+        <Standalone>
+          uninstall-MsiPackage -ProductCode '{C3F10D8C-BD70-4516-B2B4-BF6901980741}' -LogFile ($RoleSetupLoggingPath + "\UninstallASDat.msilog")
+        </Standalone>
+      </BuildToBuildUpgrade>
+      <DisasterRecovery />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <ServerTaskInfo Id="_85242ca8afce4b699883dac5856c2fd6" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install />
+      <BuildToBuildUpgrade>
+        <Standalone>
+          uninstall-MsiPackage -ProductCode '{14F288C7-C695-40D5-971D-8890605C6040}' -LogFile ($RoleSetupLoggingPath + "\UninstallASEntIRS.msilog")
+        </Standalone>
+      </BuildToBuildUpgrade>
+      <DisasterRecovery />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <ServerTaskInfo Id="_7e6dc539164144aaa752c496b3de4304" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install />
+      <BuildToBuildUpgrade>
+        <Standalone>
+          uninstall-MsiPackage -ProductCode '{93FCFF43-49E2-4AE5-9AD4-0256878AB886}' -LogFile ($RoleSetupLoggingPath + "\UninstallASEntSig.msilog");
+        </Standalone>
+      </BuildToBuildUpgrade>
+      <DisasterRecovery />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Install, uninstall, and upgrade the MSI packages -->
+    <ServerTaskInfo Id="_3f4a70ff37b549999a228ec24821d0dc" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          install-MsiPackage `
+          -PackagePath ($RoleInstallPath + "TransportRoles\agents\Hygiene\ASDat.MSI") `
+          -LogFile ($RoleSetupLoggingPath + "\InstallASDat.msilog") `
+          -PropertyValues ("ALLUSERS=1") `
+          -UpdatesDir $RoleUpdatesDir
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>
+          uninstall-MsiPackage `
+          -ProductCode '{C3F10D8C-BD70-4516-B2B4-BF6901980741}' `
+          -LogFile ($RoleSetupLoggingPath + "\UninstallASDat.msilog")
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <ServerTaskInfo Id="_0950ec0c6c894ec8ad384dc89415c394" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          install-MsiPackage `
+          -PackagePath ($RoleInstallPath + "TransportRoles\agents\Hygiene\ASEntIRS.MSI") `
+          -LogFile ($RoleSetupLoggingPath + "\InstallASEntIRS.msilog") `
+          -PropertyValues ("ALLUSERS=1") `
+          -UpdatesDir $RoleUpdatesDir
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>
+          uninstall-MsiPackage `
+          -ProductCode '{14F288C7-C695-40D5-971D-8890605C6040}' `
+          -LogFile ($RoleSetupLoggingPath + "\UninstallASEntIRS.msilog")
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <ServerTaskInfo Id="_9a710dcc5d464585ae5edc61065f8440" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          install-MsiPackage `
+          -PackagePath ($RoleInstallPath + "TransportRoles\agents\Hygiene\ASEntSig.MSI") `
+          -LogFile ($RoleSetupLoggingPath + "\InstallASEntSig.msilog") `
+          -PropertyValues ("ALLUSERS=1") `
+          -UpdatesDir $RoleUpdatesDir
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>
+          uninstall-MsiPackage `
+          -ProductCode '{93FCFF43-49E2-4AE5-9AD4-0256878AB886}' `
+          -LogFile ($RoleSetupLoggingPath + "\UninstallASEntSig.msilog")
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- The ACL on the ExchangeServer object regulates access to the   -->
+    <!-- message-tracking RPC interface. Give GenericRead access to BCM -->
+    <!-- client which runs as Network Service, using the non language   -->
+    <!-- specific SID "S-1-5-20" since "Network service" is not used    -->
+    <!-- in all languages.                                              -->
+    <ServerTaskInfo Id="_0706a16b43394b188a2423c6d60fe9f1" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          get-ExchangeServer $RoleNetBIOSName | add-ADPermission `
+            -DomainController $RoleDomainController `
+            -User "S-1-5-20" `
+            -AccessRights GenericRead
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+
+      <!-- No Uninstall: Object is deleted during Exchange Server uninstall -->
+      <Uninstall />
+
+    </ServerTaskInfo>
+
+    <!-- Temporary for E14-M1 Dogfood -->
+    <!-- The ACL on the ExchangeServer object regulates access to the   -->
+    <!-- message-tracking RPC interface. Give GenericRead access to BCM -->
+    <!-- client which currently runs as LocalSystem but will switch to  -->
+    <!-- Network Service later, and use the ACE we added above -->
+    <ServerTaskInfo Id="_645bf7655071489787950039b21e0d6a" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          get-ExchangeServer $RoleNetBIOSName | add-ADPermission `
+            -DomainController $RoleDomainController `
+            -User "S-1-5-18" `
+            -AccessRights GenericRead
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+
+      <!-- No Uninstall: Object is deleted during Exchange Server uninstall -->
+      <Uninstall />
+
+    </ServerTaskInfo>
+
+    <!-- Configure Resource Health registry flags -->
+    <ServerTaskInfo Id="_d68428dcc3c7412f9a81a28b8c331407" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          Install-ResourceHealthActiveFlags
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall/>
+    </ServerTaskInfo>
+  </ServerTasks>
+</SetupComponentInfo>

@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<SetupComponentInfo Name="Client Access Configuration" DescriptionId="ClientAccessComponentDescription">
+
+  <ServerTasks>
+    <!-- 
+      See http://support.microsoft.com/kb/896861 for details on this setting.
+      Disables NTLM loopback check that prevents NTLM authentication from 
+      succeeding against a local server if an FQDN was used to address it.
+    -->
+    <ServerTaskInfo Id="_178a10624c88445093855c4ede7e9b9c" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          . "$RoleInstallPath\Scripts\ConfigureNetworkProtocolParameters.ps1"; 
+          Set-NtlmLoopbackCheck $false
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall/>
+    </ServerTaskInfo>
+
+    <!-- Install/uninstall CA IIS web service extensions -->
+    <ServerTaskInfo Id="_14a6761e144e428b93c62249acc814fe" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>install-ClientAccessIisWebServiceExtensions</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall>
+        <Standalone>uninstall-ClientAccessIisWebServiceExtensions</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- Restart Microsoft.Exchange.ServiceHost to flush CLR assemblies-->
+    <ServerTaskInfo Id="_28fdfe8bec984e809cdeef6d4d59bf4e" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+        if (get-service MSExchangeServiceHost* | where {$_.name -eq "MSExchangeServiceHost"})
+        {
+            restart-service MSExchangeServiceHost
+        }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall/>
+    </ServerTaskInfo>
+
+    <!-- Restart Microsoft.Exchange.ProtectedServiceHost to flush CLR assemblies-->
+    <ServerTaskInfo Id="_7816256880dc4be0baf5b005b2af8cd3" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+        if (get-service MSExchangeProtectedServiceHost* | where {$_.name -eq "MSExchangeProtectedServiceHost"})
+        {
+            restart-service MSExchangeProtectedServiceHost
+        }
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery UseInstallTasks="true" />
+      <Uninstall/>
+    </ServerTaskInfo>
+
+    <!-- Set OSP role -->
+    <ServerTaskInfo Id="_01bF955bc82d468ea6654bf7d9fcb2d3" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>set-ExchangeServerOSPRole -Identity $RoleFqdnOrName -ServerRole:OSP -DomainController $RoleDomainController</Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery />
+      <Uninstall>
+        <Standalone>set-ExchangeServerOSPRole -Identity $RoleFqdnOrName -ServerRole:OSP -DomainController $RoleDomainController -Remove</Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+    <!-- ClientAccessExchangeCertificate -->
+    <ServerTaskInfo Id="_fb5e9028e669404d94dba90aace8c2f9" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          Install-ExchangeCertificate -services "IIS" -DomainController $RoleDomainController
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery />
+      <Uninstall/>
+    </ServerTaskInfo>
+
+    <!-- Create HTTP container -->
+    <ServerTaskInfo Id="_1caf8df8c428441484062a10868713ca" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>new-HttpContainer -DomainController $RoleDomainController</Standalone>
+      </Install>
+      <BuildToBuildUpgrade />
+      <DisasterRecovery />
+      <Uninstall />
+    </ServerTaskInfo>
+
+    <!-- Create ECP virtual directory -->
+    <ServerTaskInfo Id="_9b61914c88354a1ca625560e0a59451c" Component="EXCHANGE14:\Current\Release\Shared\Datacenter\Setup">
+      <Install>
+        <Standalone>
+          $InternalEcpUrl="https://" + $RoleFqdnOrName + "/ecp";
+          $ExternalEcpUrl = $null;
+          if ($RoleExternalCASServerDomain -ne $null)
+          {
+          $ExternalEcpUrl = "https://" + $RoleExternalCASServerDomain + "/ecp";
+          }
+          new-EcpVirtualDirectory -Role Mailbox -WebSitename "Default Web Site" -DomainController $RoleDomainController -InternalUrl $InternalEcpUrl -ExternalUrl $ExternalEcpUrl;
+        </Standalone>
+      </Install>
+      <BuildToBuildUpgrade UseInstallTasks="true" />
+      <DisasterRecovery />
+      <Uninstall>
+        <Standalone>
+          get-EcpVirtualDirectory -server $RoleFqdnOrName -DomainController $RoleDomainController | remove-EcpVirtualDirectory -DomainController $RoleDomainController;
+        </Standalone>
+      </Uninstall>
+    </ServerTaskInfo>
+
+  </ServerTasks>
+</SetupComponentInfo>
+

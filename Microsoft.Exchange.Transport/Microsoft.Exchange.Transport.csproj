@@ -1,0 +1,1292 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{09CD9476-CD82-489E-B9E2-84B47CA141CD}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Microsoft</RootNamespace>
+    <AssemblyName>Microsoft.Exchange.Transport</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.DirectoryServices" />
+    <Reference Include="System.DirectoryServices.Protocols" />
+    <Reference Include="System.IdentityModel" />
+    <Reference Include="System.Management.Automation" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Exchange\Protocols\Smtp\AdrcSmtpMessageContextBlob.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\AnonymousTlsSmtpInCommand.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\AsyncReturnType.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\AuthCommand.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\AuthCommandHelpers.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\AuthParseOutput.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\AuthSmtpCommand.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\AuthSmtpCommandParser.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\AuthSmtpInCommand.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\AuthSmtpInCommandBase.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\AuthSmtpProxyCommand.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\AutoLatencyTracker.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\AwaitCompletedDelegate.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\BareLinefeedDetector.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\BaseDataInboundProxySmtpCommand.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\BaseDataSmtpCommand.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\BdatInboundProxySmtpCommand.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\BdatSmtpCommand.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\BdatSmtpCommandParser.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\BdatSmtpInCommand.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\BdatState.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\CertificateExpiryCheck.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\CertificateValidator.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\ClientData.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\ClientIPTable.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\CommandContext.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\CommandParsingHelper.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\CompletedTasks.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\ConnectEventSourceImpl.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\ConnectionCacheRemovalType.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\DataBdatCommandBase.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\DataBdatHelpers.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\DataInboundProxySmtpCommand.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\DataSmtpCommand.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\DataSmtpCommandParser.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\DataSmtpInCommand.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\DelayedAckStatus.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\DiagnosticsConfigAdapter.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\DisconnectEventSourceImpl.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\EHLOInboundProxySmtpCommand.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\EhloOptions.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\EhloOptionsFlags.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\EHLOShadowSmtpCommand.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\EHLOSmtpCommand.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\EhloSmtpInCommand.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\EHLOSmtpProxyCommand.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\EndOfAuthenticationEventSourceImpl.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\EnumConverter.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\ExceptionFilter.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\ExpnSmtpCommandParser.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\ExpnSmtpInCommand.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\ExtendedPropertiesSmtpMessageContextBlob.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\FastIndexSmtpMessageContextBlob.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\FiniteStateMachine.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\HeloEhloParseOutput.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\HeloOrEhlo.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\HELOSmtpCommand.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\HeloSmtpCommandParser.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\HeloSmtpInCommand.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\HeloSmtpInCommandBase.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\HELOSmtpProxyCommand.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\HelpSmtpCommand.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\HelpSmtpCommandParser.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\HelpSmtpInCommand.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\ICertificateValidator.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\IDiagnosticsConfigProvider.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\IEhloOptions.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\IInboundMessageContextBlob.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\IInboundProxyDestinationPerfCounters.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\IInboundProxyDestinationTracker.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\IInboundProxyLayer.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\ILegacySmtpCommand.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\IMessageHandler.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\InboundBdatProxyLayer.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\InboundClientProxyStates.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\InboundDataProxyLayer.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\InboundProxyAccountForestPerfCounters.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\InboundProxyAccountForestPerfCountersInstance.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\InboundProxyAccountForestPerfCountersWrapper.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\InboundProxyDestinationPerfCounters.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\InboundProxyDestinationPerfCountersInstance.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\InboundProxyDestinationPerfCountersWrapper.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\InboundProxyDestinationTracker.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\InboundProxyLayer.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\InboundProxySmtpOutSession.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\InboundProxyTrackerType.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\InboundRecipientCorrelator.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\IRoutingConfigProvider.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\ISmtpAvailabilityPerfCounters.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\ISmtpInCommand.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\ISmtpInCommandFactory.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\ISmtpInComponent.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\ISmtpInMailItemStorage.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\ISmtpInServer.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\ISmtpInSession.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\ISmtpInStreamBuilder.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\ISmtpMessageContextBlob.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\ISmtpOutConnectionHandler.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\ISmtpOutSession.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\ISmtpReceiveConfiguration.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\ISmtpReceivePerfCounters.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\ISmtpSession.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\ITransportConfigProvider.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\LegitimateSmtpAvailabilityCategory.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\MailboxTransportSmtpInCommandFactory.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\MailboxTransportSmtpInStateMachine.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\MailboxTransportSmtpState.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\MailCommandHelpers.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\MailCommandMessageContextParameters.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\MailParseOutput.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\MailSmtpCommand.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\MailSmtpCommandParser.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\MailSmtpInCommand.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\MatchableDomain.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\MatchableDomainMap.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\MatchOptions.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\MessageContentHandler.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\MessageContextBlobHandler.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\MessageHandlerResult.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\ModernSmtpInServer.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\NoopSmtpCommand.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\NoopSmtpCommandParser.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\NoopSmtpInCommand.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\NullInboundProxyDestinationPerfCounters.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\Offset.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\OutboundProxyBySourcePerfCounters.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\OutboundProxyBySourcePerfCountersInstance.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\OutboundProxyBySourceTracker.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\Parse821.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\ParseAndProcessResult.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\ParseResult.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\ParserState.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\ParsingStatus.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\ProxyInboundMessageEventSourceImpl.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\ProxyParseCommonOutput.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\ProxySessionSetupHandler.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\QuitSmtpCommand.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\QuitSmtpCommandParser.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\QuitSmtpInCommand.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\QuitSmtpProxyCommand.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\RawDataHandler.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\Rcpt2ParseOutput.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\Rcpt2SmtpCommand.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\Rcpt2SmtpCommandParser.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\RcptInboundProxySmtpCommand.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\RcptParseOutput.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\RcptSmtpCommand.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\RcptSmtpCommandParser.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\RcptSmtpInCommand.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\ReceiveCommandEventSourceImpl.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\ReceiveConnectorManager.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\ReceiveMessageEventSourceImpl.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\RecipientCorrelator.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\RejectEventSourceImpl.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\RoutingConfigAdapter.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\RsetInboundProxySmtpCommand.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\RsetShadowSmtpCommand.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\RsetSmtpCommand.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\RsetSmtpCommandParser.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\RsetSmtpInCommand.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\SecureState.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\SessionExtendedProperties.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\ShadowSmtpOutSession.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\SmtpAvailabilityPerfCounters.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\SmtpAvailabilityPerfCountersInstance.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\SmtpAvailabilityPerfCountersWrapper.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\SmtpCommand.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\SmtpConnectionCachePerfCounters.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\SmtpConnectionCachePerfCountersInstance.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\SmtpConstants.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\SmtpInAccessChecker.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\SmtpInBdatParser.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\SmtpInBdatProxyParser.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\SmtpInBdatState.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\SmtpInBdatStreamBuilder.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\SmtpInCommand.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\SmtpInCommandBase.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\SmtpInComponent.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\SmtpInConnectorMap.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\SmtpInDataParser.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\SmtpInDataProxyParser.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\SmtpInDataStreamBuilder.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\SmtpInExceptionHandler.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\SmtpInMailItemStorage.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\SmtpInParser.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\SmtpInServer.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\SmtpInServerState.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\SmtpInSession.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\SmtpInSessionBreadcrumbs.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\SmtpInSessionState.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\SmtpInSessionUtils.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\SmtpInStateMachine.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\SmtpInStateMachineEvents.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\SmtpInStreamBuilderBase.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\SmtpInStrings.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\SmtpMessageContextBlob.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\SmtpMessageContextBlobWrapper.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\SmtpOutConnection.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\SmtpOutConnectionHandler.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\SmtpOutProxySession.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\SmtpOutProxyType.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\SmtpOutSession.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\SmtpOutSessionCache.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\SmtpOutTargetHostPicker.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\SmtpProxyPerfCounters.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\SmtpProxyPerfCountersInstance.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\SmtpProxyPerfCountersWrapper.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\SmtpReceiveConfiguration.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\SmtpReceiveConnectorStub.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\SmtpReceiveFrontendPerfCounters.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\SmtpReceiveFrontendPerfCountersInstance.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\SmtpReceivePerfCounters.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\SmtpReceivePerfCountersFrontendWrapper.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\SmtpReceivePerfCountersInstance.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\SmtpReceivePerfCountersWrapper.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\SmtpReceiveServer.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\SmtpSendPerfCounters.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\SmtpSendPerfCountersInstance.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\SmtpSessionCertificateUse.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\SmtpSessionHelper.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\SmtpSessionImpl.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\SmtpSessionProps.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\SmtpSessions.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\SmtpToken.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\StarttlsSmtpCommand.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\StartTlsSmtpCommandParser.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\StartTlsSmtpInCommand.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\StarttlsSmtpProxyCommand.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\StateMachineUtils.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\StateTransition.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\SubmissionQuotaChecker.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\TarpitAction.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\TlsSendConfiguration.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\TlsSmtpInCommandBase.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\TransportConfigAdapter.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\TransportSmtpInStateMachine.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\UnknownSmtpCommand.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\Util.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\VrfySmtpCommandParser.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\VrfySmtpInCommand.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\Xexch50SmtpCommand.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\XExpsSmtpInCommand.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\XProxyFromParseOutput.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\XProxyFromSmtpCommand.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\XProxyFromSmtpCommandParser.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\XProxyParseOutput.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\XProxyParserUtils.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\XProxySmtpCommand.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\XProxySmtpCommandParser.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\XProxyToNextHopServer.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\XProxyToParseOutput.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\XProxyToSmtpCommand.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\XProxyToSmtpCommandParser.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\XQDiscardSmtpCommand.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\XQDiscardSmtpCommandParser.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\XRsetProxyToSmtpCommand.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\XRsetProxyToSmtpCommandParser.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\XSessionParams.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\XSessionParamsSmtpCommand.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\XSessionParamsSmtpCommandParser.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\XSessionParamsSmtpInCommand.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\XShadowRequestSmtpCommand.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\XShadowRequestSmtpCommandParser.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\XShadowSmtpCommand.cs" />
+    <Compile Include="Exchange\Protocols\Smtp\XShadowSmtpCommandParser.cs" />
+    <Compile Include="Exchange\SecureMail\MultilevelAuth.cs" />
+    <Compile Include="Exchange\SecureMail\MultilevelAuthMechanism.cs" />
+    <Compile Include="Exchange\SecureMail\OrganizationScopeResult.cs" />
+    <Compile Include="Exchange\SecureMail\SecureMailTransportPerfCounters.cs" />
+    <Compile Include="Exchange\SecureMail\SecureMailTransportPerfCountersInstance.cs" />
+    <Compile Include="Exchange\SecureMail\SubmitAuthCategory.cs" />
+    <Compile Include="Exchange\SecureMail\Utils.cs" />
+    <Compile Include="Exchange\Transport\AcceptedDomainTable.cs" />
+    <Compile Include="Exchange\Transport\AccessToken.cs" />
+    <Compile Include="Exchange\Transport\AckDetails.cs" />
+    <Compile Include="Exchange\Transport\AckReason.cs" />
+    <Compile Include="Exchange\Transport\AckStatus.cs" />
+    <Compile Include="Exchange\Transport\AckStatusAndResponse.cs" />
+    <Compile Include="Exchange\Transport\AdminActionStatus.cs" />
+    <Compile Include="Exchange\Transport\Admin\IPFiltering\IPFilterAdminServer.cs" />
+    <Compile Include="Exchange\Transport\AgentGeneratedMessageLoopChecker.cs" />
+    <Compile Include="Exchange\Transport\AgentGeneratedMessageLoopCheckerConfig.cs" />
+    <Compile Include="Exchange\Transport\AgentGeneratedMessageLoopCheckerTransportConfig.cs" />
+    <Compile Include="Exchange\Transport\AgentLatencyTracker.cs" />
+    <Compile Include="Exchange\Transport\AlertingTracer.cs" />
+    <Compile Include="Exchange\Transport\ApprovalInitiation.cs" />
+    <Compile Include="Exchange\Transport\AuthzAuthorizationWrapper.cs" />
+    <Compile Include="Exchange\Transport\BackgroundProcessingThread.cs" />
+    <Compile Include="Exchange\Transport\BackgroundProcessingThreadBase.cs" />
+    <Compile Include="Exchange\Transport\BifInfo.cs" />
+    <Compile Include="Exchange\Transport\BifInfoException.cs" />
+    <Compile Include="Exchange\Transport\BifSenderType.cs" />
+    <Compile Include="Exchange\Transport\BlindProxyNextHopConnection.cs" />
+    <Compile Include="Exchange\Transport\BodyType.cs" />
+    <Compile Include="Exchange\Transport\CategorizerBreadcrumb.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\ADSiteRelayMap.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\AgentCategorizedMessageSource.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\AgentQueuedMessageEventArgs.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\AgentResolvedMessageSource.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\AgentRoutedMessageSource.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\AgentSubmittedMessageSource.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\ArrayTracer.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\ArrayTracerWithWrapper.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\AutoResponseSuppress.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\AutoResponseSuppressFormatter.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\CachedProperty.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\CacheSchema.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\CategorizerAdapterComponent.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\CategorizerComponent.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\CategorizerItem.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\CategorizerJobsUtil.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\CatScheduler.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\CatSchedulerJobList.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\CatServer.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\ConnectorDeliveryGroup.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\ConnectorDeliveryHop.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\ConnectorIndex.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\ConnectorIndexMap.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\ConnectorMatchResult.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\ConnectorRouteFactory.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\ConnectorRoutingDestination.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\ContactItem.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\ContactItemSchema.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\ContentConverter.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\DagDeliveryGroup.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\DagSelector.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\DatabaseLoader.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\DatabaseRouteMap.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\DeliverableItem.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\DeliverableItemSchema.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\DeliveryGroup.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\DeliveryRestriction.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\DirectoryItem.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\DirectoryItemSchema.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\EdgeConnectorRouteFactory.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\EdgeRoutingDependencies.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\EdgeRoutingTopology.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\EncodingFlags.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\EnhancedDns.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\EnhancedDnsHostsResult.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\EnhancedDnsRequest.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\EnhancedDnsRequestContext.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\EnhancedDnsStatusResult.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\EnhancedDnsTargetHost.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\EnterpriseRelaySendConnector.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\Expansion.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\ExpansionDisposition.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\ExpansionServerDestination.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\FanOutPlanner.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\ForwardableItem.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\ForwardableItemSchema.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\FqdnPortPair.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\GenericConnectorIndex.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\GroupItem.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\GroupItemSchema.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\History.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\HistoryRecord.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\ICategorizer.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\IEnhancedDns.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\IMailBifurcationHelper.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\IMailRouter.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\InternalCategorizedMessageSource.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\InternalQueuedMessageSource.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\InternalResolvedMessageSource.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\InternalRoutedMessageSource.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\InternalSubmittedMessageSource.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\InvalidItem.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\IPAddressPortPair.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\IPArrayTracer.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\IProxyHubSelector.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\IProxyHubSelectorComponent.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\IRoutingComponent.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\ITenantDagQuota.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\ITraceWrapper.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\Job.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\JobHealthMonitor.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\JobList.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\LimitedMailItem.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\ListLoadBalancer.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\ListTracer.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\LoadBalancedCollection.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\MailboxDatabaseDestination.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\MailboxDeliveryGroup.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\MailboxDeliveryGroupBase.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\MailboxDeliveryGroupId.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\MailboxDeliveryHop.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\MailboxItem.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\MailboxItemSchema.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\MailItemBifurcator.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\MailRouter.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\MessageTemplate.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\MExEvents.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\MicrosoftExchangeItem.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\MicrosoftExchangeItemSchema.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\MsgTypeRestriction.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\NdrNextHop.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\NextHopMatch.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\NullCategorizer.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\OneOffItem.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\OofReplyType.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\OofRestriction.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\OrganizationMailboxDatabaseCache.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\PerTenantOrganizationMailboxDatabases.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\Proximity.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\ProxyFallbackDeliveryGroup.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\ProxyHubSelector.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\ProxyHubSelectorComponent.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\ProxyHubSelectorPerfCounters.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\ProxyHubSelectorPerfCountersInstance.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\ProxyHubSelectorPerformanceCounters.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\ProxyRoutingContext.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\ProxyRoutingEnumeratorContext.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\ProxySendConnector.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\ProxyTargetHubCollection.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\PublicDatabaseItem.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\PublicDatabaseItemSchema.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\PublicFolderItem.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\PublicFolderItemSchema.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\RecipientEncoding.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\RecipientHomeMDBComparer.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\RecipientItem.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\RecipientWithBifurcationInfo.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\RecipSettingBifurcator.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\RedirectDestination.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\RedirectGroup.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\ReroutableItem.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\ReroutableItemSchema.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\Resolver.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\ResolverCache.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\ResolverConfiguration.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\ResolverLog.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\ResolverMessage.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\ResolverMessageType.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\ResolverPerfCounters.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\ResolverPerfCountersInstance.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\RestrictedItem.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\RestrictedItemSchema.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\ReusableJob.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\RouteCalculatorContext.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\RouteComparison.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\RoutedServerCollection.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\RoutedServerSelectStrategy.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\RouteInfo.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\RoutingComponent.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\RoutingContext.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\RoutingContextCore.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\RoutingDependencies.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\RoutingDestination.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\RoutingDiag.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\RoutingGroupRelayMap.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\RoutingMiniServer.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\RoutingNextHop.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\RoutingPerfCounters.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\RoutingPerfCountersInstance.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\RoutingPerformanceCounters.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\RoutingServerInfo.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\RoutingServerInfoMap.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\RoutingTableLogFileManager.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\RoutingTableLogger.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\RoutingTables.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\RoutingTablesChangedHandler.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\RoutingTablesLoader.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\RoutingTopology.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\RoutingTopologyBase.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\RoutingUtils.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\Sender.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\SenderSchema.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\ServerCollectionDeliveryGroup.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\ShadowRoutingConfiguration.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\ShadowRoutingContext.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\SmtpConnectorIndex.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\StageHandler.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\StageInfo.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\StandaloneJob.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\TargetHostArrayTracer.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\TargetHostTraceWrapper.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\TaskCompletion.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\TaskContext.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\TemplateWithHistory.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\TenantDagQuota.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\TopologyPath.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\TopologyRelayMap.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\TransientRoutingException.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\UnhealthyTargetFilter.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\UnhealthyTargetFilterComponent.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\UnhealthyTargetFilterConfiguration.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\UnreachableNextHop.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\UnresolvedRecipientBifurcatedTransientException.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\UnroutableDestination.cs" />
+    <Compile Include="Exchange\Transport\Categorizer\X400ConnectorIndex.cs" />
+    <Compile Include="Exchange\Transport\CertificateCache.cs" />
+    <Compile Include="Exchange\Transport\CertificateComponent.cs" />
+    <Compile Include="Exchange\Transport\CertificateValidationResultCache.cs" />
+    <Compile Include="Exchange\Transport\CertificateValidationResultCachePerfCounters.cs" />
+    <Compile Include="Exchange\Transport\CertificateValidationResultCachePerfCountersInstance.cs" />
+    <Compile Include="Exchange\Transport\Components.cs" />
+    <Compile Include="Exchange\Transport\ComponentsState.cs" />
+    <Compile Include="Exchange\Transport\ComponentsWrapper.cs" />
+    <Compile Include="Exchange\Transport\CompositeTransportComponent.cs" />
+    <Compile Include="Exchange\Transport\ConditionBasedQueue.cs" />
+    <Compile Include="Exchange\Transport\ConfigurationComponent.cs" />
+    <Compile Include="Exchange\Transport\Configuration\AgentErrorHandlingOverrideSection.cs" />
+    <Compile Include="Exchange\Transport\Configuration\ConfigurationCachePerfCounters.cs" />
+    <Compile Include="Exchange\Transport\Configuration\ConfigurationCachePerfCountersInstance.cs" />
+    <Compile Include="Exchange\Transport\Configuration\ConfigurationLoader.cs" />
+    <Compile Include="Exchange\Transport\Configuration\ConfigurationUpdateHandler.cs" />
+    <Compile Include="Exchange\Transport\Configuration\ConnectorConfiguration.cs" />
+    <Compile Include="Exchange\Transport\Configuration\ConnectorConfigurationSession.cs" />
+    <Compile Include="Exchange\Transport\Configuration\JournalingRulesPerTenantSettings.cs" />
+    <Compile Include="Exchange\Transport\Configuration\JournalRuleData.cs" />
+    <Compile Include="Exchange\Transport\Configuration\LogTypesEnum.cs" />
+    <Compile Include="Exchange\Transport\Configuration\MicrosoftExchangeRecipientPerTenantSettings.cs" />
+    <Compile Include="Exchange\Transport\Configuration\PerTenantAcceptedDomainTable.cs" />
+    <Compile Include="Exchange\Transport\Configuration\PerTenantCachePerformanceCounters.cs" />
+    <Compile Include="Exchange\Transport\Configuration\PerTenantCacheTracer.cs" />
+    <Compile Include="Exchange\Transport\Configuration\PerTenantPerimeterSettings.cs" />
+    <Compile Include="Exchange\Transport\Configuration\PerTenantRemoteDomainTable.cs" />
+    <Compile Include="Exchange\Transport\Configuration\PerTenantTransportSettings.cs" />
+    <Compile Include="Exchange\Transport\Configuration\ReconciliationAccountPerTenantSettings.cs" />
+    <Compile Include="Exchange\Transport\Configuration\TestMessageConfig.cs" />
+    <Compile Include="Exchange\Transport\Configuration\TransportIsInternalResolver.cs" />
+    <Compile Include="Exchange\Transport\Cost.cs" />
+    <Compile Include="Exchange\Transport\CostConfiguration.cs" />
+    <Compile Include="Exchange\Transport\CostFactory.cs" />
+    <Compile Include="Exchange\Transport\CostIndex.cs" />
+    <Compile Include="Exchange\Transport\CostMap.cs" />
+    <Compile Include="Exchange\Transport\CostObjectState.cs" />
+    <Compile Include="Exchange\Transport\CrashProperties.cs" />
+    <Compile Include="Exchange\Transport\CrossPremisesHeaderTransformation.cs" />
+    <Compile Include="Exchange\Transport\DatabaseLoggingFolderMonitor.cs" />
+    <Compile Include="Exchange\Transport\DatabaseMonitor.cs" />
+    <Compile Include="Exchange\Transport\DefaultAuthoritativeDomainNotFoundException.cs" />
+    <Compile Include="Exchange\Transport\DeferredQueue.cs" />
+    <Compile Include="Exchange\Transport\DeliveryFailurePerfCounters.cs" />
+    <Compile Include="Exchange\Transport\DeliveryStatus.cs" />
+    <Compile Include="Exchange\Transport\Delivery\DeliveryAgentConnection.cs" />
+    <Compile Include="Exchange\Transport\Delivery\DeliveryAgentConnectionHandler.cs" />
+    <Compile Include="Exchange\Transport\Delivery\DeliveryAgentMExEvents.cs" />
+    <Compile Include="Exchange\Transport\Delivery\DeliveryAgentPerfCounters.cs" />
+    <Compile Include="Exchange\Transport\Delivery\DeliveryAgentPerfCountersInstance.cs" />
+    <Compile Include="Exchange\Transport\Delivery\DeliveryAgentServer.cs" />
+    <Compile Include="Exchange\Transport\Delivery\InternalCloseConnectionEventArgs.cs" />
+    <Compile Include="Exchange\Transport\Delivery\InternalCloseConnectionEventSource.cs" />
+    <Compile Include="Exchange\Transport\Delivery\InternalDeliverMailItemEventArgs.cs" />
+    <Compile Include="Exchange\Transport\Delivery\InternalDeliverMailItemEventSource.cs" />
+    <Compile Include="Exchange\Transport\Delivery\InternalDeliveryAgentEventSource.cs" />
+    <Compile Include="Exchange\Transport\Delivery\InternalOpenConnectionEventArgs.cs" />
+    <Compile Include="Exchange\Transport\Delivery\InternalOpenConnectionEventSource.cs" />
+    <Compile Include="Exchange\Transport\Delivery\RoutedMailItemWrapper.cs" />
+    <Compile Include="Exchange\Transport\DequeueMatch.cs" />
+    <Compile Include="Exchange\Transport\DequeueMatchResult.cs" />
+    <Compile Include="Exchange\Transport\Destination.cs" />
+    <Compile Include="Exchange\Transport\DiagnosticsAggregationService\DiagnosticsAggregationHelper.cs" />
+    <Compile Include="Exchange\Transport\DiagnosticsAggregationService\QueueFilter.cs" />
+    <Compile Include="Exchange\Transport\DiskSpaceMonitor.cs" />
+    <Compile Include="Exchange\Transport\DiskSystemCheck.cs" />
+    <Compile Include="Exchange\Transport\DiskSystemCheckUtilsWrapper.cs" />
+    <Compile Include="Exchange\Transport\DnsFaultTolerance.cs" />
+    <Compile Include="Exchange\Transport\DsnGenerator.cs" />
+    <Compile Include="Exchange\Transport\DsnGeneratorPerfCounters.cs" />
+    <Compile Include="Exchange\Transport\DsnGeneratorPerfCountersInstance.cs" />
+    <Compile Include="Exchange\Transport\DsnMailOutHandlerDelegate.cs" />
+    <Compile Include="Exchange\Transport\DsnSchedulerComponent.cs" />
+    <Compile Include="Exchange\Transport\DsnSource.cs" />
+    <Compile Include="Exchange\Transport\E2ELatencyBucketsPerfCounters.cs" />
+    <Compile Include="Exchange\Transport\E2ELatencyBucketsPerfCountersInstance.cs" />
+    <Compile Include="Exchange\Transport\E2ELatencyBucketsPerfCountersWrapper.cs" />
+    <Compile Include="Exchange\Transport\E2ELatencySlaPerfCounters.cs" />
+    <Compile Include="Exchange\Transport\E2ELatencySlaPerfCountersInstance.cs" />
+    <Compile Include="Exchange\Transport\EventNotificationItemWrapper.cs" />
+    <Compile Include="Exchange\Transport\ExceptionHelper.cs" />
+    <Compile Include="Exchange\Transport\Exch50.cs" />
+    <Compile Include="Exchange\Transport\Exch50Exception.cs" />
+    <Compile Include="Exchange\Transport\Exch50Reader.cs" />
+    <Compile Include="Exchange\Transport\Exch50Writer.cs" />
+    <Compile Include="Exchange\Transport\ExchangeMailMsgProperty.cs" />
+    <Compile Include="Exchange\Transport\ExportStream.cs" />
+    <Compile Include="Exchange\Transport\ExtendedPropertyDictionary.cs" />
+    <Compile Include="Exchange\Transport\Extensibility\AgentComponent.cs" />
+    <Compile Include="Exchange\Transport\Extensibility\AgentErrorHandling.cs" />
+    <Compile Include="Exchange\Transport\Extensibility\AgentErrorHandlingAllowAction.cs" />
+    <Compile Include="Exchange\Transport\Extensibility\AgentErrorHandlingCondition.cs" />
+    <Compile Include="Exchange\Transport\Extensibility\AgentErrorHandlingDeferAction.cs" />
+    <Compile Include="Exchange\Transport\Extensibility\AgentErrorHandlingDefinition.cs" />
+    <Compile Include="Exchange\Transport\Extensibility\AgentErrorHandlingDropAction.cs" />
+    <Compile Include="Exchange\Transport\Extensibility\AgentErrorHandlingMap.cs" />
+    <Compile Include="Exchange\Transport\Extensibility\AgentErrorHandlingNdrAction.cs" />
+    <Compile Include="Exchange\Transport\Extensibility\ErrorHandlingActionType.cs" />
+    <Compile Include="Exchange\Transport\Extensibility\IErrorHandlingAction.cs" />
+    <Compile Include="Exchange\Transport\Extensibility\SmtpAgentSession.cs" />
+    <Compile Include="Exchange\Transport\Extensibility\StorageAgentMExEvents.cs" />
+    <Compile Include="Exchange\Transport\Extensibility\StorageAgentState.cs" />
+    <Compile Include="Exchange\Transport\FailureDsnComparer.cs" />
+    <Compile Include="Exchange\Transport\FifoQueue.cs" />
+    <Compile Include="Exchange\Transport\ForkCount.cs" />
+    <Compile Include="Exchange\Transport\GetCost.cs" />
+    <Compile Include="Exchange\Transport\GlobalConfigurationBase.cs" />
+    <Compile Include="Exchange\Transport\HeaderFirewall.cs" />
+    <Compile Include="Exchange\Transport\IAgentRuntime.cs" />
+    <Compile Include="Exchange\Transport\IAuthzAuthorization.cs" />
+    <Compile Include="Exchange\Transport\ICertificateCache.cs" />
+    <Compile Include="Exchange\Transport\IComponentsWrapper.cs" />
+    <Compile Include="Exchange\Transport\ICostFactory.cs" />
+    <Compile Include="Exchange\Transport\ICostIndex.cs" />
+    <Compile Include="Exchange\Transport\IDiskSystemCheckUtilsWrapper.cs" />
+    <Compile Include="Exchange\Transport\IDsnGeneratorComponent.cs" />
+    <Compile Include="Exchange\Transport\IEventNotificationItem.cs" />
+    <Compile Include="Exchange\Transport\IExtendedPropertyCollection.cs" />
+    <Compile Include="Exchange\Transport\IgnorableForcedCrashException.cs" />
+    <Compile Include="Exchange\Transport\ILatencyPerformanceCounter.cs" />
+    <Compile Include="Exchange\Transport\ILockableItem.cs" />
+    <Compile Include="Exchange\Transport\ILockableQueue.cs" />
+    <Compile Include="Exchange\Transport\IMessageDepotComponent.cs" />
+    <Compile Include="Exchange\Transport\IMessageDepotQueueViewerComponent.cs" />
+    <Compile Include="Exchange\Transport\IMeteringComponent.cs" />
+    <Compile Include="Exchange\Transport\InboundExch50.cs" />
+    <Compile Include="Exchange\Transport\InboundProxyNextHopConnection.cs" />
+    <Compile Include="Exchange\Transport\InboundProxyRoutedMailItem.cs" />
+    <Compile Include="Exchange\Transport\InMemoryReceiveConnector.cs" />
+    <Compile Include="Exchange\Transport\Internal\Configuration.cs" />
+    <Compile Include="Exchange\Transport\IOrarGeneratorComponent.cs" />
+    <Compile Include="Exchange\Transport\IPerfCountersLoader.cs" />
+    <Compile Include="Exchange\Transport\IPPermissionImpl.cs" />
+    <Compile Include="Exchange\Transport\IProcessingQuotaComponent.cs" />
+    <Compile Include="Exchange\Transport\IProcessingSchedulerComponent.cs" />
+    <Compile Include="Exchange\Transport\IQueueItem.cs" />
+    <Compile Include="Exchange\Transport\IQueueQuotaComponent.cs" />
+    <Compile Include="Exchange\Transport\IQueueQuotaComponentPerformanceCounters.cs" />
+    <Compile Include="Exchange\Transport\IQueueQuotaConfig.cs" />
+    <Compile Include="Exchange\Transport\IQueueQuotaMailItem.cs" />
+    <Compile Include="Exchange\Transport\IQueueQuotaObservableComponent.cs" />
+    <Compile Include="Exchange\Transport\IQueueQuotaThresholdFetcher.cs" />
+    <Compile Include="Exchange\Transport\IQueueVisitor.cs" />
+    <Compile Include="Exchange\Transport\IReadOnlyExtendedPropertyCollection.cs" />
+    <Compile Include="Exchange\Transport\IReadOnlyMailItem.cs" />
+    <Compile Include="Exchange\Transport\IReadOnlyMailRecipientCollection.cs" />
+    <Compile Include="Exchange\Transport\IRoutedMessageQueue.cs" />
+    <Compile Include="Exchange\Transport\IsBelowCost.cs" />
+    <Compile Include="Exchange\Transport\IsBelowCostResult.cs" />
+    <Compile Include="Exchange\Transport\IsLocked.cs" />
+    <Compile Include="Exchange\Transport\IsLockedOnQueue.cs" />
+    <Compile Include="Exchange\Transport\ISmtpAgentSession.cs" />
+    <Compile Include="Exchange\Transport\IStartableTransportComponent.cs" />
+    <Compile Include="Exchange\Transport\IStoreDriver.cs" />
+    <Compile Include="Exchange\Transport\IStoreDriverDelivery.cs" />
+    <Compile Include="Exchange\Transport\IStoreDriverSubmission.cs" />
+    <Compile Include="Exchange\Transport\ISystemCheck.cs" />
+    <Compile Include="Exchange\Transport\ISystemCheckComponent.cs" />
+    <Compile Include="Exchange\Transport\ItemRelocked.cs" />
+    <Compile Include="Exchange\Transport\ItemUnlocked.cs" />
+    <Compile Include="Exchange\Transport\ITransportAppConfig.cs" />
+    <Compile Include="Exchange\Transport\ITransportComponent.cs" />
+    <Compile Include="Exchange\Transport\ITransportConfiguration.cs" />
+    <Compile Include="Exchange\Transport\IWaitConditionManagerConfig.cs" />
+    <Compile Include="Exchange\Transport\KeySerializer.cs" />
+    <Compile Include="Exchange\Transport\LatencyAgentGroup.cs" />
+    <Compile Include="Exchange\Transport\LatencyComponent.cs" />
+    <Compile Include="Exchange\Transport\LatencyComponentAction.cs" />
+    <Compile Include="Exchange\Transport\LatencyCounterType.cs" />
+    <Compile Include="Exchange\Transport\LatencyFormatter.cs" />
+    <Compile Include="Exchange\Transport\LatencyHeaderManager.cs" />
+    <Compile Include="Exchange\Transport\LatencyInProgressParser.cs" />
+    <Compile Include="Exchange\Transport\LatencyParser.cs" />
+    <Compile Include="Exchange\Transport\LatencyPerformanceCounter.cs" />
+    <Compile Include="Exchange\Transport\LatencyPerformanceCounterType.cs" />
+    <Compile Include="Exchange\Transport\LatencyRecord.cs" />
+    <Compile Include="Exchange\Transport\LatencyRecordPlus.cs" />
+    <Compile Include="Exchange\Transport\LatencyTracker.cs" />
+    <Compile Include="Exchange\Transport\LatencyTrackerEndToEndPerfCounters.cs" />
+    <Compile Include="Exchange\Transport\LatencyTrackerEndToEndPerfCountersInstance.cs" />
+    <Compile Include="Exchange\Transport\LatencyTrackerPerfCounters.cs" />
+    <Compile Include="Exchange\Transport\LatencyTrackerPerfCountersInstance.cs" />
+    <Compile Include="Exchange\Transport\LocalComputer.cs" />
+    <Compile Include="Exchange\Transport\LocDescriptionAttribute.cs" />
+    <Compile Include="Exchange\Transport\Logging\ConnectionLog\ConnectionLog.cs" />
+    <Compile Include="Exchange\Transport\Logging\IProtocolLog.cs" />
+    <Compile Include="Exchange\Transport\Logging\IProtocolLogSession.cs" />
+    <Compile Include="Exchange\Transport\Logging\MessageTracking\IMessageTrackingLog.cs" />
+    <Compile Include="Exchange\Transport\Logging\MessageTracking\MessageTrackingLog.cs" />
+    <Compile Include="Exchange\Transport\Logging\MessageTracking\MessageTrackingLogWrapper.cs" />
+    <Compile Include="Exchange\Transport\Logging\MessageTracking\MsgTrackDSNInfo.cs" />
+    <Compile Include="Exchange\Transport\Logging\MessageTracking\MsgTrackExpandInfo.cs" />
+    <Compile Include="Exchange\Transport\Logging\MessageTracking\MsgTrackMapiSubmitInfo.cs" />
+    <Compile Include="Exchange\Transport\Logging\MessageTracking\MsgTrackPoisonInfo.cs" />
+    <Compile Include="Exchange\Transport\Logging\MessageTracking\MsgTrackReceiveInfo.cs" />
+    <Compile Include="Exchange\Transport\Logging\MessageTracking\MsgTrackRedirectInfo.cs" />
+    <Compile Include="Exchange\Transport\Logging\MessageTracking\MsgTrackResolveInfo.cs" />
+    <Compile Include="Exchange\Transport\Logging\ProtocolEvent.cs" />
+    <Compile Include="Exchange\Transport\Logging\ProtocolLog.cs" />
+    <Compile Include="Exchange\Transport\Logging\ProtocolLogRowFormatter.cs" />
+    <Compile Include="Exchange\Transport\Logging\ProtocolLogSession.cs" />
+    <Compile Include="Exchange\Transport\Logging\WorkloadManagement\TransportWlmLog.cs" />
+    <Compile Include="Exchange\Transport\MailboxDeliveryReceiveConnector.cs" />
+    <Compile Include="Exchange\Transport\MailboxGuidTraceConfiguration.cs" />
+    <Compile Include="Exchange\Transport\MailboxTransportDeliveryResult.cs" />
+    <Compile Include="Exchange\Transport\MailItemTraceFilter.cs" />
+    <Compile Include="Exchange\Transport\MailRecipient.cs" />
+    <Compile Include="Exchange\Transport\MailRecipientCollection.cs" />
+    <Compile Include="Exchange\Transport\MailRecipientCollectionWrapper.cs" />
+    <Compile Include="Exchange\Transport\MailRecipientWrapper.cs" />
+    <Compile Include="Exchange\Transport\MdbefPropTag.cs" />
+    <Compile Include="Exchange\Transport\MemoryPressureException.cs" />
+    <Compile Include="Exchange\Transport\MemoryPrivateBytesMonitor.cs" />
+    <Compile Include="Exchange\Transport\MemoryTotalBytesMonitor.cs" />
+    <Compile Include="Exchange\Transport\MessageContext.cs" />
+    <Compile Include="Exchange\Transport\MessageDepotComponent.cs" />
+    <Compile Include="Exchange\Transport\MessageDepotConfig.cs" />
+    <Compile Include="Exchange\Transport\MessageDepotMailItem.cs" />
+    <Compile Include="Exchange\Transport\MessageDepotQueueViewerComponent.cs" />
+    <Compile Include="Exchange\Transport\MessageProcessingSource.cs" />
+    <Compile Include="Exchange\Transport\MessageQueue.cs" />
+    <Compile Include="Exchange\Transport\MessageRepository\MessageResubmissionRpcClientImpl.cs" />
+    <Compile Include="Exchange\Transport\MessageResubmission\IMessageResubmissionPerfCounters.cs" />
+    <Compile Include="Exchange\Transport\MessageResubmission\IMessageResubmissionRpcServer.cs" />
+    <Compile Include="Exchange\Transport\MessageResubmission\MailboxResubmitHelper.cs" />
+    <Compile Include="Exchange\Transport\MessageResubmission\MessageResubmissionComponent.cs" />
+    <Compile Include="Exchange\Transport\MessageResubmission\MessageResubmissionPerfCounters.cs" />
+    <Compile Include="Exchange\Transport\MessageResubmission\MessageResubmissionPerformanceCounters.cs" />
+    <Compile Include="Exchange\Transport\MessageResubmission\MessageResubmissionPerformanceCountersInstance.cs" />
+    <Compile Include="Exchange\Transport\MessageResubmission\MessageResubmissionRpcServerImpl.cs" />
+    <Compile Include="Exchange\Transport\MessageResubmission\ResubmitFilter.cs" />
+    <Compile Include="Exchange\Transport\MessageResubmission\ResubmitRequestFacade.cs" />
+    <Compile Include="Exchange\Transport\MessageThrottling\IMessageThrottlingManager.cs" />
+    <Compile Include="Exchange\Transport\MessageThrottling\IMessageThrottlingManagerConfig.cs" />
+    <Compile Include="Exchange\Transport\MessageThrottling\MessageThrottlingComponent.cs" />
+    <Compile Include="Exchange\Transport\MessageThrottling\MessageThrottlingManager.cs" />
+    <Compile Include="Exchange\Transport\MessageThrottling\MessageThrottlingManagerConfig.cs" />
+    <Compile Include="Exchange\Transport\MessageThrottling\MessageThrottlingReason.cs" />
+    <Compile Include="Exchange\Transport\MeteringComponent.cs" />
+    <Compile Include="Exchange\Transport\MeteringConfig.cs" />
+    <Compile Include="Exchange\Transport\MicrosoftExchangeRecipientConfiguration.cs" />
+    <Compile Include="Exchange\Transport\MimeCache.cs" />
+    <Compile Include="Exchange\Transport\ModerationHelper.cs" />
+    <Compile Include="Exchange\Transport\MsgDepotLegacyPerfCounterWrapper.cs" />
+    <Compile Include="Exchange\Transport\MultiTenantTransport.cs" />
+    <Compile Include="Exchange\Transport\MultiValueHeader.cs" />
+    <Compile Include="Exchange\Transport\NextHopConnection.cs" />
+    <Compile Include="Exchange\Transport\NextHopSolution.cs" />
+    <Compile Include="Exchange\Transport\NextHopSolutionKey.cs" />
+    <Compile Include="Exchange\Transport\NextHopSolutionKeyId.cs" />
+    <Compile Include="Exchange\Transport\NextHopSolutionKeyObjectSchema.cs" />
+    <Compile Include="Exchange\Transport\NextHopSolutionKeyPropertyBag.cs" />
+    <Compile Include="Exchange\Transport\NextHopType.cs" />
+    <Compile Include="Exchange\Transport\Node.cs" />
+    <Compile Include="Exchange\Transport\NullResourceMonitor.cs" />
+    <Compile Include="Exchange\Transport\OrarGenerator.cs" />
+    <Compile Include="Exchange\Transport\OrganizationArbitritionMailboxCache.cs" />
+    <Compile Include="Exchange\Transport\OutboundConnectorNotFoundException.cs" />
+    <Compile Include="Exchange\Transport\OutboundExch50.cs" />
+    <Compile Include="Exchange\Transport\ParallelTransportComponent.cs" />
+    <Compile Include="Exchange\Transport\PendingLatencyRecord.cs" />
+    <Compile Include="Exchange\Transport\PerTenantOutboundConnectors.cs" />
+    <Compile Include="Exchange\Transport\PickupContext.cs" />
+    <Compile Include="Exchange\Transport\Pickup\DirectoryScanner.cs" />
+    <Compile Include="Exchange\Transport\Pickup\FileList.cs" />
+    <Compile Include="Exchange\Transport\Pickup\IPickupSubmitHandler.cs" />
+    <Compile Include="Exchange\Transport\Pickup\PickupComponent.cs" />
+    <Compile Include="Exchange\Transport\Pickup\PickupDirectory.cs" />
+    <Compile Include="Exchange\Transport\Pickup\PickupFileMailer.cs" />
+    <Compile Include="Exchange\Transport\Pickup\PickupPerfCounters.cs" />
+    <Compile Include="Exchange\Transport\Pickup\PickupPerfCountersInstance.cs" />
+    <Compile Include="Exchange\Transport\Pickup\ReplayFileMailer.cs" />
+    <Compile Include="Exchange\Transport\Pickup\ReplayXHeaderProcessor.cs" />
+    <Compile Include="Exchange\Transport\PoisonContext.cs" />
+    <Compile Include="Exchange\Transport\PoisonMessage.cs" />
+    <Compile Include="Exchange\Transport\PoisonMessageQueue.cs" />
+    <Compile Include="Exchange\Transport\PostconditionAttribute.cs" />
+    <Compile Include="Exchange\Transport\PreconditionAttribute.cs" />
+    <Compile Include="Exchange\Transport\PrioritizedLatencyPerformanceCounter.cs" />
+    <Compile Include="Exchange\Transport\PriorityBehaviour.cs" />
+    <Compile Include="Exchange\Transport\ProcessingQuotaComponent.cs" />
+    <Compile Include="Exchange\Transport\ProcessingSchedulerAdminWrapper.cs" />
+    <Compile Include="Exchange\Transport\ProcessingSchedulerComponent.cs" />
+    <Compile Include="Exchange\Transport\ProcessTransportRoleFlags.cs" />
+    <Compile Include="Exchange\Transport\QuarantineConfig.cs" />
+    <Compile Include="Exchange\Transport\QuarantineConfigReadException.cs" />
+    <Compile Include="Exchange\Transport\QuarantineNotConfiguredException.cs" />
+    <Compile Include="Exchange\Transport\QueueDiversity.cs" />
+    <Compile Include="Exchange\Transport\QueuedRecipientsByAgePerfCounters.cs" />
+    <Compile Include="Exchange\Transport\QueuedRecipientsByAgePerfCountersInstance.cs" />
+    <Compile Include="Exchange\Transport\QueuedRecipientsByAgePerfCountersWrapper.cs" />
+    <Compile Include="Exchange\Transport\QueuedRecipientsByAgeToken.cs" />
+    <Compile Include="Exchange\Transport\QueueItemList.cs" />
+    <Compile Include="Exchange\Transport\QueueNode.cs" />
+    <Compile Include="Exchange\Transport\QueueQuotaComponent.cs" />
+    <Compile Include="Exchange\Transport\QueueQuotaComponentPerfCounters.cs" />
+    <Compile Include="Exchange\Transport\QueueQuotaComponentPerfCountersInstance.cs" />
+    <Compile Include="Exchange\Transport\QueueQuotaComponentPerformanceCountersWrapper.cs" />
+    <Compile Include="Exchange\Transport\QueueQuotaComponentWithMetering.cs" />
+    <Compile Include="Exchange\Transport\QueueQuotaConfig.cs" />
+    <Compile Include="Exchange\Transport\QueueQuotaDiagnosticLogger.cs" />
+    <Compile Include="Exchange\Transport\QueueQuotaEntity.cs" />
+    <Compile Include="Exchange\Transport\QueueQuotaHelper.cs" />
+    <Compile Include="Exchange\Transport\QueueQuotaImpl.cs" />
+    <Compile Include="Exchange\Transport\QueueQuotaLoggingContext.cs" />
+    <Compile Include="Exchange\Transport\QueueQuotaResources.cs" />
+    <Compile Include="Exchange\Transport\QueueQuotaTrackingBits.cs" />
+    <Compile Include="Exchange\Transport\QueueQuota\OrganizationUsageData.cs" />
+    <Compile Include="Exchange\Transport\QueueQuota\UsageData.cs" />
+    <Compile Include="Exchange\Transport\QueueViewer\MessageInfoFactory.cs" />
+    <Compile Include="Exchange\Transport\QueueViewer\PagingEngine.cs" />
+    <Compile Include="Exchange\Transport\QueueViewer\QueueInfoFactory.cs" />
+    <Compile Include="Exchange\Transport\QueueViewer\QueueLog.cs" />
+    <Compile Include="Exchange\Transport\QueueViewer\QueueViewerClient.cs" />
+    <Compile Include="Exchange\Transport\QueueViewer\QueueViewerServer.cs" />
+    <Compile Include="Exchange\Transport\QueueViewer\Serialization.cs" />
+    <Compile Include="Exchange\Transport\QueueViewer\VersionedQueueViewerClient.cs" />
+    <Compile Include="Exchange\Transport\QueueWaitList.cs" />
+    <Compile Include="Exchange\Transport\ReaderWriterLockExtensions.cs" />
+    <Compile Include="Exchange\Transport\ReadOnlyMailRecipientCollectionWrapper.cs" />
+    <Compile Include="Exchange\Transport\ReceiveConnectorConfiguration.cs" />
+    <Compile Include="Exchange\Transport\RecipientAPI\AddressBookEntryImpl.cs" />
+    <Compile Include="Exchange\Transport\RecipientAPI\AddressBookImpl.cs" />
+    <Compile Include="Exchange\Transport\RecipientAPI\CompressedAddressComparer.cs" />
+    <Compile Include="Exchange\Transport\RecipientAPI\GetAddress.cs" />
+    <Compile Include="Exchange\Transport\RecipientAPI\IsMemberOfResolverComponent.cs" />
+    <Compile Include="Exchange\Transport\RecipientAPI\RecipientValidator.cs" />
+    <Compile Include="Exchange\Transport\RecipientAPI\TransportAddressBook.cs" />
+    <Compile Include="Exchange\Transport\RecipientAPI\TransportIsMemberOfResolverConfig.cs" />
+    <Compile Include="Exchange\Transport\RecipientAPI\Utility.cs" />
+    <Compile Include="Exchange\Transport\RedirectionHistory.cs" />
+    <Compile Include="Exchange\Transport\RemoteDelivery\ConnectionManager.cs" />
+    <Compile Include="Exchange\Transport\RemoteDelivery\GetQueueDelegate.cs" />
+    <Compile Include="Exchange\Transport\RemoteDelivery\IRemoteDeliveryHealthPerformanceCounters.cs" />
+    <Compile Include="Exchange\Transport\RemoteDelivery\LocalDeliveryConnectionHandler.cs" />
+    <Compile Include="Exchange\Transport\RemoteDelivery\MultiQueueWaitConditionManager.cs" />
+    <Compile Include="Exchange\Transport\RemoteDelivery\NonSmtpGatewayConnection.cs" />
+    <Compile Include="Exchange\Transport\RemoteDelivery\NonSmtpGatewayConnectionHandler.cs" />
+    <Compile Include="Exchange\Transport\RemoteDelivery\OutboundIPPoolPerfCounters.cs" />
+    <Compile Include="Exchange\Transport\RemoteDelivery\OutboundIPPoolPerfCountersInstance.cs" />
+    <Compile Include="Exchange\Transport\RemoteDelivery\QueueManager.cs" />
+    <Compile Include="Exchange\Transport\RemoteDelivery\QueuingPerfCounters.cs" />
+    <Compile Include="Exchange\Transport\RemoteDelivery\QueuingPerfCountersInstance.cs" />
+    <Compile Include="Exchange\Transport\RemoteDelivery\RemoteDeliveryComponent.cs" />
+    <Compile Include="Exchange\Transport\RemoteDelivery\RemoteDeliveryHealthPerformanceCountersWrapper.cs" />
+    <Compile Include="Exchange\Transport\RemoteDelivery\RemoteDeliveryHealthTracker.cs" />
+    <Compile Include="Exchange\Transport\RemoteDelivery\RemoteMessageQueue.cs" />
+    <Compile Include="Exchange\Transport\RemoteDelivery\ResubmitReason.cs" />
+    <Compile Include="Exchange\Transport\RemoteDelivery\RoutedMessageQueue.cs" />
+    <Compile Include="Exchange\Transport\RemoteDelivery\SmtpResponseSubCodePerfCounters.cs" />
+    <Compile Include="Exchange\Transport\RemoteDelivery\TransportMessageQueue.cs" />
+    <Compile Include="Exchange\Transport\RemoteDelivery\UnreachableMessageQueue.cs" />
+    <Compile Include="Exchange\Transport\RemoteDomainTable.cs" />
+    <Compile Include="Exchange\Transport\ResolverLogLevel.cs" />
+    <Compile Include="Exchange\Transport\ResourceManager.cs" />
+    <Compile Include="Exchange\Transport\ResourceManagerComponent.cs" />
+    <Compile Include="Exchange\Transport\ResourceManagerComponentsAdapter.cs" />
+    <Compile Include="Exchange\Transport\ResourceManagerConfiguration.cs" />
+    <Compile Include="Exchange\Transport\ResourceManagerEventLogger.cs" />
+    <Compile Include="Exchange\Transport\ResourceManagerResources.cs" />
+    <Compile Include="Exchange\Transport\ResourceMonitor.cs" />
+    <Compile Include="Exchange\Transport\ResourceMonitorFactory.cs" />
+    <Compile Include="Exchange\Transport\ResourceMonitoring\DatabaseUsedSpaceMeter.cs" />
+    <Compile Include="Exchange\Transport\ResourceMonitoring\IMeterableJetDataSource.cs" />
+    <Compile Include="Exchange\Transport\ResourceMonitoring\IMeterableQueue.cs" />
+    <Compile Include="Exchange\Transport\ResourceMonitoring\MeterableJetDataSource.cs" />
+    <Compile Include="Exchange\Transport\ResourceMonitoring\MeterableJetDataSourceFactory.cs" />
+    <Compile Include="Exchange\Transport\ResourceMonitoring\MeterableQueue.cs" />
+    <Compile Include="Exchange\Transport\ResourceMonitoring\MeterableQueueFactory.cs" />
+    <Compile Include="Exchange\Transport\ResourceMonitoring\QueueLengthResourceMeter.cs" />
+    <Compile Include="Exchange\Transport\ResourceMonitoring\ResourceMeteringConfig.cs" />
+    <Compile Include="Exchange\Transport\ResourceMonitoring\ResourceThrottlingConfig.cs" />
+    <Compile Include="Exchange\Transport\ResourceMonitoring\UsedVersionBucketsResourceMeter.cs" />
+    <Compile Include="Exchange\Transport\ResourceMonitorStabilizer.cs" />
+    <Compile Include="Exchange\Transport\ResourceObservingComponents.cs" />
+    <Compile Include="Exchange\Transport\ResourceThrottlingComponent.cs" />
+    <Compile Include="Exchange\Transport\ResourceThrottlingPerfCounters.cs" />
+    <Compile Include="Exchange\Transport\ResourceThrottlingPerfCountersInstance.cs" />
+    <Compile Include="Exchange\Transport\ResourceThrottling\BootScannerResourceLevelObserver.cs" />
+    <Compile Include="Exchange\Transport\ResourceThrottling\ContentAggregatorResourceLevelObserver.cs" />
+    <Compile Include="Exchange\Transport\ResourceThrottling\EnhancedDnsResourceLevelObserver.cs" />
+    <Compile Include="Exchange\Transport\ResourceThrottling\IsMofRResourceLevelObserver.cs" />
+    <Compile Include="Exchange\Transport\ResourceThrottling\MessageResubmissionResourceLevelObserver.cs" />
+    <Compile Include="Exchange\Transport\ResourceThrottling\PickupResourceLevelObserver.cs" />
+    <Compile Include="Exchange\Transport\ResourceThrottling\RemoteDeliveryResourceLevelObserver.cs" />
+    <Compile Include="Exchange\Transport\ResourceThrottling\ResourceHelper.cs" />
+    <Compile Include="Exchange\Transport\ResourceThrottling\ResourceLevelObserver.cs" />
+    <Compile Include="Exchange\Transport\ResourceThrottling\ShadowRedundancyResourceLevelObserver.cs" />
+    <Compile Include="Exchange\Transport\ResourceThrottling\SmtpInResourceLevelObserver.cs" />
+    <Compile Include="Exchange\Transport\ResourceUses.cs" />
+    <Compile Include="Exchange\Transport\RestrictedHeaderSet.cs" />
+    <Compile Include="Exchange\Transport\ResubmitHelper.cs" />
+    <Compile Include="Exchange\Transport\ResubmitterBasedCondition.cs" />
+    <Compile Include="Exchange\Transport\RightsManagement\AgentAsyncState.cs" />
+    <Compile Include="Exchange\Transport\RightsManagement\AsyncDecryptionOperationResult.cs" />
+    <Compile Include="Exchange\Transport\RightsManagement\AsyncOperationResult.cs" />
+    <Compile Include="Exchange\Transport\RightsManagement\DecryptionResultData.cs" />
+    <Compile Include="Exchange\Transport\RightsManagement\E4eCssStyle.cs" />
+    <Compile Include="Exchange\Transport\RightsManagement\E4eCssStyleV1.cs" />
+    <Compile Include="Exchange\Transport\RightsManagement\E4eCssStyleV2.cs" />
+    <Compile Include="Exchange\Transport\RightsManagement\E4eDecryptionHelper.cs" />
+    <Compile Include="Exchange\Transport\RightsManagement\E4eDecryptionHelperV2.cs" />
+    <Compile Include="Exchange\Transport\RightsManagement\E4eEncryptionHelper.cs" />
+    <Compile Include="Exchange\Transport\RightsManagement\E4eEncryptionHelperV2.cs" />
+    <Compile Include="Exchange\Transport\RightsManagement\E4eException.cs" />
+    <Compile Include="Exchange\Transport\RightsManagement\E4eHelper.cs" />
+    <Compile Include="Exchange\Transport\RightsManagement\E4eHtmlParser.cs" />
+    <Compile Include="Exchange\Transport\RightsManagement\E4eLog.cs" />
+    <Compile Include="Exchange\Transport\RightsManagement\E4eLogField.cs" />
+    <Compile Include="Exchange\Transport\RightsManagement\E4eLogType.cs" />
+    <Compile Include="Exchange\Transport\RightsManagement\E4eProbeHelper.cs" />
+    <Compile Include="Exchange\Transport\RightsManagement\IE4eLogger.cs" />
+    <Compile Include="Exchange\Transport\RightsManagement\IrmProbeHelper.cs" />
+    <Compile Include="Exchange\Transport\RightsManagement\IrmProbeMailItem.cs" />
+    <Compile Include="Exchange\Transport\RightsManagement\MessageConversionException.cs" />
+    <Compile Include="Exchange\Transport\RightsManagement\MessageConverter.cs" />
+    <Compile Include="Exchange\Transport\RightsManagement\RmsDecryptor.cs" />
+    <Compile Include="Exchange\Transport\RightsManagement\RmsEncryptor.cs" />
+    <Compile Include="Exchange\Transport\RightsManagement\RmsLatencyTracker.cs" />
+    <Compile Include="Exchange\Transport\RightsManagement\State.cs" />
+    <Compile Include="Exchange\Transport\RightsManagement\Utils.cs" />
+    <Compile Include="Exchange\Transport\RmsClientManagerComponent.cs" />
+    <Compile Include="Exchange\Transport\RoutedMailItem.cs" />
+    <Compile Include="Exchange\Transport\RoutedQueueBase.cs" />
+    <Compile Include="Exchange\Transport\SchedulableMailItem.cs" />
+    <Compile Include="Exchange\Transport\SchedulerAdapterComponent.cs" />
+    <Compile Include="Exchange\Transport\SenderBasedCondition.cs" />
+    <Compile Include="Exchange\Transport\SenderGuidTraceFilter.cs" />
+    <Compile Include="Exchange\Transport\SenderIdStatus.cs" />
+    <Compile Include="Exchange\Transport\SequentialTransportComponent.cs" />
+    <Compile Include="Exchange\Transport\ServiceStateHelper.cs" />
+    <Compile Include="Exchange\Transport\SessionId.cs" />
+    <Compile Include="Exchange\Transport\SessionSetupFailureReason.cs" />
+    <Compile Include="Exchange\Transport\ShadowRedundancyCompatibilityVersion.cs" />
+    <Compile Include="Exchange\Transport\ShadowRedundancy\CommitCoordinator.cs" />
+    <Compile Include="Exchange\Transport\ShadowRedundancy\DelayedAckCompletionStatus.cs" />
+    <Compile Include="Exchange\Transport\ShadowRedundancy\DelayedAckItemHandler.cs" />
+    <Compile Include="Exchange\Transport\ShadowRedundancy\DiscardReason.cs" />
+    <Compile Include="Exchange\Transport\ShadowRedundancy\FindRelatedBridgeHeads.cs" />
+    <Compile Include="Exchange\Transport\ShadowRedundancy\GetRoutedMessageQueueStatus.cs" />
+    <Compile Include="Exchange\Transport\ShadowRedundancy\IPrimaryServerInfoMap.cs" />
+    <Compile Include="Exchange\Transport\ShadowRedundancy\IShadowRedundancyConfigurationSource.cs" />
+    <Compile Include="Exchange\Transport\ShadowRedundancy\IShadowRedundancyManager.cs" />
+    <Compile Include="Exchange\Transport\ShadowRedundancy\IShadowRedundancyPerformanceCounters.cs" />
+    <Compile Include="Exchange\Transport\ShadowRedundancy\IShadowSession.cs" />
+    <Compile Include="Exchange\Transport\ShadowRedundancy\NullShadowSession.cs" />
+    <Compile Include="Exchange\Transport\ShadowRedundancy\PrimaryServerInfo.cs" />
+    <Compile Include="Exchange\Transport\ShadowRedundancy\PrimaryServerInfoMap.cs" />
+    <Compile Include="Exchange\Transport\ShadowRedundancy\RoutingBasedHubPicker.cs" />
+    <Compile Include="Exchange\Transport\ShadowRedundancy\ShadowBdatSession.cs" />
+    <Compile Include="Exchange\Transport\ShadowRedundancy\ShadowBreadcrumbs.cs" />
+    <Compile Include="Exchange\Transport\ShadowRedundancy\ShadowDataSession.cs" />
+    <Compile Include="Exchange\Transport\ShadowRedundancy\ShadowHubPickerBase.cs" />
+    <Compile Include="Exchange\Transport\ShadowRedundancy\ShadowMailItem.cs" />
+    <Compile Include="Exchange\Transport\ShadowRedundancy\ShadowMessageQueue.cs" />
+    <Compile Include="Exchange\Transport\ShadowRedundancy\ShadowPeerNextHopConnection.cs" />
+    <Compile Include="Exchange\Transport\ShadowRedundancy\ShadowRedundancyComponent.cs" />
+    <Compile Include="Exchange\Transport\ShadowRedundancy\ShadowRedundancyConfig.cs" />
+    <Compile Include="Exchange\Transport\ShadowRedundancy\ShadowRedundancyConfigChange.cs" />
+    <Compile Include="Exchange\Transport\ShadowRedundancy\ShadowRedundancyCounterId.cs" />
+    <Compile Include="Exchange\Transport\ShadowRedundancy\ShadowRedundancyEventLogger.cs" />
+    <Compile Include="Exchange\Transport\ShadowRedundancy\ShadowRedundancyHeartbeatHelper.cs" />
+    <Compile Include="Exchange\Transport\ShadowRedundancy\ShadowRedundancyInstancePerfCounters.cs" />
+    <Compile Include="Exchange\Transport\ShadowRedundancy\ShadowRedundancyInstancePerfCountersInstance.cs" />
+    <Compile Include="Exchange\Transport\ShadowRedundancy\ShadowRedundancyManager.cs" />
+    <Compile Include="Exchange\Transport\ShadowRedundancy\ShadowRedundancyPerfCounters.cs" />
+    <Compile Include="Exchange\Transport\ShadowRedundancy\ShadowRedundancyPerfCountersInstance.cs" />
+    <Compile Include="Exchange\Transport\ShadowRedundancy\ShadowRedundancyPerformanceCounters.cs" />
+    <Compile Include="Exchange\Transport\ShadowRedundancy\ShadowRedundancyResubmitHelper.cs" />
+    <Compile Include="Exchange\Transport\ShadowRedundancy\ShadowServerResponseInfo.cs" />
+    <Compile Include="Exchange\Transport\ShadowRedundancy\ShadowSession.cs" />
+    <Compile Include="Exchange\Transport\ShadowRedundancy\ShadowSessionFactory.cs" />
+    <Compile Include="Exchange\Transport\ShadowRedundancy\ShouldSuppressResubmission.cs" />
+    <Compile Include="Exchange\Transport\ShadowRedundancy\TransportConfigBasedHubPicker.cs" />
+    <Compile Include="Exchange\Transport\ShadowRedundancy\WriteRecord.cs" />
+    <Compile Include="Exchange\Transport\ShadowRoutedMailItem.cs" />
+    <Compile Include="Exchange\Transport\ShouldAddToIndex.cs" />
+    <Compile Include="Exchange\Transport\SingleQueueWaitConditionManager.cs" />
+    <Compile Include="Exchange\Transport\Status.cs" />
+    <Compile Include="Exchange\Transport\Storage\BlobCollection.cs" />
+    <Compile Include="Exchange\Transport\Storage\Breadcrumb.cs" />
+    <Compile Include="Exchange\Transport\Storage\Breadcrumbs.cs" />
+    <Compile Include="Exchange\Transport\Storage\BufferedStream.cs" />
+    <Compile Include="Exchange\Transport\Storage\CachingStream.cs" />
+    <Compile Include="Exchange\Transport\Storage\ChunkingScanner.cs" />
+    <Compile Include="Exchange\Transport\Storage\ColumnAccess.cs" />
+    <Compile Include="Exchange\Transport\Storage\ColumnCache.2.cs" />
+    <Compile Include="Exchange\Transport\Storage\ColumnCache.cs" />
+    <Compile Include="Exchange\Transport\Storage\ColumnCacheByteArray.cs" />
+    <Compile Include="Exchange\Transport\Storage\ColumnCacheString.cs" />
+    <Compile Include="Exchange\Transport\Storage\ColumnCacheValueType.cs" />
+    <Compile Include="Exchange\Transport\Storage\DatabaseAutoRecovery.cs" />
+    <Compile Include="Exchange\Transport\Storage\DatabaseAutoRecoveryEventLogger.cs" />
+    <Compile Include="Exchange\Transport\Storage\DatabasePerfCounters.cs" />
+    <Compile Include="Exchange\Transport\Storage\DatabasePerfCountersInstance.cs" />
+    <Compile Include="Exchange\Transport\Storage\DatabaseRecoveryAction.cs" />
+    <Compile Include="Exchange\Transport\Storage\DataColumn.2.cs" />
+    <Compile Include="Exchange\Transport\Storage\DataColumn.cs" />
+    <Compile Include="Exchange\Transport\Storage\DataColumnByteArray.cs" />
+    <Compile Include="Exchange\Transport\Storage\DataColumnDefinitionAttribute.cs" />
+    <Compile Include="Exchange\Transport\Storage\DataColumnsCache.cs" />
+    <Compile Include="Exchange\Transport\Storage\DataColumnString.cs" />
+    <Compile Include="Exchange\Transport\Storage\DataConnection.cs" />
+    <Compile Include="Exchange\Transport\Storage\DataGeneration.cs" />
+    <Compile Include="Exchange\Transport\Storage\DataGenerationCategory.cs" />
+    <Compile Include="Exchange\Transport\Storage\DataGenerationManager.cs" />
+    <Compile Include="Exchange\Transport\Storage\DataGenerationRow.cs" />
+    <Compile Include="Exchange\Transport\Storage\DataGenerationTable.cs" />
+    <Compile Include="Exchange\Transport\Storage\DataInternalComponent.cs" />
+    <Compile Include="Exchange\Transport\Storage\DataRow.cs" />
+    <Compile Include="Exchange\Transport\Storage\DataSeekException.cs" />
+    <Compile Include="Exchange\Transport\Storage\DataSource.cs" />
+    <Compile Include="Exchange\Transport\Storage\DataStream.cs" />
+    <Compile Include="Exchange\Transport\Storage\DataStreamImmediate.cs" />
+    <Compile Include="Exchange\Transport\Storage\DataStreamImmediateReader.cs" />
+    <Compile Include="Exchange\Transport\Storage\DataStreamImmediateWriter.cs" />
+    <Compile Include="Exchange\Transport\Storage\DataStreamLazyReader.cs" />
+    <Compile Include="Exchange\Transport\Storage\DataTable.cs" />
+    <Compile Include="Exchange\Transport\Storage\DataTableCursor.cs" />
+    <Compile Include="Exchange\Transport\Storage\DataTableView.cs" />
+    <Compile Include="Exchange\Transport\Storage\GenerationCleanupMode.cs" />
+    <Compile Include="Exchange\Transport\Storage\IDatabaseAutoRecoveryEventLogger.cs" />
+    <Compile Include="Exchange\Transport\Storage\IDataExternalComponent.cs" />
+    <Compile Include="Exchange\Transport\Storage\IDataObjectComponent.cs" />
+    <Compile Include="Exchange\Transport\Storage\IDataWithinRowComponent.cs" />
+    <Compile Include="Exchange\Transport\Storage\IPFiltering\Database.cs" />
+    <Compile Include="Exchange\Transport\Storage\IPFiltering\IPFilteringTable.cs" />
+    <Compile Include="Exchange\Transport\Storage\IPFiltering\IPFilterList.cs" />
+    <Compile Include="Exchange\Transport\Storage\IPFiltering\IPFilterLists.cs" />
+    <Compile Include="Exchange\Transport\Storage\IPFiltering\IPFilterRange.cs" />
+    <Compile Include="Exchange\Transport\Storage\IPFiltering\IPFilterRow.cs" />
+    <Compile Include="Exchange\Transport\Storage\IPFiltering\PolicyType.cs" />
+    <Compile Include="Exchange\Transport\Storage\LazyBytes.cs" />
+    <Compile Include="Exchange\Transport\Storage\Messaging\DataColumnViewAttribute.cs" />
+    <Compile Include="Exchange\Transport\Storage\Messaging\IBootLoader.cs" />
+    <Compile Include="Exchange\Transport\Storage\Messaging\IBootLoaderConfig.cs" />
+    <Compile Include="Exchange\Transport\Storage\Messaging\ICursorPool.cs" />
+    <Compile Include="Exchange\Transport\Storage\Messaging\IMailItemStorage.cs" />
+    <Compile Include="Exchange\Transport\Storage\Messaging\IMailRecipientStorage.cs" />
+    <Compile Include="Exchange\Transport\Storage\Messaging\IMessagingDatabase.cs" />
+    <Compile Include="Exchange\Transport\Storage\Messaging\IMessagingDatabaseComponent.cs" />
+    <Compile Include="Exchange\Transport\Storage\Messaging\IMessagingDatabaseConfig.cs" />
+    <Compile Include="Exchange\Transport\Storage\Messaging\IReplayRequest.cs" />
+    <Compile Include="Exchange\Transport\Storage\Messaging\MailItemAndRecipients.cs" />
+    <Compile Include="Exchange\Transport\Storage\Messaging\MessagingDatabaseComponent.cs" />
+    <Compile Include="Exchange\Transport\Storage\Messaging\MessagingDatabaseResultStatus.cs" />
+    <Compile Include="Exchange\Transport\Storage\Messaging\Null\MessagingDatabase.cs" />
+    <Compile Include="Exchange\Transport\Storage\Messaging\QueueTable.cs" />
+    <Compile Include="Exchange\Transport\Storage\Messaging\RowType.cs" />
+    <Compile Include="Exchange\Transport\Storage\Messaging\ServerInfoTable.cs" />
+    <Compile Include="Exchange\Transport\Storage\Messaging\StorageFactory.cs" />
+    <Compile Include="Exchange\Transport\Storage\Messaging\Utah\BootScanner.cs" />
+    <Compile Include="Exchange\Transport\Storage\Messaging\Utah\MailItemStorage.cs" />
+    <Compile Include="Exchange\Transport\Storage\Messaging\Utah\MailRecipientStorage.cs" />
+    <Compile Include="Exchange\Transport\Storage\Messaging\Utah\MessageTable.cs" />
+    <Compile Include="Exchange\Transport\Storage\Messaging\Utah\MessagingDatabase.cs" />
+    <Compile Include="Exchange\Transport\Storage\Messaging\Utah\MessagingGeneration.cs" />
+    <Compile Include="Exchange\Transport\Storage\Messaging\Utah\OnLoadedMessageEventArgs.cs" />
+    <Compile Include="Exchange\Transport\Storage\Messaging\Utah\OnLoadedMessageEventSource.cs" />
+    <Compile Include="Exchange\Transport\Storage\Messaging\Utah\RecipientTable.cs" />
+    <Compile Include="Exchange\Transport\Storage\Messaging\Utah\ReplayRequest.cs" />
+    <Compile Include="Exchange\Transport\Storage\Messaging\Utah\ReplayRequestStorage.cs" />
+    <Compile Include="Exchange\Transport\Storage\Messaging\Utah\ReplayRequestTable.cs" />
+    <Compile Include="Exchange\Transport\Storage\Messaging\VersionTable.cs" />
+    <Compile Include="Exchange\Transport\Storage\OperationTracker.cs" />
+    <Compile Include="Exchange\Transport\Storage\SchemaException.cs" />
+    <Compile Include="Exchange\Transport\Storage\Transaction.cs" />
+    <Compile Include="Exchange\Transport\Storage\TransactionCommitMode.cs" />
+    <Compile Include="Exchange\Transport\StoreDriverSubmitContext.cs" />
+    <Compile Include="Exchange\Transport\Strings.cs" />
+    <Compile Include="Exchange\Transport\SubmissionQueueBlockedException.cs" />
+    <Compile Include="Exchange\Transport\SubmissionQueueMonitor.cs" />
+    <Compile Include="Exchange\Transport\SubmitHelper.cs" />
+    <Compile Include="Exchange\Transport\SubmitHelperPerfCounters.cs" />
+    <Compile Include="Exchange\Transport\SubmitMessageQueue.cs" />
+    <Compile Include="Exchange\Transport\SupervisionMaps.cs" />
+    <Compile Include="Exchange\Transport\SynchronizedStream.cs" />
+    <Compile Include="Exchange\Transport\SystemCheckComponent.cs" />
+    <Compile Include="Exchange\Transport\SystemCheckConfig.cs" />
+    <Compile Include="Exchange\Transport\SystemProbeHelper.cs" />
+    <Compile Include="Exchange\Transport\TenantBasedCondition.cs" />
+    <Compile Include="Exchange\Transport\TenantOutboundConnectorsRetrievalException.cs" />
+    <Compile Include="Exchange\Transport\ThrottlingContext.cs" />
+    <Compile Include="Exchange\Transport\ThrottlingController.cs" />
+    <Compile Include="Exchange\Transport\TlsCertificateNameNotFoundException.cs" />
+    <Compile Include="Exchange\Transport\TraceConfigurationBase.cs" />
+    <Compile Include="Exchange\Transport\TraceConfigurationSingleton.cs" />
+    <Compile Include="Exchange\Transport\TransportAppConfig.cs" />
+    <Compile Include="Exchange\Transport\TransportComponentLoadFailedException.cs" />
+    <Compile Include="Exchange\Transport\TransportEventLog.cs" />
+    <Compile Include="Exchange\Transport\TransportEventLogConstants.cs" />
+    <Compile Include="Exchange\Transport\TransportMailItem.cs" />
+    <Compile Include="Exchange\Transport\TransportMailItemWrapper.cs" />
+    <Compile Include="Exchange\Transport\TransportNoopExPerformanceCounter.cs" />
+    <Compile Include="Exchange\Transport\TransportProperty.cs" />
+    <Compile Include="Exchange\Transport\TransportPropertyException.cs" />
+    <Compile Include="Exchange\Transport\TransportPropertyReader.cs" />
+    <Compile Include="Exchange\Transport\TransportPropertyStreamReader.cs" />
+    <Compile Include="Exchange\Transport\TransportPropertyStreamWriter.cs" />
+    <Compile Include="Exchange\Transport\TransportPropertyWriter.cs" />
+    <Compile Include="Exchange\Transport\TransportServerConfiguration.cs" />
+    <Compile Include="Exchange\Transport\TransportSettingsConfiguration.cs" />
+    <Compile Include="Exchange\Transport\TransportTraceConfiguration.cs" />
+    <Compile Include="Exchange\Transport\TreeLatencyTracker.cs" />
+    <Compile Include="Exchange\Transport\TypeEntry.cs" />
+    <Compile Include="Exchange\Transport\UnreachableSolution.cs" />
+    <Compile Include="Exchange\Transport\VersionBucketsMonitor.cs" />
+    <Compile Include="Exchange\Transport\WaitCondition.cs" />
+    <Compile Include="Exchange\Transport\WaitConditionManager.cs" />
+    <Compile Include="Exchange\Transport\WaitConditionManagerBreadcrumbs.cs" />
+    <Compile Include="Exchange\Transport\WaitListState.cs" />
+    <Compile Include="Exchange\Transport\X400AuthoritativeDomainEntry.cs" />
+    <Compile Include="Exchange\Transport\X400AuthoritativeDomainTable.cs" />
+    <Compile Include="Exchange\Transport\XExch50Blob.cs" />
+    <Compile Include="Office\Datacenter\ActiveMonitoring\Exchange\TransportNotificationEvent.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Exchange\Transport\Strings.resources" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.Exchange.Common.DiskManagement\Microsoft.Exchange.Common.DiskManagement.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140EF}</Project>
+      <Name>Microsoft.Exchange.Common.DiskManagement</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Common\Microsoft.Exchange.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140F0}</Project>
+      <Name>Microsoft.Exchange.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Compliance\Microsoft.Exchange.Compliance.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140F2}</Project>
+      <Name>Microsoft.Exchange.Compliance</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Configuration.ObjectModel\Microsoft.Exchange.Configuration.ObjectModel.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140FC}</Project>
+      <Name>Microsoft.Exchange.Configuration.ObjectModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Core.Strings\Microsoft.Exchange.Core.Strings.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14103}</Project>
+      <Name>Microsoft.Exchange.Core.Strings</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.ApplicationLogic\Microsoft.Exchange.Data.ApplicationLogic.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14104}</Project>
+      <Name>Microsoft.Exchange.Data.ApplicationLogic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Common\Microsoft.Exchange.Data.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140D3}</Project>
+      <Name>Microsoft.Exchange.Data.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Directory\Microsoft.Exchange.Data.Directory.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14105}</Project>
+      <Name>Microsoft.Exchange.Data.Directory</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Metering.Contracts\Microsoft.Exchange.Data.Metering.Contracts.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1410B}</Project>
+      <Name>Microsoft.Exchange.Data.Metering.Contracts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Metering\Microsoft.Exchange.Data.Metering.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1410C}</Project>
+      <Name>Microsoft.Exchange.Data.Metering</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Storage\Microsoft.Exchange.Data.Storage.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1410F}</Project>
+      <Name>Microsoft.Exchange.Data.Storage</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.ThrottlingService.Client\Microsoft.Exchange.Data.ThrottlingService.Client.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14110}</Project>
+      <Name>Microsoft.Exchange.Data.ThrottlingService.Client</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data.Transport\Microsoft.Exchange.Data.Transport.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140D5}</Project>
+      <Name>Microsoft.Exchange.Data.Transport</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data\Microsoft.Exchange.Data.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14106}</Project>
+      <Name>Microsoft.Exchange.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Diagnostics\Microsoft.Exchange.Diagnostics.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14113}</Project>
+      <Name>Microsoft.Exchange.Diagnostics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.EdgeSync.Common\Microsoft.Exchange.EdgeSync.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14119}</Project>
+      <Name>Microsoft.Exchange.EdgeSync.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Extensibility.Internal\Microsoft.Exchange.Extensibility.Internal.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14126}</Project>
+      <Name>Microsoft.Exchange.Extensibility.Internal</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Extensibility.Partner\Microsoft.Exchange.Extensibility.Partner.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14127}</Project>
+      <Name>Microsoft.Exchange.Extensibility.Partner</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.MessageSecurity\Microsoft.Exchange.MessageSecurity.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA1416A}</Project>
+      <Name>Microsoft.Exchange.MessageSecurity</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Net\Microsoft.Exchange.Net.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14178}</Project>
+      <Name>Microsoft.Exchange.Net</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Rpc\Microsoft.Exchange.Rpc.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14188}</Project>
+      <Name>Microsoft.Exchange.Rpc</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.TextProcessing\Microsoft.Exchange.TextProcessing.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141BB}</Project>
+      <Name>Microsoft.Exchange.TextProcessing</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Transport.Common\Microsoft.Exchange.Transport.Common.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141CC}</Project>
+      <Name>Microsoft.Exchange.Transport.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Transport.LoggingCommon\Microsoft.Exchange.Transport.LoggingCommon.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141CF}</Project>
+      <Name>Microsoft.Exchange.Transport.LoggingCommon</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Transport.Scheduler.Contracts\Microsoft.Exchange.Transport.Scheduler.Contracts.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141D0}</Project>
+      <Name>Microsoft.Exchange.Transport.Scheduler.Contracts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Transport.Scheduler\Microsoft.Exchange.Transport.Scheduler.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141D1}</Project>
+      <Name>Microsoft.Exchange.Transport.Scheduler</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Transport.Storage.Contracts\Microsoft.Exchange.Transport.Storage.Contracts.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141D2}</Project>
+      <Name>Microsoft.Exchange.Transport.Storage.Contracts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Transport.Storage\Microsoft.Exchange.Transport.Storage.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141D3}</Project>
+      <Name>Microsoft.Exchange.Transport.Storage</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.VariantConfiguration\Microsoft.Exchange.VariantConfiguration.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141E0}</Project>
+      <Name>Microsoft.Exchange.VariantConfiguration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Isam.Esent.Interop\Microsoft.Isam.Esent.Interop.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141E8}</Project>
+      <Name>Microsoft.Isam.Esent.Interop</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Office.Datacenter.ActiveMonitoringLocal\Microsoft.Office.Datacenter.ActiveMonitoringLocal.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141ED}</Project>
+      <Name>Microsoft.Office.Datacenter.ActiveMonitoringLocal</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\mscorlib\mscorlib.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141F1}</Project>
+      <Name>mscorlib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

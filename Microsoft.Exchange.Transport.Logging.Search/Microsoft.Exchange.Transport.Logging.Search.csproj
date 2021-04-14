@@ -1,0 +1,128 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{09CD9476-CD82-489E-B9E2-84B47CA141CE}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Microsoft.Exchange.Transport.Logging.Search</RootNamespace>
+    <AssemblyName>Microsoft.Exchange.Transport.Logging.Search</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CommonDiagnosticsLog.cs" />
+    <Compile Include="DeliveryReportsSource.cs" />
+    <Compile Include="DeliveryReportsTask.cs" />
+    <Compile Include="DiagnosticProperty.cs" />
+    <Compile Include="DiagnosticsLevel.cs" />
+    <Compile Include="DiagnosticWatson.cs" />
+    <Compile Include="EnumAttributeInfo.cs" />
+    <Compile Include="EnumConverter.cs" />
+    <Compile Include="ErrorAndCount.cs" />
+    <Compile Include="HealthMonitoringEvents.cs" />
+    <Compile Include="HealthMonitoringEventsStrings.cs" />
+    <Compile Include="HostId.cs" />
+    <Compile Include="IProgressReport.cs" />
+    <Compile Include="LawEnforcementClientActivityField.cs" />
+    <Compile Include="LawEnforcementClientActivitySchema.cs" />
+    <Compile Include="LogAndCondition.cs" />
+    <Compile Include="LogBinaryOperatorCondition.cs" />
+    <Compile Include="LogBinaryStringOperatorCondition.cs" />
+    <Compile Include="LogComparisonCondition.cs" />
+    <Compile Include="LogComparisonOperator.cs" />
+    <Compile Include="LogCompoundCondition.cs" />
+    <Compile Include="LogCondition.cs" />
+    <Compile Include="LogConditionConstant.cs" />
+    <Compile Include="LogConditionField.cs" />
+    <Compile Include="LogConditionOperand.cs" />
+    <Compile Include="LogConditionVariable.cs" />
+    <Compile Include="LogFalseCondition.cs" />
+    <Compile Include="LogForAnyCondition.cs" />
+    <Compile Include="LogForEveryCondition.cs" />
+    <Compile Include="LogIsNullOrEmptyCondition.cs" />
+    <Compile Include="LogNotCondition.cs" />
+    <Compile Include="LogOrCondition.cs" />
+    <Compile Include="LogQuantifierCondition.cs" />
+    <Compile Include="LogQuery.cs" />
+    <Compile Include="LogQuerySerializer.cs" />
+    <Compile Include="LogSearchClient.cs" />
+    <Compile Include="LogSearchConstants.cs" />
+    <Compile Include="LogSearchCursor.cs" />
+    <Compile Include="LogSearchStream.cs" />
+    <Compile Include="LogStringComparisonCondition.cs" />
+    <Compile Include="LogStringContainsCondition.cs" />
+    <Compile Include="LogStringEndsWithCondition.cs" />
+    <Compile Include="LogStringStartsWithCondition.cs" />
+    <Compile Include="LogTrueCondition.cs" />
+    <Compile Include="LogUnaryCondition.cs" />
+    <Compile Include="LogUnaryOperatorCondition.cs" />
+    <Compile Include="MessageTrackingField.cs" />
+    <Compile Include="MSExchangeTransportLogSearchEventLogConstants.cs" />
+    <Compile Include="Names.cs" />
+    <Compile Include="Operations.cs" />
+    <Compile Include="OpType.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SyncHealthLogSchema.cs" />
+    <Compile Include="XmlSerializationReaderLogQuery.cs" />
+    <Compile Include="XmlSerializationWriterLogQuery.cs" />
+    <Compile Include="XmlSerializer1.cs" />
+    <Compile Include="XmlSerializerContract.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.Exchange.Configuration.ObjectModel\Microsoft.Exchange.Configuration.ObjectModel.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA140FC}</Project>
+      <Name>Microsoft.Exchange.Configuration.ObjectModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Data\Microsoft.Exchange.Data.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14106}</Project>
+      <Name>Microsoft.Exchange.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Diagnostics\Microsoft.Exchange.Diagnostics.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14113}</Project>
+      <Name>Microsoft.Exchange.Diagnostics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Net\Microsoft.Exchange.Net.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14178}</Project>
+      <Name>Microsoft.Exchange.Net</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Exchange.Rpc\Microsoft.Exchange.Rpc.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA14188}</Project>
+      <Name>Microsoft.Exchange.Rpc</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\mscorlib\mscorlib.csproj">
+      <Project>{09CD9476-CD82-489E-B9E2-84B47CA141F1}</Project>
+      <Name>mscorlib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
